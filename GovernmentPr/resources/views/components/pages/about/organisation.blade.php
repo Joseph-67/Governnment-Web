@@ -1,4 +1,5 @@
 @extends('components.layouts.app')
+@section('PageTitle', 'organisation')
 @section('pageContent')
 
 <main>

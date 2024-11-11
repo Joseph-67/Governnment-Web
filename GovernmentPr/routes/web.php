@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\organisationController;
+use App\Http\Controllers\mandateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ Route::get('/', function () {
 });
 Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
 Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
+Route::get('/mandate', [mandateController::class, 'displayMandate'])->name('mandate');
 
 Route::middleware([
     'auth:sanctum',
