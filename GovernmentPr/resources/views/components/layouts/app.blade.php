@@ -315,7 +315,7 @@
                            <button class="search-open-btn"><i class="fa-regular fa-magnifying-glass"></i></button>
                         </div>
                         <div class="tp-header-right-btn d-none d-sm-block">
-                           <a class="tp-btn" href="contact.html">REPORT ISSUE</a>
+                           <a class="tp-btn" href="{{route('login')}}"> LOGIN </a>
                         </div>
                         <div class="tp-header-right-tel-icon-box d-none d-xxl-block">
                            <div class="tp-header-right-tel-icon d-flex align-items-center">
