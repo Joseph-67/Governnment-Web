@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\organisationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ Route::get('/', function () {
     return redirect('home');
 });
 Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
+Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
 
 Route::middleware([
     'auth:sanctum',
