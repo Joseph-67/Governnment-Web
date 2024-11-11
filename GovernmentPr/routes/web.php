@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\HomePageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,17 +14,17 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return redirect('home');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
+    'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return view('dashboard');
     })->name('dashboard');
 });
