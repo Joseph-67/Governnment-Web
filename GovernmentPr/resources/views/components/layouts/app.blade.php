@@ -4,12 +4,12 @@
 <head>
    <meta charset="utf-8">
    <meta http-equiv="x-ua-compatible" content="ie=edge">
-   <title>Mayorx - Municipal & City Government Template </title>
+   <title>@yield('title') – Federal Ministry of Environment </title>
    <meta name="description" content="">
    <meta name="viewport" content="width=device-width, initial-scale=1">
 
    <!-- Place favicon.ico in the root directory -->
-   <link rel="shortcut icon" type="image/x-icon" href="{{asset('MainAssets/img/logo/favicon.png')}}">
+   <link rel="shortcut icon" type="image/x-icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
 
    <!-- CSS here -->
    <link rel="stylesheet" href="{{asset('MainAssets/css/bootstrap.css')}}">

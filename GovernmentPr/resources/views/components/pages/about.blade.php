@@ -1,1 +1,2 @@
 @extends('')
+@section('title', 'Home')
