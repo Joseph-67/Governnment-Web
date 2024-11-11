@@ -14,9 +14,9 @@ use App\Http\Controllers\HomePageController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return redirect('home');
+});
 Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
 
 Route::middleware([

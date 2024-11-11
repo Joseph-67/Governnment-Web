@@ -60,7 +60,7 @@
                   <div class="search__top d-flex justify-content-between align-items-center">
                      <div class="search__logo">
                         <a href="index.html">
-                           <img src="assets/img/logo/logo-white.png" alt="">
+                           <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt="">
                         </a>
                      </div>
                      <div class="search__close">
@@ -109,7 +109,7 @@
          </div>
          <div class="tpoffcanvas__logo">
             <a href="index.html">
-               <img src="assets/img/logo/logo-white.png" alt="">
+               <img src="{{asset('MainAssets/img/logo/logo-white.png')}}" alt="">
             </a>
          </div>
          <div class="tpoffcanvas__title">
@@ -210,7 +210,7 @@
             <div class="row align-items-center">
                <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
                   <div class="tp-header-logo">
-                     <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                     <a href="index.html"><img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt=""></a>
                   </div>
                </div>
                <div class="col-xxl-6 col-xl-7 d-none d-xl-block">
