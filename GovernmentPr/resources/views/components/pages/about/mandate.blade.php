@@ -86,7 +86,7 @@
                            </ul>
                         </div>
                         <div class="postbox__list">
-                           <h3 class="postbox__list-title">Let our investment management team</h3>
+                           <h3 class="postbox__list-title">MANDATES</h3>
                            <div class="row">
                               <div class="col-xl-7 col-lg-12">
                                  <div class="postbox__list-content">
@@ -101,7 +101,7 @@
                                                 </path>
                                              </svg>
                                           </span> 
-                                          Lorem Ipsum generators on the tend to repeat.
+                                          Securing a quality environment conducive for good health and wellbeing of fauna and flora.
                                        </li>
                                        <li>
                                           <span class="active"><svg width="14" height="14" viewBox="0 0 16 15"
@@ -111,7 +111,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span> If you are going to use a passage..
+                                          </span> Promoting sustainable use of natural resources.
                                        </li>
                                        <li>
                                           <span>
@@ -122,7 +122,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span>series of manual and semi-manual activities.
+                                          </span> Restoring and maintaining the ecosystem, ecological process and preserve biodiversity.
                                        </li>
                                        <li>
                                           <span>
@@ -133,7 +133,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span> Lorem Ipsum generators on the tend to repeat.
+                                          </span> Raising public awareness and promoting understanding of linkages of the environment.
                                        </li>
                                        <li>
                                           <span>
@@ -144,12 +144,16 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span>If you are going to use a passage.
+                                          </span> Cooperating with relevant MDAs, the private sector, NGOs, and International organizations on environmental matters.
                                        </li>
                                     </ul>
                                  </div>
                               </div>
-                              
+                              <div class="col-xl-5 col-lg-12">
+                                 <div class="posbox__list-img">
+                                    <img src="assets/img/blog/blog-list-img.jpg" alt="">
+                                 </div>
+                              </div>
                            </div>
                         </div>
                         
