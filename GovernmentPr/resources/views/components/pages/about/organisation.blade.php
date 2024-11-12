@@ -5,7 +5,7 @@
 <main>
 
 <!-- breadcrumb area start -->
-<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix" data-background="{{asset('MainAssets/img/department/departments-1.jpg')}}">
+<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix" data-background="{{asset('MainAssets/img/department/landscape-2.webp')}}">
    <div class="container">
       <div class="row">
          <div class="col-xxl-12">
