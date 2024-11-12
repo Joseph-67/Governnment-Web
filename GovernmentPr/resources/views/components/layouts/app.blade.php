@@ -274,8 +274,13 @@
                         <div class="tp-header-right-search d-none d-sm-block">
                            <button class="search-open-btn"><i class="fa-regular fa-magnifying-glass"></i></button>
                         </div>
-                        <div class="tp-header-right-btn d-none d-sm-block">
-                           <a class="tp-btn" href="{{route('login')}}"> LOGIN </a>
+                        <div class="tp-header-right-btn" >
+                           <a class="tp-btn dropdown-toggle" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
+                           <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                              <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
+                              <!-- <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li> -->
+                           </ul>
+                           
                         </div>
                         <div class="tp-header-right-tel-icon-box d-none d-xxl-block">
                            <div class="tp-header-right-tel-icon d-flex align-items-center">
