@@ -367,11 +367,14 @@
                            Friday: Closed
                         </span>
                      </div>
+                    
                   </div>
                </div>
+               
             </div>
          </div>
       </div>
+      
       <!-- footer-top area end -->
    
       <!-- footer area start -->
@@ -384,7 +387,9 @@
                <div class="col-xl-3 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                   <div class="tp-footer-widget footer-col-1">
                      <div class="tp-footer-widget-logo">
-                        <a href="index.html"><img src="assets/img/logo/logo-white.png" alt=""></a>
+                     <a href="">
+         <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}"  alt="logo">
+      </a>
                      </div>
                      <div class="tp-footer-widget-content">
                         <p class="mb-40">Desires to obtain pain of it because it is pain, but occasionally circum
