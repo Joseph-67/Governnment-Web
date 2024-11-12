@@ -218,14 +218,14 @@
                      <nav class="tp-main-menu-content">
                         <ul>
                            <li class="has-dropdown">
-                              <a href="index.html">HOME</a>
+                              <a href="{{route('home')}}">HOME</a>
   
                            </li>
                            <li class="has-dropdown">
                               <a href="service.html">ABOUT US</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="">MANDATE</a></li>
-                                 <li><a href="">ORGANIZATION</a></li>
+                                 <li><a href="{{route('mandate')}}">MANDATE</a></li>
+                                 <li><a href="{{route('organisation')}}">ORGANIZATION</a></li>
                                  <li><a href="">LEADERSHIP</a></li>
                                  <li><a href="">CAREER</a></li>
                               </ul>
