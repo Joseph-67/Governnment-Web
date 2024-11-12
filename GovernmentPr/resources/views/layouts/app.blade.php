@@ -828,12 +828,12 @@
                             </li><!--end nav-item-->
                         </ul><!--end navbar-nav--->
                         <div class="update-msg text-center"> 
-                            <div class="d-flex justify-content-center align-items-center thumb-lg update-icon-box  rounded-circle mx-auto">
-                                <i class="iconoir-peace-hand h3 align-self-center mb-0 text-primary"></i>
-                            </div>                   
-                            <h5 class="mt-3">Mannat Themes</h5>
-                            <p class="mb-3 text-muted">Rizz is a high quality web applications.</p>
-                            <a href="javascript: void(0);" class="btn text-primary shadow-sm rounded-pill">Upgrade your plan</a>
+                        <div class="d-flex justify-content-center align-items-center thumb-lg update-icon-box  rounded-circle mx-auto">
+                            <img src="{{asset('MainAssets/img/logo/icon-100x100.png')}}" alt="logo" width="70px">
+                        </div>                   
+                        <h5 class="mt-3"> Federal Ministry of Environment </h5>
+                        <p class="mb-3 text-muted">Made by Elite Tech. Dev.</p>
+                        <a href="javascript: void(0);" class="btn text-primary shadow-sm rounded-pill">Contact Us</a>
                         </div>
                     </div>
                 </div><!--end startbar-collapse-->
