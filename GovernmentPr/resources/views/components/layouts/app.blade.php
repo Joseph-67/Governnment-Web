@@ -184,7 +184,7 @@
                         <li>
                            <i class="flaticon-map"></i>
                            <a href="https://www.google.com/maps/@23.822337,90.3654296,15z?entry=ttu" target="_blank">76
-                              San Fransisco Street. New York</a>
+                           17 Aguiyi Ironsi St, Wuse, Abuja </a>
                         </li>
                         <li>
                            <i class="flaticon-envelope"></i>
@@ -332,8 +332,7 @@
                      <div class="tp-footer-top-info">
                         <h4 class="tp-footer-top-info-title">Address</h4>
                         <span>
-                           <a href="https://www.google.com.bd/maps/@23.7806365,90.4193257,12z?hl=en&entry=ttu"
-                              target="_blank">420 Kalapani Road, Mirpur 12 kingston, Bangladesh
+                           <a href="#">17 Aguiyi Ironsi St, Wuse, Abuja 904101, Federal Capital Territory
                            </a>
                         </span>
                      </div>

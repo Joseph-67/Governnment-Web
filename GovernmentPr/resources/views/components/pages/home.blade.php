@@ -21,7 +21,7 @@
          <button class="slider-next"><i class="fa-regular fa-arrow-right"></i></button>
       </div>
       <div class="tp-slider-shape-5">
-         <img src="{{asset('MainAssets/img/slider/slider-shape-1-5.png')}}" alt="">
+         <img src="{{asset('MainAssets/img/slider/slider-new1.png')}}"  alt="">
       </div>
       <div class="swiper-container tp-slider-active">
          <div class="swiper-wrapper">
@@ -53,7 +53,7 @@
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=K527oNxtO7o"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=R6rchakWh5Q"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -111,7 +111,7 @@
                      <img src="{{asset('MainAssets/img/slider/slider-shape-1-3.png')}}" alt="">
                   </div>
                   <div class="tp-slider-shape-3 z-index-1">
-                     <img src="assets/i{{asset('MainAssetsmg/slider/slider-shape-1-2.png')}}" alt="">
+                     <img src="assets/i{{asset('MainAssets/mg/slider/slider-shape-1-2.png')}}" alt="">
                   </div>
                   <div class="container">
                      <div class="row">
@@ -120,7 +120,7 @@
                               <div class="tp-slider-shape-4">
                                  <img src="{{asset('MainAssets/img/slider/slider-shape-1-4.png')}}" alt="">
                               </div>
-                              <div class="tp-slider-title-box p-relative">
+                             <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
                                  <h4 class="tp-slider-title">To be a nation that develops in harmony with its environment</p>
                               </div>
@@ -158,7 +158,7 @@
          <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
             <div class="tp-feature-item mb-30 text-center">
                <div class="tp-feature-icon">
-                  <i class="flaticon-open-book"></i>
+               <i class="fas fa-rocket mission-icon"></i>
                </div>
                <div class="tp-feature-content">
                   <h4 class="tp-feature-title-sm">OUR MISSION</h4>
@@ -169,7 +169,8 @@
          <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
             <div class="tp-feature-item mb-30 text-center">
                <div class="tp-feature-icon">
-                  <i class="flaticon-job-offer"></i>
+               <i class="fa fa-recycle" aria-hidden="true"></i>
+
                </div>
                <div class="tp-feature-content">
                   <h4 class="tp-feature-title-sm">ENVIRONMENTAL PROTECTION</h4>
@@ -180,7 +181,9 @@
          <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
             <div class="tp-feature-item mb-30 text-center">
                <div class="tp-feature-icon">
-                  <i class="flaticon-targeting"></i>
+               <i class="fa fa-water" aria-hidden="true"></i>
+
+
                </div>
                <div class="tp-feature-content">
                   <h4 class="tp-feature-title-sm">Natural Resources Conservation</h4>
@@ -191,7 +194,8 @@
          <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
             <div class="tp-feature-item mb-30 text-center">
                <div class="tp-feature-icon">
-                  <i class="flaticon-goverment"></i>
+               <i class="fa fa-building" aria-hidden="true"></i>
+
                </div>
                <div class="tp-feature-content">
                   <h4 class="tp-feature-title-sm">SUSTAINABLE DEVELOPMENT</h4>
@@ -201,7 +205,8 @@
          <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay="1s">
             <div class="tp-feature-item mb-30 text-center">
                <div class="tp-feature-icon">
-                  <i class="flaticon-traffic-light"></i>
+               <i class="fa fa-hands-helping" aria-hidden="true"></i>
+
                </div>
                <div class="tp-feature-content">
                   <h4 class="tp-feature-title-sm">COMMUNITY INVOLVEMENT</h4>
@@ -236,11 +241,11 @@
                   <h4 class="tp-about-feature-title">Ministerial focal points</h4>
                   <div class="tp-about-feature-list">
                      <ul>
-                        <li><a href="service-details.html">Quality Environment</a></li>
-                        <li><a href="service-details.html">Sustainability</a></li>
-                        <li><a href="service-details.html">Restoration</a></li>
-                        <li><a href="service-details.html">Public Awareness</a></li>
-                        <li><a href="service-details.html">Collaborations</a></li>
+                        <li><a href="">Quality Environment</a></li>
+                        <li><a href="">Sustainability</a></li>
+                        <li><a href="">Restoration</a></li>
+                        <li><a href="">Public Awareness</a></li>
+                        <li><a href="">Collaborations</a></li>
                      </ul>
                   </div>
                   <div class="tp-about-feature-btn">
@@ -294,9 +299,9 @@
 
 <!-- service area start -->
 <div id="service-one-page" class="tp-service-area p-relative theme-bg-2 pt-120 pb-90">
-   <div class="tp-service-shape-1 d-none d-lg-block">
+   <!-- <div class="tp-service-shape-1 d-none d-lg-block">
       <img src="{{asset('MainAssets/img/service/sv-flag.png')}}" alt="">
-   </div>
+   </div> -->
    <div class="container custom-container">
       <div class="row">
          <div class="col-xl-12">
@@ -322,7 +327,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="service-details.html">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -332,7 +337,8 @@
                   <img src="{{asset('MainAssets/img/service/sv-item-shape.png')}}" alt="">
                </div>
                <div class="tp-service-icon">
-                  <i class="flaticon-car-insurance"></i>
+               <i class="fa fa-wind" aria-hidden="true"></i>
+
                </div>
                <div class="tp-service-content">
                   <h4 class="tp-service-title-sm"><a href="service-details.html">Climate Change</a></h4>
@@ -341,7 +347,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="service-details.html">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -351,7 +357,8 @@
                   <img src="{{asset('MainAssets/img/service/sv-item-shape.png')}}" alt="">
                </div>
                <div class="tp-service-icon">
-                  <i class="flaticon-industrial-park"></i>
+               <i class="fa fa-file-invoice" aria-hidden="true"></i>
+
                </div>
                <div class="tp-service-content">
                   <h4 class="tp-service-title-sm"><a href="service-details.html">Finance & Accounts </a></h4>
@@ -360,7 +367,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="service-details.html">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -370,7 +377,7 @@
                   <img src="{{asset('MainAssets/img/service/sv-item-shape.png')}}" alt="">
                </div>
                <div class="tp-service-icon">
-                  <i class="flaticon-scroll"></i>
+               <i class="fas fa-briefcase"></i>
                </div>
                <div class="tp-service-content">
                   <h4 class="tp-service-title-sm"><a href="service-details.html">General Services </a></h4>
@@ -379,7 +386,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="service-details.html">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
