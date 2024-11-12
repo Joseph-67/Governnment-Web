@@ -231,7 +231,7 @@
   
                            </li>
                            <li class="has-dropdown">
-                              <a href="service.html">ABOUT US</a>
+                              <a href="#">ABOUT US</a>
                               <ul class="tp-submenu submenu">
                                  <li><a href="{{route('mandate')}}">MANDATE</a></li>
                                  <li><a href="{{route('organisation')}}">ORGANIZATION</a></li>
