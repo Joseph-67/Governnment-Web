@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Admins;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 
 class AdminsController extends Controller
 {
@@ -22,9 +28,16 @@ class AdminsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create_register()
     {
         //
+        return view('auth.register')->with(['guard' => 'admin']);
+    }
+
+    public function create_login()
+    {
+        //
+        return view('auth.login')->with(['guard' => 'admin']);
     }
 
     /**
@@ -33,9 +46,50 @@ class AdminsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         //
+        $request->validate([
+            'first_name' => ['required', 'string', 'min:4', 'max:255'],
+            'last_name' => ['required', 'string', 'min:4', 'max:255'],
+            'other_name' => ['nullable', 'string', 'min:4', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'min:4', 'max:255', 'unique:Admins'],
+            'password' => ['required', 'string', 'min:6', Password::min(6)->mixedCase()->letters()->symbols()->numbers()->uncompromised(), 'confirmed'],
+            'mobile_number' => ['nullable', 'numeric', 'min:12']
+        ]);
+
+        $admin = Admins::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'other_name' => $request['other_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'mobile_number' => $request['mobile_number'],
+        ]);
+
+        event(new Registered($admin));
+        Auth::guard('admin')->login($admin);
+        return redirect(route('admin.dashboard', absolute: false));
+    }
+
+    public function process_login(Request $request): RedirectResponse
+    {
+        //
+        $request->validate([
+            'email'     => ['required', 'string', 'lowercase', 'email'],
+            'password'  => ['required', 'string'],
+        ]);
+
+        if (Auth::guard('admin')->attempt([
+            'email' => $request->email,
+            'password' => $request->password,
+        ], $request->remember)) {
+            # code...
+            $request->session()->regenerate();
+            return redirect()->intended(route('admin.dashboard', ['admin' => 'admin']));
+        }
+            // $request->session()->regenerate();
+            // return redirect(route('admin.dashboard', absolute: false));      
     }
 
     /**
@@ -44,6 +98,10 @@ class AdminsController extends Controller
      * @param  \App\Models\Admins  $admins
      * @return \Illuminate\Http\Response
      */
+
+    public function display_dashboard() {
+        return view('components.admin.dashboard');
+    }
     public function show(Admins $admins)
     {
         //
@@ -78,8 +136,12 @@ class AdminsController extends Controller
      * @param  \App\Models\Admins  $admins
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admins $admins)
+    public function destroy(Request $request)
     {
         //
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

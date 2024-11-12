@@ -59,8 +59,8 @@
                <div class="search__wrapper">
                   <div class="search__top d-flex justify-content-between align-items-center">
                      <div class="search__logo">
-                        <a href="index.html">
-                           <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt="">
+                        <a href="{{ url('/') }}">
+                           <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt="logo">
                         </a>
                      </div>
                      <div class="search__close">

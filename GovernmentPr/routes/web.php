@@ -16,12 +16,17 @@ use App\Http\Controllers\mandateController;
 |
 */
 
-Route::get('/', function () {
-    return redirect('home');
+Route::middleware('guest:web')->group(function(){
+    Route::get('/', function () {
+        return redirect('home');
+    });
+    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
+    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
+    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
+    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
+    Route::get('/mandate', [mandateController::class, 'displayMandate'])->name('mandate');    
 });
-Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
-Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
-Route::get('/mandate', [mandateController::class, 'displayMandate'])->name('mandate');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -32,3 +37,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+require 'admin.php';

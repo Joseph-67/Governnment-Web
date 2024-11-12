@@ -4,7 +4,12 @@
             <x-authentication-card-logo />
         </x-slot>
 
-        <x-validation-errors class="mb-4" />
+        <x-slot:pageHeading>
+            <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started FME</h4>   
+            <p class="text-muted fw-medium mb-0">Sign in to continue use of application.</p>
+        </x-slot>
+
+        <x-validation-errors class="alert" alert />
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -12,37 +17,41 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
+        <form class="my-4" method="POST" action="{{ (isset($guard))? route($guard.'.login'):route('login') }}">
             @csrf
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+            <div class="form-group mb-2">
+                <label class="form-label" for="username">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">                               
+            </div><!--end form-group--> 
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
+            <div class="form-group">
+                <label class="form-label" for="userpassword">Password</label>                                            
+                <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">                            
+            </div><!--end form-group--> 
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+            <div class="form-group row mt-3">
+                <div class="col-sm-6">
+                    <div class="form-check form-switch form-switch-success">
+                        <input class="form-check-input" type="checkbox" id="customSwitchSuccess" name="remember">
+                        <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
+                    </div>
+                </div><!--end col-->
+                @if (Route::has('password.request')) 
+                <div class="col-sm-6 text-end">
+                    <a href="{{ route('password.request') }}" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>                                    
+                </div>
                 @endif
+                <!--end col--> 
+            </div><!--end form-group--> 
 
-                <x-button class="ml-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
+            <div class="form-group mb-0 row">
+                <div class="col-12">
+                    <div class="d-grid mt-3">
+                        <x-button class="btn btn-primary">Log In <i class="fas fa-sign-in-alt ms-1"></i></x-button>
+                    </div>
+                </div><!--end col--> 
+            </div> <!--end form-group--> 
         </form>
     </x-authentication-card>
 </x-guest-layout>
