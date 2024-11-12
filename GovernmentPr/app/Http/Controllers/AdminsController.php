@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Jetstream\Jetstream;
 
 class AdminsController extends Controller
 {

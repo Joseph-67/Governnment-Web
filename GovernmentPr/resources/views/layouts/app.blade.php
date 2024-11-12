@@ -1,52 +1,4 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Styles -->
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased">
-        <x-banner />
-
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                
-            </main>
-        </div>
-
-        @stack('modals')
-
-        @livewireScripts
-    </body>
-</html>
-
-
-
-<!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
 
     
@@ -97,7 +49,7 @@
                             </button>
                         </li> 
                         <li class="mx-3 welcome-text">
-                            <h3 class="mb-0 fw-bold text-truncate">Good Morning, <span class="text-capitalize">{{Auth::guard('admin')->user()->first_name}}</span>!</h3>
+                            <h3 class="mb-0 fw-bold text-truncate">Good Morning, <span class="text-capitalize">{{Auth::guard('web')->user()->first_name}}</span>!</h3>
                             <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
                         </li>                   
                     </ul>
@@ -330,9 +282,9 @@
                                 <a class="dropdown-item" href="pages-profile.html"><i class="las la-lock fs-18 me-1 align-text-bottom"></i> Security</a>
                                 <a class="dropdown-item" href="pages-faq.html"><i class="las la-question-circle fs-18 me-1 align-text-bottom"></i> Help Center</a>                       
                                 <div class="dropdown-divider mb-0"></div>
-                                <form method="POST" action="{{ route('admin.logout') }}" x-data>
+                                <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
-                                    <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
+                                    <x-dropdown-link class="dropdown-item text-danger" href="{{ route('logout') }}"
                                         @click.prevent="$root.submit();">
                                         <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
                                     </x-dropdown-link>
