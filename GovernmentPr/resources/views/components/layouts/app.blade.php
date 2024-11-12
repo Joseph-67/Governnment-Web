@@ -219,88 +219,48 @@
                         <ul>
                            <li class="has-dropdown">
                               <a href="index.html">HOME</a>
-                              <div class="tp-submenu submenu has-homemenu">
-                                 <div class="row gx-6 row-cols-1 row-cols-md-2 row-cols-xl-3">
-                                    <div class="col homemenu">
-                                       <div class="homemenu-thumb mb-15">
-                                          <img src="assets/img/menu/home-1.jpg" alt="">
-                                          <div class="homemenu-btn">
-                                             <a class="tp-menu-btn" href="index.html">Multi page</a>
-                                             <a class="tp-menu-btn" href="index-one-page.html">One page</a>
-                                          </div>
-                                       </div>
-                                       <div class="homemenu-content text-center">
-                                          <h4 class="homemenu-title">
-                                             <a href="index.html">Home 01</a>
-                                          </h4>
-                                       </div>
-                                    </div>
-                                    <div class="col homemenu">
-                                       <div class="homemenu-thumb mb-15">
-                                          <img src="assets/img/menu/home-2.jpg" alt="">
-                                          <div class="homemenu-btn">
-                                             <a class="tp-menu-btn" href="index-2.html">Multi page</a>
-                                             <a class="tp-menu-btn" href="index-2-one-page.html">One page</a>
-                                          </div>
-                                       </div>
-                                       <div class="homemenu-content text-center">
-                                          <h4 class="homemenu-title">
-                                             <a href="index-2.html">Home 02</a>
-                                          </h4>
-                                       </div>
-                                    </div>
-                                    <div class="col homemenu">
-                                       <div class="homemenu-thumb mb-15">
-                                          <img src="assets/img/menu/home-3.jpg" alt="">
-                                          <div class="homemenu-btn">
-                                             <a class="tp-menu-btn" href="index-3.html">Multi page</a>
-                                             <a class="tp-menu-btn" href="index-3-one-page.html">One page</a>
-                                          </div>
-                                       </div>
-                                       <div class="homemenu-content text-center">
-                                          <h4 class="homemenu-title">
-                                             <a href="index-3.html">Home 03</a>
-                                          </h4>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+  
                            </li>
-                           <li><a href="about.html">About</a></li>
                            <li class="has-dropdown">
-                              <a href="service.html">SERVICES</a>
+                              <a href="service.html">ABOUT US</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="service.html">Service</a></li>
-                                 <li><a href="service-details.html">Service Details</a></li>
+                                 <li><a href="">MANDATE</a></li>
+                                 <li><a href="">ORGANIZATION</a></li>
+                                 <li><a href="">LEADERSHIP</a></li>
+                                 <li><a href="">CAREER</a></li>
                               </ul>
                            </li>
                            <li class="has-dropdown">
-                              <a href="index.html#">Pages</a>
+                              <a href="service.html">DEPARTMENTS</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="team.html">Team</a></li>
-                                 <li><a href="team-details.html">Team Details</a></li>
-                                 <li><a href="departments.html">Department</a></li>
-                                 <li><a href="department-details.html">Department Details</a></li>
-                                 <li><a href="event.html">Event</a></li>
-                                 <li><a href="event-details.html">Event Details</a></li>
-                                 <li><a href="portfolio.html">Portfolio</a></li>
-                                 <li><a href="portfolio-details.html">Portfolio Details</a></li>
-                                 <li><a href="history.html">History</a></li>
-                                 <li><a href="price.html">Price</a></li>
-                                 <li><a href="faq.html">Faq</a></li>
-                                 <li><a href="shop.html">Shop</a></li>
-                                 <li><a href="shop-details.html">Shop Details</a></li>
-                                 <li><a href="cart.html">Cart</a></li>
-                                 <li><a href="checkout.html">Checkout</a></li>
-                                 <li><a href="404.html">404</a></li>
+                                 <li><a href="">AUDIT</a></li>
+                                 <li><a href="">CLIMATE CHANGE</a></li>
                               </ul>
                            </li>
                            <li class="has-dropdown">
-                              <a href="blog.html">NEWS</a>
+                              <a href="service.html">INITIATIVES</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="blog.html">Blog</a></li>
-                                 <li><a href="blog-standard.html">Blog Standard</a></li>
-                                 <li><a href="blog-details.html">Blog Details</a></li>
+                                 <li><a href="">ACRSEAL</a></li>
+                                 <li><a href="">CLEAN AND GREEN INITIATIVE</a></li>
+                              </ul>
+                              
+                           </li>
+                           
+                          
+                           <li class="has-dropdown">
+                              <a href="index.html#">MORE</a>
+                              <ul class="tp-submenu submenu">
+                              <li class="has-dropdown">
+                                 <a href="blog.html">EVENTS & NEWS</a>
+                              </li>
+                              <li class="has-dropdown">
+                                 <a href="blog.html">AGENCIES</a>
+                              </li>
+                              <li class="has-dropdown">
+                                 <a href="blog.html">MEDIA & FOLLOWING</a>
+                              </li>
+                                 
+                              
                               </ul>
                            </li>
                            <li><a href="contact.html">CONTACT</a></li>

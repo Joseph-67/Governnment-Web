@@ -167,7 +167,8 @@
                   <i class="flaticon-open-book"></i>
                </div>
                <div class="tp-feature-content">
-                  <h4 class="tp-feature-title-sm">EDUCATION</h4>
+                  <h4 class="tp-feature-title-sm">OUR MISSION</h4>
+                  <!-- <p>How We Serve Our Fatherland</p> -->
                </div>
             </div>
          </div>
@@ -177,7 +178,8 @@
                   <i class="flaticon-job-offer"></i>
                </div>
                <div class="tp-feature-content">
-                  <h4 class="tp-feature-title-sm">BUSINESS</h4>
+                  <h4 class="tp-feature-title-sm">ENVIRONMENTAL PROTECTION</h4>
+                  <!-- <p>Through environmental standards regulation and enforcement.</p> -->
                </div>
             </div>
          </div>
@@ -187,7 +189,8 @@
                   <i class="flaticon-targeting"></i>
                </div>
                <div class="tp-feature-content">
-                  <h4 class="tp-feature-title-sm">GOVERMENT</h4>
+                  <h4 class="tp-feature-title-sm">Natural Resources Conservation</h4>
+                  <!-- <h5>Through forestry research and national park service.</h5> -->
                </div>
             </div>
          </div>
@@ -197,7 +200,7 @@
                   <i class="flaticon-goverment"></i>
                </div>
                <div class="tp-feature-content">
-                  <h4 class="tp-feature-title-sm">CITY JOB</h4>
+                  <h4 class="tp-feature-title-sm">SUSTAINABLE DEVELOPMENT</h4>
                </div>
             </div>
          </div>
@@ -207,7 +210,7 @@
                   <i class="flaticon-traffic-light"></i>
                </div>
                <div class="tp-feature-content">
-                  <h4 class="tp-feature-title-sm">TRAFIC SYSTEM</h4>
+                  <h4 class="tp-feature-title-sm">COMMUNITY INVOLVEMENT</h4>
                </div>
             </div>
          </div>
@@ -222,8 +225,7 @@
       <div class="row">
          <div class="col-xl-10">
             <div class="tp-about-title-box mb-45">
-               <span class="tp-section-subtitle">HEY WE ARE STATEX!</span>
-               <h4 class="tp-section-title">Stand with Our Campaign for <br> Working Political</h4>
+               <h4 class="tp-section-subtitle">OUR MANDATE</h4>
             </div>
          </div>
       </div>
@@ -231,21 +233,21 @@
          <div class="tp-about-shape d-none d-xl-block">
             <img src="{{asset('MainAssets/img/about/ab-shape-1.png')}}" alt="">
          </div>
-         <div class="tp-about-right-img d-none d-xl-block wow tpfadeRight" data-wow-duration=".9s" data-wow-delay=".3s">
-            <img src="{{asset('MainAssets/img/about/ab-1.png')}}" alt="">
+         <div class="tp-about-right-img d-none d-xl-block wow tpfadeRight " data-wow-duration=".9s" data-wow-delay=".3s">
+            <img src="{{asset('MainAssets/img/about/minister2.png')}}" alt="">
          </div>
          <div class="row">
             <div class="col-xl-3 col-lg-4 col-md-12">
                <div class="tp-about-feature-box">
-                  <h4 class="tp-about-feature-title">Online <br> Services</h4>
+                  <h4 class="tp-about-feature-title">Ministerial focal points</h4>
                   <div class="tp-about-feature-list">
                      <ul>
-                        <li><a href="service-details.html">Parking Permission</a></li>
-                        <li><a href="service-details.html">Order Birth Certficate</a></li>
-                        <li><a href="service-details.html">File a Tax Return</a></li>
-                        <li><a href="service-details.html">Get Building Permission</a></li>
+                        <li><a href="service-details.html">Quality Environment</a></li>
+                        <li><a href="service-details.html">Sustainability</a></li>
+                        <li><a href="service-details.html">Restoration</a></li>
+                        <li><a href="service-details.html">Public Awareness</a></li>
                         <li><a href="service-details.html">Apply for Driving License</a></li>
-                        <li><a href="service-details.html">Report Polution</a></li>
+                        <li><a href="service-details.html">Collaborations</a></li>
                      </ul>
                   </div>
                   <div class="tp-about-feature-btn">
@@ -263,7 +265,7 @@
                   </div>
                   <div class="tp-about-city-info d-flex align-items-center">
                      <i class="flaticon-smart-city"></i>
-                     <span>Great city & places to deveolop your carrer & business</span>
+                     <span>How We Serve Our Fatherland</span>
                   </div>
                   <div class="tp-about-progress p-relative">
                      <span class="progress-label">City Development</span>
