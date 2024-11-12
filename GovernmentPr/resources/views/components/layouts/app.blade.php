@@ -22,7 +22,16 @@
    <link rel="stylesheet" href="{{asset('MainAssets/css/spacing.css')}}">
    <link rel="stylesheet" href="{{asset('MainAssets/css/custom-animation.css')}}">
    <link rel="stylesheet" href="{{asset('MainAssets/css/main.css')}}">
+   <style>
+      .dropdown-menu{
+         padding: 10px 0;
+      }
+      .dropdown-item{
+         padding: 15px 15px;
+         margin: 2px 0;
 
+      }
+   </style>
 </head>
 
 <body>
@@ -218,14 +227,14 @@
                      <nav class="tp-main-menu-content">
                         <ul>
                            <li class="has-dropdown">
-                              <a href="index.html">HOME</a>
+                              <a href="{{route('home')}}">HOME</a>
   
                            </li>
                            <li class="has-dropdown">
                               <a href="service.html">ABOUT US</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="">MANDATE</a></li>
-                                 <li><a href="">ORGANIZATION</a></li>
+                                 <li><a href="{{route('mandate')}}">MANDATE</a></li>
+                                 <li><a href="{{route('organisation')}}">ORGANIZATION</a></li>
                                  <li><a href="">LEADERSHIP</a></li>
                                  <li><a href="">CAREER</a></li>
                               </ul>
@@ -274,8 +283,13 @@
                         <div class="tp-header-right-search d-none d-sm-block">
                            <button class="search-open-btn"><i class="fa-regular fa-magnifying-glass"></i></button>
                         </div>
-                        <div class="tp-header-right-btn d-none d-sm-block">
-                           <a class="tp-btn" href="{{route('login')}}"> LOGIN </a>
+                        <div class="tp-header-right-btn" >
+                           <a class="tp-btn dropdown-toggle" style="color: #fff;" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
+                           <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                              <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
+                              <li><a href="{{route('admin.login')}}" class="dropdown-item">Admin Login</a></li>
+                           </ul>
+                           
                         </div>
                         <div class="tp-header-right-tel-icon-box d-none d-xxl-block">
                            <div class="tp-header-right-tel-icon d-flex align-items-center">

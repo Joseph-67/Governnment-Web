@@ -55,7 +55,8 @@ class AdminsController extends Controller
             'other_name' => ['nullable', 'string', 'min:4', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'min:4', 'max:255', 'unique:Admins'],
             'password' => ['required', 'string', 'min:6', Password::min(6)->mixedCase()->letters()->symbols()->numbers()->uncompromised(), 'confirmed'],
-            'mobile_number' => ['nullable', 'numeric', 'min:12']
+            'mobile_number' => ['nullable', 'numeric', 'min:12'],
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ]);
 
         $admin = Admins::create([
