@@ -1,21 +1,16 @@
-@extends('components.layouts.app')
-@section('PageTitle', 'Mandate')
-
-@section('pageContent')
 <main>
 
 <!-- breadcrumb area start -->
-<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix"
-   data-background="assets/img/breadcurmb/breadcurmb.jpg">
+<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix" data-background="{{asset('MainAssets/img/department/landscape-2.webp')}}">
    <div class="container">
       <div class="row">
          <div class="col-xxl-12">
             <div class="breadcrumb__content z-index text-center">
-               <h3 class="breadcrumb__title">Blog Details</h3>
+               <h3 class="breadcrumb__title">MANDATE</h3>
                <div class="breadcrumb__list">
                   <span><a href="index.html">Home</a></span>
                   <span class="dvdr"><i class="fa fa-angle-right"></i></span>
-                  <span>Blog Details</span>
+                  <span>MANDATE</span>
                </div>
             </div>
          </div>
@@ -25,68 +20,34 @@
 <!-- breadcrumb area end -->
 
 <!-- postbox area start -->
-<section class="postbox__area pt-120 pb-90">
-   <div class="container">
-      <div class="row">
-         <div class="col-xxl-8 col-xl-8 col-lg-8">
-            <div class="postbox__wrapper">
+<div class="postbox__comment mb-80">
+                  
+
+<            <div class="postbox__wrapper">
                <article class="postbox__item format-image mb-50 transition-3">
-                 
+                  <div class="postbox__thumb w-img">
+                     <img src="assets/img/blog/blog-standard-4.jpg" alt="">
+                  </div>
+                  </div>
+                     
                      <div class="postbox__text">
-                        <p>The Federal Ministry of Environment works to ensure environmental protection, natural resources conservation and sustainable development. 
+                        <p> The Federal Ministry of Environment works to ensure environmental protection, natural resources conservation and sustainable development. 
                             Since its  establishment, the Ministry has impacted on raising the issue of environmental consciousness in the minds of Nigerians as well as the interface with the Global environmental best practices. 
                             It has focused on involving innovative strategies that emphasize the use of environmental re – engineering as a veritable tool for job creation, poverty eradication, ensuring food security, encouraging sustainable economic development and general improvement in the livelihood of Nigerian populace.
                         
                         </p>
+                        <ul>
+                
 
-                        <div class="postbox__comment mb-80">
-                           <!-- <h3 class="postbox__comment-title"></h3> -->
-                           <ul>
-                              <li>
-                                 <div class="postbox__comment-box p-relative">
-                                    <div class="postbox__comment-info d-flex align-items-center">
-                                       <div class="postbox__comment-avater mr-40">
-                                          <!-- <img src="assets/img/avata/avata-3.png" alt=""> -->
-                                       </div>
-                                       <div class="postbox__comment-name p-relative">
-                                          <h5>VISION</h5>
-                                          <div class="postbox__comment-text">
-                                             <p>To be a Nation that develops in harmony with its environment.</p>
-                                          </div>
-                                          <div class="postbox__comment-reply">
-                                             <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
-                                                </svg></span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </li>
-                              <li>
-                                 <div class="postbox__comment-box p-relative">
-                                    <div class="postbox__comment-info d-flex align-items-center">
-                                       <div class="postbox__comment-avater mr-40">
-                                          <!-- <img src="assets/img/avata/avata-4.png" alt=""> -->
-                                       </div>
-                                       <div class="postbox__comment-name p-relative">
-                                       <h5>MISSION</h5>
-                                    <div class="postbox__comment-text">
-                                       <p>To ensure environmental protection, natural resources conservation and sustainable development.</p>
-                                    </div>
-                                          <div class="postbox__comment-reply">
-                                             <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
-                                                </svg></span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </li>
-                             
-                           </ul>
+
+                        <div class="postbox__blockquote p-relative">
+                           <div class="postbox__blockquote-shape">
+                              <img src="https://template.wphix.com/mayorx-prev/mayorx/assets/img/blog/quote.png" alt="">
+                           </div>
+
                         </div>
                         <div class="postbox__list">
-                           <h3 class="postbox__list-title">Let our investment management team</h3>
+                           <h3 class="postbox__list-title">MANDATES</h3>
                            <div class="row">
                               <div class="col-xl-7 col-lg-12">
                                  <div class="postbox__list-content">
@@ -101,7 +62,7 @@
                                                 </path>
                                              </svg>
                                           </span> 
-                                          Lorem Ipsum generators on the tend to repeat.
+                                          Securing a quality environment conducive for good health and wellbeing of fauna and flora.
                                        </li>
                                        <li>
                                           <span class="active"><svg width="14" height="14" viewBox="0 0 16 15"
@@ -111,7 +72,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span> If you are going to use a passage..
+                                          </span> Promoting sustainable use of natural resources.
                                        </li>
                                        <li>
                                           <span>
@@ -122,7 +83,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span>series of manual and semi-manual activities.
+                                          </span> Restoring and maintaining the ecosystem, ecological process and preserve biodiversity.
                                        </li>
                                        <li>
                                           <span>
@@ -133,7 +94,7 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span> Lorem Ipsum generators on the tend to repeat.
+                                          </span> Raising public awareness and promoting understanding of linkages of the environment.
                                        </li>
                                        <li>
                                           <span>
@@ -144,22 +105,72 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span>If you are going to use a passage.
+                                          </span> Cooperating with relevant MDAs, the private sector, NGOs, and International organizations on environmental matters.
                                        </li>
                                     </ul>
                                  </div>
                               </div>
-                              
+                              <div class="col-xl-5 col-lg-12">
+                                 <div class="posbox__list-img">
+                                    <img src="assets/img/blog/blog-list-img.jpg" alt="">
+                                 </div>
+                              </div>
                            </div>
                         </div>
-                        
+                        <li>
+                           <div class="postbox__comment-box p-relative">
+                              <div class="postbox__comment-info d-flex align-items-center">
+                                 <div class="postbox__comment-avater mr-40">
+                                    <img src="assets/img/avata/avata-3.png" alt="">
+                                 </div>
+                                 <div class="postbox__comment-name p-relative">
+                                    <h5>VISION</h5>
+                                    <div class="postbox__comment-text">
+                                       <p>To be a Nation that develops in harmony with its environment.</p>
+                                    </div>
+                                    <div class="postbox__comment-reply">
+                                       <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
+                                          </svg></span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="postbox__comment-box p-relative">
+                              <div class="postbox__comment-info d-flex align-items-center">
+                                 <div class="postbox__comment-avater mr-40">
+                                    <img src="assets/img/avata/avata-4.png" alt="">
+                                 </div>
+                                 <div class="postbox__comment-name p-relative">
+                                    <h5>MISSION</h5>
+                                    <div class="postbox__comment-text">
+                                       <p>To ensure environmental protection, natural resources conservation and sustainable development.</p>
+                                    </div>
+                                    <div class="postbox__comment-reply">
+                                       <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
+                                          </svg></span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </article>
-    
-               
-               
-     
+
+                  </ul>
+               </div>
+      </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
       </div>
    </div>
 </section>
@@ -167,5 +178,3 @@
 
 
 </main>
-
-@endsection
