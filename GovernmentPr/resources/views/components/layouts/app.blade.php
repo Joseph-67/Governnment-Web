@@ -22,7 +22,16 @@
    <link rel="stylesheet" href="{{asset('MainAssets/css/spacing.css')}}">
    <link rel="stylesheet" href="{{asset('MainAssets/css/custom-animation.css')}}">
    <link rel="stylesheet" href="{{asset('MainAssets/css/main.css')}}">
+   <style>
+      .dropdown-menu{
+         padding: 10px 0;
+      }
+      .dropdown-item{
+         padding: 10px 15px;
+         margin: 2px 0;
 
+      }
+   </style>
 </head>
 
 <body>
@@ -278,7 +287,7 @@
                            <a class="tp-btn dropdown-toggle" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
                            <ul class="dropdown-menu" aria-labelledby="loginDropdown">
                               <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
-                              <!-- <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li> -->
+                              <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
                            </ul>
                            
                         </div>
