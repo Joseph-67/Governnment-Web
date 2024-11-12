@@ -6,16 +6,16 @@
 
 <!-- breadcrumb area start -->
 <div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix"
-   data-background="assets/img/breadcurmb/breadcurmb.jpg">
+   data-background="{{{assets('MainAssets/img/department/landscape.jpg')}}">
    <div class="container">
       <div class="row">
          <div class="col-xxl-12">
             <div class="breadcrumb__content z-index text-center">
-               <h3 class="breadcrumb__title">Blog Details</h3>
+               <h3 class="breadcrumb__title">MANDATE</h3>
                <div class="breadcrumb__list">
                   <span><a href="index.html">Home</a></span>
                   <span class="dvdr"><i class="fa fa-angle-right"></i></span>
-                  <span>Blog Details</span>
+                  <span>Mandate</span>
                </div>
             </div>
          </div>
