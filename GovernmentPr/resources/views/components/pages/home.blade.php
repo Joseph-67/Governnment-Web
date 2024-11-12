@@ -246,7 +246,6 @@
                         <li><a href="service-details.html">Sustainability</a></li>
                         <li><a href="service-details.html">Restoration</a></li>
                         <li><a href="service-details.html">Public Awareness</a></li>
-                        <li><a href="service-details.html">Apply for Driving License</a></li>
                         <li><a href="service-details.html">Collaborations</a></li>
                      </ul>
                   </div>
@@ -258,9 +257,8 @@
             <div class="col-xl-6 col-lg-8 col-md-12">
                <div class="tp-about-content-wrap p-relative">
                   <div class="tp-about-text">
-                     <p>We strive to understand what they’re going the what
-                        what their price points are, and what’s important to
-                        them and their customers. We connect
+                     <p>We focus on protecting the environment, promoting sustainability, and addressing climate change.
+
                      </p>
                   </div>
                   <div class="tp-about-city-info d-flex align-items-center">
@@ -278,7 +276,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="tp-about-tel-info d-flex align-items-center">
+                  <!-- <div class="tp-about-tel-info d-flex align-items-center">
                      <div class="tp-about-tel-box mr-100 d-flex align-items-center">
                         <div class="tp-about-tel-icon">
                            <span><i class="flaticon-phone-call-1"></i></span>
@@ -291,7 +289,7 @@
                      <div class="tp-about-signature">
                         <img src="{{asset('MainAssets/img/about/signature.png')}}" alt="">
                      </div>
-                  </div>
+                  </div> -->
                </div>
             </div>
          </div>
@@ -310,7 +308,7 @@
          <div class="col-xl-12">
             <div class="tp-service-title-box text-center mb-70">
                <span class="tp-section-subtitle">OUR DEPERTMENTS</span>
-               <h4 class="tp-section-title text-white">Explore city government <br> departments</h4>
+               <h4 class="tp-section-title text-white">Explore our departments</h4>
             </div>
          </div>
       </div>
@@ -324,9 +322,9 @@
                   <i class="flaticon-approved"></i>
                </div>
                <div class="tp-service-content">
-                  <h4 class="tp-service-title-sm"><a href="service-details.html">Job & Unemployement</a></h4>
+                  <h4 class="tp-service-title-sm"><a href="service-details.html">Audit</a></h4>
                   <p>
-                     Write a short descip onthat ipsum loreum sed ameture hot
+                  The Audit department ensures transparency and accuracy in our operations.
                   </p>
                </div>
                <div class="tp-service-link">
@@ -343,9 +341,9 @@
                   <i class="flaticon-car-insurance"></i>
                </div>
                <div class="tp-service-content">
-                  <h4 class="tp-service-title-sm"><a href="service-details.html">Road & Transport</a></h4>
+                  <h4 class="tp-service-title-sm"><a href="service-details.html">Climate Change</a></h4>
                   <p>
-                     Write a short descip onthat ipsum loreum sed ameture hot
+                  Dedicated to addressing the impacts of climate change through research, advocacy, and action. 
                   </p>
                </div>
                <div class="tp-service-link">
@@ -362,9 +360,9 @@
                   <i class="flaticon-industrial-park"></i>
                </div>
                <div class="tp-service-content">
-                  <h4 class="tp-service-title-sm"><a href="service-details.html">Business & Industry </a></h4>
+                  <h4 class="tp-service-title-sm"><a href="service-details.html">Finance & Accounts </a></h4>
                   <p>
-                     Write a short descip onthat ipsum loreum sed ameture hot
+                  Ensures accurate financial records, supports strategic planning, and maintains financial health.
                   </p>
                </div>
                <div class="tp-service-link">
@@ -381,9 +379,9 @@
                   <i class="flaticon-scroll"></i>
                </div>
                <div class="tp-service-content">
-                  <h4 class="tp-service-title-sm"><a href="service-details.html">Culture and Recreation </a></h4>
+                  <h4 class="tp-service-title-sm"><a href="service-details.html">General Services </a></h4>
                   <p>
-                     Write a short descip onthat ipsum loreum sed ameture hot
+                  Provides essential support functions to ensure smooth operations within an organization. 
                   </p>
                </div>
                <div class="tp-service-link">
