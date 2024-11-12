@@ -241,11 +241,11 @@
                   <h4 class="tp-about-feature-title">Ministerial focal points</h4>
                   <div class="tp-about-feature-list">
                      <ul>
-                        <li><a href="">Quality Environment</a></li>
-                        <li><a href="">Sustainability</a></li>
-                        <li><a href="">Restoration</a></li>
-                        <li><a href="">Public Awareness</a></li>
-                        <li><a href="">Collaborations</a></li>
+                        <li><a href="#">Quality Environment</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Restoration</a></li>
+                        <li><a href="#">Public Awareness</a></li>
+                        <li><a href="#">Collaborations</a></li>
                      </ul>
                   </div>
                   <div class="tp-about-feature-btn">
@@ -327,7 +327,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -347,7 +347,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -367,7 +367,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -386,7 +386,7 @@
                   </p>
                </div>
                <div class="tp-service-link">
-                  <a href="">Read More <i class="fa-light fa-arrow-right"></i></a>
+                  <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
                </div>
             </div>
          </div>
@@ -677,12 +677,12 @@
          <div class="col-xl-6 col-lg-6 col-md-12 mb-30">
             <div class="tp-online-list-box background-style-2 theme-bg-2">
                <ul>
-                  <li><a href="">Erosion & Watershed Management Project<span><i class="flaticon-right-arrow"></i></span></a></li>
-                  <li><a href="">Clean Energy Initiative<span><i class="flaticon-right-arrow"></i></span></a></li>
-                  <li><a href="">Public Service Identy<span><i class="flaticon-right-arrow"></i></span></a></li>
-                  <li><a href="">National Planning Frame<span><i class="flaticon-right-arrow"></i></span></a></li>
-                  <li><a href="">Apply for Business License<span><i class="flaticon-right-arrow"></i></span></a></li>
-                  <li><a href="">Professional License<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">Erosion & Watershed Management Project<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">Clean Energy Initiative<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">Public Service Identy<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">National Planning Frame<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">Apply for Business License<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  <li><a href="#">Professional License<span><i class="flaticon-right-arrow"></i></span></a></li>
                </ul>
             </div>
          </div>
