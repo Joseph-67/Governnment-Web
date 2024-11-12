@@ -329,21 +329,10 @@
                             <span>Main Menu</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarDashboards">
+                            <a class="nav-link" href="{{route('admin.dashboard')}}">
                                 <i class="iconoir-home-simple menu-icon"></i>
-                                <span>Dashboards</span>
+                                <span>Dashboard</span>
                             </a>
-                            <div class="collapse " id="sidebarDashboards">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="index.html">Analytics</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="ecommerce-index.html">Ecommerce</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end startbarDashboards-->
                         </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
