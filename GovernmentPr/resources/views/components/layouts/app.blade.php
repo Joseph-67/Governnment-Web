@@ -27,7 +27,7 @@
          padding: 10px 0;
       }
       .dropdown-item{
-         padding: 10px 15px;
+         padding: 15px 15px;
          margin: 2px 0;
 
       }
@@ -284,10 +284,10 @@
                            <button class="search-open-btn"><i class="fa-regular fa-magnifying-glass"></i></button>
                         </div>
                         <div class="tp-header-right-btn" >
-                           <a class="tp-btn dropdown-toggle" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
+                           <a class="tp-btn dropdown-toggle" style="color: #fff;" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
                            <ul class="dropdown-menu" aria-labelledby="loginDropdown">
                               <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
-                              <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
+                              <li><a href="{{route('admin.login')}}" class="dropdown-item">Admin Login</a></li>
                            </ul>
                            
                         </div>
