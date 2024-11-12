@@ -4,19 +4,14 @@
 
 <!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:14:37 GMT -->
 <head>
-    
-
     <meta charset="utf-8" />
-            <title>@yield('PageTitle') – Federal Ministry of Environment</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta content="Federal Ministry of Environment" name="description" />
-            <meta content="" name="author" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-            <!-- App favicon -->
-            <link rel="shortcut icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
-
-       
+    <title>@yield('PageTitle') – Federal Ministry of Environment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Federal Ministry of Environment" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
 
     <link rel="stylesheet" href="{{asset('adminAssets/libs/jsvectormap/css/jsvectormap.min.css')}}">
 
@@ -24,7 +19,6 @@
      <link href="{{asset('adminAssets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body>
@@ -360,96 +354,23 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"
-                                            aria-expanded="false" aria-controls="sidebarAnalytics">                                        
-                                            <span>Analytics</span>
-                                        </a>
-                                        <div class="collapse " id="sidebarAnalytics">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a href="analytics-customers.html" class="nav-link ">Customers</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a href="analytics-reports.html" class="nav-link ">Reports</a>
-                                                </li><!--end nav-item-->
-                                            </ul><!--end nav-->
-                                        </div>
+                                        <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
                                     </li><!--end nav-item-->                                
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarProjects" data-bs-toggle="collapse" role="button"
-                                            aria-expanded="false" aria-controls="sidebarProjects">                                        
-                                            <span>Projects</span>
-                                        </a>
-                                        <div class="collapse " id="sidebarProjects">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-clients.html">Clients</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-team.html">Team</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-project.html">Project</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-task.html">Task</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-kanban-board.html">Kanban Board</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-chat.html">Chat</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-users.html">Users</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="projects-create.html">Project Create</a>
-                                                </li><!--end nav-item--> 
-                                            </ul><!--end nav-->
-                                        </div>
+                                        <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarEcommerce" data-bs-toggle="collapse" role="button"
-                                            aria-expanded="false" aria-controls="sidebarEcommerce">                                        
-                                            <span>Ecommerce</span>
-                                        </a>
-                                        <div class="collapse " id="sidebarEcommerce">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-products.html">Products</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-customers.html">Customers</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-customer-details.html">Customer Details</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-orders.html">Orders</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-order-details.html">Order Details</a>
-                                                </li><!--end nav-item-->
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="ecommerce-refunds.html">Refunds</a>
-                                                </li><!--end nav-item-->
-                                            </ul><!--end nav-->
-                                        </div>
+                                        <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>
                                     </li><!--end nav-item-->
-                                 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="apps-chat.html">Chat</a>
+                                        <a class="nav-link" href="apps-chat.html">Categories Management</a>
                                     </li><!--end nav-item--> 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="apps-contact-list.html">Contact List</a>
+                                        <a class="nav-link" href="apps-contact-list.html">Tags Management</a>
                                     </li><!--end nav-item--> 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="apps-calendar.html">Calendar</a>
-                                    </li><!--end nav-item-->  
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="apps-invoice.html">Invoice</a>
-                                    </li><!--end nav-item-->                                
+                                        <a class="nav-link" href="apps-calendar.html">Pages Management</a>
+                                    </li><!--end nav-item-->                               
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
