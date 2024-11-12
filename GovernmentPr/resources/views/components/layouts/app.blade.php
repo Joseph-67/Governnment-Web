@@ -240,39 +240,39 @@
                               </ul>
                            </li>
                            <li class="has-dropdown">
-                              <a href="service.html">DEPARTMENTS</a>
+                              <a href="#">DEPARTMENTS</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="">AUDIT</a></li>
-                                 <li><a href="">CLIMATE CHANGE</a></li>
+                                 <li><a href="#">AUDIT</a></li>
+                                 <li><a href="#">CLIMATE CHANGE</a></li>
                               </ul>
                            </li>
                            <li class="has-dropdown">
-                              <a href="service.html">INITIATIVES</a>
+                              <a href="#">INITIATIVES</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="">ACRSEAL</a></li>
-                                 <li><a href="">CLEAN AND GREEN INITIATIVE</a></li>
+                                 <li><a href="#">ACRSEAL</a></li>
+                                 <li><a href="#">CLEAN AND GREEN INITIATIVE</a></li>
                               </ul>
                               
                            </li>
                            
                           
                            <li class="has-dropdown">
-                              <a href="index.html#">MORE</a>
+                              <a href="#">MORE</a>
                               <ul class="tp-submenu submenu">
                               <li class="has-dropdown">
-                                 <a href="blog.html">EVENTS & NEWS</a>
+                                 <a href="#">EVENTS & NEWS</a>
                               </li>
                               <li class="has-dropdown">
-                                 <a href="blog.html">AGENCIES</a>
+                                 <a href="#">AGENCIES</a>
                               </li>
                               <li class="has-dropdown">
-                                 <a href="blog.html">MEDIA & FOLLOWING</a>
+                                 <a href="#">MEDIA & FOLLOWING</a>
                               </li>
                                  
                               
                               </ul>
                            </li>
-                           <li><a href="contact.html">CONTACT</a></li>
+                           <li><a href="#">CONTACT</a></li>
                         </ul>
                      </nav>
                   </div>
