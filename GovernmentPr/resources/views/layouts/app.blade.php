@@ -50,7 +50,7 @@
                             </button>
                         </li> 
                         <li class="mx-3 welcome-text">
-                            <h3 class="mb-0 fw-bold text-truncate">Good Morning, <span class="text-capitalize">{{Auth::guard('admin')->user()->first_name}}</span>!</h3>
+                            <h3 class="mb-0 fw-bold text-truncate">Good Morning, <span class="text-capitalize">{{Auth::guard('web')->user()->first_name}}</span>!</h3>
                             <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
                         </li>                   
                     </ul>
@@ -283,9 +283,9 @@
                                 <a class="dropdown-item" href="pages-profile.html"><i class="las la-lock fs-18 me-1 align-text-bottom"></i> Security</a>
                                 <a class="dropdown-item" href="pages-faq.html"><i class="las la-question-circle fs-18 me-1 align-text-bottom"></i> Help Center</a>                       
                                 <div class="dropdown-divider mb-0"></div>
-                                <form method="POST" action="{{ route('admin.logout') }}" x-data>
+                                <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
-                                    <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
+                                    <x-dropdown-link class="dropdown-item text-danger" href="{{ route('logout') }}"
                                         @click.prevent="$root.submit();">
                                         <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
                                     </x-dropdown-link>

@@ -411,17 +411,17 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/event-1.jpg')}}" alt="">
+                  <img src="{{asset('MainAssets/img/event/min-event1.jpg')}}" height="200px" alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
-                     <div class="tp-event-meta">
+                     <!-- <div class="tp-event-meta">
                         <span><i class="fa-regular fa-clock"></i>08:00 am</span>
                         <span><i class="fa-light fa-location-dot"></i><a
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
-                     </div>
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">The city in photography contest in london</a></h4>
+                     </div> -->
+                     <h4 class="tp-event-title-sm"><a href="event-details.html">Environment Day 2024</a></h4>
                   </div>
                   <div class="tp-event-link">
                      <a href="event-details.html">Read More</a>
@@ -432,17 +432,17 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/event-2.jpg')}}" alt="">
+                  <img src="{{asset('MainAssets/img/event/min-event2.jpg')}}" alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
-                     <div class="tp-event-meta">
+                     <!-- <div class="tp-event-meta">
                         <span><i class="fa-regular fa-clock"></i>08:00 am</span>
                         <span><i class="fa-light fa-location-dot"></i><a
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
-                     </div>
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">Computer training or workshop</a></h4>
+                     </div> -->
+                     <h4 class="tp-event-title-sm"><a href="event-details.html">Training or workshop</a></h4>
                   </div>
                   <div class="tp-event-link">
                      <a href="event-details.html">Read More</a>
@@ -453,17 +453,17 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/event-3.jpg')}}" alt="">
+                  <img src="{{asset('MainAssets/img/event/min-event3.jpg')}}" height="200px" alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
-                     <div class="tp-event-meta">
+                     <!-- <div class="tp-event-meta">
                         <span><i class="fa-regular fa-clock"></i>08:00 am</span>
                         <span><i class="fa-light fa-location-dot"></i><a
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
-                     </div>
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">Sport games for current childrens</a></h4>
+                     </div> -->
+                     <h4 class="tp-event-title-sm"><a href="event-details.html">Climate change dialouge</a></h4>
                   </div>
                   <div class="tp-event-link">
                      <a href="event-details.html">Read More</a>
@@ -537,13 +537,12 @@
             <div class="col-xl-7 col-lg-6">
                <div class="tp-project-title-box">
                   <span class="tp-section-subtitle">Latest events</span>
-                  <h4 class="tp-section-title">Explore City Beautiful<br>Highlights Portfolio</h4>
+                  <h4 class="tp-section-title">Explore Our Latest Events</h4>
                </div>
             </div>
             <div class="col-xl-5 col-lg-6">
                <div class="tp-project-right-text">
-                  <p>We strive to understand what they’re going the what
-                     what their price points are, and what’s important to them and their customers. We connect
+                  <p>We focus on protecting the environment, promoting sustainability, and addressing climate change.
                   </p>
                </div>
             </div>
@@ -558,7 +557,7 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/project/project-1.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/event/secv1.jpg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
