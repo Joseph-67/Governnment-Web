@@ -402,7 +402,7 @@
             <div class="col-xl-8">
                <div class="tp-event-title-box text-center">
                   <span class="tp-section-subtitle">Latest events</span>
-                  <h4 class="tp-section-title">Upcoming city activities &<br>events schedule</h4>
+                  <h4 class="tp-section-title">Our ministerial activities</h4>
                </div>
             </div>
          </div>

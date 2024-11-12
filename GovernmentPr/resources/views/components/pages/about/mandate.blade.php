@@ -4,8 +4,7 @@
 <main>
 
 <!-- breadcrumb area start -->
-<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix"
-   data-background="assets/img/breadcurmb/breadcurmb.jpg">
+<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix" data-background="{{asset('MainAssets/img/department/departments-1.jpg')}}">
    <div class="container">
       <div class="row">
          <div class="col-xxl-12">
@@ -28,6 +27,7 @@
                <article class="postbox__item format-image mb-50 transition-3">
                   <div class="postbox__thumb w-img">
                      <img src="assets/img/blog/blog-standard-4.jpg" alt="">
+                  </div>
                   </div>
                      
                      <div class="postbox__text">
