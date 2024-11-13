@@ -184,7 +184,7 @@
                         <li>
                            <i class="flaticon-map"></i>
                            <a href="https://www.google.com/maps/@23.822337,90.3654296,15z?entry=ttu" target="_blank">76
-                           17 Aguiyi Ironsi St, Wuse, Abuja </a>
+                           Federal Ministry of Environment Headquarters</a>
                         </li>
                         <li>
                            <i class="flaticon-envelope"></i>
@@ -272,7 +272,7 @@
                               
                               </ul>
                            </li>
-                           <li><a href="#">CONTACT</a></li>
+                           <li><a href="{{route('contact-us')}}">CONTACT</a></li>
                         </ul>
                      </nav>
                   </div>
@@ -332,7 +332,7 @@
                      <div class="tp-footer-top-info">
                         <h4 class="tp-footer-top-info-title">Address</h4>
                         <span>
-                           <a href="#">17 Aguiyi Ironsi St, Wuse, Abuja 904101, Federal Capital Territory
+                           <a href="#">Federal Ministry of Environment Headquarters 3FH3+WC8, Mabushi 900108, Abuja
                            </a>
                         </span>
                      </div>
@@ -391,8 +391,7 @@
       </a>
                      </div>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-40">Desires to obtain pain of it because it is pain, but occasionally circum
-                           We work with a passion of
+                        <p class="mb-40">We focus on innovative strategies that emphasize the use of environmental re - engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.
                         </p>
                         <a class="tp-btn white-anim" href="about.html">KNOW MORE</a>
                      </div>

@@ -249,7 +249,7 @@
                      </ul>
                   </div>
                   <div class="tp-about-feature-btn">
-                     <a class="tp-btn-purple" href="service.html">KNOW MORE</a>
+                     <a class="tp-btn-purple" href="#">KNOW MORE</a>
                   </div>
                </div>
             </div>
