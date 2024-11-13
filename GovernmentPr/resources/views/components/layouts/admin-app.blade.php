@@ -19,6 +19,7 @@
      <link href="{{asset('adminAssets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+     @yield('styles')
 </head>
 
 <body>
@@ -729,6 +730,7 @@
     <script src="{{asset('adminAssets/libs/jsvectormap/maps/world.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/index.init.js')}}"></script>
     <script src="{{asset('adminAssets/js/app.js')}}"></script>
+    @yield('scripts')
 </body>
 <!--end body-->
 
