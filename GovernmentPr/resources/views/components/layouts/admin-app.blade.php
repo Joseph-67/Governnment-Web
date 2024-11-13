@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
-
-
-<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:14:37 GMT -->
 <head>
     <meta charset="utf-8" />
     <title>@yield('PageTitle') – Federal Ministry of Environment</title>
@@ -764,5 +761,5 @@
 <!--end body-->
 
 
-<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:15:49 GMT -->
+
 </html>
