@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\RolesController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -16,5 +17,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(AdminsController::class)->group(function(){
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
+    });
+
+    // roles
+    Route::controller(RolesController::class)->group(function(){
+        Route::get('/role', 'index')->name('admin.display-roles');
     });
 });

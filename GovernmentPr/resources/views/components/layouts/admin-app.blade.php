@@ -75,7 +75,6 @@
                             <span class="alert-badge"></span>
                         </a>
                         <div class="dropdown-menu stop dropdown-menu-end dropdown-lg py-0">
-                        
                             <h5 class="dropdown-item-text m-0 py-3 d-flex justify-content-between align-items-center">
                                 Notifications <a href="#" class="badge text-body-tertiary badge-pill">
                                     <i class="iconoir-plus-circle fs-4"></i>
@@ -344,7 +343,7 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
+                                        <a class="nav-link" href="{{route('admin.display-roles')}}">Roles Management</a>
                                     </li><!--end nav-item-->                                
                                     <li class="nav-item">
                                         <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
