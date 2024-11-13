@@ -15,7 +15,7 @@
             <div class="breadcrumb__content z-index text-center">
                <h3 class="breadcrumb__title">Contact</h3>
                <div class="breadcrumb__list">
-                  <span><a href="index.html">Home</a></span>
+                  <span><a href="#">Home</a></span>
                   <span class="dvdr"><i class="fa fa-angle-right"></i></span>
                   <span>Contact</span>
                </div>
@@ -61,7 +61,7 @@
             </div>
             <div class="col-xl-7 col-lg-6">
                <div class="contact-wrapper">
-                  <form action="contact.html#">
+                  <form action="#">
                      <div class="tp-contact-2-form">
                         <div class="row">
                            <div class="col-xl-6 col-lg-6">
