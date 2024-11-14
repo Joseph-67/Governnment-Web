@@ -5,6 +5,8 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\organisationController;
 use App\Http\Controllers\mandateController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\UsersManagementController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +41,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
 
 require 'admin.php';

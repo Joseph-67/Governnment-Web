@@ -347,7 +347,7 @@
                                         <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
                                     </li><!--end nav-item-->                                
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.users-management') }}">Users Management</a>
+                                        <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>

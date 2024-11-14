@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\UsersManagementController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -17,4 +18,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
     });
+    //
+    Route::controller(UsersManagementController::class)->group(function(){
+        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    });
+    //
+
 });
