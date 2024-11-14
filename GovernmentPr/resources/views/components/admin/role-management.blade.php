@@ -1,13 +1,34 @@
 <x-layouts.admin-app>
     @section('styles')
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
     @endsection
     @section('scripts')
+    <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script>
+        new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
+    </script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     @endsection
 
                 <div class="container-xxl"> 
+                <x-validation-errors class="alert" alert />
+                <x-feedback alertType="success" msgTitle="Done! Task completed." :msg="$session('success')" />
+
+                @if (session('success'))
+                    <div class="rounded alert alert-success" alert>
+                        <div class="fw-medium text-red-600 fs-18">success</div>
+                        <p class="mt-2 text-sm text-red-600 fs-14">
+                            {{ session('success') }}
+                        </p>
+                    </div>
+                @endif
+
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -19,6 +40,7 @@
                                         <div class="col-auto"> 
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
+                                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
                                         </div><!--end col-->
                                     </div><!--end row-->                                  
                                 </div><!--end card-header-->
@@ -119,19 +141,23 @@
                     <div class="modal-body">
                         <div class="row">
                             <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Role Title :</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 mb-2">
                               <input type="text" class="form-control" id="inputTaskTitle">
                             </div><!--end col-->
                         </div><!--end row-->                                                      
                         <div class="row">
-                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Guard Title :</label>
+                            <label class="col-sm-3 col-form-label text-end fw-medium">Guard:</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" id="inputTaskTitle">
-                            </div><!--end col-->
+                                <select id="guardSelect">
+                                    <option value="value-1">Value 1</option>
+                                    <option value="value-2">Value 2</option>
+                                    <option value="value-3">Value 3</option>
+                                </select>          
+                            </div> <!-- end col --> 
                         </div><!--end row-->                                                      
                     </div><!--end modal-body-->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm">Save</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Close</button>                                
                     </div><!--end modal-footer-->
                 </div><!--end modal-content-->
@@ -142,27 +168,57 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title m-0">Add New Role</h6>
+                        <h6 class="modal-title m-0">Add New Permission</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div><!--end modal-header-->
                     <div class="modal-body">
                         <div class="row">
-                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Role Title :</label>
-                            <div class="col-sm-9">
+                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Permission Title :</label>
+                            <div class="col-sm-9 mb-2">
                               <input type="text" class="form-control" id="inputTaskTitle">
                             </div><!--end col-->
                         </div><!--end row-->                                                      
                         <div class="row">
-                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Role Title :</label>
+                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Guard :</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" id="inputTaskTitle">
+                                <select id="guardSelect2">
+                                    <option value="value-1">Value 1</option>
+                                    <option value="value-2">Value 2</option>
+                                    <option value="value-3">Value 3</option>
+                                </select>         
                             </div><!--end col-->
                         </div><!--end row-->                                                      
                     </div><!--end modal-body-->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm">Save</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Close</button>                                
                     </div><!--end modal-footer-->
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div><!--end modal-->
+        <!-- Guard -->
+        <div class="modal fade" id="addGuard" tabindex="-1" role="dialog" aria-labelledby="addGuard" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{route('admin.store-guard')}}" method="post">
+                        @csrf
+                    <div class="modal-header">
+                        <h6 class="modal-title m-0">Add New Guard</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div><!--end modal-header-->
+                    <div class="modal-body">
+                        <div class="row">
+                            <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Guard Title :</label>
+                            <div class="col-sm-9 mb-2">
+                              <input type="text" class="form-control" id="inputTaskTitle" name="guard_title">
+                            </div><!--end col-->
+                        </div><!--end row-->                                                     
+                    </div><!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Close</button>                                
+                    </div><!--end modal-footer-->
+                    </form> <!-- guard creation form ends -->
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div><!--end modal-->
