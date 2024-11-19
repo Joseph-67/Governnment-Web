@@ -17,6 +17,6 @@ class GuardsController extends Controller
             'title' => $request['guard_title'],
         ]);
 
-        return back()->with(['success'=> 'Guard created successfully']);
+        return back()->with(['success'=> "{$request->guard_title} Guard created successfully."]);
     }
 }

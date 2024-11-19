@@ -18,17 +18,7 @@
 
                 <div class="container-xxl"> 
                 <x-validation-errors class="alert" alert />
-                <x-feedback alertType="success" msgTitle="Done! Task completed." :msg="$session('success')" />
-
-                @if (session('success'))
-                    <div class="rounded alert alert-success" alert>
-                        <div class="fw-medium text-red-600 fs-18">success</div>
-                        <p class="mt-2 text-sm text-red-600 fs-14">
-                            {{ session('success') }}
-                        </p>
-                    </div>
-                @endif
-
+                @include('shared.feedback')
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -148,10 +138,10 @@
                         <div class="row">
                             <label class="col-sm-3 col-form-label text-end fw-medium">Guard:</label>
                             <div class="col-sm-9">
-                                <select id="guardSelect">
-                                    <option value="value-1">Value 1</option>
-                                    <option value="value-2">Value 2</option>
-                                    <option value="value-3">Value 3</option>
+                                <select id="guardSelect" name="guard">
+                                    @foreach($guards as $guard)
+                                    <option value="{{ $guard->title }}">{{ $guard->title }}</option>
+                                    @endforeach
                                 </select>          
                             </div> <!-- end col --> 
                         </div><!--end row-->                                                      
@@ -167,6 +157,8 @@
         <div class="modal fade" id="addPermission" tabindex="-1" role="dialog" aria-labelledby="addPermission" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                <form action="{{route('admin.store-permission')}}" method="post">
+                    @csrf
                     <div class="modal-header">
                         <h6 class="modal-title m-0">Add New Permission</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -175,16 +167,16 @@
                         <div class="row">
                             <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Permission Title :</label>
                             <div class="col-sm-9 mb-2">
-                              <input type="text" class="form-control" id="inputTaskTitle">
+                              <input type="text" class="form-control" id="inputTaskTitle" name="permission_title">
                             </div><!--end col-->
                         </div><!--end row-->                                                      
                         <div class="row">
                             <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Guard :</label>
                             <div class="col-sm-9">
-                                <select id="guardSelect2">
-                                    <option value="value-1">Value 1</option>
-                                    <option value="value-2">Value 2</option>
-                                    <option value="value-3">Value 3</option>
+                                <select id="guardSelect2" name="guard[]">
+                                    @foreach($guards as $guard)
+                                    <option value="{{ $guard->title }}">{{ $guard->title }}</option>
+                                    @endforeach
                                 </select>         
                             </div><!--end col-->
                         </div><!--end row-->                                                      
@@ -193,9 +185,11 @@
                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Close</button>                                
                     </div><!--end modal-footer-->
+                    </form>
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div><!--end modal-->
+        <!-- end permission -->
         <!-- Guard -->
         <div class="modal fade" id="addGuard" tabindex="-1" role="dialog" aria-labelledby="addGuard" aria-hidden="true">
             <div class="modal-dialog" role="document">
