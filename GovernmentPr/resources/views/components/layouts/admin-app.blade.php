@@ -438,6 +438,47 @@
                                 </ul><!--end nav-->
                             </div><!--end startbarElements-->
                         </li><!--end nav-item-->
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarAdvancedUI">
+                                <i class="iconoir-peace-hand menu-icon"></i>
+                                <span>Content Management System</span>
+                            </a>
+                            <div class="collapse " id="sidebarAdvancedUI">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-animation.html">Pages</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-clipboard.html">Posts</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-files.html">Design & Themes</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-highlight.html">Notifications and Alerts</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-rangeslider.html">Content Organization</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-ratings.html">Settings</a>
+                                    </li><!--end nav-item-->
+                              
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-sweetalerts.html">Tools & Utilities</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-toasts.html">Help & Support</a>
+                                    </li><!--end nav-item-->
+                                </ul><!--end nav-->
+                            </div><!--end Content Management System-->
+                        </li><!--end nav-item-->
+
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
