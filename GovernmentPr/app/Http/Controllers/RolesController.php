@@ -7,6 +7,8 @@ use App\Models\guard;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class RolesController extends Controller
 {
     /**
@@ -17,6 +19,8 @@ class RolesController extends Controller
     public function index()
     {
         //
+        $data['roles'] = Role::get();
+        $data['permissions'] = Permission::get();
         $data['guards'] = guard::where('status', '=', 'active')->select('title')->get();
         return view('components.admin.role-management', $data);
     }

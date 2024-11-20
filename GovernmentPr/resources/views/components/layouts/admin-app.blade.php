@@ -341,10 +341,7 @@
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('admin.display-roles')}}">Roles Management</a>
-                                    </li><!--end nav-item-->                                
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
-                                    </li><!--end nav-item-->
+                                    </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>
                                     </li><!--end nav-item-->
@@ -365,13 +362,13 @@
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Components</span>
+                            <span>Management Systems</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarElements" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarElements">
                                 <i class="iconoir-compact-disc menu-icon"></i>
-                                <span>UI Elements</span>
+                                <span>People</span>
                             </a>
                             <div class="collapse " id="sidebarElements">
                                 <ul class="nav flex-column">
@@ -663,10 +660,10 @@
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Crafted</span>
+                            <span>Settings</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
+                            <a class="nav-link" href="{{route('admin.display-roles')}}" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarPages">
                                 <i class="iconoir-page-star menu-icon"></i>
                                 <span>Pages</span>
@@ -704,36 +701,10 @@
                             </div><!--end startbarPages-->
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarAuthentication" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarAuthentication">
+                            <a class="nav-link" href="{{route('admin.display-roles')}}">
                                 <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
-                                <span>Authentication</span>
+                                <span>Security & Permissions</span>
                             </a>
-                            <div class="collapse " id="sidebarAuthentication">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-login.html">Log in</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-register.html">Register</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-recover-pw.html">Re-Password</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-lock-screen.html">Lock Screen</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-maintenance.html">Maintenance</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-404.html">Error 404</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="auth-500.html">Error 500</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end startbarAuthentication-->
                         </li><!--end nav-item-->
                     </ul><!--end navbar-nav--->
                     <div class="update-msg text-center"> 
