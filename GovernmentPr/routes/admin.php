@@ -33,6 +33,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
+        Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
+        Route::post('/settings/revoke_role_has_permission', 'revoke_role_permission')->name('admin.revoke.permission-role');
     });
     // settings
     Route::controller(generalSetting::class)->group(function() {

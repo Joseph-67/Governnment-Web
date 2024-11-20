@@ -73,6 +73,43 @@ class RolesController extends Controller
         return back()->with(['success' => `{$request->role_title} role created successfully.`]);
     }
 
+    public function assign_role_permission(Request $request)
+    {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'role' => ['required', 'numeric'],
+            'permission' => ['required', 'numeric']
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json(['error' =>  $validator], 400);
+        }
+        // fetch role
+        $role = Role::find($request['role']);
+        $permission = Permission::find($request['permission']);
+        $role->givePermissionTo($permission);
+        return response()->json(['message' =>  'Permission assigned to role successfully.'], 200);
+    }
+
+    public function revoke_role_permission(Request $request)
+    {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'role' => ['required', 'numeric'],
+            'permission' => ['required', 'numeric']
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json(['error' =>  $validator], 400);
+        }
+        // fetch role
+        $role = Role::find($request['role']);
+        $permission = Permission::find($request['permission']);
+        $role->revokePermissionTo($permission);
+        return response()->json(['message' =>  'Permission revoked from role successfully.'], 200);
+    }
     /**
      * Display the specified resource.
      *

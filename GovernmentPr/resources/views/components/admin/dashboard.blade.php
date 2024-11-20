@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+    @section('PageTitle', 'Dashboard')
             <div class="container-xxl">
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">

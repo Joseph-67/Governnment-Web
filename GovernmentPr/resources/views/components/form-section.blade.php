@@ -6,7 +6,7 @@
 
     <div class="mt-lg-3 col-md-6">
         <form wire:submit.prevent="{{ $submit }}">
-            <div class="px-2 py-3 bg-white p-5 shadow-sm rounded">
+    <div class="px-2 py-3 bg-white~ p-5 shadow-sm rounded">
                 <div class="d-flex g-2">
                     {{ $form }}
                 </div>
