@@ -25,11 +25,7 @@
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
     @endsection
-    
-    <div class="page-wrapper">
 
-<!-- Page Content-->
-<div class="page-content">
     <div class="container-xxl">
         
         <div class="row justify-content-center">
@@ -702,8 +698,5 @@
     </div>
     <!--end Rightbar/offcanvas-->
     <!--end Rightbar-->
-</div>
-<!-- end page content -->
-</div>
-<!-- end page-wrapper -->
+
 </x-layouts.admin-app>

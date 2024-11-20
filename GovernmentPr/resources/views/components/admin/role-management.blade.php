@@ -66,6 +66,29 @@
             }
 
         }
+
+        function changeGuard(select) {
+            select.addEventListener('change', async () => {
+                let guard = select.value
+                console.log('change detected', guard);
+                let url = "{{ route('admin.guard-change') }}"
+                let formData = new FormData()
+                formData.append('guard', guard)
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN' : '{{ csrf_token() }}',
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                }).then(async (response) => {
+                    let data = await response.json()
+                    console.log(data);
+                }).catch((err) => {
+                    console.log("--ERROR: ", err);
+                });
+            })
+        }
     </script>
     @endsection
 
@@ -84,7 +107,7 @@
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
                                             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
-                                            <select name="" id="guard" class="form-select col-3" style="width: auto ! important; display: inline;">
+                                            <select name="" onclick="changeGuard(this)" class="form-select col-3" style="width: auto ! important; display: inline;">
                                                 <option value="" disabled> Select guard... </option>
                                                 @foreach($guards as $guard)
                                                 <option value="{{$guard->title}}" {{ ($guard->title == 'web')? "selected":"" }}>{{$guard->title}}</option>

@@ -110,6 +110,21 @@ class RolesController extends Controller
         $role->revokePermissionTo($permission);
         return response()->json(['message' =>  'Permission revoked from role successfully.'], 200);
     }
+
+    public function guard_change(Request $request) {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'guard' => ['required', 'string'],
+        ]);
+        
+        if ($validator->fails()) {
+            # code...
+            return response()->json($validator, 400);
+        }
+        $data['roles'] = Role::where('guard_name', '=', $request['guard'])->get();
+        $data['permissions'] = Permission::where('guard_name', '=', $request['guard'])->get();
+        return response()->json($data, 200);
+    }
     /**
      * Display the specified resource.
      *
