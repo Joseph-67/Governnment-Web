@@ -443,15 +443,15 @@
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
                                 <i class="iconoir-peace-hand menu-icon"></i>
-                                <span>Content Management System</span>
+                                <span>Content Management System (CMS)</span>
                             </a>
                             <div class="collapse " id="sidebarAdvancedUI">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-animation.html">Pages</a>
+                                        <a class="nav-link" href="{{route('CMS.CMS')}}">Pages</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-clipboard.html">Posts</a>
+                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
