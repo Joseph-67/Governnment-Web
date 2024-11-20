@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\GuardsController;
+use App\Http\Controllers\generalSetting;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -31,7 +32,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/role', 'index')->name('admin.display-roles');
         Route::post('/role', 'store')->name('admin.store-role');
     });
-
+    // settings
+    Route::controller(generalSetting::class)->group(function() {
+        Route::get('/general-setting', 'index')->name('admin.general-setting');
+    });
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');

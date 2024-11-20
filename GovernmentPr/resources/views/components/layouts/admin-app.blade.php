@@ -705,7 +705,14 @@
                                 <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
                                 <span>Security & Permissions</span>
                             </a>
-                        </li><!--end nav-item-->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.general-setting')}}">
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                <span> General Settings</span>
+                            </a>
+                        </li>
+                        <!--end nav-item-->
                     </ul><!--end navbar-nav--->
                     <div class="update-msg text-center"> 
                         <div class="d-flex justify-content-center align-items-center thumb-lg update-icon-box  rounded-circle mx-auto">
