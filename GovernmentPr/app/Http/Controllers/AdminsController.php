@@ -91,7 +91,7 @@ class AdminsController extends Controller
             return redirect()->intended(route('admin.dashboard', ['admin' => 'admin']));
         }
             // $request->session()->regenerate();
-            // return redirect(route('admin.dashboard', absolute: false));      
+        return back()->withErrors('User not registered.');      
     }
 
     /**

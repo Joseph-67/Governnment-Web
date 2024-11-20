@@ -3,14 +3,18 @@
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
     @endsection
     @section('scripts')
     <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
     <script>
-        new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
+        // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
+        new TomSelect('#guardSelect2',{maxItems: 5});
+        new TomSelect('#guardSelect',{maxItems: 5});
     </script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
@@ -124,6 +128,8 @@
             <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="addRole" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                <form action="{{route('admin.store-role')}}" method="post">
+                @csrf
                     <div class="modal-header">
                         <h6 class="modal-title m-0">Add New Role</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -132,13 +138,13 @@
                         <div class="row">
                             <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Role Title :</label>
                             <div class="col-sm-9 mb-2">
-                              <input type="text" class="form-control" id="inputTaskTitle">
+                              <input type="text" class="form-control" id="inputTaskTitle" name="role_title">
                             </div><!--end col-->
                         </div><!--end row-->                                                      
                         <div class="row">
                             <label class="col-sm-3 col-form-label text-end fw-medium">Guard:</label>
                             <div class="col-sm-9">
-                                <select id="guardSelect" name="guard">
+                                <select id="guardSelect" multiple name="guard[]">
                                     @foreach($guards as $guard)
                                     <option value="{{ $guard->title }}">{{ $guard->title }}</option>
                                     @endforeach
@@ -150,6 +156,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Close</button>                                
                     </div><!--end modal-footer-->
+                </form>
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div><!--end modal-->
@@ -173,7 +180,8 @@
                         <div class="row">
                             <label for="inputTaskTitle" class="col-sm-3 col-form-label text-end fw-medium">Guard :</label>
                             <div class="col-sm-9">
-                                <select id="guardSelect2" name="guard[]">
+                                <select id="guardSelect2" multiple name="guard[]">
+                                    <option value="" disabled>Choose...</option>
                                     @foreach($guards as $guard)
                                     <option value="{{ $guard->title }}">{{ $guard->title }}</option>
                                     @endforeach

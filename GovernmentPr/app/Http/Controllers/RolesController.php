@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\guard;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 class RolesController extends Controller
 {
     /**
@@ -37,6 +40,33 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->guard);
+        foreach ($request['guard'] as $key => $guard) {
+            # code...
+            // dd($guard);
+            $validator =Validator::make($request->all(),[
+                'role_title' => ['required', 'string', 'min:3', 'max:20', Rule::unique('roles', 'name')->where(function ($query) use ($guard) {
+                    return $query->where('guard_name', $guard);
+                }),],
+                'guard' => ['required', 'array'],
+                'guard.*' => ['required', 'string', 'min:3', 'max:20']
+            ]);
+
+            if ($validator->fails()) {
+                # code...
+                return back()->withErrors($validator);
+            }            
+        }
+
+        // `unique:permissions,name,{$guard},guard_name`,
+        foreach ($request['guard'] as $key => $guard) {
+            Role::create([
+                'name' => $request['role_title'],
+                'guard_name' => $guard
+            ]);
+        }
+
+        return back()->with(['success' => `{$request->role_title} role created successfully.`]);
     }
 
     /**
