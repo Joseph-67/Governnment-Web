@@ -29,12 +29,13 @@
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">                      
-                                            <h4 class="card-title">Roles Details</h4>                      
-                                        </div><!--end col-->
+                            <h4 class="card-title">Custom Role Permissions</h4>                      
+                        </div><!--end col-->
                                         <div class="col-auto"> 
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
                                             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
+                                            <select name="" id="guardSelect"></select>
                                         </div><!--end col-->
                                     </div><!--end row-->                                  
                                 </div><!--end card-header-->
@@ -43,33 +44,15 @@
                                         <table class="table mb-0" id="datatable_1">
                                             <thead class="table-light">
                                               <tr>
-                                                <th>Name</th>
-                                                <th>ID</th>
-                                                <th>Roal</th>
-                                                <th>Last activity</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Manage Actions</th>
+                                                @foreach($roles as $role)
+                                                <th>{{ $role->name }}</th>
+                                                @endforeach
                                               </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="d-flex align-items-center">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="assets/images/users/avatar-1.jpg" class="me-2 thumb-md align-self-center rounded" alt="...">
-                                                            <div class="flex-grow-1 text-truncate"> 
-                                                                <h6 class="m-0">Unity Pugh</h6>
-                                                                <a href="#" class="fs-12 text-primary">dummy@gmail.com</a>                                                                                           
-                                                            </div><!--end media body-->
-                                                        </div>
-                                                    </td>
-                                                    <td>#9958</td>
-                                                    <td><a href="#" class="text-body text-decoration-underline">Manager</a></td>
-                                                    <td>Today, 02:30pm</td>
-                                                    <td><span class="badge rounded text-success bg-success-subtle">Active</span></td>
-                                                    <td class="text-end">                                                       
-                                                        <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                        <a href="#"><i class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                    </td>
+                                                    <td></td>
                                                 </tr>
                                                                                                                                   
                                             </tbody>
