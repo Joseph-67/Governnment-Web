@@ -6,6 +6,8 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\generalSetting;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PostsController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -39,5 +41,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
-    });
+    }); 
+
+    //Pages
+    Route::controller(PagesController::class)->group(function() {
+        Route::get ('/CMS', 'index')->name('CMS.CMS');
+    }); 
+
+      //Posts
+      Route::controller(PostsController::class)->group(function() {
+        Route::get ('/cms-posts', 'index')->name('CMS.posts');
+    }); 
 });
