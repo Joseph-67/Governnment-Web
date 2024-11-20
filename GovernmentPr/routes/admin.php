@@ -31,8 +31,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // roles
     Route::controller(RolesController::class)->group(function(){
-        Route::get('/role', 'index')->name('admin.display-roles');
-        Route::post('/role', 'store')->name('admin.store-role');
+        Route::get('/settings/role', 'index')->name('admin.display-roles');
+        Route::post('/settings/role', 'store')->name('admin.store-role');
     });
     // settings
     Route::controller(generalSetting::class)->group(function() {

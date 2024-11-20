@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+    
     @section('styles')
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
@@ -6,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
     @endsection
     @section('scripts')
-    <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
@@ -15,6 +15,27 @@
         // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
         new TomSelect('#guardSelect2',{maxItems: 5});
         new TomSelect('#guardSelect',{maxItems: 5});
+
+        // function to update role permission
+        function updateRolePermission(checkbox, role_id, permission_id) {
+            if (checkbox.checked) {
+                let response = await fetch(url, {
+                    method: 'POST',
+                    header: {
+                        'X-CSRF-TOKEN': '{{ CSRF_TOKEN() }}'
+                    },
+                    body: { role: role_id, permission: permission_id}
+                });
+
+                if (response.ok) {
+
+                    console.log();
+                    
+                }
+            }else{
+                alert('unchecked')
+            }
+        }
     </script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
@@ -29,13 +50,18 @@
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">                      
-                            <h4 class="card-title">Custom Role Permissions</h4>                      
-                        </div><!--end col-->
+                                            <h4 class="card-title">Custom Role  Permission</h4>                      
+                                        </div><!--end col-->
                                         <div class="col-auto"> 
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
                                             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
-                                            <select name="" id="guardSelect"></select>
+                                            <select name="" id="guard" class="form-select col-3" style="width: auto ! important; display: inline;">
+                                                <option value="" disabled> Select guard... </option>
+                                                @foreach($guards as $guard)
+                                                <option value="{{$guard->title}}" {{ ($guard->title == 'web')? "selected":"" }}>{{$guard->title}}</option>
+                                                @endforeach
+                                            </select>
                                         </div><!--end col-->
                                     </div><!--end row-->                                  
                                 </div><!--end card-header-->
@@ -44,17 +70,29 @@
                                         <table class="table mb-0" id="datatable_1">
                                             <thead class="table-light">
                                               <tr>
-                                                <th>Manage Actions</th>
+                                                <th>ACTIONS</th>
                                                 @foreach($roles as $role)
-                                                <th>{{ $role->name }}</th>
+                                                <th>{{$role->name}}</th>
                                                 @endforeach
                                               </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($permissions as $permission)
                                                 <tr>
-                                                    <td></td>
+                                                    <td>{{$permission->name}}</td>
+                                                    @foreach($roles as $role)
+                                                        @php
+                                                            // Fetching data
+                                                            $role_permission = DB::table('role_has_permissions')->where('role_id', '=', $role->id)->where('permission_id', '=', $permission->id)->first();
+                                                        @endphp
+                                                        <td>
+                                                            <div class="form-check form-switch">
+                                                              <input class="form-check-input" type="checkbox" role="switch" {{ (isset($role_permission->permission_id) !="")? "checked":""}} onclick='updateRolePermission(this, "{{$role->id}}", "$permission->id")'>
+                                                            </div>
+                                                        </td>
+                                                    @endforeach
                                                 </tr>
-                                                                                                                                  
+                                                @endforeach                                                                                  
                                             </tbody>
                                           </table>
                                     </div>

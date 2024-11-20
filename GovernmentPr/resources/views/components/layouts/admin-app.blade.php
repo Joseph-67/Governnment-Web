@@ -340,9 +340,6 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('admin.display-roles')}}">Roles Management</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
@@ -663,7 +660,7 @@
                             <span>Settings</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.display-roles')}}" data-bs-toggle="collapse" role="button"
+                            <a class="nav-link" href="#" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarPages">
                                 <i class="iconoir-page-star menu-icon"></i>
                                 <span>Pages</span>
@@ -701,17 +698,18 @@
                             </div><!--end startbarPages-->
                         </li><!--end nav-item-->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.general-setting')}}">
+                                <i class="iconoir-lock menu-icon"></i>
+                                <span> General Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.display-roles')}}">
                                 <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
                                 <span>Security & Permissions</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.general-setting')}}">
-                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
-                                <span> General Settings</span>
-                            </a>
-                        </li>
+
                         <!--end nav-item-->
                     </ul><!--end navbar-nav--->
                     <div class="update-msg text-center"> 

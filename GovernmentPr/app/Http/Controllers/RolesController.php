@@ -19,8 +19,8 @@ class RolesController extends Controller
     public function index()
     {
         //
-        $data['roles'] = Role::get();
-        $data['permissions'] = Permission::get();
+        $data['roles'] = Role::where('guard_name', '=', 'web')->get();
+        $data['permissions'] = Permission::where('guard_name', '=', 'web')->get();
         $data['guards'] = guard::where('status', '=', 'active')->select('title')->get();
         return view('components.admin.role-management', $data);
     }
