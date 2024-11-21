@@ -57,10 +57,14 @@
                                     </div><!--end card-body-->        
                         </div> <!--end col-->
                         <div class="col-md-6">
-                            <h4 class="card-title">Favicon</h4>
+                            <label for="">Favicon</label>
                             <input type="file" class="form-control" name="Favicon">
                         </div>
-    </div>
+                        <div class="col-md-6">
+                            <label for="">Date of Establishment</label>
+                            <input class="form-control" type="date" id="">
+                        </div>
+                        </div>
 
     </x-slot>
 </x-form-section>
@@ -75,15 +79,81 @@
 
     <x-slot name="form">
     <div class="row">
-        <div class="col-md-7">
-            <input type="text" class="form-control" placeholder="Phone numbers" aria-label="First name">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Phone Number" aria-label="First name">
         </div>
-        <div class="col-md-5">
-            <input type="text" class="form-control" placeholder="Email address" aria-label="Last name">
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Email Address" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Physical Address" aria-label="First name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Social Media Links" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Websites URL" aria-label="Last name">
         </div>
     </div>
     </x-slot>
 </x-form-section>
+<x-form-section submit="">
+    <x-slot name="title">
+        {{ __('Company Overview') }}
+    </x-slot>
+
+    <x-slot name="description">
+        {{ __('Update your company\'s overview information.') }}
+    </x-slot>
+
+    <x-slot name="form">
+    <div class="row">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="About Us" aria-label="First name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Mission Statement" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Vision Statement" aria-label="First name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Core values" aria-label="Last name">
+        </div>
+    </div>
+    </x-slot>
+</x-form-section>
+<x-form-section submit="">
+    <x-slot name="title">
+        {{ __('Business Details') }}
+    </x-slot>
+
+    <x-slot name="description">
+        {{ __('Update your business details.') }}
+    </x-slot>
+
+<x-slot name="form">
+    <div class="row">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Industry(Finance/Technology)" aria-label="First name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Company type(Private, Public, NGO)" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="numbers" class="form-control" placeholder="Size(No.of employees)" aria-label="First name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+        <label for="">Certifications</label>
+                            <input type="file" class="form-control" name="Certification">
+                        </div>
+    </div>
+    </x-slot>
+</x-form-section>
+
 @section('scripts')
 <script src="assets/js/pages/file-upload.init.js"></script>
 @endsection
