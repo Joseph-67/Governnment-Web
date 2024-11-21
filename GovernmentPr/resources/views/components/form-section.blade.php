@@ -4,7 +4,7 @@
         <x-slot name="description">{{ $description }}</x-slot>
     </x-section-title>
 
-    <div class="mt-lg-3 col-md-6">
+    <div class="mt-lg-3 col-md-12">
         <form wire:submit.prevent="{{ $submit }}">
             <div class="px-2 py-3 card card-body p-5 shadow-sm rounded">
                 <div class=" g-2">
