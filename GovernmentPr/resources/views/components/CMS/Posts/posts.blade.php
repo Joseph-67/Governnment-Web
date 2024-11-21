@@ -111,8 +111,8 @@
                 <div class="clearfix">
                     <div class="btn-group float-end ms-2">
                         <button type="button" class="btn btn-primary me-0 overflow-hidden">
-                        Add New Post
-                          <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/>
+                        <a class="nav-link" href="{{route('CMS.add-post')}}">Add New Post</a>
+                          <!-- <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/> -->
                         </button>
                        
                         <!-- <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
@@ -127,14 +127,14 @@
                     <div class="btn-group float-end ms-2">
                         <button type="button" class="btn btn-secondary me-0 overflow-hidden">
                         Add New Category
-                          <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/>
+                          <!-- <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/> -->
                         </button>
                     </div>
                 <div class="clearfix">
                     <div class="btn-group float-end ms-2">
                         <button type="button" class="btn btn-success me-0 overflow-hidden">
                         Add New Tag
-                          <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/>
+                          <!-- <input type="file" name="file" class="overflow-hidden position-absolute top-0 start-0 opacity-0"/> -->
                         </button>
                     </div>
                     <ul class="nav nav-tabs my-4" role="tablist">
