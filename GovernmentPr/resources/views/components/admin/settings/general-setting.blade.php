@@ -79,20 +79,26 @@
 
     <x-slot name="form">
     <div class="row">
-        <div class="col-md-12">
-            <input type="text" class="form-control" placeholder="Phone Number" aria-label="First name">
+        <div class="col-md-6">
+            <input type="tel" class="form-control" placeholder="Phone Number" aria-label="First name">
         </div>
-        <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Email Address" aria-label="Last name">
+        <div class="col-md-6">
+            <input type="email" class="form-control" placeholder="Email Address" aria-label="Last name">
         </div>
         <div class="col-md-12 mt-2">
             <input type="text" class="form-control" placeholder="Physical Address" aria-label="First name">
         </div>
-        <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Social Media Links" aria-label="Last name">
+        <div class="col-md-4 mt-2">
+            <input type="url" class="form-control" placeholder="Instagram Links" >
+        </div>
+        <div class="col-md-4 mt-2">
+            <input type="url" class="form-control" placeholder="Facebook Links" >
+        </div>
+        <div class="col-md-4 mt-2">
+            <input type="url" class="form-control" placeholder="Twitter Links" >
         </div>
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Websites URL" aria-label="Last name">
+            <input type="url" class="form-control" placeholder="Websites URL" aria-label="Last name">
         </div>
     </div>
     </x-slot>
@@ -108,9 +114,6 @@
 
     <x-slot name="form">
     <div class="row">
-        <div class="col-md-12">
-            <input type="text" class="form-control" placeholder="About Us" aria-label="First name">
-        </div>
         <div class="col-md-12 mt-2">
             <input type="text" class="form-control" placeholder="Mission Statement" aria-label="Last name">
         </div>
@@ -119,6 +122,16 @@
         </div>
         <div class="col-md-12 mt-2">
             <input type="text" class="form-control" placeholder="Core values" aria-label="Last name">
+        </div>
+        <div class="col-md-12 mt-2">
+            <label class="">About Company</label>
+        <div class=" pt-0">
+            <div id="editor">
+                <p>Hello World!</p>
+                <p>Some initial <strong>bold</strong> text</p>
+                <p><br /></p>
+            </div> 
+        </div><!--end card-body--> 
         </div>
     </div>
     </x-slot>
@@ -134,27 +147,45 @@
 
 <x-slot name="form">
     <div class="row">
-        <div class="col-md-12">
-            <input type="text" class="form-control" placeholder="Industry(Finance/Technology)" aria-label="First name">
+        <div class="col-md-6">
+        <div class="">
+                <label for="">Industry</label>
+                <select name="company_type" id="" class="form-select">
+                    <option value="" disabled selected> Choose... </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="">
+                <label for="">Organization Type</label>
+                <select name="company_type" id="" class="form-select">
+                    <option value="" disabled selected> Choose... </option>
+                    <option value="private">Private</option>
+                    <option value="public">Public</option>
+                    <option value="n.g.o">N.G.O</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 mt-2">
+            <input type="number" class="form-control" placeholder="Size(No.of employees)" min="1">
+        </div>
+        <div class="col-md-6 mt-2">
+            <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)">
         </div>
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Company type(Private, Public, NGO)" aria-label="Last name">
+            <label for="">Certifications</label>
+            <input type="file" class="form-control" name="Certification">
         </div>
-        <div class="col-md-12 mt-2">
-            <input type="numbers" class="form-control" placeholder="Size(No.of employees)" aria-label="First name">
-        </div>
-        <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" aria-label="Last name">
-        </div>
-        <div class="col-md-12 mt-2">
-        <label for="">Certifications</label>
-                            <input type="file" class="form-control" name="Certification">
-                        </div>
     </div>
     </x-slot>
 </x-form-section>
-
+@section('styles')
+<link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
+@endsection
 @section('scripts')
-<script src="assets/js/pages/file-upload.init.js"></script>
+<script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
+<script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
+<script src="{{asset('adminAssets/js/pages/form-editor.init.js')}}"></script>
+<script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
 @endsection
 </x-layouts.admin-app>
