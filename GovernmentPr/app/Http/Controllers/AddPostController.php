@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\addPost;
 use Illuminate\Http\Request;
 use App\Models\guard;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
-class PostsController extends Controller
+class AddPostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class PostsController extends Controller
     public function index()
     {
         //
-        return view('components.CMS.Posts.posts');
+        return view('components.CMS.Posts.add-post');
     }
 
     /**
@@ -46,10 +46,10 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\addPost  $addPost
      * @return \Illuminate\Http\Response
      */
-    public function show(Posts $posts)
+    public function show(addPost $addPost)
     {
         //
     }
@@ -57,10 +57,10 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\addPost  $addPost
      * @return \Illuminate\Http\Response
      */
-    public function edit(Posts $posts)
+    public function edit(addPost $addPost)
     {
         //
     }
@@ -69,10 +69,10 @@ class PostsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\addPost  $addPost
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Posts $posts)
+    public function update(Request $request, addPost $addPost)
     {
         //
     }
@@ -80,10 +80,10 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\addPost  $addPost
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Posts $posts)
+    public function destroy(addPost $addPost)
     {
         //
     }
