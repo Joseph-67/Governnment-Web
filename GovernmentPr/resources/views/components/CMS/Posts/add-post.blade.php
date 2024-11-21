@@ -5,6 +5,8 @@
      <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
+     <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
+
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
@@ -24,6 +26,8 @@
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+    <script src="assets/libs/quill/quill.js"></script>
+        <script src="assets/js/pages/form-editor.init.js"></script>
     @endsection
 
     <div class="row">
@@ -58,9 +62,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                         <!-- Page Content-->
-            <div class="page-content">
-                <div class="container-xxl">
+
+                                        <div class="container-xxl">
                     <div class="row justify-content-center">                        
                         <div class="col-12">
                             <div class="card">
@@ -80,8 +83,8 @@
                                 </div><!--end card-body--> 
                             </div><!--end card--> 
                         </div> <!--end col-->                                                       
-                    </div><!--end row-->                    
-                </div><!-- container -->
+                    </div><!--end row-->         
+                                         <!-- Page Content-->
                                         </div>
                                     </form>      
                                 </div><!--end card-body--> 
