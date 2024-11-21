@@ -1,5 +1,5 @@
 <x-layouts.admin-app>
-    
+@section('PageTitle', 'Security & Permissions')
     @section('styles')
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
@@ -11,34 +11,85 @@
     <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script>
         // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
         new TomSelect('#guardSelect2',{maxItems: 5});
         new TomSelect('#guardSelect',{maxItems: 5});
 
         // function to update role permission
-        function updateRolePermission(checkbox, role_id, permission_id) {
+        async function updateRolePermission(checkbox, role_id, permission_id) {
+            console.log(role_id, permission_id);
             if (checkbox.checked) {
+                let url = "{{ route('admin.update.permission-role') }}";
+                let formData = new FormData()
+                formData.append('role', role_id)
+                formData.append('permission', permission_id)
                 let response = await fetch(url, {
                     method: 'POST',
-                    header: {
-                        'X-CSRF-TOKEN': '{{ CSRF_TOKEN() }}'
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
-                    body: { role: role_id, permission: permission_id}
-                });
-
-                if (response.ok) {
-
-                    console.log();
+                    credentials: "same-origin",
+                    body: formData
+                })
+                .then(async (response) => {
+                    let data = await response.json();
+                    console.log(data.message);
                     
-                }
+                })
+                .catch((err) => {
+                    console.log("--ERROR: ", err);
+                })
             }else{
-                alert('unchecked')
+                let url = "{{ route('admin.revoke.permission-role') }}";
+                let formData = new FormData()
+                formData.append('role', role_id)
+                formData.append('permission', permission_id)
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    credentials: "same-origin",
+                    body: formData
+                })
+                .then(async (response) => {
+                    let data = await response.json();
+                    console.log(data.message);
+                    
+                })
+                .catch((err) => {
+                    console.log("--ERROR: ", err);
+                })
             }
+
+        }
+
+        function changeGuard(select) {
+            select.addEventListener('change', async () => {
+                let guard = select.value
+                console.log('change detected', guard);
+                let url = "{{ route('admin.guard-change') }}"
+                let formData = new FormData()
+                formData.append('guard', guard)
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN' : '{{ csrf_token() }}',
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                }).then(async (response) => {
+                    let data = await response.json()
+                    console.log(data);
+                }).catch((err) => {
+                    console.log("--ERROR: ", err);
+                });
+            })
         }
     </script>
-    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     @endsection
 
                 <div class="container-xxl"> 
@@ -56,7 +107,7 @@
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
                                             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
-                                            <select name="" id="guard" class="form-select col-3" style="width: auto ! important; display: inline;">
+                                            <select name="" onclick="changeGuard(this)" class="form-select col-3" style="width: auto ! important; display: inline;">
                                                 <option value="" disabled> Select guard... </option>
                                                 @foreach($guards as $guard)
                                                 <option value="{{$guard->title}}" {{ ($guard->title == 'web')? "selected":"" }}>{{$guard->title}}</option>
@@ -87,7 +138,7 @@
                                                         @endphp
                                                         <td>
                                                             <div class="form-check form-switch">
-                                                              <input class="form-check-input" type="checkbox" role="switch" {{ (isset($role_permission->permission_id) !="")? "checked":""}} onclick='updateRolePermission(this, "{{$role->id}}", "$permission->id")'>
+                                                              <input class="form-check-input" type="checkbox" role="switch" {{ (isset($role_permission->permission_id) !="")? "checked":""}} onclick='updateRolePermission(this, "{{$role->id}}", "{{$permission->id}}")'>
                                                             </div>
                                                         </td>
                                                     @endforeach
