@@ -78,11 +78,6 @@
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN' : '{{ csrf_token() }}',
-                        {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        },
-                        credentials: "same-origin",
-                        
                     },
                     credentials: 'same-origin',
                     body: formData
@@ -95,20 +90,37 @@
                             thead.innerHTML = `<th> ACTIONS </th>`
                             data.roles.forEach(role => {  thead.innerHTML+= `<th>${role.name}</th>`; })
                             tbody.innerHTML = ""
-                            let tr = document.createElement('tr')
-                            tbody.appendChild(tr)
+
                             data.permissions.forEach(async (permission) => { 
-                                let url = ""
-                                let response = fetch(url, {
-                                    method: "POST",
-                                    headers: 
+                                let tr = document.createElement('tr')
+                                tbody.appendChild(tr)
+
+                                data.roles.forEach(role => {
+                                let url = "{{ route('admin.fetch.role-permission') }}"
+                                let formData = new FormData();
+                                formData.append('role_id', role.id)
+                                formData.append('permission_id', permission.id)
+                                    let response = fetch(url, {
+                                        method: "POST",
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        },
+                                        credentials: 'same-origin',
+                                        body: formData
+                                    }).then(async response => {
+                                        let data = await response.json();
+                                        console.log('--RESP: ', data);
+                                        document.querySelector('.guard-table tbody tr').innerHTML+= `
+                                        <td>${permission.name}</td>
+                                        <td> 
+                                            <div class="form-check form-switch">
+                                            <input class="form-check-input" 
+                                            type="checkbox" role="switch" ${(data.role_permission.permission_id != 0)? "checked":""}  onclick='updateRolePermission(this, "", "")'>
+                                            </div>
+                                        </td>`;
+                                    })
                                 })
-                                document.querySelector('.guard-table tbody tr').innerHTML+= `
-                                <td>${permission.name}</td> <td> 
-                                    <div class="form-check form-switch">
-                                      <input class="form-check-input" type="checkbox" role="switch" {{ (isset($role_permission->permission_id) !="")? "checked":""}} onclick='updateRolePermission(this, "{{$role->id}}", "{{$permission->id}}")'>
-                                    </div>
-                                </td>`;
+
                             })
                     }
                 }).catch((err) => {
