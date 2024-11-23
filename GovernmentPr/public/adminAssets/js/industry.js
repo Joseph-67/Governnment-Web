@@ -1,11 +1,14 @@
-{
-    "Agriculture" : ["Crop Production (e.g., cassava, maize, rice)"]
+let industries = {
+    "Agriculture" : [
+        "Crop Production (e.g., cassava, maize, rice)",
+        "Livestock Farming",
+        "Fisheries and Aquaculture",
+        "Forestry",
+    ],
+    "Mining and Quarrying" : [
+        ""
+    ],
 
-
-Livestock Farming
-Fisheries and Aquaculture
-Forestry
-Mining and Quarrying
 
 Oil and Gas
 Coal Mining
