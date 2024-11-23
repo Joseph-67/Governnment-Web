@@ -117,8 +117,8 @@
             <button class="close-btn"><i class="fal fa-times"></i></button>
          </div>
          <div class="tpoffcanvas__logo">
-            <a href="index.html">
-               <img src="{{asset('MainAssets/img/logo/logo-white.png')}}" alt="">
+            <a href="{{ url('/') }}">
+               <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt="">
             </a>
          </div>
          <div class="tpoffcanvas__title">
@@ -133,8 +133,8 @@
             <ul>
                <li>
                   <i class="fa-light fa-location-dot"></i>
-                  <a href="https://www.google.com/maps/@23.8223586,90.3661283,15z" target="_blank">Melbone st,
-                     Australia, Ny 12099</a>
+                  <a href="https://www.google.com/maps/@23.8223586,90.3661283,15z" target="_blank">76
+                  Federal Ministry of Environment Headquarters</a>
                </li>
                <li>
                   <i class="fas fa-envelope"></i>
@@ -219,7 +219,7 @@
             <div class="row align-items-center">
                <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
                   <div class="tp-header-logo">
-                     <a href="index.html"><img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt=""></a>
+                     <a href="{{ url('/') }}"><img src="{{asset('MainAssets/img/logo/fme-logo.png')}}" alt=""></a>
                   </div>
                </div>
                <div class="col-xxl-6 col-xl-7 d-none d-xl-block">

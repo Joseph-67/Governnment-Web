@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
-
-
-<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:14:37 GMT -->
 <head>
     <meta charset="utf-8" />
     <title>@yield('PageTitle') – Federal Ministry of Environment</title>
@@ -75,7 +72,6 @@
                             <span class="alert-badge"></span>
                         </a>
                         <div class="dropdown-menu stop dropdown-menu-end dropdown-lg py-0">
-                        
                             <h5 class="dropdown-item-text m-0 py-3 d-flex justify-content-between align-items-center">
                                 Notifications <a href="#" class="badge text-body-tertiary badge-pill">
                                     <i class="iconoir-plus-circle fs-4"></i>
@@ -344,7 +340,7 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
+                                        <a class="nav-link" href="{{route('admin.display-roles')}}">Roles Management</a>
                                     </li><!--end nav-item-->                                
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.users-management') }}">Users Management</a>
@@ -715,7 +711,37 @@
     <!-- end leftbar-tab-menu-->
 
     <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content">
         {{ $slot }}
+                    <!--Start Footer-->
+                
+                    <footer class="footer text-center text-sm-start d-print-none">
+                    <div class="container-xxl">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card mb-0 rounded-bottom-0">
+                                    <div class="card-body">
+                                        <p class="text-muted mb-0">
+                                            ©
+                                            <script> document.write(new Date().getFullYear()) </script>
+                                            Federal Ministry of Environment
+                                            <span
+                                                class="text-muted d-none d-sm-inline-block float-end">
+                                                Crafted with
+                                                <i class="iconoir-heart text-danger"></i>
+                                                by Elite. Tech. Dev.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                
+                <!--end footer-->
+            </div>
+            <!-- end page content -->
     </div>
     <!-- end page-wrapper -->
 
@@ -735,5 +761,5 @@
 <!--end body-->
 
 
-<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:15:49 GMT -->
+
 </html>
