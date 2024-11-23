@@ -24,9 +24,7 @@
     <!-- Top Bar Start -->
     <div class="topbar d-print-none">
         <div class="container-xxl">
-            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
-        
-
+            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">                        
                     <li>
                         <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
@@ -341,7 +339,7 @@
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
-                                    </li><!--end nav-item-->                            
+                                    </li><!--end nav-item-->
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
