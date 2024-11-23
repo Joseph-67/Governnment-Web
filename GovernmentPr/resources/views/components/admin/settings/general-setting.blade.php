@@ -80,25 +80,25 @@
     <x-slot name="form">
     <div class="row">
         <div class="col-md-6">
-            <input type="tel" class="form-control" placeholder="Phone Number" aria-label="First name">
+            <input type="tel" class="form-control" placeholder="Phone Number">
         </div>
         <div class="col-md-6">
-            <input type="email" class="form-control" placeholder="Email Address" aria-label="Last name">
+            <input type="email" class="form-control" placeholder="Email Address">
         </div>
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Physical Address" aria-label="First name">
+            <input type="text" class="form-control" placeholder="Physical Address">
         </div>
         <div class="col-md-4 mt-2">
-            <input type="url" class="form-control" placeholder="Instagram Links" >
+            <input type="url" class="form-control" placeholder="Instagram Links">
         </div>
         <div class="col-md-4 mt-2">
-            <input type="url" class="form-control" placeholder="Facebook Links" >
+            <input type="url" class="form-control" placeholder="Facebook Links">
         </div>
         <div class="col-md-4 mt-2">
-            <input type="url" class="form-control" placeholder="Twitter Links" >
+            <input type="url" class="form-control" placeholder="Twitter Links">
         </div>
         <div class="col-md-12 mt-2">
-            <input type="url" class="form-control" placeholder="Websites URL" aria-label="Last name">
+            <input type="url" class="form-control" placeholder="Websites URL">
         </div>
     </div>
     </x-slot>
@@ -115,13 +115,13 @@
     <x-slot name="form">
     <div class="row">
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Mission Statement" aria-label="Last name">
+            <input type="text" class="form-control" placeholder="Mission Statement">
         </div>
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Vision Statement" aria-label="First name">
+            <input type="text" class="form-control" placeholder="Vision Statement">
         </div>
         <div class="col-md-12 mt-2">
-            <input type="text" class="form-control" placeholder="Core values" aria-label="Last name">
+            <input type="text" class="form-control" placeholder="Core values">
         </div>
         <div class="col-md-12 mt-2">
             <label class="">About Company</label>
@@ -179,6 +179,101 @@
     </div>
     </x-slot>
 </x-form-section>
+
+<x-form-section submit="">
+    <x-slot name="title">
+        {{ __('Branding and Media Details') }}
+    </x-slot>
+
+    <x-slot name="description">
+        {{ __('Update your branding and media details.') }}
+    </x-slot>
+
+    <x-slot name="form">
+    <div class="row">
+        <div class="col-md-7">
+            <label for="">Brand Colour</label>
+            <input type="color" class="form-control" placeholder="Primary and Secondary colour(e.g HEX,RGB)">
+        </div>
+        <div class="col-md-6 col-lg-6 mt-2">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Brochures</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div class="d-grid">
+                                        <p class="text-muted">Upload your company's brochures here.</p>
+                                        <div class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3"></div>
+                                        <input type="file" id="input-file" name="input-file" accept="image/*" onchange={handleChange()} hidden />
+                                        <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
+                                    </div>             
+                                </div><!--end card-body--> 
+                            
+                        </div> <!--end col-->
+                        <div class="col-md-6 col-lg-6 mt-2">
+                            
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Corporate Presentation</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div class="d-grid">
+                                        <p class="text-muted">Upload your corporate presentation here.</p>
+                                        <div class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3"></div>
+                                        <input type="file" id="input-file" name="input-file" accept="image/*" onchange={handleChange()} hidden />
+                                        <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
+                                    </div>
+                                    </div><!--end card-body-->        
+                        </div> <!--end col-->
+                        <div class="col-md-6 col-lg-6 mt-2">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Promotional Photos</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div class="d-grid">
+                                        <p class="text-muted">Upload your company's promotional photos here.</p>
+                                        <div class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3"></div>
+                                        <input type="file" id="input-file" name="input-file" accept="image/*" onchange={handleChange()} hidden />
+                                        <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
+                                    </div>             
+                                </div><!--end card-body--> 
+                            
+                        </div> <!--end col-->
+                        <div class="col-md-6 col-lg-6 mt-2">
+                            
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Promotional Videos</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div class="d-grid">
+                                        <p class="text-muted">Upload your company's promotional videos here.</p>
+                                        <div class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3"></div>
+                                        <input type="file" id="input-file" name="input-file" accept="image/*" onchange={handleChange()} hidden />
+                                        <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
+                                    </div>
+                                    </div><!--end card-body-->        
+                        </div> <!--end col-->
+        </div>
+        
+    </div>
+    </x-slot>
+</x-form-section>
+
+
 @section('styles')
 <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
 @endsection

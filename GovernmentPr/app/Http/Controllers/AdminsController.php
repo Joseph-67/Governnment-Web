@@ -51,9 +51,9 @@ class AdminsController extends Controller
     {
         //
         $request->validate([
-            'first_name' => ['required', 'string', 'min:4', 'max:255'],
-            'last_name' => ['required', 'string', 'min:4', 'max:255'],
-            'other_name' => ['nullable', 'string', 'min:4', 'max:255'],
+            'first_name' => ['required', 'string', 'min:2', 'max:255'],
+            'last_name' => ['required', 'string', 'min:2', 'max:255'],
+            'other_name' => ['nullable', 'string', 'min:2', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'min:4', 'max:255', 'unique:Admins'],
             'password' => ['required', 'string', 'min:6', Password::min(6)->mixedCase()->letters()->symbols()->numbers()->uncompromised(), 'confirmed'],
             'mobile_number' => ['nullable', 'numeric', 'min:12'],

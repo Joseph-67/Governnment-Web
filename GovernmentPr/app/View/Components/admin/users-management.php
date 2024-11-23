@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
+
+
+<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:14:37 GMT -->
 <head>
     <meta charset="utf-8" />
     <title>@yield('PageTitle') – Federal Ministry of Environment</title>
@@ -72,6 +75,7 @@
                             <span class="alert-badge"></span>
                         </a>
                         <div class="dropdown-menu stop dropdown-menu-end dropdown-lg py-0">
+                        
                             <h5 class="dropdown-item-text m-0 py-3 d-flex justify-content-between align-items-center">
                                 Notifications <a href="#" class="badge text-body-tertiary badge-pill">
                                     <i class="iconoir-plus-circle fs-4"></i>
@@ -340,15 +344,12 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-<<<<<<< HEAD
-=======
-                                        <a class="nav-link" href="{{route('admin.display-roles')}}">Roles Management</a>
+                                        <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
                                     </li><!--end nav-item-->                                
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.users-management') }}">Users Management</a>
+                                        <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
->>>>>>> d86c1879a1ebc35f3d33fb33f9fd9f4a10ad10eb
                                         <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
@@ -368,55 +369,79 @@
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Management Systems</span>
+                            <span>Components</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarElements">
-                                <i class="iconoir-community menu-icon"></i>
-                                <span>People</span>
+                            <a class="nav-link" href="#sidebarElements" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarElements">
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                <span>UI Elements</span>
                             </a>
-                        </li><!--end nav-item-->
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarAdvancedUI">
-                                <i class="iconoir-apple-shortcuts menu-icon"></i>
-                                <span>Content Management System (CMS)</span>
-                            </a>
-                            <div class="collapse " id="sidebarAdvancedUI">
+                            <div class="collapse " id="sidebarElements">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.CMS')}}">Pages</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-files.html">Design & Themes</a>
+                                        <a class="nav-link" href="ui-alerts.html">Alerts</a>
                                     </li><!--end nav-item--> 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-highlight.html">Notifications and Alerts</a>
+                                        <a class="nav-link" href="ui-avatar.html">Avatar</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-rangeslider.html">Content Organization</a>
+                                        <a class="nav-link" href="ui-buttons.html">Buttons</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-ratings.html">Settings</a>
-                                    </li><!--end nav-item-->
-                              
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-sweetalerts.html">Tools & Utilities</a>
+                                        <a class="nav-link" href="ui-badges.html">Badges</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-toasts.html">Help & Support</a>
+                                        <a class="nav-link" href="ui-cards.html">Cards</a>
                                     </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-carousels.html">Carousels</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-dropdowns.html">Dropdowns</a>
+                                    </li><!--end nav-item-->                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-grids.html">Grids</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-images.html">Images</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-list.html">List</a>
+                                    </li><!--end nav-item-->                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-modals.html">Modals</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-navs.html">Navs</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-navbar.html">Navbar</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-paginations.html">Paginations</a>
+                                    </li><!--end nav-item-->   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-popover-tooltips.html">Popover & Tooltips</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-progress.html">Progress</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-spinners.html">Spinners</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-tabs-accordions.html">Tabs & Accordions</a>
+                                    </li><!--end nav-item-->                               
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-typography.html">Typography</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-videos.html">Videos</a>
+                                    </li><!--end nav-item--> 
                                 </ul><!--end nav-->
-                            </div><!--end Content Management System-->
+                            </div><!--end startbarElements-->
                         </li><!--end nav-item-->
-
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
@@ -601,10 +626,10 @@
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Settings</span>
+                            <span>Crafted</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="collapse" role="button"
+                            <a class="nav-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarPages">
                                 <i class="iconoir-page-star menu-icon"></i>
                                 <span>Pages</span>
@@ -642,19 +667,37 @@
                             </div><!--end startbarPages-->
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.general-setting')}}">
-                                <i class="iconoir-settings menu-icon"></i>
-                                <span> General Settings</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.display-roles')}}">
+                            <a class="nav-link" href="#sidebarAuthentication" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarAuthentication">
                                 <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
-                                <span>Security & Permissions</span>
+                                <span>Authentication</span>
                             </a>
-                        </li>
-
-                        <!--end nav-item-->
+                            <div class="collapse " id="sidebarAuthentication">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-login.html">Log in</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-register.html">Register</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-recover-pw.html">Re-Password</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-lock-screen.html">Lock Screen</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-maintenance.html">Maintenance</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-404.html">Error 404</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-500.html">Error 500</a>
+                                    </li><!--end nav-item-->
+                                </ul><!--end nav-->
+                            </div><!--end startbarAuthentication-->
+                        </li><!--end nav-item-->
                     </ul><!--end navbar-nav--->
                     <div class="update-msg text-center"> 
                         <div class="d-flex justify-content-center align-items-center thumb-lg update-icon-box  rounded-circle mx-auto">
@@ -672,37 +715,7 @@
     <!-- end leftbar-tab-menu-->
 
     <div class="page-wrapper">
-        <!-- Page Content-->
-        <div class="page-content">
         {{ $slot }}
-                    <!--Start Footer-->
-                
-                    <footer class="footer text-center text-sm-start d-print-none">
-                    <div class="container-xxl">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card mb-0 rounded-bottom-0">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-0">
-                                            ©
-                                            <script> document.write(new Date().getFullYear()) </script>
-                                            Federal Ministry of Environment
-                                            <span
-                                                class="text-muted d-none d-sm-inline-block float-end">
-                                                Crafted with
-                                                <i class="iconoir-heart text-danger"></i>
-                                                by Elite. Tech. Dev.</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                
-                <!--end footer-->
-            </div>
-            <!-- end page content -->
     </div>
     <!-- end page-wrapper -->
 
@@ -722,5 +735,5 @@
 <!--end body-->
 
 
-
+<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:15:49 GMT -->
 </html>
