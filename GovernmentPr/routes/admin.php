@@ -25,19 +25,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
     });
-<<<<<<< HEAD
 
     // permissions
     Route::controller(PermissionsController::class)->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
-=======
     //users
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
     });
->>>>>>> d86c1879a1ebc35f3d33fb33f9fd9f4a10ad10eb
     // roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
@@ -53,7 +50,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
-<<<<<<< HEAD
     }); 
 
     //Pages
@@ -69,7 +65,3 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     }); 
 });
-=======
-    });
-});
->>>>>>> d86c1879a1ebc35f3d33fb33f9fd9f4a10ad10eb
