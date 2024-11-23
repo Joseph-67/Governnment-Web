@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+<div class="container-xxl"> 
 <x-form-section submit="">
     <x-slot name="title">
         {{ __('Company\'s Profile') }}
@@ -181,6 +182,7 @@
     </div>
     </x-slot>
 </x-form-section>
+</div>
 @section('styles')
 <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
 @endsection

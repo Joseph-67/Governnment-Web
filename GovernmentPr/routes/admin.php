@@ -9,6 +9,7 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AddPostController;
+use App\Http\Controllers\CompanyController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -59,5 +60,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     }); 
       Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
+    }); 
+
+    Route::controller(CompanyController::class)->group(function() {
+        Route::get ('/company', 'index')->name('admin.view-company');
+        Route::get ('/register-company', 'create')->name('admin.create-company');
     }); 
 });
