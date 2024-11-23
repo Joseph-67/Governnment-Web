@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\guard;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use DB;
 class RolesController extends Controller
 {
     /**
@@ -14,7 +19,10 @@ class RolesController extends Controller
     public function index()
     {
         //
-        return view('components.admin.role-management');
+        $data['roles'] = Role::where('guard_name', '=', 'web')->get();
+        $data['permissions'] = Permission::where('guard_name', '=', 'web')->get();
+        $data['guards'] = guard::where('status', '=', 'active')->select('title')->get();
+        return view('components.admin.role-management', $data);
     }
 
     /**
@@ -36,8 +44,92 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->guard);
+        foreach ($request['guard'] as $key => $guard) {
+            # code...
+            // dd($guard);
+            $validator =Validator::make($request->all(),[
+                'role_title' => ['required', 'string', 'min:3', 'max:20', Rule::unique('roles', 'name')->where(function ($query) use ($guard) {
+                    return $query->where('guard_name', $guard);
+                }),],
+                'guard' => ['required', 'array'],
+                'guard.*' => ['required', 'string', 'min:3', 'max:20']
+            ]);
+
+            if ($validator->fails()) {
+                # code...
+                return back()->withErrors($validator);
+            }            
+        }
+
+        // `unique:permissions,name,{$guard},guard_name`,
+        foreach ($request['guard'] as $key => $guard) {
+            Role::create([
+                'name' => $request['role_title'],
+                'guard_name' => $guard
+            ]);
+        }
+
+        return back()->with(['success' => `{$request->role_title} role created successfully.`]);
     }
 
+    public function assign_role_permission(Request $request)
+    {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'role' => ['required', 'numeric'],
+            'permission' => ['required', 'numeric']
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json(['error' =>  $validator], 400);
+        }
+        // fetch role
+        $role = Role::find($request['role']);
+        $permission = Permission::find($request['permission']);
+        $role->givePermissionTo($permission);
+        return response()->json(['message' =>  'Permission assigned to role successfully.'], 200);
+    }
+
+    public function revoke_role_permission(Request $request)
+    {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'role' => ['required', 'numeric'],
+            'permission' => ['required', 'numeric']
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json(['error' =>  $validator], 400);
+        }
+        // fetch role
+        $role = Role::find($request['role']);
+        $permission = Permission::find($request['permission']);
+        $role->revokePermissionTo($permission);
+        return response()->json(['message' =>  'Permission revoked from role successfully.'], 200);
+    }
+
+    public function guard_change(Request $request) {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'guard' => ['required', 'string'],
+        ]);
+        
+        if ($validator->fails()) {
+            # code...
+            return response()->json($validator, 400);
+        }
+        $data['roles'] = Role::where('guard_name', '=', $request['guard'])->get();
+        $data['permissions'] = Permission::where('guard_name', '=', $request['guard'])->get();
+        return response()->json($data, 200);
+    }
+
+    public function get_role_permission(Request $request) {
+        $data['role_permission'] = DB::table('role_has_permissions')->where('role_id', '=', $request['role_id'])->where('permission_id', '=', $request['permission_id'])->first();
+        return response()->json($data, 200);
+    }
     /**
      * Display the specified resource.
      *
