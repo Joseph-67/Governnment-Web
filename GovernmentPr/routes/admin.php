@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\GuardsController;
@@ -31,6 +32,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
+    //users
+    Route::controller(UsersManagementController::class)->group(function(){
+        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    });
     // roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
