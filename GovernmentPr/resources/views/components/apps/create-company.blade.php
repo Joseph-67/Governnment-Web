@@ -17,7 +17,7 @@
             <div class="col-md-6 mt-2">
                 <div class="form-group">
                     <label for="">Industry</label>
-                    <select name="" id="" class="form-select">
+                    <select name="" id="industry" class="form-select">
                         <option value="" selected disabled> Choose... </option>
                     </select>
                 </div>
@@ -129,10 +129,10 @@
 <x-section-border />
 <x-form-section>
     <x-slot name="title">
-        {{ __('Company\'s Policy, Objectives and Tearget') }}
+        {{ __('Company\'s Policy, Objectives and Target') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('For effective management and performance , the company\'s policy should deliver economic, human, and enviromental health gains.') }}
+        {{ __('For effective management and performance, the company\'s policy should deliver economic, human, and environmental health gains.') }}
     </x-slot>
     <x-slot name="form">
     </x-slot>
@@ -141,5 +141,6 @@
 
 @section('scripts')
 <script src="{{ asset('adminAssets/js/location.js') }}"></script>
+<script src="{{ asset('adminAssets/js/industry.js') }}"></script>
 @endsection
 </x-layouts.admin-app>
