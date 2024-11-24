@@ -340,6 +340,18 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-chat.html">Categories Management</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-contact-list.html">Tags Management</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-calendar.html">Pages Management</a>
+                                    </li><!--end nav-item-->                               
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{route('email')}}">Email Integration</a>
+                                    </li><!--end nav-item-->                               
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
