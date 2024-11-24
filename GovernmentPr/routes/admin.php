@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\GuardsController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\EmailIntegration;
+use App\Http\Controllers\CompanyController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -31,6 +33,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
+    //users
+    Route::controller(UsersManagementController::class)->group(function(){
+        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    });
     // roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
@@ -65,4 +71,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email');
     });
+});
+    }); 
+
+    Route::controller(CompanyController::class)->group(function() {
+        Route::get ('/company', 'index')->name('admin.view-company');
+        Route::get ('/register-company', 'create')->name('admin.create-company');
+    }); 
 });
