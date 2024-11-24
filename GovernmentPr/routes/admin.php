@@ -71,8 +71,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email');
     });
-});
-    }); 
 
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
