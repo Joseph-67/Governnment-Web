@@ -86,14 +86,20 @@
                     console.log(data);
                     if (data.roles) {
                             let thead = document.querySelector('.guard-table thead tr')
-                            let tbody = document.querySelector('.guard-table tbody')
+                            // let tbody = document.querySelector('.guard-table tbody')
                             thead.innerHTML = `<th> ACTIONS </th>`
                             data.roles.forEach(role => {  thead.innerHTML+= `<th>${role.name}</th>`; })
-                            tbody.innerHTML = ""
+                            // tbody.innerHTML = ""
+                            let tBody = document.querySelector('.guard-table tbody');
+                            console.log(tBody);
+                            tBody.innerHTML = ``
 
                             data.permissions.forEach(async (permission) => { 
-                                let tr = document.createElement('tr')
-                                tbody.appendChild(tr)
+                                tBody.innerHTML += `
+                                        <tr data-${permission.id}>
+                                        <td>${permission.name}</td>
+                                        </tr>`
+                                let permissionTr = document.querySelector(`.guard-table tbody tr[data-${permission.id}]`)
 
                                 data.roles.forEach(role => {
                                 let url = "{{ route('admin.fetch.role-permission') }}"
@@ -109,15 +115,21 @@
                                         body: formData
                                     }).then(async response => {
                                         let data = await response.json();
-                                        console.log('--RESP: ', data);
-                                        document.querySelector('.guard-table tbody tr').innerHTML+= `
-                                        <td>${permission.name}</td>
-                                        <td> 
+                                        console.log(data);
+                                        
+                                        console.log(permissionTr);
+                                        permissionTr.innerHTML += `
+                                        <td>
                                             <div class="form-check form-switch">
-                                            <input class="form-check-input" 
-                                            type="checkbox" role="switch" ${(data.role_permission.permission_id != 0)? "checked":""}  onclick='updateRolePermission(this, "", "")'>
+                                                <input class="form-check-input" 
+                                                type="checkbox" 
+                                                role="switch" 
+                                                ${(data.role_permission != null)? "checked":""} 
+                                                onclick="updateRolePermission(this,${role.id}, ${permission.id})">
                                             </div>
-                                        </td>`;
+                                        </td>
+                                        `
+                                        
                                     })
                                 })
 
