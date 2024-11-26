@@ -14,6 +14,30 @@
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script>
+        function changeGuard(select) {
+            select.addEventListener('change', async () => {
+                let guard = select.value
+                console.log('change detected', guard);
+                let url = "{{ route('admin.guard-change') }}";
+                let formData = new FormData()
+                formData.append('guard', guard)
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                })
+                if (response) {
+                    let resp = response.json();
+                    console.log(resp);
+                    
+                }
+            })
+        }
+    </script>
+    <script>
         // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
         new TomSelect('#guardSelect2',{maxItems: 5});
         new TomSelect('#guardSelect',{maxItems: 5});
@@ -65,26 +89,6 @@
                 })
             }
 
-        }
-
-        function changeGuard(select) {
-            select.addEventListener('change', async () => {
-                let guard = select.value
-                console.log('change detected', guard);
-                let url = "{{ route('admin.guard-change') }}";
-                let formData = new FormData()
-                formData.append('guard', guard)
-                let response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
-                    },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    console.log(await response.json());
-                })
-            })
         }
     </script>
     @endsection
