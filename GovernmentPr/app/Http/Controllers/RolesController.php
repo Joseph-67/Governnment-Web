@@ -121,9 +121,9 @@ class RolesController extends Controller
             # code...
             return response()->json($validator, 400);
         }
-        $roles = DB::table('roles')->get();
-        // $data['permissions']    = Permission::where('guard_name', '=', $request['guard'])->get();
-        return response()->json(['message' => $roles], 200);
+        $data['roles'] = Role::where('guard_name', '=', $request['guard'])->get();
+        $data['permissions'] = Permission::where('guard_name', '=', $request['guard'])->get();
+        return response()->json($data, 200);
     }
 
     public function get_role_permission(Request $request) {
