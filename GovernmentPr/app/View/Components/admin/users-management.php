@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
+
+
+<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:14:37 GMT -->
 <head>
     <meta charset="utf-8" />
     <title>@yield('PageTitle') – Federal Ministry of Environment</title>
@@ -24,7 +27,9 @@
     <!-- Top Bar Start -->
     <div class="topbar d-print-none">
         <div class="container-xxl">
-            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
+        
+
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">                        
                     <li>
                         <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
@@ -70,6 +75,7 @@
                             <span class="alert-badge"></span>
                         </a>
                         <div class="dropdown-menu stop dropdown-menu-end dropdown-lg py-0">
+                        
                             <h5 class="dropdown-item-text m-0 py-3 d-flex justify-content-between align-items-center">
                                 Notifications <a href="#" class="badge text-body-tertiary badge-pill">
                                     <i class="iconoir-plus-circle fs-4"></i>
@@ -338,12 +344,23 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
+                                        <a class="nav-link" href="#sidebarRolesManagement">Roles Management</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#sidebarUsersManagement">Users Management</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('view-email') }}">Email App</a>
+                                        <a class="nav-link" href="#sidebarEcommerce">Blogs Management</a>
                                     </li><!--end nav-item-->
-                             
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-chat.html">Categories Management</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-contact-list.html">Tags Management</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="apps-calendar.html">Pages Management</a>
+                                    </li><!--end nav-item-->                               
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
@@ -352,76 +369,335 @@
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Management Systems</span>
+                            <span>Components</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.users-management')}}">
-                                <i class="iconoir-community menu-icon"></i>
-                                <span>People</span>
+                            <a class="nav-link" href="#sidebarElements" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarElements">
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                <span>UI Elements</span>
                             </a>
+                            <div class="collapse " id="sidebarElements">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-alerts.html">Alerts</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-avatar.html">Avatar</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-buttons.html">Buttons</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-badges.html">Badges</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-cards.html">Cards</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-carousels.html">Carousels</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-dropdowns.html">Dropdowns</a>
+                                    </li><!--end nav-item-->                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-grids.html">Grids</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-images.html">Images</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-list.html">List</a>
+                                    </li><!--end nav-item-->                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-modals.html">Modals</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-navs.html">Navs</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-navbar.html">Navbar</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-paginations.html">Paginations</a>
+                                    </li><!--end nav-item-->   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-popover-tooltips.html">Popover & Tooltips</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-progress.html">Progress</a>
+                                    </li><!--end nav-item-->                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-spinners.html">Spinners</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-tabs-accordions.html">Tabs & Accordions</a>
+                                    </li><!--end nav-item-->                               
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-typography.html">Typography</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="ui-videos.html">Videos</a>
+                                    </li><!--end nav-item--> 
+                                </ul><!--end nav-->
+                            </div><!--end startbarElements-->
                         </li><!--end nav-item-->
-
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
-                                <i class="iconoir-apple-shortcuts menu-icon"></i>
-                                <span>Content Management System (CMS)</span>
+                                <i class="iconoir-peace-hand menu-icon"></i>
+                                <span>Advanced UI</span><span class="badge rounded text-success bg-success-subtle ms-1">New</span>
                             </a>
                             <div class="collapse " id="sidebarAdvancedUI">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.CMS')}}">Pages</a>
+                                        <a class="nav-link" href="advanced-animation.html">Animation</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
+                                        <a class="nav-link" href="advanced-clipboard.html">Clip Board</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
+                                        <a class="nav-link" href="advanced-dragula.html">Dragula</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-files.html">Design & Themes</a>
+                                        <a class="nav-link" href="advanced-files.html">File Manager</a>
                                     </li><!--end nav-item--> 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-highlight.html">Notifications and Alerts</a>
+                                        <a class="nav-link" href="advanced-highlight.html">Highlight</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-rangeslider.html">Content Organization</a>
+                                        <a class="nav-link" href="advanced-rangeslider.html">Range Slider</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-ratings.html">Settings</a>
-                                    </li><!--end nav-item-->
-                              
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-sweetalerts.html">Tools & Utilities</a>
+                                        <a class="nav-link" href="advanced-ratings.html">Ratings</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-toasts.html">Help & Support</a>
+                                        <a class="nav-link" href="advanced-ribbons.html">Ribbons</a>
+                                    </li><!--end nav-item-->                                  
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-sweetalerts.html">Sweet Alerts</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-toasts.html">Toasts</a>
                                     </li><!--end nav-item-->
                                 </ul><!--end nav-->
-                            </div><!--end Content Management System-->
+                            </div><!--end startbarAdvancedUI-->
                         </li><!--end nav-item-->
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarForms">
+                                <i class="iconoir-journal-page menu-icon"></i>
+                                <span>Forms</span>
+                            </a>
+                            <div class="collapse " id="sidebarForms">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-elements.html">Basic Elements</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-advanced.html">Advance Elements</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-validation.html">Validation</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-wizard.html">Wizard</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-editors.html">Editors</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-uploads.html">File Upload</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="forms-img-crop.html">Image Crop</a>
+                                    </li><!--end nav-item-->
+                                </ul><!--end nav-->
+                            </div><!--end startbarForms-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarCharts" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarCharts">
+                                <i class="iconoir-candlestick-chart menu-icon"></i>
+                                <span>Charts</span>
+                            </a>
+                            <div class="collapse " id="sidebarCharts">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="charts-apex.html">Apex</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="charts-justgage.html">JustGage</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="charts-chartjs.html">Chartjs</a>
+                                    </li><!--end nav-item--> 
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="charts-toast-ui.html">Toast</a>
+                                    </li><!--end nav-item--> 
+                                </ul><!--end nav-->
+                            </div><!--end startbarCharts-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarTables" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarTables">
+                                <i class="iconoir-table-rows menu-icon"></i>
+                                <span>Tables</span>
+                            </a>
+                            <div class="collapse " id="sidebarTables">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="tables-basic.html">Basic</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="tables-datatable.html">Datatables</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="tables-editable.html">Editable</a>
+                                    </li><!--end nav-item--> 
+                                </ul><!--end nav-->
+                            </div><!--end startbarTables-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarIcons">
+                                <i class="iconoir-trophy menu-icon"></i>
+                                <span>Icons</span>
+                            </a>
+                            <div class="collapse " id="sidebarIcons">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="icons-fontawesome.html">Font Awesome</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="icons-lineawesome.html">Line Awesome</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="icons-icofont.html">Icofont</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="icons-iconoir.html">Iconoir</a>
+                                    </li><!--end nav-item-->
+                                </ul><!--end nav-->
+                            </div><!--end startbarIcons-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarMaps" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarMaps">
+                                <i class="iconoir-navigator-alt menu-icon"></i>
+                                <span>Maps</span>
+                            </a>
+                            <div class="collapse " id="sidebarMaps">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="maps-google.html">Google Maps</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="maps-leaflet.html">Leaflet Maps</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="maps-vector.html">Vector Maps</a>
+                                    </li><!--end nav-item--> 
+                                </ul><!--end nav-->
+                            </div><!--end startbarMaps-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarEmailTemplates" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarEmailTemplates">
+                                <i class="iconoir-send-mail menu-icon"></i>
+                                <span>Email Templates</span>
+                            </a>
+                            <div class="collapse " id="sidebarEmailTemplates">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="email-templates-basic.html">Basic Action Email</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="email-templates-alert.html">Alert Email</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="email-templates-billing.html">Billing Email</a>
+                                    </li><!--end nav-item-->  
+                                </ul><!--end nav-->
+                            </div><!--end startbarEmailTemplates-->
+                        </li><!--end nav-item-->
                         <li class="menu-label mt-2">
                             <small class="label-border">
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
                             </small>
-                            <span>Settings</span>
+                            <span>Crafted</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.general-setting')}}">
-                                <i class="iconoir-settings menu-icon"></i>
-                                <span> General Settings</span>
+                            <a class="nav-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarPages">
+                                <i class="iconoir-page-star menu-icon"></i>
+                                <span>Pages</span>
                             </a>
-                        </li>
+                            <div class="collapse " id="sidebarPages">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-profile.html">Profile</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-notifications.html">Notifications</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-timeline.html">Timeline</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-treeview.html">Treeview</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-starter.html">Starter Page</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-pricing.html">Pricing</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-blogs.html">Blogs</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-faq.html">FAQs</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="pages-gallery.html">Gallery</a>
+                                    </li><!--end nav-item-->  
+                                </ul><!--end nav-->
+                            </div><!--end startbarPages-->
+                        </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.display-roles')}}">
+                            <a class="nav-link" href="#sidebarAuthentication" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarAuthentication">
                                 <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
-                                <span>Security & Permissions</span>
+                                <span>Authentication</span>
                             </a>
-                        </li>
-
-                        <!--end nav-item-->
+                            <div class="collapse " id="sidebarAuthentication">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-login.html">Log in</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-register.html">Register</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-recover-pw.html">Re-Password</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-lock-screen.html">Lock Screen</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-maintenance.html">Maintenance</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-404.html">Error 404</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="auth-500.html">Error 500</a>
+                                    </li><!--end nav-item-->
+                                </ul><!--end nav-->
+                            </div><!--end startbarAuthentication-->
+                        </li><!--end nav-item-->
                     </ul><!--end navbar-nav--->
                     <div class="update-msg text-center"> 
                         <div class="d-flex justify-content-center align-items-center thumb-lg update-icon-box  rounded-circle mx-auto">
@@ -439,43 +715,13 @@
     <!-- end leftbar-tab-menu-->
 
     <div class="page-wrapper">
-        <!-- Page Content-->
-        <div class="page-content">
         {{ $slot }}
-                    <!--Start Footer-->
-                
-                    <footer class="footer text-center text-sm-start d-print-none">
-                    <div class="container-xxl">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card mb-0 rounded-bottom-0">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-0">
-                                            ©
-                                            <script> document.write(new Date().getFullYear()) </script>
-                                            Federal Ministry of Environment
-                                            <span
-                                                class="text-muted d-none d-sm-inline-block float-end">
-                                                Crafted with
-                                                <i class="iconoir-heart text-danger"></i>
-                                                by Elite. Tech. Dev.</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                
-                <!--end footer-->
-            </div>
-            <!-- end page content -->
     </div>
     <!-- end page-wrapper -->
 
     <!-- Javascript  -->
     <!-- vendor js -->
-    <script src="{{ asset('adminAssets/js/jquery.js') }}"></script>
+    
     <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/apexcharts/apexcharts.min.js')}}"></script>
@@ -489,5 +735,5 @@
 <!--end body-->
 
 
-
+<!-- Mirrored from mannatthemes.com/rizz/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Nov 2024 14:15:49 GMT -->
 </html>

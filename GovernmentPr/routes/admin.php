@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\GuardsController;
@@ -9,6 +10,9 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AddPostController;
+use App\Http\Controllers\EmailIntegration;
+use App\Http\Controllers\EmailApp;
+use App\Http\Controllers\CompanyController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -30,6 +34,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
+    //users
+    Route::controller(UsersManagementController::class)->group(function(){
+        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    });
     // roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
@@ -37,6 +45,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
         Route::post('/settings/revoke_role_has_permission', 'revoke_role_permission')->name('admin.revoke.permission-role');
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
+        Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
     // settings
     Route::controller(generalSetting::class)->group(function() {
@@ -58,5 +67,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     }); 
       Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
+    });
+    // Email integration
+    Route::controller(EmailIntegration::class)->group(function() {
+        Route::get ('/email', 'index')->name('email');
+    });
+    Route::controller(EmailApp::class)->group(function() {
+        Route::get ('/email-app', 'index')->name('view-email');
+    });
+
+    Route::controller(CompanyController::class)->group(function() {
+        Route::get ('/company', 'index')->name('admin.view-company');
+        Route::get ('/register-company', 'create')->name('admin.create-company');
     }); 
 });

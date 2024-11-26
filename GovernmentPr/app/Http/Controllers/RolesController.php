@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use DB;
 class RolesController extends Controller
 {
     /**
@@ -123,6 +123,11 @@ class RolesController extends Controller
         }
         $data['roles'] = Role::where('guard_name', '=', $request['guard'])->get();
         $data['permissions'] = Permission::where('guard_name', '=', $request['guard'])->get();
+        return response()->json($data, 200);
+    }
+
+    public function get_role_permission(Request $request) {
+        $data['role_permission'] = DB::table('role_has_permissions')->where('role_id', '=', $request['role_id'])->where('permission_id', '=', $request['permission_id'])->first();
         return response()->json($data, 200);
     }
     /**

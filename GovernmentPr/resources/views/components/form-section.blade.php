@@ -1,11 +1,11 @@
-<div {{ $attributes->merge(['class' => 'row ']) }}>
+<div {{ $attributes->merge(['class' => 'row mt-md-2']) }}>
     <x-section-title>
         <x-slot name="title">{{ $title }}</x-slot>
         <x-slot name="description">{{ $description }}</x-slot>
     </x-section-title>
 
     <div class="mt-lg-3 col-md-6">
-        <form wire:submit.prevent="{{ $submit }}">
+        <div>
             <div class="px-2 py-3 card card-body p-5 shadow-sm rounded">
                 <div class=" g-2">
                     {{ $form }}
@@ -17,6 +17,6 @@
                     {{ $actions }}
                 </div>
             @endif
-        </form>
+</div>
     </div>
 </div>
