@@ -14,6 +14,82 @@
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script>
+        let select = document.querySelector('#setGuard');
+        select.addEventListener('change', async () => {
+            let guard = select.value
+            console.log('change detected', guard);
+            
+            let url = "{{ route('admin.guard-change') }}";
+            let formData = new FormData()
+            formData.append('guard', guard)
+            
+            let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+            }).then(async response =>  {
+                    let data = await response.json()
+                    console.log("--Roles", data.roles, data);
+
+                    if (data.roles) {
+                            let thead = document.querySelector('.guard-table thead tr')
+                            // let tbody = document.querySelector('.guard-table tbody')
+                            thead.innerHTML = `<th> ACTIONS </th>`
+                            data.roles.forEach(role => {  thead.innerHTML+= `<th>${role.name}</th>`; })
+                            // tbody.innerHTML = ""
+                            let tBody = document.querySelector('.guard-table tbody');
+                            console.log(tBody);
+                            tBody.innerHTML = ``
+
+                            data.permissions.forEach(async (permission) => { 
+                                tBody.innerHTML += `
+                                        <tr data-${permission.id}>
+                                        <td>${permission.name}</td>
+                                        </tr>`
+                                let permissionTr = undefined;
+                                data.roles.forEach(role => {
+                                let url = "{{ route('admin.fetch.role-permission') }}"
+                                let formData = new FormData();
+                                formData.append('role_id', role.id)
+                                formData.append('permission_id', permission.id)
+                                    let response = fetch(url, {
+                                        method: "POST",
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        },
+                                        credentials: 'same-origin',
+                                        body: formData
+                                    }).then(async response => {
+                                        let data = await response.json();
+                                        console.log("--Resp:", data);
+                                        permissionTr = document.querySelector(`.guard-table tbody tr[data-${permission.id}]`);
+                                        console.log(permissionTr);
+                                        permissionTr.innerHTML += `
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" 
+                                                type="checkbox" 
+                                                role="switch" 
+                                                ${(data.role_permission != null)? "checked":""} 
+                                                onclick="updateRolePermission(this,${role.id}, ${permission.id})">
+                                            </div>
+                                        </td>
+                                        `
+                                        
+                                    })
+                                })
+
+                            })
+                    }
+
+                })
+
+        })
+    </script>
+    <script>
         // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
         new TomSelect('#guardSelect2',{maxItems: 5});
         new TomSelect('#guardSelect',{maxItems: 5});
@@ -66,26 +142,6 @@
             }
 
         }
-
-        function changeGuard(select) {
-            select.addEventListener('change', async () => {
-                let guard = select.value
-                console.log('change detected', guard);
-                let url = "{{ route('admin.guard-change') }}";
-                let formData = new FormData()
-                formData.append('guard', guard)
-                let response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
-                    },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    console.log(await response.json());
-                })
-            })
-        }
     </script>
     @endsection
 
@@ -104,7 +160,7 @@
                                             <button class="btn bg-primary-subtle text-primary" data-bs-toggle="modal" data-bs-target="#addRole"><i class="fas fa-plus me-1"></i> Add Role</button>  
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermission"><i class="fas fa-plus me-1"></i> Add Permission </button>
                                             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addGuard"><i class="fas fa-plus me-1"></i> Add Guard </button>
-                                            <select name="" onclick="changeGuard(this)" class="form-select col-3" style="width: auto ! important; display: inline;">
+                                            <select name="" id="setGuard" class="form-select col-3" style="width: auto ! important; display: inline;">
                                                 <option value="" disabled> Select guard... </option>
                                                 @foreach($guards as $guard)
                                                 <option value="{{$guard->title}}" {{ ($guard->title == 'web')? "selected":"" }}>{{$guard->title}}</option>
