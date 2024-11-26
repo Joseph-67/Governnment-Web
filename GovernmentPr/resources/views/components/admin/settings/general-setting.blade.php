@@ -183,11 +183,8 @@
         <div class="col-md-6">
         <div class="">
                 <label for="">Industry</label>
-                <select name="company_type" id="" class="form-select">
+                <select name="company_type" id="industry" class="form-select">
                     <option value="" disabled selected> Choose... </option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
                 </select>
             </div>
         </div>
@@ -304,72 +301,6 @@
     </x-slot>
 </x-form-section>
 </div>
-<x-form-section submit="">
-    <x-slot name="title">
-        {{ __('Leadership and Team') }}
-    </x-slot>
-
-    <x-slot name="description">
-        {{ __('Update your company\'s leadership and team information.') }}
-    </x-slot>
-
-    <x-slot name="form">
-    <div class="row">
-        <div class="col-md-12">
-            <label for="">Team Members</label>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="Name">
-            </div>
-        <div class="col-md-6">
-        <div class="">
-                <select name="company_type" id="" class="form-select">
-                    <option value="" disabled selected> Select Department... </option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6 mt-2">
-            <label for="">About Key Leaders</label>
-            <input type="text" class="form-control" placeholder="Short biography for key leaders">
-        </div>
-        <div class="col-md-6 mt-2">
-            <label for="">Upload profile picture</label>
-            <input type="file" class="form-control" name="Profile picture upload">
-        </div>
-        <div class="col-md-12 mt-2">
-          <label for="">Board Of Directors</label>
-        </div>
-        <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="Full Name">
-        </div>
-        <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="Nationality">
-        </div>
-        <div class="col-md-6 mt-2">
-            <label for="">Date of Birth</label>
-            <input class="form-control" type="date" id="">
-        </div>
-        <div class="col-md-6 mt-2">
-            <label for="">Date of Appointment</label>
-            <input class="form-control" type="date" id="">
-        </div>
-        <div class="col-md-6 mt-2">
-            <input type="text" class="form-control" placeholder="Residential Address">
-        </div>
-        <div class="col-md-6 mt-2">
-            <input type="text" class="form-control" placeholder="Contact Information">
-        </div>
-        <div class="col-md-12 mt-2">
-            <label for="">Testimonial (Customer or employees testimonials)</label>
-            <input type="file" class="form-control" name="testimonial">
-        </div>
-        </div>
-    </x-slot>
-</x-form-section>
 </div>
 @section('styles')
 <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
@@ -380,5 +311,6 @@
 <script src="{{asset('adminAssets/js/pages/form-editor.init.js')}}"></script>
 <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
 <script src="{{ asset('adminAssets/js/location.js') }}"></script>
+<script src="{{ asset('adminAssets/js/industry.js') }}"></script>
 @endsection
 </x-layouts.admin-app>
