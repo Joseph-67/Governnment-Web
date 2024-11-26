@@ -340,6 +340,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('view-email') }}">Email App</a>
+                                    </li><!--end nav-item-->
                              
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
