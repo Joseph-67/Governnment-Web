@@ -125,26 +125,16 @@
                 aria-labelledby="templates-tab">
               
                <p class="card-title">No email templates selected yet.</p>
-        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#templateModal">
-          + Add Template
-        </button>
-        <div class="modal fade" id="templateModal" tabindex="-1" aria-labelledby="templateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="templateModalLabel">Select a Template</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body col-lg-10">
-          <ul class="list-group">
-            <li class="list-group-item">Email Template 1</li>
-            <li class="list-group-item">Email Template 2</li>
-            <li class="list-group-item">Email Template 3</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+      
+   
+
+<!-- Trigger Modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#emailModal">
+  Open Email Template
+</button>
+
+
+
               </div>
             </div>
             <div class="d-flex justify-content-end mt-2">

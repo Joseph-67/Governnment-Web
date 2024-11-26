@@ -11,6 +11,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\EmailIntegration;
+use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\CompanyController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -70,6 +71,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email');
+    });
+    Route::controller(EmailApp::class)->group(function() {
+        Route::get ('/email-app', 'index')->name('view-email');
     });
 
     Route::controller(CompanyController::class)->group(function() {
