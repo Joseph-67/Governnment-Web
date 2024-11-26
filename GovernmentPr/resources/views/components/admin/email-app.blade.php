@@ -1,11 +1,6 @@
 <x-layouts.admin-app>
   @section('styles')
-  <style>
-     .tagify{    
-  width: 100%;
-  max-width: 700px;
-}
-  </style>
+  <link rel="stylesheet" href="{{asset('adminAssets/css/tagify.css')}}">
   @endsection
 <div class="container-fluid d-flex justify-content-center align-items-center">
   
@@ -69,7 +64,7 @@
             <form>
               <div class="mb-3">
                 <label for="emailTo" class="form-label">To</label>
-                <input type="email" class="form-control" id="emailTo" name='basic' value='tag1, tag2' autofocus>
+                <input type="email" class="form-control users-list" id="" name='users-list-tags' value='abatisse2@nih.gov, Justinian Hattersley' autofocus>
               </div>
               <div class="mb-3">
                 <label for="emailSubject" class="form-label">Subject</label>
@@ -88,12 +83,6 @@
 </div>
 </div>
 @section('scripts')
-  <script>
-    // The DOM element you wish to replace with Tagify
-var input = document.querySelector('input[name=basic]');
-
-// initialize Tagify on the above input node reference
-new Tagify(input)
-  </script>
+  <script src="{{asset('adminAssests/js/tagify.js')}}"></script>
 @endsection
 </x-layouts.admin-app>
