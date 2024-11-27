@@ -2,6 +2,78 @@
   @section('styles')
   <link rel="stylesheet" href="{{asset('adminAssets/css/tagify.css')}}">
   @endsection
+  @section('scripts')
+  <script src="{{asset('adminAssests/js/tagify.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+  <script>
+    
+      new TomSelect('#select-repo',{
+      valueField: 'url',
+      labelField: 'name',
+      searchField: 'name',
+      // fetch remote data
+      load: function(query, callback) {
+
+        var url = '{{route('get-user')}}?q=' + encodeURIComponent(query);
+        fetch(url)
+          .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+          .then(json => {
+            console.log('Fetched items:', json.items[0]); // Debugging log
+            callback(json.items || []); // Pass items to Tom Select
+          }).catch((error)=>{
+            console.error('Fetch error:', error); // Log the error
+            callback();
+          });
+
+      },
+      // custom rendering functions for options and items
+      render: {
+        option: function(item, escape) {
+          console.log(item);
+          
+          return `<div class="py-2 d-flex">
+                <div class="icon me-3">
+                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
+                </div>
+                <div>
+                  <div class="mb-1">
+                    <span class="h4">
+                      ${ escape(item.first_name || "") }
+                    </span>
+                    <span class="text-muted">by ${ escape(item.email || "") }</span>
+                  </div>
+                  <div class="description">${ escape(item.description || "") }</div>
+                </div>
+              </div>`;
+        },
+        item: function(item, escape) {
+          console.log(item);
+          
+          return `<div class="py-2 d-flex">
+                <div class="icon me-3">
+                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
+                </div>
+                <div>
+                  <div class="mb-1">
+                    <span class="h4">
+                      ${ escape(item.first_name || "") }
+                    </span>
+                    <span class="text-muted">by ${ escape(item.email || "") }</span>
+                  </div>
+                  <div class="description">${ escape(item.description || "") }</div>
+                </div>
+              </div>`;
+        }
+      },
+    });
+
+  </script>
+  @endsection
 <div class="container-fluid d-flex justify-content-center align-items-center">
   
 <div class="card-container w-100 ">
@@ -82,7 +154,5 @@
 </div>
 </div>
 </div>
-@section('scripts')
-  <script src="{{asset('adminAssests/js/tagify.js')}}"></script>
-@endsection
+
 </x-layouts.admin-app>
