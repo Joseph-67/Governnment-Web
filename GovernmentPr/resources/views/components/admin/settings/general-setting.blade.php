@@ -1,4 +1,10 @@
 <x-layouts.admin-app>
+@section('styles')
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+/>
+@endsection
     <div class="container-xxl">
         <x-form-section submit="">
             <x-slot name="title">
@@ -89,7 +95,7 @@
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="tel" class="form-control" placeholder="Phone Number" name="phone_number">
+                        <input id="mobile_code_primary" type="tel" class="form-control" placeholder="Phone Number">
                     </div>
                     <div class="col-md-6">
                         <input type="email" class="form-control" placeholder="Email Address" name="email">
@@ -167,11 +173,10 @@
                         <div class=" pt-0">
                             <div id="editor">
                                 <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong> text</p>
+                                <p>Some initial <strong>bold</strong></p>
                                 <p><br /></p>
                             </div>
-                        </div><!--end card-body-->
-                    </div>
+                        </div><!--end card-body--> 
                 </div>
             </x-slot>
         </x-form-section>
@@ -331,5 +336,24 @@
     <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script>
+    // -----Country Code Selection
+    let tel_primary = document.querySelector('#mobile_code_primary')
+    let tel_secondary = document.querySelector('#mobile_code_secondary')
+    let tel_contact = document.querySelector('#mobile_code_contact')
+    window.intlTelInput(tel_primary, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	// utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+    window.intlTelInput(tel_contact, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	// utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+</script>
+
     @endsection
 </x-layouts.admin-app>
