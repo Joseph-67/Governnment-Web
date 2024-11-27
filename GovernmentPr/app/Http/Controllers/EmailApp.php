@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Admins;
 
 class EmailApp extends Controller
 {
@@ -14,7 +16,15 @@ class EmailApp extends Controller
     public function index()
     {
         //
-        return view('components.admin.email-app');
+       return view('components/admin/email-app');
+    }
+
+    public function fetch_users()
+    {
+        //
+        // dd($query);
+        $data['items']= Admins::get();
+        return response()->Json($data, 200);
     }
 
     /**

@@ -74,6 +74,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
+        Route::get ('/fetch-user', 'fetch_users')->name('get-user');
     });
 
     Route::controller(CompanyController::class)->group(function() {
