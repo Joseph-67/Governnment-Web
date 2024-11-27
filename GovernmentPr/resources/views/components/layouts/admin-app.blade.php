@@ -420,6 +420,12 @@
                                 <span>Security & Permissions</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('email-configuration')}}">
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                <span>Email Integration</span>
+                            </a>
+                        </li>
 
                         <!--end nav-item-->
                     </ul><!--end navbar-nav--->

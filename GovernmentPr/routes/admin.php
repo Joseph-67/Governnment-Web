@@ -70,7 +70,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
-        Route::get ('/email', 'index')->name('email');
+        Route::get ('/email', 'index')->name('email-configuration');
     });
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
