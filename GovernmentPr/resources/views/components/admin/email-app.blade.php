@@ -16,12 +16,17 @@
 
         var url = '{{route('get-user')}}?q=' + encodeURIComponent(query);
         fetch(url)
-          .then(response => response.json())
+          .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
           .then(json => {
-            console.log(json.items);
-            
-            callback(json.items);
-          }).catch(()=>{
+            console.log('Fetched items:', json.items[0]); // Debugging log
+            callback(json.items || []); // Pass items to Tom Select
+          }).catch((error)=>{
+            console.error('Fetch error:', error); // Log the error
             callback();
           });
 
@@ -33,16 +38,16 @@
           
           return `<div class="py-2 d-flex">
                 <div class="icon me-3">
-                  <img class="img-fluid" src="${item.owner.avatar_url}" />
+                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
                 </div>
                 <div>
                   <div class="mb-1">
                     <span class="h4">
-                      ${ escape(item.first_name) }
+                      ${ escape(item.first_name || "") }
                     </span>
-                    <span class="text-muted">by ${ escape(item.email) }</span>
+                    <span class="text-muted">by ${ escape(item.email || "") }</span>
                   </div>
-                  <div class="description">${ escape(item.description) }</div>
+                  <div class="description">${ escape(item.description || "") }</div>
                 </div>
               </div>`;
         },
@@ -51,16 +56,16 @@
           
           return `<div class="py-2 d-flex">
                 <div class="icon me-3">
-                  <img class="img-fluid" src="${item.owner.avatar_url}" />
+                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
                 </div>
                 <div>
                   <div class="mb-1">
                     <span class="h4">
-                      ${ escape(item.first_name) }
+                      ${ escape(item.first_name || "") }
                     </span>
-                    <span class="text-muted">by ${ escape(item.email) }</span>
+                    <span class="text-muted">by ${ escape(item.email || "") }</span>
                   </div>
-                  <div class="description">${ escape(item.description) }</div>
+                  <div class="description">${ escape(item.description || "") }</div>
                 </div>
               </div>`;
         }
