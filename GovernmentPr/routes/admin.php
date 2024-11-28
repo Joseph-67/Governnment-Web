@@ -50,6 +50,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // settings
     Route::controller(generalSetting::class)->group(function() {
         Route::get('/general-setting', 'index')->name('admin.general-setting');
+        Route::post ('/register-settings', 'store')->name('admin.store-settings');
     });
     // Guards
     Route::controller(GuardsController::class)->group(function() {

@@ -289,7 +289,7 @@
 
 <div class="row justify-content-end">
     <div class="col-md-3 py-3">
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </div>
 </div>
