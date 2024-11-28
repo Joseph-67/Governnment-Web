@@ -1,11 +1,7 @@
 <x-layouts.admin-app>
-@section('styles')
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
-/>
-@endsection
-    <div class="container-xxl">
+<div class="container-xxl">
+    <form action="{{ route('admin.store-settings') }}" method="post">
+        @csrf
         <x-form-section submit="">
             <x-slot name="title">
                 {{ __('Company\'s Profile') }}
@@ -324,10 +320,19 @@
                 </div>
             </x-slot>
         </x-form-section>
-    </div>
-    </div>
+        <div class="row justify-content-end">
+            <div class="col-md-3 py-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
     @section('styles')
     <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
     @endsection
     @section('scripts')
     <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
@@ -339,21 +344,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script>
-    // -----Country Code Selection
-    let tel_primary = document.querySelector('#mobile_code_primary')
-    let tel_secondary = document.querySelector('#mobile_code_secondary')
-    let tel_contact = document.querySelector('#mobile_code_contact')
-    window.intlTelInput(tel_primary, {
-    	initialCountry: "ng",
-    	separateDialCode: true,
-    	// utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-    });
-    window.intlTelInput(tel_contact, {
-    	initialCountry: "ng",
-    	separateDialCode: true,
-    	// utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-    });
-</script>
-
+        // -----Country Code Selection
+        let tel_primary = document.querySelector('#mobile_code_primary')
+        let tel_secondary = document.querySelector('#mobile_code_secondary')
+        let tel_contact = document.querySelector('#mobile_code_contact')
+        window.intlTelInput(tel_primary, {
+            initialCountry: "ng",
+            separateDialCode: true,
+            // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+        window.intlTelInput(tel_contact, {
+            initialCountry: "ng",
+            separateDialCode: true,
+            // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+    </script>
     @endsection
 </x-layouts.admin-app>
