@@ -1,8 +1,12 @@
 <x-layouts.admin-app>
+<x-validation-errors class="alert" alert />
+@include('shared.feedback')
 <div class="container-xxl">
+
     <form action="{{ route('admin.store-settings') }}" method="post">
         @csrf
         <x-form-section submit="">
+       
             <x-slot name="title">
                 {{ __('Company\'s Profile') }}
             </x-slot>
@@ -91,7 +95,7 @@
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <input id="mobile_code_primary" type="tel" class="form-control" placeholder="Phone Number">
+                        <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Phone Number">
                     </div>
                     <div class="col-md-6">
                         <input type="email" class="form-control" placeholder="Email Address" name="email">
