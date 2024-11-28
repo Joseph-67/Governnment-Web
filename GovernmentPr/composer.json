@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
+        "propaganistas/laravel-phone": "^5.1",
         "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {

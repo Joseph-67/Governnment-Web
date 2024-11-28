@@ -80,6 +80,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
-        Route::get ('/register-company', 'create')->name('admin.create-company');
+        Route::get ('/create-company', 'create')->name('admin.create-company');
+        Route::post ('/save-company', 'store')->name('admin.store-company');
     }); 
 });
