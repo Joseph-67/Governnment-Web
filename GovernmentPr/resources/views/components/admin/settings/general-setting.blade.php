@@ -188,7 +188,6 @@
             <x-slot name="description">
                 {{ __('Update your business details.') }}
             </x-slot>
-
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
