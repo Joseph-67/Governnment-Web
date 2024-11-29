@@ -41,6 +41,7 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         //
+       
     }
 
     /**

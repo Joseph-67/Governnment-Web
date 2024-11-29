@@ -65,6 +65,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
       //Posts
       Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
+        Route::post ('/save-posts', 'store')->name('admin.store-post');
     }); 
       Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');

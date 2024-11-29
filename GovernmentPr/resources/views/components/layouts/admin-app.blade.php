@@ -379,6 +379,12 @@
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
+                                        <a class="nav-link" href="advanced-dragula.html">News & Events</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
                                         <a class="nav-link" href="advanced-files.html">Design & Themes</a>
                                     </li><!--end nav-item--> 
                                     <li class="nav-item">

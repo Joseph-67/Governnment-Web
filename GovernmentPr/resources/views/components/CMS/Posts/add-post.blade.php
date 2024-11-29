@@ -53,6 +53,9 @@
 
     <div class="row justify-content-center">
                         <div class="col-md-6 col-lg-6">
+                            
+    <x-validation-errors class="alert" alert />
+    @include('shared.feedback') 
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
@@ -62,22 +65,24 @@
                                     </div>  <!--end row-->                                  
                                 </div><!--end card-header-->
                                 <div class="card-body pt-0">
-                                    <form>
+                                    <form action="{{ route('admin.store-post')}}" method="post">
+                                        @csrf
                                         <div class="mb-3">
-                                            <label for="" class="form-label">Title*</label>
-                                            <input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="">
+                                            <label for="" class="form-label">Post Title*</label>
+                                            <input type="text" class="form-control" name="title" id="" aria-describedby="emailHelp" placeholder="">
                                         </div>
-                                        <!-- <div class="mb-3">
+                                        <!-- <div class="mb-3"> 
                                             <label for="" class="form-label">Password</label>
                                             <input type="text" class="form-control" id="" placeholder="">
                                         </div> -->
+
                                         <div class="row justify-content-center">                        
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">                      
-                                            <h4 class="card-title">Contents</h4>                      
+                                            <h4 class="card-title">Post Body</h4>                      
                                         </div><!--end col-->
                                     </div>  <!--end row-->                                  
                                 </div><!--end card-header-->
@@ -91,28 +96,21 @@
                             </div><!--end card--> 
                         </div> <!--end col-->                                                       
                     </div><!--end row-->
+
                     <div class="mb-3">
                         <label class="form-label" for="exampleFormControlSelect1">Add Post Tag</label>
-                        <select class="form-select" id="exampleFormControlSelect1">
+                        <select class="form-select" name="tag" id="exampleFormControlSelect1">
                         <option>select tag</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
                         </select>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label" for="exampleFormControlSelect1">Add Post Category</label>
-                        <select class="form-select" id="exampleFormControlSelect1">
+                        <select class="form-select" name="category" id="exampleFormControlSelect1">
                         <option>select category</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
                         </select>
                     </div>
-                            
-            </form>                
+                                         
                                 </div><!--end card-body--> 
                             </div><!--end card--> 
                         </div> <!--end col--> 
@@ -127,13 +125,20 @@
                                 </div><!--end card-header-->
                                 <div class="card-body pt-0">
                                     <div id="drag-drop-area"></div>    
-                                    <div class="col-md-12">
+
+                                <div class="col-md-12">
                                     <label class="mb-2 mt-4">Created At</label>
-                                    <input class="form-control mb-3" type="text" name="foo">
+                                    <input class="form-control mb-3" type="date" name="date">
                                 </div>  
                                 </div><!--end card-body-->
                             </div><!--end card--> 
                         </div> <!--end col-->                                                      
                     </div><!--end row-->
+
+                        <div class="card-body pb-2">
+                                    <div class="d-flex flex-wrap gap-2 ">
+                                      <button type="submit" class="btn btn-outline-primary w-50">Submit</button>
+                                    </div>
+                                </div><!--end card-body--> 
                 </form>              
     </x-layouts.admin-app>
