@@ -43,8 +43,8 @@
                                     <div
                                         class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
                                     </div>
-                                    <input type="file" id="input-file" name="logo_darkmode" accept="image/*"
-                                        onchange={handleChange()} hidden />
+                                    <input type="file" id="input-file" name="logo_darkmode" accept="image/*" 
+                                    onchange={handleChange()} hidden />
                                     <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
                                 </div>
                             </div><!--end card-body-->

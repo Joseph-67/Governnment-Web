@@ -49,7 +49,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     // settings
     Route::controller(generalSetting::class)->group(function() {
-        Route::get('/general-setting', 'index')->name('admin.general-setting');
+        Route::get('/general-setting', 'create')->name('admin.general-setting');
         Route::post ('/register-settings', 'store')->name('admin.store-settings');
     });
     // Guards
@@ -83,5 +83,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
         Route::get ('/create-company', 'create')->name('admin.create-company');
         Route::post ('/save-company', 'store')->name('admin.store-company');
+        Route::get ('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
     }); 
 });

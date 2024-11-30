@@ -42,9 +42,26 @@
                                 <th>State/Province</th>
                                 <th>Date Of Est.</th>
                                 <th>G.I.S Location</th>
+                                <th>Actions</th>
                               </tr>
                             </thead>
-                            <tbody>                                                                                 
+                            <tbody>
+                                @foreach($companies as $key=> $company)
+                                <tr>
+                                    <td>{{$company->company_name}}</td>
+                                    <td>{{$company->email}}</td>
+                                    <td>{{$company->primary_phone_number}}</td>
+                                    <td>{{$company->state}}</td>
+                                    <td>{{$company->date_of_establishment}}</td>
+                                    <td>{{$company->gis_location}}</td>
+                                    <td>
+                                        <a href="" class="btn btn-link">View</a>
+                                        <a href="" class="btn btn-warning">Edit</a>
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('admin.create-recp', ['id'=> encrypt($company->company_id)]) }}" class="btn btn-outline-primary">Register RECP</a>
+                                    </td>
+                                </tr>
+                                @endforeach                                                                               
                             </tbody>
                           </table>
                     </div>

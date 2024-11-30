@@ -17,7 +17,7 @@ class CompanyController extends Controller
     public function index()
     {
         //
-        $data['companies'] = Company::get();
+        $data['companies'] = Company::where('status', '=', 'active')->get();
         return view('components.apps.displayCompany', $data);
     }
 
@@ -30,6 +30,13 @@ class CompanyController extends Controller
     {
         //
         return view('components.apps.create-company');
+    }
+
+    public function create_resp($id)
+    {
+        //
+        $id = decrypt($id);
+        return view('components.apps.create-recp')->with(['companyID' => $id]);
     }
 
     /**
@@ -93,7 +100,6 @@ class CompanyController extends Controller
 
         if ($company) {
             # code...
-
             if (isset($request['policy'])) {
                 # code...
                 foreach ($request['policy'] as $key => $policy) {

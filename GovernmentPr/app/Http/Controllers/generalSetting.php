@@ -15,7 +15,7 @@ class generalSetting extends Controller
     public function index()
     {
         //
-        return view('components.admin.settings.general-setting');
+        
     }
 
     /**
@@ -26,7 +26,7 @@ class generalSetting extends Controller
     public function create()
     {
         //
-       
+        return view('components.admin.settings.general-setting');
     }
 
     /**
@@ -38,7 +38,7 @@ class generalSetting extends Controller
     public function store(Request $request)
     {
         //
-        
+        dd($request);
         $request->validate([
             'company_name'=>'required',
             'slogan'=>'required',
@@ -72,6 +72,8 @@ class generalSetting extends Controller
             'promotional_photos'=>'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'promotional_videos'=>'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+
     }
 
     /**
