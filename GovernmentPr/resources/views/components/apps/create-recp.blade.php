@@ -133,6 +133,137 @@
     </x-form-section>
 <!-- End Basic Profile -->
 <x-section-border />
+<!-- Basic Profile -->
+<x-form-section submit="">
+    <x-slot name="title">
+        {{ __('Innovation') }}
+    </x-slot>
+    <x-slot name="description">
+        {{ __('') }}
+    </x-slot>
+    <x-slot name="form">
+        <div class="row">
+            <div class="col-md-12 mt-2">
+                <div class="col-md-8">
+                <label for="">Key areas for improving performance in your industry.</label>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent">
+                        </div>
+                    </div>
+                    <div class="col-md-3"><button class="btn btn-secondary add_more_key_areas" type="button">  Add </button></div>
+                </div>
+                
+            </div>
+            <div class="col-md-12 key-areas-container"></div>
+
+            <div class="col-md-12 mt-2">
+                <div class="col-md-8">
+                <label for="">Highlight innovations that enhance your product's environmental compatibility.</label>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="" name="key_area_for_improvent">
+                        </div>
+                    </div>
+                    <div class="col-md-3"><button class="btn btn-secondary add_more_innovative_changes" type="button">  Add </button></div>
+                </div>
+                
+            </div>
+            <div class="col-md-12 product-innovation-container"></div>
+
+            <div class="col-md-12 mt-2">
+                <div class="col-md-8">
+                <label for="">Identify hazardous materials in your process system that can be reduced, eliminated, or replaced with safer alternatives.</label>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="" name="key_area_for_improvent">
+                        </div>
+                    </div>
+                    <div class="col-md-3"><button class="btn btn-secondary add_more_hazardous_material" type="button">  Add </button></div>
+                </div>
+                
+            </div>
+            <div class="col-md-12 harzardous-material-container"></div>
+        </div>
+    </x-slot>
+</x-form-section>
+<!-- End Basic Profile -->
+<x-section-border />
 </form>
 </div>
+@section('scripts')
+<script>
+    let add_more_key_areas = document.querySelector('.add_more_key_areas')
+    add_more_key_areas.addEventListener('click', () => {
+        let container = document.querySelector('.key-areas-container')
+        container.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_key_area(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_key_area(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+
+    let add_more_product_innovation = document.querySelector('.add_more_innovative_changes')
+    console.log(add_more_product_innovation);
+    
+    add_more_product_innovation.addEventListener('click', () => {
+        // alert('hello')
+        let inovationcontainer = document.querySelector('.product-innovation-container')
+        inovationcontainer.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Product's innovation" name="key_area_for_improvent">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_product_innovation(this)" type="button">  Remove </button></div>
+            </div>
+        `
+
+    });
+
+    function remove_product_innovation(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+
+    let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
+    console.log(add_more_hazardous_material);
+    add_more_hazardous_material.addEventListener('click', () => {
+        // alert('hello')
+        let hazrdouscontainer = document.querySelector('.harzardous-material-container')
+        hazrdouscontainer.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Hazardous material" name="key_area_for_improvent">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_harzardous_material(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_harzardous_material(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+</script>
+@endsection
 </x-layouts.admin-app>
