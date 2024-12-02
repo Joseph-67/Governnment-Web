@@ -32,31 +32,14 @@
                         <input type="file" id="input-file" name="logo_dark_mode" multiple accept="image/*" />
                     </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Logo Light Mode</h4>
-                                </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <div class="d-grid">
-                                <p class="text-muted">Upload your logo image in light mode here, Please click "Upload
-                                    Image" Button.</p>
-                                <div
-                                    class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                </div>
-                                <input type="file" id="input-file" name="logo_lightmode" accept="image/*"
-                                    onchange={handleChange()} hidden />
-                                <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                            </div>
-                        </div><!--end card-body-->
+                        <label for="">Logo Light Mode</label>
+                        <input type="file" id="input-file" name="logo_light_mode" multiple accept="image/*" />
                     </div> <!--end col-->
                     <div class="col-md-6">
                         <label for="">Favicon</label>
-                        <input type="file" class="form-control" name="Favicon">
+                        <input type="file" id="input-file" name="logo_light_mode" accept="image/*" />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                         <label for="">Date of Establishment</label>
                         <input class="form-control" type="date" id="">
                     </div>
@@ -76,9 +59,13 @@
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Phone Number">
+                        <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Primary Phone Number">
                     </div>
                     <div class="col-md-6">
+                    <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Secondary Phone Number">
+                    <input type="hidden" name="secondary_phone_number">
+                    </div>
+                    <div class="col-md-12 mt-2">
                         <input type="email" class="form-control" placeholder="Email Address" name="email">
                     </div>
                     <div class="col-md-4 mt-2">
@@ -198,7 +185,7 @@
                     </div>
                     <div class="col-md-12 mt-2">
                         <label for="">Certifications</label>
-                        <input type="file" class="form-control" name="Certification">
+                        <input type="file" id="input-file" name="certifications" multiple accept="image/*" />
                     </div>
                 </div>
             </x-slot>
@@ -222,85 +209,21 @@
                             placeholder="Primary and Secondary colour(e.g HEX,RGB)">
                     </div>
                     <div class="col-md-6 col-lg-6 mt-2">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Brochures</h4>
+                    <label for="">Brochures</label>
+                    <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
                                 </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <div class="d-grid">
-                                <p class="text-muted">Upload your company's brochures here.</p>
-                                <div
-                                    class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                </div>
-                                <input type="file" id="input-file" name="brochures" accept="image/*"
-                                    onchange={handleChange()} hidden />
-                                <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                            </div>
-                        </div><!--end card-body-->
-                    </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Corporate Presentation</h4>
+                    <label for="">Corporate Presentation</label>
+                    <input type="file" id="input-file" name="corporate_presentation" multiple accept="image/*" />
                                 </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <div class="d-grid">
-                                <p class="text-muted">Upload your corporate presentation here.</p>
-                                <div
-                                    class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                </div>
-                                <input type="file" id="input-file" name="coroperate_presentation" accept="image/*"
-                                    onchange={handleChange()} hidden />
-                                <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                            </div>
-                        </div><!--end card-body-->
-                    </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Promotional Photos</h4>
+                    <label for="">Promotional Photos</label>
+                    <input type="file" id="input-file" name="promotional_photos" multiple accept="image/*" />
                                 </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <div class="d-grid">
-                                <p class="text-muted">Upload your company's promotional photos here.</p>
-                                <div
-                                    class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                </div>
-                                <input type="file" id="input-file" name="promotional_photos" accept="image/*"
-                                    onchange={handleChange()} hidden />
-                                <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                            </div>
-                        </div><!--end card-body-->
-                    </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Promotional Videos</h4>
-                                </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <div class="d-grid">
-                                <p class="text-muted">Upload your company's promotional videos here.</p>
-                                <div
-                                    class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                </div>
-                                <input type="file" id="input-file" name="promotional_videos" accept="image/*"
-                                    onchange={handleChange()} hidden />
-                                <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                            </div>
-                        </div><!--end card-body-->
-                    </div> <!--end col-->
+                        <label for="">Promotional Videos</label>
+                        <input type="file" id="input-file" name="promotional_videos" multiple accept="image/*" />
+                     </div><!--end col-->
                 </div>
             </x-slot>
         </x-form-section>
@@ -344,6 +267,29 @@
             separateDialCode: true,
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
         });
+        let contact = window.intlTelInput(tel_contact, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+
+    tel_primary.addEventListener("blur", function () {
+        const fullPhoneNumber = primary.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="primary_phone_number"]').value = fullPhoneNumber
+    });
+
+    tel_secondary.addEventListener("blur", function () {
+        const fullPhoneNumber = secondary.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="secondary_phone_number"]').value = fullPhoneNumber
+    });
+
+    tel_contact.addEventListener("blur", function () {
+        const fullPhoneNumber = contact.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
+    });
     </script>
     <script>
         let inputElement = document.querySelectorAll('input[type="file"]')
