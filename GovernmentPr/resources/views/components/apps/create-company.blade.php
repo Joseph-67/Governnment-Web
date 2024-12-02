@@ -88,7 +88,7 @@
 <!-- Location Details -->
 <x-form-section>
     <x-slot name="title">
-        {{ __('Company\'s Loaction') }}
+        {{ __('Company\'s Location') }}
     </x-slot>
     <x-slot name="description">
         {{ __('Update your company\'s address information.') }}
