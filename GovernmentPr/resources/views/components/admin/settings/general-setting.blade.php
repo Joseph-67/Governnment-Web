@@ -3,7 +3,7 @@
 @include('shared.feedback')
 <div class="container-xxl">
 
-    <form action="{{ route('admin.store-settings') }}" method="post">
+    <form action="{{ route('admin.store-settings') }}" method="post" enctype="multipart/form-data">
         @csrf
         <x-form-section submit="">
        
@@ -59,10 +59,16 @@
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Primary Phone Number">
+                        <input id="mobile_code_primary" type="tel" class="form-control" placeholder="Primary Phone Number">
+                        <input type="hidden" name="primary_phone_number">
                     </div>
                     <div class="col-md-6">
+<<<<<<< HEAD
                     <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Secondary Phone Number">
+=======
+                    <input id="mobile_code_secondary" type="tel" class="form-control" placeholder="Secondary Phone Number">
+                    <input type="hidden" name="secondary_phone_number">
+>>>>>>> 7a400b23b8409405163817a3e5dc1804ac2ee022
                     </div>
                     <div class="col-md-12 mt-2">
                         <input type="email" class="form-control" placeholder="Email Address" name="email">
@@ -141,11 +147,8 @@
                     <div class="col-md-12 mt-2">
                         <label class="">About Company</label>
                         <div class=" pt-0">
-                            <div id="editor">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong></p>
-                                <p><br /></p>
-                            </div>
+                            <div id="editor"></div>
+                            <textarea name="about_company" id="" style="display: none"></textarea>
                         </div><!--end card-body--> 
                 </div>
             </x-slot>
@@ -185,7 +188,7 @@
                     <div class="col-md-6 mt-2">
                         <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" name="registration_details">
                     </div>
-                    <div class="col-md-12 mt-2">
+                    <div class="col-md-6 mt-2">
                         <label for="">Certifications</label>
                         <input type="file" id="input-file" name="certifications" multiple accept="image/*" />
                     </div>
@@ -205,15 +208,17 @@
 
             <x-slot name="form">
                 <div class="row">
-                    <div class="col-md-7">
+                <div class="col-md-3">
                         <label for="">Brand Colour</label>
                         <input type="color" class="form-control"
                             placeholder="Primary and Secondary colour(e.g HEX,RGB)">
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 col-lg-6 mt-2">
-                    <label for="">Brochures</label>
-                    <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
-                                </div><!--end col-->
+                        <label for="">Brochures</label>
+                        <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
+                    </div><!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                     <label for="">Corporate Presentation</label>
                     <input type="file" id="input-file" name="corporate_presentation" multiple accept="image/*" />
@@ -234,6 +239,7 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="col-md-6">
             <div class="">
                 <label for="">Organization Type</label>
@@ -258,6 +264,43 @@
     </div>
     </x-slot>
 </x-form-section>
+=======
+    </form>
+</div>
+    @section('styles')
+    <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    @endsection
+    @section('scripts')
+    <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/form-editor.init.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/location.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    <script>
+        // -----Country Code Selection
+        let tel_primary = document.querySelector('#mobile_code_primary')
+        let tel_secondary = document.querySelector('#mobile_code_secondary')
+        window.intlTelInput(tel_primary, {
+            initialCountry: "ng",
+            separateDialCode: true,
+            // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+        window.intlTelInput(tel_secondary, {
+            initialCountry: "ng",
+            separateDialCode: true,
+            // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+
+>>>>>>> 7a400b23b8409405163817a3e5dc1804ac2ee022
 
 
 <x-form-section submit="">
@@ -265,6 +308,7 @@
         {{ __('Branding and Media Details') }}
     </x-slot>
 
+<<<<<<< HEAD
     <x-slot name="description">
         {{ __('Update your branding and media details.') }}
     </x-slot>
@@ -463,4 +507,32 @@
 <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
 <script src="{{ asset('adminAssets/js/location.js') }}"></script>
 @endsection
+=======
+    tel_contact.addEventListener("blur", function () {
+        const fullPhoneNumber = contact.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
+    });
+    </script>
+    <script>
+        let inputElement = document.querySelectorAll('input[type="file"]')
+        console.log(inputElement);
+        inputElement.forEach(element => {
+            let pond = FilePond.create(element, {
+                storeAsFile: true,
+            });
+        });
+    </script>
+    <script>
+        let about_company = document.querySelector('textarea[name="about_company"]')
+        let content = quill.root
+        console.log(content);
+        
+        quill.on('text-change', () => {
+            console.log(content.innerHTML);
+            about_company.value = content.innerHTML
+        });
+    </script>
+    @endsection
+>>>>>>> 7a400b23b8409405163817a3e5dc1804ac2ee022
 </x-layouts.admin-app>

@@ -42,8 +42,10 @@ class generalSetting extends Controller
         $request->validate([
             'company_name'=>'required',
             'slogan'=>'required',
-            'logo_darkmode'=>'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'logo_lightmode'=>'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'logo_dark_mode'=>'required|array',
+            'logo_light_mode'=>'required|array',
+            'logo_dark_mode.*'=>'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'logo_light_mode'=>'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'date_of_establishment'=>'required',
             'phone_number'=>'required|nullable:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'email_address'=>'required',
