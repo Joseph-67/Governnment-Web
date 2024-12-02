@@ -63,7 +63,6 @@
                     </div>
                     <div class="col-md-6">
                     <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Secondary Phone Number">
-                    <input type="hidden" name="secondary_phone_number">
                     </div>
                     <div class="col-md-12 mt-2">
                         <input type="email" class="form-control" placeholder="Email Address" name="email">
@@ -267,29 +266,6 @@
             separateDialCode: true,
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
         });
-        let contact = window.intlTelInput(tel_contact, {
-    	initialCountry: "ng",
-    	separateDialCode: true,
-    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-    });
-
-    tel_primary.addEventListener("blur", function () {
-        const fullPhoneNumber = primary.getNumber(); // Gets the full number in E.164 format
-        console.log("Full phone number:", fullPhoneNumber);
-        document.querySelector('input[name="primary_phone_number"]').value = fullPhoneNumber
-    });
-
-    tel_secondary.addEventListener("blur", function () {
-        const fullPhoneNumber = secondary.getNumber(); // Gets the full number in E.164 format
-        console.log("Full phone number:", fullPhoneNumber);
-        document.querySelector('input[name="secondary_phone_number"]').value = fullPhoneNumber
-    });
-
-    tel_contact.addEventListener("blur", function () {
-        const fullPhoneNumber = contact.getNumber(); // Gets the full number in E.164 format
-        console.log("Full phone number:", fullPhoneNumber);
-        document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
-    });
     </script>
     <script>
         let inputElement = document.querySelectorAll('input[type="file"]')
