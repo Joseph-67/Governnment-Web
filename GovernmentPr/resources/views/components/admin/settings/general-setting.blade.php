@@ -239,32 +239,6 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
-<<<<<<< HEAD
-        <div class="col-md-6">
-            <div class="">
-                <label for="">Organization Type</label>
-                <select name="company_type" id="" class="form-select">
-                    <option value="" disabled selected> Choose... </option>
-                    <option value="private">Private</option>
-                    <option value="public">Public</option>
-                    <option value="n.g.o">N.G.O</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6 mt-2">
-            <input type="number" class="form-control" placeholder="Size(No.of employees)" min="1">
-        </div>
-        <div class="col-md-6 mt-2">
-            <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)">
-        </div>
-        <div class="col-md-12 mt-2">
-            <label for="">Certifications</label>
-            <input type="file" class="form-control" name="Certification">
-        </div>
-    </div>
-    </x-slot>
-</x-form-section>
-=======
     </form>
 </div>
     @section('styles')
@@ -300,7 +274,6 @@
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
         });
 
->>>>>>> 7a400b23b8409405163817a3e5dc1804ac2ee022
 
 
 <x-form-section submit="">
