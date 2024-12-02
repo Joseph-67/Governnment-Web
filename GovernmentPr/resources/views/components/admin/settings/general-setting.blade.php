@@ -3,7 +3,7 @@
 @include('shared.feedback')
 <div class="container-xxl">
 
-    <form action="{{ route('admin.store-settings') }}" method="post">
+    <form action="{{ route('admin.store-settings') }}" method="post" enctype="multipart/form-data">
         @csrf
         <x-form-section submit="">
        
@@ -59,10 +59,11 @@
             <x-slot name="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Primary Phone Number">
+                        <input id="mobile_code_primary" type="tel" class="form-control" placeholder="Primary Phone Number">
+                        <input type="hidden" name="primary_phone_number">
                     </div>
                     <div class="col-md-6">
-                    <input id="mobile_code_primary" name="phone_number" type="tel" class="form-control" placeholder="Secondary Phone Number">
+                    <input id="mobile_code_secondary" type="tel" class="form-control" placeholder="Secondary Phone Number">
                     <input type="hidden" name="secondary_phone_number">
                     </div>
                     <div class="col-md-12 mt-2">
@@ -139,11 +140,8 @@
                     <div class="col-md-12 mt-2">
                         <label class="">About Company</label>
                         <div class=" pt-0">
-                            <div id="editor">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong></p>
-                                <p><br /></p>
-                            </div>
+                            <div id="editor"></div>
+                            <textarea name="about_company" id="" style="display: none"></textarea>
                         </div><!--end card-body--> 
                 </div>
             </x-slot>
@@ -183,7 +181,7 @@
                     <div class="col-md-6 mt-2">
                         <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" name="registration_details">
                     </div>
-                    <div class="col-md-12 mt-2">
+                    <div class="col-md-6 mt-2">
                         <label for="">Certifications</label>
                         <input type="file" id="input-file" name="certifications" multiple accept="image/*" />
                     </div>
@@ -203,15 +201,17 @@
 
             <x-slot name="form">
                 <div class="row">
-                    <div class="col-md-7">
+                <div class="col-md-3">
                         <label for="">Brand Colour</label>
                         <input type="color" class="form-control"
                             placeholder="Primary and Secondary colour(e.g HEX,RGB)">
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 col-lg-6 mt-2">
-                    <label for="">Brochures</label>
-                    <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
-                                </div><!--end col-->
+                        <label for="">Brochures</label>
+                        <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
+                    </div><!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                     <label for="">Corporate Presentation</label>
                     <input type="file" id="input-file" name="corporate_presentation" multiple accept="image/*" />
@@ -256,22 +256,17 @@
         // -----Country Code Selection
         let tel_primary = document.querySelector('#mobile_code_primary')
         let tel_secondary = document.querySelector('#mobile_code_secondary')
-        let tel_contact = document.querySelector('#mobile_code_contact')
         window.intlTelInput(tel_primary, {
             initialCountry: "ng",
             separateDialCode: true,
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
         });
-        window.intlTelInput(tel_contact, {
+        window.intlTelInput(tel_secondary, {
             initialCountry: "ng",
             separateDialCode: true,
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
         });
-        let contact = window.intlTelInput(tel_contact, {
-    	initialCountry: "ng",
-    	separateDialCode: true,
-    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-    });
+
 
     tel_primary.addEventListener("blur", function () {
         const fullPhoneNumber = primary.getNumber(); // Gets the full number in E.164 format
@@ -298,6 +293,16 @@
             let pond = FilePond.create(element, {
                 storeAsFile: true,
             });
+        });
+    </script>
+    <script>
+        let about_company = document.querySelector('textarea[name="about_company"]')
+        let content = quill.root
+        console.log(content);
+        
+        quill.on('text-change', () => {
+            console.log(content.innerHTML);
+            about_company.value = content.innerHTML
         });
     </script>
     @endsection
