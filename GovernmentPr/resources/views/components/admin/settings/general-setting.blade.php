@@ -29,19 +29,19 @@
 
                     <div class="col-md-6 mt-2">
                         <label for="">Logo Dark Mode</label>
-                        <input type="file" id="input-file" name="logo_dark_mode" multiple accept="image/*" />
+                        <input type="file" id="input-file" name="logo_dark_mode[]" multiple accept="image/*" />
                     </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                         <label for="">Logo Light Mode</label>
-                        <input type="file" id="input-file" name="logo_light_mode" multiple accept="image/*" />
+                        <input type="file" id="input-file" name="logo_light_mode[]" multiple accept="image/*" />
                     </div> <!--end col-->
                     <div class="col-md-6">
                         <label for="">Favicon</label>
-                        <input type="file" id="input-file" name="logo_light_mode" accept="image/*" />
+                        <input type="file" id="input-file" name="favicon" accept="image/*" />
                     </div>
                     <div class="col-md-6 mt-3">
                         <label for="">Date of Establishment</label>
-                        <input class="form-control" type="date" id="">
+                        <input class="form-control" type="date" id="" name="date_of_establishment">
                     </div>
 
 
@@ -72,7 +72,7 @@
                     <div class="col-md-4 mt-2">
                         <div class="form-group">
                             <label for="">Country</label>
-                            <select name="" id="" class="form-select countries" id="countryId">
+                            <select name="country" id="" class="form-select countries" id="countryId">
                                 <option value="" selected disabled> Choose... </option>
                             </select>
                         </div>
@@ -81,7 +81,7 @@
                     <div class="col-md-4 mt-2">
                         <div class="form-group">
                             <label for="">State</label>
-                            <select name="" id="" class="form-select states" onchange="toggleLGA(this);" id="stateId">
+                            <select name="state" id="" class="form-select states" onchange="toggleLGA(this);" id="stateId">
                                 <option value="" selected disabled> Choose... </option>
                             </select>
                         </div>
@@ -90,7 +90,7 @@
                     <div class="col-md-4 mt-2">
                         <div class="form-group">
                             <label for="">City</label>
-                            <select name="" id="lga" class="form-select select-lga cities" id="cityId">
+                            <select name="city" id="lga" class="form-select select-lga cities" id="cityId">
                                 <option value="" selected disabled> Choose... </option>
                             </select>
                         </div>
@@ -159,7 +159,7 @@
                     <div class="col-md-6">
                         <div class="">
                             <label for="">Industry</label>
-                            <select name="company_type" id="industry" class="form-select">
+                            <select name="industry" id="industry" class="form-select">
                                 <option value="" disabled selected> Choose... </option>
                             </select>
                         </div>
@@ -176,14 +176,14 @@
                         </div>
                     </div>
                     <div class="col-md-6 mt-2">
-                        <input type="number" class="form-control" placeholder="Size(No.of employees)" min="1" name="size">
+                        <input type="number" class="form-control" placeholder="Nunber of employees" min="1" name="size">
                     </div>
                     <div class="col-md-6 mt-2">
                         <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" name="registration_details">
                     </div>
                     <div class="col-md-6 mt-2">
                         <label for="">Certifications</label>
-                        <input type="file" id="input-file" name="certifications" multiple accept="image/*" />
+                        <input type="file" id="input-file" name="certifications[]" multiple accept="image/*" />
                     </div>
                 </div>
             </x-slot>
@@ -204,25 +204,25 @@
                 <div class="col-md-3">
                         <label for="">Brand Colour</label>
                         <input type="color" class="form-control"
-                            placeholder="Primary and Secondary colour(e.g HEX,RGB)">
+                            placeholder="Primary and Secondary colour(e.g HEX,RGB)" name="brand_colour">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-6 mt-2">
                         <label for="">Brochures</label>
-                        <input type="file" id="input-file" name="brochures" multiple accept="image/*" />
+                        <input type="file" id="input-file" name="brochures[]" multiple accept="image/*" />
                     </div><!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                     <label for="">Corporate Presentation</label>
-                    <input type="file" id="input-file" name="corporate_presentation" multiple accept="image/*" />
+                    <input type="file" id="input-file" name="corporate_presentation[]" multiple accept="image/*" />
                                 </div><!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                     <label for="">Promotional Photos</label>
-                    <input type="file" id="input-file" name="promotional_photos" multiple accept="image/*" />
+                    <input type="file" id="input-file" name="promotional_photos[]" multiple accept="image/*" />
                                 </div><!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                         <label for="">Promotional Videos</label>
-                        <input type="file" id="input-file" name="promotional_videos" multiple accept="image/*" />
+                        <input type="file" id="input-file" name="promotional_videos[]" multiple accept="image/*" />
                      </div><!--end col-->
                 </div>
             </x-slot>
