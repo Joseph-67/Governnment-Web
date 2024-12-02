@@ -28,27 +28,8 @@
                     </div>
 
                     <div class="col-md-6 mt-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Logo Dark Mode</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <div class="d-grid">
-                                    <p class="text-muted">Upload your logo image in dark mode here, Please click "Upload
-                                        Image" Button.</p>
-                                    <div
-                                        class="preview-box d-block justify-content-center rounded  border-dashed border-theme-color overflow-hidden p-3">
-                                    </div>
-                                    <input type="file" id="input-file" name="logo_darkmode" accept="image/*" 
-                                    onchange={handleChange()} hidden />
-                                    <label class="btn-upload btn btn-primary mt-3" for="input-file">Upload Image</label>
-                                </div>
-                            </div><!--end card-body-->
-                        </div>
+                        <label for="">Logo Dark Mode</label>
+                        <input type="file" id="input-file" name="logo_dark_mode" multiple accept="image/*" />
                     </div> <!--end col-->
                     <div class="col-md-6 col-lg-6 mt-2">
                         <div class="card-header">
@@ -336,6 +317,7 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
     />
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     @endsection
     @section('scripts')
     <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
@@ -346,6 +328,7 @@
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script>
         // -----Country Code Selection
         let tel_primary = document.querySelector('#mobile_code_primary')
@@ -360,6 +343,15 @@
             initialCountry: "ng",
             separateDialCode: true,
             // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+    </script>
+    <script>
+        let inputElement = document.querySelectorAll('input[type="file"]')
+        console.log(inputElement);
+        inputElement.forEach(element => {
+            let pond = FilePond.create(element, {
+                storeAsFile: true,
+            });
         });
     </script>
     @endsection
