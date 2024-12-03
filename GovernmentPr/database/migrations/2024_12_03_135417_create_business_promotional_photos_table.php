@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('business_corevalues', function (Blueprint $table) {
-            $table->id('CorevaluesID');
+        Schema::create('business_promotional_photos', function (Blueprint $table) {
+            $table->id('promotionalphotoID');
             $table->unsignedBigInteger('businessID');
-            $table->string('core_values_title');
+            $table->string('file_url');
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('businessID')
-            ->references('business_id')
+            ->references('businessID')
             ->on('businesses')
             ->onDelete('cascade');
             $table->timestamps();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_corevalues');
+        Schema::dropIfExists('business_promotional_photos');
     }
 };
