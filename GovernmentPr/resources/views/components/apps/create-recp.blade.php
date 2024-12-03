@@ -501,27 +501,27 @@
         parent.remove()
     }
 
-    let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
-    console.log(add_more_hazardous_material);
-    add_more_hazardous_material.addEventListener('click', () => {
-        // alert('hello')
-        let hazrdouscontainer = document.querySelector('.harzardous-material-container')
-        hazrdouscontainer.innerHTML += `
-            <div class="row mt-2">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Hazarduous material" name="hazardous_material_in_process[]">
+        let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
+        console.log(add_more_hazardous_material);
+        add_more_hazardous_material.addEventListener('click', () => {
+            // alert('hello')
+            let hazrdouscontainer = document.querySelector('.harzardous-material-container')
+            hazrdouscontainer.innerHTML += `
+                <div class="row mt-2">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Hazarduous material" name="hazardous_material_in_process[]">
+                        </div>
                     </div>
+                    <div class="col-md-3"><button class="btn btn-danger" onclick="remove_harzardous_material(this)" type="button">  Remove </button></div>
                 </div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_harzardous_material(this)" type="button">  Remove </button></div>
-            </div>
-        `
-    });
+            `
+        });
 
-    function remove_harzardous_material(ele) {
-        let parent = ele.parentElement.parentElement
-        parent.remove()
-    }
+        function remove_harzardous_material(ele) {
+            let parent = ele.parentElement.parentElement
+            parent.remove()
+        }
 
     let add_more_unit_process = document.querySelector('.add_more_unit_process')
     console.log(add_more_unit_process);
