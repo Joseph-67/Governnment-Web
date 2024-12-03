@@ -190,7 +190,11 @@
                         </div>
                     </div>
                     <div class="col-md-6 mt-2">
+<<<<<<< Updated upstream
                         <input type="number" class="form-control" placeholder="Nunber of employees" min="1" name="number_of_employees">
+=======
+                        <input type="number" class="form-control" placeholder="Number of employees" min="1" name="size">
+>>>>>>> Stashed changes
                     </div>
                     <div class="col-md-6 mt-2">
                         <input type="text" class="form-control" placeholder="Registration No. (TIN/VAT)" name="registration_number">
