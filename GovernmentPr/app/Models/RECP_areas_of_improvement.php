@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RECP_areas_of_improvement extends Model
 {
     use HasFactory;
-    protected $table = "";
-    protected $primaryKey = "";
-    protected $fillable = [];
+    protected $table = "recp_areas_of_improvements";
+    protected $primaryKey = "improvementAreaID";
+    protected $fillable = [
+        'companyID',
+        'area_title',
+        'status'
+    ];
 }

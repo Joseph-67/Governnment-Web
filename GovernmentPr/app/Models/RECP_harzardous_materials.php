@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RECP_harzardous_materials extends Model
 {
     use HasFactory;
-    protected $table = "";
-    protected $primaryKey = "";
-    protected $fillable = [];
+    protected $table = "recp_harzardous_materials";
+    protected $primaryKey = "hazarduousMaterialID";
+    protected $fillable = [
+        'companyID',
+        'material_title',
+        'status'
+    ];
 }
