@@ -13,6 +13,7 @@ use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EventController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -70,6 +71,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
       Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });
+
+    //Events
+    Route::controller(EventController::class)->group(function() {
+        Route::get ('/cms-events', 'index')->name('CMS.event');
+    }); 
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email-configuration');
