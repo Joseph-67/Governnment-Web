@@ -90,5 +90,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/create-company', 'create')->name('admin.create-company');
         Route::post ('/save-company', 'store')->name('admin.store-company');
         Route::get ('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
+        Route::post ('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
     }); 
 });

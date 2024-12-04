@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\CompanyObjectives;
 use App\Models\Policy;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class CompanyController extends Controller
 {
@@ -125,6 +126,28 @@ class CompanyController extends Controller
         }
 
         return back()->withInput()->with(['success', "Company registered successfully"]);
+    }
+
+    public function store_recp(Request $request) {
+        $validator = $request->validate([
+            'company_id'                        => ['required', 'numeric'],
+            'areas_of_company_benefit'          => ['nullable', 'array'],
+            'areas_of_company_benefit.*'        => ['nullable', 'string'],
+            'key_area_for_improvent'            => ['nullable', 'array'],
+            'key_area_for_improvent.*'          => ['nullable', 'string'],
+            'innovation_that_enhance_product'   => ['nullable', 'array'],
+            'innovation_that_enhance_product.*' => ['nullable', 'string'],
+            'hazardous_material_in_process'     => ['nullable', 'array'],
+            'hazardous_material_in_process.*'   => ['nullable', 'string'],
+            'unit_process'                      => ['nullable', 'array'],
+            'unit_process.*'                    => ['nullable', 'string'],
+            'problem_and_solution'              => ['nullable', 'array'],
+            'problem_and_solution.*'            => ['nullable', 'string']
+        ]);
+
+        $error = new MessageBag(['Please fill in the form before submission.']);
+
+        return back()->withErrors($error);
     }
 
     /**

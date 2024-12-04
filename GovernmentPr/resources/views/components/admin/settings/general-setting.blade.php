@@ -21,7 +21,7 @@
                         <input type="text" class="form-control" placeholder="Company name" name="company_name">
                     </div>
                     <div class="col-md-7 mt-2">
-                        <input type="text" class="form-control" placeholder="Slogan" aria-label="Last name" name="slogan">
+                        <input type="text" class="form-control" placeholder="Slogan" name="slogan">
                     </div>
                     <div class="col-md-5 mt-2">
                         <input type="text" class="form-control" placeholder="Abbreviation" name="abbreviation">
@@ -41,10 +41,8 @@
                     </div>
                     <div class="col-md-6 mt-3">
                         <label for="">Date of Establishment</label>
-                        <input class="form-control" type="date" id="" name="date_of_establishment">
+                        <input class="form-control" type="date" name="date_of_establishment">
                     </div>
-
-
             </x-slot>
         </x-form-section>
         <x-form-section submit="">
@@ -72,7 +70,7 @@
                     <div class="col-md-4 mt-2">
                         <div class="form-group">
                             <label for="">Country</label>
-                            <select name="country" id="" class="form-select countries" id="countryId">
+                            <select name="country" class="form-select countries" id="countryId">
                                 <option value="" selected disabled> Choose... </option>
                             </select>
                         </div>
@@ -81,7 +79,7 @@
                     <div class="col-md-4 mt-2">
                         <div class="form-group">
                             <label for="">State</label>
-                            <select name="state" id="" class="form-select states" onchange="toggleLGA(this);" id="stateId">
+                            <select name="state" class="form-select states" onchange="toggleLGA(this);" id="stateId">
                                 <option value="" selected disabled> Choose... </option>
                             </select>
                         </div>
@@ -135,8 +133,24 @@
                         <input type="text" class="form-control" placeholder="Vision Statement" name="vision_statement">
                     </div>
                     <div class="col-md-12 mt-2">
-                        <input type="text" class="form-control" placeholder="Core values" name="core_values">
+                        <div class="col-md-8">
+                        <label for="">Core Values</label>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="" name="core_value[]">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button 
+                                class="btn btn-secondary add_more_core_value"
+                                type="button">  Add </button>
+                            </div>
+                        </div>
+                        
                     </div>
+                    <div class="col-md-12 core-values-container"></div>
                     <div class="col-md-12 mt-2">
                         <label class="">About Company</label>
                         <div class=" pt-0">
@@ -167,7 +181,7 @@
                     <div class="col-md-6">
                         <div class="">
                             <label for="">Organization Type</label>
-                            <select name="company_type" id="" class="form-select">
+                            <select name="company_type" class="form-select">
                                 <option value="" disabled selected> Choose... </option>
                                 <option value="private">Private</option>
                                 <option value="public">Public</option>
@@ -176,10 +190,14 @@
                         </div>
                     </div>
                     <div class="col-md-6 mt-2">
-                        <input type="number" class="form-control" placeholder="Nunber of employees" min="1" name="size">
+<<<<<<< Updated upstream
+                        <input type="number" class="form-control" placeholder="Nunber of employees" min="1" name="number_of_employees">
+=======
+                        <input type="number" class="form-control" placeholder="Number of employees" min="1" name="size">
+>>>>>>> Stashed changes
                     </div>
                     <div class="col-md-6 mt-2">
-                        <input type="text" class="form-control" placeholder="Registration details(TIN/VAT)" name="registration_details">
+                        <input type="text" class="form-control" placeholder="Registration No. (TIN/VAT)" name="registration_number">
                     </div>
                     <div class="col-md-6 mt-2">
                         <label for="">Certifications</label>
@@ -304,6 +322,30 @@
             console.log(content.innerHTML);
             about_company.value = content.innerHTML
         });
+    </script>
+    <script>
+        let add_more_core_value = document.querySelector('.add_more_core_value')
+        console.log(add_more_core_value);
+        add_more_core_value.addEventListener('click', () => {
+            // alert('hello')
+            let corevaluecontainer = document.querySelector('.core-values-container')
+            corevaluecontainer.innerHTML += `
+                <div class="row mt-2">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Core value" name="core_value[]">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                    <button class="btn btn-danger" onclick="remove_core_value(this)" type="button">  Remove </button></div>
+                </div>
+            `
+        });
+
+        function remove_core_value(ele) {
+            let parent = ele.parentElement.parentElement
+            parent.remove()
+        }
     </script>
     @endsection
 </x-layouts.admin-app>
