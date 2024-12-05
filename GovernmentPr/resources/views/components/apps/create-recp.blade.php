@@ -71,55 +71,55 @@
             </div>
         </div>
         <x-section-border />
-        <h5 class="mt-3">Human and Enviromental Health/Business Benefits</h5>
+        <h5 class="mt-3">Human and Environmental Health/Business Benefits</h5>
         <p> It has been proven that applying RECP methodologies yields numerous economic, environmental, and social benefits. </p>
         <p> <i>Please select/or list the gains you forsee for your company because of your willigness to apply the RECP methodologies.</i> </p>
         <div class="row mb-2">
             <div class="col-md-12">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a minimum 20% reduction in energy consumption within one year." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a minimum 20% reduction in energy consumption within one year. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Double your water productivity within one year." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Double your water productivity within one year." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Double your water productivity within one year. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 50% increase in overall material productivity within one year." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 50% increase in overall material productivity within one year. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve an increase in overall annual financial savings." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve an increase in overall annual financial savings. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Enhance customer satisfaction through improved products, services, and overall experience." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Enhance customer satisfaction through improved products, services, and overall experience. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
                 </div>
             </div>

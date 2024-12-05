@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\CompanyObjectives;
+use App\Models\RECP_areas_of_benefit;
+use App\Models\RECP_areas_of_improvement;
+use App\Models\RECP_innovation_areas;
+use App\Models\RECP_harzardous_materials;
+use App\Models\RECP_unit_of_process;
+use App\Models\RECP_problem_and_solution;
 use App\Models\Policy;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -129,24 +135,116 @@ class CompanyController extends Controller
     }
 
     public function store_recp(Request $request) {
+        // dd($request);
         $validator = $request->validate([
             'company_id'                        => ['required', 'numeric'],
             'areas_of_company_benefit'          => ['nullable', 'array'],
             'areas_of_company_benefit.*'        => ['nullable', 'string'],
+            'environment_health_benefit'        => ['nullable', 'array'],
+            'environment_health_benefit.*'      => ['nullable', 'string'],
             'key_area_for_improvent'            => ['nullable', 'array'],
             'key_area_for_improvent.*'          => ['nullable', 'string'],
             'innovation_that_enhance_product'   => ['nullable', 'array'],
             'innovation_that_enhance_product.*' => ['nullable', 'string'],
             'hazardous_material_in_process'     => ['nullable', 'array'],
             'hazardous_material_in_process.*'   => ['nullable', 'string'],
+            'house_keeping'                     => ['nullable', 'array'],
+            'house_keeping.*'                   => ['nullable', 'string'],
             'unit_process'                      => ['nullable', 'array'],
             'unit_process.*'                    => ['nullable', 'string'],
             'problem_and_solution'              => ['nullable', 'array'],
-            'problem_and_solution.*'            => ['nullable', 'string']
+            'problem_and_solution.*'            => ['nullable', 'string'],
+            'RECP_waste_reduction_measures'     => ['nullable', 'array'],
+            'RECP_waste_reduction_measures.*'   => ['nullable', 'string'],
+            'waste_management_methods'          => ['nullable', 'array'],
+            'waste_management_methods.*'        => ['nullable', 'string'],
+            'product_recovery_measures'         => ['nullable', 'array'],
+            'product_recovery_measures.*'       => ['nullable', 'string'],
         ]);
 
-        $error = new MessageBag(['Please fill in the form before submission.']);
+        $check = false;
+        // Areas of company benefit
+        if(is_array($request['areas_of_company_benefit']) && $request['areas_of_company_benefit.*'] == null && isset($request['company_id'])){
+            foreach ($request['areas_of_company_benefit'] as $key => $benefit) {
+                # code...
+                $RECP_areas_of_benefit = RECP_areas_of_benefit::create([
+                    'companyID' => $request['company_id'],
+                    'benefit_title' => $benefit
+                ]);
 
+                $check = true;
+            }
+        }
+
+        // Key area of improvement
+        if(is_array($request['key_area_for_improvent']) && $request['key_area_for_improvent.*'] != null && isset($request['company_id'])){
+            foreach ($request['key_area_for_improvent'] as $key => $improvement) {
+                # code...
+                $RECP_areas_of_improvement = RECP_areas_of_improvement::create([
+                    'companyID' => $request['company_id'],
+                    'area_title' => $improvement
+                ]);
+
+                $check = true;
+            }
+        }
+
+        // Key area of innovation
+        if(is_array($request['innovation_that_enhance_product']) && $request['innovation_that_enhance_product.*'] != null && isset($request['company_id'])){
+            foreach ($request['innovation_that_enhance_product'] as $key => $innovation) {
+                # code...
+                $RECP_areas_of_innovation = RECP_innovation_areas::create([
+                    'companyID' => $request['company_id'],
+                    'innovation_area_title' => $innovation
+                ]);
+
+                $check = true;
+            }
+        }
+
+        // Key area of hazarduous materials
+        if(isset($request['hazardous_material_in_process']) && $request['hazardous_material_in_process.*'] != null && isset($request['company_id'])){
+            foreach ($request['hazardous_material_in_process'] as $key => $harzaduous_material) {
+                # code...
+                $RECP_areas_of_hazarduous_material = RECP_harzardous_materials::create([
+                    'companyID' => $request['company_id'],
+                    'material_title' => $harzaduous_material
+                ]);
+
+                $check = true;
+            }
+        }
+
+        // Key area of unit process
+        if(isset($request['unit_process']) && $request['unit_process.*'] != null && isset($request['company_id'])){
+            foreach ($request['unit_process'] as $key => $unit_process) {
+                # code...
+                $RECP_areas_of_unit_process = RECP_unit_of_process::create([
+                    'companyID' => $request['company_id'],
+                    'unit_process_title' => $unit_process
+                ]);
+                $check = true;
+            }
+        }
+
+        // Key area of problem and solution
+        if(isset($request['problem_and_solution']) && $request['problem_and_solution.*'] != null && isset($request['company_id'])){
+            foreach ($request['problem_and_solution'] as $key => $problem_solution) {
+                # code...
+                $RECP_areas_of_problem_solution = RECP_problem_and_solution::create([
+                    'companyID' => $request['company_id'],
+                    'problem_solution_title' => $problem_solution
+                ]);
+                $check = true;
+            }
+        }
+
+        if ($check == true) {
+            # code...
+            return back()->with(['success' => 'RECP registeration successful.']);
+        }
+
+        $error = new MessageBag(['Please fill in the form before submission.']);
         return back()->withErrors($error);
     }
 

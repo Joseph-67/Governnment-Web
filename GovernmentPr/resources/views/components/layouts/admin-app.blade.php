@@ -17,6 +17,9 @@
      <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
      @yield('styles')
+     <style>
+        .filepond--credits{display: none; }
+     </style>
 </head>
 
 <body>
