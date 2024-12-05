@@ -496,7 +496,7 @@
                                                             <img src="assets/images/users/avatar-6.jpg" alt="avatar" class="thumb-md shadow-sm rounded-circle">
                                                         </a>                 
                                                     </div>
-                                                </td>
+                                                </td> 
                                                 <td class="text-end">   
                                                     <a href="#"><i class="las la-download text-secondary fs-18"></i></a>                                                    
                                                     <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>

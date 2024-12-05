@@ -14,6 +14,7 @@ use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\AddEventController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -75,6 +76,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     //Events
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
+    }); 
+    Route::controller(AddEventController::class)->group(function() {
+        Route::get ('/create-events', 'index')->name('CMS.add-event');
     }); 
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
