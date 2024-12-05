@@ -385,7 +385,7 @@
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">News & Events</a>
+                                        <a class="nav-link" href="{{route('CMS.event')}}">Events & News </a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
