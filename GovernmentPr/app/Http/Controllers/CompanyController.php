@@ -372,9 +372,11 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show($company)
     {
         //
+        // return "hello";
+        return view('components.apps.companyProfile');
     }
 
     /**
