@@ -29,13 +29,13 @@
         <div class="row mb-2">
             <div class="col-md-12">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, humanand environmental health gain to your company." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
                 </div>
             </div>
             <div class="col-md-12 mt-md-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, humanand environmental health gain to your company." name="areas_of_company_benefit[]">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]">
                     <label class="form-check-label" for="flexSwitchCheckDefault"> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
                 </div>
             </div>

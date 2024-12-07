@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\CompanyObjectives;
+use App\Models\RECPHistory;
 use App\Models\RECP_areas_of_benefit;
-use App\Models\RECP_areas_of_improvement;
+use App\Models\RECP_human_and_environmental_health_benefit;
 use App\Models\RECP_innovation_areas;
+use App\Models\RECP_areas_of_improvement;
 use App\Models\RECP_harzardous_materials;
+use App\Models\RECP_house_keep_practice;
 use App\Models\RECP_unit_of_process;
 use App\Models\RECP_problem_and_solution;
+use App\Models\RECP_waste_management_method;
+use App\Models\RECP_waste_reduction_measure;
+use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -137,7 +143,7 @@ class CompanyController extends Controller
     public function store_recp(Request $request) {
         // dd($request);
         $validator = $request->validate([
-            'company_id'                        => ['required', 'numeric'],
+            'company_id'                        => ['required', 'numeric', 'unique:recp_histories,companyID'],
             'areas_of_company_benefit'          => ['nullable', 'array'],
             'areas_of_company_benefit.*'        => ['nullable', 'string'],
             'environment_health_benefit'        => ['nullable', 'array'],
@@ -160,87 +166,199 @@ class CompanyController extends Controller
             'waste_management_methods.*'        => ['nullable', 'string'],
             'product_recovery_measures'         => ['nullable', 'array'],
             'product_recovery_measures.*'       => ['nullable', 'string'],
+        ], [
+            'company_id.unique'=> 'Company already registered for RECP.'
         ]);
 
         $check = false;
+
         // Areas of company benefit
-        if(is_array($request['areas_of_company_benefit']) && $request['areas_of_company_benefit.*'] == null && isset($request['company_id'])){
+        if(is_array($request['areas_of_company_benefit']) && isset($request['company_id'])){
             foreach ($request['areas_of_company_benefit'] as $key => $benefit) {
                 # code...
-                $RECP_areas_of_benefit = RECP_areas_of_benefit::create([
-                    'companyID' => $request['company_id'],
-                    'benefit_title' => $benefit
-                ]);
+                if ($benefit != null) {
+                    # code...
+                    $RECP_areas_of_benefit = 
+                    RECP_areas_of_benefit::create([
+                        'companyID' => $request['company_id'],
+                        'benefit_title' => $benefit
+                    ]);
+                    $check = true;
+                }
 
-                $check = true;
             }
         }
 
-        // Key area of improvement
-        if(is_array($request['key_area_for_improvent']) && $request['key_area_for_improvent.*'] != null && isset($request['company_id'])){
-            foreach ($request['key_area_for_improvent'] as $key => $improvement) {
+        // Environment and health benefit
+        if(is_array($request['environment_health_benefit']) && isset($request['company_id'])){
+            foreach ($request['environment_health_benefit'] as $key => $healthBenefit) {
                 # code...
-                $RECP_areas_of_improvement = RECP_areas_of_improvement::create([
-                    'companyID' => $request['company_id'],
-                    'area_title' => $improvement
-                ]);
+                if($healthBenefit != null){
+                    $RECP_environment_health_benefit = 
+                    RECP_human_and_environmental_health_benefit::create([
+                        'companyID' => $request['company_id'],
+                        'enviromental_benefit_title' => $healthBenefit
+                    ]);
 
-                $check = true;
+                    $check = true;
+                }
+
             }
         }
 
         // Key area of innovation
-        if(is_array($request['innovation_that_enhance_product']) && $request['innovation_that_enhance_product.*'] != null && isset($request['company_id'])){
+        if(is_array($request['innovation_that_enhance_product']) != null && isset($request['company_id'])){
             foreach ($request['innovation_that_enhance_product'] as $key => $innovation) {
                 # code...
-                $RECP_areas_of_innovation = RECP_innovation_areas::create([
-                    'companyID' => $request['company_id'],
-                    'innovation_area_title' => $innovation
-                ]);
+                if ($innovation != null) {
+                    # code...
+                    // dd($innovation);
+                    $RECP_areas_of_innovation = RECP_innovation_areas::create([
+                        'companyID' => $request['company_id'],
+                        'innovation_area_title' => $innovation
+                    ]);
+    
+                    $check = true;
+                }
 
-                $check = true;
+            }
+        }
+
+        // Key area of improvement
+        if(is_array($request['key_area_for_improvent']) && isset($request['company_id'])){
+            
+            foreach ($request['key_area_for_improvent'] as $key => $improvement) {
+                # code...
+                if ($improvement != null) {
+                    # code...
+                    $RECP_areas_of_improvement = RECP_areas_of_improvement::create([
+                        'companyID' => $request['company_id'],
+                        'area_title' => $improvement
+                    ]);
+                    $check = true;
+                }
             }
         }
 
         // Key area of hazarduous materials
-        if(isset($request['hazardous_material_in_process']) && $request['hazardous_material_in_process.*'] != null && isset($request['company_id'])){
+        if(isset($request['hazardous_material_in_process']) && isset($request['company_id'])){
             foreach ($request['hazardous_material_in_process'] as $key => $harzaduous_material) {
                 # code...
-                $RECP_areas_of_hazarduous_material = RECP_harzardous_materials::create([
-                    'companyID' => $request['company_id'],
-                    'material_title' => $harzaduous_material
-                ]);
+                if ($harzaduous_material != null) {
+                    # code...
+                    $RECP_areas_of_hazarduous_material = 
+                    RECP_harzardous_materials::create([
+                        'companyID' => $request['company_id'],
+                        'material_title' => $harzaduous_material
+                    ]);
+    
+                    $check = true;
+                }
 
-                $check = true;
+            }
+        }
+
+        // good housekeeping practice
+        if(is_array($request['house_keeping']) && isset($request['company_id'])){
+            foreach ($request['house_keeping'] as $key => $practice) {
+                # code...
+                if ($practice != null) {
+                    # code...
+                    $RECP_house_keeping_practice = 
+                    RECP_house_keep_practice::create([
+                        'companyID' => $request['company_id'],
+                        'practice_title' => $practice
+                    ]);
+
+                    $check = true;
+                }
+
             }
         }
 
         // Key area of unit process
-        if(isset($request['unit_process']) && $request['unit_process.*'] != null && isset($request['company_id'])){
+        if(isset($request['unit_process']) && isset($request['company_id'])){
             foreach ($request['unit_process'] as $key => $unit_process) {
                 # code...
-                $RECP_areas_of_unit_process = RECP_unit_of_process::create([
-                    'companyID' => $request['company_id'],
-                    'unit_process_title' => $unit_process
-                ]);
-                $check = true;
+                if ($unit_process != null) {
+                    # code...
+                    $RECP_areas_of_unit_process = RECP_unit_of_process::create([
+                        'companyID' => $request['company_id'],
+                        'unit_process_title' => $unit_process
+                    ]);
+                    $check = true;
+                }
+
             }
         }
 
         // Key area of problem and solution
-        if(isset($request['problem_and_solution']) && $request['problem_and_solution.*'] != null && isset($request['company_id'])){
+        if(isset($request['problem_and_solution']) && isset($request['company_id'])){
             foreach ($request['problem_and_solution'] as $key => $problem_solution) {
                 # code...
-                $RECP_areas_of_problem_solution = RECP_problem_and_solution::create([
-                    'companyID' => $request['company_id'],
-                    'problem_solution_title' => $problem_solution
-                ]);
-                $check = true;
+                if ($problem_solution != null) {
+                    # code...
+                    $RECP_areas_of_problem_solution = RECP_problem_and_solution::create([
+                        'companyID' => $request['company_id'],
+                        'problem_solution_title' => $problem_solution
+                    ]);
+                    $check = true;
+                }
+
+            }
+        }
+
+        // Waste Reduction Measure
+        if(isset($request['RECP_waste_reduction_measures']) && isset($request['company_id'])){
+            foreach ($request['RECP_waste_reduction_measures'] as $key => $reduction_measures) {
+                # code...
+                if ($reduction_measures != null) {
+                    # code...
+                    $RECP_waste_reduction_measure = RECP_waste_reduction_measure::create([
+                        'companyID' => $request['company_id'],
+                        'waste_reduction_title' => $reduction_measures
+                    ]);
+                    $check = true;
+                }
+
+            }
+        }
+
+        // Waste Management Method
+        if(isset($request['waste_management_methods']) && isset($request['company_id'])){
+            foreach ($request['waste_management_methods'] as $key => $method) {
+                # code...
+                if ($method != null) {
+                    # code...
+                    $RECP_waste_management_method = RECP_waste_management_method::create([
+                        'companyID' => $request['company_id'],
+                        'management_method_title' => $method
+                    ]);
+                    $check = true;
+                }
+
+            }
+        }
+
+        // Recovery Measures
+        if(isset($request['product_recovery_measures']) && isset($request['company_id'])){
+            foreach ($request['product_recovery_measures'] as $key => $measure) {
+                # code...
+                if ($measure != null) {
+                    # code...
+                    $RECP_recovery_measures = RECP_product_recovery_method::create([
+                        'companyID' => $request['company_id'],
+                        'recovery_method_title' => $measure
+                    ]);
+                    $check = true;
+                }
+
             }
         }
 
         if ($check == true) {
             # code...
+            RECPHistory::create(['companyID' => $request['company_id']]);
             return back()->with(['success' => 'RECP registeration successful.']);
         }
 
