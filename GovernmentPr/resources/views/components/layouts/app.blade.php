@@ -31,6 +31,25 @@
          margin: 2px 0;
 
       }
+      .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      /* gap: 20px; */
+      padding: 20px;
+      min-width: 300px;
+      /* width: 100%; */
+      /* background: red; */
+    }
+
+    .logo-grid img {
+      width: 80%;
+      height: auto;
+      object-fit: contain;
+      background-color: #fff;
+      padding: 10px;
+      /* border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    }
    </style>
 </head>
 
@@ -225,7 +244,7 @@
          <div class="container-fluid">
             <div class="row align-items-center">
                <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
-                  <div class="tp-header-logo">
+                  <div class="tp-header-logo logo-grid">
                      <a href="{{ url('/') }}">
                         <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
                         <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
