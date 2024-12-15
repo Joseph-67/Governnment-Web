@@ -24,7 +24,7 @@
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             /* gap: 20px; */
             padding: 20px;
-            min-width: 300px;
+            /* min-width: 300px; */
             /* width: 100%; */
             /* background: red; */
             }
@@ -474,35 +474,34 @@
     <div class="page-wrapper">
         <!-- Page Content-->
         <div class="page-content">
-        {{ $slot }}
-                    <!--Start Footer-->
-                
-                    <footer class="footer text-center text-sm-start d-print-none">
-                    <div class="container-xxl">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card mb-0 rounded-bottom-0">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-0">
-                                            ©
-                                            <script> document.write(new Date().getFullYear()) </script>
-                                            Federal Ministry of Environment
-                                            <span
-                                                class="text-muted d-none d-sm-inline-block float-end">
-                                                Crafted with
-                                                <i class="iconoir-heart text-danger"></i>
-                                                by Elite. Tech. Dev.</span>
-                                        </p>
-                                    </div>
+            {{ $slot }}
+                <!--Start Footer-->
+                <footer class="footer text-center text-sm-start d-print-none">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-0 rounded-bottom-0">
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">
+                                        ©
+                                        <script> document.write(new Date().getFullYear()) </script>
+                                        Federal Ministry of Environment
+                                        <span
+                                            class="text-muted d-none d-sm-inline-block float-end">
+                                            Crafted with
+                                            <i class="iconoir-heart text-danger"></i>
+                                            by Elite. Tech. Dev.</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </footer>
-                
-                <!--end footer-->
-            </div>
-            <!-- end page content -->
+                </div>
+            </footer>
+            
+            <!--end footer-->
+        </div>
+        <!-- end page content -->
     </div>
     <!-- end page-wrapper -->
 

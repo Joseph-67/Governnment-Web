@@ -376,7 +376,10 @@ class CompanyController extends Controller
     {
         //
         // return "hello";
-        return view('components.apps.companyProfile');
+        $companyID = decrypt($company);
+        $data['company'] = Company::where('company_id', $companyID)->first();
+        // dd($company);
+        return view('components.apps.companyProfile', $data);
     }
 
     /**
