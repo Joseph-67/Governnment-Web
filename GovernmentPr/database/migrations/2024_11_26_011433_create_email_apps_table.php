@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('email_apps', function (Blueprint $table) {
-            $table->id();
+            $table->id('notification_id');
+            $table->string('reciepients_email');            
+            $table->string('subject');            
+            $table->string('message');            
             $table->timestamps();
         });
     }
