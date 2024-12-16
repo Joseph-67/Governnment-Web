@@ -52,7 +52,7 @@
                         </button>
                     </li> 
                     <li class="mx-3 welcome-text">
-                        <h3 class="mb-0 fw-bold text-truncate">Good Morning, <span class="text-capitalize">{{Auth::guard('admin')->user()->first_name}}</span>!</h3>
+                        <h3 class="mb-0 fw-bold text-truncate"><span id="greeting"></span>, <span class="text-capitalize">{{Auth::guard('admin')->user()->first_name}}</span>!</h3>
                         <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
                     </li>                   
                 </ul>
@@ -516,6 +516,28 @@
     <script src="{{asset('adminAssets/libs/jsvectormap/maps/world.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/index.init.js')}}"></script>
     <script src="{{asset('adminAssets/js/app.js')}}"></script>
+    <script>
+        function getTimeOfDay() {
+            const now = new Date(); // Get the current date and time
+            const hours = now.getHours(); // Extract the hour (0-23)
+
+            if (hours >= 5 && hours < 12) {
+                return "Morning";
+            } else if (hours >= 12 && hours < 17) {
+                return "Afternoon";
+            } else if (hours >= 17 && hours < 21) {
+                return "Evening";
+            } else {
+                return "Night";
+            }
+        }
+
+        // Example usage
+        const timeOfDay = getTimeOfDay();
+        console.log(`Good ${timeOfDay}!`);
+        document.querySelector('#greeting').innerHTML = `Good ${timeOfDay}`
+
+    </script>
     @yield('scripts')
 </body>
 <!--end body-->

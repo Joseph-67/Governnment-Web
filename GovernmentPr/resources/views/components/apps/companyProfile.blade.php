@@ -9,32 +9,20 @@
                                     <div class="row">
                                         <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
                                             <div class="d-flex align-items-center flex-row flex-wrap">
-                                                <div class="position-relative me-3">
-                                                    <img src="assets/images/users/avatar-7.jpg" alt="" height="120" class="rounded-circle">
-                                                    <a href="#" class="thumb-md justify-content-center d-flex align-items-center bg-primary text-white rounded-circle position-absolute end-0 bottom-0 border border-3 border-card-bg">
-                                                        <i class="fas fa-camera"></i>
-                                                    </a>
-                                                </div>
+
                                                 <div class="">
                                                     <h5 class="fw-semibold fs-22 mb-1 text-uppercase">{{ $company->company_name }}</h5>                                                        
-                                                    <p class="mb-0 text-muted fw-medium">{{ $company->industry }}, {{ $company->state }}, {{ $company->country }}.</p>                                                        
+                                                    <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
+                                                    <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>{{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>                                                        
                                                 </div>
                                             </div>                                                
                                         </div><!--end col-->
                                         
-                                        <div class="col-lg-4 ms-auto align-self-center">
+                                        <div class="col-lg-1 ms-auto align-self-center">
                                             <div class="d-flex justify-content-center">
                                                 <div class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
                                                     <h5 class="fw-semibold fs-22 mb-1">{{ $company->number_of_employees }}</h5>
-                                                    <p class="text-muted mb-0 fw-medium">No. Of Employees</p>
-                                                </div>
-                                                <div class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
-                                                    <h5 class="fw-semibold fs-22 mb-1">68%</h5>
-                                                    <p class="text-muted mb-0 fw-medium">Success Rate</p>
-                                                </div>
-                                                <div class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
-                                                    <h5 class="fw-semibold fs-22 mb-1">$8620</h5>
-                                                    <p class="text-muted mb-0 fw-medium">Earning</p>
+                                                    <p class="text-muted mb-0 fw-medium">Employees</p>
                                                 </div>
                                             </div>                                          
                                         </div><!--end col-->
@@ -80,18 +68,41 @@
                                         <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Secondary Phone </b> : {{ $company->secondary_phone_number }}</li>
                                         <li class="mt-2"><i class="las la-envelope me-2 text-secondary fs-22 align-middle me-2"></i> <b> Email </b> : {{ $company->email }}</li>
                                         <li class="mt-2"><i class="las la-link text-secondary fs-22 align-middle me-2"></i> <b> Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a></li>
-                                    </ul> 
-      
+                                        <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i> <b> G.I.S Location </b> : {{ $company->gis_location }}</li>
+                                    </ul>       
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Extra</h4>                      
+                                        </div><!--end col-->
+
+                                    </div>  <!--end row-->                          
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <p class="text-muted fw-medium mb-1">
+                                    <!-- This section displays the personal information you’ve provided to us. Please review the details below to ensure they’re accurate and up-to-date. -->
+                                    </p>
+
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental Operations Manager </b> : {{ $company->operations_manager }}</li>
+                                        <li class="mt-2 text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact Person </b> : {{ $company->contact_person_full_name }}</li>
+                                        <li class="mt-2 text-capitalize"><i class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position </b> : {{ $company->contact_person_position }}</li>
+                                        <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Mobile </b> : {{ $company->contact_person_contact_number }}</li>
+                                    </ul>       
                                 </div><!--end card-body--> 
                             </div><!--end card--> 
                         </div> <!--end col--> 
                         <div class="col-md-8">
                             <ul class="nav nav-tabs mb-3" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#post" role="tab" aria-selected="true">Post</a>
+                                    <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab" aria-selected="true">Policies & Objectives</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link fw-medium" data-bs-toggle="tab" href="#gallery" role="tab" aria-selected="false">Gallery</a>
+                                    <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab" aria-selected="false">R.E.C.P</a>
                                 </li>                                                
                                 <li class="nav-item">
                                     <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab" aria-selected="false">Settings</a>
@@ -99,340 +110,133 @@
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="post" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row d-flex justify-content-center">
-                                                        <div class="col">
-                                                            <p class="text-dark mb-1 fw-semibold">Views</p>
-                                                            <h3 class="my-2 fs-24 fw-bold">24k</h3>
-                                                            <p class="mb-0 text-truncate text-muted"><i class="iconoir-bell text-warning fs-18"></i>
-                                                                <span class="text-dark fw-semibold">1500</span> New subscribers this week
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-auto align-self-center">
-                                                            <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                                                <i class="iconoir-eye fs-30 align-self-center text-muted"></i>
-                                                            </div>                                                                    
-                                                        </div>
-                                                    </div> 
-                                                </div><!--end card-body--> 
-                                            </div><!--end card-->   
-                                        </div><!--end col-->
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row d-flex justify-content-center">
-                                                        <div class="col">
-                                                            <p class="text-dark mb-1 fw-semibold">Comments</p>
-                                                            <h3 class="my-2 fs-24 fw-bold">24k</h3>
-                                                            <p class="mb-0 text-truncate text-muted"><i class="ti ti-thumb-up text-success fs-18"></i>
-                                                                <span class="text-dark fw-semibold">854</span> New Like this week
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-auto align-self-center">
-                                                            <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                                                <i class="iconoir-chat-lines fs-30 align-self-center text-muted"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>    
-                                                </div><!--end card-body--> 
-                                            </div><!--end card--> 
-                                        </div><!--end col-->
-                                    </div><!--end row--> 
-                                    <div class="row">
-                                        <div class="col-12">                                            
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">                      
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="assets/images/users/avatar-10.jpg" class="thumb-md align-self-center rounded-circle" alt="...">
-                                                                <div class="flex-grow-1 ms-2">
-                                                                    <h5 class="m-0 fs-14">Anderson Vanhron</h5>
-                                                                    <p class="text-muted mb-0 fs-12">online</p>
-                                                                </div><!--end media-body-->
-                                                            </div>                     
-                                                        </div><!--end col-->
-                                                        <div class="col-auto">                      
-                                                            <div class="d-none d-sm-inline-block align-self-center">
-                                                                <a href="#" class="me-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Call" data-bs-custom-class="tooltip-primary"><i class="iconoir-media-image fs-18"></i></a>
-                                                                <a href="#" class="me-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Attachment" data-bs-custom-class="tooltip-primary"><i class="iconoir-attachment fs-18"></i></a>
-                                                                <a href="#" class="me-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" data-bs-custom-class="tooltip-primary"><i class="iconoir-calendar fs-18"></i></a>
-                                                                
-                                                                <div class="dropdown d-inline-block">
-                                                                    <a class="dropdown-toggle arrow-none text-muted" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">
-                                                                        <i class="iconoir-more-vert fs-18"></i>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end pb-0" >
-                                                                        <a class="dropdown-item" href="#">Profile</a>
-                                                                        <a class="dropdown-item" href="#">Add archive</a>
-                                                                        <a class="dropdown-item" href="#">Delete</a>
-                                                                        <a class="dropdown-item text-danger" href="#">Block</a>
-                                                                    </div>
-                                                                </div>                                                       
-                                                            </div>                  
-                                                        </div><!--end col-->
-                                                    </div>  <!--end row-->                                  
-                                                </div><!--end card-header-->
-                                                <div class="card-body pt-0">  
-                                                    <form action="#">
-                                                        <div class="">
-                                                            <textarea class="form-control mb-2" id="post-1" rows="5" placeholder="Write here.."></textarea>
-                                                            <button type="button" class="btn btn-primary">Post</button>
-                                                        </div>
-                                                    </form>
-                                                </div><!--end card-body-->
-                                            </div><!--end card-->
-                                        </div><!--end col-->  
-                                        <div class="col-12">                                            
-                                            <div class="card">
-                                                <div class="card-body">                                                                                          
-                                                    <img src="assets/images/extra/card/post-1.jpg" alt="" class="img-fluid">
-                                                    <div class="post-title mt-3">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <span class="badge bg-primary-subtle text-primary">Natural</span>
-                                                            </div><!--end col-->
-                                                            <div class="col-auto">
-                                                                <span class="text-muted"><i class="far fa-calendar me-1"></i>02 July 2024</span>
-                                                            </div><!--end col-->
-                                                        </div><!--end row-->
-                                                       
-                                                        <h5 href="#" class="fs-20 fw-bold d-block my-3">There is nothing more beautiful than nature.</h5>
-                                                        <span class="fs-15 bg-light py-2 px-3 rounded">Taking pictures is savouring life intensely.</span>
-                                                        <p class="fs-15 mt-3">It is a long established fact that a reader will be distracted by the readable content of 
-                                                            a page when looking at its layout. The point of using Lorem Ipsum is that it has a 
-                                                            more-or-less normal distribution of letters, as opposed to using 
-                                                            'Content here, content here', making it look like readable English. 
-                                                            Many desktop publishing packages and web page editors now use Lorem Ipsum 
-                                                            as their default model text, and a search for 'lorem ipsum' will uncover many
-                                                             web sites still in their infancy. 
-
-                                                        </p>
-                                                        <blockquote class="blockquote border-start ps-4">
-                                                            <p class="fs-18"><i>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."</i></p>
-                                                            <footer class="blockquote-footer mt-1">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                                        </blockquote>
-                                                        <p class="fs-15">Taking pictures is savouring life intensely, every hundredth of a second – Marc Riboud.
-                                                            Joy in looking and comprehending is nature’s most beautiful gift.</p>
-                                                        <p class="fs-15 mb-0">It is a long established fact that a reader will be distracted by the readable content of 
-                                                            a page when looking at its layout. The point of using Lorem Ipsum is that it has a 
-                                                            more-or-less normal distribution of letters, as opposed to using 
-                                                            'Content here, content here', making it look like readable English. 
-                                                            Many desktop publishing packages and web page editors now use Lorem Ipsum 
-                                                            as their default model text, and a search for 'lorem ipsum' will uncover many
-                                                             web sites still in their infancy. 
-
-                                                        </p>
-                                                    </div>
+                                <div class="tab-pane active" id="policy" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">Company Policies</h4>                      
+                                                </div><!--end col-->                                                       
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <!-- Policy -->
+                                             <div class="row">
+                                             <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="quality policy" name="policy[]" {{(in_array('quality policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Quality policy </label>
                                                 </div>
-                                                <div class="card-body pt-0">
-                                                    <div class="row mb-3">
-                                                        <div class="col">
-                                                            <p class="text-dark fw-semibold mb-0">Artical tags</p>
-                                                        </div>
-                                                    </div>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Music</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Animals</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Natural</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Food</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Fashion</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Helth</span>
-                                                    <span class="badge bg-light text-dark px-3 py-2 fw-semibold">Charity</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="environmental policy" name="policy[]" {{(in_array("environmental policy", array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Enviromental Policy. </label>
                                                 </div>
-                                            </div>   
-                                            <div class="card">
-                                                <div class="card-body pb-0">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <p class="text-dark fw-semibold mb-0">Comments (205)</p>
-                                                        </div><!--end col-->
-                                                    </div><!--end row-->    
-                                                </div><!--end card-body-->  
-                                                <div class="card-body border-bottom-dashed"> 
-                                                    <ul class="list-unstyled mb-0">
-                                                        <li>
-                                                            <div class="row">
-                                                                <div class="col-auto">
-                                                                    <img src="assets/images/users/avatar-2.jpg" alt="" class="thumb-md rounded-circle">
-                                                                </div><!--end col-->
-                                                                <div class="col">
-                                                                    <div class="bg-light rounded ms-n2 bg-light-alt p-3">
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <p class="text-dark fw-semibold mb-2">Martin Luther</p>
-                                                                            </div><!--end col-->
-                                                                            <div class="col-auto">
-                                                                                <span class="text-muted"><i class="far fa-clock me-1"></i>30 min ago</span>
-                                                                            </div><!--end col-->
-                                                                        </div><!--end row-->                                                                
-                                                                        <p>It is a long established fact that a reader will be distracted by the 
-                                                                            readable content of a page when looking at its layout. The point of 
-                                                                            using Lorem Ipsum is that it has a more-or-less normal distribution of letters, 
-                                                                            as opposed to using 'Content here, content here', making it look like readable English.
-                                                                        </p>
-                                                                        <a href="#" class="text-primary"><i class="fas fa-reply me-1"></i>Replay</a>
-                                                                    </div>
-                                                                </div><!--end col-->
-                                                            </div><!--end row-->
-                                                            <ul class="list-unstyled ms-5">
-                                                                <li>
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-auto">
-                                                                            <img src="assets/images/logo-sm.png" alt="" class="thumb-md rounded-circle">
-                                                                        </div><!--end col-->
-                                                                        <div class="col">
-                                                                            <div class="bg-light rounded ms-n2 bg-light-alt p-3">
-                                                                                <div class="row">
-                                                                                    <div class="col">
-                                                                                        <p class="text-dark fw-semibold mb-2">Metrica Author</p>
-                                                                                    </div><!--end col-->
-                                                                                    <div class="col-auto">
-                                                                                        <span class="text-muted"><i class="far fa-clock me-1"></i>37 min ago</span>
-                                                                                    </div><!--end col-->
-                                                                                </div><!--end row-->                                                                
-                                                                                <p>It is a long established fact that a reader will be distracted by the 
-                                                                                    readable content of a page when looking at its layout. 
-                                                                                </p>
-                                                                                <p class="mb-0">Thank you</p>
-                                                                            </div>
-                                                                        </div><!--end col-->
-                                                                    </div><!--end row-->
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="mt-3">
-                                                            <div class="row">
-                                                                <div class="col-auto">
-                                                                    <img src="assets/images/users/avatar-1.jpg" alt="" class="thumb-md rounded-circle">
-                                                                </div><!--end col-->
-                                                                <div class="col">
-                                                                    <div class="bg-light rounded ms-n2 bg-light-alt p-3">
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <p class="text-dark fw-semibold mb-2">Joseph Rust</p>
-                                                                            </div><!--end col-->
-                                                                            <div class="col-auto">
-                                                                                <span class="text-muted"><i class="far fa-clock me-1"></i>40 min ago</span>
-                                                                            </div><!--end col-->
-                                                                        </div><!--end row-->                                                                
-                                                                        <p>Is it a long established fact that a reader will be distracted by the 
-                                                                            readable content of a page when looking at its layout?
-                                                                        </p>
-                                                                        <a href="#" class="text-primary"><i class="fas fa-reply me-1"></i>Replay</a>
-                                                                    </div>
-                                                                </div><!--end col-->
-                                                            </div><!--end row--> 
-                                                        </li>
-                                                        <li class="mt-3">
-                                                            <div class="row">
-                                                                <div class="col-auto">
-                                                                    <img src="assets/images/users/avatar-5.jpg" alt="" class="thumb-md rounded-circle">
-                                                                </div><!--end col-->
-                                                                <div class="col">
-                                                                    <div class="bg-light rounded ms-n2 bg-light-alt p-3">
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <p class="text-dark fw-semibold mb-2">Matt Rosales</p>
-                                                                            </div><!--end col-->
-                                                                            <div class="col-auto">
-                                                                                <span class="text-muted"><i class="far fa-clock me-1"></i>40 min ago</span>
-                                                                            </div><!--end col-->
-                                                                        </div><!--end row-->                                                                
-                                                                        <p>Is it a long established fact that a reader will be distracted by the 
-                                                                            readable content of a page when looking at its layout?
-                                                                        </p>
-                                                                        <a href="#" class="text-primary"><i class="fas fa-reply me-1"></i>Replay</a>
-                                                                    </div>
-                                                                </div><!--end col-->
-                                                            </div><!--end row-->
-                                                            <ul class="list-unstyled ms-5">
-                                                                <li>
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-auto">
-                                                                            <img src="assets/images/logo-sm.png" alt="" class="thumb-md rounded-circle">
-                                                                        </div><!--end col-->
-                                                                        <div class="col">
-                                                                            <div class="bg-light rounded ms-n2 bg-light-alt p-3">
-                                                                                <div class="row">
-                                                                                    <div class="col">
-                                                                                        <p class="text-dark fw-semibold mb-2">Metrica Author</p>
-                                                                                    </div><!--end col-->
-                                                                                    <div class="col-auto">
-                                                                                        <span class="text-muted"><i class="far fa-clock me-1"></i>37 min ago</span>
-                                                                                    </div><!--end col-->
-                                                                                </div><!--end row-->                                                                
-                                                                                <p>It is a long established fact that a reader will be distracted by the 
-                                                                                    readable content of a page when looking at its layout. 
-                                                                                </p>
-                                                                                <p class="mb-0">Thank you</p>
-                                                                            </div>
-                                                                        </div><!--end col-->
-                                                                    </div><!--end row-->
-                                                                </li>
-                                                            </ul> 
-                                                        </li>
-                                                    </ul> 
-                                                </div><!--end card-body--> 
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <p class="text-dark fw-semibold mb-0">Leave a comment</p>
-                                                        </div><!--end col-->
-                                                    </div><!--end row-->
-                                                </div><!--end card-body--> 
-                                                <div class="card-body pt-0">
-                                                    <form>
-                                                        <div class="form-group mb-3">
-                                                            <textarea class="form-control" rows="5" id="leave_comment" placeholder="Message"></textarea>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12 text-end">
-                                                                <button type="submit" class="btn btn-primary px-4">Send Message</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div><!--end card-body-->             
-                                            </div> <!--end card-->  
-                                        </div><!--end col-->                                                
-                                    </div><!--end row-->
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="health and safety policy" name="policy[]" {{(in_array('health and safety policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Health and safety policy. </label>
+                                                </div>
+                                            </div>
+                                            <x-section-border />
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="human resource policy" name="policy[]" {{(in_array('human resource policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Human resource policy. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="data protection policy" name="policy[]" {{(in_array('data protection policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Data protection policy. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="cooperate social responsibility policy" name="policy[]" {{(in_array('cooperate social responsibility policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Cooperate social reponsibility policy. </label>
+                                                </div>
+                                            </div>
+                                             </div>
+                                            <!-- End Policy -->
+                                        </div><!--end card-body-->                                            
+                                    </div><!--end card-->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">Company Objectives</h4>                      
+                                                </div><!--end col-->                                                       
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <!-- Policy -->
+                                             <div class="row">
+                                             <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="business growth" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Business growth </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="customer satisfaction" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Customer satisfaction. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="material optimization" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Material optimization. </label>
+                                                </div>
+                                            </div>
+                                            <x-section-border />
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="waste minimization" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Waste minimization. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="measurable and timely targets" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Measurable & timely targets. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="innovation" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Innovation. </label>
+                                                </div>
+                                            </div>
+                                            <x-section-border />
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="sustainability" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Sustainability. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="employee management" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Employee management. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="market expansion" name="objective[]">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"> Market expansion. </label>
+                                                </div>
+                                            </div>
+                                             </div>
+                                            <!-- End Policy -->
+                                        </div><!--end card-body-->                                            
+                                    </div><!--end card-->
                                 </div>
-                                <div class="tab-pane p-3" id="gallery" role="tabpanel">
-                                    <div id="grid" class="row g-0">
-                                        <div class="col-md-6 col-lg-4 picture-item">
-                                            <a href="assets/images/extra/card/img-1.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-1.jpg" alt="" class="img-fluid" />
-                                            </a>  
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 picture-item picture-item--overlay">
-                                            <a href="assets/images/extra/card/img-2.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-2.jpg" alt="" class="img-fluid" />
-                                            </a> 
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 picture-item">
-                                            <a href="assets/images/extra/card/img-3.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-3.jpg" alt="" class="img-fluid" />
-                                            </a> 
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 picture-item picture-item--h2">
-                                            <a href="assets/images/extra/card/img-4.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-4.jpg" alt="" class="img-fluid" />
-                                            </a> 
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 picture-item">
-                                            <a href="assets/images/extra/card/img-5.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-5.jpg" alt="" class="img-fluid" />
-                                            </a> 
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 picture-item picture-item--overlay">
-                                            <a href="assets/images/extra/card/img-6.jpg" class="lightbox">
-                                                <img src="assets/images/extra/card/img-6.jpg" alt="" class="img-fluid" />
-                                            </a> 
-                                        </div>                 
-                                    </div> 
+                                <div class="tab-pane p-3" id="objectives" role="tabpanel">
+
                                 </div>                                                
                                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                                     <div class="card">
