@@ -52,15 +52,14 @@
     @endsection
 
 
-    
-    <div class="row justify-content-center">
+        <div class="row justify-content-center">
                         <div class="col-md-6 col-lg-6">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                         <div class="col">                      
                                             <h4 class="card-title">Create Event</h4>                      
-                                        </div><!--end col-->
+                                            </div><!--end col-->
                                     </div>  <!--end row-->                                  
                                 </div><!--end card-header-->
                                 <div class="card-body pt-0">

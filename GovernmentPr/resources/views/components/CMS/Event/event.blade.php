@@ -44,7 +44,7 @@
                                                           
                                         </div><!--end col-->
                                     </div>  <!--end row-->                                  
-                                </div><!--end card-header-->
+                                </div><!--end card-header--> 
                                 <div class="card-body pt-0">
                                     <div class="table-responsive">
                                         <table class="table mb-0">
