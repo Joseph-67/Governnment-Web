@@ -19,11 +19,28 @@
      @yield('styles')
      <style>
         .filepond--credits{display: none; }
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            /* gap: 20px; */
+            padding: 20px;
+            /* min-width: 300px; */
+            /* width: 100%; */
+            /* background: red; */
+            }
+
+    .logo-grid img {
+            width: 80%;
+            height: auto;
+            object-fit: contain;
+            background-color: #fff;
+            padding: 10px;
+            /* border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+            }
      </style>
 </head>
-
 <body>
-
     <!-- Top Bar Start -->
     <div class="topbar d-print-none">
         <div class="container-xxl">
@@ -303,16 +320,14 @@
         <!--start brand-->
         <div class="brand">
             <a href="{{ url('/') }}" class="logo">
-                <span>
-                    <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm">
-                </span>
-                <span class="">
+                <div class="logo-grid">
+                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm">
                     <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm logo-dark">
                     <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm logo-dark">
                     <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm logo-dark">
                     <!-- <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-light">
                     <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-dark"> -->
-                </span>
+</div>
             </a>
         </div>
         <!--end brand-->
@@ -459,35 +474,34 @@
     <div class="page-wrapper">
         <!-- Page Content-->
         <div class="page-content">
-        {{ $slot }}
-                    <!--Start Footer-->
-                
-                    <footer class="footer text-center text-sm-start d-print-none">
-                    <div class="container-xxl">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card mb-0 rounded-bottom-0">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-0">
-                                            ©
-                                            <script> document.write(new Date().getFullYear()) </script>
-                                            Federal Ministry of Environment
-                                            <span
-                                                class="text-muted d-none d-sm-inline-block float-end">
-                                                Crafted with
-                                                <i class="iconoir-heart text-danger"></i>
-                                                by Elite. Tech. Dev.</span>
-                                        </p>
-                                    </div>
+            {{ $slot }}
+                <!--Start Footer-->
+                <footer class="footer text-center text-sm-start d-print-none">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-0 rounded-bottom-0">
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">
+                                        ©
+                                        <script> document.write(new Date().getFullYear()) </script>
+                                        Federal Ministry of Environment
+                                        <span
+                                            class="text-muted d-none d-sm-inline-block float-end">
+                                            Crafted with
+                                            <i class="iconoir-heart text-danger"></i>
+                                            by Elite. Tech. Dev.</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </footer>
-                
-                <!--end footer-->
-            </div>
-            <!-- end page content -->
+                </div>
+            </footer>
+            
+            <!--end footer-->
+        </div>
+        <!-- end page content -->
     </div>
     <!-- end page-wrapper -->
 
