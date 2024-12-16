@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Admins;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class EmailApp extends Controller
 {
@@ -46,6 +48,11 @@ class EmailApp extends Controller
     public function store(Request $request)
     {
         //
+            $request->validate([
+                'reciepients_email'=> 'required',
+                'subject'          => 'required',
+                'message'          => 'required'
+            ]);
     }
 
     /**

@@ -75,7 +75,7 @@
   </script>
   @endsection
 <div class="container-fluid d-flex justify-content-center align-items-center">
-  
+
 <div class="card-container w-100 ">
 <div class="card shadow-sm">
 <div class="card-header">
@@ -83,6 +83,8 @@
        
       </div>
   <div class="card-body">
+  <x-validation-errors class="alert" alert />
+                @include('shared.feedback')
   <div class="row">
           <!-- Sidebar -->
           <div class="col-md-3 email-sidebar">
@@ -133,18 +135,19 @@
           <!-- Compose Mail Form -->
           <div class="col-md-5 collapse" id="composeForm">
             <h5>New Message</h5>
-            <form>
+            <form method="post" action="{{route('display-message')}}">
+              @csrf
               <div class="mb-3">
                 <label for="emailTo" class="form-label">To</label>
-                <input type="email" class="form-control users-list" id="" name='users-list-tags' value='abatisse2@nih.gov, Justinian Hattersley' autofocus>
+                <input type="email" class="form-control users-list" id="" name='reciepients_email' value='abatisse2@nih.gov, Justinian Hattersley' autofocus>
               </div>
               <div class="mb-3">
                 <label for="emailSubject" class="form-label">Subject</label>
-                <input type="text" class="form-control" id="emailSubject" placeholder="Enter subject">
+                <input type="text" class="form-control" id="emailSubject" name="subject" placeholder="Enter subject">
               </div>
               <div class="mb-3">
                 <label for="emailMessage" class="form-label">Message</label>
-                <textarea class="form-control" id="emailMessage" rows="5" placeholder="Enter your message"></textarea>
+                <textarea class="form-control" id="emailMessage" name="message" rows="5" placeholder="Enter your message"></textarea>
               </div>
               <button type="submit" class="btn btn-success">Send</button>
             </form>
