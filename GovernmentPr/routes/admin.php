@@ -97,5 +97,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/show-company/{company}', 'show')->name('admin.show-company');
         Route::get ('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
         Route::post ('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
+        Route::post ('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
+        Route::post ('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
+        Route::post ('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::post ('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
     }); 
 });

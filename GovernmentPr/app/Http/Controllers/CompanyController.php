@@ -19,6 +19,8 @@ use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
@@ -384,6 +386,98 @@ class CompanyController extends Controller
         return view('components.apps.companyProfile', $data);
     }
 
+    public function add_company_policy(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'   => ['required', 'numeric'],
+            'policy'    =>  ['required', Rule::unique('policies', 'policy_title')->where(function ($query) use ($request) {
+                                return $query->where('companyID', $request['company']);
+                            }),]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        Policy::create([
+            'companyID'    =>  $request->company,
+            'policy_title'  =>  $request->policy
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Policy added successfully.',
+            'policy' => $request->policy
+        ]);
+    }
+    public function remove_company_policy(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'   => ['required', 'numeric'],
+            'policy'    =>  ['required']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        Policy::where('companyID', $request->company)->where('policy_title',$request->policy)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Policy removed successfully.',
+            'policy' => $request->policy
+        ]);
+    }
+
+    public function add_company_objective(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'   => ['required', 'numeric'],
+            'objective'    =>  ['required', Rule::unique('company_objectives', 'objective_title')->where(function ($query) use ($request) {
+                                return $query->where('companyID', $request['company']);
+                            }),]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyObjectives::create([
+            'companyID'    =>  $request->company,
+            'objective_title'  =>  $request->objective
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Objective added successfully.',
+            'objective' => $request->objective
+        ]);
+    }
+
+    public function remove_company_objective(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'   => ['required', 'numeric'],
+            'objective'    =>  ['required']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyObjectives::where('companyID', $request->company)->where('objective_title',$request->objective)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Objective removed successfully.',
+            'objective' => $request->objective
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

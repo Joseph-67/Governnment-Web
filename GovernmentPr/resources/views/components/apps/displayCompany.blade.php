@@ -14,7 +14,6 @@
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
 @endSection
-
 <div class="container-xxl"> 
     <x-validation-errors class="alert" alert />
     @include('shared.feedback')
