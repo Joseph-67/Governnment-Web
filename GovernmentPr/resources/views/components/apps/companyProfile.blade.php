@@ -230,9 +230,146 @@
                                         </div><!--end card-body-->                                            
                                     </div><!--end card-->
                                 </div>
-                                <div class="tab-pane p-3" id="objectives" role="tabpanel">
+                                <div class="tab-pane" id="recp" role="tabpanel">
+                                    <h4 class="">General Knowledge of Nigeria IEE RECP Concept/Benefit</h4> 
+                                    <p class="subtitle">In Nigeria, Industrial Energy Efficiency (IEE) and Resource Efficiency 
+                                        and Cleaner Production (RECP) focus on optimizing energy and resource use while minimizing waste. 
+                                        These practices help businesses reduce costs, enhance sustainability, and lower environmental impacts. 
+                                        The benefits include cost savings, compliance with regulations, improved competitiveness, and positive 
+                                        contributions to Nigeria's economic growth and environmental protection. Adopting IEE and RECP strategies 
+                                        enables industries to operate more efficiently and sustainably, fostering a cleaner, greener future.</p>
+                                        <!-- this projct -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">This Project</h4> 
+                                                </div><!--end col-->                                                       
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects." name="areas_of_company_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects. </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                </div>                                                
+                                    <!-- Human and Environmental Health/Business Benefits -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">Human and Environmental Health/Business Benefits</h4> 
+                                                </div><!--end col-->                                                       
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <div class="row mb-2">
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a minimum 20% reduction in energy consumption within one year. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Double your water productivity within one year." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Double your water productivity within one year. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 50% increase in overall material productivity within one year. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve an increase in overall annual financial savings. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Enhance customer satisfaction through improved products, services, and overall experience. </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-md-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]">
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Human and Environmental Health/Business Benefits -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">Human and Environmental Health/Business Benefits</h4> 
+                                                </div><!--end col-->                                                       
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                        </div>
+                                    </div>
+                                </div>                     
                                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">
@@ -367,8 +504,7 @@
                             </div> 
                         </div> <!--end col-->                                                       
                     </div><!--end row-->
-
-                                      
+    
                 </div><!-- container -->
                 <!--Start Rightbar-->
                 <!--Start Rightbar/offcanvas-->
