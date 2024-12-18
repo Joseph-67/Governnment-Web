@@ -241,14 +241,21 @@
                                         <!-- this projct -->
                                     <div class="card">
                                         <div class="card-header">
-                                            <div class="row align-items-center">
-                                                <div class="col">                      
-                                                    <h4 class="card-title">This Project</h4> 
-                                                </div><!--end col-->                                                       
-                                            </div>  <!--end row-->                                  
+                                            <ul class="nav nav-tabs card-header-tabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" aria-current="true" href="#this-project" data-bs-toggle="tab">This Project</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#environmental-health" data-bs-toggle="tab">Human and Environmental Health/Business Benefits</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#tab-innovation" data-bs-toggle="tab">Innovation</a>
+                                                </li>
+                                            </ul>                                
                                         </div><!--end card-header-->
-                                        <div class="card-body pt-0">
-                                            <div class="row">
+                                        <div class="card-body pt-2">
+                                            <div class="tab-content">
+                                            <div class="row tab-pane fade show active" id="this-project">
                                                 <div class="col-md-12">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]">
@@ -292,20 +299,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <!-- Human and Environmental Health/Business Benefits -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <div class="row align-items-center">
-                                                <div class="col">                      
-                                                    <h4 class="card-title">Human and Environmental Health/Business Benefits</h4> 
-                                                </div><!--end col-->                                                       
-                                            </div>  <!--end row-->                                  
-                                        </div><!--end card-header-->
-                                        <div class="card-body pt-0">
-                                            <div class="row mb-2">
+                                            <!-- environmental health -->
+                                            <div class="row tab-pane fade" id="environmental-health">
                                                 <div class="col-md-12">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]">
@@ -355,20 +351,347 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- environmental health -->
+                                             <!-- Innovation -->
+                                             <div class="row tab-pane fade" id="tab-innovation">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-8">
+                                                    <label for="">Key areas for improving performance in your industry.</label>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-9">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_key_areas" type="button">  Add </button></div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-12 key-areas-container"></div>
+
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="col-md-8">
+                                                    <label for="">Highlight innovations that enhance your product's environmental compatibility.</label>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-9">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" placeholder="" name="innovation_that_enhance_product[]">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_innovative_changes" type="button">  Add </button></div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-12 product-innovation-container"></div>
+
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="col-md-8">
+                                                    <label for="">Identify hazarduous materials in your process system that can be reduced, eliminated, or replaced with safer alternatives.</label>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-9">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" placeholder="" name="hazardous_material_in_process[]">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_hazardous_material" type="button">  Add </button></div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-12 harzardous-material-container"></div>
+                                            </div>
+                                             <!-- Innovation -->
+                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Human and Environmental Health/Business Benefits -->
+
+                                    <h4 class="">Resource Efficiency & Cleaner Production Opportunities</h4>
+                                    <p>Resource Efficiency and Cleaner Production (RECP) focus on optimizing 
+                                        the use of resources while minimizing waste and environmental impacts 
+                                        throughout production processes. By adopting these strategies, industries 
+                                        can enhance productivity, reduce costs, and achieve sustainability goals.</p>
                                     <div class="card">
                                         <div class="card-header">
-                                            <div class="row align-items-center">
-                                                <div class="col">                      
-                                                    <h4 class="card-title">Human and Environmental Health/Business Benefits</h4> 
-                                                </div><!--end col-->                                                       
-                                            </div>  <!--end row-->                                  
+                                        <ul class="nav nav-tabs card-header-tabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" aria-current="true" href="#tab-housekeeping" data-bs-toggle="tab">Good Housekeeping</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#process-specific-optimization" data-bs-toggle="tab">Process Specific Optimization</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#process-waste-reduction-measures" data-bs-toggle="tab">Waste Reduction Measures</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#waste-management-method" data-bs-toggle="tab">Waste Management & Disposal Methods</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#product-recovery" data-bs-toggle="tab">Product Recovery Measures</a>
+                                                </li>
+                                            </ul>                               
                                         </div><!--end card-header-->
-                                        <div class="card-body pt-0">
+                                        <div class="card-body pt-2">
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade show active" id="tab-housekeeping">
+                                                    <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attitudinal change (negligence attitude)." name="house_keeping[]">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Attitudinal change (negligence attitude). </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Improved workplace management." name="house_keeping[]">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Improved Workplace management. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Good operating practices(personel practices, waste segregation etc.)." name="house_keeping[]">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Good operating practices(personel practices, waste segregation etc.). </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Workers motivation." name="house_keeping[]">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Workers motivation. </label>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Process  Specific Specialization -->
+                                                <div class="row mb-2 tab-pane fade "  id="process-specific-optimization">
+                                                    <div class="col-md-12 mt-2">
+                                                        <div class="col-md-8"><label for=""> List Unit Processes Requiring Intervention (if applicable) </label></div>
+                                                        <div class="row">
+                                                            <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="" name="unit_process[]">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3"><button class="btn btn-secondary add_more_unit_process" type="button">  Add </button></div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="col-md-12 unit-process-container"></div>
+                                                    <div class="col-md-12 mt-2">
+                                                        <div class="col-md-8">
+                                                            <label for=""> Problem Summary and Suggested Solutions. </label>
+                                                            </div>
+                                                            <div class="row mt-1">
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" placeholder="" name="problem_and_solution[]">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3"><button class="btn btn-secondary add_more_problem_and_solution" type="button">  Add </button></div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="col-md-12 problem-and-solution-container"></div>
+                                                </div>
+                                                <!-- Process specific specialization -->
+                                                 <!-- waste reduction measures -->
+                                                  <div class="tab-pane fade" id="process-waste-reduction-measures">
+                                                    <div class="row mb-2">
+                                                        <div class="col-md-6">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Water recycling flow" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Water recycling flow </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste water treatment" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste water treatment </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Monitoring of the quality and quantity of wastewater" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Monitoring of the quality and quantity of wastewater </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using production equipment or technology that supports energy/resource-efficient production" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Using production equipment or technology that supports energy/resource-efficient production </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Use of waste for internal energy sources" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Use of waste for internal energy sources </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Installation of lighting sensor" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Installation of lighting sensor </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Utilization of sunlight for daytime lighting" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Utilization of sunlight for daytime lighting </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Use of enviromentally friendly/renewable energy" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Use of enviromentally friendly/renewable energy </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recording of fuel usage" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Recording of fuel usage </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Minimize the use of generating sets" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Minimize the use of generating sets </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Substitute high yield pollutant raw materials with other less polluting materials" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Substitute high yield pollutant raw materials with other less polluting materials </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Maintain the unit process/equipment to minimize emission of pollutants" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Maintain the unit process/equipment to minimize emission of pollutants </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Diluting the air pollutants" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Diluting the air pollutants </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Plant flowers and trees around the premises to reduce large number of pollutants in the air" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Plant flowers and trees around the premises to reduce large number of pollutants in the air </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.)" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.) </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                 <!-- waste reduction measures -->
+                                                  <!-- waste management and disposal methods -->
+                                                 <div class="tab-pane fade" id="waste-management-method">
+                                                 <div class="row g-2 mb-2">
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Landfill" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Landfill </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recycling" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Recycling </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste segregation" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste segregation </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Incineration" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Incineration </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Composting" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Composting </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste Symbiosis" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste Symbiosis </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                                  <!--  -->
+                                                  <!--  -->
+                                                 <div class="tab-pane fade" id="product-recovery">
+                                                    <div class="row mb-2">
+                                                        <div class="col-md-6">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="High temperature recovery method" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> High temperature recovery method </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using correct material ratio" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Using correct material ratio </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using standard measuring equipment" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Using standard measuring equipment </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Adequate chemical/ material storage facility" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Adequate chemical/ material storage facility </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Adequate container seal to prevent spill" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Adequate container seal to prevent spill </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recycling" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Recycling </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Filtration" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Filtration </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Extended Producer Responsibility(EPR)" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Extended Producer Responsibility(EPR)  </label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                 </div>
+                                                  <!--  -->
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>                     
                                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                                     <div class="card">
@@ -500,6 +823,7 @@
                                             </div>
                                         </div><!--end card-body-->
                                     </div><!--end card-->
+
                                 </div>
                             </div> 
                         </div> <!--end col-->                                                       
@@ -686,6 +1010,117 @@
             })
             }
         }
+    }
+</script>
+
+<script>
+    let add_more_key_areas = document.querySelector('.add_more_key_areas')
+    add_more_key_areas.addEventListener('click', () => {
+        let container = document.querySelector('.key-areas-container')
+        container.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_key_area(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_key_area(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+
+    let add_more_product_innovation = document.querySelector('.add_more_innovative_changes')
+    console.log(add_more_product_innovation);
+    
+    add_more_product_innovation.addEventListener('click', () => {
+        // alert('hello')
+        let inovationcontainer = document.querySelector('.product-innovation-container')
+        inovationcontainer.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Product's innovation" name="innovation_that_enhance_product[]">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_product_innovation(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_product_innovation(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+
+        let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
+        console.log(add_more_hazardous_material);
+        add_more_hazardous_material.addEventListener('click', () => {
+            // alert('hello')
+            let hazrdouscontainer = document.querySelector('.harzardous-material-container')
+            hazrdouscontainer.innerHTML += `
+                <div class="row mt-2">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Hazarduous material" name="hazardous_material_in_process[]">
+                        </div>
+                    </div>
+                    <div class="col-md-3"><button class="btn btn-danger" onclick="remove_harzardous_material(this)" type="button">  Remove </button></div>
+                </div>
+            `
+        });
+
+        function remove_harzardous_material(ele) {
+            let parent = ele.parentElement.parentElement
+            parent.remove()
+        }
+
+    let add_more_unit_process = document.querySelector('.add_more_unit_process')
+    console.log(add_more_unit_process);
+    add_more_unit_process.addEventListener('click', () => {
+        // alert('hello')
+        let unitProcessContainer = document.querySelector('.unit-process-container')
+        unitProcessContainer.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Unit process" name="unit_process[]">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_unit_process(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_unit_process(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
+    }
+
+    let add_more_problem_and_solution = document.querySelector('.add_more_problem_and_solution')
+    console.log(add_more_problem_and_solution);
+    add_more_problem_and_solution.addEventListener('click', () => {
+        // alert('hello')
+        let problemAndSolutionContainer = document.querySelector('.problem-and-solution-container')
+        problemAndSolutionContainer.innerHTML += `
+            <div class="row mt-2">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Problem summary and solution" name="problem_and_solution[]">
+                    </div>
+                </div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_problem_and_solution(this)" type="button">  Remove </button></div>
+            </div>
+        `
+    });
+
+    function remove_problem_and_solution(ele) {
+        let parent = ele.parentElement.parentElement
+        parent.remove()
     }
 </script>
 @endsection
