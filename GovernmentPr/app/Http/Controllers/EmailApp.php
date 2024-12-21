@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Admins;
+use App\Models\NotificationConfig;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\MessageApp;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class EmailApp extends Controller
@@ -18,6 +22,10 @@ class EmailApp extends Controller
     public function index()
     {
         //
+       
+
+        // $user = User::first();
+        // Notification::send($user, new SystemNotification);
        return view('components/admin/email-app');
     }
 
@@ -48,11 +56,20 @@ class EmailApp extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request);
+
             $request->validate([
                 'reciepients_email'=> 'required',
                 'subject'          => 'required',
                 'message'          => 'required'
             ]);
+            $user = Admins::where('email', $request['reciepients_email'])->first();
+            $data = [
+                // 'notification_id'   =>  $request->email_apps,
+                'subject'           =>  $request->subject,
+                'body'              =>  $request->message
+            ];
+            Notification::send($user, new MessageApp($data));
     }
 
     /**
