@@ -64,6 +64,12 @@ class EmailApp extends Controller
                 'message'          => 'required'
             ]);
             $user = Admins::where('email', $request['reciepients_email'])->first();
+              // Check if user exists
+                 if (!$user) {
+                     return response()->json([
+                         'error' => 'Recipient not found'
+                     ], 404);
+                 }
             $data = [
                 // 'notification_id'   =>  $request->email_apps,
                 'subject'           =>  $request->subject,
