@@ -379,9 +379,11 @@ class CompanyController extends Controller
         //
         // return "hello";
         $companyID = decrypt($company);
-        $data['company'] = Company::where('company_id', $companyID)->first();
-        $data['company_policies'] = Policy::where('companyID', $companyID)->get();
+        $data['company']            = Company::where('company_id', $companyID)->first();
+        $data['company_policies']   = Policy::where('companyID', $companyID)->get();
         $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
+        $data['company_benefits']   = RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_enviromental_benefits']   = RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
         // dd($company);
         return view('components.apps.companyProfile', $data);
     }

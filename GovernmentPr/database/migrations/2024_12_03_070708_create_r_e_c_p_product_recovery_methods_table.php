@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_product_recovery_methods', function (Blueprint $table) {
             $table->id('productRecoveryID');
             $table->unsignedBigInteger('companyID');
-            $table->string('recovery_method_title');
+            $table->string('recovery_method_title', 225);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

@@ -258,44 +258,44 @@
                                             <div class="row tab-pane fade show active" id="this-project">
                                                 <div class="col-md-12">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]" {{(in_array("Develop policy and regulation that deliver economic, human and environmental health gain to your company.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]" {{(in_array("To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)" value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector." name="areas_of_company_benefit[]" {{(in_array("To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)" value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes." name="areas_of_company_benefit[]" {{(in_array("To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)" value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector." name="areas_of_company_benefit[]" {{(in_array("To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)" value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs." name="areas_of_company_benefit[]" {{(in_array("To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects." name="areas_of_company_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)" value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects." name="areas_of_company_benefit[]" {{(in_array("To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects. </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -304,50 +304,50 @@
                                             <div class="row tab-pane fade" id="environmental-health">
                                                 <div class="col-md-12">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a minimum 20% reduction in energy consumption within one year. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]" {{(in_array("Achieve a minimum 20% reduction in energy consumption within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Achieve a minimum 20% reduction in energy consumption within one year. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]" {{(in_array("Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Double your water productivity within one year." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Double your water productivity within one year. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)" value="Double your water productivity within one year." name="environment_health_benefit[]" {{(in_array("Double your water productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Double your water productivity within one year. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve a 50% increase in overall material productivity within one year. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]" {{(in_array("Achieve a 50% increase in overall material productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Achieve a 50% increase in overall material productivity within one year. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]" {{(in_array("Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve an increase in overall annual financial savings. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]" {{(in_array("Achieve an increase in overall annual financial savings.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Achieve an increase in overall annual financial savings. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Enhance customer satisfaction through improved products, services, and overall experience. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]" {{(in_array("Enhance customer satisfaction through improved products, services, and overall experience.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Enhance customer satisfaction through improved products, services, and overall experience. </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-md-3">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                        <label class="form-check-label" for=""> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -438,26 +438,26 @@
                                                     <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Attitudinal change (negligence attitude)." name="house_keeping[]">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Attitudinal change (negligence attitude). </label>
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Attitudinal change (negligence attitude)." name="house_keeping[]">
+                                                            <label class="form-check-label" for=""> Attitudinal change (negligence attitude). </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Improved workplace management." name="house_keeping[]">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Improved Workplace management. </label>
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Improved workplace management." name="house_keeping[]">
+                                                            <label class="form-check-label" for=""> Improved Workplace management. </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 mt-2">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Good operating practices(personel practices, waste segregation etc.)." name="house_keeping[]">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Good operating practices(personel practices, waste segregation etc.). </label>
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Good operating practices(personel practices, waste segregation etc.)." name="house_keeping[]">
+                                                            <label class="form-check-label" for=""> Good operating practices(personel practices, waste segregation etc.). </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-2">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Workers motivation." name="house_keeping[]">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"> Workers motivation. </label>
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Workers motivation." name="house_keeping[]">
+                                                            <label class="form-check-label" for=""> Workers motivation. </label>
                                                         </div>
                                                     </div>
                                                     </div>
@@ -500,92 +500,92 @@
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Water recycling flow" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Water recycling flow </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Water recycling flow" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Water recycling flow </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste water treatment" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste water treatment </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste water treatment" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Waste water treatment </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Monitoring of the quality and quantity of wastewater" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Monitoring of the quality and quantity of wastewater </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Monitoring of the quality and quantity of wastewater" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Monitoring of the quality and quantity of wastewater </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using production equipment or technology that supports energy/resource-efficient production" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Using production equipment or technology that supports energy/resource-efficient production </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using production equipment or technology that supports energy/resource-efficient production" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Using production equipment or technology that supports energy/resource-efficient production </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Use of waste for internal energy sources" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Use of waste for internal energy sources </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Use of waste for internal energy sources" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Use of waste for internal energy sources </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Installation of lighting sensor" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Installation of lighting sensor </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Installation of lighting sensor" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Installation of lighting sensor </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Utilization of sunlight for daytime lighting" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Utilization of sunlight for daytime lighting </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Utilization of sunlight for daytime lighting" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Utilization of sunlight for daytime lighting </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Use of enviromentally friendly/renewable energy" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Use of enviromentally friendly/renewable energy </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Use of enviromentally friendly/renewable energy" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Use of enviromentally friendly/renewable energy </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recording of fuel usage" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Recording of fuel usage </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recording of fuel usage" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Recording of fuel usage </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Minimize the use of generating sets" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Minimize the use of generating sets </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Minimize the use of generating sets" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Minimize the use of generating sets </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Substitute high yield pollutant raw materials with other less polluting materials" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Substitute high yield pollutant raw materials with other less polluting materials </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Substitute high yield pollutant raw materials with other less polluting materials" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Substitute high yield pollutant raw materials with other less polluting materials </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Maintain the unit process/equipment to minimize emission of pollutants" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Maintain the unit process/equipment to minimize emission of pollutants </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Maintain the unit process/equipment to minimize emission of pollutants" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Maintain the unit process/equipment to minimize emission of pollutants </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Diluting the air pollutants" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Diluting the air pollutants </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Diluting the air pollutants" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Diluting the air pollutants </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Plant flowers and trees around the premises to reduce large number of pollutants in the air" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Plant flowers and trees around the premises to reduce large number of pollutants in the air </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Plant flowers and trees around the premises to reduce large number of pollutants in the air" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Plant flowers and trees around the premises to reduce large number of pollutants in the air </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.)" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.) </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.)" name="RECP_waste_reduction_measures[]">
+                                                                <label class="form-check-label" for=""> Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.) </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -596,38 +596,38 @@
                                                  <div class="row g-2 mb-2">
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Landfill" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Landfill </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Landfill" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Landfill </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recycling" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Recycling </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recycling" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Recycling </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste segregation" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste segregation </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste segregation" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Waste segregation </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Incineration" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Incineration </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Incineration" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Incineration </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Composting" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Composting </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Composting" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Composting </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Waste Symbiosis" name="waste_management_methods[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Waste Symbiosis </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste Symbiosis" name="waste_management_methods[]">
+                                                                <label class="form-check-label" for=""> Waste Symbiosis </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -638,50 +638,50 @@
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="High temperature recovery method" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> High temperature recovery method </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="High temperature recovery method" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for=""> High temperature recovery method </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using correct material ratio" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"> Using correct material ratio </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using correct material ratio" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for=""> Using correct material ratio </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Using standard measuring equipment" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Using standard measuring equipment </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using standard measuring equipment" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Using standard measuring equipment </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Adequate chemical/ material storage facility" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Adequate chemical/ material storage facility </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Adequate chemical/ material storage facility" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Adequate chemical/ material storage facility </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Adequate container seal to prevent spill" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Adequate container seal to prevent spill </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Adequate container seal to prevent spill" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Adequate container seal to prevent spill </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Recycling" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Recycling </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recycling" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Recycling </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Filtration" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Filtration </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Filtration" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Filtration </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="Extended Producer Responsibility(EPR)" name="product_recovery_measures[]">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault">  Extended Producer Responsibility(EPR)  </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Extended Producer Responsibility(EPR)" name="product_recovery_measures[]">
+                                                                <label class="form-check-label" for="">  Extended Producer Responsibility(EPR)  </label>
                                                             </div>
                                                         </div>
 
@@ -691,7 +691,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>                     
                                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                                     <div class="card">
@@ -1011,6 +1010,140 @@
             }
         }
     }
+</script>
+
+<script>
+// area of utmost benefit
+async function ChangeUtmostBenefit(ele, company, benefit) {
+    console.log(ele, company, benefit);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-recp-project') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('areas_of_company_benefit', benefit)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--benefit", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove this area of benefit?")) {
+            let uri = "{{ route('admin.remove-recp-project') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('areas_of_company_benefit', benefit)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--benefit", data);
+        })
+        }
+    }
+}
+
+// human  & environmental and health benefit
+async function ChangeEnvironmentalBenefit(ele, company, benefit) {
+    console.log(ele, company, benefit);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-recp-environmental') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('enviromental_benefit_title', benefit)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--benefit", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove this benefit?")) {
+            let uri = "{{ route('admin.remove-recp-environmental') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('enviromental_benefit_title', benefit)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--benefit", data);
+        })
+        }
+    }
+}
 </script>
 
 <script>

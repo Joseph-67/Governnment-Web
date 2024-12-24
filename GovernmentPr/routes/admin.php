@@ -15,6 +15,7 @@ use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AddEventController;
+use App\Http\Controllers\RECPController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -101,5 +102,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
         Route::post ('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
         Route::post ('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
-    }); 
+    });
+
+    Route::controller(RECPController::class)->group(function(){
+        Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
+        Route::post('/add-environmental-benefit', 'add_environmental_benefit')->name('admin.add-recp-environmental');
+        Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
+        Route::post('/remove-environmental-benefit', 'remove_environmetal_benefit')->name('admin.remove-recp-environmental');
+    });
 });
