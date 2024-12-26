@@ -105,9 +105,20 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
     Route::controller(RECPController::class)->group(function(){
+        // add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
         Route::post('/add-environmental-benefit', 'add_environmental_benefit')->name('admin.add-recp-environmental');
+        Route::post('/add-house-keeping', 'add_house_keeping')->name('admin.add-house-keeping');
+        Route::post('/add-waste-reduction-measure', 'add_waste_reduction_measure')->name('admin.add-waste-reduction-measure');
+        Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
+        Route::post('/add-product-recovery-measure', 'add_product_recovery_measure')->name('admin.add-product-recovery-measure');
+        
+        // remove
         Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
         Route::post('/remove-environmental-benefit', 'remove_environmetal_benefit')->name('admin.remove-recp-environmental');
+        Route::post('/remove-house-keeping', 'remove_house_keeping')->name('admin.remove-house-keeping');
+        Route::post('/remove-waste-reduction-measure', 'remove_waste_reduction_measure')->name('admin.remove-waste-reduction-measure');
+        Route::post('/remove-waste-disposal-method', 'remove_waste_management_method')->name('admin.remove-waste-disposal-method');
+        Route::post('/remove-product-recovery-measure', 'remove_product_recovery_measure')->name('admin.remove-product-recovery-measure');
     });
 });

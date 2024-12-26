@@ -24,6 +24,24 @@ use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
+
+    public function show($company)
+    {
+        //
+        // return "hello";
+        $companyID = decrypt($company);
+        $data['company']            = Company::where('company_id', $companyID)->first();
+        $data['company_policies']   = Policy::where('companyID', $companyID)->get();
+        $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
+        $data['company_benefits']   = RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_enviromental_benefits']   = RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_house_keeping']   = RECP_house_keep_practice::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_waste_reduction_measures']   = RECP_waste_reduction_measure::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_management_measures']   = RECP_waste_management_method::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_product_recovery_measures']   = RECP_product_recovery_method::where('companyID', $companyID)->where('status', 'active')->get();
+        // dd($company);
+        return view('components.apps.companyProfile', $data);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -374,19 +392,7 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show($company)
-    {
-        //
-        // return "hello";
-        $companyID = decrypt($company);
-        $data['company']            = Company::where('company_id', $companyID)->first();
-        $data['company_policies']   = Policy::where('companyID', $companyID)->get();
-        $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
-        $data['company_benefits']   = RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_enviromental_benefits']   = RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        // dd($company);
-        return view('components.apps.companyProfile', $data);
-    }
+
 
     public function add_company_policy(Request $request) {
         $validator =Validator::make($request->all(),[

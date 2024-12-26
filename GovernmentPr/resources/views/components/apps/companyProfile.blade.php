@@ -438,25 +438,25 @@
                                                     <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Attitudinal change (negligence attitude)." name="house_keeping[]">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Attitudinal change (negligence attitude).`)" value="Attitudinal change (negligence attitude)." name="house_keeping[]" {{(in_array("Attitudinal change (negligence attitude).", array_column($company_house_keeping->toArray(), 'practice_title')))? "checked": ""}}>
                                                             <label class="form-check-label" for=""> Attitudinal change (negligence attitude). </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Improved workplace management." name="house_keeping[]">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Improved workplace management.`)" value="Improved workplace management." name="house_keeping[]" {{(in_array("Improved workplace management.", array_column($company_house_keeping->toArray(), 'practice_title')))? "checked": ""}}>
                                                             <label class="form-check-label" for=""> Improved Workplace management. </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 mt-2">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Good operating practices(personel practices, waste segregation etc.)." name="house_keeping[]">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Good operating practices(personel practices, waste segregation etc.).`)" value="Good operating practices(personel practices, waste segregation etc.)." name="house_keeping[]" {{(in_array("Good operating practices(personel practices, waste segregation etc.).", array_column($company_house_keeping->toArray(), 'practice_title')))? "checked": ""}}>
                                                             <label class="form-check-label" for=""> Good operating practices(personel practices, waste segregation etc.). </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-2">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="" value="Workers motivation." name="house_keeping[]">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Workers motivation.`)" value="Workers motivation." name="house_keeping[]" {{(in_array("Workers motivation.", array_column($company_house_keeping->toArray(), 'practice_title')))? "checked": ""}}>
                                                             <label class="form-check-label" for=""> Workers motivation. </label>
                                                         </div>
                                                     </div>
@@ -500,92 +500,92 @@
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Water recycling flow" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Water recycling flow </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Water recycling flow.`)" id="" value="Water recycling flow." name="RECP_waste_reduction_measures[]" {{(in_array("Water recycling flow.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Water recycling flow. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste water treatment" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Waste water treatment </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Waste water treatment.`)" value="Waste water treatment." name="RECP_waste_reduction_measures[]" {{(in_array("Waste water treatment.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Waste water treatment. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Monitoring of the quality and quantity of wastewater" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Monitoring of the quality and quantity of wastewater </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Monitoring of the quality and quantity of waste water.`)" value="Monitoring of the quality and quantity of waste water." name="RECP_waste_reduction_measures[]" {{(in_array("Monitoring of the quality and quantity of waste water.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Monitoring of the quality and quantity of wastewater. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using production equipment or technology that supports energy/resource-efficient production" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Using production equipment or technology that supports energy/resource-efficient production </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Using production equipment or technology that supports energy/resource-efficient production.`)" value="Using production equipment or technology that supports energy/resource-efficient production." name="RECP_waste_reduction_measures[]" {{(in_array("Using production equipment or technology that supports energy/resource-efficient production.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Using production equipment or technology that supports energy/resource-efficient production. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Use of waste for internal energy sources" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Use of waste for internal energy sources </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of waste for internal energy sources.`)" value="Use of waste for internal energy sources." name="RECP_waste_reduction_measures[]" {{(in_array("Use of waste for internal energy sources.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Use of waste for internal energy sources. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Installation of lighting sensor" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Installation of lighting sensor </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Installation of lighting sensor.`)" value="Installation of lighting sensor." name="RECP_waste_reduction_measures[]" {{(in_array("Installation of lighting sensor.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Installation of lighting sensor. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Utilization of sunlight for daytime lighting" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Utilization of sunlight for daytime lighting </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Utilization of sunlight for daytime lighting.`)" value="Utilization of sunlight for daytime lighting." name="RECP_waste_reduction_measures[]" {{(in_array("Utilization of sunlight for daytime lighting.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Utilization of sunlight for daytime lighting. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Use of enviromentally friendly/renewable energy" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Use of enviromentally friendly/renewable energy </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of enviromentally friendly/renewable energy.`)" value="Use of enviromentally friendly/renewable energy." name="RECP_waste_reduction_measures[]" {{(in_array("Use of enviromentally friendly/renewable energy.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Use of enviromentally friendly/renewable energy. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recording of fuel usage" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Recording of fuel usage </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Recording of fuel usage.`)" value="Recording of fuel usage." name="RECP_waste_reduction_measures[]" {{(in_array("Recording of fuel usage.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Recording of fuel usage. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Minimize the use of generating sets" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Minimize the use of generating sets </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Minimize the use of generating sets.`)" value="Minimize the use of generating sets." name="RECP_waste_reduction_measures[]" {{(in_array("Minimize the use of generating sets.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Minimize the use of generating sets. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Substitute high yield pollutant raw materials with other less polluting materials" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Substitute high yield pollutant raw materials with other less polluting materials </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Substitute high yield pollutant raw materials with other less polluting materials.`)" value="Substitute high yield pollutant raw materials with other less polluting materials." name="RECP_waste_reduction_measures[]" {{(in_array("Substitute high yield pollutant raw materials with other less polluting materials.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Substitute high yield pollutant raw materials with other less polluting materials. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Maintain the unit process/equipment to minimize emission of pollutants" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Maintain the unit process/equipment to minimize emission of pollutants </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Maintain the unit process/equipment to minimize emission of pollutants.`)" value="Maintain the unit process/equipment to minimize emission of pollutants." name="RECP_waste_reduction_measures[]" {{(in_array("Maintain the unit process/equipment to minimize emission of pollutants.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Maintain the unit process/equipment to minimize emission of pollutants. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Diluting the air pollutants" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Diluting the air pollutants </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Diluting the air pollutants.`)" value="Diluting the air pollutants." name="RECP_waste_reduction_measures[]" {{(in_array("Diluting the air pollutants.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Diluting the air pollutants. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Plant flowers and trees around the premises to reduce large number of pollutants in the air" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Plant flowers and trees around the premises to reduce large number of pollutants in the air </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Plant flowers and trees around the premises to reduce large number of pollutants in the air.`)" value="Plant flowers and trees around the premises to reduce large number of pollutants in the air." name="RECP_waste_reduction_measures[]"  {{(in_array("Plant flowers and trees around the premises to reduce large number of pollutants in the air.", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Plant flowers and trees around the premises to reduce large number of pollutants in the air. </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.)" name="RECP_waste_reduction_measures[]">
-                                                                <label class="form-check-label" for=""> Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy.) </label>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).`)" value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)." name="RECP_waste_reduction_measures[]"  {{(in_array("Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).", array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title')))? "checked": ""}}>
+                                                                <label class="form-check-label" for=""> Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy). </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -596,37 +596,37 @@
                                                  <div class="row g-2 mb-2">
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Landfill" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Landfill`)" value="Landfill" name="waste_management_methods[]" {{(in_array("Landfill", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Landfill </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recycling" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Recycling`)" value="Recycling" name="waste_management_methods[]" {{(in_array("Recycling", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Recycling </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste segregation" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste segregation`)" value="Waste segregation" name="waste_management_methods[]" {{(in_array("Waste segregation", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Waste segregation </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Incineration" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Incineration`)" value="Incineration" name="waste_management_methods[]" {{(in_array("Incineration", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Incineration </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Composting" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Composting`)" value="Composting" name="waste_management_methods[]" {{(in_array("Composting", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Composting </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Waste Symbiosis" name="waste_management_methods[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste Symbiosis`)" value="Waste Symbiosis" name="waste_management_methods[]" {{(in_array("Waste Symbiosis", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Waste Symbiosis </label>
                                                             </div>
                                                         </div>
@@ -638,49 +638,49 @@
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="High temperature recovery method" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `High temperature recovery method`)" value="High temperature recovery method" name="product_recovery_measures[]" {{(in_array("High temperature recovery method", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> High temperature recovery method </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using correct material ratio" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using correct material ratio`)" value="Using correct material ratio" name="product_recovery_measures[]" {{(in_array("Using correct material ratio", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for=""> Using correct material ratio </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Using standard measuring equipment" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using standard measuring equipment`)" value="Using standard measuring equipment" name="product_recovery_measures[]" {{(in_array("Using standard measuring equipment", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Using standard measuring equipment </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Adequate chemical/ material storage facility" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate chemical/ material storage facility`)" value="Adequate chemical/ material storage facility" name="product_recovery_measures[]" {{(in_array("Adequate chemical/ material storage facility", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Adequate chemical/ material storage facility </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Adequate container seal to prevent spill" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate container seal to prevent spill`)" value="Adequate container seal to prevent spill" name="product_recovery_measures[]" {{(in_array("Adequate container seal to prevent spill", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Adequate container seal to prevent spill </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Recycling" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Recycling`)" value="Recycling" name="product_recovery_measures[]" {{(in_array("Recycling", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Recycling </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Filtration" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Filtration`)" value="Filtration" name="product_recovery_measures[]" {{(in_array("Filtration", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Filtration </label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mt-2">
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="" value="Extended Producer Responsibility(EPR)" name="product_recovery_measures[]">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Extended Producer Responsibility(EPR)`)" value="Extended Producer Responsibility(EPR)" name="product_recovery_measures[]" {{(in_array("Extended Producer Responsibility(EPR)", array_column($company_product_recovery_measures->toArray(), 'recovery_method_title')))? "checked": ""}}>
                                                                 <label class="form-check-label" for="">  Extended Producer Responsibility(EPR)  </label>
                                                             </div>
                                                         </div>
@@ -873,11 +873,11 @@
                 <!--end Rightbar-->
 
 @section('styles')
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
 <script>
     async function ChangePolicy(ele, company, policy) {
         console.log(ele, company, policy);
@@ -945,7 +945,6 @@
     }
 
     // company objectives
-    
     async function ChangeObjectives(ele, company, objective) {
         console.log(ele, company, objective);
         if (ele.checked) {
@@ -1141,6 +1140,268 @@ async function ChangeEnvironmentalBenefit(ele, company, benefit) {
             let data = await response.json()
             console.log("--benefit", data);
         })
+        }
+    }
+}
+
+// Good House Keeping
+async function ChangeGoodHouseKeeping(ele, company, house_keeping) {
+    console.log(ele, company, house_keeping);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-house-keeping') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('house_keeping_title', house_keeping)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--house keeping", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove House keeping?")) {
+            let uri = "{{ route('admin.remove-house-keeping') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('house_keeping_title', house_keeping)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--house keeping", data);
+        })
+        }
+    }
+}
+// Waste Reduction measures
+async function ChangeWasteReductionMeasures(ele, company, measure) {
+    console.log(ele, company, measure);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-waste-reduction-measure') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('waste_reduction_measure', measure)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--Wate Reduction Measure", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove this waste reduction measure?")) {
+            let uri = "{{ route('admin.remove-waste-reduction-measure') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('waste_reduction_measure', measure)
+            let response = await fetch(uri, {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+                credentials: 'same-origin',
+                body: formData
+            }).then(async (response) => {
+                let data = await response.json();
+                console.log("--wate_reduction_measure", data);
+            });
+        }
+    }
+}
+// Waste disposal method
+async function ChangeWasteDisposalMethod(ele, company, disposal_method) {
+    console.log(ele, company, disposal_method);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-waste-disposal-method') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('waste_management_method', disposal_method)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--Waste Disposal Method", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove waste management method?")) {
+            let uri = "{{ route('admin.remove-waste-disposal-method') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('waste_management_method', disposal_method)
+            let response = await fetch(uri, {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+                credentials: 'same-origin',
+                body: formData
+            }).then(async (response) => {
+                let data = await response.json()
+                console.log("--Waste Disposal Method", data);
+            });
+        }
+    }
+}
+
+// Product recovery measures
+async function ChangeProductRecoveryMeasure(ele, company, measure) {
+    console.log(ele, company, measure);
+    if (ele.checked) {
+        let uri = "{{ route('admin.add-product-recovery-measure') }}";
+        let formData = new FormData();
+        formData.append('company', company)
+        formData.append('product_recovery_measure', measure)
+        let response = await fetch(uri, {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: formData
+        }).then(async (response) => {
+            let data = await response.json()
+            console.log("--product recovery measure", data);
+            if (data.status == 'success'){
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    }).showToast();
+            }
+
+            if(data.status == 'error'){
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",     // `top` or `bottom`
+                        position: "right",  // `left`, `center` or `right`
+                        stopOnFocus: true,  // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        }
+                        }).showToast();
+                }
+            }
+        })
+    }else{
+        if (confirm("Do you want to remove product recovery measure?")) {
+            let uri = "{{ route('admin.remove-product-recovery-measure') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('product_recovery_measure', measure)
+            let response = await fetch(uri, {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+                credentials: 'same-origin',
+                body: formData
+            }).then(async (response) => {
+                let data = await response.json()
+                console.log("--product recovery measure", data);
+            });
         }
     }
 }
