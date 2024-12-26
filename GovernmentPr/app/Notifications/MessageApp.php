@@ -7,11 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-
-class InvoicePaid extends Notification implements ShouldQueue
+class MessageApp extends Notification
 {
     use Queueable;
-    private $data=[];
+    private $data = [];
+    
 
     /**
      * Create a new notification instance.
@@ -32,7 +32,7 @@ class InvoicePaid extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return $this->data['mail'];
+        return ['mail'];
     }
 
     /**
@@ -44,18 +44,14 @@ class InvoicePaid extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-        ->from('atumajoe24.com', 'Joseph Atuma')
+        ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
-        ->reciepients_email($this->data['reciepients_email'])
         ->subject($this->data['subject'])
-        ->line($this->data['message'])
-        ->line('Hello user')
-        ->markdown('components.admin.email-app', [
-            'reciepients_email' => $this->data['reciepients_email'],
+        ->line($this->data['body'])
+        ->markdown('mail.message.template', [
             'subject'           => $this->data['subject'],
-            'body'              => $this->data['body'],
+            'body'              => $this->data['body']
         ]);
-                   
     }
 
     /**
@@ -68,10 +64,8 @@ class InvoicePaid extends Notification implements ShouldQueue
     {
         return [
             //
-            'notification_id' => $this->data['notification_id'],
-            'reciepients_email' => $this->data['reciepients_email'],
             'subject' => $this->data['subject'],
-            'message' => $this->data['message']
+            'body' => $this->data['body']
         ];
     }
 }
