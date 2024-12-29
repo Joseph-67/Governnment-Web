@@ -30,17 +30,20 @@ class CompanyController extends Controller
         //
         // return "hello";
         $companyID = decrypt($company);
-        $data['company']            = Company::where('company_id', $companyID)->first();
-        $data['company_policies']   = Policy::where('companyID', $companyID)->get();
-        $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
-        $data['company_benefits']   = RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_enviromental_benefits']   = RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_house_keeping']   = RECP_house_keep_practice::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_waste_reduction_measures']   = RECP_waste_reduction_measure::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_management_measures']   = RECP_waste_management_method::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_product_recovery_measures']   = RECP_product_recovery_method::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_areas_of_improvement']   = RECP_areas_of_improvement::where('companyID', $companyID)->where('status', 'active')->select('improvementAreaID', 'area_title')->get();
-        // dd($company);
+        $data['company']                            =   Company::where('company_id', $companyID)->first();
+        $data['company_policies']                   =   Policy::where('companyID', $companyID)->get();
+        $data['company_objectives']                 =   CompanyObjectives::where('companyID', $companyID)->get();
+        $data['company_benefits']                   =   RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_enviromental_benefits']      =   RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_house_keeping']              =   RECP_house_keep_practice::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_waste_reduction_measures']   =   RECP_waste_reduction_measure::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_management_measures']        =   RECP_waste_management_method::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_product_recovery_measures']  =   RECP_product_recovery_method::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_areas_of_improvement']       =   RECP_areas_of_improvement::where('companyID', $companyID)->where('status', 'active')->select('improvementAreaID', 'area_title')->get();
+        $data['company_product_innovation']         =   RECP_innovation_areas::where('companyID', $companyID)->where('status', 'active')->select('innovationAreaID', 'innovation_area_title')->get();
+        $data['company_hazarduous_material']        =   RECP_harzardous_materials::where('companyID', $companyID)->where('status', 'active')->select('hazarduousMaterialID', 'material_title')->get();
+        $data['company_unit_process']               =   RECP_unit_of_process::where('companyID', $companyID)->where('status', 'active')->select('unitProcessID', 'unit_process_title')->get();
+        // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }
     /**

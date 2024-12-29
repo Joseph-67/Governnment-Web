@@ -113,9 +113,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
         Route::post('/add-product-recovery-measure', 'add_product_recovery_measure')->name('admin.add-product-recovery-measure');
         Route::post('/add-improvement-key-area', 'add_improvement_key_area')->name('admin.add-improvement-key-area');
+        Route::post('/add-product-innovation', 'add_product_innovation')->name('admin.add-product-innovation');
+        Route::post('/add-hazarduous-material', 'add_hazarduous_material')->name('admin.add-hazarduous-material');
+        Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
         
         // update
         Route::post('/update-improvement-key-area', 'update_improvement_key_area')->name('admin.update-improvement-key-area');
+        Route::post('/update-product-innovation', 'update_product_innovation')->name('admin.update-product-innovation');
+        Route::post('/update-hazarduous-material', 'update_hazarduous_material')->name('admin.update-hazarduous-material');
+        Route::post('/update-unit-process', 'update_unit_process')->name('admin.update-unit-process');
         
         // remove
         Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
@@ -125,5 +131,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-waste-disposal-method', 'remove_waste_management_method')->name('admin.remove-waste-disposal-method');
         Route::post('/remove-product-recovery-measure', 'remove_product_recovery_measure')->name('admin.remove-product-recovery-measure');
         Route::post('/remove-improvement-key-area', 'remove_improvement_key_area')->name('admin.remove-improvement-key-area');
+        Route::post('/remove-product-innovation', 'remove_product_innovation')->name('admin.remove-product-innovation');
+        Route::post('/remove-hazaduous-material', 'remove_hazarduous_material')->name('admin.remove-hazarduous-material');
+        Route::post('/remove-unit-process', 'remove_unit_process')->name('admin.remove-unit-process');
     });
 });

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_harzardous_materials', function (Blueprint $table) {
             $table->id('hazarduousMaterialID');
             $table->unsignedBigInteger('companyID');
-            $table->string('material_title', 225);
+            $table->string('material_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

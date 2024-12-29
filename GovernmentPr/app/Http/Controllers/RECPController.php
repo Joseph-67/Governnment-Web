@@ -469,6 +469,391 @@ class RECPController extends Controller
         }
 
     }
+
+    // Product Innovation
+    // create
+    public function add_product_innovation(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company'                   =>  ['required', 'numeric'],
+            'key_product_innovation'   =>  ['nullable', 'string', Rule::unique('recp_innovation_areas', 'innovation_area_title')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company']);
+            })]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        RECP_innovation_areas::create([
+            'companyID' => $request['company'],
+            'innovation_area_title' => $request['key_product_innovation']
+        ]);
+
+        $product_innovation  = RECP_innovation_areas::where('companyID', $request['company'])
+                                    ->where('status', 'active')
+                                    ->select('innovationAreaID', 'innovation_area_title')
+                                    ->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Key produuct innovation added successfully.',
+            'product_innovation' => $product_innovation,
+        ]);
+    }
+
+    // update
+    public function update_product_innovation(Request $request)
+    {
+        $company    = $request->input('company');
+        $keyProductInnovationId  = $request->input('key_product_innovation_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'key_product_innovation_id.required' => 'The product innovation ID field is required.',
+            'key_product_innovation_id.numeric' => 'The product innovation ID field must be a number.',
+            'key_product_innovation.unique' => 'The product innovation title must be unique within the company.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'     =>  ['required', 'numeric'],
+            'key_product_innovation_id' =>  ['required', 'numeric'],
+            'key_product_innovation'    =>  ['nullable', 'string', Rule::unique('recp_innovation_areas', 'innovation_area_title')
+                                                        ->where(function ($query) use ($company) {
+                                                            return $query->where('companyID', $company);
+                                                        })
+                                                        ->ignore($keyProductInnovationId, 'innovationAreaID')]
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_innovation_areas::where('innovationAreaID', $keyProductInnovationId)->update([
+            'innovation_area_title' => $request['key_product_innovation']
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Key produuct innovation updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Key produuct innovation failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // delete
+    public function remove_product_innovation(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'key_product_innovation_id'      =>  ['required', 'numeric']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_innovation_areas::where('innovationAreaID', $request['key_product_innovation_id'])
+                    ->delete();
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status'            =>  'success',
+                'message'           =>  'Key produuct innovation removed successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('delete_error', 'Key produuct innovation failed to delete.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+    }
+
+    // Hazarduous material
+    // create
+    public function add_hazarduous_material(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company'                   =>  ['required', 'numeric'],
+            'hazarduous_material'   =>  ['nullable', 'string', Rule::unique('recp_harzardous_materials', 'material_title')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company']);
+            })]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_harzardous_materials::create([
+            'companyID' => $request['company'],
+            'material_title' => $request['hazarduous_material']
+        ]);
+
+        $hazardous_materials  = RECP_harzardous_materials::where('companyID', $request['company'])
+                                    ->where('status', 'active')
+                                    ->select('hazarduousMaterialID', 'material_title')
+                                    ->get();
+        
+                                    
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Hazarduous material added successfully.',
+                'hazarduous_materials' => $hazardous_materials,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Hazarduous material failed to create.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // update
+    public function update_hazarduous_material(Request $request)
+    {
+        $company                    = $request->input('company');
+        $hazarduousMaterialId       = $request->input('hazarduous_material_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'hazarduous_material_id.required' => 'The hazardous material ID field is required.',
+            'hazarduous_material_id.numeric' => 'The hazarduous material ID field must be a number.',
+            'hazarduous_material.unique' => 'The hazarduous material title must be unique within the company.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'     =>  ['required', 'numeric'],
+            'hazarduous_material_id' =>  ['required', 'numeric'],
+            'hazarduous_material'    =>  ['nullable', 'string', Rule::unique('recp_harzardous_materials', 'material_title')
+                                                        ->where(function ($query) use ($company) {
+                                                            return $query->where('companyID', $company);
+                                                        })
+                                                        ->ignore($hazarduousMaterialId, 'hazarduousMaterialID')]
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_harzardous_materials::where('hazarduousMaterialID', $hazarduousMaterialId)->update([
+            'material_title' => $request['hazarduous_material']
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Hazarduous material updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Hazarduous material failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // delete
+    public function remove_hazarduous_material(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'hazarduous_material_id'      =>  ['required', 'numeric']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_harzardous_materials::where('hazarduousMaterialID', $request['hazarduous_material_id'])
+                    ->delete();
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status'            =>  'success',
+                'message'           =>  'Hazarduous material removed successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('delete_error', 'Hazarduous material failed to delete.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+    }
+
+    // UnitProcess
+    // create
+    public function add_unit_process(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company'                   =>  ['required', 'numeric'],
+            'unit_process'   =>  ['nullable', 'string', Rule::unique('recp_unit_of_processes', 'unit_process_title')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company']);
+            })]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_unit_of_process::create([
+            'companyID' => $request['company'],
+            'unit_process_title' => $request['unit_process']
+        ]);
+
+        $unit_processes  = RECP_unit_of_process::where('companyID', $request['company'])
+                                    ->where('status', 'active')
+                                    ->select('unitProcessID', 'unit_process_title')
+                                    ->get();
+        
+                                    
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Unit process added successfully.',
+                'unit_processes' => $unit_processes,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Unit process failed to create.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // update
+    public function update_unit_process(Request $request)
+    {
+        $company    = $request->input('company');
+        $unitProcessId  = $request->input('unit_process_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'unit_process_id.required' => 'The unit process ID field is required.',
+            'unit_process_id.numeric' => 'The unit process ID field must be a number.',
+            'unit_process.unique' => 'The unit process title must be unique within the company.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'     =>  ['required', 'numeric'],
+            'unit_process_id' =>  ['required', 'numeric'],
+            'unit_process'    =>  ['nullable', 'string', Rule::unique('recp_unit_of_processes', 'unit_process_title')
+                                                        ->where(function ($query) use ($company) {
+                                                            return $query->where('companyID', $company);
+                                                        })
+                                                        ->ignore($unitProcessId, 'unitProcessID')]
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_unit_of_process::where('unitProcessID', $unitProcessId)->update([
+            'unit_process_title' => $request['unit_process']
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Unit process updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Unit process failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // delete
+    public function remove_unit_process(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'unit_process_id'      =>  ['required', 'numeric']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_unit_of_process::where('unitProcessID', $request['unit_process_id'])
+                    ->delete();
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status'            =>  'success',
+                'message'           =>  'Unit process removed successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('delete_error', 'Unit process failed to delete.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -240,6 +240,7 @@
                                         enables industries to operate more efficiently and sustainably, fostering a cleaner, greener future.</p>
                                         <!-- this projct -->
                                     <div class="card">
+                                        <!-- card header -->
                                         <div class="card-header">
                                             <ul class="nav nav-tabs card-header-tabs">
                                                 <li class="nav-item">
@@ -255,170 +256,189 @@
                                         </div><!--end card-header-->
                                         <div class="card-body pt-2">
                                             <div class="tab-content">
-                                            <div class="row tab-pane fade show active" id="this-project">
-                                                <div class="col-md-12">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]" {{(in_array("Develop policy and regulation that deliver economic, human and environmental health gain to your company.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
+                                                <div class="row tab-pane fade show active" id="this-project">
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)" value="Develop policy and regulation that deliver economic, human and environmental health gain to your company." name="areas_of_company_benefit[]" {{(in_array("Develop policy and regulation that deliver economic, human and environmental health gain to your company.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Develop policy and regulation that deliver economic, humanand environmental health gain to your company. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]" {{(in_array("To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)" value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector." name="areas_of_company_benefit[]" {{(in_array("To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)" value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes." name="areas_of_company_benefit[]" {{(in_array("To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)" value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector." name="areas_of_company_benefit[]" {{(in_array("To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)" value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs." name="areas_of_company_benefit[]" {{(in_array("To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)" value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects." name="areas_of_company_benefit[]" {{(in_array("To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects. </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)" value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise." name="areas_of_company_benefit[]" {{(in_array("To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)" value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector." name="areas_of_company_benefit[]" {{(in_array("To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)" value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes." name="areas_of_company_benefit[]" {{(in_array("To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)" value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector." name="areas_of_company_benefit[]" {{(in_array("To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)" value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs." name="areas_of_company_benefit[]" {{(in_array("To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)" value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects." name="areas_of_company_benefit[]" {{(in_array("To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.", array_column($company_benefits->toArray(), 'benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects. </label>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <!-- environmental health -->
-                                            <div class="row tab-pane fade" id="environmental-health">
-                                                <div class="col-md-12">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]" {{(in_array("Achieve a minimum 20% reduction in energy consumption within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Achieve a minimum 20% reduction in energy consumption within one year. </label>
+                                                <!-- environmental health -->
+                                                <div class="row tab-pane fade" id="environmental-health">
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)" value="Achieve a minimum 20% reduction in energy consumption within one year." name="environment_health_benefit[]" {{(in_array("Achieve a minimum 20% reduction in energy consumption within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Achieve a minimum 20% reduction in energy consumption within one year. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]" {{(in_array("Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)" value="Double your water productivity within one year." name="environment_health_benefit[]" {{(in_array("Double your water productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Double your water productivity within one year. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]" {{(in_array("Achieve a 50% increase in overall material productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Achieve a 50% increase in overall material productivity within one year. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]" {{(in_array("Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]" {{(in_array("Achieve an increase in overall annual financial savings.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Achieve an increase in overall annual financial savings. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]" {{(in_array("Enhance customer satisfaction through improved products, services, and overall experience.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Enhance customer satisfaction through improved products, services, and overall experience. </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-md-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
+                                                            <label class="form-check-label" for=""> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)" value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months." name="environment_health_benefit[]" {{(in_array("Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.</label>
+                                                <!-- environmental health -->
+                                                <!-- Innovation -->
+                                                <div class="row tab-pane fade g-2" id="tab-innovation">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-8">
+                                                        <label for="">Key areas for improving performance in your industry.</label>
+                                                        </div>
+                                                        <div class="col-md-12 key-areas-container">
+                                                                @foreach($company_areas_of_improvement as $keyArea)
+                                                                    <div class="row g-2 my-1">
+                                                                        <div class="col-md-9">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control" value="{{ $keyArea->area_title }}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", "{{ $keyArea->improvementAreaID }}", this)'>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, "{{ $keyArea->improvementAreaID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                    </div>
+                                                                @endforeach
+                                                        </div>
+                                                        <div class="row g-2">
+                                                            <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="Key area for performance improvement" id="key_area_for_improvent">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_key_areas" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        </div>
+                                                        
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)" value="Double your water productivity within one year." name="environment_health_benefit[]" {{(in_array("Double your water productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Double your water productivity within one year. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)" value="Achieve a 50% increase in overall material productivity within one year." name="environment_health_benefit[]" {{(in_array("Achieve a 50% increase in overall material productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Achieve a 50% increase in overall material productivity within one year. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)" value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices." name="environment_health_benefit[]" {{(in_array("Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)" value="Achieve an increase in overall annual financial savings." name="environment_health_benefit[]" {{(in_array("Achieve an increase in overall annual financial savings.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Achieve an increase in overall annual financial savings. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)" value="Enhance customer satisfaction through improved products, services, and overall experience." name="environment_health_benefit[]" {{(in_array("Enhance customer satisfaction through improved products, services, and overall experience.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Enhance customer satisfaction through improved products, services, and overall experience. </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-md-3">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)" value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management." name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')))? "checked": ""}}>
-                                                        <label class="form-check-label" for=""> Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management. </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- environmental health -->
-                                             <!-- Innovation -->
-                                             <div class="row tab-pane fade" id="tab-innovation">
-                                                <div class="col-md-12">
-                                                    <div class="col-md-8">
-                                                    <label for="">Key areas for improving performance in your industry.</label>
-                                                    </div>
-                                                    <div class="col-md-12 key-areas-container">
-                                                            @foreach($company_areas_of_improvement as $keyArea)
+                                                    
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-8">
+                                                        <label for="">Highlight innovations that enhance your product's environmental compatibility.</label>
+                                                        </div>
+                                                        <div class="col-md-12 product-innovation-container">
+                                                            @foreach($company_product_innovation as $productInnovation)
                                                                 <div class="row g-2 my-1">
                                                                     <div class="col-md-9">
                                                                         <div class="form-group">
-                                                                            <input type="text" class="form-control" value="{{ $keyArea->area_title }}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", "{{ $keyArea->improvementAreaID }}", this)'>
+                                                                            <input type="text" class="form-control" value="{{ $productInnovation->innovation_area_title }}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", "{{ $productInnovation->innovationAreaID }}", this)'>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, "{{ $keyArea->improvementAreaID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, "{{ $productInnovation->innovationAreaID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
                                                                 </div>
                                                             @endforeach
-                                                    </div>
-                                                    <div class="row mt-1 g-2">
-                                                        <div class="col-md-9">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="Key area for performance improvement" id="key_area_for_improvent">
-                                                            </div>
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_key_areas" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        <div class="row g-2">
+                                                            <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="Key innovation that enhance your product's environmental compatibility" id="key_product_innovation">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_key_innovation" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        </div>
                                                     </div>
                                                     
-                                                </div>
-                                                
-
-                                                <div class="col-md-12 mt-1">
-                                                    <div class="col-md-8">
-                                                    <label for="">Highlight innovations that enhance your product's environmental compatibility.</label>
-                                                    </div>
-                                                    <div class="row mt-1 g-2">
-                                                        <div class="col-md-9">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="" name="innovation_that_enhance_product[]">
-                                                            </div>
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-8">
+                                                        <label for="">Identify hazarduous materials in your process system that can be reduced, eliminated, or replaced with safer alternatives.</label>
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_innovative_changes" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
-                                                    </div>
-                                                    
-                                                </div>
-                                                <div class="col-md-12 product-innovation-container"></div>
-
-                                                <div class="col-md-12 mt-1">
-                                                    <div class="col-md-8">
-                                                    <label for="">Identify hazarduous materials in your process system that can be reduced, eliminated, or replaced with safer alternatives.</label>
-                                                    </div>
-                                                    <div class="row mt-1 g-2">
-                                                        <div class="col-md-9">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="" name="hazardous_material_in_process[]">
-                                                            </div>
+                                                        <div class="col-md-12 hazarduous-material-container">
+                                                            @foreach($company_hazarduous_material as $hazarduousMaterial)
+                                                                <div class="row g-2 my-1">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" value="{{ $hazarduousMaterial->material_title }}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", "{{ $hazarduousMaterial->hazarduousMaterialID }}", this)'>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, "{{ $hazarduousMaterial->hazarduousMaterialID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_hazardous_material" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        <div class="row g-2">
+                                                            <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="Hazarduous material " id="hazarduous_material">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_hazardous_material" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        </div>
                                                     </div>
-                                                    
+                                                <!-- Innovation -->
                                                 </div>
-                                                <div class="col-md-12 harzardous-material-container"></div>
                                             </div>
-                                             <!-- Innovation -->
-                                             </div>
                                         </div>
                                     </div>
-
+   
                                     <h4 class="">Resource Efficiency & Cleaner Production Opportunities</h4>
                                     <p>Resource Efficiency and Cleaner Production (RECP) focus on optimizing 
                                         the use of resources while minimizing waste and environmental impacts 
@@ -426,7 +446,7 @@
                                         can enhance productivity, reduce costs, and achieve sustainability goals.</p>
                                     <div class="card">
                                         <div class="card-header">
-                                        <ul class="nav nav-tabs card-header-tabs">
+                                            <ul class="nav nav-tabs card-header-tabs">
                                                 <li class="nav-item">
                                                     <a class="nav-link active" aria-current="true" href="#tab-housekeeping" data-bs-toggle="tab">Good Housekeeping</a>
                                                 </li>
@@ -476,20 +496,32 @@
                                                 </div>
 
                                                 <!-- Process  Specific Specialization -->
-                                                <div class="row mb-2 tab-pane fade "  id="process-specific-optimization">
-                                                    <div class="col-md-12 mt-2">
-                                                        <div class="col-md-8"><label for=""> List Unit Processes Requiring Intervention (if applicable) </label></div>
-                                                        <div class="row">
+                                                <div class="row g-2 tab-pane fade "  id="process-specific-optimization">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-8">
+                                                        <label for="">List Unit Processes Requiring Intervention (if applicable)</label>
+                                                        </div>
+                                                        <div class="col-md-12 unit-process-container">
+                                                            @foreach($company_unit_process as $unitProcess)
+                                                                <div class="row g-2 my-1">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" value="{{ $unitProcess->unit_process_title }}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", "{{ $unitProcess->unitProcessID }}", this)'>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, "{{ $unitProcess->unitProcessID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="row g-2">
                                                             <div class="col-md-9">
                                                                 <div class="form-group">
-                                                                    <input type="text" class="form-control" placeholder="" name="unit_process[]">
+                                                                    <input type="text" class="form-control" placeholder="Unit process" id="unit_process">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3"><button class="btn btn-secondary add_more_unit_process" type="button">  Add </button></div>
+                                                            <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_unit_process" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
                                                         </div>
-                                                        
                                                     </div>
-                                                    <div class="col-md-12 unit-process-container"></div>
                                                     <div class="col-md-12 mt-2">
                                                         <div class="col-md-8">
                                                             <label for=""> Problem Summary and Suggested Solutions. </label>
@@ -507,8 +539,8 @@
                                                         <div class="col-md-12 problem-and-solution-container"></div>
                                                 </div>
                                                 <!-- Process specific specialization -->
-                                                 <!-- waste reduction measures -->
-                                                  <div class="tab-pane fade" id="process-waste-reduction-measures">
+                                                <!-- waste reduction measures -->
+                                                <div class="tab-pane fade" id="process-waste-reduction-measures">
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
@@ -601,11 +633,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                  </div>
-                                                 <!-- waste reduction measures -->
-                                                  <!-- waste management and disposal methods -->
-                                                 <div class="tab-pane fade" id="waste-management-method">
-                                                 <div class="row g-2 mb-2">
+                                                </div>
+                                                <!-- waste reduction measures -->
+                                                <!-- waste management and disposal methods -->
+                                                <div class="tab-pane fade" id="waste-management-method">
+                                                <div class="row g-2 mb-2">
                                                         <div class="col-md-4">
                                                             <div class="form-check form-switch">
                                                                 <input class="form-check-input" type="checkbox" role="switch" id="" onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Landfill`)" value="Landfill" name="waste_management_methods[]" {{(in_array("Landfill", array_column($company_management_measures->toArray(), 'management_method_title')))? "checked": ""}}>
@@ -643,10 +675,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                 </div>
-                                                  <!--  -->
-                                                  <!--  -->
-                                                 <div class="tab-pane fade" id="product-recovery">
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <div class="tab-pane fade" id="product-recovery">
                                                     <div class="row mb-2">
                                                         <div class="col-md-6">
                                                             <div class="form-check form-switch">
@@ -698,8 +730,8 @@
                                                         </div>
 
                                                     </div>
-                                                 </div>
-                                                  <!--  -->
+                                                </div>
+                                                <!--  -->
                                             </div>
                                         </div>
                                     </div>
@@ -1418,6 +1450,7 @@ async function ChangeProductRecoveryMeasure(ele, company, measure) {
     }
 }
 
+
 // key areas for improvement
 // ***** Add key area ******//
 let add_more_key_areas = document.querySelector('.add_more_key_areas')
@@ -1516,6 +1549,297 @@ function remove_key_area(ele, key_area_id) {
 }
 // end key area for improvement
 
+// key Product Innovation
+// ***** Add ******//
+let add_more_key_innovation = document.querySelector('.add_more_key_innovation')
+add_more_key_innovation.addEventListener('click', () => {
+    let key_product_innovation_value = document.querySelector('#key_product_innovation').value.trim();
+    if(!key_product_innovation_value){
+        Toastify({
+            text: "Key Product innovation cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.add-product-innovation') }}`;
+    let formData = new FormData();
+    formData.append('company', '{{$company->company_id}}')
+    formData.append('key_product_innovation', key_product_innovation_value);
+    
+    fetch_cycle('--Add Key Product Innovation', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+        if (result.product_innovation) {
+            let container = document.querySelector('.product-innovation-container')
+            container.innerHTML ="";
+            result.product_innovation.forEach(element => {
+                console.log(element.product_innovation);
+                container.innerHTML += `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                    </div>
+                `
+            });
+        }
+    });
+});
+
+// ***** Udate ******//
+function update_product_innovation(company, product_innovation_id, ele) {
+    console.log(company, product_innovation_id, ele.value);
+    let key_product_innovation_value = ele.value.trim();
+    if (!key_product_innovation_value) {
+        Toastify({
+            text: "Key product innovation cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-product-innovation') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('key_product_innovation_id', product_innovation_id)
+    formData.append('key_product_innovation', key_product_innovation_value);
+    fetch_cycle('--Update Key Product Innovation', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+function remove_product_innovation(ele, key_product_innovation_id) {
+    console.log(ele, key_product_innovation_id);
+    
+    let parent = ele.parentElement.parentElement
+    // parent.remove()
+    if (confirm("Do you want to delete this area of perfomance improvement?")) {
+        let url = `{{ route('admin.remove-product-innovation') }}`;
+        let formData = new FormData();
+        formData.append('key_product_innovation_id', key_product_innovation_id)
+        fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
+            // let data = await result.json()
+            console.log(result);
+            if (result.status == 'success') {
+                parent.remove()
+            }
+        });
+        
+    }
+}
+// end Product Innovation
+
+// key Hazarduous Material
+// ***** Add ******//
+let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
+add_more_hazardous_material.addEventListener('click', () => {
+    let hazarduous_material_value = document.querySelector('#hazarduous_material').value.trim();
+    if(!hazarduous_material_value){
+        Toastify({
+            text: "Hazarduous material field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.add-hazarduous-material') }}`;
+    let formData = new FormData();
+    formData.append('company', '{{$company->company_id}}')
+    formData.append('hazarduous_material', hazarduous_material_value);
+    
+    fetch_cycle('--Add Hazarduous Material', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+        if (result.hazarduous_materials) {
+            let container = document.querySelector('.hazarduous-material-container')
+            container.innerHTML ="";
+            result.hazarduous_materials.forEach(element => {
+                console.log(element);
+                container.innerHTML += `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                    </div>
+                `
+            });
+        }
+    });
+});
+
+// ***** Udate ******//
+function update_hazarduous_material(company, hazarduous_material_id, ele) {
+    console.log(company, hazarduous_material_id, ele.value);
+    let hazarduous_material_value = ele.value.trim();
+    if (!hazarduous_material_value) {
+        Toastify({
+            text: "Key product innovation cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-hazarduous-material') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('hazarduous_material_id', hazarduous_material_id)
+    formData.append('hazarduous_material', hazarduous_material_value);
+    fetch_cycle('--Update Hazarduous Material', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+function remove_harzardous_material(ele, hazarduous_material_id) {
+    console.log(ele, hazarduous_material_id);
+    let parent = ele.parentElement.parentElement
+    if (confirm("Do you want to delete this hazaruous material?")) {
+        let url = `{{ route('admin.remove-hazarduous-material') }}`;
+        let formData = new FormData();
+        formData.append('hazarduous_material_id', hazarduous_material_id)
+        fetch_cycle('--Remove Hazarduous Material', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status == 'success') {
+                parent.remove()
+            }
+        });
+        
+    }
+}
+// end hazarduous material
+
+// Unit Process
+// ***** Add ******//
+let add_more_unit_process = document.querySelector('.add_more_unit_process')
+add_more_unit_process.addEventListener('click', () => {
+    let unit_process_value = document.querySelector('#unit_process').value.trim();
+    if(!unit_process_value){
+        Toastify({
+            text: "Unit process field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.add-unit-process') }}`;
+    let formData = new FormData();
+    formData.append('company', '{{$company->company_id}}')
+    formData.append('unit_process', unit_process_value);
+    
+    fetch_cycle('--Add Unit Process', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+        if (result.unit_processes) {
+            let container = document.querySelector('.unit-process-container')
+            container.innerHTML ="";
+            result.unit_processes.forEach(element => {
+                console.log(element);
+                container.innerHTML += `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                    </div>
+                `
+            });
+        }
+    });
+});
+
+// ***** Udate ******//
+function update_unit_process(company, unit_process_id, ele) {
+    console.log(company, unit_process_id, ele.value);
+    let unit_process_value = ele.value.trim();
+    if (!unit_process_value) {
+        Toastify({
+            text: "Unit process field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-unit-process') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('unit_process_id', unit_process_id)
+    formData.append('unit_process', unit_process_value);
+    fetch_cycle('--Update Unit Process', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+function remove_unit_process(ele, unit_process_id) {
+    console.log(ele, unit_process_id);
+    let parent = ele.parentElement.parentElement
+    if (confirm("Do you want to delete this unit process?")) {
+        let url = `{{ route('admin.remove-unit-process') }}`;
+        let formData = new FormData();
+        formData.append('unit_process_id', unit_process_id)
+        fetch_cycle('--Remove Unit Process', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status == 'success') {
+                parent.remove()
+            }
+        });
+        
+    }
+}
+// end hazarduous material
+
 async function fetch_cycle(subject, url, method, form_data) {
     try {
         let response = await fetch(url, {
@@ -1576,95 +1900,5 @@ async function fetch_cycle(subject, url, method, form_data) {
 }
 </script>
 
-<script>
-    // let add_more_key_areas = document.querySelector('.add_more_key_areas')
-    // add_more_key_areas.addEventListener('click', () => {
-    //     let container = document.querySelector('.key-areas-container')
-    //     container.innerHTML += `
-    //         <div class="row mt-2">
-    //             <div class="col-md-9">
-    //                 <div class="form-group">
-    //                     <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
-    //                 </div>
-    //             </div>
-    //             <div class="col-md-3"><button class="btn btn-danger" onclick="remove_key_area(this)" type="button">  Remove </button></div>
-    //         </div>
-    //     `
-    // });
-
-
-
-    let add_more_product_innovation = document.querySelector('.add_more_innovative_changes')
-    console.log(add_more_product_innovation);
-    
-
-
-
-        let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
-        console.log(add_more_hazardous_material);
-        add_more_hazardous_material.addEventListener('click', () => {
-            // alert('hello')
-            let hazrdouscontainer = document.querySelector('.harzardous-material-container')
-            hazrdouscontainer.innerHTML += `
-                <div class="row mt-2">
-                    <div class="col-md-9">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Hazarduous material" name="hazardous_material_in_process[]">
-                        </div>
-                    </div>
-                    <div class="col-md-3"><button class="btn btn-danger" onclick="remove_harzardous_material(this)" type="button">  Remove </button></div>
-                </div>
-            `
-        });
-
-        function remove_harzardous_material(ele) {
-            let parent = ele.parentElement.parentElement
-            parent.remove()
-        }
-
-    let add_more_unit_process = document.querySelector('.add_more_unit_process')
-    console.log(add_more_unit_process);
-    add_more_unit_process.addEventListener('click', () => {
-        // alert('hello')
-        let unitProcessContainer = document.querySelector('.unit-process-container')
-        unitProcessContainer.innerHTML += `
-            <div class="row mt-2">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Unit process" name="unit_process[]">
-                    </div>
-                </div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_unit_process(this)" type="button">  Remove </button></div>
-            </div>
-        `
-    });
-
-    function remove_unit_process(ele) {
-        let parent = ele.parentElement.parentElement
-        parent.remove()
-    }
-
-    let add_more_problem_and_solution = document.querySelector('.add_more_problem_and_solution')
-    console.log(add_more_problem_and_solution);
-    add_more_problem_and_solution.addEventListener('click', () => {
-        // alert('hello')
-        let problemAndSolutionContainer = document.querySelector('.problem-and-solution-container')
-        problemAndSolutionContainer.innerHTML += `
-            <div class="row mt-2">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Problem summary and solution" name="problem_and_solution[]">
-                    </div>
-                </div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_problem_and_solution(this)" type="button">  Remove </button></div>
-            </div>
-        `
-    });
-
-    function remove_problem_and_solution(ele) {
-        let parent = ele.parentElement.parentElement
-        parent.remove()
-    }
-</script>
 @endsection
 </x-layouts.admin-app>
