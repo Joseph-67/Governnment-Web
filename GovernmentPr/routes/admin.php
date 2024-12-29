@@ -116,12 +116,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-product-innovation', 'add_product_innovation')->name('admin.add-product-innovation');
         Route::post('/add-hazarduous-material', 'add_hazarduous_material')->name('admin.add-hazarduous-material');
         Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
+        Route::post('/add-problem-solution', 'add_problem_solution')->name('admin.add-problem-solution');
         
         // update
         Route::post('/update-improvement-key-area', 'update_improvement_key_area')->name('admin.update-improvement-key-area');
         Route::post('/update-product-innovation', 'update_product_innovation')->name('admin.update-product-innovation');
         Route::post('/update-hazarduous-material', 'update_hazarduous_material')->name('admin.update-hazarduous-material');
         Route::post('/update-unit-process', 'update_unit_process')->name('admin.update-unit-process');
+        Route::post('/update-problem-summary', 'update_problem')->name('admin.update-problem-summary');
+        Route::post('/update-suggested-solution', 'update_solution')->name('admin.update-suggested-solution');
         
         // remove
         Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
@@ -134,5 +137,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-product-innovation', 'remove_product_innovation')->name('admin.remove-product-innovation');
         Route::post('/remove-hazaduous-material', 'remove_hazarduous_material')->name('admin.remove-hazarduous-material');
         Route::post('/remove-unit-process', 'remove_unit_process')->name('admin.remove-unit-process');
+        Route::post('/remove-problem-solution', 'remove_problem_solution')->name('admin.remove-problem-solution');
     });
 });

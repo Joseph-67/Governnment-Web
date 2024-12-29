@@ -522,21 +522,47 @@
                                                             <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_unit_process" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 mt-2">
+                                                    
+                                                    <div class="col-md-12">
                                                         <div class="col-md-8">
-                                                            <label for=""> Problem Summary and Suggested Solutions. </label>
-                                                            </div>
-                                                            <div class="row mt-1">
-                                                                <div class="col-md-9">
-                                                                    <div class="form-group">
-                                                                        <input type="text" class="form-control" placeholder="" name="problem_and_solution[]">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3"><button class="btn btn-secondary add_more_problem_and_solution" type="button">  Add </button></div>
-                                                            </div>
-                                                            
+                                                        <label for=""> Problem Summary and Suggested Solutions. </label>
                                                         </div>
-                                                        <div class="col-md-12 problem-and-solution-container"></div>
+                                                        <div class="col-md-12 problems-solutions-container">
+                                                            @foreach($company_problems_and_solutions as $problemSolution)
+                                                                <div class="row g-2 my-1 align-items-end">
+                                                                    <div class="col-md-5">
+                                                                        <label for="">Problem Summary</label>
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" value="{{ $problemSolution->problem_title }}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                    <label for="">Suggested Solution</label>
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" value="{{ $problemSolution->solution_title }}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, "{{ $problemSolution->problemSolutionID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                        
+                                                        <div class="row g-2 align-items-end">
+                                                            <div class="col-md-5">
+                                                                <label for="">Problem summary</label>
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="Problem summary" id="problem_summary">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <label for="">Suggested Solution</label>
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" placeholder="Suggested solution" id="suggested_solution">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 "><button class="btn btn-outline-primary btn-sm add_more_problem_solution" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <!-- Process specific specialization -->
                                                 <!-- waste reduction measures -->
@@ -1792,7 +1818,7 @@ add_more_unit_process.addEventListener('click', () => {
     });
 });
 
-// ***** Udate ******//
+// ***** Update ******//
 function update_unit_process(company, unit_process_id, ele) {
     console.log(company, unit_process_id, ele.value);
     let unit_process_value = ele.value.trim();
@@ -1830,6 +1856,155 @@ function remove_unit_process(ele, unit_process_id) {
         let formData = new FormData();
         formData.append('unit_process_id', unit_process_id)
         fetch_cycle('--Remove Unit Process', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status == 'success') {
+                parent.remove()
+            }
+        });
+        
+    }
+}
+// end unit process
+
+// Problem Summary & Suggeseted Solution
+// ***** Add ******//
+let add_more_problem_solution = document.querySelector('.add_more_problem_solution')
+add_more_problem_solution.addEventListener('click', () => {
+    let problem_summary_value = document.querySelector('#problem_summary').value.trim();
+    let suggested_solution_value = document.querySelector('#suggested_solution').value.trim();
+    if(!problem_summary_value){
+        Toastify({
+            text: "Problem summary field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+    if(!suggested_solution_value){
+        Toastify({
+            text: "Suggested solution field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.add-problem-solution') }}`;
+    let formData = new FormData();
+    formData.append('company', '{{$company->company_id}}')
+    formData.append('problem_summary', problem_summary_value);
+    formData.append('suggested_solution', suggested_solution_value);
+    
+    fetch_cycle('--Add Problem Solution', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+        if (result.problems_solutions) {
+            let container = document.querySelector('.problems-solutions-container')
+            container.innerHTML ="";
+            result.problems_solutions.forEach(element => {
+                console.log(element);
+                container.innerHTML += `
+                    <div class="row g-2 my-1 align-items-end">
+                        <div class="col-md-5">
+                            <label for="">Problem Summary</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="">Suggested Solution</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                    </div>
+                `
+            });
+        }
+    });
+});
+
+// ***** Update problem ******//
+function update_problem_summary(company, problem_solution_id, ele) {
+    console.log(company, problem_solution_id, ele.value);
+    let problem_summary_value = ele.value.trim();
+    if (!problem_summary_value) {
+        Toastify({
+            text: "Problem summary field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-problem-summary') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('problem_solution_id', problem_solution_id)
+    formData.append('problem_summary', problem_summary_value);
+    fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+// ***** Update solution ******//
+function update_suggested_solution(company, problem_solution_id, ele) {
+    console.log(company, problem_solution_id, ele.value);
+    let suggested_solution_value = ele.value.trim();
+    if (!suggested_solution_value) {
+        Toastify({
+            text: "Suggested solution field cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-suggested-solution') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('problem_solution_id', problem_solution_id)
+    formData.append('suggested_solution', suggested_solution_value);
+    fetch_cycle('--Update suggested solution', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+function remove_problem_solution(ele, problem_solution_id) {
+    console.log(ele, problem_solution_id);
+    let parent = ele.parentElement.parentElement
+    if (confirm("Do you want to delete this Problem summary with it's suggested solution?")) {
+        let url = `{{ route('admin.remove-problem-solution') }}`;
+        let formData = new FormData();
+        formData.append('problem_solution_id', problem_solution_id)
+        fetch_cycle('--Remove Problem Solution', url, 'POST', formData).then(result => {
             console.log(result);
             if (result.status == 'success') {
                 parent.remove()
