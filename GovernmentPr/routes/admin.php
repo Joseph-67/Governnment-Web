@@ -112,6 +112,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-waste-reduction-measure', 'add_waste_reduction_measure')->name('admin.add-waste-reduction-measure');
         Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
         Route::post('/add-product-recovery-measure', 'add_product_recovery_measure')->name('admin.add-product-recovery-measure');
+        Route::post('/add-improvement-key-area', 'add_improvement_key_area')->name('admin.add-improvement-key-area');
+        
+        // update
+        Route::post('/update-improvement-key-area', 'update_improvement_key_area')->name('admin.update-improvement-key-area');
         
         // remove
         Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
@@ -120,5 +124,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-waste-reduction-measure', 'remove_waste_reduction_measure')->name('admin.remove-waste-reduction-measure');
         Route::post('/remove-waste-disposal-method', 'remove_waste_management_method')->name('admin.remove-waste-disposal-method');
         Route::post('/remove-product-recovery-measure', 'remove_product_recovery_measure')->name('admin.remove-product-recovery-measure');
+        Route::post('/remove-improvement-key-area', 'remove_improvement_key_area')->name('admin.remove-improvement-key-area');
     });
 });

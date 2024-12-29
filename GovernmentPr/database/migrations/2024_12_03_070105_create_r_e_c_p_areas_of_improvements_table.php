@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_areas_of_improvements', function (Blueprint $table) {
             $table->id('improvementAreaID');
             $table->unsignedBigInteger('companyID');
-            $table->string('area_title', 225);
+            $table->string('area_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

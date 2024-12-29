@@ -358,45 +358,57 @@
                                                     <div class="col-md-8">
                                                     <label for="">Key areas for improving performance in your industry.</label>
                                                     </div>
-                                                    <div class="row mt-1">
+                                                    <div class="col-md-12 key-areas-container">
+                                                            @foreach($company_areas_of_improvement as $keyArea)
+                                                                <div class="row g-2 my-1">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" value="{{ $keyArea->area_title }}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", "{{ $keyArea->improvementAreaID }}", this)'>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, "{{ $keyArea->improvementAreaID }}")' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                                                </div>
+                                                            @endforeach
+                                                    </div>
+                                                    <div class="row mt-1 g-2">
                                                         <div class="col-md-9">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
+                                                                <input type="text" class="form-control" placeholder="Key area for performance improvement" id="key_area_for_improvent">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_key_areas" type="button">  Add </button></div>
+                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_key_areas" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
                                                     </div>
                                                     
                                                 </div>
-                                                <div class="col-md-12 key-areas-container"></div>
+                                                
 
-                                                <div class="col-md-12 mt-2">
+                                                <div class="col-md-12 mt-1">
                                                     <div class="col-md-8">
                                                     <label for="">Highlight innovations that enhance your product's environmental compatibility.</label>
                                                     </div>
-                                                    <div class="row mt-1">
+                                                    <div class="row mt-1 g-2">
                                                         <div class="col-md-9">
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control" placeholder="" name="innovation_that_enhance_product[]">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_innovative_changes" type="button">  Add </button></div>
+                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_innovative_changes" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
                                                     </div>
                                                     
                                                 </div>
                                                 <div class="col-md-12 product-innovation-container"></div>
 
-                                                <div class="col-md-12 mt-2">
+                                                <div class="col-md-12 mt-1">
                                                     <div class="col-md-8">
                                                     <label for="">Identify hazarduous materials in your process system that can be reduced, eliminated, or replaced with safer alternatives.</label>
                                                     </div>
-                                                    <div class="row mt-1">
+                                                    <div class="row mt-1 g-2">
                                                         <div class="col-md-9">
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control" placeholder="" name="hazardous_material_in_process[]">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3"><button class="btn btn-secondary add_more_hazardous_material" type="button">  Add </button></div>
+                                                        <div class="col-md-3"><button class="btn btn-outline-primary btn-sm add_more_hazardous_material" type="button">  <i class="iconoir-plus fs-4"></i> </button></div>
                                                     </div>
                                                     
                                                 </div>
@@ -1405,51 +1417,188 @@ async function ChangeProductRecoveryMeasure(ele, company, measure) {
         }
     }
 }
+
+// key areas for improvement
+// ***** Add key area ******//
+let add_more_key_areas = document.querySelector('.add_more_key_areas')
+add_more_key_areas.addEventListener('click', () => {
+    let key_area_value = document.querySelector('#key_area_for_improvent').value.trim();
+    if(!key_area_value){
+        Toastify({
+            text: "Key area cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.add-improvement-key-area') }}`;
+    let formData = new FormData();
+    formData.append('company', '{{$company->company_id}}')
+    formData.append('key_area', key_area_value);
+    
+    fetch_cycle('--Add Key Area', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+        if (result.key_areas) {
+            let container = document.querySelector('.key-areas-container')
+            container.innerHTML ="";
+            result.key_areas.forEach(element => {
+                console.log(element.area_title);
+                container.innerHTML += `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.area_title}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", ${element.improvementAreaID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, ${element.improvementAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                    </div>
+                `
+            });
+        }
+    });
+});
+// ***** Udate key area ******//
+function update_key_area(company, key_area_id, ele) {
+    console.log(company, key_area_id, ele.value);
+    let key_area_value = ele.value.trim();
+    if (!key_area_value) {
+        Toastify({
+            text: "Key area cannot be empty.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+        return
+    }
+
+    let url = `{{ route('admin.update-improvement-key-area') }}`;
+    let formData = new FormData();
+    formData.append('company', company)
+    formData.append('key_area_id', key_area_id)
+    formData.append('key_area', key_area_value);
+    fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
+        // let data = await result.json()
+        console.log(result);
+    });
+}
+
+function remove_key_area(ele, key_area_id) {
+    console.log(ele, key_area_id);
+    
+    let parent = ele.parentElement.parentElement
+    // parent.remove()
+    if (confirm("Do you want to delete this area of perfomance improvement?")) {
+        let url = `{{ route('admin.remove-improvement-key-area') }}`;
+        let formData = new FormData();
+        formData.append('key_area_id', key_area_id)
+        fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
+            // let data = await result.json()
+            console.log(result);
+            if (result.status == 'success') {
+                parent.remove()
+            }
+        });
+        
+    }
+}
+// end key area for improvement
+
+async function fetch_cycle(subject, url, method, form_data) {
+    try {
+        let response = await fetch(url, {
+            method: method,
+            headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}',},
+            credentials: 'same-origin',
+            body: form_data
+        });
+
+        let data = await response.json();
+
+        // feedback
+        if (data.status == 'success'){
+            Toastify({
+                text: data.message,
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+            }).showToast();
+            return data
+        }else if(data.status == 'error'){
+            console.log(data.errors);
+            for (let key in data.errors) {
+                Toastify({
+                    text: data.errors[key],
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+            }
+        }
+        // end feedback
+    } catch (error) {
+        console.error('Fetch error:', error);
+        Toastify({
+            text: "An unexpected error occurred.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #ff0000, #ff1745)",
+            },
+        }).showToast();
+    }
+
+}
 </script>
 
 <script>
-    let add_more_key_areas = document.querySelector('.add_more_key_areas')
-    add_more_key_areas.addEventListener('click', () => {
-        let container = document.querySelector('.key-areas-container')
-        container.innerHTML += `
-            <div class="row mt-2">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
-                    </div>
-                </div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_key_area(this)" type="button">  Remove </button></div>
-            </div>
-        `
-    });
+    // let add_more_key_areas = document.querySelector('.add_more_key_areas')
+    // add_more_key_areas.addEventListener('click', () => {
+    //     let container = document.querySelector('.key-areas-container')
+    //     container.innerHTML += `
+    //         <div class="row mt-2">
+    //             <div class="col-md-9">
+    //                 <div class="form-group">
+    //                     <input type="text" class="form-control" placeholder="Key area for improving performance in your industry" name="key_area_for_improvent[]">
+    //                 </div>
+    //             </div>
+    //             <div class="col-md-3"><button class="btn btn-danger" onclick="remove_key_area(this)" type="button">  Remove </button></div>
+    //         </div>
+    //     `
+    // });
 
-    function remove_key_area(ele) {
-        let parent = ele.parentElement.parentElement
-        parent.remove()
-    }
+
 
     let add_more_product_innovation = document.querySelector('.add_more_innovative_changes')
     console.log(add_more_product_innovation);
     
-    add_more_product_innovation.addEventListener('click', () => {
-        // alert('hello')
-        let inovationcontainer = document.querySelector('.product-innovation-container')
-        inovationcontainer.innerHTML += `
-            <div class="row mt-2">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Product's innovation" name="innovation_that_enhance_product[]">
-                    </div>
-                </div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="remove_product_innovation(this)" type="button">  Remove </button></div>
-            </div>
-        `
-    });
 
-    function remove_product_innovation(ele) {
-        let parent = ele.parentElement.parentElement
-        parent.remove()
-    }
+
 
         let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
         console.log(add_more_hazardous_material);

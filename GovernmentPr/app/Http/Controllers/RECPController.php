@@ -350,6 +350,125 @@ class RECPController extends Controller
             'product_recovery_measure' => $request->product_recovery_measure
         ]);
     }
+
+    // Key Area For Improvement
+    // create
+    public function add_improvement_key_area(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company'                   =>  ['required', 'numeric'],
+            'key_area'   =>  ['nullable', 'string', Rule::unique('recp_areas_of_improvements', 'area_title')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company']);
+            })]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        RECP_areas_of_improvement::create([
+            'companyID' => $request['company'],
+            'area_title' => $request['key_area']
+        ]);
+        $areas_of_improvement  = RECP_areas_of_improvement::where('companyID', $request['company'])
+                                    ->where('status', 'active')
+                                    ->select('improvementAreaID', 'area_title')
+                                    ->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Key area for performance improvement added successfully.',
+            'key_areas' => $areas_of_improvement,
+        ]);
+    }
+
+    // update
+    public function update_improvement_key_area(Request $request)
+    {
+        $company    = $request->input('company');
+        $keyAreaId  = $request->input('key_area_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'key_area_id.required' => 'The key area ID field is required.',
+            'key_area_id.numeric' => 'The key area ID field must be a number.',
+            'key_area.unique' => 'The key area title must be unique within the company.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'     =>  ['required', 'numeric'],
+            'key_area_id' =>  ['required', 'numeric'],
+            'key_area'    =>  ['nullable', 'string', Rule::unique('recp_areas_of_improvements', 'area_title')
+                                                        ->where(function ($query) use ($company) {
+                                                            return $query->where('companyID', $company);
+                                                        })
+                                                        ->ignore($keyAreaId, 'improvementAreaID')]
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_areas_of_improvement::where('improvementAreaID', $request->key_area_id)->update([
+            'area_title' => $request['key_area']
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Key area for performance improvement updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Key area for performance improvement failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // Key Area For Improvement
+    public function remove_improvement_key_area(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'key_area_id'      =>  ['required', 'numeric']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_areas_of_improvement::where('improvementAreaID', $request['key_area_id'])
+        ->delete();
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status'            =>  'success',
+                'message'           =>  'Area of performance improvement removed successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('delete_error', 'Key area for performance improvement failed to delete.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *

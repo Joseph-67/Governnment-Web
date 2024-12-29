@@ -39,6 +39,7 @@ class CompanyController extends Controller
         $data['company_waste_reduction_measures']   = RECP_waste_reduction_measure::where('companyID', $companyID)->where('status', 'active')->get();
         $data['company_management_measures']   = RECP_waste_management_method::where('companyID', $companyID)->where('status', 'active')->get();
         $data['company_product_recovery_measures']   = RECP_product_recovery_method::where('companyID', $companyID)->where('status', 'active')->get();
+        $data['company_areas_of_improvement']   = RECP_areas_of_improvement::where('companyID', $companyID)->where('status', 'active')->select('improvementAreaID', 'area_title')->get();
         // dd($company);
         return view('components.apps.companyProfile', $data);
     }
