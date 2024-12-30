@@ -103,7 +103,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
         Route::post ('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
         Route::post ('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
-        Route::post ('/company/update/{id}', 'updateCompanyDetails')->name('update-company-details');
+        Route::post ('/company/update', 'updateCompanyDetails')->name('update-company-details');
     });
 
     Route::controller(RECPController::class)->group(function(){

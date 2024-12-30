@@ -1417,9 +1417,9 @@
                             <div class="card-body pt-0">
                             <x-validation-errors class="alert" alert />
                                 @include('shared.feedback')
-                                <form action="{{route('update-company-details')}}" method="post">
+                                <form id="general-settings" action="{{route('update-company-details')}}" method="post">
                                     @csrf
-                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <input type="text" class="form-control" placeholder="Company name"
@@ -1438,7 +1438,7 @@
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
                                                 <label for="">Industrial Process Used</label>
-                                                <select name="" id="industry-process" name="industry_process_used"
+                                                <select id="industry-process" name="industry_process_used"
                                                     class="form-select">
                                                     <option value="" selected disabled> Choose... </option>
                                                 </select>
@@ -1492,7 +1492,9 @@
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class="col-md-3 py-3">
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <div class="d-flex g-1">
+                                                <button type="button" class="btn btn-primary" id="btn-general-settings">Save</button><span class="loader" id="loader"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -2899,6 +2901,155 @@
             });
         });
         // end material
+
+        // general setting
+        let btn_general_settings = document.querySelector('#btn-general-settings')
+        btn_general_settings.addEventListener('click', () => {
+            // Show the loader
+            let loader = document.querySelector('#general-settings #loader');
+            loader.style.display = 'inline-block';
+            let company_id = document.querySelector('#general-settings input[name="company_id"]').value.trim();
+            let company_name = document.querySelector('#general-settings input[name="company_name"]').value.trim();
+            let industry = document.querySelector('#general-settings select[name="industry"]').value.trim();
+            let industry_process_used = document.querySelector('#general-settings select[name="industry_process_used"]').value.trim();
+            let email = document.querySelector('#general-settings input[name="email"]').value.trim();
+            let website_address = document.querySelector('#general-settings input[name="website_address"]').value.trim();
+            let primary_phone_number = document.querySelector('#general-settings input[name="primary_phone_number"]').value.trim();
+            let secondary_phone_number = document.querySelector('#general-settings input[name="secondary_phone_number"]').value.trim();
+            let number_of_employees = document.querySelector('#general-settings input[name="number_of_employees"]').value.trim();
+            let date_of_establishment = document.querySelector('#general-settings input[name="date_of_establishment"]').value.trim();
+
+            if (!company_id) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Company id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!company_name) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Company name field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!industry) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Industry field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!email) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Company email field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!primary_phone_number) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Primary phone number field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!number_of_employees) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Number of employees field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!date_of_establishment) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Establishment date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+
+            let url = document.querySelector('#general-settings').action;
+            let formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('company_name', company_name);
+            formData.append('industry', industry);
+            formData.append('industry_process', industry_process_used);
+            formData.append('email', email);
+            formData.append('website_address', website_address);
+            formData.append('primary_phone_number', primary_phone_number);
+            formData.append('secondary_phone_number', secondary_phone_number);
+            formData.append('number_of_employees', number_of_employees);
+            formData.append('establishment_date', date_of_establishment);
+
+            fetch_cycle('--Update Personal company details', url, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result, result.companies_info);
+                if (result.companies_info) {
+                    loader.style.display = 'none';
+
+                }
+            });
+
+        });
+        // end general setting 
+
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {
