@@ -1390,9 +1390,10 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Creat Project</a>
-                                                            <a class="dropdown-item" href="#">Open Project</a>
-                                                            <a class="dropdown-item" href="#">Tasks Details</a>
+                                                            <a class="dropdown-item" href="#">Open Material</a>
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Setup Price</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1660,6 +1661,53 @@
     <!--end Rightbar/offcanvas-->
     <!--end Rightbar-->
 
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Setup Price </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-2">
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Per Unit</label>
+                    <input type="number" value="1" min="0" class="form-control" placeholder="Unit of Measurement"
+                        name="unit">
+                </div>
+            </div>
+             <!-- Unit of measurement -->
+            <!-- Price -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Price of Disposal in Naira(₦).</label>
+                    <input type="number" min="0" class="form-control" placeholder="Price"
+                        name="price">
+                </div>
+            </div>
+             <!-- end Price -->
+            <!-- Price -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" min="0" class="form-control" 
+                        name="date">
+                </div>
+            </div>
+             <!-- end Price -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -2761,8 +2809,9 @@
         btn_submit_material.addEventListener('click', () => {
             console.log("clicked");
             // Show the loader
-            const loader = document.getElementById('loader');
+            let loader = document.getElementById('loader');
             loader.style.display = 'inline-block';
+
             let companyID = document.querySelector('input[name="company_id"]').value.trim();
             let materialID = document.querySelector('select[name="material"]').value.trim();
             let serialNo = document.querySelector('input[name="serial_number"]').value.trim();
@@ -2797,6 +2846,7 @@
                 loader.style.display = 'none';
                 return
             }
+
             let url = "{{ route('admin.save-company-material') }}"
             let formData = new FormData();
             formData.append('companyID', companyID);
@@ -2823,9 +2873,9 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Creat Project</a>
-                                        <a class="dropdown-item" href="#">Open Project</a>
-                                        <a class="dropdown-item" href="#">Tasks Details</a>
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <a class="dropdown-item" href="#">Setup Price</a>
                                     </div>
                                 </div>
                             </td>

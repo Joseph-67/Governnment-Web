@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CompanyMaterial;
+use App\Models\MaterialPrice;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -80,6 +81,49 @@ class CompanyMaterialController extends Controller
             ]);
         }else{
             $validator->errors()->add('creation_error', 'Material failed to create.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    public function store_price(Request $request)
+    {
+        //
+        $validator = Validator::make($request->all(), [
+            'companyMaterialID' =>  ['required', 'numeric'],
+            'unit' =>  ['required', 'numeric'],
+            'price' =>  ['required', 'numeric'],
+            'date' =>  ['nullable', 'date'],
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = MaterialPrice::create([
+            'companyMaterialID'  => $request['companyMaterialID'],
+            'units'  => $request['unit'],
+            'price'  => $request['price'],
+            'date'   => $request['date'],
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material price added successfully.',
+                // 'company_material_price' => $companyMaterial,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Material price failed to create.');
             return response()->json([
                 'status' => 'error',
                 'message'   => 'Validation failed.',
