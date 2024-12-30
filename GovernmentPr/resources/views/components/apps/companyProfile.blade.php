@@ -988,6 +988,10 @@
 
 @section('styles')
 <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+/>
 @endsection
 
 @section('scripts')
