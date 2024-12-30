@@ -16,6 +16,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\RECPController;
+use App\Http\Controllers\CompanyMaterialController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -138,5 +139,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-hazaduous-material', 'remove_hazarduous_material')->name('admin.remove-hazarduous-material');
         Route::post('/remove-unit-process', 'remove_unit_process')->name('admin.remove-unit-process');
         Route::post('/remove-problem-solution', 'remove_problem_solution')->name('admin.remove-problem-solution');
+    });
+
+    Route::controller(CompanyMaterialController::class)->group(function(){
+        Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
     });
 });

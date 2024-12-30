@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CompanyMaterial;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 class CompanyMaterialController extends Controller
 {
     /**
@@ -36,6 +40,52 @@ class CompanyMaterialController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'companyID'         =>  ['required', 'numeric'],
+            'material'          =>  ['required', 'numeric', Rule::unique('company_materials', 'materialID')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['companyID']);
+            })],
+            'serial_number'   =>  ['nullable', 'string'],
+            'unit_of_measurement' => ['nullable', 'string']
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = CompanyMaterial::create([
+            'companyID'         => $request['companyID'],
+            'materialID'        => $request['material'],
+            'serial_number'     => $request['serial_number'],
+            'unit_of_measure'   => $request['unit_of_measurement'],
+        ]);
+
+    
+        if ($result) {
+            # code...
+            $companyMaterial  = CompanyMaterial::where('companyID', $request['companyID'])
+            ->join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+            ->where('company_materials.status', 'active')
+            ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
+            ->get();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material added successfully.',
+                'company_material' => $companyMaterial,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Material failed to create.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
     }
 
     /**

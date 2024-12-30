@@ -1348,20 +1348,59 @@
                                             </div>
                                         </div>
                                          <!-- Unit of measurement -->
-                                         <div class="col">
-                                            <button type="button" class="btn btn-primary">Save</button>
-                                        </div>
+                                          <div class="col-md-3">
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                            </div>
+                                          </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header">
-                            <div class="row align-items-center">
+                                <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company Materials</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
+                                        <thead>
+                                        <tr>
+                                            <th>Material</th>
+                                            <th>Serial No.</th>
+                                            <th>Unit of Measurement</th>
+                                            <th>Material Status</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($companyMaterials as $material)
+                                            <tr>
+                                                <td>{{ $material->material }}</td>
+                                                <td>{{ $material->serial_number }}</td>
+                                                <td> {{ $material->unit_of_measure }} </td>
+                                                <td><span class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{ $material->company_material_status }}</span></td>
+                                                <td class="text-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="#">Creat Project</a>
+                                                            <a class="dropdown-item" href="#">Open Project</a>
+                                                            <a class="dropdown-item" href="#">Tasks Details</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
                             </div>
                         </div>
                     </div>
@@ -1624,6 +1663,28 @@
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <style>
+    /* Loader style */
+    .loader {
+      display: none;
+      margin: 20px auto;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
     @endsection
 
     @section('scripts')
@@ -2695,6 +2756,85 @@
         }
         // end hazarduous material
 
+        // material
+        let btn_submit_material = document.querySelector('#btn-submit-material');
+        btn_submit_material.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            const loader = document.getElementById('loader');
+            loader.style.display = 'inline-block';
+            let companyID = document.querySelector('input[name="company_id"]').value.trim();
+            let materialID = document.querySelector('select[name="material"]').value.trim();
+            let serialNo = document.querySelector('input[name="serial_number"]').value.trim();
+            let unit = document.querySelector('input[name="unit_of_measurement"]').value.trim();
+            if (!companyID) {
+                Toastify({
+                    text: "Company id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!materialID) {
+                Toastify({
+                    text: "Material field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            let url = "{{ route('admin.save-company-material') }}"
+            let formData = new FormData();
+            formData.append('companyID', companyID);
+            formData.append('material', materialID);
+            formData.append('serial_number', serialNo);
+            formData.append('unit_of_measurement', unit);
+            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+                if (result.company_material) {
+                    let tableBody = document.querySelector('#tbl-company-material tbody')
+                    console.log(tableBody);
+                    tableBody.innerHTML = ""
+                    result.company_material.forEach(material => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${material.material}</td>
+                            <td>${material.serial_number}</td>
+                            <td>${material.unit_of_measure}</td>
+                            <td> <span class="badge bg-${(material.company_material_status == 'active')?'success':'danger'}">${material.company_material_status}</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Creat Project</a>
+                                        <a class="dropdown-item" href="#">Open Project</a>
+                                        <a class="dropdown-item" href="#">Tasks Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`
+                    });
+                }
+            });
+        });
+        // end material
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {

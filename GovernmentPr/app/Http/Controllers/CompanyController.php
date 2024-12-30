@@ -48,6 +48,11 @@ class CompanyController extends Controller
         $data['company_problems_and_solutions']     =   RECP_problem_and_solution::where('companyID', $companyID)->where('status', 'active')->select('problemSolutionID', 'problem_title', 'solution_title')->get();
         // material
         $data['materials']     =   Material::where('status', 'active')->select('materialID', 'material')->get();
+        $data['companyMaterials']  = CompanyMaterial::where('companyID', $companyID)
+        ->join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+        ->where('company_materials.status', 'active')
+        ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
+        ->get();
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }
