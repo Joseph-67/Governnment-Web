@@ -1313,6 +1313,55 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        <!-- Material  -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Material</label>
+                                                <select name="material" id="material" class="form-select">
+                                                    <option value="" selected disabled> Choose... </option>
+                                                    @foreach($materials as $material)
+                                                    <option value="{{ $material->materialID }}"> {{ $material->material }} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Material ends -->
+                                         <!-- Serial Number -->
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Serial Number(If any)</label>
+                                                <input type="text" class="form-control" placeholder="Serial Number"
+                                                    name="serial_number">
+                                            </div>
+                                        </div>
+                                         <!-- Serial Number -->
+                                        <!-- Unit of measurement -->
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Unit of Measurement</label>
+                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
+                                                    name="unit_of_measurement">
+                                            </div>
+                                        </div>
+                                         <!-- Unit of measurement -->
+                                         <div class="col">
+                                            <button type="button" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                            <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Company Materials</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
                             </div>
                         </div>
                     </div>

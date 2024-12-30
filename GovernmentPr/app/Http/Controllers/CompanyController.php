@@ -17,6 +17,8 @@ use App\Models\RECP_waste_management_method;
 use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
+use App\Models\Material;
+use App\Models\CompanyMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -44,6 +46,8 @@ class CompanyController extends Controller
         $data['company_hazarduous_material']        =   RECP_harzardous_materials::where('companyID', $companyID)->where('status', 'active')->select('hazarduousMaterialID', 'material_title')->get();
         $data['company_unit_process']               =   RECP_unit_of_process::where('companyID', $companyID)->where('status', 'active')->select('unitProcessID', 'unit_process_title')->get();
         $data['company_problems_and_solutions']     =   RECP_problem_and_solution::where('companyID', $companyID)->where('status', 'active')->select('problemSolutionID', 'problem_title', 'solution_title')->get();
+        // material
+        $data['materials']     =   Material::where('status', 'active')->select('materialID', 'material')->get();
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }
