@@ -123,6 +123,10 @@
                             aria-selected="false">R.E.C.P</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
+                            aria-selected="false">Materials</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
                             aria-selected="false">Settings</a>
                     </li>
@@ -1299,6 +1303,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane p-3" id="materials" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Setup Material</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0">
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane p-3" id="settings" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
@@ -1316,6 +1333,7 @@
                                             <input type="text" class="form-control" placeholder="Company name"
                                                 name="company_name" value="{{ $company->company_name }}">
                                         </div>
+
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
                                                 <label for="">Industry</label>
@@ -1324,6 +1342,7 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
                                                 <label for="">Industrial Process Used</label>
@@ -1333,6 +1352,7 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
                                                 <label for="">Email</label>
@@ -1398,7 +1418,7 @@
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
                                                 <label for="">Country</label>
-                                                <select name="country" id="" class="form-select countries"
+                                                <select name="country" class="form-select countries"
                                                     id="countryId">
                                                     <option value="" selected disabled> Choose... </option>
                                                 </select>
@@ -1487,21 +1507,17 @@
                                 <h4 class="card-title">Other Settings</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <div class="row">
-                                    <div class="col-md-12 mt-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse"
-                                                name="is_sharable" value="active">
-                                            <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
-                                                your information to be shared with other companies</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mt-md-4">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-warning">Deactivate Company</button>
-                                            <button type="button" class="btn btn-danger">Delete Company</button>
-                                        </div>
-                                    </div>
+                            <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse"
+                            name="is_sharable" value="active">
+                            <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
+                            your information to be shared with other companies?</label>
+                                </div>
+                                <div class="mt-2">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-warning">Deactivate Company</button>
+                                    <button type="button" class="btn btn-danger">Delete Company</button>
+                                </div>
                                 </div>
                             </div><!--end card-body-->
                         </div><!--end card-->
@@ -2731,6 +2747,42 @@
             console.log("Full phone number:", fullPhoneNumber);
             document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
         });
+    </script>
+    <script>
+        let industry_element = document.querySelector('#industry')
+        console.log(industry_element, industry_element.options);
+        for (const key in industry_element.options) {
+            let ele = industry_element.options[key]
+            console.log(ele.value, ele);
+            if (ele.value == `{{ $company->industry }}`) {
+                console.log("true", `{{ $company->true }}`);
+                ele.selected = true
+            }
+        }
+
+        let industry_process_element = document.querySelector('#industry-process')
+        console.log(industry_process_element, industry_process_element.options);
+        for (const key in industry_process_element.options) {
+            let ele = industry_process_element.options[key]
+            console.log(ele.value, ele);
+            if (ele.value == `{{ $company->industry_process }}`) {
+                console.log("true", `{{ $company->true }}`);
+                ele.selected = true
+            }
+        }
+
+
+        setTimeout(() => {
+            let countriesEle = document.querySelector('.countries')
+            console.log(countriesEle.options, countriesEle);
+            for (let index = 0; index < countriesEle.options.length; index++) {
+                const element = countriesEle.options[index];
+                console.log(element);
+                
+            }
+            let loadCountries = Array.from(countriesEle.options).map(option=> option.value)
+            console.log(loadCountries);
+        }, 1000);
     </script>
     @endsection
 </x-layouts.admin-app>

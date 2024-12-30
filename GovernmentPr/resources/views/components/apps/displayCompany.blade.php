@@ -55,9 +55,6 @@
                                     <td>{{$company->gis_location}}</td>
                                     <td>
                                         <a href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" class="btn btn-link">View</a>
-                                        <a href="" class="btn btn-warning">Edit</a>
-                                        <a href="" class="btn btn-danger">Delete</a>
-                                        <a href="{{ route('admin.create-recp', ['id'=> encrypt($company->company_id)]) }}" class="btn btn-outline-primary">Register RECP</a>
                                     </td>
                                 </tr>
                                 @endforeach                                                                        
