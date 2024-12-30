@@ -61,6 +61,75 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function updateCompanyDetails(Request $request)
+{
+    // Extract the company ID from the request
+    $companyId = $request->input('company_id');
+
+    // Validation rules and custom error messages
+    $messages = [
+        'company_name.required' => 'The company name field is required.',
+        'industry.required' => 'The industry field is required.',
+        'industry_process.required' => 'The industry process field is required.',
+        'email.required' => 'The email field is required.',
+        'email.email' => 'The email must be a valid email address.',
+        'email.unique' => 'The email must be unique.',
+        'website_address.url' => 'The website address must be a valid URL.',
+        'phone_number.required' => 'The phone number field is required.',
+        'secondary_phone_number.numeric' => 'The secondary phone number must be a valid number.',
+        'number_of_employees.integer' => 'The number of employees must be an integer.',
+        'establishment_date.date' => 'The establishment date must be a valid date.',
+    ];
+
+    // Validation rules
+    $validator = Validator::make($request->all(), [
+        'company_name' => ['required', 'string', 'max:255'],
+        'industry' => ['required', 'string', 'max:255'],
+        'industry_process' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', Rule::unique('companies', 'email')->ignore($companyId)],
+        'website_address' => ['nullable', 'url'],
+        'phone_number' => ['required', 'string', 'max:15'],
+        'secondary_phone_number' => ['nullable', 'string', 'max:15'],
+        'number_of_employees' => ['nullable', 'integer'],
+        'establishment_date' => ['nullable', 'date'],
+    ], $messages);
+
+    // Return validation errors if any
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+   
+    $result = Company::where('company_id', $companyId)->update([
+        'company_name' => $request->input('company_name'),
+        'industry' => $request->input('industry'),
+        'industrial_process' => $request->input('industrial_process'),
+        'email' => $request->input('email'),
+        'website_address' => $request->input('website_address'),
+        'phone_number' => $request->input('phone_number'),
+        'secondary_phone_number' => $request->input('secondary_phone_number'),
+        'number_of_employees' => $request->input('number_of_employees'),
+        'establishment_date' => $request->input('establishment_date'),
+    ]);
+
+    // Return success or error response
+    if ($result) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company details updated successfully.',
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to update company details.',
+        ], 400);
+    }
+}
+
     public function index()
     {
         //

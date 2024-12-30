@@ -1415,7 +1415,10 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="" method="post">
+                            <x-validation-errors class="alert" alert />
+                                @include('shared.feedback')
+                                <form action="{{route('update-company-details')}}" method="post">
+                                    @csrf
                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1446,7 +1449,7 @@
                                             <div class="form-group">
                                                 <label for="">Email</label>
                                                 <input type="email" class="form-control"
-                                                    placeholder="Example: company@domain.com" name="email">
+                                                    placeholder="Example: company@domain.com" name="email" value="{{ $company->email }}">
                                             </div>
                                         </div>
 
@@ -1454,7 +1457,7 @@
                                             <div class="form-group">
                                                 <label for="">Website Address</label>
                                                 <input type="url" class="form-control" placeholder=""
-                                                    name="website_address">
+                                                    name="website_address" value="{{ $company->website_url}}">
                                             </div>
                                         </div>
 
@@ -1463,7 +1466,7 @@
                                                 <label for="">Primary Phone Number</label>
                                                 <input id="mobile_code_primary" type="tel" class="form-control"
                                                     placeholder="">
-                                                <input type="hidden" name="primary_phone_number">
+                                                <input type="hidden" name="primary_phone_number" >
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
@@ -1479,17 +1482,17 @@
                                             <div class="form-group">
                                                 <label for="">Number Of Employees.</label>
                                                 <input type="number" class="form-control" placeholder=""
-                                                    name="number_of_employees">
+                                                    name="number_of_employees" value="{{$company->number_of_employees}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <label for="">Date of Establishment</label>
-                                            <input class="form-control" type="date" id="" name="date_of_establishment">
+                                            <input class="form-control" type="date" id="" name="date_of_establishment" value="{{$company->date_of_establishment}}">
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class="col-md-3 py-3">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1563,7 +1566,8 @@
                                 <h4 class="card-title">Contact Personnel</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <div class="row">
+                           <form action="">
+                           <div class="row">
                                     <div class="col-md-12">
                                         <input type="text" class="form-control"
                                             placeholder="Full Name Of Enviromental Operations Specialist or Manager"
@@ -1586,9 +1590,15 @@
                                             <input type="hidden" name="contact_person_phone_number">
                                         </div>
                                     </div>
+                                    <div class="row justify-content-end">
+                                            <div class="col-md-3 py-3">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </div>
                                     
                                    
                                 </div>
+                           </form>
                             </div><!--end card-body-->
                         </div><!--end card-->
                         <div class="card">
@@ -1602,9 +1612,13 @@
                             <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
                             your information to be shared with other companies?</label>
                                 </div>
+                                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="settings-switch1">
+                    <label class="form-check-label" for="settings-switch1">Activate Company</label>
+                </div><!--end form-switch-->
                                 <div class="mt-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-warning">Deactivate Company</button>
+                                    <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
                                     <button type="button" class="btn btn-danger">Delete Company</button>
                                 </div>
                                 </div>
