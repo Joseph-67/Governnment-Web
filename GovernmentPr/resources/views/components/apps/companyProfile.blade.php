@@ -741,108 +741,128 @@
                                         <div class="card-header">
                                             <div class="row align-items-center">
                                                 <div class="col">                      
-                                                    <h4 class="card-title">Personal Information</h4>                      
+                                                    <h4 class="card-title">Company's Personal Information</h4>                      
                                                 </div><!--end col-->                                                       
                                             </div>  <!--end row-->                                  
                                         </div><!--end card-header-->
                                         <div class="card-body pt-0">                       
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">First Name</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="text" value="Rosa">
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Last Name</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="text" value="Dodson">
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Company Name</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="text" value="MannatThemes">
-                                                    <span class="form-text text-muted font-12">We'll never share your email with anyone else.</span>
-                                                </div>
-                                            </div>
-                
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Contact Phone</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="las la-phone"></i></span>
-                                                        <input type="text" class="form-control" value="+123456789" placeholder="Phone" aria-describedby="basic-addon1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Email Address</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="las la-at"></i></span>
-                                                        <input type="text" class="form-control" value="rosa.dodson@demo.com" placeholder="Email" aria-describedby="basic-addon1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Website Link</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="la la-globe"></i></span>
-                                                        <input type="text" class="form-control" value=" https://mannatthemes.com/" placeholder="Email" aria-describedby="basic-addon1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">USA</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <select class="form-select">
-                                                        <option>London</option>
-                                                        <option>India</option>
-                                                        <option>USA</option>
-                                                        <option>Canada</option>
-                                                        <option>Thailand</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                    <button type="button" class="btn btn-danger">Cancel</button>
-                                                </div>
-                                            </div>                                                    
+                                <form action="" method="">
+                                <div class="row">
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Company name" name="company_name">
+            </div>
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Industry</label>
+                    <select name="industry" id="industry" class="form-select">
+                        <option value="" selected disabled> Choose... </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2">
+            <div class="form-group">
+                    <label for="">Industrial Process Used</label>
+                    <select name="" id="industry-process" name="industry_process_used" class="form-select">
+                        <option value="" selected disabled> Choose... </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="email" class="form-control" placeholder="Example: company@domain.com" name="email">
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Website Address</label>
+                    <input type="url" class="form-control" placeholder="" name="website_address">
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Primary Phone Number</label>
+                    <input id="mobile_code_primary" type="tel" class="form-control" placeholder="">
+                    <input type="hidden" name="primary_phone_number">
+                </div>
+            </div>
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Secondary Phone Number</label>
+                    <input id="mobile_code_secondary" type="tel" class="form-control" placeholder="" >
+                    <input type="hidden" name="secondary_phone_number">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <div class="form-group">
+                    <label for="">Number Of Employees.</label>
+                    <input type="number" class="form-control" placeholder="" name="number_of_employees">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <label for="">Date of Establishment</label>
+                <input class="form-control" type="date" id="" name="date_of_establishment">
+            </div>
+            <div class="row justify-content-end">
+    <div class="col-md-3 py-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+        </div>  
+            </form>                                                
                                         </div><!--end card-body-->                                            
                                     </div><!--end card-->
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4 class="card-title">Change Password</h4>
+                                            <h4 class="card-title">Company's Location</h4>
                                         </div><!--end card-header-->
                                         <div class="card-body pt-0"> 
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Current Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="Password">
-                                                    <a href="#" class="text-primary font-12">Forgot password ?</a>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">New Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="New Password">
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Confirm Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="Re-Password">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
-                                                    <button type="submit" class="btn btn-primary">Change Password</button>
-                                                    <button type="button" class="btn btn-danger">Cancel</button>
-                                                </div>
-                                            </div>   
+                                        <div class="row">
+            <div class="col-md-4 mt-2">
+                <div class="form-group">
+                    <label for="">Country</label>
+                    <select name="country" id="" class="form-select countries" id="countryId">
+                        <option value="" selected disabled> Choose... </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <div class="form-group">
+                    <label for="">State</label>
+                    <select id="" class="form-select states" onchange="toggleLGA(this);" id="stateId" name="state">
+                        <option value="" selected disabled> Choose... </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <div class="form-group">
+                    <label for="">City</label>
+                    <select id="lga" class="form-select select-lga cities" id="cityId" name="city">
+                        <option value="" selected disabled> Choose... </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-2">
+                <div class="form-group">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" placeholder="" name="address">
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Geographic Information System(GIS) Location</label>
+                    <input type="text" class="form-control" placeholder="" name="gis_location">
+                </div>
+            </div>
+        </div>  
                                         </div><!--end card-body-->
                                     </div><!--end card-->
                                     <div class="card">
@@ -850,20 +870,36 @@
                                             <h4 class="card-title">Other Settings</h4>
                                         </div><!--end card-header-->
                                         <div class="card-body pt-0">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="Email_Notifications" checked>
-                                                <label class="form-check-label" for="Email_Notifications">
-                                                    Email Notifications
-                                                </label>
-                                                <span class="form-text text-muted fs-12 mt-0">Do you need them?</span>
-                                              </div>
-                                              <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" value="" id="API_Access">
-                                                <label class="form-check-label" for="API_Access">
-                                                    API Access
-                                                </label>
-                                                <span class="form-text text-muted font-12 mt-0">Enable/Disable access</span>
-                                            </div>
+                                        <div class="row">
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Full Name Of Enviromental Operations Specialist or Manager" name="enviromental_operations_manager">
+            </div>
+            <div class="col-md-6 mt-2">
+                <input type="text" class="form-control" placeholder="Full Name Of Contact Person" name="contact_person_name">
+            </div>
+            <div class="col-md-6 mt-2">
+                <input type="text" class="form-control" placeholder="Office Position of Contact Person" name="contact_person_position">
+            </div>
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label for="">Contact Personnel Phone Number</label>
+                    <input id="mobile_code_contact" type="tel" class="form-control" placeholder="" >
+                    <input type="hidden" name="contact_person_phone_number">
+                </div>
+            </div>
+            <div class="col-md-12 mt-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse" name="is_sharable" value="active">
+                    <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for your information to be shared with other companies</label>
+                </div>
+            </div>
+            <div class="col-md-12 mt-md-4">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-warning">Deactivate Company</button>
+                 <button type="button" class="btn btn-danger">Delete Company</button>
+            </div>
+            </div>
+        </div>
                                         </div><!--end card-body-->
                                     </div><!--end card-->
 
@@ -1899,6 +1935,48 @@ async function fetch_cycle(subject, url, method, form_data) {
 
 }
 </script>
+<script src="{{ asset('adminAssets/js/location.js') }}"></script>
+<script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+<script>
+    // -----Country Code Selection
+    let tel_primary = document.querySelector('#mobile_code_primary')
+    let tel_secondary = document.querySelector('#mobile_code_secondary')
+    let tel_contact = document.querySelector('#mobile_code_contact')
+    let primary = window.intlTelInput(tel_primary, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+    let secondary = window.intlTelInput(tel_secondary, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+    let contact = window.intlTelInput(tel_contact, {
+    	initialCountry: "ng",
+    	separateDialCode: true,
+    	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
 
+    tel_primary.addEventListener("blur", function () {
+        const fullPhoneNumber = primary.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="primary_phone_number"]').value = fullPhoneNumber
+    });
+
+    tel_secondary.addEventListener("blur", function () {
+        const fullPhoneNumber = secondary.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="secondary_phone_number"]').value = fullPhoneNumber
+    });
+
+    tel_contact.addEventListener("blur", function () {
+        const fullPhoneNumber = contact.getNumber(); // Gets the full number in E.164 format
+        console.log("Full phone number:", fullPhoneNumber);
+        document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
+    });
+</script>
 @endsection
 </x-layouts.admin-app>
