@@ -139,7 +139,7 @@
               @csrf
               <div class="mb-3">
                 <label for="emailTo" class="form-label">To</label>
-                <input type="email" class="form-control users-list" id="" name='reciepients_email' value='abatisse2@nih.gov, Justinian Hattersley' autofocus>
+                <input type="email" class="form-control users-list" id="" name='recipients_email' value='abatisse2@nih.gov, Justinian Hattersley' autofocus>
               </div>
               <div class="mb-3">
                 <label for="emailSubject" class="form-label">Subject</label>
