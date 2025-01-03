@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_innovation_areas', function (Blueprint $table) {
             $table->id('innovationAreaID');
             $table->unsignedBigInteger('companyID');
-            $table->string('innovation_area_title');
+            $table->string('innovation_area_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

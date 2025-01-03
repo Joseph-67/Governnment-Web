@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_waste_reduction_measures', function (Blueprint $table) {
             $table->id('wasteReductionID');
             $table->unsignedBigInteger('companyID');
-            $table->string('waste_reduction_title');
+            $table->string('waste_reduction_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_human_and_environmental_health_benefits', function (Blueprint $table) {
             $table->id('enviromentalBenefitID');
             $table->unsignedBigInteger('companyID');
-            $table->string('enviromental_benefit_title');
+            $table->string('environmental_benefit_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

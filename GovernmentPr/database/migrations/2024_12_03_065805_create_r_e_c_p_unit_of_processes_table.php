@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recp_unit_of_processes', function (Blueprint $table) {
             $table->id('unitProcessID');
             $table->unsignedBigInteger('companyID');
-            $table->string('unit_process_title');
+            $table->string('unit_process_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

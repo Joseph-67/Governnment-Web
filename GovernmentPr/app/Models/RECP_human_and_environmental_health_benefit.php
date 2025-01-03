@@ -12,7 +12,7 @@ class RECP_human_and_environmental_health_benefit extends Model
     protected $primaryKey = "enviromentalBenefitID";
     protected $fillable = [
         'companyID',
-        'enviromental_benefit_title',
+        'environmental_benefit_title',
         'status'
     ];
 }
