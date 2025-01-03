@@ -816,7 +816,7 @@
         </div>                                                  
         <div class="row justify-content-end">
     <div class="col-md-3 py-3">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </div>
                                             </form>                 
@@ -873,7 +873,7 @@
         </div>  
         <div class="row justify-content-end">
     <div class="col-md-3 py-3">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </div>                                         
                                             </form> 
@@ -885,7 +885,8 @@
                                             <h4 class="card-title">Other Settings</h4>
                                         </div><!--end card-header-->
                                         <div class="card-body pt-0">
-                                        <div class="row">
+              <form action="">
+              <div class="row">
             <div class="col-md-12">
                 <input type="text" class="form-control" placeholder="Full Name Of Enviromental Operations Specialist or Manager" name="enviromental_operations_manager">
             </div>
@@ -902,6 +903,11 @@
                     <input type="hidden" name="contact_person_phone_number">
                 </div>
             </div>
+            <div class="row justify-content-end">
+    <div class="col-md-3 py-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</div>  
             <div class="col-md-12 mt-md-4">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse" name="is_sharable" value="active">
@@ -915,6 +921,8 @@
             </div>
             </div>
         </div>
+          
+              </form>
                                         </div><!--end card-body-->
                                     </div><!--end card-->
 
