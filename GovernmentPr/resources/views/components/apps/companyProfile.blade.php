@@ -1309,11 +1309,12 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="" method="">
+                                <form action="" method="post">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <input type="text" class="form-control" placeholder="Company name"
-                                                name="company_name">
+                                                name="company_name" value="{{ $company->company_name }}">
                                         </div>
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
@@ -1391,7 +1392,8 @@
                                 <h4 class="card-title">Company's Location</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="">
+                                <form action="" method="post">
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
