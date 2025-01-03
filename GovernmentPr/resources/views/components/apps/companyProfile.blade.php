@@ -751,8 +751,9 @@
                                                 </div><!--end col-->                                                       
                                             </div>  <!--end row-->                                  
                                         </div><!--end card-header-->
-                                        <div class="card-body pt-0">                       
-                                        <div class="row">
+                                        <div class="card-body pt-0">      
+                                            <form action="">
+                                            <div class="row">
             <div class="col-md-12">
                 <input type="text" class="form-control" placeholder="Company name" name="company_name">
             </div>
@@ -813,14 +814,22 @@
                 <input class="form-control" type="date" id="" name="date_of_establishment">
             </div>
         </div>                                                  
+        <div class="row justify-content-end">
+    <div class="col-md-3 py-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+                                            </form>                 
+         
                                         </div><!--end card-body-->                                            
                                     </div><!--end card-->
                                     <div class="card">
                                         <div class="card-header">
                                             <h4 class="card-title">Company's Location</h4>
                                         </div><!--end card-header-->
-                                        <div class="card-body pt-0"> 
-                                        <div class="row">
+                                        <div class="card-body pt-0">
+                                            <form action="">
+                                            <div class="row">
             <div class="col-md-4 mt-2">
                 <div class="form-group">
                     <label for="">Country</label>
@@ -862,6 +871,13 @@
                 </div>
             </div>
         </div>  
+        <div class="row justify-content-end">
+    <div class="col-md-3 py-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>                                         
+                                            </form> 
+          
                                         </div><!--end card-body-->
                                     </div><!--end card-->
                                     <div class="card">
