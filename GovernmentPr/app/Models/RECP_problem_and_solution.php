@@ -12,7 +12,8 @@ class RECP_problem_and_solution extends Model
     protected $primaryKey = "problemSolutionID";
     protected $fillable = [
         'companyID',
-        'problem_solution_title',
+        'problem_title',
+        'solution_title',
         'status'
     ];
 }

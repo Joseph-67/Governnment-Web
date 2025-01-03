@@ -43,6 +43,7 @@ class CompanyController extends Controller
         $data['company_product_innovation']         =   RECP_innovation_areas::where('companyID', $companyID)->where('status', 'active')->select('innovationAreaID', 'innovation_area_title')->get();
         $data['company_hazarduous_material']        =   RECP_harzardous_materials::where('companyID', $companyID)->where('status', 'active')->select('hazarduousMaterialID', 'material_title')->get();
         $data['company_unit_process']               =   RECP_unit_of_process::where('companyID', $companyID)->where('status', 'active')->select('unitProcessID', 'unit_process_title')->get();
+        $data['company_problems_and_solutions']     =   RECP_problem_and_solution::where('companyID', $companyID)->where('status', 'active')->select('problemSolutionID', 'problem_title', 'solution_title')->get();
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }

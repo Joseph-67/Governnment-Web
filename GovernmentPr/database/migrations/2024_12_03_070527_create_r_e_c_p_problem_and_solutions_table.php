@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('recp_problem_and_solutions', function (Blueprint $table) {
             $table->id('problemSolutionID');
             $table->unsignedBigInteger('companyID');
-            $table->string('problem_solution_title', 225);
+            $table->string('problem_title', 500);
+            $table->string('solution_title', 500);
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

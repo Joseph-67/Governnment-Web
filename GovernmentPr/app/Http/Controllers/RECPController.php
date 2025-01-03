@@ -854,6 +854,182 @@ class RECPController extends Controller
         }
 
     }
+
+    // Problems and Solution
+    // create
+    public function add_problem_solution(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company'                   =>  ['required', 'numeric'],
+            'problem_summary'   =>  ['nullable', 'string', Rule::unique('recp_problem_and_solutions', 'problem_title')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company']);
+            })],
+            'suggested_solution' => ['nullable', 'string']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_problem_and_solution::create([
+            'companyID' => $request['company'],
+            'problem_title' => $request['problem_summary'],
+            'solution_title' => $request['suggested_solution'],
+        ]);
+
+        $problemSolution  = RECP_problem_and_solution::where('companyID', $request['company'])
+                                    ->where('status', 'active')
+                                    ->select('problemSolutionID', 'problem_title', 'solution_title')
+                                    ->get();
+    
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Problem summary and suggested solution added successfully.',
+                'problems_solutions' => $problemSolution,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Problem summary and suggested solution failed to create.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // update problem
+    public function update_problem(Request $request)
+    {
+        $company    = $request->input('company');
+        $problemSolutionId  = $request->input('problem_solution_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'problem_solution_id.required' => 'The problem and solution ID field is required.',
+            'problem_solution_id.numeric' => 'The problem and solution ID field must be a number.',
+            'problem_summary.unique' => 'The problem summary title must be unique within the company.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'   =>  ['required', 'numeric'],
+            'problem_solution_id'   =>  ['required', 'numeric'],
+            'problem_summary'   =>  ['nullable', 'string', Rule::unique('recp_problem_and_solutions', 'problem_title')->where(function ($query) use ($company) {
+                return $query->where('companyID', $company);
+            })->ignore($problemSolutionId, 'problemSolutionID')],
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_problem_and_solution::where('problemSolutionID', $problemSolutionId)->update([
+            'problem_title' => $request['problem_summary'],
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Problem summary updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Problem summary failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+
+    // update solution
+    public function update_solution(Request $request)
+    {
+        $company    = $request->input('company');
+        $problemSolutionId  = $request->input('problem_solution_id');
+        $messages   = [
+            'company.required' => 'The company field is required.',
+            'company.numeric' => 'The company field must be a number.',
+            'problem_solution_id.required' => 'The problem and solution ID field is required.',
+            'problem_solution_id.numeric' => 'The problem and solution ID field must be a number.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'company'   =>  ['required', 'numeric'],
+            'problem_solution_id'   =>  ['required', 'numeric'],
+            'suggested_solution' => ['nullable', 'string']
+        ], $messages);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ], 422);
+        }
+
+       $result = RECP_problem_and_solution::where('problemSolutionID', $problemSolutionId)->update([
+            'solution_title' => $request['suggested_solution'],
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Suggested solution updated successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('update_error', 'Suggested solution failed to update.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
+    // delete
+    public function remove_problem_solution(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'problem_solution_id'      =>  ['required', 'numeric']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = RECP_problem_and_solution::where('problemSolutionID', $request['problem_solution_id'])
+                    ->delete();
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status'            =>  'success',
+                'message'           =>  'Problem summary and suggested solution removed successfully.',
+            ], 200);
+        }else{
+            $validator->errors()->add('delete_error', 'Problem summary and suggested solution failed to delete.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *
