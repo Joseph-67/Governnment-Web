@@ -1586,6 +1586,11 @@
                                             <input type="hidden" name="contact_person_phone_number">
                                         </div>
                                     </div>
+                                    <div class="row justify-content-end">
+                                            <div class="col-md-3 py-3">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </div>
                                     
                                    
                                 </div>
