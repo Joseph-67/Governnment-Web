@@ -1610,7 +1610,7 @@
                                 </div>
                                 <div class="form-check form-switch mb-2">
                     <input class="form-check-input" type="checkbox" id="settings-switch1">
-                    <label class="form-check-label" for="settings-switch1">Deactivate Company</label>
+                    <label class="form-check-label" for="settings-switch1">Activate Company</label>
                 </div><!--end form-switch-->
                                 <div class="mt-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
