@@ -105,6 +105,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
         Route::post ('/company/update', 'updateCompanyDetails')->name('update-company-details');
         Route::post ('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post ('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
     });
 
     Route::controller(RECPController::class)->group(function(){

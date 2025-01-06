@@ -1568,21 +1568,25 @@
                                 <h4 class="card-title">Contact Personnel</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                           <form action="">
+                           <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
+                           <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                            <div class="row">
                                     <div class="col-md-12">
                                         <input type="text" class="form-control"
                                             placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                            name="enviromental_operations_manager">
+                                            name="enviromental_operations_manager" 
+                                            value="{{ $company->operations_manager }}">
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <input type="text" class="form-control"
-                                            placeholder="Full Name Of Contact Person" name="contact_person_name">
+                                            placeholder="Full Name Of Contact Person" name="contact_person_name"
+                                            value="{{$company->contact_person_full_name}}">
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <input type="text" class="form-control"
                                             placeholder="Office Position of Contact Person"
-                                            name="contact_person_position">
+                                            name="contact_person_position" 
+                                            value="{{$company->contact_person_position}}">
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <div class="form-group">
@@ -1594,7 +1598,7 @@
                                     </div>
                                     <div class="row justify-content-end">
                                             <div class="col-md-3 py-3">
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-primary" id="btn_contact_settings">Save</button><span class="loader" id="loader"></span>
                                             </div>
                                         </div>
                                     
@@ -3161,6 +3165,144 @@
 
         });
         // end company location update
+        // company contact update
+        let btn_contact_settings = document.querySelector('#btn_contact_settings')
+        btn_contact_settings.addEventListener('click', () => {
+            // Show the loader
+            let loader = document.querySelector('#contact_settings #loader');
+            loader.style.display = 'inline-block';
+            let company_id = document.querySelector('#contact_settings input[name="company_id"]').value.trim();
+            let enviromental_operations_manager = document.querySelector('#contact_settings input[name="enviromental_operations_manager"]').value.trim();
+            let contact_person_name = document.querySelector('#contact_settings input[name="contact_person_name"]').value.trim();
+            let contact_person_position = document.querySelector('#contact_settings input[name="contact_person_position"]').value.trim();
+            let contact_person_phone_number = document.querySelector('#contact_settings input[name="contact_person_phone_number"]').value.trim();
+            if (!company_id) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Company id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!enviromental_operations_manager) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Enviromental operations manager field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!contact_person_name) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Contact person name field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!contact_person_position) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Contact person position field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!contact_person_name) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Contact person name field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!contact_person_position) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Contact person position field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!contact_person_phone_number) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Contact person phone number field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+           
+
+            let url = document.querySelector('#contact_settings').action;
+            let formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('enviromental_operations_manager', enviromental_operations_manager);
+            formData.append('contact_person_name', contact_person_name);
+            formData.append('contact_person_position', contact_person_position);
+            formData.append('contact_person_phone_number', contact_person_phone_number);
+           
+
+            fetch_cycle('--Update Contact Personnel', url, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result, result.companies_info);
+                if (result.companies_info) {
+                    loader.style.display = 'none';
+
+                }
+            });
+
+        });
+        // end company contact update
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {
