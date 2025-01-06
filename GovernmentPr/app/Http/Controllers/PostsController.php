@@ -19,7 +19,7 @@ class PostsController extends Controller
     public function index()
     {
         //
-        return view('components.CMS.Posts.posts');
+        return view('components.CMS.Posts.posts'); 
     }
 
     /**
