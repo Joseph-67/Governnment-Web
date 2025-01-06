@@ -1506,7 +1506,7 @@
                                 <h4 class="card-title">Company's Location</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="" method="post">
+                                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
@@ -1542,7 +1542,7 @@
                                         <div class="col-md-12 mt-2">
                                             <div class="form-group">
                                                 <label for="">Address</label>
-                                                <input type="text" class="form-control" placeholder="" name="address">
+                                                <input type="text" class="form-control" placeholder="" name="address" value="{{$company->address}}">
                                             </div>
                                         </div>
 
@@ -1550,13 +1550,13 @@
                                             <div class="form-group">
                                                 <label for="">Geographic Information System(GIS) Location</label>
                                                 <input type="text" class="form-control" placeholder=""
-                                                    name="gis_location">
+                                                    name="gis_location" value="{{$company->gis_location}}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="col-md-3 py-3">
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="button" class="btn btn-primary" id="btn-location-settings">Save</button><span class="loader" id="loader"></span>
                                         </div>
                                     </div>
                                 </form>
@@ -3050,6 +3050,117 @@
         });
         // end general setting 
 
+        // company location update
+        let btn_location_settings = document.querySelector('#btn-location-settings')
+        btn_location_settings.addEventListener('click', () => {
+            // Show the loader
+            let loader = document.querySelector('#location_settings #loader');
+            loader.style.display = 'inline-block';
+            let company_id = document.querySelector('#location_settings input[name="company_id"]').value.trim();
+            let country = document.querySelector('#location_settings select[name="country"]').value.trim();
+            let state = document.querySelector('#location_settings select[name="state"]').value.trim();
+            let city = document.querySelector('#location_settings select[name="city"]').value.trim();
+            let address = document.querySelector('#location_settings  input[name="address"]').value.trim();
+            let gis_location = document.querySelector('#location_settings  input[name="gis_location"]').value.trim();
+            
+            if (!company_id) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Company id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!country) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Country field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!state) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "State field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!city) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "City field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+            if (!address) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: "Address field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return
+            }
+           
+
+            let url = document.querySelector('#location_settings').action;
+            let formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('country', country);
+            formData.append('state', state);
+            formData.append('city', city);
+            formData.append('address', address);
+            formData.append('gis_location', gis_location);
+           
+
+            fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result, result.companies_info);
+                if (result.companies_info) {
+                    loader.style.display = 'none';
+
+                }
+            });
+
+        });
+        // end company location update
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {
