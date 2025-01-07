@@ -18,6 +18,7 @@ use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
+use App\Http\Controllers\CategoryController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -156,6 +157,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     Route::controller(CategoryController::class)->group(function(){
         Route::get ('/create-category', 'create')->name('admin.create-category');
-        Route::post ('/store-category', 'store')->name('admin.store-categor');
+        Route::post ('/store-category', 'store')->name('admin.store-category');
     });
 });
