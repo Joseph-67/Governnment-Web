@@ -179,13 +179,13 @@ class CompanyController extends Controller
     
         // Return success or error response
         if ($result) {
-            // $companiesInfo = Company::where('status', '=', 'active')
-            // ->where('company_id', $companyId)
-            // ->select('company_name', 'industry', 'industry_process', 'email', 'website_url', 'primary_phone_number','secondary_phone_number', 'number_of_employees', 'date_of_establishment')->first();
+            $companiesInfo = Company::where('status', '=', 'active')
+            ->where('company_id', $companyId)
+            ->select('country', 'state', 'city', 'address', 'gis_location')->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Company Location updated successfully.',
-                // 'companies_info' => $companiesInfo
+                'companies_info' => $companiesInfo
             ], 200);
         } else {
             return response()->json([
@@ -195,6 +195,58 @@ class CompanyController extends Controller
         }
     }
     // end update company location
+    // update contact personnel
+    public function updateCompanyContact(Request $request)
+    {
+        // Extract the company ID from the request
+        $companyId = $request->input('company_id');
+    
+        // Validation rules
+        $companyId = $request->company_id;
+        $validator = Validator::make($request->all(), [
+            'company_id' => ['required', 'numeric'],
+            'enviromental_operations_manager' => ['required', 'string', 'max:255'],
+            'contact_person_name' => ['required', 'string', 'max:255'],
+            'contact_person_position' => ['required', 'string', 'max:255'],
+            'contact_person_phone_number' => ['required'],
+           
+        ]);
+    
+        // Return validation errors if any
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+       
+        $result = Company::where('company_id', $companyId)->where('status', 'active ')->update([
+            'operations_manager' => $request->input('enviromental_operations_manager'),
+            'contact_person_full_name' => $request->input('contact_person_name'),
+            'contact_person_position' => $request->input('contact_person_position'),
+            'contact_person_contact_number' => $request->input('address'),
+        ]);
+    
+        // Return success or error response
+        if ($result) {
+            // $companiesInfo = Company::where('status', '=', 'active')
+            // ->where('company_id', $companyId)
+            // ->select('company_name', 'industry', 'industry_process', 'email', 'website_url', 'primary_phone_number','secondary_phone_number', 'number_of_employees', 'date_of_establishment')->first();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Contact Personnel updated successfully.',
+                // 'companies_info' => $companiesInfo
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update contact personnel.',
+            ], 400);
+        }
+    }
+    // end update company contact personnel
     public function index()
     {
         //
