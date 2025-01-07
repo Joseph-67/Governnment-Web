@@ -152,6 +152,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
+        Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
     });
 
     Route::controller(CategoryController::class)->group(function(){
