@@ -25,6 +25,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return view("components.apps.category");
     }
 
     /**
@@ -36,6 +37,24 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'category_title' => 'required|max:255|unique:categories,category_name',
+            'category_description' => 'nullable|max:255',
+        ]);
+
+        $result = category::create([
+            'category_name' => $request->category_title,
+            'category_description' => $request->category_description,
+        ]);
+
+        if ($result) {
+            # code...
+            return back()->with(['success' => 'Category added successfully']);
+        } else {
+            # code...
+            return back()->with(['error' => 'Category failed to create']);
+        }
+        
     }
 
     /**
