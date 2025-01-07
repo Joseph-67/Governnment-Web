@@ -52,8 +52,6 @@
     @endsection
 
     <div class="tab-pane p-3" id="materials" role="tabpanel">
-    <x-validation-errors class="alert" alert />
-    @include('shared.feedback')
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -64,7 +62,6 @@
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
                                 <form method="post" action="{{ route('admin.store-material')}}" >
-                                    @csrf
                                     <div class="row g-2 align-items-end"> 
                                         <!-- Material Name -->
                                         <div class="col-md-4">
@@ -82,9 +79,7 @@
                                                 <label for="">Category</label>
                                                 <select name="category" id="category" class="form-select">
                                                     <option value="" selected disabled> Choose... </option>
-                                                    @foreach($categories as $category)
-                                                    <option value="{{$category->categoryID}}">{{$category->category_name}}</option>
-                                                    @endforeach
+                                                    <option value="categoryID">Testing</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -121,18 +116,19 @@
                                     <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
                                         <thead>
                                         <tr>
-                                            <th>Material Name</th>
-                                            <th>Category Name</th>
+                                            <th>Material ID</th>
+                                            <th>Name</th>
+                                            <th>Company</th>
                                             <th>Material Status</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($Material as $material_detail)
                                             <tr>
-                                                <td>{{ $material_detail -> material }}</td>
-                                                <td>{{$material_detail -> categoryID  }}</td>
-                                                <td><span class="badge bg-{{ ($material_detail -> status == 'active')? 'success':'danger'}}">{{  $material_detail -> status  }} </span></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><span class="badge"> </span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -147,7 +143,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @endforeach
                                         </tbody>
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->
