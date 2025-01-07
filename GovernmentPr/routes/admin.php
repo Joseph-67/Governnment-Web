@@ -18,7 +18,6 @@ use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
-use App\Http\Controllers\CategoryController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -96,7 +95,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
         //Material
         Route::controller(MaterialController::class)->group(function() {
-            Route::get ('/materials', 'index')->name('materimaterialsals.material');
+            Route::get ('/materials', 'index')->name('materials.material');
             Route::post ('/save-material', 'store')->name('admin.store-material');
         }); 
     Route::controller(CompanyController::class)->group(function() {
@@ -152,10 +151,5 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
-    });
-
-    Route::controller(CategoryController::class)->group(function(){
-        Route::get ('/create-category', 'create')->name('admin.create-category');
-        Route::post ('/store-category', 'store')->name('admin.store-category');
     });
 });

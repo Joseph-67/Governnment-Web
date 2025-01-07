@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\category;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -15,7 +16,9 @@ class MaterialController extends Controller
     public function index()
     {
         // 
-        return view('components.materials.material'); 
+        $data['categories'] = category::get();
+        $data['Material'] = material::get();
+        return view('components.materials.material', $data); 
     }
 
     /**
@@ -39,10 +42,20 @@ class MaterialController extends Controller
         //
 
         $request->validate([
-            'material_name'     => 'required',
-            'category'          => 'required',
-            'description'       => 'nullable'
+            'material_name'     => 'required|max:255',
+            'category'          => 'required|max:255',
+            'description'       => 'nullable|max:255'
         ]);
+
+        $material = new Material();
+
+        $material -> categoryID     =   $request-> category;
+        $material -> material       =   $request-> material_name;
+        $material -> description    =   $request-> description;
+        $material -> status         =   "1";
+        $material -> save();
+
+        return back()->with(['success' => 'Material added successfully']);
     }
 
     /**
