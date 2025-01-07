@@ -51,5 +51,102 @@
         <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     @endsection
 
+    <div class="tab-pane p-3" id="materials" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Create Material</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0">
+                                <form method="post" action="{{ route('admin.store-material')}}" >
+                                    <div class="row g-2 align-items-end"> 
+                                        <!-- Material Name -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="">Material name</label>
+                                                <input type="text" class="form-control" placeholder="Material Name"
+                                                    name="material_name">
+                                            </div>
+                                        </div>
+                                         <!-- Material Name -->
 
+                                        <!-- Category  -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Category</label>
+                                                <select name="category" id="category" class="form-select">
+                                                    <option value="" selected disabled> Choose... </option>
+                                                    <option value="categoryID">Testing</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Category ends -->
+
+                                        <!-- Description -->
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="">Description</label>
+                                                <input type="text" class="form-control" placeholder="Description"
+                                                    name="description">
+                                            </div>
+                                        </div>
+                                         <!-- Description -->
+                                          <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <button type="submit" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Materials</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
+                                        <thead>
+                                        <tr>
+                                            <th>Material ID</th>
+                                            <th>Name</th>
+                                            <th>Company</th>
+                                            <th>Material Status</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><span class="badge"> </span></td>
+                                                <td class="text-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="#">Open Material</a>
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Setup Price</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+                            </div>
+                        </div>
+                    </div>
 </x-layouts.admin-app>

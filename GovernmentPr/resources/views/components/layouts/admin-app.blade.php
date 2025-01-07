@@ -362,7 +362,7 @@
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">Material</a>
+                                        <a class="nav-link" href="{{ route('materials.material') }}">Material</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>

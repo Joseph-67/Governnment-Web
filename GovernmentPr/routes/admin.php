@@ -16,6 +16,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\RECPController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -92,6 +93,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-email', 'store')->name('display-message');
     });
 
+        //Material
+        Route::controller(MaterialController::class)->group(function() {
+            Route::get ('/materials', 'index')->name('materimaterialsals.material');
+            Route::post ('/save-material', 'store')->name('admin.store-material');
+        }); 
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
         Route::get ('/create-company', 'create')->name('admin.create-company');

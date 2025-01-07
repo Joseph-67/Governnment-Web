@@ -14,7 +14,8 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        //
+        // 
+        return view('components.materials.material'); 
     }
 
     /**
@@ -36,6 +37,12 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         //
+
+        $request->validate([
+            'material_name'     => 'required',
+            'category'          => 'required',
+            'description'       => 'nullable'
+        ]);
     }
 
     /**
