@@ -61,84 +61,140 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // update company personal details
     public function updateCompanyDetails(Request $request)
-{
-    // Extract the company ID from the request
-    $companyId = $request->input('company_id');
-
-    // Validation rules and custom error messages
-    // $messages = [
-    //     'company_name.required' => 'The company name field is required.',
-    //     'industry.required' => 'The industry field is required.',
-    //     'industry_process.required' => 'The industry process field is required.',
-    //     'email.required' => 'The email field is required.',
-    //     'email.email' => 'The email must be a valid email address.',
-    //     'email.unique' => 'The email must be unique.',
-    //     'website_address.url' => 'The website address must be a valid URL.',
-    //     'phone_number.required' => 'The phone number field is required.',
-    //     'secondary_phone_number.numeric' => 'The secondary phone number must be a valid number.',
-    //     'number_of_employees.integer' => 'The number of employees must be an integer.',
-    //     'establishment_date.date' => 'The establishment date must be a valid date.',
-    // ];
-
-    // Validation rules
-    $companyId = $request->company_id;
-    $validator = Validator::make($request->all(), [
-        'company_id' => ['required', 'numeric'],
-        'company_name' => ['required', 'string', 'max:255', Rule::unique('companies', 'company_name')->where(function ($query) use ($request) {
-                return $query->where('company_id', $request['company_id']);
-            })->ignore($companyId, 'company_id')
-        ],
-        'industry' => ['required', 'string', 'max:255'],
-        'industry_process' => ['nullable', 'string', 'max:255'],
-        'email' => ['required', 'email', Rule::unique('companies', 'email')->ignore($companyId, 'company_id')],
-        'website_address' => ['nullable', 'url'],
-        'primary_phone_number' => ['required', 'string', 'max:15'],
-        'secondary_phone_number' => ['nullable', 'string', 'max:15'],
-        'number_of_employees' => ['nullable', 'integer'],
-        'establishment_date' => ['nullable', 'date'],
-    ]);
-
-    // Return validation errors if any
-    if ($validator->fails()) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Validation failed.',
-            'errors' => $validator->errors(),
-        ], 422);
+    {
+        // Extract the company ID from the request
+        $companyId = $request->input('company_id');
+    
+        // Validation rules and custom error messages
+        // $messages = [
+        //     'company_name.required' => 'The company name field is required.',
+        //     'industry.required' => 'The industry field is required.',
+        //     'industry_process.required' => 'The industry process field is required.',
+        //     'email.required' => 'The email field is required.',
+        //     'email.email' => 'The email must be a valid email address.',
+        //     'email.unique' => 'The email must be unique.',
+        //     'website_address.url' => 'The website address must be a valid URL.',
+        //     'phone_number.required' => 'The phone number field is required.',
+        //     'secondary_phone_number.numeric' => 'The secondary phone number must be a valid number.',
+        //     'number_of_employees.integer' => 'The number of employees must be an integer.',
+        //     'establishment_date.date' => 'The establishment date must be a valid date.',
+        // ];
+    
+        // Validation rules
+        $companyId = $request->company_id;
+        $validator = Validator::make($request->all(), [
+            'company_id' => ['required', 'numeric'],
+            'company_name' => ['required', 'string', 'max:255', Rule::unique('companies', 'company_name')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request['company_id']);
+                })->ignore($companyId, 'company_id')
+            ],
+            'industry' => ['required', 'string', 'max:255'],
+            'industry_process' => ['nullable', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('companies', 'email')->ignore($companyId, 'company_id')],
+            'website_address' => ['nullable', 'url'],
+            'primary_phone_number' => ['required', 'string', 'max:15'],
+            'secondary_phone_number' => ['nullable', 'string', 'max:15'],
+            'number_of_employees' => ['nullable', 'integer'],
+            'establishment_date' => ['nullable', 'date'],
+        ]);
+    
+        // Return validation errors if any
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+       
+        $result = Company::where('company_id', $companyId)->where('status', 'active ')->update([
+            'company_name' => $request->input('company_name'),
+            'industry' => $request->input('industry'),
+            'industry_process' => $request->input('industrial_process'),
+            'email' => $request->input('email'),
+            'website_url' => $request->input('website_address'),
+            'primary_phone_number' => $request->input('primary_phone_number'),
+            'secondary_phone_number' => $request->input('secondary_phone_number'),
+            'number_of_employees' => $request->input('number_of_employees'),
+            'date_of_establishment' => $request->input('establishment_date'),
+        ]);
+    
+        // Return success or error response
+        if ($result) {
+            $companiesInfo = Company::where('status', '=', 'active')
+            ->where('company_id', $companyId)
+            ->select('company_name', 'industry', 'industry_process', 'email', 'website_url', 'primary_phone_number','secondary_phone_number', 'number_of_employees', 'date_of_establishment')->first();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Company details updated successfully.',
+                'companies_info' => $companiesInfo
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update company details.',
+            ], 400);
+        }
     }
+    // end update company personal details
 
-   
-    $result = Company::where('company_id', $companyId)->where('status', 'active ')->update([
-        'company_name' => $request->input('company_name'),
-        'industry' => $request->input('industry'),
-        'industry_process' => $request->input('industrial_process'),
-        'email' => $request->input('email'),
-        'website_url' => $request->input('website_address'),
-        'primary_phone_number' => $request->input('primary_phone_number'),
-        'secondary_phone_number' => $request->input('secondary_phone_number'),
-        'number_of_employees' => $request->input('number_of_employees'),
-        'date_of_establishment' => $request->input('establishment_date'),
-    ]);
-
-    // Return success or error response
-    if ($result) {
-        $companiesInfo = Company::where('status', '=', 'active')
-        ->where('company_id', $companyId)
-        ->select('company_name', 'industry', 'industry_process', 'email', 'website_url', 'primary_phone_number','secondary_phone_number', 'number_of_employees', 'date_of_establishment')->first();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Company details updated successfully.',
-            'companies_info' => $companiesInfo
-        ], 200);
-    } else {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Failed to update company details.',
-        ], 400);
+    // update company location
+    public function updateCompanyLocation(Request $request)
+    {
+        // Extract the company ID from the request
+        $companyId = $request->input('company_id');
+    
+        // Validation rules
+        $companyId = $request->company_id;
+        $validator = Validator::make($request->all(), [
+            'company_id' => ['required', 'numeric'],
+            'country' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['required'],
+            'gis_location' => ['nullable']
+        ]);
+    
+        // Return validation errors if any
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+       
+        $result = Company::where('company_id', $companyId)->where('status', 'active ')->update([
+            'country' => $request->input('country'),
+            'state' => $request->input('state'),
+            'city' => $request->input('city'),
+            'address' => $request->input('address'),
+            'gis_location' => $request->input('gis_location')
+           
+        ]);
+    
+        // Return success or error response
+        if ($result) {
+            // $companiesInfo = Company::where('status', '=', 'active')
+            // ->where('company_id', $companyId)
+            // ->select('company_name', 'industry', 'industry_process', 'email', 'website_url', 'primary_phone_number','secondary_phone_number', 'number_of_employees', 'date_of_establishment')->first();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Company Location updated successfully.',
+                // 'companies_info' => $companiesInfo
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update company location.',
+            ], 400);
+        }
     }
-}
-
+    // end update company location
     public function index()
     {
         //
@@ -185,7 +241,7 @@ class CompanyController extends Controller
             'number_of_employees' => ['required', 'numeric'],
             'date_of_establishment' => ['required', 'date', 'before:now'],
             'country' => ['required', 'string'],
-            'state' => ['nullable', 'string'],
+            'state' => ['required', 'string'],
             'city' => ['required', 'string'],
             'address' => ['required', 'string'],
             'gis_location' => ['nullable', 'string'],
