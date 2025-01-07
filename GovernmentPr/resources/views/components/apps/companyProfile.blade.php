@@ -1393,7 +1393,7 @@
                                                             <a class="dropdown-item" href="#">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Setup Price</a>
+                                                            <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1678,7 +1678,7 @@
     <!--end Rightbar-->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -1686,6 +1686,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+            <input type="hidden" name="material_price_id" >
             <div class="row g-2">
             <!-- Unit of measurement -->
             <div class="col-md-6">
@@ -1718,7 +1719,8 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-material-price">Save changes</button>
+            <span class="loader" id="loader"></span>
         </div>
         </div>
     </div>
@@ -2879,8 +2881,8 @@
                     result.company_material.forEach(material => {
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
-                            <td>${material.serial_number}</td>
-                            <td>${material.unit_of_measure}</td>
+                            <td>${(material.serial_number == "")? "":material.serial_number}</td>
+                            <td>${(material.unit_of_measure == "")? "":material.unit_of_measure}</td>
                             <td> <span class="badge bg-${(material.company_material_status == 'active')?'success':'danger'}">${material.company_material_status}</span>
                             </td>
                             <td class="text-end">
@@ -2891,7 +2893,7 @@
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <a class="dropdown-item" href="#">Setup Price</a>
+                                                            <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
                                     </div>
                                 </div>
                             </td>
@@ -2901,6 +2903,77 @@
             });
         });
         // end material
+
+        // company material
+        let btn_submit_material_price = document.querySelector('#btn-submit-material-price');
+        btn_submit_material_price.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#materialPriceModal #loader');
+            loader.style.display = 'inline-block';
+
+            let material_price_id = document.querySelector('input[name="material_price_id"]').value.trim();
+            let unit = document.querySelector('input[name="unit"]').value.trim();
+            let price = document.querySelector('input[name="price"]').value.trim();
+            let date = document.querySelector('input[name="date"]').value.trim();
+            if (!material_price_id) {
+                Toastify({
+                    text: "Material price id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!unit) {
+                Toastify({
+                    text: "Unit field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!price) {
+                Toastify({
+                    text: "Price field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-material-price') }}"
+            let formData = new FormData();
+            formData.append('companyMaterialID', material_price_id);
+            formData.append('unit', unit);
+            formData.append('price', price);
+            formData.append('date', date);
+            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // end company material
 
         // general setting
         let btn_general_settings = document.querySelector('#btn-general-settings')
@@ -3043,7 +3116,6 @@
                 console.log(result, result.companies_info);
                 if (result.companies_info) {
                     loader.style.display = 'none';
-
                 }
             });
 
@@ -3298,6 +3370,15 @@
             let loadCountries = Array.from(countriesEle.options).map(option=> option.value)
             console.log(loadCountries);
         }, 1000);
+    </script>
+    <script>
+        let triggerMaterialPrice = (companyMaterialID) => {
+            let materialPriceModal = document.querySelector('#materialPriceModal');
+            // Initialize Bootstrap modal
+            document.querySelector('input[name="material_price_id"]').value = companyMaterialID;
+            const myModal = new bootstrap.Modal(materialPriceModal);
+            myModal.show();
+        }
     </script>
     @endsection
 </x-layouts.admin-app>
