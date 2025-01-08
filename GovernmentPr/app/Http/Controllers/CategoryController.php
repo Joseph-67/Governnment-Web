@@ -25,7 +25,8 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        return view("components.apps.category");
+        $data['categoryList']=category::get();
+        return view("components.apps.category", $data);
     }
 
     /**
