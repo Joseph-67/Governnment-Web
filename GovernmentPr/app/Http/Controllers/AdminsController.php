@@ -23,7 +23,10 @@ class AdminsController extends Controller
     {
         //
     }
-
+    public function getAllAdmins()
+    {
+        $adminDetails = Admins::all();
+    }
     /**
      * Show the form for creating a new resource.
      *

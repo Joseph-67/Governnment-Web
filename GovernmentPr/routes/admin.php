@@ -34,6 +34,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(AdminsController::class)->group(function(){
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
+        Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
+
     });
 
     // permissions
@@ -44,6 +46,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     //users
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+        Route::get('/users-details',  'getAllUsers')->name('users.details');
+
     });
     // roles
     Route::controller(RolesController::class)->group(function(){
@@ -118,7 +122,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::get('/company/{id}',  'display')->name('company.display');
         // fetch admin details
-        Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
 
 
     });

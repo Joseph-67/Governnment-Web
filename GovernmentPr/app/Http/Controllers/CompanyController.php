@@ -27,10 +27,7 @@ use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
-    public function getAllAdmins()
-    {
-        $adminDetails = Admins::all();
-    }
+   
     public function show($company)
     {
         //
