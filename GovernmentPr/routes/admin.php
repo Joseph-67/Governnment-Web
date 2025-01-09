@@ -116,6 +116,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
         Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::get('/company/{id}',  'display')->name('company.display');
+        // fetch admin details
+        Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
 
 
     });

@@ -19,6 +19,7 @@ use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use App\Models\Material;
 use App\Models\CompanyMaterial;
+use App\Models\Admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +27,10 @@ use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
-
+    public function getAllAdmins()
+    {
+        $adminDetails = Admin::all();
+    }
     public function show($company)
     {
         //
