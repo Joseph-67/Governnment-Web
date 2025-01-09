@@ -94,11 +94,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-email', 'store')->name('display-message');
     });
 
-        //Material
-        Route::controller(MaterialController::class)->group(function() {
-            Route::get ('/materials', 'index')->name('materials.material');
-            Route::post ('/save-material', 'store')->name('admin.store-material');
-        }); 
+    //Material
+    Route::controller(MaterialController::class)->group(function() {
+        Route::get ('/materials', 'index')->name('materials.material');
+        Route::post ('/save-material', 'store')->name('admin.store-material');
+    }); 
+
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
         Route::get ('/create-company', 'create')->name('admin.create-company');
@@ -113,6 +114,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/company/update', 'updateCompanyDetails')->name('update-company-details');
         Route::post ('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
         Route::post ('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
+        Route::get('/company/{id}',  'display')->name('company.display');
+
+
     });
 
     Route::controller(RECPController::class)->group(function(){

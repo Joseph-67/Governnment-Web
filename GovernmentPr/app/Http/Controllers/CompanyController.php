@@ -247,6 +247,41 @@ class CompanyController extends Controller
         }
     }
     // end update company contact personnel
+    // activate company start
+    public function toggleStatus(Request $request)
+    {
+        $company = Company::find($request->company_id);
+    
+        if ($company) {
+            // Toggle the status based on the checkbox value
+            $company->status = $request->status ? 'active' : 'inactive';
+            $company->save();
+    
+            // Return a success response
+            return response()->json([
+                'success' => true,
+                'message' => $company->status === 'active' ? 'Company activated!' : 'Company deactivated!'
+            ]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Company not found'], 404);
+    }
+    // end activation and deactivation
+
+    // company 404
+    public function dispaly($id)
+    {
+        $company = Company::find($id);
+    
+        // Check if the company is active
+        if (!$company || $company->status !== 'active') {
+            abort(404, 'Company has been deactivated.');
+        }
+    
+        return view('displayCompany', compact('company'));
+    }
+    
+    // company 404
     public function index()
     {
         //
