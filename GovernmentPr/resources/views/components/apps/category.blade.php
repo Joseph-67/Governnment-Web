@@ -87,4 +87,5 @@
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->
                             </div>
+                            </div>
 </x-layouts.admin-app>
