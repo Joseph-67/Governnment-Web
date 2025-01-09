@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="mb-3"> 
                                             <label for="" class="form-label">UrlName</label>
-                                            <input type="text" class="form-control" id="" placeholder="www.google.com">
+                                            <input type="text" class="form-control" name="url" id="" placeholder="www.google.com">
                                         </div>
 
                                         <div class="row justify-content-center">                        
@@ -85,7 +85,7 @@
                                     </div>  <!--end row-->                                  
                                 </div><!--end card-header-->
                                 <div class="card-body pt-0">
-                                    <div id="editor">
+                                    <div id="editor" name="content">
                                         <p>Hello World!</p>
                                         <p>Some initial <strong>bold</strong> text</p>
                                         <p><br /></p>
@@ -104,13 +104,13 @@
 
                     <div class="mb-3">
                         <label class="mb-2">Created At</label>
-                        <input class="form-control mb-3" type="date" name="date">
+                        <input class="form-control mb-3" type="date" name="post_date">
                     </div>
 
                     <div class="input-group mt-4" id="DateRange">
-                         <input type="text" class="form-control" placeholder="Start" aria-label="StartDate">
+                         <input type="date" class="form-control" placeholder="Start" aria-label="StartDate" name="StartDate">
                          <span class="input-group-text">to</span>
-                         <input type="text" class="form-control rounded-end" placeholder="End" aria-label="EndDate">
+                         <input type="date" class="form-control rounded-end" placeholder="End" aria-label="EndDate" name="EndDate">
                     </div> 
                                          
                                 </div><!--end card-body--> 
@@ -122,7 +122,7 @@
                                 <div class="card-header">
                                     <div class="row align-items-center">
                                 <label class="form-label" for="exampleFormControlTextarea1">Description</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="12"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="12"></textarea>
 
                                 <div class="col-md-12">
                                 <label class="form-label mt-4" for="exampleFormControlSelect1">Add Post Category</label>

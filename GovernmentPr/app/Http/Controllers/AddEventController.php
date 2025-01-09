@@ -26,6 +26,7 @@ class AddEventController extends Controller
     public function create()
     {
         //
+    
     }
 
     /**
@@ -37,6 +38,17 @@ class AddEventController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title'         => 'required|max:255',
+            'url'           => 'nullable',
+            'content'       => 'required|max:255',
+            'post_date'     => 'required|date_format:dd/mm/yy',
+            'StartDate'     => 'required|date_format:dd/mm/yy',
+            'EndDate'       => 'required|date_format:dd/mm/yy',
+            'description'   => 'required|max:255',
+            'category'      => 'required|max:255',
+        ]);
+
     }
 
     /**

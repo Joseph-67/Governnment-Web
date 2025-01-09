@@ -14,7 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
+            $table->id('EventID');
+            // $table->unsignedBigInteger('categoryID');
+            // $table->string('Event', 255);
+            // $table->string('UrlName', 255);
+            // $table->string('content', 500)->nullable();
+            // $table->string('description', 500)->nullable();
+            // $table->timestamps('StartDate');
+            // $table->timestamps('EndDate');
+            // $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });
     }
