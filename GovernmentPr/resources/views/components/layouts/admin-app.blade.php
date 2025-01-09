@@ -264,7 +264,7 @@
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
+                                <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                             @else
                                 <span class="inline-flex rounded-md text-uppercase">
                                     {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
@@ -276,7 +276,7 @@
                             <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
                                 <div class="flex-shrink-0">
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
+                                    <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                                 @else
                                     <span class="inline-flex rounded-md text-uppercase">
                                         {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
@@ -301,10 +301,9 @@
 
                             <form method="POST" action="{{ route('admin.logout') }}" x-data>
                                 @csrf
-
                                 <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
-                                         @click.prevent="$root.submit();">
-                                         <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
+                                    @click.prevent="$root.submit();">
+                                    <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </div>
@@ -320,14 +319,13 @@
         <!--start brand-->
         <div class="brand">
             <a href="{{ url('/') }}" class="logo">
-                <div class="logo-grid">
-                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm">
-                    <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <!-- <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-light">
-                    <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-dark"> -->
-</div>
+                <!-- <span>
+                    <img src="{{asset('MainAssets/img/logo/logo.png')}}" alt="logo-small" class="logo-sm">
+                </span> -->
+                <span>
+                <img src="{{asset('MainAssets/img/logo/logo.png')}}" alt="logo-small" class="logo-lg ">
+                <img src="{{asset('MainAssets/img/logo/logo.png')}}" alt="logo-small" class="logo-lg logo-dark">
+                </span>
             </a>
         </div>
         <!--end brand-->
@@ -338,10 +336,10 @@
                     <!-- Navigation -->
                     <ul class="navbar-nav mb-auto w-100">
                         <li class="menu-label pt-0 mt-0">
-                            <!-- <small class="label-border">
+                            <small class="label-border">
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
-                            </small> -->
+                            </small>
                             <span>Main Menu</span>
                         </li>
                         <li class="nav-item">
