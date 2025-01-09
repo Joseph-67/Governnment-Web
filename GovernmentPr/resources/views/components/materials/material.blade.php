@@ -131,7 +131,7 @@
                                         @foreach($Material as $material_detail)
                                             <tr>
                                                 <td>{{ $material_detail -> material }}</td>
-                                                <td>{{$material_detail -> categoryID  }}</td>
+                                                <td>{{$material_detail -> category_name  }}</td>
                                                 <td><span class="badge bg-{{ ($material_detail -> status == 'active')? 'success':'danger'}}">{{  $material_detail -> status  }} </span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">

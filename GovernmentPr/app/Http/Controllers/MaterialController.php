@@ -17,7 +17,7 @@ class MaterialController extends Controller
     {
         // 
         $data['categories'] = category::get();
-        $data['Material'] = material::get();
+        $data['Material'] = material::join('categories', 'categories.categoryID', '=', 'materials.categoryID')->select('materialID', 'material', 'description','status', 'category_name')->get();
         return view('components.materials.material', $data); 
     }
 
