@@ -419,25 +419,28 @@
 									</div>
 									<form action="#" method="post">
 										<div class="modal-body">
-											<div class="form-group">
+										<div class="row g-3 ">
+											<div class="form-group col-md-12">
 												<input name="to" type="email" class="form-control" placeholder="To">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-6">
 												<input name="cc" type="email" class="form-control" placeholder="Cc">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-6">
 												<input name="bcc" type="email" class="form-control" placeholder="Bcc">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-12">
 												<input name="subject" type="email" class="form-control" placeholder="Subject">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-12">
 												<textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
 											</div>
 											<div class="form-group">
-                        <input type="file" name="attachment">
+                        <input type="file" name="a-ttachment" class="form-control" id="formFile">
 											</div>
 										</div>
+										</div>
+							
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
 											<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send Message</button>
