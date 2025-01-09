@@ -29,7 +29,7 @@ class CompanyController extends Controller
 {
     public function getAllAdmins()
     {
-        $adminDetails = Admin::all();
+        $adminDetails = Admins::all();
     }
     public function show($company)
     {
