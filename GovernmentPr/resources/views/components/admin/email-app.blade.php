@@ -169,7 +169,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
   <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
   <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
-  <script src="{{asset('adminAssets/js/tagify.js')}}"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -191,18 +191,13 @@
             const value = e.detail.value;
 
             if (value.length > 2) {
-                fetch(`/api/users?query=${value}`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // Update Tagify whitelist
-                        tagify.settings.whitelist = data.map((user) => ({
-                            value: user.name,
-                            id: user.id,
-                        }));
-
-                        // Show suggestions
-                        tagify.dropdown.show();
-                    })
+				const url = new URL("{{ route('admins.details') }}");
+				url.searchParams.append("query", value);
+                fetch(url.toString())
+                    .then((response) => {
+						let data = response.json()
+						console.log(data);
+					})
                     .catch((error) => console.error("Error fetching users:", error));
             }
         });
@@ -393,7 +388,7 @@
 										<div class="modal-body">
 										<div class="row g-3 ">
 											<div class="form-group col-md-12">
-												<input name="to" type="email" class="form-control" placeholder="To">
+												<input name="to" type="email" class="form-control" placeholder="To" id="user-selector">
 											</div>
 											<div class="form-group col-md-6">
 												<input name="cc" type="email" class="form-control" placeholder="Cc">
