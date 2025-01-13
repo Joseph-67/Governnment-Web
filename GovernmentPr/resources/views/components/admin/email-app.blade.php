@@ -3,68 +3,6 @@
   <link rel="stylesheet" href="{{asset('adminAssets/css/tagify.css')}}">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
-    /* body{
-    margin-top:20px;
-    background:#eee;
-} */
-/* EMAIL */
-/* .email {
-    padding: 20px 10px 15px 10px;
-	font-size: 1em;
-} */
-
-/* .email .btn.search {
-	font-size: 0.9em;
-} */
-
-/* .email h2 {
-	margin-top: 0;
-	padding-bottom: 8px;
-} */
-/* 
-.email .nav.nav-pills > li > a {
-	border-top: 3px solid transparent;
-} */
-
-.email .nav.nav-pills > li > a > .fa {
-	margin-right: 5px;
-}
-
-/* .email .nav.nav-pills > li.active > a,
-.email .nav.nav-pills > li.active > a:hover {
-	background-color: #f6f6f6;
-	border-top-color: #3c8dbc;
-}
-
-.email .nav.nav-pills > li.active > a {
-	font-weight: 600;
-}
-
-.email .nav.nav-pills > li > a:hover {
-	background-color: #f6f6f6;
-} */
-
-/* .email .nav.nav-pills.nav-stacked > li > a {
-	color: #666;
-	border-top: 0;
-	border-left: 3px solid transparent;
-	border-radius: 0px;
-} */
-
-/* .email .nav.nav-pills.nav-stacked > li.active > a,
-.email .nav.nav-pills.nav-stacked > li.active > a:hover {
-	background-color: #f6f6f6;
-	border-left-color: #3c8dbc;
-	color: #444;
-} */
-
-/* .email .nav.nav-pills.nav-stacked > li.header {
-	color: #777;
-	text-transform: uppercase;
-	position: relative;
-	padding: 0px 0 10px 0;
-} */
-
 .email table {
 	font-weight: 600;
 }
@@ -227,9 +165,9 @@
   </style>
   @endsection
   @section('scripts')
-  <script src="{{asset('adminAssests/js/popper.min.js')}}"></script>
-  <script src="{{asset('adminAssests/js/bootstrap.min.js')}}"></script>
-  <script src="{{asset('adminAssests/js/tagify.js')}}"></script>
+  <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
+  <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('adminAssets/js/tagify.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
   <script>
     
@@ -337,27 +275,26 @@
 								</label>
 								<div class="btn-group">
                   <div class="dropdown">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
-										Action
-									</button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<a href="#">Mark as read</a>
-										<a href="#">Mark as unread</a>
-										<a href="#">Mark as important</a>
-										<div class="divider"></div>
-										<a href="#">Report spam</a>
-										<a href="#">Delete</a>
-                    </div>
-                  </div>
+                      <a href="#" class="btn bt btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Action<i class="las la-angle-down ms-1"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item" href="#">Mark as read</a>
+                          <a class="dropdown-item" href="#">Mark as unread</a>
+                          <a class="dropdown-item" href="#">Mark as important</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">Report spam</a>
+                          <a class="dropdown-item" href="#">Delete</a>
+                      </div>
+                  </div>  
 								</div>
 							</div>
 
 							<div class="col-md-6 search-form">
 								<form action="#" class="text-right">
 									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="Search">
-										<span class="input-group-btn">
-                                            <button type="submit" name="search" class="btn_ btn-primary btn-sm search"><i class="fa fa-search"></i></button></span>
+										<input type="text" class="form-control input-sm" placeholder="Search" aria-describedby="button-search">
+                    <button type="submit" name="search" class="btn btn-primary search" id="button-search"><i class="fa fa-search"></i></button>
 									</div>			 
 								</form>
 							</div>
@@ -451,25 +388,34 @@
 						</div>
 
 						<ul class="pagination">
-							<li class="disabled"><a href="#">«</a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">»</a></li>
+							<li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+							<li class="page-item active"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#">4</a></li>
+							<li class="page-item"><a class="page-link" href="#">5</a></li>
+							<li class="page-item"><a class="page-link" href="#">»</a></li>
 						</ul>						
 					</div>
 					<!-- END INBOX CONTENT -->
 					
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END INBOX -->
+</div>
+</div>
+
 					<!-- BEGIN COMPOSE MESSAGE -->
 					<div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
 						<div class="modal-wrapper">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header bg-blue">
-										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 										<h4 class="modal-title"><i class="fa fa-envelope"></i> Compose New Message</h4>
+                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-hidden="true"></button>
+
 									</div>
 									<form action="#" method="post">
 										<div class="modal-body">
@@ -488,7 +434,8 @@
 											<div class="form-group">
 												<textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
 											</div>
-											<div class="form-group">														<input type="file" name="attachment">
+											<div class="form-group">
+                        <input type="file" name="attachment">
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -501,11 +448,4 @@
 						</div>
 					</div>
 					<!-- END COMPOSE MESSAGE -->
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- END INBOX -->
-</div>
-</div>
 </x-layouts.admin-app>
