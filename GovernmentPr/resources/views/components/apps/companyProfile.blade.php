@@ -1,6 +1,5 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
-   
     <div class="container-xxl">
         <div class="row justify-content-center">
             <div class="col-12">
