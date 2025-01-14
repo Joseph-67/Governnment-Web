@@ -20,6 +20,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\StockMovementController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -165,6 +166,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
+    });
+
+    Route::controller(StockMovementController::class)->group(function(){
+        Route::post('/company/material-setup/check-in', 'store')->name('admin.save-company-material-check-in');
     });
 
     Route::controller(CategoryController::class)->group(function(){

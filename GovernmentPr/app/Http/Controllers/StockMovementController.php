@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\stock_movement;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+use Carbon\Carbon;
+
 class StockMovementController extends Controller
 {
     /**
@@ -36,6 +42,52 @@ class StockMovementController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request);
+        $validator = Validator::make($request->all(), [
+            'checkIn_material_id'   =>  ['required', 'numeric'],
+            'quantity'              =>  ['required', 'numeric'],
+            'date'                  =>  ['required', 'date'],
+            'remark'                =>  ['nullable', 'string', 'min:4'],
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        if (!empty($request['date'])) {
+            # code...
+            // Extract the year using Carbon
+            $year = Carbon::parse($request->input('dateInput'))->year;
+        }
+        $result = stock_movement::create([
+            'companyMaterialId'  => $request['checkIn_material_id'],
+            'quantity'           => $request['quantity'],
+            'movement_type'      => 'in',
+            'calendar_year'      => $year,
+            'movement_date'      => $request['date'],
+            'remark'             => $request['remark'],
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material added successfully.',
+                // 'company_material_price' => $companyMaterial,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Material failed to check in.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
     }
 
     /**

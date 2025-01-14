@@ -40,7 +40,6 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         //
-
         $request->validate([
             'material_name'     => 'required|max:255',
             'category'          => 'required|max:255',
