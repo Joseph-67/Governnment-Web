@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyMaterial;
 use App\Models\MaterialPrice;
+use App\Models\Company;
+use App\Models\category;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -138,9 +141,14 @@ class CompanyMaterialController extends Controller
      * @param  \App\Models\CompanyMaterial  $companyMaterial
      * @return \Illuminate\Http\Response
      */
-    public function show(CompanyMaterial $companyMaterial)
+    public function show($id)
     {
         //
+       
+        $id = decrypt($id);
+        $data['prices'] = MaterialPrice::latest('created_at')->first();
+        $data['Material'] = material::join('categories', 'categories.categoryID', '=', 'materials.categoryID')->select('materialID', 'material', 'description','status', 'category_name')->get();
+        return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
 
     /**

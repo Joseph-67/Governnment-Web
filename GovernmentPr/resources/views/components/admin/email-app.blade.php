@@ -240,6 +240,8 @@
 
   @endsection
   <div class="container">
+  <x-validation-errors class="alert" alert />
+  @include('shared.feedback')
     <div class="row">
         <!-- BEGIN INBOX -->
         <div class="col-md-12">
@@ -451,11 +453,12 @@
                     <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                         aria-hidden="true"></button>
                 </div>
-                <form action="#" method="post">
+                <form action="{{route('display-message')}}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="row g-3 ">
                             <div class="form-group col-md-12">
-                                <input name="to" type="text" class="form-control" placeholder="To" id="user-selector">
+                                <input name="recipients_email" type="text" class="form-control" placeholder="To" id="user-selector">
                             </div>
                             <div class="form-group col-md-6">
                                 <input name="cc" type="email" class="form-control" placeholder="Cc">

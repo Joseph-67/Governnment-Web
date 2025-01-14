@@ -1390,7 +1390,7 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Open Material</a>
+                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt($material->companyMaterialId)]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
