@@ -1769,10 +1769,14 @@
             </div>
              <!-- end Date -->
             <!-- Unit of measurement -->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label for="">Quantity/Volume</label>
-                    <input type="number" min="0" class="form-control" name="quantity">
+                    <div class="input-group qty-icons w-50">
+                                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                    </div>   
                 </div>
             </div>
              <!-- Unit of measurement -->
