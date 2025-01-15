@@ -19,6 +19,7 @@ use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TeamMemberController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -160,4 +161,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
     });
+    Route::controller(TeamMemberController::class)->group(function(){
+        Route::get ('/team-member', 'index')->name('admin.team-member');
+
+});
+
 });
