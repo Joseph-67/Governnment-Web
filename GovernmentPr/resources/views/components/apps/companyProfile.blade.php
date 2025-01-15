@@ -1,5 +1,6 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
+   
     <div class="container-xxl">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -1618,10 +1619,17 @@
                             <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
                             your information to be shared with other companies?</label>
                                 </div>
+          
                                 <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch1">
-                    <label class="form-check-label" for="settings-switch1">Activate Company</label>
-                </div><!--end form-switch-->
+                                <label>
+    <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
+    {{ $company->company_name }}
+</label>
+                    <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
+                    <label class="form-check-label" for="settings-switch1">Activate Company</label> -->
+                </div>
+                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;"></div>
+                <!--end form-switch-->
                                 <div class="mt-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
@@ -1635,7 +1643,7 @@
                 </div>
             </div> <!--end col-->
         </div><!--end row-->
-
+    
     </div><!-- container -->
     <!--Start Rightbar-->
     <!--Start Rightbar/offcanvas-->
@@ -3375,6 +3383,9 @@
 
         });
         // end company contact update
+        // activate and deactivate start
+            
+        // end activate and deactivate start
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {
@@ -3522,5 +3533,45 @@
             myModal.show();
         }
     </script>
+    <!-- activate and deactivate -->
+    <script>
+    document.querySelectorAll('.toggle-status').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const companyId = this.getAttribute('data-company-id');
+            const status = this.checked ? 1 : 0; // Convert to a boolean-friendly value
+
+            fetch("{{ route('company.toggleStatus') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    company_id: companyId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const feedback = document.getElementById('feedback-message');
+                if (data.success) {
+                    feedback.textContent = data.message;
+                    feedback.style.color = 'green';
+                } else {
+                    feedback.textContent = 'Error updating status!';
+                    feedback.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const feedback = document.getElementById('feedback-message');
+                feedback.textContent = 'An error occurred!';
+                feedback.style.color = 'red';
+            });
+        });
+    });
+</script>
+
+    <!-- end activate and deactivate -->
     @endsection
 </x-layouts.admin-app>

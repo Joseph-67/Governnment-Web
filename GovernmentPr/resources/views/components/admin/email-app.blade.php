@@ -2,6 +2,7 @@
   @section('styles')
   <link rel="stylesheet" href="{{asset('adminAssets/css/tagify.css')}}">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.css" />
   <style>
 .email table {
 	font-weight: 600;
@@ -165,78 +166,49 @@
   </style>
   @endsection
   @section('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
   <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
   <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
   <script src="{{asset('adminAssets/js/tagify.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
   <script>
-    
-      new TomSelect('#select-repo',{
-      valueField: 'url',
-      labelField: 'name',
-      searchField: 'name',
-      // fetch remote data
-      load: function(query, callback) {
+    document.addEventListener("DOMContentLoaded", () => {
+        const input = document.querySelector("#user-selector");
 
-        var url = '{{route('get-user')}}?q=' + encodeURIComponent(query);
-        fetch(url)
-          .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-          .then(json => {
-            console.log('Fetched items:', json.items[0]); // Debugging log
-            callback(json.items || []); // Pass items to Tom Select
-          }).catch((error)=>{
-            console.error('Fetch error:', error); // Log the error
-            callback();
-          });
+        // Initialize Tagify
+        const tagify = new Tagify(input, {
+            whitelist: [], // Initially empty; will be populated via AJAX
+            maxTags: 10, // Adjust as needed
+            enforceWhitelist: true, // Only allow users from the AJAX response
+            dropdown: {
+                enabled: 1, // Show suggestions after typing
+                maxItems: 10,
+                closeOnSelect: false,
+            },
+        });
+        // Fetch suggestions via AJAX
+        tagify.on("input", (e) => {
+            const value = e.detail.value;
 
-      },
-      // custom rendering functions for options and items
-      render: {
-        option: function(item, escape) {
-          console.log(item);
-          
-          return `<div class="py-2 d-flex">
-                <div class="icon me-3">
-                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
-                </div>
-                <div>
-                  <div class="mb-1">
-                    <span class="h4">
-                      ${ escape(item.first_name || "") }
-                    </span>
-                    <span class="text-muted">by ${ escape(item.email || "") }</span>
-                  </div>
-                  <div class="description">${ escape(item.description || "") }</div>
-                </div>
-              </div>`;
-        },
-        item: function(item, escape) {
-          console.log(item);
-          
-          return `<div class="py-2 d-flex">
-                <div class="icon me-3">
-                  <img class="img-fluid" src="${escape(item.profile_photo_path || "")}" />
-                </div>
-                <div>
-                  <div class="mb-1">
-                    <span class="h4">
-                      ${ escape(item.first_name || "") }
-                    </span>
-                    <span class="text-muted">by ${ escape(item.email || "") }</span>
-                  </div>
-                  <div class="description">${ escape(item.description || "") }</div>
-                </div>
-              </div>`;
-        }
-      },
+            if (value.length > 2) {
+                fetch(`/api/users?query=${value}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Update Tagify whitelist
+                        tagify.settings.whitelist = data.map((user) => ({
+                            value: user.name,
+                            id: user.id,
+                        }));
+
+                        // Show suggestions
+                        tagify.dropdown.show();
+                    })
+                    .catch((error) => console.error("Error fetching users:", error));
+            }
+        });
     });
+</script>
 
-  </script>
   @endsection
   <div class="container">
 <div class="row">
@@ -419,25 +391,28 @@
 									</div>
 									<form action="#" method="post">
 										<div class="modal-body">
-											<div class="form-group">
+										<div class="row g-3 ">
+											<div class="form-group col-md-12">
 												<input name="to" type="email" class="form-control" placeholder="To">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-6">
 												<input name="cc" type="email" class="form-control" placeholder="Cc">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-6">
 												<input name="bcc" type="email" class="form-control" placeholder="Bcc">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-12">
 												<input name="subject" type="email" class="form-control" placeholder="Subject">
 											</div>
-											<div class="form-group">
+											<div class="form-group col-md-12">
 												<textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
 											</div>
 											<div class="form-group">
-                        <input type="file" name="attachment">
+                        <input type="file" name="a-ttachment" class="form-control" id="formFile">
 											</div>
 										</div>
+										</div>
+							
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
 											<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send Message</button>
