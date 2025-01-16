@@ -19,7 +19,7 @@ class UsersManagementController extends Controller
 
     public function getAllUsers()
     {
-        $adminDetails = usersManagement::all();
+        $usersDetails = usersManagement::all();
     }
     /**
      * Show the form for creating a new resource.
