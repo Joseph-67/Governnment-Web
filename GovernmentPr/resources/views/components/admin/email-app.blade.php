@@ -197,9 +197,7 @@
                     .then((response) => {
 						let data = response.json()
 						console.log(data);
-						
 					})
-
                     .catch((error) => console.error("Error fetching users:", error));
             }
         });
