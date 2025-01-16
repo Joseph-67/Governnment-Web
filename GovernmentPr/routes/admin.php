@@ -35,7 +35,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
-
     });
 
     // permissions
@@ -173,7 +172,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     Route::controller(TeamMemberController::class)->group(function(){
         Route::get ('/team-member', 'index')->name('admin.team-member');
-
 });
 
 });
