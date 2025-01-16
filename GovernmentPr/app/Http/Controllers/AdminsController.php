@@ -25,8 +25,8 @@ class AdminsController extends Controller
     }
     public function getAllAdmins(Request $request)
     {
-        $query = $request->query;
-        $adminDetails = Admins::where('email', 'LIKE', '%{$query}')->where('status', '=', 'active')->limit(10)->get(['id', 'email', 'profile_photo_path']);
+        $query = $request->input('query');
+        $adminDetails = Admins::where('email', 'like', "%{$query}%")->where('status', '=', 'active')->limit(10)->get(['id', 'email', 'profile_photo_path', 'first_name', 'last_name']);
         return response()->json($adminDetails);
     }
     /**
