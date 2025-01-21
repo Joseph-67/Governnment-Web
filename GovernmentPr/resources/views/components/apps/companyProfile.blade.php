@@ -1,6 +1,5 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
-   
     <div class="container-xxl">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -1395,6 +1394,7 @@
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->material }}")'>Check In Item</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1727,6 +1727,54 @@
                 </div>
             </div>
              <!-- end Price -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-material-price">Save changes</button>
+            <span class="loader" id="loader"></span>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Check In Item </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="checkIn_material_id" >
+            <div class="row g-2">
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Material</label>
+                    <input type="text" class="form-control" readonly name="checkIn_material_name">
+                </div>
+            </div>
+             <!-- Unit of measurement -->
+            <!-- Date -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" min="0" class="form-control" 
+                        name="date">
+                </div>
+            </div>
+             <!-- end Date -->
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Quantity/Volume</label>
+                    <input type="number" min="0" class="form-control" name="quantity">
+                </div>
+            </div>
+             <!-- Unit of measurement -->
             </div>
         </div>
         <div class="modal-footer">
@@ -3525,11 +3573,22 @@
         }, 1000);
     </script>
     <script>
+        // Trigger Material Price Modal
         let triggerMaterialPrice = (companyMaterialID) => {
             let materialPriceModal = document.querySelector('#materialPriceModal');
             // Initialize Bootstrap modal
             document.querySelector('input[name="material_price_id"]').value = companyMaterialID;
             const myModal = new bootstrap.Modal(materialPriceModal);
+            myModal.show();
+        }
+
+        // Trigger CheckIn
+        let triggerCheckIn = (companyMaterialID, materialName) => {
+            let checkInModal = document.querySelector('#checkInModal');
+            // Initialize Bootstrap modal
+            document.querySelector('input[name="checkIn_material_id"]').value = companyMaterialID;
+            document.querySelector('input[name="checkIn_material_name"]').value = materialName;
+            const myModal = new bootstrap.Modal(checkInModal);
             myModal.show();
         }
     </script>

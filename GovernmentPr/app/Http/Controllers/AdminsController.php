@@ -23,9 +23,11 @@ class AdminsController extends Controller
     {
         //
     }
-    public function getAllAdmins()
+    public function getAllAdmins(Request $request)
     {
-        $adminDetails = Admins::all();
+        $query = $request->input('query');
+        $adminDetails = Admins::where('email', 'like', "%{$query}%")->where('status', '=', 'active')->limit(10)->get(['id', 'email', 'profile_photo_path', 'first_name', 'last_name']);
+        return response()->json($adminDetails);
     }
     /**
      * Show the form for creating a new resource.
