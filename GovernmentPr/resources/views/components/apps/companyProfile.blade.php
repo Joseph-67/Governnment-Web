@@ -1750,14 +1750,14 @@
         <div class="modal-body">
             <input type="hidden" name="checkIn_material_id" >
             <div class="row g-2">
-            <!-- Unit of measurement -->
+            <!-- Material name -->
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="">Material</label>
                     <input type="text" class="form-control" readonly name="checkIn_material_name">
                 </div>
             </div>
-             <!-- Unit of measurement -->
+             <!-- Material name -->
             <!-- Date -->
             <div class="col-md-6">
                 <div class="form-group">
@@ -1768,10 +1768,10 @@
             </div>
              <!-- end Date -->
             <!-- Unit of measurement -->
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="">Quantity/Volume</label>
-                    <div class="input-group qty-icons w-50">
+                    <div class="input-group qty-icons">
                         <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
                         <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
                         <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
@@ -1779,6 +1779,14 @@
                 </div>
             </div>
              <!-- Unit of measurement -->
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Remark</label>
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+             <!-- Material name -->
             </div>
         </div>
         <div class="modal-footer">
@@ -3047,13 +3055,13 @@
             let loader = document.querySelector('#checkInModal #loader');
             loader.style.display = 'inline-block';
 
-            let material_price_id = document.querySelector('input[name="material_price_id"]').value.trim();
-            let unit = document.querySelector('input[name="unit"]').value.trim();
-            let price = document.querySelector('input[name="price"]').value.trim();
-            let date = document.querySelector('input[name="date"]').value.trim();
-            if (!material_price_id) {
+            let checkIn_material_id = document.querySelector('#checkInModal input[name="checkIn_material_id"]').value.trim();
+            let quantity = document.querySelector('#checkInModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkInModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkInModal input[name="remark"]').value.trim();
+            if (!checkIn_material_id) {
                 Toastify({
-                    text: "Material price id field cannot be empty.",
+                    text: "Material id field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -3066,9 +3074,9 @@
                 loader.style.display = 'none';
                 return
             }
-            if (!unit) {
+            if (!quantity) {
                 Toastify({
-                    text: "Unit field cannot be empty.",
+                    text: "Quantity field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -3081,9 +3089,9 @@
                 loader.style.display = 'none';
                 return
             }
-            if (!price) {
+            if (!date) {
                 Toastify({
-                    text: "Price field cannot be empty.",
+                    text: "Date field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -3097,13 +3105,13 @@
                 return
             }
 
-            let url = "{{ route('admin.save-company-material-price') }}"
+            let url = "{{ route('admin.save-company-material-check-in') }}"
             let formData = new FormData();
-            formData.append('companyMaterialID', material_price_id);
-            formData.append('unit', unit);
-            formData.append('price', price);
+            formData.append('checkIn_material_id', checkIn_material_id);
+            formData.append('quantity', quantity);
             formData.append('date', date);
-            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
                 console.log(result);
                 loader.style.display = 'none';
             });
