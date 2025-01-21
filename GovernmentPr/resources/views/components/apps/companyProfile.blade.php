@@ -1772,10 +1772,10 @@
                 <div class="form-group">
                     <label for="">Quantity/Volume</label>
                     <div class="input-group qty-icons w-50">
-                                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
-                                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                    </div>   
+                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>   
                 </div>
             </div>
              <!-- Unit of measurement -->
@@ -1783,7 +1783,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id = "btn-submit-material-price">Save changes</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-check-in">Save changes</button>
             <span class="loader" id="loader"></span>
         </div>
         </div>
@@ -2968,7 +2968,7 @@
         });
         // end material
 
-        // company material
+        // company material price
         let btn_submit_material_price = document.querySelector('#btn-submit-material-price');
         btn_submit_material_price.addEventListener('click', () => {
             console.log("clicked");
@@ -3037,7 +3037,78 @@
                 loader.style.display = 'none';
             });
         });
-        // end company material
+        // end company material price
+
+        // company material price
+        let btn_submit_check_in = document.querySelector('#btn-submit-check-in');
+        btn_submit_check_in.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkInModal #loader');
+            loader.style.display = 'inline-block';
+
+            let material_price_id = document.querySelector('input[name="material_price_id"]').value.trim();
+            let unit = document.querySelector('input[name="unit"]').value.trim();
+            let price = document.querySelector('input[name="price"]').value.trim();
+            let date = document.querySelector('input[name="date"]').value.trim();
+            if (!material_price_id) {
+                Toastify({
+                    text: "Material price id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!unit) {
+                Toastify({
+                    text: "Unit field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!price) {
+                Toastify({
+                    text: "Price field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-material-price') }}"
+            let formData = new FormData();
+            formData.append('companyMaterialID', material_price_id);
+            formData.append('unit', unit);
+            formData.append('price', price);
+            formData.append('date', date);
+            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // end company material price
 
         // general setting
         let btn_general_settings = document.querySelector('#btn-general-settings')
@@ -3275,7 +3346,6 @@
                 return
             }
            
-
             let url = document.querySelector('#location_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3285,7 +3355,6 @@
             formData.append('address', address);
             formData.append('gis_location', gis_location);
            
-
             fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3383,6 +3452,7 @@
                 }).showToast();
                 return
             }
+
             if (!contact_person_position) {
                 loader.style.display = 'none';
                 Toastify({
@@ -3414,7 +3484,6 @@
                 return
             }
            
-
             let url = document.querySelector('#contact_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3423,7 +3492,6 @@
             formData.append('contact_person_position', contact_person_position);
             formData.append('contact_person_phone_number', contact_person_phone_number);
            
-
             fetch_cycle('--Update Contact Personnel', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3562,7 +3630,6 @@
                 ele.selected = true
             }
         }
-
 
         setTimeout(() => {
             let countriesEle = document.querySelector('.countries')
