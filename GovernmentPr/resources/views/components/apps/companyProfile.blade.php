@@ -2986,8 +2986,8 @@
                     result.company_material.forEach(material => {
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
-                            <td>${(material.serial_number == "")? "":material.serial_number}</td>
-                            <td>${(material.unit_of_measure == "")? "":material.unit_of_measure}</td>
+                            <td>${material.serial_number ?? ''}</td>
+                            <td>${material.unit_of_measure ?? ''}</td>
                             <td> <span class="badge bg-${(material.company_material_status == 'active')?'success':'danger'}">${material.company_material_status}</span>
                             </td>
                             <td class="text-end">
@@ -2996,9 +2996,11 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.material}")'>Check In Item</a>
                                     </div>
                                 </div>
                             </td>

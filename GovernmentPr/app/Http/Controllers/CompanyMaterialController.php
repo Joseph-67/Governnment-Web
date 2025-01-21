@@ -147,7 +147,11 @@ class CompanyMaterialController extends Controller
        
         $id = decrypt($id);
         $data['prices'] = MaterialPrice::latest('created_at')->first();
-        $data['Material'] = material::join('categories', 'categories.categoryID', '=', 'materials.categoryID')->select('materialID', 'material', 'description','status', 'category_name')->get();
+        $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+        ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
+        ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
+        ->where('companyMaterialId', $id)->first();
+        // dd($data);
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
 
