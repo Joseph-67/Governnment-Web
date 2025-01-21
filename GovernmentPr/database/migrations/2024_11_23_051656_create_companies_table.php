@@ -25,7 +25,10 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();
-            $table->string('gis_location')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('mgrs')->nullable();
             $table->string('website_url')->nullable();
             $table->string('date_of_establishment')->nullable();
             $table->string('number_of_employees')->nullable();

@@ -210,13 +210,17 @@
                             />
                         </div>
                         <div class="col-md-12 mt-2">
-                            <input
-                                id="mobile_code_primary"
-                                type="tel"
-                                class="form-control"
-                                placeholder="Phone Number"
-                            />
-                        </div>
+                            <div class="">
+                                <div class="col-md-12 mt-2">
+                                    <input
+                                        id="mobile_code_primary"
+                                        type="tel"
+                                        class="form-control"
+                                        placeholder="Phone Number"
+                                    />
+                                </div>
+                                </div>
+                            </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="text"
@@ -357,14 +361,17 @@
                             />
                         </div>
                         <div class="col-md-12 mt-2">
-                            <input
-                                id="mobile_code_primary"
-                                type="tel"
-                                class="form-control"
-                                placeholder="Phone Number"
-                            />
-                            <input type="hidden" name="phone_number" />
-                        </div>
+                            <div class="">
+                                <div class="col-md-12 mt-2">
+                                    <input
+                                        id="mobile_code_primary"
+                                        type="tel"
+                                        class="form-control"
+                                        placeholder="Phone Number"
+                                    />
+                                </div>
+                                </div>
+                            </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="text"
@@ -614,7 +621,8 @@
 @section('styles')
 <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"        rel="stylesheet"
+
     />
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <style>

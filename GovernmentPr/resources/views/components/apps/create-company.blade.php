@@ -129,10 +129,34 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mt-2">
-                <div class="form-group">
-                    <label for="">Geographic Information System(GIS) Location</label>
-                    <input type="text" class="form-control" placeholder="" name="gis_location">
+            <div class="col-md-12 mt-2">
+                <label>Geographic Information System(GIS) Location</label>
+            </div>
+            <div class="col-md-4 mt-2">
+                 <div class="form-group">
+                 <label for="">ZIP code</label>
+                    <input type="text" class="form-control" placeholder="" name="zip_code">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                 <div class="form-group">
+                 <label for="">Longitude</label>
+                    <input type="text" class="form-control" placeholder="" name="longitude">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                 <div class="form-group">
+                 <label for="">Latitude</label>
+                    <input type="text" class="form-control" placeholder="" name="latitude">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                 <div class="form-group">
+                 <label for="">Military Grid Reference System (MGRS) coordinate</label>
+                    <input type="text" class="form-control" placeholder="" name="mgrs">
                 </div>
             </div>
         </div>

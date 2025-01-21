@@ -79,7 +79,17 @@
                                     Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a>
                             </li>
                             <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> G.I.S Location </b> : {{ $company->gis_location }}</li>
+                                <b> ZIP Code </b> : {{ $company->zip_code }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Longitude </b> : {{ $company->longitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Latitude </b> : {{ $company->latitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> MGRS </b> : {{ $company->mgrs }}
+                            </li>
                         </ul>
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -1547,11 +1557,34 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 mt-2">
+                                        <div class="col-md-12 mt-2">
+                                            <label>Geographic Information System(GIS) Location</label>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Geographic Information System(GIS) Location</label>
-                                                <input type="text" class="form-control" placeholder=""
-                                                    name="gis_location" value="{{$company->gis_location}}">
+                                            <label for="">ZIP code</label>
+                                                <input type="text" class="form-control" placeholder="" name="zip_code" value="{{$company->zip_code}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Longitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="longitude" value="{{$company->longitude}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Latitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="latitude" value="{{$company->latitude}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Military Grid Reference System (MGRS) coordinate</label>
+                                                <input type="text" class="form-control" placeholder="" name="mgrs" value="{{$company->mgrs}}">
                                             </div>
                                         </div>
                                     </div>
@@ -3276,7 +3309,10 @@
             let state = document.querySelector('#location_settings select[name="state"]').value.trim();
             let city = document.querySelector('#location_settings select[name="city"]').value.trim();
             let address = document.querySelector('#location_settings  input[name="address"]').value.trim();
-            let gis_location = document.querySelector('#location_settings  input[name="gis_location"]').value.trim();
+            let zip_code = document.querySelector('#location_settings  input[name="zip_code"]').value.trim();
+            let longitude = document.querySelector('#location_settings  input[name="longitude"]').value.trim();
+            let latitude = document.querySelector('#location_settings  input[name="latitude"]').value.trim();
+            let mgrs = document.querySelector('#location_settings  input[name="mgrs"]').value.trim();
             
             if (!company_id) {
                 loader.style.display = 'none';
@@ -3361,7 +3397,10 @@
             formData.append('state', state);
             formData.append('city', city);
             formData.append('address', address);
-            formData.append('gis_location', gis_location);
+            formData.append('zip_code', zip_code);
+            formData.append('longitude', longitude);
+            formData.append('latitude', latitude);
+            formData.append('mgrs', mgrs);
            
             fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
                 // let data = await result.json()

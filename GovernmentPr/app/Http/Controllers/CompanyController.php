@@ -156,7 +156,10 @@ class CompanyController extends Controller
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required'],
-            'gis_location' => ['nullable']
+            'zip_code' => ['nullable', 'string'],
+            'longitude' => ['nullable', 'numeric'],
+            'latitude' => ['nullable', 'numeric'],
+            'mgrs' => ['nullable', 'string'],
         ]);
     
         // Return validation errors if any
@@ -174,7 +177,10 @@ class CompanyController extends Controller
             'state' => $request->input('state'),
             'city' => $request->input('city'),
             'address' => $request->input('address'),
-            'gis_location' => $request->input('gis_location')
+            'zip_code' => $request['zip_code'],
+            'longitude' => $request['longitude'],
+            'latitude' => $request['latitude'],
+            'mgrs' => $request['mgrs'],
            
         ]);
     
@@ -182,7 +188,7 @@ class CompanyController extends Controller
         if ($result) {
             $companiesInfo = Company::where('status', '=', 'active')
             ->where('company_id', $companyId)
-            ->select('country', 'state', 'city', 'address', 'gis_location')->first();
+            ->select('country', 'state', 'city', 'address', 'zip_code', )->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Company Location updated successfully.',
@@ -332,7 +338,10 @@ class CompanyController extends Controller
             'state' => ['required', 'string'],
             'city' => ['required', 'string'],
             'address' => ['required', 'string'],
-            'gis_location' => ['nullable', 'string'],
+            'zip_code' => ['nullable', 'string'],
+            'longitude' => ['nullable', 'numeric'],
+            'latitude' => ['nullable', 'numeric'],
+            'mgrs' => ['nullable', 'string'],
             'policy' => ['nullable', 'array'],
             'policy.*' => ['string'],
             'objective' => ['nullable', 'array'],
@@ -356,7 +365,10 @@ class CompanyController extends Controller
             'state' => $request['state'],
             'city' => $request['city'],
             'address' => $request['address'],
-            'gis_location' => $request['gis_location'],
+            'zip_code' => $request['zip_code'],
+            'longitude' => $request['longitude'],
+            'latitude' => $request['latitude'],
+            'mgrs' => $request['mgrs'],
             'website_url' => $request['website_address'],
             'date_of_establishment' => $request['date_of_establishment'],
             'number_of_employees' => $request['number_of_employees'],
