@@ -1369,7 +1369,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">
+                        <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company Materials</h4>
@@ -1378,8 +1378,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
-                                        <thead>
+                                    <table class="table mb-0" id="tbl-company-material">
+                                        <thead class="table-light">
                                         <tr>
                                             <th>Material</th>
                                             <th>Serial No.</th>

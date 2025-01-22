@@ -10,18 +10,6 @@
                             </div><!--end col-->
                         </div> <!--end row-->
                     </div><!--end card-header-->
-                    <div class="card-body bg-black"> 
-                        <div class="row">
-                            <div class="col-4 align-self-center">                                                
-                                <img src="assets/images/logo-sm.png" alt="logo-small" class="logo-sm me-1" height="70" > 
-                            </div><!--end col-->    
-                            <div class="col-8 text-end align-self-center">                                                
-                                <h5 class="mb-1 fw-semibold text-white"> {{ $material->company_name }}</h5> 
-                                <!-- <h5 class="mb-0 fw-semibold text-white"><span class="text-muted">Industry:</span> {{ $material->industry }}</h5>  -->
-                                <h5 class="mb-0 text-white">({{ $material->state }}, {{ $material->country }}.)</p> 
-                            </div><!--end col-->    
-                        </div><!--end row-->     
-                    </div><!--end card-body-->
 
                     <div class="card-body pt-0">
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
@@ -44,17 +32,14 @@
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Description:</h5><span>{{ $material->description }}</span>
-
                             </div><!--end media-body-->
                         </div><!--end media-->
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Latest Material Price:</h5><span>₦{{number_format($prices->price,
-                                    2)}}</span>
-
+                                <h5 class="m-0">Latest Material Price:</h5><span>₦{{number_format($prices->price, 2)}}</span>
                             </div><!--end media-body-->
                         </div><!--end media-->
-                        </div><!--end media-->
+                        
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Unit Of Measure:</h5><span>{{$material -> unit_of_measure}}</span>
@@ -66,7 +51,7 @@
                                 <h5 class="m-0">Serial Number:</h5><span>{{$material -> serial_number}}</span>
 
                             </div><!--end media-body-->
-                        
+                        </div><!--end media-->
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
@@ -102,7 +87,7 @@
         </div><!--end row-->
 
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -124,9 +109,14 @@
                                 <tbody>
                                     @foreach($price_history as $priceList )
                                     <tr>
-
                                         <td>{{number_format($priceList -> price, 2)}}</td>
-                                        <td>{{$priceList -> date}}</td>
+                                        <td>
+                                            @php
+                                                $start = Carbon\Carbon::now();
+                                                $end = Carbon\Carbon::create($priceList->date);
+                                                echo $start->diffForHumans($end);
+                                            @endphp
+                                        </td>
                                     </tr>
                                    @endforeach
                                 </tbody>
@@ -135,37 +125,70 @@
                     </div>
                 </div>
             </div> <!-- end col -->
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Stock Movement Table</h4>
-                            </div><!--end col-->
-                        </div> <!--end row-->
-                    </div><!--end card-header-->
-                    <div class="card-body pt-0">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Source</th>
-                                        <th>Movement Type</th>
-                                       
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   @foreach($stockMovement as $stock)
-                                    <tr>
-                                        <td>{{$stock_movement -> movement_type}}</td>
-                                        
-                                    </tr>
-                                </tbody>
-                            </table>
+            <!--end col-->
+            <div class="col-lg-9">
+                        <div class="card card-h-100">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Stock Management</h4>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end card-header-->
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="border-top-0">Qauntity</th>
+                                                <th class="border-top-0">Movement Type</th>
+                                                <th class="border-top-0">Calendar Yr.</th>
+                                                <th class="border-top-0">Date</th>
+                                                <th class="border-top-0">Remark</th>
+                                            </tr>
+                                            <!--end tr-->
+                                        </thead>
+                                        <tbody>
+                                            @foreach($stockMovement as $stock)
+                                            <tr>
+                                                <td>{{ $stock->quantity }}</td>
+                                                <td class="text-capitalize"> {{ $stock->movement_type }} 
+                                                @if ($stock->movement_type == 'in')
+                                                <i class="fas fa-caret-up text-success font-16"></i>
+                                                @endif
+                                                @if ($stock->movement_type == 'out')
+                                                <i class="fas fa-caret-down text-danger font-16"></i>
+                                                @endif
+                                                </td>
+                                                <td>{{ $stock->calendar_year }}</td>
+                                                <td>
+                                                @php
+                                                    $date = Carbon\Carbon::create($stock->movement_date);
+                                                    echo $date->format('l, d F Y');
+                                                @endphp
+                                                </td>
+                                                <td>
+                                                    {{ $stock->remark }}
+                                                </td>
+                                            </tr>
+                                            <!--end tr-->
+                                            @endforeach
+                                            
+                                        </tbody>
+                                    </table>
+                                    <!--end table-->
+                                </div>
+                                <!--end /div-->
+                                <!-- <p class="m-0 fs-12 fst-italic ps-2 text-muted">Last data updated - 13min ago <a href="#!" class="link-danger ms-1 "><i class="align-middle iconoir-refresh"></i></a></p> -->
+                            </div>
+                            <!--end card-body-->
                         </div>
+                        <!--end card-->
                     </div>
-                </div>
-            </div> <!-- end col -->
+                    <!--end col-->
         </div> <!-- end row -->
     </div><!-- container -->
     @section('scripts')
