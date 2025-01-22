@@ -1,12 +1,11 @@
 <x-layouts.admin-app>
+@section('PageTitle', 'Material')
     @section('styles')
  <!-- App css -->
      <link href="{{asset('adminAssets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
-     <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
-     <link rel="shortcut icon" href="{{asset('adminAssets/images/favicon.ico')}}">
 
      <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
      <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />

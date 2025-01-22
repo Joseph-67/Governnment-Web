@@ -301,8 +301,14 @@
         <div class="brand">
             <a href="{{ url('/') }}" class="logo">
                 <span>
-                <img src="{{asset('MainAssets/img/logo/logo.png')}}" alt="logo-small" class="logo-sm logo-light">
-                <img src="{{asset('MainAssets/img/logo/logo.png')}}" alt="logo-small" class="logo-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
                 </span>
             </a>
         </div>

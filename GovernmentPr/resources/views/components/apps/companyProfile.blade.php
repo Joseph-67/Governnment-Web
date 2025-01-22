@@ -12,8 +12,8 @@
                                         <h5 class="fw-semibold fs-22 mb-1 text-uppercase">{{ $company->company_name }}
                                         </h5>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
-                                        <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>{{
-                                            $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
+                                        <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>
+                                        {{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
                                     </div>
                                 </div>
                             </div><!--end col-->
