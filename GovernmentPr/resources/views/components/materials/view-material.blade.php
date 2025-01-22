@@ -155,7 +155,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+                                   @foreach($stockMovement as $stock)
                                     <tr>
                                         <td>{{$stock_movement -> movement_type}}</td>
                                         
