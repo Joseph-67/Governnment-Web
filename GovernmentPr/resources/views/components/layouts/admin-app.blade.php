@@ -344,12 +344,6 @@
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('materials.material') }}">Material</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.create-category') }}">Category</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
                                     </li><!--end nav-item-->
                              
@@ -369,7 +363,18 @@
                                 <span>People</span>
                             </a>
                         </li><!--end nav-item-->
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.create-category') }}">
+                                <i class="iconoir-page-star menu-icon"></i>
+                                <span>Category</span>    
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('materials.material') }}">
+                            <i class="iconoir-page-star menu-icon"></i>
+                            <span>Material</span>
+                            </a>
+                        </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">

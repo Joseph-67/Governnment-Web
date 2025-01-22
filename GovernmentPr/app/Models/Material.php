@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\stock_movement;
+
 class Material extends Model
 {
     use HasFactory;
@@ -17,4 +19,9 @@ class Material extends Model
         'description',
         'status'
     ];
+
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
 }

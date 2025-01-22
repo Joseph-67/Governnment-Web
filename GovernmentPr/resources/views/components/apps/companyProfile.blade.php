@@ -1406,8 +1406,8 @@
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <hr class="dropdown-divider">
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->material }}")'>Check In Item</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->material }}")'>Check Out Item</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check In Item</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check Out Item</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1785,6 +1785,8 @@
         </div>
         <div class="modal-body">
             <input type="hidden" name="checkIn_material_id" >
+            <input type="hidden" name="material_id" >
+            <input type="hidden" name="company_id" >
             <div class="row g-2">
             <!-- Material name -->
             <div class="col-md-6">
@@ -1845,6 +1847,8 @@
         </div>
         <div class="modal-body">
             <input type="hidden" name="checkOut_material_id" >
+            <input type="hidden" name="material_id" >
+            <input type="hidden" name="company_id" >
             <div class="row g-2">
             <!-- Material name -->
             <div class="col-md-6">
@@ -3059,13 +3063,13 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <hr class="dropdown-divider">
-                                                            <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.material}")'>Check In Item</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.material}")'>Check Out Item</a>
+                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
+                                        <a class="dropdown-item" href="#">Update Material</a>
+                                        <a class="dropdown-item" href="#">Delete Material</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }", "${material.material}")'>Check In Item</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }",  "${material.material}")'>Check Out Item</a>
                                     </div>
                                 </div>
                             </td>
@@ -3147,7 +3151,7 @@
         });
         // end company material price
 
-        // company material price
+        // checkin
         let btn_submit_check_in = document.querySelector('#btn-submit-check-in');
         btn_submit_check_in.addEventListener('click', () => {
             console.log("clicked");
@@ -3156,6 +3160,8 @@
             loader.style.display = 'inline-block';
 
             let checkIn_material_id = document.querySelector('#checkInModal input[name="checkIn_material_id"]').value.trim();
+            let material_id = document.querySelector('#checkInModal input[name="material_id"]').value.trim();
+            let company_id = document.querySelector('#checkInModal input[name="company_id"]').value.trim();
             let quantity = document.querySelector('#checkInModal input[name="quantity"]').value.trim();
             let date = document.querySelector('#checkInModal input[name="date"]').value.trim();
             let remark = document.querySelector('#checkInModal input[name="remark"]').value.trim();
@@ -3208,6 +3214,8 @@
             let url = "{{ route('admin.save-company-material-check-in') }}"
             let formData = new FormData();
             formData.append('checkIn_material_id', checkIn_material_id);
+            formData.append('material_id', material_id);
+            formData.append('company_id', company_id);
             formData.append('quantity', quantity);
             formData.append('date', date);
             formData.append('remark', remark);
@@ -3227,6 +3235,8 @@
             loader.style.display = 'inline-block';
 
             let checkOut_material_id = document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value.trim();
+            let material_id = document.querySelector('#checkOutModal input[name="material_id"]').value.trim();
+            let company_id = document.querySelector('#checkOutModal input[name="company_id"]').value.trim();
             let quantity = document.querySelector('#checkOutModal input[name="quantity"]').value.trim();
             let date = document.querySelector('#checkOutModal input[name="date"]').value.trim();
             let remark = document.querySelector('#checkOutModal input[name="remark"]').value.trim();
@@ -3279,6 +3289,8 @@
             let url = "{{ route('admin.save-company-material-check-out') }}"
             let formData = new FormData();
             formData.append('checkOut_material_id', checkOut_material_id);
+            formData.append('material_id', material_id);
+            formData.append('company_id', company_id);
             formData.append('quantity', quantity);
             formData.append('date', date);
             formData.append('remark', remark);
@@ -3839,21 +3851,25 @@
         }
 
         // Trigger CheckIn
-        let triggerCheckIn = (companyMaterialID, materialName) => {
+        let triggerCheckIn = (companyMaterialID, materialID, companyID, materialName) => {
             let checkInModal = document.querySelector('#checkInModal');
             // Initialize Bootstrap modal
-            document.querySelector('input[name="checkIn_material_id"]').value = companyMaterialID;
-            document.querySelector('input[name="checkIn_material_name"]').value = materialName;
+            document.querySelector('#checkInModal input[name="checkIn_material_id"]').value = companyMaterialID;
+            document.querySelector('#checkInModal input[name="material_id"]').value = materialID;
+            document.querySelector('#checkInModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkInModal input[name="checkIn_material_name"]').value = materialName;
             const myModal = new bootstrap.Modal(checkInModal);
             myModal.show();
         }
 
         // Trigger CheckOut
-        let triggerCheckOut = (companyMaterialID, materialName) => {
+        let triggerCheckOut = (companyMaterialID, materialID, companyID, materialName) => {
             let checkOutModal = document.querySelector('#checkOutModal');
             // Initialize Bootstrap modal
-            document.querySelector('input[name="checkOut_material_id"]').value      = companyMaterialID;
-            document.querySelector('input[name="checkOut_material_name"]').value    = materialName;
+            document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value      = companyMaterialID;
+            document.querySelector('#checkOutModal input[name="material_id"]').value = materialID;
+            document.querySelector('#checkOutModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value    = materialName;
             const myModal = new bootstrap.Modal(checkOutModal);
             myModal.show();
         }

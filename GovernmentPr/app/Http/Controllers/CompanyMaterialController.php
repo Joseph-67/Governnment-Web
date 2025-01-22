@@ -7,6 +7,7 @@ use App\Models\MaterialPrice;
 use App\Models\Company;
 use App\Models\category;
 use App\Models\Material;
+use App\Models\stock_movement;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -152,7 +153,8 @@ class CompanyMaterialController extends Controller
         ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
         ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
         ->where('companyMaterialId', $id)->first();
-        // dd($data);
+        $data['stockMovement'] = stock_movement::where('companyMaterialId', $id)->get();
+        dd($data);
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
 

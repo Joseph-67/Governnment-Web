@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Material;
 class stock_movement extends Model
 {
     use HasFactory;
@@ -12,7 +13,8 @@ class stock_movement extends Model
     protected $primaryKey="stockID";
     protected $fillable=[
         'companyMaterialId',
-        'company_id',
+        'materialID',
+        'companyID',
         'movement_type',
         'quantity',
         'calendar_year',
@@ -20,4 +22,9 @@ class stock_movement extends Model
         'remark',
         'status'
     ];
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 }

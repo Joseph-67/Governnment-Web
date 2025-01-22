@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id('stockID');
             $table->unsignedBigInteger('companyMaterialId');
-            // $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('materialID');
+            $table->unsignedBigInteger('companyID');
             $table->enum('movement_type', ['in', 'out', 'transfer', 'adjustment'])->nullable();
             $table->string('quantity');
             $table->string('calendar_year');
@@ -24,7 +25,8 @@ return new class extends Migration
             $table->string('remark')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreign('companyMaterialId')->references('companyMaterialId')->on('company_materials');
-            // $table->foreign('company_id')->references('company_id')->on('companies');
+            $table->foreign('materialID')->references('materialID')->on('materials');
+            $table->foreign('companyID')->references('company_id')->on('companies');
             $table->timestamps();
         });
     }

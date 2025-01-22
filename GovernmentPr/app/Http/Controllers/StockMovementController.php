@@ -77,6 +77,8 @@ class StockMovementController extends Controller
         // dd($request);
         $validator = Validator::make($request->all(), [
             'checkIn_material_id'   =>  ['required', 'numeric'],
+            'material_id'           =>  ['required', 'numeric'],
+            'company_id'            =>  ['required', 'numeric'],
             'quantity'              =>  ['required', 'numeric', 'min:1'],
             'date'                  =>  ['required', 'date'],
             'remark'                =>  ['nullable', 'string', 'min:4'],
@@ -98,6 +100,8 @@ class StockMovementController extends Controller
         }
         $result = stock_movement::create([
             'companyMaterialId'  => $request['checkIn_material_id'],
+            'materialID'        => $request['material_id'],
+            'companyID'         => $request['company_id'],
             'quantity'           => $request['quantity'],
             'movement_type'      => 'in',
             'calendar_year'      => $year,
@@ -128,6 +132,8 @@ class StockMovementController extends Controller
         // dd($request);
         $validator = Validator::make($request->all(), [
             'checkOut_material_id'   =>  ['required', 'numeric'],
+            'material_id'           =>  ['required', 'numeric'],
+            'company_id'            =>  ['required', 'numeric'],
             'quantity'              =>  ['required', 'numeric', 'min:1'],
             'date'                  =>  ['required', 'date'],
             'remark'                =>  ['nullable', 'string', 'min:4'],
@@ -171,6 +177,8 @@ class StockMovementController extends Controller
         }
         $result = stock_movement::create([
             'companyMaterialId'  => $request['checkOut_material_id'],
+            'materialID'        => $request['material_id'],
+            'companyID'         => $request['company_id'],
             'quantity'           => $request['quantity'],
             'movement_type'      => 'out',
             'calendar_year'      => $year,
