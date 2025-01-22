@@ -24,7 +24,7 @@
                     </div><!--end card-body-->
 
                     <div class="card-body pt-0">
-                        <div class="d-flex align-items-center border-dashed-bottom py-3">
+                        <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Material Name:</h5><span>{{ $material->material }}</span>
                             </div><!--end media-body-->
@@ -41,16 +41,22 @@
 
                             </div><!--end media-body-->
                         </div><!--end media-->
-                        <div class="d-flex align-items-center border-dashed-bottom py-3">
+                        <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Description:</h5><span>{{ $material->description }}</span>
 
                             </div><!--end media-body-->
                         </div><!--end media-->
-                        <div class="d-flex align-items-center border-dashed-bottom py-3">
+                        <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Latest Material Price:</h5><span>₦{{number_format($prices->price,
                                     2)}}</span>
+
+                            </div><!--end media-body-->
+                        </div><!--end media-->
+                        <div class="d-flex align-items-center border-dashed-bottom py-2">
+                            <div class="flex-grow-1 ms-2">
+                                <h5 class="m-0">Serial Number:</h5><span>{{$material -> serial_number}}</span>
 
                             </div><!--end media-body-->
                         </div><!--end media-->
@@ -89,12 +95,12 @@
         </div><!--end row-->
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h4 class="card-title">Visits Details</h4>
+                                <h4 class="card-title">Price History</h4>
                             </div><!--end col-->
                         </div> <!--end row-->
                     </div><!--end card-header-->
@@ -103,49 +109,31 @@
                             <table class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>URL</th>
-                                        <th class="text-end">Views</th>
-                                        <th class="text-end">Uniques</th>
+                                        <th>Price Of Disposal (₦)</th>
+                                        <th>Date</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($price_history as $priceList )
                                     <tr>
-                                        <td>htpps:/</td>
-                                        <td class="text-end">9.2k</td>
-                                        <td class="text-end">7.9k</td>
+
+                                        <td>{{number_format($priceList -> price, 2)}}</td>
+                                        <td>{{$priceList -> date}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>.com/dashboard</td>
-                                        <td class="text-end">7.7k</td>
-                                        <td class="text-end">6.2k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>.com/ecommerce-index</td>
-                                        <td class="text-end">6.8k</td>
-                                        <td class="text-end">5.5k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>.com/apps/projects-overview</td>
-                                        <td class="text-end">5k</td>
-                                        <td class="text-end">4.9k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>.com/blog/crypto/exchange</td>
-                                        <td class="text-end">4.3k</td>
-                                        <td class="text-end">3.3k</td>
-                                    </tr>
+                                   @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div> <!-- end col -->
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h4 class="card-title">By Social Media</h4>
+                                <h4 class="card-title">Stock Movement Table</h4>
                             </div><!--end col-->
                         </div> <!--end row-->
                     </div><!--end card-header-->
@@ -160,26 +148,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Twitter</td>
-                                        <td class="text-end">9.2k</td>
-                                        <td class="text-end">7.9k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Facebook</td>
-                                        <td class="text-end">7.7k</td>
-                                        <td class="text-end">6.2k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Instagram</td>
-                                        <td class="text-end">6.8k</td>
-                                        <td class="text-end">5.5k</td>
-                                    </tr>
-                                    <tr>
-                                        <td>LinkedIn</td>
-                                        <td class="text-end">5k</td>
-                                        <td class="text-end">4.9k</td>
-                                    </tr>
+                                   
                                     <tr>
                                         <td>WhatsApp</td>
                                         <td class="text-end">4.3k</td>
