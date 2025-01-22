@@ -40,7 +40,6 @@
                                 <th>Phone No.</th>
                                 <th>State/Province</th>
                                 <th>Date Of Est.</th>
-                                <th>G.I.S Location</th>
                                 <th>Actions</th>
                               </tr>
                             </thead>
@@ -52,9 +51,15 @@
                                     <td>{{$company->primary_phone_number}}</td>
                                     <td>{{$company->state}}</td>
                                     <td>{{$company->date_of_establishment}}</td>
-                                    <td>{{$company->gis_location}}</td>
                                     <td>
-                                        <a href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" class="btn btn-link">View</a>
+                                        <div class="dropdown d-inline-block">
+                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                <a class="dropdown-item" href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open Company</a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach                                                                        

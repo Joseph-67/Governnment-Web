@@ -9,7 +9,8 @@
                             <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center flex-row flex-wrap">
                                     <div class="">
-                                        <h5 class="fw-semibold fs-22 mb-1 text-uppercase">{{ $company->company_name }}
+                                        <h5 class="fw-semibold fs-22 mb-1 text-uppercase">
+                                            {{ $company->company_name }}
                                         </h5>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>
@@ -1403,8 +1404,10 @@
                                                             <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt($material->companyMaterialId)]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
                                                             <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->material }}")'>Check In Item</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->material }}")'>Check Out Item</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1825,6 +1828,66 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id = "btn-submit-check-in">Save changes</button>
+            <span class="loader" id="loader"></span>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Check Out Item </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="checkOut_material_id" >
+            <div class="row g-2">
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Material</label>
+                    <input type="text" class="form-control" readonly name="checkOut_material_name">
+                </div>
+            </div>
+             <!-- Material name -->
+            <!-- Date -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" min="0" class="form-control" 
+                        name="date">
+                </div>
+            </div>
+             <!-- end Date -->
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Quantity/Volume</label>
+                    <div class="input-group qty-icons">
+                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>   
+                </div>
+            </div>
+             <!-- Unit of measurement -->
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Remark</label>
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+             <!-- Material name -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-check-out">Save changes</button>
             <span class="loader" id="loader"></span>
         </div>
         </div>
@@ -2999,8 +3062,10 @@
                                                             <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
                                                             <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.material}")'>Check In Item</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.material}")'>Check Out Item</a>
                                     </div>
                                 </div>
                             </td>
@@ -3152,6 +3217,77 @@
             });
         });
         // end company material price
+
+        // company material checkout
+        let btn_submit_check_out = document.querySelector('#btn-submit-check-out');
+        btn_submit_check_out.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkOutModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkOut_material_id = document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value.trim();
+            let quantity = document.querySelector('#checkOutModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkOutModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkOutModal input[name="remark"]').value.trim();
+            if (!checkOut_material_id) {
+                Toastify({
+                    text: "Material id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-material-check-out') }}"
+            let formData = new FormData();
+            formData.append('checkOut_material_id', checkOut_material_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // end check out
 
         // general setting
         let btn_general_settings = document.querySelector('#btn-general-settings')
@@ -3709,6 +3845,16 @@
             document.querySelector('input[name="checkIn_material_id"]').value = companyMaterialID;
             document.querySelector('input[name="checkIn_material_name"]').value = materialName;
             const myModal = new bootstrap.Modal(checkInModal);
+            myModal.show();
+        }
+
+        // Trigger CheckOut
+        let triggerCheckOut = (companyMaterialID, materialName) => {
+            let checkOutModal = document.querySelector('#checkOutModal');
+            // Initialize Bootstrap modal
+            document.querySelector('input[name="checkOut_material_id"]').value      = companyMaterialID;
+            document.querySelector('input[name="checkOut_material_name"]').value    = materialName;
+            const myModal = new bootstrap.Modal(checkOutModal);
             myModal.show();
         }
     </script>

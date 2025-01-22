@@ -245,15 +245,14 @@
     <div class="row">
         <!-- BEGIN INBOX -->
         <div class="col-md-12">
-            <div class="grid email">
-                <div class="grid-body">
+            <div class="email card">
+                <div class="card-body">
                     <div class="row">
                         <!-- BEGIN INBOX MENU -->
                         <div class="col-md-3">
-                            <h2 class="grid-title"><i class="fa fa-inbox"></i> Inbox</h2>
+                            <h2 class="card-title"><i class="fa fa-inbox"></i> Inbox</h2>
                             <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i
                                     class="fa fa-pencil"></i>&nbsp;&nbsp;NEW MESSAGE</a>
-
                             <hr>
 
                             <div>
@@ -327,7 +326,7 @@
                             <div class="padding"></div>
 
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered mt-2 table-centered">
                                     <tbody>
                                         <tr>
                                             <td class="action"><input type="checkbox" /></td>
@@ -448,7 +447,7 @@
     <div class="modal-wrapper">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-blue">
+                <div class="modal-header bg-black">
                     <h4 class="modal-title"><i class="fa fa-envelope"></i> Compose New Message</h4>
                     <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                         aria-hidden="true"></button>

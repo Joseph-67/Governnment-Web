@@ -169,7 +169,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
     Route::controller(StockMovementController::class)->group(function(){
-        Route::post('/company/material-setup/check-in', 'store')->name('admin.save-company-material-check-in');
+        Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
+        Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
     });
 
     Route::controller(CategoryController::class)->group(function(){
