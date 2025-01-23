@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Material;
 class CompanyMaterial extends Model
 {
     use HasFactory;
@@ -16,4 +17,9 @@ class CompanyMaterial extends Model
         'unit_of_measure',
         'status'
     ];
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 }

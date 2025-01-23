@@ -153,9 +153,8 @@ class CompanyMaterialController extends Controller
         ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
         ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
         ->where('companyMaterialId', $id)->first();
-        $data['stock_movement'] = CompanyMaterial::join('stock_movements',  'stock_movements.stockID', '=', 'company_materials.stockID')
-        ->select('company_materials.stockID', 'movement_type')
-        ->where('companyMaterialId', $id)->first();
+        $data['stockMovement'] = stock_movement::join('materials', 'materials.materialID', '=', 'stock_movements.materialID')
+        ->where('companyMaterialId', $id)->get(['*', 'stock_movements.materialID as stk_move_material_id']);
         // dd($data);
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
