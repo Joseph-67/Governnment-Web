@@ -7,6 +7,7 @@ use App\Models\MaterialPrice;
 use App\Models\Company;
 use App\Models\category;
 use App\Models\Material;
+use App\Models\stock_movement;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -151,6 +152,9 @@ class CompanyMaterialController extends Controller
         $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
         ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
         ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
+        ->where('companyMaterialId', $id)->first();
+        $data['stock_movement'] = CompanyMaterial::join('stock_movements',  'stock_movements.stockID', '=', 'company_materials.stockID')
+        ->select('company_materials.stockID', 'movement_type')
         ->where('companyMaterialId', $id)->first();
         // dd($data);
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
