@@ -189,7 +189,7 @@ class CompanyController extends Controller
         if ($result) {
             $companiesInfo = Company::where('status', '=', 'active')
             ->where('company_id', $companyId)
-            ->select('country', 'state', 'city', 'address', 'zip_code', )->first();
+            ->select('country', 'state', 'city', 'address', 'zip_code', 'latitude', 'longitude', 'mgrs')->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Company Location updated successfully.',
