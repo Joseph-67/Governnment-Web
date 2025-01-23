@@ -54,12 +54,19 @@
 
                             </div><!--end media-body-->
                         </div><!--end media-->
+                        </div><!--end media-->
+                        <div class="d-flex align-items-center border-dashed-bottom py-2">
+                            <div class="flex-grow-1 ms-2">
+                                <h5 class="m-0">Unit Of Measure:</h5><span>{{$material -> unit_of_measure}}</span>
+
+                            </div><!--end media-body-->
+                        </div><!--end media-->
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
                                 <h5 class="m-0">Serial Number:</h5><span>{{$material -> serial_number}}</span>
 
                             </div><!--end media-body-->
-                        </div><!--end media-->
+                        
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
@@ -143,16 +150,15 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>Source</th>
-                                        <th class="text-end">Views</th>
-                                        <th class="text-end">Uniques</th>
+                                        <th>Movement Type</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                    
                                     <tr>
-                                        <td>WhatsApp</td>
-                                        <td class="text-end">4.3k</td>
-                                        <td class="text-end">3.3k</td>
+                                        <td>{{$stock_movement -> movement_type}}</td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
