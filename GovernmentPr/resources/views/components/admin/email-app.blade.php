@@ -241,29 +241,29 @@ var tagify = new Tagify(inputElm, {
     //         "name": "Justinian Hattersley",
     //         "avatar": "https://i.pravatar.cc/80?img=1",
     //         "email": "jhattersley0@ucsd.edu",
-    //         "team": "A"
+    //         "role": "A"
     //     },
     // ],
 
-    // transformTag: (tagData, originalData) => {
-    //     var {name, email} = parseFullValue(tagData.name)
-    //     tagData.name = name
-    //     tagData.email = email || tagData.email
-    // },
+    transformTag: (tagData, originalData) => {
+        var {name, email} = parseFullValue(tagData.name)
+        tagData.name = name
+        tagData.email = email || tagData.email
+    },
 
-    // validate({name, email}) {
-    //     // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
-    //     if( !email && name ) {
-    //         var parsed = parseFullValue(name)
-    //         name = parsed.name
-    //         email = parsed.email
-    //     }
+    validate({name, email}) {
+        // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
+        if( !email && name ) {
+            var parsed = parseFullValue(name)
+            name = parsed.name
+            email = parsed.email
+        }
 
-    //     if( !name ) return "Missing name"
-    //     if( !validateEmail(email) ) return "Invalid email"
+        if( !name ) return "Missing name"
+        if( !validateEmail(email) ) return "Invalid email"
 
-    //     return true
-    // }
+        return true
+    }
 })
 
 // Event listener for input typing
@@ -287,7 +287,7 @@ tagify.on('input', async (e) => {
             name: `${user.first_name} ${user.last_name}`,
             avatar: user.profile_photo_path || '', // Default avatar if not provided
             email: user.email,
-            team: user.team || 'Not Assigned'
+            role: 'admin' || 'Not Assigned'
         }));
 
         // Update Tagify's whitelist and show the dropdown
@@ -311,20 +311,20 @@ function escapeHTML( s ){
 }
 
 // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
-// (since each user also has a 'team' property)
+// (since each user also has a 'role' property)
 tagify.dropdown.createListHTML = sugegstionsList  => {
-    const teamsOfUsers = sugegstionsList.reduce((acc, suggestion) => {
-        const team = suggestion.team || 'Not Assigned';
+    const rolesOfUsers = sugegstionsList.reduce((acc, suggestion) => {
+        const role = suggestion.role || 'Not Assigned';
 
-        if( !acc[team] )
-            acc[team] = [suggestion]
+        if( !acc[role] )
+            acc[role] = [suggestion]
         else
-            acc[team].push(suggestion)
+            acc[role].push(suggestion)
 
         return acc
     }, {})
 
-    const getUsersSuggestionsHTML = teamUsers => teamUsers.map((suggestion, idx) => {
+    const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
         if( typeof suggestion == 'string' || typeof suggestion == 'number' )
             suggestion = {value:suggestion}
 
@@ -337,8 +337,8 @@ tagify.dropdown.createListHTML = sugegstionsList  => {
 
 
     // assign the user to a group
-    return Object.entries(teamsOfUsers).map(([team, teamUsers]) => {
-        return `<div class="tagify__dropdown__itemsGroup" data-title="Team ${team}:">${getUsersSuggestionsHTML(teamUsers)}</div>`
+    return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
+        return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
     }).join("")
 }
 
