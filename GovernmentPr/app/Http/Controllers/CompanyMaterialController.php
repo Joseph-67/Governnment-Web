@@ -23,11 +23,11 @@ class CompanyMaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getMovements($movementType)
+    public function getMovements(Request $request)
     {
-        $movements = stock_movement::where('movement_type', $movementType)
-            ->orderBy('movement_date', 'desc')
-            ->get();
+        $movements = stock_movement::where('calendar_year', $request['query'])
+                    ->where('companyMaterialId', $request['company'])
+                    ->get();
 
         return response()->json($movements);
     }
@@ -157,6 +157,7 @@ class CompanyMaterialController extends Controller
         //
        
         $id = decrypt($id);
+        $data['companyMaterialID'] = $id;
         $data['prices'] = MaterialPrice::latest('created_at')->first();
         $data['price_history'] = MaterialPrice::all();
         $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')

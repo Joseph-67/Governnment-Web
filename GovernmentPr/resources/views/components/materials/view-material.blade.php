@@ -196,52 +196,86 @@
     <script src="{{asset('adminAssets/libs/apexcharts/apexcharts.min.js')}}"></script>
     <!-- <script src="{{asset('adminAssets/js/pages/analytics-reports.init.js')}}"></script> -->
      <script>
-let chartInstance = null;
+        let stock_analysis = async (searchTerm, company) => {
+            const url = new URL("{{ route('admin.stock-analysis') }}");
+            url.searchParams.append("query", searchTerm);
+            url.searchParams.append("company", company);
+            console.log(url.toString());
+            const response = await fetch(url.toString());
+            const resp = await response.json();
+            console.log(resp);
+            
+        // Assuming `resp` contains `seriesData` and `categories` for the chart
+        const monthlyData = {};
+        const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-function updateChartData(movementType) {
-    const chartElement = document.querySelector("#reports-bar");
+                // Aggregate quantities by month and movement type
+                resp.forEach((item) => {
+            const month = new Date(item.movement_date).getMonth(); // 0-based index
+            const movementType = item.movement_type;
 
-    if (!chartElement) {
-        console.error("Element #reports-bar not found");
-        return;
-    }
-
-    fetch(`/stock-movements/${movementType}`)
-        .then(response => response.json())
-        .then(data => {
-            const categories = data.map(item => item.movement_date);
-            const quantities = data.map(item => item.quantity);
-
-            // Destroy the existing chart instance if any
-            if (chartInstance) {
-                chartInstance.destroy();
+            if (!monthlyData[movementType]) {
+                monthlyData[movementType] = new Array(12).fill(0);
             }
 
-            // Create a new chart instance
-            chartInstance = new ApexCharts(chartElement, {
-                series: [{
-                    name: movementType === 'in' ? "Stock In" : "Stock Out",
-                    data: quantities,
-                }],
-                chart: {
-                    type: 'bar',
-                    height: 292,
-                },
-                xaxis: {
-                    categories: categories,
-                },
-            });
-
-            // Render the new chart
-            chartInstance.render();
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
+            monthlyData[movementType][month] += parseFloat(item.quantity);
         });
-}
 
-// Fetch and display 'in' stock movements
-updateChartData('in');
+        // Build the series
+        const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
+            name: key, // 'in' or 'out'
+            data: data
+        }));
+
+
+        // Define the chart configuration dynamically
+        var chart = {
+            series: seriesData, // Dynamically map the series
+            chart: {
+                toolbar: { show: false },
+                type: "bar",
+                fontFamily: "inherit",
+                foreColor: "#adb0bb",
+                height: 292,
+                stacked: true,
+                offsetX: -15
+            },
+            colors: ["var(--bs-primary)", "var(--bs-secondary)"],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    barHeight: "80%",
+                    columnWidth: "12%",
+                    borderRadius: [3],
+                    borderRadiusApplication: "end",
+                    borderRadiusWhenStacked: "all"
+                }
+            },
+            dataLabels: { enabled: false },
+            legend: { show: false },
+            grid: {
+                show: true,
+                strokeDashArray: 3,
+                padding: { top: 0, bottom: 0, right: 0 },
+                borderColor: "rgba(0,0,0,0.05)",
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: false } }
+            },
+            yaxis: { tickAmount: 4 },
+            xaxis: {
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                categories: categories // Dynamically map the categories
+            }
+        };
+
+        // Render the chart
+        (chart = new ApexCharts(document.querySelector("#reports-bar"), chart)).render();
+
+        }
+
+        const currentYear = new Date().getFullYear();
+        stock_analysis(currentYear, "{{$companyMaterialID}}");
      </script>
     @endsection
 </x-layouts.admin.app>
