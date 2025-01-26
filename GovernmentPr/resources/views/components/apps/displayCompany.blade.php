@@ -38,6 +38,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone No.</th>
+                                <th>Country</th>
                                 <th>State/Province</th>
                                 <th>Date Of Est.</th>
                                 <th>Actions</th>
@@ -49,8 +50,14 @@
                                     <td>{{$company->company_name}}</td>
                                     <td>{{$company->email}}</td>
                                     <td>{{$company->primary_phone_number}}</td>
+                                    <td>{{$company->country}}</td>
                                     <td>{{$company->state}}</td>
-                                    <td>{{$company->date_of_establishment}}</td>
+                                    <td>
+                                        @php
+                                            $date = Carbon\Carbon::create($company->date_of_establishment);
+                                            echo $date->format('l, d F Y');
+                                        @endphp
+                                    </td>
                                     <td>
                                         <div class="dropdown d-inline-block">
                                             <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
