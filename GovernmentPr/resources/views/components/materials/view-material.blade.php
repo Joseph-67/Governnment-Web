@@ -196,7 +196,52 @@
     <script src="{{asset('adminAssets/libs/apexcharts/apexcharts.min.js')}}"></script>
     <!-- <script src="{{asset('adminAssets/js/pages/analytics-reports.init.js')}}"></script> -->
      <script>
-        var chart={series:[{name:"2024",data:[2.7,2.2,1.3,2.5,1,2.5,1.2,1.2,2.7,1,3.6,2.1]},{name:"2023",data:[-2.3,-1.9,-1,-2.1,-1.3,-2.2,-1.1,-2.3,-2.8,-1.1,-2.5,-1.5]}],chart:{toolbar:{show:!1},type:"bar",fontFamily:"inherit",foreColor:"#adb0bb",height:292,stacked:!0,offsetX:-15},colors:["var(--bs-primary)","var(--bs-secondary)"],plotOptions:{bar:{horizontal:!1,barHeight:"80%",columnWidth:"12%",borderRadius:[3],borderRadiusApplication:"end",borderRadiusWhenStacked:"all"}},dataLabels:{enabled:!1},legend:{show:!1},grid:{show:!0,strokeDashArray:3,padding:{top:0,bottom:0,right:0},borderColor:"rgba(0,0,0,0.05)",xaxis:{lines:{show:!0}},yaxis:{lines:{show:!1}}},yaxis:{tickAmount:4},xaxis:{axisBorder:{show:!1},axisTicks:{show:!1},categories:["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"]}};(chart=new ApexCharts(document.querySelector("#reports-bar"),chart)).render();
+let chartInstance = null;
+
+function updateChartData(movementType) {
+    const chartElement = document.querySelector("#reports-bar");
+
+    if (!chartElement) {
+        console.error("Element #reports-bar not found");
+        return;
+    }
+
+    fetch(`/stock-movements/${movementType}`)
+        .then(response => response.json())
+        .then(data => {
+            const categories = data.map(item => item.movement_date);
+            const quantities = data.map(item => item.quantity);
+
+            // Destroy the existing chart instance if any
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Create a new chart instance
+            chartInstance = new ApexCharts(chartElement, {
+                series: [{
+                    name: movementType === 'in' ? "Stock In" : "Stock Out",
+                    data: quantities,
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 292,
+                },
+                xaxis: {
+                    categories: categories,
+                },
+            });
+
+            // Render the new chart
+            chartInstance.render();
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+// Fetch and display 'in' stock movements
+updateChartData('in');
      </script>
     @endsection
 </x-layouts.admin.app>

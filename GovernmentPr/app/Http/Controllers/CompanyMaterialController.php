@@ -14,6 +14,8 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+
+
 class CompanyMaterialController extends Controller
 {
     /**
@@ -21,6 +23,14 @@ class CompanyMaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getMovements($movementType)
+    {
+        $movements = stock_movement::where('movement_type', $movementType)
+            ->orderBy('movement_date', 'desc')
+            ->get();
+
+        return response()->json($movements);
+    }
     public function index()
     {
         //
@@ -148,7 +158,7 @@ class CompanyMaterialController extends Controller
        
         $id = decrypt($id);
         $data['prices'] = MaterialPrice::latest('created_at')->first();
-        $data['price_history'] = MaterialPrice::where('companyMaterialId', $id)->get();
+        $data['price_history'] = MaterialPrice::all();
         $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
         ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
         ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
@@ -159,6 +169,7 @@ class CompanyMaterialController extends Controller
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
 
+    
     /**
      * Show the form for editing the specified resource.
      *
