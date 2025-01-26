@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+@section('PageTitle', 'Notification')
 @section('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -235,15 +236,6 @@ var tagify = new Tagify(inputElm, {
         dropdownItem: suggestionItemTemplate,
         dropdownHeader: dropdownHeaderTemplate
     },
-    // whitelist: [
-    //     {
-    //         "value": 1,
-    //         "name": "Justinian Hattersley",
-    //         "avatar": "https://i.pravatar.cc/80?img=1",
-    //         "email": "jhattersley0@ucsd.edu",
-    //         "role": "A"
-    //     },
-    // ],
 
     transformTag: (tagData, originalData) => {
         var {name, email} = parseFullValue(tagData.name)
@@ -280,18 +272,30 @@ tagify.on('input', async (e) => {
         
         const response = await fetch(url.toString());
         const users = await response.json();
-
+        console.log(users);
+        
         // Format the data to match Tagify's whitelist structure
-        const formattedUsers = users.map(user => ({
+        const formattedAdmins = users.admin.map(user => ({
             value: user.id,
             name: `${user.first_name} ${user.last_name}`,
             avatar: user.profile_photo_path || '', // Default avatar if not provided
             email: user.email,
-            role: 'admin' || 'Not Assigned'
+            role: 'admin'
+        }));
+        
+        const formattedUsers = users.users.map(user => ({
+            value: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            avatar: user.profile_photo_path || '', // Default avatar if not provided
+            email: user.email,
+            role: 'user'
         }));
 
+        // Combine both admin and user lists
+        const formattedData = formattedAdmins.concat(formattedUsers);
+
         // Update Tagify's whitelist and show the dropdown
-        tagify.settings.whitelist = formattedUsers;
+        tagify.settings.whitelist = formattedData;
         tagify.dropdown.show(searchTerm); // Show dropdown with filtered results
     } catch (error) {
         console.error('Error fetching user data:', error);
