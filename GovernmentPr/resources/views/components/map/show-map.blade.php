@@ -39,18 +39,18 @@ let getMap = async () => {
 
         console.log(locations);
         
-        // let locations =[
-        //     { lat: 9.8965, lng: 8.8583, title: "Jos" },
-        //     { lat: 10.5036, lng: 7.4337, title: "Kaduna" },
-        //     { lat: 6.5244, lng: 3.3792, title: "Lagos" },
-        //     { lat: 7.3775, lng: 3.9470, title: "Ibadan" },
-        //     { lat: 11.1247, lng: 7.7254, title: "Zaria" },
-        //     { lat: 9.1099, lng: 7.4042, title: "Gwarinpa" },
-        //     { lat: 9.0228, lng: 7.5702, title: "Nyanya" },
-        // ];
+        let location =[
+            { lat: 9.8965, lng: 8.8583, title: "Jos" },
+            { lat: 10.5036, lng: 7.4337, title: "Kaduna" },
+            { lat: 6.5244, lng: 3.3792, title: "Lagos" },
+            { lat: 7.3775, lng: 3.9470, title: "Ibadan" },
+            { lat: 11.1247, lng: 7.7254, title: "Zaria" },
+            { lat: 9.1099, lng: 7.4042, title: "Gwarinpa" },
+            { lat: 9.0228, lng: 7.5702, title: "Nyanya" },
+        ];
 
         // Add markers to the map
-        locations.forEach((location) => {
+        location.forEach((location) => {
             L.marker([location.lat, location.lng])
                 .addTo(map)
                 .bindPopup(location.title)

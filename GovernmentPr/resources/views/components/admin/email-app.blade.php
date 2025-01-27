@@ -262,7 +262,7 @@ var tagify = new Tagify(inputElm, {
 tagify.on('input', async (e) => {
     const searchTerm = e.detail.value.trim(); // Get the input value
 
-    if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
+    // if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
 
     try {
         // Fetch suggestions from the API
@@ -283,6 +283,8 @@ tagify.on('input', async (e) => {
             role: 'admin'
         }));
         
+        // console.log(formattedAdmins);
+        
         const formattedUsers = users.users.map(user => ({
             value: user.id,
             name: `${user.first_name} ${user.last_name}`,
@@ -293,7 +295,8 @@ tagify.on('input', async (e) => {
 
         // Combine both admin and user lists
         const formattedData = formattedAdmins.concat(formattedUsers);
-
+        console.log(formattedData);
+        
         // Update Tagify's whitelist and show the dropdown
         tagify.settings.whitelist = formattedData;
         tagify.dropdown.show(searchTerm); // Show dropdown with filtered results
