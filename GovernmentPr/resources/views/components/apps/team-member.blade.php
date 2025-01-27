@@ -37,12 +37,13 @@
                         </div>
                     </div>
                     <div class="col-md-6 flex-valign text-md-right">
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Full Name"
-                            name="full_name"
-                        />
+                        <div class="row">
+                        <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                    </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="email"
@@ -51,9 +52,9 @@
                                 name="email"
                             />
                         </div>
-                        <div class="col-md-12 mt-2">
+                        <div class="col-md-12 mt-1">
                             <div class="">
-                                <div class="col-md-12 mt-2">
+                                <div class="col-md-12 mt-1">
                                     <input
                                         id="mobile_code_primary"
                                         type="tel"
@@ -193,14 +194,14 @@
                     </div>
                     <!--end col-->
                     <div class="col-md-6 flex-valign">
-                        <h5 class="my-0 font-weight-normal"></h5>
-                        <hr class="hr-primary w-70 ml-0 mb-3" />
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Full Name"
-                            name="full_name"
-                        />
+                        <div class="row">
+                        <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                    </div>
+                    </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="email"
@@ -345,13 +346,14 @@
                         </div>
                     </div>
                     <div class="col-md-6 flex-valign text-md-right">
-                        <hr class="hr-primary w-70 ml-0 ml-md-auto mr-md-0 mb-3" />
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Full Name"
-                            name="full_name"
-                        />
+                    <div class="row">
+                        <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                    </div>
+                    </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="email"
@@ -496,13 +498,14 @@
                         </div>
                     </div>
                     <div class="col-md-6 flex-valign">
-                        <hr class="hr-primary w-70 ml-0 mb-3" />
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Full Name"
-                            name="full_name"
-                        />
+                    <div class="row">
+                        <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                    </div>
+                    </div>
                         <div class="col-md-12 mt-2">
                             <input
                                 type="email"
@@ -617,6 +620,12 @@
         </div>
     </div>
    </div>
+   <div class="row justify-content-end">
+            <div class="col-md-3 py-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
 </div>
 @section('styles')
 <link
