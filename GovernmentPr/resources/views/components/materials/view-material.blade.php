@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+@section('PageTitle', 'Company Material')
     <div class="container-xxl">
         <div class="row">
             <div class="col-md-12 col-lg-3">
@@ -205,12 +206,12 @@
             const resp = await response.json();
             console.log(resp);
             
-        // Assuming `resp` contains `seriesData` and `categories` for the chart
-        const monthlyData = {};
-        const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            // Assuming `resp` contains `seriesData` and `categories` for the chart
+            const monthlyData = {};
+            const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-                // Aggregate quantities by month and movement type
-                resp.forEach((item) => {
+            // Aggregate quantities by month and movement type
+            resp.forEach((item) => {
             const month = new Date(item.movement_date).getMonth(); // 0-based index
             const movementType = item.movement_type;
 
