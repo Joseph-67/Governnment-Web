@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+@section('PageTitle', 'Company Material')
     <div class="container-xxl">
         <div class="row">
             <div class="col-md-12 col-lg-3">
@@ -65,7 +66,7 @@
                             <div class="card-body pt-0">
     <!-- Period Switching Dropdown -->
     <div class="dropdown ms-auto my-3">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <button class="btn btn-primary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
         Select Period
     </button>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">

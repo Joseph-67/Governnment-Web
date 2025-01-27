@@ -21,6 +21,7 @@ use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\MapReport;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -177,8 +178,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
     });
+
     Route::controller(TeamMemberController::class)->group(function(){
         Route::get ('/team-member', 'index')->name('admin.team-member');
-});
+    });
+
+    Route::controller(MapReport::class)->group(function(){
+        Route::get ('/companies-map', 'show_all_companies')->name('admin.show-all-companies');
+        Route::get ('/all-companies', 'get_all_companies')->name('admin.get-all-companies');
+    });
 
 });
