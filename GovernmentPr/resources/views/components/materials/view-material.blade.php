@@ -62,21 +62,32 @@
                             <div class="col">
                                 <h4 class="card-title">Metrics</h4>
                             </div><!--end col-->
-                            <div class="col-auto">
-                                <div class="dropdown">
-                                    <a href="#" class="btn bt btn-light dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icofont-calendar fs-5 me-1"></i> This Year<i
-                                            class="las la-angle-down ms-1"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Today</a>
-                                        <a class="dropdown-item" href="#">Last Week</a>
-                                        <a class="dropdown-item" href="#">Last Month</a>
-                                        <a class="dropdown-item" href="#">This Year</a>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
+                            <div class="card-body pt-0">
+    <!-- Period Switching Dropdown -->
+    <div class="dropdown ms-auto my-3">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Select Period
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#" data-period="this_year">This Year</a></li>
+        <li><a class="dropdown-item" href="#" data-period="last_week">Last Week</a></li>
+        <li><a class="dropdown-item" href="#" data-period="previous_day">Previous Day</a></li>
+        <li><a class="dropdown-item" href="#" data-period="monthly">This Month</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button class="btn btn-secondary" id="download-csv">Download CSV</button>
+</div>
+
+<!-- Label for selected period -->
+<div id="selected-period-label" class="mt-2">Selected Period: This Year</div>
+
+
+    <!-- Chart Container -->
+    <div id="reports-bar" class="apex-charts pill-bar"></div>
+</div>
+
+
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
@@ -196,86 +207,181 @@
     <script src="{{asset('adminAssets/libs/apexcharts/apexcharts.min.js')}}"></script>
     <!-- <script src="{{asset('adminAssets/js/pages/analytics-reports.init.js')}}"></script> -->
      <script>
-        let stock_analysis = async (searchTerm, company) => {
-            const url = new URL("{{ route('admin.stock-analysis') }}");
-            url.searchParams.append("query", searchTerm);
-            url.searchParams.append("company", company);
-            console.log(url.toString());
-            const response = await fetch(url.toString());
-            const resp = await response.json();
-            console.log(resp);
-            
-        // Assuming `resp` contains `seriesData` and `categories` for the chart
-        const monthlyData = {};
-        const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+let stock_analysis = async (period, company) => {
+    const url = new URL("{{ route('admin.stock-analysis') }}");
+    url.searchParams.append("query", period);
+    url.searchParams.append("company", company);
+    const response = await fetch(url.toString());
+    const resp = await response.json();
 
-                // Aggregate quantities by month and movement type
-                resp.forEach((item) => {
-            const month = new Date(item.movement_date).getMonth(); // 0-based index
-            const movementType = item.movement_type;
+    // Process data for the chart
+    const monthlyData = {};
+    const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-            if (!monthlyData[movementType]) {
-                monthlyData[movementType] = new Array(12).fill(0);
-            }
+    // Get the current date
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth(); // 0 for Jan, 1 for Feb, etc.
+    const currentDay = currentDate.getDate();
+    const currentWeek = getWeekNumber(currentDate);
 
-            monthlyData[movementType][month] += parseFloat(item.quantity);
-        });
+    // Get the start and end date of last week (Previous Monday to Sunday)
+    const lastWeekStartDate = new Date(currentDate);
+    const lastWeekEndDate = new Date(currentDate);
 
-        // Build the series
-        const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
-            name: key, // 'in' or 'out'
-            data: data
-        }));
+    // Set last week's start date to the last Monday
+    lastWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay() - 6); // Last Monday
+    // Set last week's end date to the last Sunday
+    lastWeekEndDate.setDate(currentDate.getDate() - currentDate.getDay()); // Last Sunday
 
+    resp.forEach((item) => {
+        const movementDate = new Date(item.movement_date);
+        const movementType = item.movement_type;
+        const month = movementDate.getMonth(); // Get the month of the stock movement
+        const day = movementDate.getDate();
+        const week = getWeekNumber(movementDate);
 
-        // Define the chart configuration dynamically
-        var chart = {
-            series: seriesData, // Dynamically map the series
-            chart: {
-                toolbar: { show: false },
-                type: "bar",
-                fontFamily: "inherit",
-                foreColor: "#adb0bb",
-                height: 292,
-                stacked: true,
-                offsetX: -15
-            },
-            colors: ["var(--bs-primary)", "var(--bs-secondary)"],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    barHeight: "80%",
-                    columnWidth: "12%",
-                    borderRadius: [3],
-                    borderRadiusApplication: "end",
-                    borderRadiusWhenStacked: "all"
-                }
-            },
-            dataLabels: { enabled: false },
-            legend: { show: false },
-            grid: {
-                show: true,
-                strokeDashArray: 3,
-                padding: { top: 0, bottom: 0, right: 0 },
-                borderColor: "rgba(0,0,0,0.05)",
-                xaxis: { lines: { show: true } },
-                yaxis: { lines: { show: false } }
-            },
-            yaxis: { tickAmount: 4 },
-            xaxis: {
-                axisBorder: { show: false },
-                axisTicks: { show: false },
-                categories: categories // Dynamically map the categories
-            }
-        };
-
-        // Render the chart
-        (chart = new ApexCharts(document.querySelector("#reports-bar"), chart)).render();
-
+        // Filter data for the selected period
+        if (period === "this_year" && movementDate.getFullYear() !== currentDate.getFullYear()) {
+            return; // Skip data that is not for the current year
+        }
+        if (period === "monthly" && month !== currentMonth) {
+            return; // Skip data that is not for this month
+        }
+        if (period === "previous_day" && day !== currentDay - 1) {
+            return; // Skip data that is not for the previous day
+        }
+        if (period === "last_week" && (movementDate < lastWeekStartDate || movementDate > lastWeekEndDate)) {
+            return; // Skip data that is not for the last week
         }
 
-        const currentYear = new Date().getFullYear();
-        stock_analysis(currentYear, "{{$companyMaterialID}}");
+        // Initialize movementType if not already initialized
+        if (!monthlyData[movementType]) {
+            monthlyData[movementType] = new Array(12).fill(0);
+        }
+
+        // Accumulate data for the selected period
+        monthlyData[movementType][month] += parseFloat(item.quantity);
+    });
+
+    const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
+        name: key,
+        data: data
+    }));
+
+    // Chart configuration
+    const chartOptions = {
+        series: seriesData,
+        chart: {
+            toolbar: { show: false },
+            type: "bar",
+            fontFamily: "inherit",
+            foreColor: "#adb0bb",
+            height: 292,
+            stacked: true,
+            offsetX: -15
+        },
+        colors: ["var(--bs-primary)", "var(--bs-secondary)"],
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                barHeight: "80%",
+                columnWidth: "12%",
+                borderRadius: [3],
+                borderRadiusApplication: "end",
+                borderRadiusWhenStacked: "all"
+            }
+        },
+        dataLabels: { enabled: false },
+        legend: {
+            show: true,
+            position: "top",
+            horizontalAlign: "right",
+            markers: {
+                width: 12,
+                height: 12,
+                radius: 3
+            }
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 3,
+            padding: { top: 0, bottom: 0, right: 0 },
+            borderColor: "rgba(0,0,0,0.05)",
+            xaxis: { lines: { show: true } },
+            yaxis: { lines: { show: false } }
+        },
+        yaxis: { tickAmount: 4 },
+        xaxis: {
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+            categories: categories
+        }
+    };
+
+    // Reinitialize and render the chart after re-fetching data
+    const chartContainer = document.querySelector("#reports-bar");
+    const chart = new ApexCharts(chartContainer, chartOptions);
+    chart.render();
+
+    // Reattach event listeners for download buttons
+    reattachDownloadListeners(chart, resp);
+};
+
+// Function to attach download button listeners
+function reattachDownloadListeners(chart, resp) {
+    document.getElementById("download-png").addEventListener("click", () => chart.exportChart({ type: "png" }));
+    document.getElementById("download-svg").addEventListener("click", () => chart.exportChart({ type: "svg" }));
+    document.getElementById("download-csv").addEventListener("click", () => {
+        const csvData = resp.map(item => ({
+            Date: item.movement_date,
+            Type: item.movement_type,
+            Quantity: item.quantity
+        }));
+        downloadCSV(csvData, "stock_analysis.csv");
+    });
+}
+
+// Helper Function to Download CSV
+function downloadCSV(data, filename) {
+    const csvRows = [
+        ["Date", "Type", "Quantity"],
+        ...data.map(row => [row.Date, row.Type, row.Quantity])
+    ];
+    const csvContent = csvRows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Get week number from date
+function getWeekNumber(date) {
+    const currentDate = new Date(date);
+    const startDate = new Date(currentDate.getFullYear(), 0, 1);
+    const days = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+    return Math.ceil((days + startDate.getDay() + 1) / 7);
+}
+
+// Handle Period Switching
+document.querySelectorAll(".dropdown-item[data-period]").forEach(item => {
+    item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const period = item.getAttribute("data-period");
+
+        // Update selected period label
+        document.getElementById("selected-period-label").textContent = `Selected Period: ${period.charAt(0).toUpperCase() + period.slice(1).replace("_", " ")}`;
+        
+        // Fetch and display stock data for the selected period
+        stock_analysis(period, "{{$companyMaterialID}}");
+    });
+});
+
+// Initial Call (first load)
+stock_analysis("this_year", "{{$companyMaterialID}}");
+
      </script>
     @endsection
 </x-layouts.admin.app>

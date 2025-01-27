@@ -9,7 +9,7 @@ use App\Models\category;
 use App\Models\Material;
 use App\Models\stock_movement;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -24,13 +24,29 @@ class CompanyMaterialController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getMovements(Request $request)
-    {
-        $movements = stock_movement::where('calendar_year', $request['query'])
-                    ->where('companyMaterialId', $request['company'])
-                    ->get();
+{
+    $query = $request->query('query');
+    $company = $request->query('company');
 
-        return response()->json($movements);
+    $movements = stock_movement::where('companyMaterialId', $company);
+
+    switch ($query) {
+        case 'today':
+            $movements->whereDate('movement_date', Carbon::today());
+            break;
+        case 'last_week':
+            $movements->whereBetween('movement_date', [Carbon::now()->subWeek(), Carbon::now()]);
+            break;
+        case 'last_month':
+            $movements->whereBetween('movement_date', [Carbon::now()->subMonth(), Carbon::now()]);
+            break;
+        case 'this_year':
+            $movements->whereYear('movement_date', Carbon::now()->year);
+            break;
     }
+
+    return response()->json($movements->get());
+}
     public function index()
     {
         //
