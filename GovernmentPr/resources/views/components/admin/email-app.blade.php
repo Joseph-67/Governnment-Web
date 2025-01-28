@@ -164,25 +164,71 @@
     border-top: 1px solid #DDD;
 }
 
-
-.chat-box .chat-footer{
-    background-color:var(--bs-secondary-bg);
-    border-radius:8px;padding:16px;
-    position:absolute;
-    width:100%;
-    left:0;
-    bottom:0;
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--bs-secondary-bg);
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    width:auto;
+    border-radius:8px;
 }
-.chat-box .chat-footer .chat-features a{
-    color:#c1cde0;
-    font-size:22px;
+.chat-input textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+.chat-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-icons a {
+    color: var(--bs-label-color);
+    font-size:20px;
     margin-left:12px;
 }
-.chat-box .chat-footer .chat-features a:hover{
-    color:#22c55e;
-    }
+.chat-icons a:hover {
+    color:#22c55e
+}
 
-    .chat-box-right{width:auto;background-color:var(--bs-body-bg);display:block;border-radius:8px;position:relative;height:710px;margin-left:361px;margin-bottom:20px}.chat-box-right .chat-body{padding:16px;height:540px}.chat-box-right .chat-body .chat-detail{max-height:610px}.chat-box-right .chat-body .chat-detail .chat-box .user-chat p{background-color:var(--bs-secondary-bg);-webkit-box-shadow:0 .125rem .25rem rgba(0,0,0,.075);box-shadow:0 .125rem .25rem rgba(0,0,0,.075);border-radius:16px 16px 16px 0;padding:14px;margin-bottom:4px;width:75%;max-width:-webkit-max-content;max-width:-moz-max-content;max-width:max-content}.chat-box-right .chat-body .chat-detail .chat-box.reverse{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.chat-box-right .chat-body .chat-detail .chat-box.reverse .user-chat{display:contents;width:100%}.chat-box-right .chat-body .chat-detail .chat-box.reverse .user-chat p{background-color:#22c55e;color:#fff;border-radius:16px 16px 0 16px;text-align:end}.chat-box-right .chat-body .chat-detail .chat-box .chat-time{font-size:10px}
+input[type="file"] {
+    display: none;
+}
+
+#captured-photos, .file-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    max-width: 600px;
+}
+.photo-item, .file-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background: var(--bs-card-bg);
+    border-radius: 5px;
+    border: 1px solid var(--bs-border-color);
+}
+.photo-item img {
+    max-width: 100px;
+    border-radius: 5px;
+}
+.remove-btn {
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+}
 </style>
 @endsection
 @section('scripts')
@@ -423,7 +469,55 @@
 </script>
 <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
 <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
+<script>
+            document.getElementById('file-input').addEventListener('change', function(event) {
+            const filePreview = document.getElementById('file-preview');
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const fileItem = document.createElement('div');
+                fileItem.classList.add('file-item');
+                fileItem.innerHTML = `${files[i].name} <span class="remove-btn">×</span>`;
+                fileItem.querySelector('.remove-btn').addEventListener('click', function() {
+                    fileItem.remove();
+                });
+                filePreview.appendChild(fileItem);
+            }
+            filePreview.style.display = 'block';
+        });
 
+    // camera trigger
+
+    document.getElementById('camera-btn').addEventListener('click', async function() {
+            const video = document.getElementById('camera-preview');
+            const canvas = document.getElementById('camera-canvas');
+            const context = canvas.getContext('2d');
+            const capturedPhotos = document.getElementById('captured-photos');
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = 'block';
+                setTimeout(() => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    video.srcObject.getTracks().forEach(track => track.stop());
+                    video.style.display = 'none';
+                    const imageData = canvas.toDataURL('image/png');
+                    const photoItem = document.createElement('div');
+                    photoItem.classList.add('photo-item');
+                    photoItem.innerHTML = `<img src="${imageData}" alt="Captured Photo"> <span class="remove-btn">×</span>`;
+                    photoItem.querySelector('.remove-btn').addEventListener('click', function() {
+                        photoItem.remove();
+                    });
+                    capturedPhotos.appendChild(photoItem);
+                }, 3000);
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+            }
+        });
+    // end camera trigger
+</script>
   @endsection
   <div class="container">
   <x-validation-errors class="alert" alert />
@@ -649,24 +743,29 @@
                             <div class="form-group col-md-12">
                                 <input name="subject" type="email" class="form-control" placeholder="Subject">
                             </div>
-                            <div class="chat-footer">
-                                    <div class="row">                                                    
-                                        <div class="col-12 col-md-8">
-                                            <input type="text" class="form-control" placeholder="Type something here...">
-                                        </div><!-- col-8 -->
-                                        <div class="col-4 text-end">
-                                            <div class="d-none d-sm-inline-block chat-features">
-                                                <a href="#"><i class="iconoir-camera"></i></a>
-                                                <a href="#"><i class="iconoir-attachment"></i></a>
-                                                <a href="#"><i class="iconoir-microphone"></i></a>
-                                                <a href="#" class="text-primary"><i class="iconoir-send-solid"></i></a>
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
-                            </div>
                             <div class="form-group">
-                                <input type="file" name="a-ttachment" class="form-control" id="formFile">
+                                <div class="chat-input">
+                                    <textarea class="form-control" placeholder="Type something here..." id="chat-textarea"></textarea>
+                                    <div class="chat-icons">
+                                        <a href="#">
+                                            <label for="">
+                                            <i class="iconoir-camera" title="Take Photo" id="camera-btn"></i>
+                                            </label>
+                                        </a>
+                                        <a href="#">
+                                            <label for="file-input">
+                                            <i class="iconoir-attachment" title="Attach File"></i>
+                                            </label>
+                                            <input type="file" id="file-input">
+                                        </a>
+                                        <a href="#"><i class="iconoir-microphone"></i></a>
+                                    </div>
+                                </div>
                             </div>
+                            <video id="camera-preview" style="display:none;" autoplay></video>
+                            <canvas id="camera-canvas" style="display:none;"></canvas>
+                            <div id="captured-photos"></div>
+                            <div class="file-preview" id="file-preview"></div>
                         </div>
                     </div>
 
