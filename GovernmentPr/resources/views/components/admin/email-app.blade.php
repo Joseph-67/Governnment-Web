@@ -390,6 +390,17 @@
     }
     // work in the name of Jesus
 </script>
+<script>
+    let sendBtn = document.querySelector('#send-btn')
+    sendBtn.addEventListener('click', (e) => {
+        let formData = new FormData();
+        let recipients = document.querySelector('input[name="recipients_email"]')
+        let subject = document.querySelector('input[name="subject"]')
+        let message = document.querySelector('input[name="message"]')
+        console.log(recipients.value);
+        
+    });
+</script>
 <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
 <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
 
@@ -631,7 +642,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i>
                             Discard</button>
-                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send
+                        <button type="button" class="btn btn-primary pull-right" id="send-btn"><i class="fa fa-envelope"></i> Send
                             Message</button>
                     </div>
                 </form>
