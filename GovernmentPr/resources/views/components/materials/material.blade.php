@@ -121,7 +121,8 @@
                                         <thead>
                                         <tr>
                                             <th>Material Name</th>
-                                            <th>Category Name</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
                                             <th>Material Status</th>
                                             <th class="text-end">Action</th>
                                         </tr>
@@ -130,6 +131,7 @@
                                         @foreach($Material as $material_detail)
                                             <tr>
                                                 <td>{{ $material_detail -> material }}</td>
+                                                <td>{{ $material_detail -> description }}</td>
                                                 <td>{{$material_detail -> category_name  }}</td>
                                                 <td><span class="badge bg-{{ ($material_detail -> status == 'active')? 'success':'danger'}}">{{  $material_detail -> status  }} </span></td>
                                                 <td class="text-end">
@@ -138,10 +140,8 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Setup Price</a>
                                                         </div>
                                                     </div>
                                                 </td>
