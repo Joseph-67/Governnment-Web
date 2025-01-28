@@ -165,15 +165,24 @@
 }
 
 
-.chat-box-right .chat-footer {
-    background-color: var(--bs-secondary-bg);
-    border-radius: 8px;
-    padding: 16px;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
+.chat-box .chat-footer{
+    background-color:var(--bs-secondary-bg);
+    border-radius:8px;padding:16px;
+    position:absolute;
+    width:100%;
+    left:0;
+    bottom:0;
 }
+.chat-box .chat-footer .chat-features a{
+    color:#c1cde0;
+    font-size:22px;
+    margin-left:12px;
+}
+.chat-box .chat-footer .chat-features a:hover{
+    color:#22c55e;
+    }
+
+    .chat-box-right{width:auto;background-color:var(--bs-body-bg);display:block;border-radius:8px;position:relative;height:710px;margin-left:361px;margin-bottom:20px}.chat-box-right .chat-body{padding:16px;height:540px}.chat-box-right .chat-body .chat-detail{max-height:610px}.chat-box-right .chat-body .chat-detail .chat-box .user-chat p{background-color:var(--bs-secondary-bg);-webkit-box-shadow:0 .125rem .25rem rgba(0,0,0,.075);box-shadow:0 .125rem .25rem rgba(0,0,0,.075);border-radius:16px 16px 16px 0;padding:14px;margin-bottom:4px;width:75%;max-width:-webkit-max-content;max-width:-moz-max-content;max-width:max-content}.chat-box-right .chat-body .chat-detail .chat-box.reverse{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.chat-box-right .chat-body .chat-detail .chat-box.reverse .user-chat{display:contents;width:100%}.chat-box-right .chat-body .chat-detail .chat-box.reverse .user-chat p{background-color:#22c55e;color:#fff;border-radius:16px 16px 0 16px;text-align:end}.chat-box-right .chat-body .chat-detail .chat-box .chat-time{font-size:10px}
 </style>
 @endsection
 @section('scripts')
@@ -632,7 +641,7 @@
                 <form action="{{route('display-message')}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <div class="row g-3 chat-box-right">
+                        <div class="row g-3 chat-box">
                             <div class="form-group col-md-12">
                                 <input name="recipients_email" type="text" class="form-control" placeholder="To" id="user-selector">
                             </div>
