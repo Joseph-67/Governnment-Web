@@ -379,6 +379,12 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('chemicals.chemicalUsage') }}">
+                            <i class="iconoir-page-star menu-icon"></i>
+                            <span>Chemical Usage</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
                                 <i class="iconoir-apple-shortcuts menu-icon"></i>

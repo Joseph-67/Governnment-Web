@@ -18,6 +18,7 @@ use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
+use App\Http\Controllers\ChemicalUsageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
@@ -104,6 +105,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
+    }); 
+
+    //Chemicals
+    Route::controller(ChemicalUsageController::class)->group(function() {
+        Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
+        Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
     }); 
 
     Route::controller(CompanyController::class)->group(function() {
