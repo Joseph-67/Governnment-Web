@@ -3103,6 +3103,8 @@
                     console.log(tableBody);
                     tableBody.innerHTML = ""
                     result.company_material.forEach(material => {
+                        let encodedID =  "{{ encrypt("+ material.companyMaterialId)}}"
+                        let uri = `{{ route("admin.view-material", ["material"=> $encodedID}]) }}`
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
                             <td>${material.serial_number ?? ''}</td>
@@ -3115,7 +3117,7 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
+                                        <a class="dropdown-item" href="${uri}">Open Material</a>
                                         <a class="dropdown-item" href="#">Update Material</a>
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">

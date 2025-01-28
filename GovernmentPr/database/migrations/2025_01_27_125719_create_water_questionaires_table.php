@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('water_questionaires', function (Blueprint $table) {
             $table->id('questionId');
             $table->string('label');
-            $table->string('key');
-            $table->enum('value', ['true', 'false'])->default('true');
+            $table->string('question');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });

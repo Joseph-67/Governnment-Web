@@ -18,6 +18,7 @@ use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use App\Models\Material;
+use App\Models\WaterQuestionaire;
 use App\Models\CompanyMaterial;
 use App\Models\Admins;
 use Illuminate\Http\Request;
@@ -55,6 +56,9 @@ class CompanyController extends Controller
         ->where('company_materials.status', 'active')
         ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
         ->get();
+
+        // water things
+        $data['waterQuestions'] =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }
