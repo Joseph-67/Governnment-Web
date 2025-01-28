@@ -1,0 +1,142 @@
+let stock_analysis = async (period, company) => {
+    const url = new URL("{{ route('admin.stock-analysis') }}");
+    url.searchParams.append("query", period);
+    url.searchParams.append("company", company);
+    const response = await fetch(url.toString());
+    const resp = await response.json();
+
+    const monthlyData = {};
+    const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentDay = currentDate.getDate();
+    const currentYear = currentDate.getFullYear();
+    const lastYear = currentYear - 1; // Calculate last year
+
+    // Dates for last week and previous day
+    const lastWeekStartDate = new Date(currentDate);
+    lastWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay() - 6);
+
+    const lastWeekEndDate = new Date(currentDate);
+    lastWeekEndDate.setDate(currentDate.getDate() - currentDate.getDay());
+
+    const previousDay = new Date(currentDate);
+    previousDay.setDate(currentDate.getDate() - 1);
+
+    resp.forEach((item) => {
+        const movementDate = new Date(item.movement_date);
+        const movementType = item.movement_type;
+        const month = movementDate.getMonth();
+        const year = movementDate.getFullYear();
+
+        // Filter by period
+        if (period === "this_year" && year !== currentYear) return;
+        if (period === "last_year" && year !== lastYear) return; // Filter for last year
+        if (period === "monthly" && month !== currentMonth) return;
+        if (period === "previous_day" && movementDate.toDateString() !== previousDay.toDateString()) return;
+        if (period === "last_week" && (movementDate < lastWeekStartDate || movementDate > lastWeekEndDate)) return;
+
+        if (!monthlyData[movementType]) {
+            monthlyData[movementType] = new Array(12).fill(0);
+        }
+
+        monthlyData[movementType][month] += parseFloat(item.quantity);
+    });
+
+    const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
+        name: key,
+        data: data
+    }));
+
+    const chartOptions = {
+        series: seriesData,
+        chart: {
+            toolbar: { show: false },
+            type: "bar",
+            fontFamily: "inherit",
+            foreColor: "#adb0bb",
+            height: 292,
+            stacked: true,
+            offsetX: -15
+        },
+        colors: ["var(--bs-primary)", "var(--bs-secondary)"],
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                barHeight: "80%",
+                columnWidth: "12%",
+                borderRadius: [3],
+                borderRadiusApplication: "end",
+                borderRadiusWhenStacked: "all"
+            }
+        },
+        dataLabels: { enabled: false },
+        legend: {
+            show: true,
+            position: "top",
+            horizontalAlign: "right",
+            markers: {
+                width: 12,
+                height: 12,
+                radius: 3
+            }
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 3,
+            padding: { top: 0, bottom: 0, right: 0 },
+            borderColor: "rgba(0,0,0,0.05)",
+            xaxis: { lines: { show: true } },
+            yaxis: { lines: { show: false } }
+        },
+        yaxis: { tickAmount: 4 },
+        xaxis: {
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+            categories: categories
+        }
+    };
+
+    const chartContainer = document.querySelector("#reports-bar");
+    const chart = new ApexCharts(chartContainer, chartOptions);
+    chart.render();
+
+    document.getElementById("download-csv").addEventListener("click", () => {
+        downloadCSV(resp, period);
+    });
+};
+
+const downloadCSV = (data, period) => {
+    const csvHeader = "Movement Date,Movement Type,Quantity\n";
+    const csvRows = data.map(
+        (item) => `${item.movement_date},${item.movement_type},${item.quantity}`
+    );
+    const csvContent = csvHeader + csvRows.join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `stock_analysis_${period}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+// Add an option for "Last Year" in the dropdown
+document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
+    item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const period = item.getAttribute("data-period");
+
+        document.getElementById("selected-period-label").textContent = `Selected Period: ${period
+            .charAt(0)
+            .toUpperCase()}${period.slice(1).replace("_", " ")}`;
+        stock_analysis(period, "{{$companyMaterialID}}");
+    });
+});
+
+// Initial Call
+stock_analysis("this_year", "{{$companyMaterialID}}");
