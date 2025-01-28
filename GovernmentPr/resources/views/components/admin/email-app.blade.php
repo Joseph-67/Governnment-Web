@@ -1,7 +1,7 @@
 <x-layouts.admin-app>
 @section('PageTitle', 'Notification')
 @section('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
     .email table {
@@ -162,6 +162,17 @@
 
 .users-list .tagify__dropdown__itemsGroup:not(:first-of-type){
     border-top: 1px solid #DDD;
+}
+
+
+.chat-box-right .chat-footer {
+    background-color: var(--bs-secondary-bg);
+    border-radius: 8px;
+    padding: 16px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
 }
 </style>
 @endsection
@@ -396,7 +407,7 @@
         let formData = new FormData();
         let recipients = document.querySelector('input[name="recipients_email"]')
         let subject = document.querySelector('input[name="subject"]')
-        let message = document.querySelector('input[name="message"]')
+        let message = document.querySelector('input[name="  "]')
         console.log(recipients.value);
         
     });
@@ -621,7 +632,7 @@
                 <form action="{{route('display-message')}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <div class="row g-3 ">
+                        <div class="row g-3 chat-box-right">
                             <div class="form-group col-md-12">
                                 <input name="recipients_email" type="text" class="form-control" placeholder="To" id="user-selector">
                             </div>
@@ -629,9 +640,20 @@
                             <div class="form-group col-md-12">
                                 <input name="subject" type="email" class="form-control" placeholder="Subject">
                             </div>
-                            <div class="form-group col-md-12">
-                                <textarea name="message" id="email_message" class="form-control" placeholder="Message"
-                                    style="height: 120px;"></textarea>
+                            <div class="chat-footer">
+                                    <div class="row">                                                    
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" class="form-control" placeholder="Type something here...">
+                                        </div><!-- col-8 -->
+                                        <div class="col-4 text-end">
+                                            <div class="d-none d-sm-inline-block chat-features">
+                                                <a href="#"><i class="iconoir-camera"></i></a>
+                                                <a href="#"><i class="iconoir-attachment"></i></a>
+                                                <a href="#"><i class="iconoir-microphone"></i></a>
+                                                <a href="#" class="text-primary"><i class="iconoir-send-solid"></i></a>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
                             </div>
                             <div class="form-group">
                                 <input type="file" name="a-ttachment" class="form-control" id="formFile">
