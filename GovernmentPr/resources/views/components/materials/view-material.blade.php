@@ -80,7 +80,7 @@
 <div class="btn-group">
 <!-- <button id="download-png" class="btn btn-secondary">Download PNG</button>
 <button id="download-svg" class="btn btn-secondary">Download SVG</button> -->
-<!-- <button id="download-csv" class="btn btn-secondary">Download CSV</button> -->
+<button id="download-csv" class="btn btn-secondary">Download Metrics</button>
 </div>
 
 <!-- Label for selected period -->
@@ -316,16 +316,38 @@ let stock_analysis = async (period, company) => {
     const chart = new ApexCharts(chartContainer, chartOptions);
     chart.render();
 
-    reattachDownloadListeners(chart, resp);
+    document.getElementById("download-csv").addEventListener("click", () => {
+        downloadCSV(resp, period);
+    });
+};
+
+const downloadCSV = (data, period) => {
+    const csvHeader = "Movement Date,Movement Type,Quantity\n";
+    const csvRows = data.map(
+        (item) => `${item.movement_date},${item.movement_type},${item.quantity}`
+    );
+    const csvContent = csvHeader + csvRows.join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `stock_analysis_${period}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 };
 
 // Add an option for "Last Year" in the dropdown
-document.querySelectorAll(".dropdown-item[data-period]").forEach(item => {
+document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
     item.addEventListener("click", (e) => {
         e.preventDefault();
         const period = item.getAttribute("data-period");
 
-        document.getElementById("selected-period-label").textContent = `Selected Period: ${period.charAt(0).toUpperCase() + period.slice(1).replace("_", " ")}`;
+        document.getElementById("selected-period-label").textContent = `Selected Period: ${period
+            .charAt(0)
+            .toUpperCase()}${period.slice(1).replace("_", " ")}`;
         stock_analysis(period, "{{$companyMaterialID}}");
     });
 });

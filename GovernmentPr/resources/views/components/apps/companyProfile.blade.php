@@ -1659,7 +1659,7 @@
                                 <div class="form-check form-switch mb-2">
                                 <label>
     <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
-    {{ $company->company_name }}
+    Activate or Deactivate Company
 </label>
                     <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
                     <label class="form-check-label" for="settings-switch1">Activate Company</label> -->
