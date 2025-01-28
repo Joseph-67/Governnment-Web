@@ -134,10 +134,6 @@
                             aria-selected="false">R.E.C.P</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
-                            aria-selected="false">Water Usage</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
                             aria-selected="false">Materials</a>
                     </li>
@@ -1315,54 +1311,6 @@
                                     </div>
                                     <!--  -->
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane p-3" id="water-usage" role="tabpanel">
-                    <div class="card">
-                            <div class="card-body pt-0">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        <!-- Material  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" name="water_needed" id="flexCheckIndeterminate">
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                
-                                            </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- Material ends -->
-                                         <!-- Serial Number -->
-                                         <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Serial Number(If any)</label>
-                                                <input type="text" class="form-control" placeholder="Serial Number"
-                                                    name="serial_number">
-                                            </div>
-                                        </div>
-                                         <!-- Serial Number -->
-                                        <!-- Unit of measurement -->
-                                         <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
-                                                    name="unit_of_measurement">
-                                            </div>
-                                        </div>
-                                         <!-- Unit of measurement -->
-                                          <div class="col-md-3">
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
-                                            </div>
-                                          </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -3103,8 +3051,6 @@
                     console.log(tableBody);
                     tableBody.innerHTML = ""
                     result.company_material.forEach(material => {
-                        let encodedID =  "{{ encrypt("+ material.companyMaterialId)}}"
-                        let uri = `{{ route("admin.view-material", ["material"=> $encodedID}]) }}`
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
                             <td>${material.serial_number ?? ''}</td>
@@ -3117,7 +3063,7 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="${uri}">Open Material</a>
+                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
                                         <a class="dropdown-item" href="#">Update Material</a>
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">
