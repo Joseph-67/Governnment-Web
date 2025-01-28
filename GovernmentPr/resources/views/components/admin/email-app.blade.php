@@ -614,12 +614,7 @@
                             <div class="form-group col-md-12">
                                 <input name="recipients_email" type="text" class="form-control" placeholder="To" id="user-selector">
                             </div>
-                            <div class="form-group col-md-6">
-                                <input name="cc" type="email" class="form-control" placeholder="Cc">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <input name="bcc" type="email" class="form-control" placeholder="Bcc">
-                            </div>
+
                             <div class="form-group col-md-12">
                                 <input name="subject" type="email" class="form-control" placeholder="Subject">
                             </div>
