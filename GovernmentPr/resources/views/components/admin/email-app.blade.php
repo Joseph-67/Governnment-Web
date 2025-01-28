@@ -764,6 +764,7 @@ input[type="file"] {
                                             <input type="file" id="file-input">
                                         </a>
                                         <a href="#"><i class="iconoir-microphone"></i></a>
+                                        <a href="#"><i class="iconoir-link"></i></a>
                                     </div>
                                 </div>
                             </div>
