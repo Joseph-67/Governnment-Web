@@ -1401,7 +1401,7 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt($material->companyMaterialId)]) }}">Open Material</a>
+                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <hr class="dropdown-divider">
@@ -3051,6 +3051,10 @@
                     console.log(tableBody);
                     tableBody.innerHTML = ""
                     result.company_material.forEach(material => {
+                        let id = material.companyMaterialId;
+                        const baseUrl = "{{ route('admin.view-material', ['material' => '__PLACEHOLDER__']) }}";
+                        const url = baseUrl.replace('__PLACEHOLDER__', id);
+                        
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
                             <td>${material.serial_number ?? ''}</td>
@@ -3063,7 +3067,7 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
+                                        <a class="dropdown-item" href="${url}">Open Material</a>
                                         <a class="dropdown-item" href="#">Update Material</a>
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">
