@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Material;
-use App\Models\category;
+use App\Models\ChemicalUsage;
 use Illuminate\Validation\Rule;
-
 use Illuminate\Http\Request;
 
-class MaterialController extends Controller
+class ChemicalUsageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,9 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        // 
-        $data['categories'] = category::get();
-        $data['Material'] = material::join('categories', 'categories.categoryID', '=', 'materials.categoryID')->select('materialID', 'material', 'description','status', 'category_name')->get();
-        return view('components.materials.material', $data); 
+        //
+        $data['chemical'] = ChemicalUsage::get();
+        return view('components.chemicals.chemicalUsage', $data); 
     }
 
     /**
@@ -31,6 +28,7 @@ class MaterialController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -43,29 +41,27 @@ class MaterialController extends Controller
     {
         //
         $request->validate([
-            'material_name'     => 'required|max:255|unique:materials,material',
-            'category'          => 'required|max:255',
+            'chemical_name'     => 'required|max:255|unique:chemical_usages,chemical',
             'description'       => 'nullable|max:255'
         ]);
 
-        $material = new Material();
+        $chemical = new chemicalUsage();
 
-        $material -> categoryID     =   $request-> category;
-        $material -> material       =   $request-> material_name;
-        $material -> description    =   $request-> description;
-        $material -> status         =   "1";
-        $material -> save();
+        $chemical -> chemical       =   $request-> chemical_name;
+        $chemical -> description    =   $request-> description;
+        $chemical -> status         =   "1";
+        $chemical -> save();
 
-        return back()->with(['success' => 'Material added successfully']);
+        return back()->with(['success' => 'Chemical added successfully']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Material  $material
+     * @param  \App\Models\ChemicalUsage  $chemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function show(Material $material)
+    public function show(ChemicalUsage $chemicalUsage)
     {
         //
     }
@@ -73,23 +69,22 @@ class MaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Material  $material
+     * @param  \App\Models\ChemicalUsage  $chemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function edit(Material $material)
+    public function edit(ChemicalUsage $chemicalUsage)
     {
         //
-        
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Material  $material
+     * @param  \App\Models\ChemicalUsage  $chemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Material $material)
+    public function update(Request $request, ChemicalUsage $chemicalUsage)
     {
         //
     }
@@ -97,10 +92,10 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Material  $material
+     * @param  \App\Models\ChemicalUsage  $chemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Material $material)
+    public function destroy(ChemicalUsage $chemicalUsage)
     {
         //
     }
