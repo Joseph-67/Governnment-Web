@@ -78,6 +78,7 @@ class MaterialController extends Controller
     public function edit(Material $material)
     {
         //
+        
     }
 
     /**
