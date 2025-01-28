@@ -440,7 +440,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.team-member')}}">
                                 <i class="iconoir-settings menu-icon"></i>
-                                <span> Team Members Settings</span>
+                                <span> Team Member Settings</span>
                             </a>
                         </li>
                         <li class="nav-item">
