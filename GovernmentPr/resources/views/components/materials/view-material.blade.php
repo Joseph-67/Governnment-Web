@@ -189,6 +189,7 @@
                                                     {{ $stock->remark }}
                                                 </td>
                                             </tr>
+                                          
                                             <!--end tr-->
                                             @endforeach
                                             

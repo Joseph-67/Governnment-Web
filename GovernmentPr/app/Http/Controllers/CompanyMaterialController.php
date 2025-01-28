@@ -183,9 +183,47 @@ class CompanyMaterialController extends Controller
         $data['stockMovement'] = stock_movement::join('materials', 'materials.materialID', '=', 'stock_movements.materialID')
         ->where('companyMaterialId', $id)->get(['*', 'stock_movements.materialID as stk_move_material_id']);
         // dd($data);
+        // $data['availableBalance'] = $this->getBalance($id['companyMaterialId']);
+        
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
     }
+    public function getTotalCheckIn($companyMaterialId)
+    {
+        //
+        $totalCheckIn = stock_movement::where('companyMaterialId', $companyMaterialId)
+        ->where('movement_type', 'in')->sum('quantity');
+        return $totalCheckIn;
+    }
 
+    public function getTotalTransfer($companyMaterialId)
+    {
+        //
+        $totalTransfer = stock_movement::where('companyMaterialId', $companyMaterialId)
+        ->where('movement_type', 'transfer')->sum('quantity');
+        return $totalTransfer;
+    }
+
+    public function getTotalAdjustment($companyMaterialId)
+    {
+        //
+        $totalAdjustment = stock_movement::where('companyMaterialId', $companyMaterialId)
+        ->where('movement_type', 'adjustment')->sum('quantity');
+        return $totalAdjustment;
+    }
+
+    public function getTotalCheckOut($companyMaterialId)
+    {
+        //
+        $totalCheckOut = stock_movement::where('companyMaterialId', $companyMaterialId)
+        ->where('movement_type', 'out')->sum('quantity');
+        return $totalCheckOut;
+    }
+
+    public function getBalance($companyMaterialId) {
+        $balance = $this->getTotalCheckIn($companyMaterialId) - $this->getTotalTransfer($companyMaterialId) + $this->getTotalAdjustment($companyMaterialId) - $this->getTotalCheckOut($companyMaterialId);
+        return $balance; 
+    }
+       
     
     /**
      * Show the form for editing the specified resource.

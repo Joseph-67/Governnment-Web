@@ -50,7 +50,7 @@ class StockMovementController extends Controller
         return $totalCheckOut;
     }
 
-    private function getBalance($companyMaterialId) {
+    public function getBalance($companyMaterialId) {
         $balance = $this->getTotalCheckIn($companyMaterialId) - $this->getTotalTransfer($companyMaterialId) + $this->getTotalAdjustment($companyMaterialId) - $this->getTotalCheckOut($companyMaterialId);
         return $balance; 
     }
