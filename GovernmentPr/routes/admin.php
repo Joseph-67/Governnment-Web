@@ -113,6 +113,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
     }); 
 
+    Route::controller(CompanyChemicalUsageController::class)->group(function() {
+        Route::get('/chemical-view/{chemicalUsage}', 'show')->name('admin.view-chemicalUsage');
+    }); 
+
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
         Route::get ('/create-company', 'create')->name('admin.create-company');

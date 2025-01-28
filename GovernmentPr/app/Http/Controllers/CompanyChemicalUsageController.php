@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ChemicalUsage;
-use Illuminate\Validation\Rule;
+use App\Models\CompanyChemicalUsage;
 use Illuminate\Http\Request;
 
-class ChemicalUsageController extends Controller
+class CompanyChemicalUsageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +13,8 @@ class ChemicalUsageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
+    {
         //
-        $data['chemical'] = ChemicalUsage::get();
-        return view('components.chemicals.chemicalUsage', $data); 
     }
 
     /**
@@ -28,7 +25,6 @@ class ChemicalUsageController extends Controller
     public function create()
     {
         //
-        
     }
 
     /**
@@ -42,13 +38,13 @@ class ChemicalUsageController extends Controller
         //
         $request->validate([
             'chemical_name'     => 'required|max:255|unique:chemical_usages,chemical',
-            'description'       => 'nullable|max:255'
+            'unit_of_measurement'       => 'nullable|max:255'
         ]);
 
         $chemical = new chemicalUsage();
 
-        $chemical -> chemical       =   $request-> chemical_name;
-        $chemical -> description    =   $request-> description;
+        $chemical -> chemical               =   $request-> chemical_name;
+        $chemical -> unit_of_measurement    =   $request-> unit_of_measurement;
         $chemical -> status         =   "1";
         $chemical -> save();
 
@@ -58,10 +54,10 @@ class ChemicalUsageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ChemicalUsage  $chemicalUsage
+     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function show(ChemicalUsage $chemicalUsage)
+    public function show(CompanyChemicalUsage $companyChemicalUsage)
     {
         //
     }
@@ -69,10 +65,10 @@ class ChemicalUsageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ChemicalUsage  $chemicalUsage
+     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function edit(ChemicalUsage $chemicalUsage)
+    public function edit(CompanyChemicalUsage $companyChemicalUsage)
     {
         //
     }
@@ -81,10 +77,10 @@ class ChemicalUsageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ChemicalUsage  $chemicalUsage
+     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ChemicalUsage $chemicalUsage)
+    public function update(Request $request, CompanyChemicalUsage $companyChemicalUsage)
     {
         //
     }
@@ -92,10 +88,10 @@ class ChemicalUsageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ChemicalUsage  $chemicalUsage
+     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ChemicalUsage $chemicalUsage)
+    public function destroy(CompanyChemicalUsage $companyChemicalUsage)
     {
         //
     }

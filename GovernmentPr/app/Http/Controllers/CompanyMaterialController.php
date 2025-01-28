@@ -172,7 +172,7 @@ class CompanyMaterialController extends Controller
     {
         //
        
-        $id = decrypt($id);
+        $id = decrypt($id); 
         dd($id);
         // $data['companyMaterialID'] = $id;
         $data['prices'] = MaterialPrice::latest('created_at')->first();
