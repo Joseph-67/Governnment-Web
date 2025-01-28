@@ -37,7 +37,7 @@
                         </div><!--end media-->
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Latest Material Price:</h5><span>₦{{number_format($prices->price, 2)}}</span>
+                                <h5 class="m-0">Latest Material Price:</h5><span>{{ isset($prices->price) ? '₦'.number_format($prices->price, 2) : "" }}</span>
                             </div><!--end media-body-->
                         </div><!--end media-->
                         
