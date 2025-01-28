@@ -19,6 +19,9 @@ use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\MapReport;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -33,6 +36,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(AdminsController::class)->group(function(){
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
+        Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
     });
 
     // permissions
@@ -43,6 +47,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     //users
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+        Route::get('/users-details',  'getAllUsers')->name('users.details');
+
     });
     // roles
     Route::controller(RolesController::class)->group(function(){
@@ -94,11 +100,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-email', 'store')->name('display-message');
     });
 
-        //Material
-        Route::controller(MaterialController::class)->group(function() {
-            Route::get ('/materials', 'index')->name('materials.material');
-            Route::post ('/save-material', 'store')->name('admin.store-material');
-        }); 
+    //Material
+    Route::controller(MaterialController::class)->group(function() {
+        Route::get ('/materials', 'index')->name('materials.material');
+        Route::post ('/save-material', 'store')->name('admin.store-material');
+    }); 
+
     Route::controller(CompanyController::class)->group(function() {
         Route::get ('/company', 'index')->name('admin.view-company');
         Route::get ('/create-company', 'create')->name('admin.create-company');
@@ -113,6 +120,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/company/update', 'updateCompanyDetails')->name('update-company-details');
         Route::post ('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
         Route::post ('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
+        Route::get('/company/{id}',  'display')->name('company.display');
+        // fetch admin details
     });
 
     Route::controller(RECPController::class)->group(function(){
@@ -154,10 +164,28 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
+        Route::get('/material-view/{material}', 'show')->name('admin.view-material');
+        Route::get('/stock-analysis', 'getMovements')->name('admin.stock-analysis');
+
+    });
+
+    Route::controller(StockMovementController::class)->group(function(){
+        Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
+        Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
     });
 
     Route::controller(CategoryController::class)->group(function(){
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
     });
+
+    Route::controller(TeamMemberController::class)->group(function(){
+        Route::get ('/team-member', 'index')->name('admin.team-member');
+    });
+
+    Route::controller(MapReport::class)->group(function(){
+        Route::get ('/companies-map', 'show_all_companies')->name('admin.show-all-companies');
+        Route::get ('/all-companies', 'get_all_companies')->name('admin.get-all-companies');
+    });
+
 });

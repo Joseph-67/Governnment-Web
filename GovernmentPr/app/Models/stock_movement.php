@@ -6,15 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Material;
-class CompanyMaterial extends Model
+class stock_movement extends Model
 {
     use HasFactory;
-    protected $primaryKey="companyMaterialId";
+    protected $table="stock_movements";
+    protected $primaryKey="stockID";
     protected $fillable=[
-        'companyID',
+        'companyMaterialId',
         'materialID',
-        'serial_number',
-        'unit_of_measure',
+        'companyID',
+        'movement_type',
+        'quantity',
+        'calendar_year',
+        'movement_date',
+        'remark',
         'status'
     ];
 

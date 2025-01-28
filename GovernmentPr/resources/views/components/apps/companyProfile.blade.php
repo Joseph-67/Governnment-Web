@@ -9,11 +9,12 @@
                             <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center flex-row flex-wrap">
                                     <div class="">
-                                        <h5 class="fw-semibold fs-22 mb-1 text-uppercase">{{ $company->company_name }}
+                                        <h5 class="fw-semibold fs-22 mb-1 text-uppercase">
+                                            {{ $company->company_name }}
                                         </h5>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
-                                        <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>{{
-                                            $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
+                                        <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>
+                                        {{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -79,7 +80,17 @@
                                     Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a>
                             </li>
                             <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> G.I.S Location </b> : {{ $company->gis_location }}</li>
+                                <b> ZIP Code </b> : {{ $company->zip_code }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Longitude </b> : {{ $company->longitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Latitude </b> : {{ $company->latitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> MGRS </b> : {{ $company->mgrs }}
+                            </li>
                         </ul>
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -121,6 +132,10 @@
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
                             aria-selected="false">R.E.C.P</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
+                            aria-selected="false">Water Usage</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
@@ -1303,6 +1318,54 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane p-3" id="water-usage" role="tabpanel">
+                    <div class="card">
+                            <div class="card-body pt-0">
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        <!-- Material  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" name="water_needed" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                
+                                            </label>
+                                            </div>
+                                            <!-- form check -->
+                                        </div>
+                                        <!-- Material ends -->
+                                         <!-- Serial Number -->
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Serial Number(If any)</label>
+                                                <input type="text" class="form-control" placeholder="Serial Number"
+                                                    name="serial_number">
+                                            </div>
+                                        </div>
+                                         <!-- Serial Number -->
+                                        <!-- Unit of measurement -->
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="">Unit of Measurement</label>
+                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
+                                                    name="unit_of_measurement">
+                                            </div>
+                                        </div>
+                                         <!-- Unit of measurement -->
+                                          <div class="col-md-3">
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
@@ -1358,7 +1421,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">
+                        <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company Materials</h4>
@@ -1367,8 +1430,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
-                                        <thead>
+                                    <table class="table mb-0" id="tbl-company-material">
+                                        <thead class="table-light">
                                         <tr>
                                             <th>Material</th>
                                             <th>Serial No.</th>
@@ -1390,10 +1453,13 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Open Material</a>
+                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt($material->companyMaterialId)]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
                                                             <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check In Item</a>
+                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check Out Item</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1546,11 +1612,34 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 mt-2">
+                                        <div class="col-md-12 mt-2">
+                                            <label>Geographic Information System(GIS) Location</label>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Geographic Information System(GIS) Location</label>
-                                                <input type="text" class="form-control" placeholder=""
-                                                    name="gis_location" value="{{$company->gis_location}}">
+                                            <label for="">ZIP code</label>
+                                                <input type="text" class="form-control" placeholder="" name="zip_code" value="{{$company->zip_code}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Longitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="longitude" value="{{$company->longitude}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Latitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="latitude" value="{{$company->latitude}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                            <label for="">Military Grid Reference System (MGRS) coordinate</label>
+                                                <input type="text" class="form-control" placeholder="" name="mgrs" value="{{$company->mgrs}}">
                                             </div>
                                         </div>
                                     </div>
@@ -1618,10 +1707,17 @@
                             <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
                             your information to be shared with other companies?</label>
                                 </div>
+          
                                 <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch1">
-                    <label class="form-check-label" for="settings-switch1">Activate Company</label>
-                </div><!--end form-switch-->
+                                <label>
+    <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
+    Activate or Deactivate Company
+</label>
+                    <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
+                    <label class="form-check-label" for="settings-switch1">Activate Company</label> -->
+                </div>
+                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;"></div>
+                <!--end form-switch-->
                                 <div class="mt-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
@@ -1635,7 +1731,7 @@
                 </div>
             </div> <!--end col-->
         </div><!--end row-->
-
+    
     </div><!-- container -->
     <!--Start Rightbar-->
     <!--Start Rightbar/offcanvas-->
@@ -1724,6 +1820,130 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id = "btn-submit-material-price">Save changes</button>
+            <span class="loader" id="loader"></span>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Check In Item </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="checkIn_material_id" >
+            <input type="hidden" name="material_id" >
+            <input type="hidden" name="company_id" >
+            <div class="row g-2">
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Material</label>
+                    <input type="text" class="form-control" readonly name="checkIn_material_name">
+                </div>
+            </div>
+             <!-- Material name -->
+            <!-- Date -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" min="0" class="form-control" 
+                        name="date">
+                </div>
+            </div>
+             <!-- end Date -->
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Quantity/Volume</label>
+                    <div class="input-group qty-icons">
+                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>   
+                </div>
+            </div>
+             <!-- Unit of measurement -->
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Remark</label>
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+             <!-- Material name -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-check-in">Save changes</button>
+            <span class="loader" id="loader"></span>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Check Out Item </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="checkOut_material_id" >
+            <input type="hidden" name="material_id" >
+            <input type="hidden" name="company_id" >
+            <div class="row g-2">
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Material</label>
+                    <input type="text" class="form-control" readonly name="checkOut_material_name">
+                </div>
+            </div>
+             <!-- Material name -->
+            <!-- Date -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" min="0" class="form-control" 
+                        name="date">
+                </div>
+            </div>
+             <!-- end Date -->
+            <!-- Unit of measurement -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Quantity/Volume</label>
+                    <div class="input-group qty-icons">
+                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>   
+                </div>
+            </div>
+             <!-- Unit of measurement -->
+            <!-- Material name -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">Remark</label>
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+             <!-- Material name -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id = "btn-submit-check-out">Save changes</button>
             <span class="loader" id="loader"></span>
         </div>
         </div>
@@ -2885,8 +3105,8 @@
                     result.company_material.forEach(material => {
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
-                            <td>${(material.serial_number == "")? "":material.serial_number}</td>
-                            <td>${(material.unit_of_measure == "")? "":material.unit_of_measure}</td>
+                            <td>${material.serial_number ?? ''}</td>
+                            <td>${material.unit_of_measure ?? ''}</td>
                             <td> <span class="badge bg-${(material.company_material_status == 'active')?'success':'danger'}">${material.company_material_status}</span>
                             </td>
                             <td class="text-end">
@@ -2895,9 +3115,13 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
+                                        <a class="dropdown-item" href="#">Update Material</a>
+                                        <a class="dropdown-item" href="#">Delete Material</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }", "${material.material}")'>Check In Item</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }",  "${material.material}")'>Check Out Item</a>
                                     </div>
                                 </div>
                             </td>
@@ -2908,7 +3132,7 @@
         });
         // end material
 
-        // company material
+        // company material price
         let btn_submit_material_price = document.querySelector('#btn-submit-material-price');
         btn_submit_material_price.addEventListener('click', () => {
             console.log("clicked");
@@ -2977,7 +3201,157 @@
                 loader.style.display = 'none';
             });
         });
-        // end company material
+        // end company material price
+
+        // checkin
+        let btn_submit_check_in = document.querySelector('#btn-submit-check-in');
+        btn_submit_check_in.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkInModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkIn_material_id = document.querySelector('#checkInModal input[name="checkIn_material_id"]').value.trim();
+            let material_id = document.querySelector('#checkInModal input[name="material_id"]').value.trim();
+            let company_id = document.querySelector('#checkInModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkInModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkInModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkInModal input[name="remark"]').value.trim();
+            if (!checkIn_material_id) {
+                Toastify({
+                    text: "Material id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-material-check-in') }}"
+            let formData = new FormData();
+            formData.append('checkIn_material_id', checkIn_material_id);
+            formData.append('material_id', material_id);
+            formData.append('company_id', company_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // end company material price
+
+        // company material checkout
+        let btn_submit_check_out = document.querySelector('#btn-submit-check-out');
+        btn_submit_check_out.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkOutModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkOut_material_id = document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value.trim();
+            let material_id = document.querySelector('#checkOutModal input[name="material_id"]').value.trim();
+            let company_id = document.querySelector('#checkOutModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkOutModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkOutModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkOutModal input[name="remark"]').value.trim();
+            if (!checkOut_material_id) {
+                Toastify({
+                    text: "Material id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-material-check-out') }}"
+            let formData = new FormData();
+            formData.append('checkOut_material_id', checkOut_material_id);
+            formData.append('material_id', material_id);
+            formData.append('company_id', company_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // end check out
 
         // general setting
         let btn_general_settings = document.querySelector('#btn-general-settings')
@@ -3137,7 +3511,10 @@
             let state = document.querySelector('#location_settings select[name="state"]').value.trim();
             let city = document.querySelector('#location_settings select[name="city"]').value.trim();
             let address = document.querySelector('#location_settings  input[name="address"]').value.trim();
-            let gis_location = document.querySelector('#location_settings  input[name="gis_location"]').value.trim();
+            let zip_code = document.querySelector('#location_settings  input[name="zip_code"]').value.trim();
+            let longitude = document.querySelector('#location_settings  input[name="longitude"]').value.trim();
+            let latitude = document.querySelector('#location_settings  input[name="latitude"]').value.trim();
+            let mgrs = document.querySelector('#location_settings  input[name="mgrs"]').value.trim();
             
             if (!company_id) {
                 loader.style.display = 'none';
@@ -3215,7 +3592,6 @@
                 return
             }
            
-
             let url = document.querySelector('#location_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3223,9 +3599,11 @@
             formData.append('state', state);
             formData.append('city', city);
             formData.append('address', address);
-            formData.append('gis_location', gis_location);
+            formData.append('zip_code', zip_code);
+            formData.append('longitude', longitude);
+            formData.append('latitude', latitude);
+            formData.append('mgrs', mgrs);
            
-
             fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3323,6 +3701,7 @@
                 }).showToast();
                 return
             }
+
             if (!contact_person_position) {
                 loader.style.display = 'none';
                 Toastify({
@@ -3354,7 +3733,6 @@
                 return
             }
            
-
             let url = document.querySelector('#contact_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3363,7 +3741,6 @@
             formData.append('contact_person_position', contact_person_position);
             formData.append('contact_person_phone_number', contact_person_phone_number);
            
-
             fetch_cycle('--Update Contact Personnel', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3375,6 +3752,9 @@
 
         });
         // end company contact update
+        // activate and deactivate start
+            
+        // end activate and deactivate start
         async function fetch_cycle(subject, url, method, form_data) {
             try {
                 let response = await fetch(url, {
@@ -3500,7 +3880,6 @@
             }
         }
 
-
         setTimeout(() => {
             let countriesEle = document.querySelector('.countries')
             console.log(countriesEle.options, countriesEle);
@@ -3514,6 +3893,7 @@
         }, 1000);
     </script>
     <script>
+        // Trigger Material Price Modal
         let triggerMaterialPrice = (companyMaterialID) => {
             let materialPriceModal = document.querySelector('#materialPriceModal');
             // Initialize Bootstrap modal
@@ -3521,6 +3901,70 @@
             const myModal = new bootstrap.Modal(materialPriceModal);
             myModal.show();
         }
+
+        // Trigger CheckIn
+        let triggerCheckIn = (companyMaterialID, materialID, companyID, materialName) => {
+            let checkInModal = document.querySelector('#checkInModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkInModal input[name="checkIn_material_id"]').value = companyMaterialID;
+            document.querySelector('#checkInModal input[name="material_id"]').value = materialID;
+            document.querySelector('#checkInModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkInModal input[name="checkIn_material_name"]').value = materialName;
+            const myModal = new bootstrap.Modal(checkInModal);
+            myModal.show();
+        }
+
+        // Trigger CheckOut
+        let triggerCheckOut = (companyMaterialID, materialID, companyID, materialName) => {
+            let checkOutModal = document.querySelector('#checkOutModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value      = companyMaterialID;
+            document.querySelector('#checkOutModal input[name="material_id"]').value = materialID;
+            document.querySelector('#checkOutModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value    = materialName;
+            const myModal = new bootstrap.Modal(checkOutModal);
+            myModal.show();
+        }
     </script>
+    <!-- activate and deactivate -->
+    <script>
+    document.querySelectorAll('.toggle-status').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const companyId = this.getAttribute('data-company-id');
+            const status = this.checked ? 1 : 0; // Convert to a boolean-friendly value
+
+            fetch("{{ route('company.toggleStatus') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    company_id: companyId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const feedback = document.getElementById('feedback-message');
+                if (data.success) {
+                    feedback.textContent = data.message;
+                    feedback.style.color = 'green';
+                } else {
+                    feedback.textContent = 'Error updating status!';
+                    feedback.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const feedback = document.getElementById('feedback-message');
+                feedback.textContent = 'An error occurred!';
+                feedback.style.color = 'red';
+            });
+        });
+    });
+</script>
+
+    <!-- end activate and deactivate -->
     @endsection
 </x-layouts.admin-app>

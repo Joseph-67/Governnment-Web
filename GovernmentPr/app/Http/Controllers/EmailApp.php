@@ -59,9 +59,11 @@ class EmailApp extends Controller
         // dd($request);
 
             $request->validate([
-                'recipients_email'=> 'required|email',
+                'recipients_email' => 'required|email',
                 'subject'          => 'required',
-                'message'          => 'required'
+                'message'          => 'required',
+                'cc'               =>  'nullable',
+                'bcc'               =>  'nullable'
             ]);
             $user = Admins::where('email', $request['recipients_email'])->first();
               // Check if user exists

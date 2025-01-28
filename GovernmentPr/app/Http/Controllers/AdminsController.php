@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admins;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,13 @@ class AdminsController extends Controller
     {
         //
     }
-
+    public function getAllAdmins(Request $request)
+    {
+        $query = $request->input('query');
+        $adminDetails = Admins::where('email', 'like', "%{$query}%")->where('status', '=', 'active')->limit(10)->get(['id', 'email', 'profile_photo_path', 'first_name', 'last_name']);
+        $userDetails = User::where('email', 'like', "%{$query}%")->where('status', '=', 'active')->limit(10)->get(['id', 'email', 'profile_photo_path', 'first_name', 'last_name']);
+        return response()->json(['admin'=>$adminDetails, 'users' => $userDetails]);
+    }
     /**
      * Show the form for creating a new resource.
      *

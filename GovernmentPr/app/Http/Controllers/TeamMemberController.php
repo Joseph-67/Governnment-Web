@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\usersManagement;
 use Illuminate\Http\Request;
 
-class UsersManagementController extends Controller
+class TeamMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +14,10 @@ class UsersManagementController extends Controller
     public function index()
     {
         //
+        return view('components.apps.team-member');
+
     }
 
-    public function getAllUsers()
-    {
-        $usersDetails = usersManagement::all();
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -45,40 +42,33 @@ class UsersManagementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\usersManagement  $usersManagement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(usersManagement $usersManagement)
+    public function show($id)
     {
         //
-       
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\usersManagement  $usersManagement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(usersManagement $usersManagement)
+    public function edit($id)
     {
         //
     }
-
-    public function show_usersmanagement() {
-        return view('components.admin.users-management');
-    }
-
-
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\usersManagement  $usersManagement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, usersManagement $usersManagement)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -86,10 +76,10 @@ class UsersManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\usersManagement  $usersManagement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(usersManagement $usersManagement)
+    public function destroy($id)
     {
         //
     }

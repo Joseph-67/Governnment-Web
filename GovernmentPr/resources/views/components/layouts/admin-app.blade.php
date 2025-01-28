@@ -19,25 +19,6 @@
      @yield('styles')
      <style>
         .filepond--credits{display: none; }
-        .logo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            /* gap: 20px; */
-            padding: 20px;
-            /* min-width: 300px; */
-            /* width: 100%; */
-            /* background: red; */
-            }
-
-    .logo-grid img {
-            width: 80%;
-            height: auto;
-            object-fit: contain;
-            background-color: #fff;
-            padding: 10px;
-            /* border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
-            }
      </style>
 </head>
 <body>
@@ -264,7 +245,7 @@
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
+                                <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                             @else
                                 <span class="inline-flex rounded-md text-uppercase">
                                     {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
@@ -276,7 +257,7 @@
                             <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
                                 <div class="flex-shrink-0">
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
+                                    <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                                 @else
                                     <span class="inline-flex rounded-md text-uppercase">
                                         {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
@@ -301,10 +282,9 @@
 
                             <form method="POST" action="{{ route('admin.logout') }}" x-data>
                                 @csrf
-
                                 <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
-                                         @click.prevent="$root.submit();">
-                                         <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
+                                    @click.prevent="$root.submit();">
+                                    <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </div>
@@ -320,14 +300,16 @@
         <!--start brand-->
         <div class="brand">
             <a href="{{ url('/') }}" class="logo">
-                <div class="logo-grid">
-                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm">
-                    <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm logo-dark">
-                    <!-- <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-light">
-                    <img src="{{asset('MainAssets/img/logo/fme-logo-text.png')}}" alt="logo-large" class="logo-lg logo-dark"> -->
-</div>
+                <span>
+                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
+                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                </span>
             </a>
         </div>
         <!--end brand-->
@@ -338,10 +320,10 @@
                     <!-- Navigation -->
                     <ul class="navbar-nav mb-auto w-100">
                         <li class="menu-label pt-0 mt-0">
-                            <!-- <small class="label-border">
+                            <small class="label-border">
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
-                            </small> -->
+                            </small>
                             <span>Main Menu</span>
                         </li>
                         <li class="nav-item">
@@ -362,13 +344,10 @@
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('materials.material') }}">Material</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.create-category') }}">Category</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->
                              
                                 </ul><!--end nav-->
@@ -387,7 +366,18 @@
                                 <span>People</span>
                             </a>
                         </li><!--end nav-item-->
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.create-category') }}">
+                                <i class="iconoir-page-star menu-icon"></i>
+                                <span>Category</span>    
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('materials.material') }}">
+                            <i class="iconoir-page-star menu-icon"></i>
+                            <span>Material</span>
+                            </a>
+                        </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
@@ -445,6 +435,12 @@
                             <a class="nav-link" href="{{route('admin.general-setting')}}">
                                 <i class="iconoir-settings menu-icon"></i>
                                 <span> General Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.team-member')}}">
+                                <i class="iconoir-settings menu-icon"></i>
+                                <span> Team Member Settings</span>
                             </a>
                         </li>
                         <li class="nav-item">

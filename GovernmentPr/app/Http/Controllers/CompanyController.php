@@ -19,14 +19,16 @@ use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use App\Models\Material;
 use App\Models\CompanyMaterial;
+use App\Models\Admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class CompanyController extends Controller
 {
-
+   
     public function show($company)
     {
         //
@@ -155,7 +157,10 @@ class CompanyController extends Controller
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required'],
-            'gis_location' => ['nullable']
+            'zip_code' => ['nullable', 'string'],
+            'longitude' => ['nullable', 'numeric'],
+            'latitude' => ['nullable', 'numeric'],
+            'mgrs' => ['nullable', 'string'],
         ]);
     
         // Return validation errors if any
@@ -173,7 +178,10 @@ class CompanyController extends Controller
             'state' => $request->input('state'),
             'city' => $request->input('city'),
             'address' => $request->input('address'),
-            'gis_location' => $request->input('gis_location')
+            'zip_code' => $request['zip_code'],
+            'longitude' => $request['longitude'],
+            'latitude' => $request['latitude'],
+            'mgrs' => $request['mgrs'],
            
         ]);
     
@@ -181,7 +189,7 @@ class CompanyController extends Controller
         if ($result) {
             $companiesInfo = Company::where('status', '=', 'active')
             ->where('company_id', $companyId)
-            ->select('country', 'state', 'city', 'address', 'gis_location')->first();
+            ->select('country', 'state', 'city', 'address', 'zip_code', 'latitude', 'longitude', 'mgrs')->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Company Location updated successfully.',
@@ -247,6 +255,41 @@ class CompanyController extends Controller
         }
     }
     // end update company contact personnel
+    // activate company start
+    public function toggleStatus(Request $request)
+    {
+        $company = Company::find($request->company_id);
+    
+        if ($company) {
+            // Toggle the status based on the checkbox value
+            $company->status = $request->status ? 'active' : 'inactive';
+            $company->save();
+    
+            // Return a success response
+            return response()->json([
+                'success' => true,
+                'message' => $company->status === 'active' ? 'Company activated!' : 'Company deactivated!'
+            ]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Company not found'], 404);
+    }
+    // end activation and deactivation
+
+    // company 404
+    public function dispaly($id)
+    {
+        $company = Company::find($id);
+    
+        // Check if the company is active
+        if (!$company || $company->status !== 'active') {
+            abort(404, 'Company has been deactivated.');
+        }
+    
+        return view('displayCompany', compact('company'));
+    }
+    
+    // company 404
     public function index()
     {
         //
@@ -296,7 +339,10 @@ class CompanyController extends Controller
             'state' => ['required', 'string'],
             'city' => ['required', 'string'],
             'address' => ['required', 'string'],
-            'gis_location' => ['nullable', 'string'],
+            'zip_code' => ['nullable', 'string'],
+            'longitude' => ['nullable', 'numeric'],
+            'latitude' => ['nullable', 'numeric'],
+            'mgrs' => ['nullable', 'string'],
             'policy' => ['nullable', 'array'],
             'policy.*' => ['string'],
             'objective' => ['nullable', 'array'],
@@ -320,7 +366,10 @@ class CompanyController extends Controller
             'state' => $request['state'],
             'city' => $request['city'],
             'address' => $request['address'],
-            'gis_location' => $request['gis_location'],
+            'zip_code' => $request['zip_code'],
+            'longitude' => $request['longitude'],
+            'latitude' => $request['latitude'],
+            'mgrs' => $request['mgrs'],
             'website_url' => $request['website_address'],
             'date_of_establishment' => $request['date_of_establishment'],
             'number_of_employees' => $request['number_of_employees'],
