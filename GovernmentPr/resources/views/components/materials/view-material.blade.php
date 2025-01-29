@@ -66,21 +66,26 @@
                             <div class="card-body pt-0">
     <!-- Period Switching Dropdown -->
     <div class="dropdown ms-auto my-3">
-    <button class="btn btn-primary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <!-- <button class="btn btn-primary dropdown-toggle float-end" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
         Select Period
-    </button>
+    </button> -->
+    <a href="#" class="btn bt btn-light dropdown-toggle float-end" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"id="dropdownMenuButton">
+      <i class="icofont-calendar fs-5 me-1"></i> This Year<i class="las la-angle-down ms-1"></i>
+    </a>
     <ul class="dropdown-menu">
-    <li><a class="dropdown-item" data-period="this_year">This Year</a></li>
-    <li><a class="dropdown-item" data-period="last_year">Last Year</a></li>
-    <li><a class="dropdown-item" data-period="monthly">This Month</a></li>
     <li><a class="dropdown-item" data-period="last_week">Last Week</a></li>
     <li><a class="dropdown-item" data-period="previous_day">Previous Day</a></li>
+    <li><a class="dropdown-item" data-period="monthly">This Month</a></li>
+    <li><a class="dropdown-item" data-period="this_year">This Year</a></li>
+    <li><a class="dropdown-item" data-period="last_year">Last Year</a></li>
+ 
+    
   </ul>
 </div>
 <div class="btn-group">
 <!-- <button id="download-png" class="btn btn-secondary">Download PNG</button>
 <button id="download-svg" class="btn btn-secondary">Download SVG</button> -->
-<button id="download-csv" class="btn btn-secondary">Download Metrics</button>
+<button id="download-csv" class="btn btn-primary">Download Metrics</button>
 </div>
 
 <!-- Label for selected period -->
@@ -354,6 +359,9 @@ document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
 
 // Initial Call
 stock_analysis("this_year", "{{$companyMaterialID}}");
+
+
+
 
      </script>
     @endsection
