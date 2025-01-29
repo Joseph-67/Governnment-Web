@@ -1322,6 +1322,76 @@
                             </div>
                         </div>
                     </div>
+                    <!-- water usage -->
+                    <div class="tab-pane p-3" id="water-usage" role="tabpanel">
+                    <div class="card">
+                            <div class="card-body py-3">
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        @foreach($waterQuestions as $question)
+                                        <!-- question  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                {{ $question->question }}
+                                            </label>
+                                            </div>
+                                            <!-- form check -->
+                                        </div>
+                                        <!-- question ends -->
+                                        @endforeach
+                                    </div>
+                                </form>
+                                <hr>
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        @foreach($WaterConservationMethod as $method)
+                                        <!-- question  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                {{ $method->method }}
+                                            </label>
+                                            </div>
+                                            <!-- form check -->
+                                        </div>
+                                        <!-- question ends -->
+                                        @endforeach
+                                    </div>
+                                </form>
+                                <hr>
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        @foreach($WaterSources as $sources)
+                                        <!-- question  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                {{ $sources->sources }}
+                                            </label>
+                                            </div>
+                                            <!-- form check -->
+                                        </div>
+                                        <!-- question ends -->
+                                        @endforeach
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tab water usage -->
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
