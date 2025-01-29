@@ -134,6 +134,17 @@
                             aria-selected="false">R.E.C.P</a>
                     </li>
                     <li class="nav-item">
+<<<<<<< Updated upstream
+=======
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
+                            aria-selected="false">Water Usage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
+                            aria-selected="false">Chemical Usage</a>
+                    </li>
+                    <li class="nav-item">
+>>>>>>> Stashed changes
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
                             aria-selected="false">Materials</a>
                     </li>
