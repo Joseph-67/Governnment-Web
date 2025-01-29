@@ -138,8 +138,16 @@
                             aria-selected="false">Water Usage</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
+                            aria-selected="false">Chemical Usage</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
                             aria-selected="false">Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemicals" role="tab"
+                            aria-selected="false">Chemical usage</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
@@ -1318,81 +1326,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane p-3" id="water-usage" role="tabpanel">
-                    <div class="card">
-                            <div class="card-body py-3">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        @foreach($waterQuestions as $question)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}" id="flexCheckIndeterminate">
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $question->question }}
-                                            </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                                <hr>
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        @foreach($WaterConservationMethod as $method)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate">
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $method->method }}
-                                            </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                                <hr>
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        @foreach($WaterSources as $sources)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $->label }}" id="flexCheckIndeterminate">
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $sources->sources }}
-                                            </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Setup Material</h4>
+                                        <h4 class="card-title">Material</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
@@ -1474,7 +1413,7 @@
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt($material->companyMaterialId)]) }}">Open Material</a>
+                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <hr class="dropdown-divider">
@@ -1486,6 +1425,94 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane p-3" id="chemicals" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Chemical Usage</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0">
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="" value="">
+                                    <div class="row g-2">
+                                        <!-- Chemicals  -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Chemicals</label>
+                                                <select name="chemical" id="chemical" class="form-select">
+                                                    <option value="" selected disabled> Choose... </option>
+                                                    <option value=""> </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Chemicals ends -->
+                                        <!-- Unit of measurement -->
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="">Unit of Measurement</label>
+                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
+                                                    name="unit_of_measurement">
+                                            </div>
+                                        </div>
+                                         <!-- Unit of measurement -->
+                                          <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                        <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Company Chemical</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0" id="tbl-company-material">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Material</th>
+                                            <th>Unit of Measurement</th>
+                                            <th>Chemical Status</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><span class=""></span></td>
+                                                <td class="text-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->
@@ -3124,6 +3151,10 @@
                     console.log(tableBody);
                     tableBody.innerHTML = ""
                     result.company_material.forEach(material => {
+                        let id = material.companyMaterialId;
+                        const baseUrl = "{{ route('admin.view-material', ['material' => '__PLACEHOLDER__']) }}";
+                        const url = baseUrl.replace('__PLACEHOLDER__', id);
+                        
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
                             <td>${material.serial_number ?? ''}</td>
@@ -3136,7 +3167,7 @@
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> encrypt('${material.companyMaterialId}')]) }}">Open Material</a>
+                                        <a class="dropdown-item" href="${url}">Open Material</a>
                                         <a class="dropdown-item" href="#">Update Material</a>
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">

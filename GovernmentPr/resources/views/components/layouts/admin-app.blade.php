@@ -247,9 +247,9 @@
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                             @else
-                                <span class="inline-flex rounded-md text-uppercase">
+                                <span class="inline-flex text-uppercase justify-content-center d-flex align-items-center fw-bold text-dark rounded-circle">
+                                {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
                                     {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
-                                    {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
                                 </span>
                             @endif
                         </a>
@@ -259,10 +259,10 @@
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                     <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                                 @else
-                                    <span class="inline-flex rounded-md text-uppercase">
-                                        {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
-                                        {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
-                                    </span>
+                                <span class="thumb-md justify-content-center d-flex align-items-center bg-dark-subtle text-dark text-uppercase rounded-circle me-2">
+                                {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
+                                {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
+                                </span>
                                 @endif
                                 </div>
                                 <div class="flex-grow-1 ms-2 text-truncate align-self-center">
@@ -376,6 +376,12 @@
                             <a class="nav-link" href="{{ route('materials.material') }}">
                             <i class="iconoir-page-star menu-icon"></i>
                             <span>Material</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('chemicals.chemicalUsage') }}">
+                            <i class="iconoir-page-star menu-icon"></i>
+                            <span>Chemicals</span>
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
