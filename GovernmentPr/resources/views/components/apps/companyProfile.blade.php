@@ -1351,7 +1351,8 @@
                                 <form action="" method="post">
                                     <input type="hidden" class="form-control"
                                     name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
+                                    <label for="">Indicate the water conservations opportunity that is applicable or beneficial to your process</label>
+                                    <div class="row g-2 mt-2">
                                         @foreach($WaterConservationMethod as $method)
                                         <!-- question  -->
                                         <div class="col-md-6">
@@ -1372,7 +1373,8 @@
                                 <form action="" method="post">
                                     <input type="hidden" class="form-control"
                                     name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
+                                    <label for="">Select the water source used in your Organization</label>
+                                    <div class="row g-2 mt-2">
                                         @foreach($WaterSources as $sources)
                                         <!-- question  -->
                                         <div class="col-md-6">
