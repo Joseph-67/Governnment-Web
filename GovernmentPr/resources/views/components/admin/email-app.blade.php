@@ -166,228 +166,232 @@
 </style>
 @endsection
 @section('scripts')
-<script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
-<script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
 <script>
     // work in the name of Jesus
     var inputElm = document.querySelector('input[name=recipients_email]');
 
-function tagTemplate(tagData){
-return `
-    <tag title="${tagData.email}"
-            contenteditable='false'
-            spellcheck='false'
-            tabIndex="-1"
-            class="tagify__tag ${tagData.class ? tagData.class : ""}"
-            ${this.getAttributes(tagData)}>
-        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-        <div>
-            <div class='tagify__tag__avatar-wrap'>
-                <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-            </div>
-            <span class='tagify__tag-text'>${tagData.name}</span>
-        </div>
-    </tag>
-`
-}
-
-function suggestionItemTemplate(tagData) {
-    return `
-        <div ${this.getAttributes(tagData)}
-            class='tagify__dropdown__item ${tagData.role}'
-            tabindex="0"
-            role="option">
-            <div class='tagify__dropdown__item__avatar-wrap'>
-                <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-            </div>
-            <strong>${tagData.name}</strong>
-            <span>${tagData.email} (${tagData.role})</span>
-        </div>
-    `;
-}
-
-function dropdownHeaderTemplate(suggestions){
-return `
-    <header data-selector='tagify-suggestions-header' class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
-        <strong style='grid-area: add'>${this.value.length ? `Add Remaning` : 'Add All'}</strong>
-        <span style='grid-area: remaning'>${suggestions.length} members</span>
-        <a class='remove-all-tags'>Remove all</a>
-    </header>
-`
-}
-
-// initialize Tagify on the above input node reference
-var tagify = new Tagify(inputElm, {
-tagTextProp: 'name', // very important since a custom template is used with this property as text
-enforceWhitelist: true,
-skipInvalid: true, // do not remporarily add invalid tags
-dropdown: {
-    // closeOnSelect: false,
-    enabled: 0,
-    classname: 'users-list',
-    searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
-},
-templates: {
-    tag: tagTemplate,
-    dropdownItem: suggestionItemTemplate,
-    dropdownHeader: dropdownHeaderTemplate
-},
-
-transformTag: (tagData, originalData) => {
-    var {name, email} = parseFullValue(tagData.name)
-    tagData.name = name
-    tagData.email = email || tagData.email
-},
-
-validate({name, email}) {
-    // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
-    if( !email && name ) {
-        var parsed = parseFullValue(name)
-        name = parsed.name
-        email = parsed.email
+    function tagTemplate(tagData){
+        return `
+            <tag title="${tagData.email}"
+                    contenteditable='false'
+                    spellcheck='false'
+                    tabIndex="-1"
+                    class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                    ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <div class='tagify__tag__avatar-wrap'>
+                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                    </div>
+                    <span class='tagify__tag-text'>${tagData.name}</span>
+                </div>
+            </tag>
+        `
     }
 
-    if( !name ) return "Missing name"
-    if( !validateEmail(email) ) return "Invalid email"
-
-    return true
-},
-// maxTags: 2, // Allow only one tag
-})
-
-
-// Event listener for input typing
-tagify.on('input', async (e) => {
-const searchTerm = e.detail.value.trim(); // Get the input value
-tagify.whitelist = null
-if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
-
-debounceTimer = setTimeout(async () => {
-try {
-    tagify.loading(true).dropdown.hide()
-    // Fetch suggestions from the API
-    const url = new URL("{{ route('admins.details') }}");
-    url.searchParams.append("query", searchTerm);
-    console.log(url.toString());
-    
-    const response = await fetch(url.toString());
-    const users = await response.json();
-    console.log(users);
-
-    if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
-        console.error('Unexpected API response structure:', users);
-        return;
+    function suggestionItemTemplate(tagData){
+        return `
+            <div ${this.getAttributes(tagData)}
+                class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+                tabindex="0"
+                role="option">
+                ${ tagData.avatar ? `
+                    <div class='tagify__dropdown__item__avatar-wrap'>
+                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                    </div>` : ''
+                }
+                <strong>${tagData.name}</strong>
+                <span>${tagData.email}</span>
+            </div>
+        `
     }
-    // Format the data to match Tagify's whitelist structure
-    const formattedAdmins = users.admin.map(user => ({
-        value: user.id,
-        name: `${user.first_name} ${user.last_name}`,
-        avatar: user.profile_photo_path || 'https://via.placeholder.com/80', // Default avatar if not provided
-        email: user.email,
-        role: 'admin'
-    }));
-    
-    // console.log(formattedAdmins);
-    
-    const formattedUsers = users.users.map(user => ({
-        value: user.id,
-        name: `${user.first_name} ${user.last_name}`,
-        avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
-        email: user.email,
-        role: 'user'
-    }));
 
-    // Combine both admin and user lists
-    const formattedData = formattedAdmins.concat(formattedUsers);
-    console.log(formattedData);
-    
-    // Update Tagify's whitelist and show the dropdown
-    tagify.settings.whitelist = formattedData;
-    tagify.loading(false).dropdown.show(searchTerm); // Show dropdown with filtered results
-} catch (error) {
-    console.error('Error fetching user data:', error);
-    tagify.settings.whitelist = [];
-    tagify.dropdown.show('Error fetching data. Try again later.');
-}
-}, 300); // Delay of 300ms
-});
+    function dropdownHeaderTemplate(suggestions){
+        return `
+            <header data-selector='tagify-suggestions-header' class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
+                <strong style='grid-area: add'>${this.value.length ? `Add Remaning` : 'Add All'}</strong>
+                <span style='grid-area: remaning'>${suggestions.length} members</span>
+                <a class='remove-all-tags'>Remove all</a>
+            </header>
+        `
+    }
 
-tagify.on('add', (e) => {
-    const searchTerm = ''; // Reset search term after adding a tag
-    tagify.settings.whitelist = []; // Clear the whitelist for a fresh start
-    tagify.dropdown.show(searchTerm); // Show updated dropdown
-});
+    // initialize Tagify on the above input node reference
+    var tagify = new Tagify(inputElm, {
+        tagTextProp: 'name', // very important since a custom template is used with this property as text
+        // enforceWhitelist: true,
+        skipInvalid: true, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: false,
+            enabled: 1, // Show suggestions after typing one character
+            classname: 'users-list',
+            searchKeys: ['name', 'email'],  // very important to set by which keys to search for suggesttions when typing
+            position: "text", // Position suggestions relative to the cursor
+            mapValueTo: "email", // Use email for selection
+        },
+        templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate,
+            dropdownHeader: dropdownHeaderTemplate
+        },
+        whitelist: [],
 
-tagify.on('dropdown:hide', (e) => {
-    if (!e.detail.value) e.preventDefault(); // Prevent dropdown from hiding if input exists
-});
-tagify.on('dropdown:select', (e) => console.log('Dropdown item selected:', e.detail));
-// The below code is printed as escaped, so please copy this function from:
-// https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
-function escapeHTML( s ){
-return typeof s == 'string' ? s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/`|'/g, "&#039;")
-    : s;
-}
+        transformTag: (tagData, originalData) => {
+            var {name, email} = parseFullValue(tagData.name)
+            tagData.name = name
+            tagData.email = email || tagData.email
+        },
 
-// The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
-// (since each user also has a 'role' property)
-tagify.dropdown.createListHTML = sugegstionsList  => {
-const rolesOfUsers = sugegstionsList.reduce((acc, suggestion) => {
-    const role = suggestion.role || 'Not Assigned';
+        validate({name, email}) {
+            // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
+            if( !email && name ) {
+                var parsed = parseFullValue(name)
+                name = parsed.name
+                email = parsed.email
+            }
 
-    if( !acc[role] )
-        acc[role] = [suggestion]
-    else
-        acc[role].push(suggestion)
+            if( !name ) return "Missing name"
+            if( !validateEmail(email) ) return "Invalid email"
 
-    return acc
-}, {})
+            return true
+        }
+    })
 
-const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
-    if( typeof suggestion == 'string' || typeof suggestion == 'number' )
-        suggestion = {value:suggestion}
+    // The below code is printed as escaped, so please copy this function from:
+    // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
+    function escapeHTML( s ){
+        return typeof s == 'string' ? s
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/`|'/g, "&#039;")
+            : s;
+    }
 
-    var value = tagify.dropdown.getMappedValue.call(tagify, suggestion)
+    // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
+    // (since each user also has a 'role' property)
+    tagify.dropdown.createListHTML = sugegstionsList  => {
+        const rolesOfUsers = sugegstionsList.reduce((acc, suggestion) => {
+            const role = suggestion.role || 'Not Assigned';
 
-    suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
+            if( !acc[role] )
+                acc[role] = [suggestion]
+            else
+                acc[role].push(suggestion)
 
-    return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
-}).join("")
+            return acc
+        }, {})
+
+        const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
+            if( typeof suggestion == 'string' || typeof suggestion == 'number' )
+                suggestion = {value:suggestion}
+
+            var value = tagify.dropdown.getMappedValue.call(tagify, suggestion)
+
+            suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
+
+            return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
+        }).join("")
 
 
-// assign the user to a group
-return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
-    return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
-}).join("")
-}
+        // assign the user to a group
+        return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
+            return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
+        }).join("")
+    }
 
+    // Event listener for input typing
+    tagify.on('input', async (e) => {
+    const searchTerm = e.detail.value.trim(); // Get the input value
+    if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
+    tagify.settings.whitelist.length = 0 
+    tagify.loading(true).dropdown.hide.call(tagify)
+    debounceTimer = setTimeout(async () => {
+    try {
+        tagify.loading(true).dropdown.hide()
+        // Fetch suggestions from the API
+        const url = new URL("{{ route('admins.details') }}");
+        url.searchParams.append("query", searchTerm);
+        console.log(url.toString());
+        
+        const response = await fetch(url.toString());
+        const users = await response.json();
+        console.log(users);
 
-function onEditStart({detail:{tag, data}}){
-tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
-}
+        if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
+            console.error('Unexpected API response structure:', users);
+            return;
+        }
+        // Format the data to match Tagify's whitelist structure
+        let formattedAdmins = users.admin.map(user => ({
+            value: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            avatar: user.profile_photo_path || 'https://via.placeholder.com/80', // Default avatar if not provided
+            email: user.email,
+            role: 'admin'
+        }));
+        
+        // console.log(formattedAdmins);
+        
+        let formattedUsers = users.users.map(user => ({
+            value: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
+            email: user.email,
+            role: 'user'
+        }));
 
-// https://stackoverflow.com/a/9204568/104380
-function validateEmail(email) {
-return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
+        // Combine both admin and user lists
+        let formattedData = formattedAdmins.concat(formattedUsers);
+        console.log(formattedData);
+        
+        // Update Tagify's whitelist and show the dropdown
+        tagify.settings.whitelist = formattedData;
+        tagify.loading(false).dropdown.show.call(tagify, searchTerm)
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        tagify.settings.whitelist = [];
+        tagify.dropdown.show.call('Error fetching data. Try again later.');
+    }
+    }, 300); // Delay of 300ms
+    });
+    // attach events listeners
+    tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
+        .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
 
-function parseFullValue(value) {
-// https://stackoverflow.com/a/11592042/104380
-var parts = value.split(/<(.*?)>/g),
-    name = parts[0].trim(),
-    email = parts[1]?.replace(/<(.*?)>/g, '').trim();
+    function onSelectSuggestion(e){
+        if( e.detail.event.target.matches('.remove-all-tags')) {
+            tagify.removeAllTags()
+        }
 
-return {name, email}
-}
-// work in the name of Jesus
+        // custom class from "dropdownHeaderTemplate"
+        else if( e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`) )
+            tagify.dropdown.selectAll();
+    }
+
+    function onEditStart({detail:{tag, data}}){
+        tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
+    }
+
+    // https://stackoverflow.com/a/9204568/104380
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    }
+
+    function parseFullValue(value) {
+        // https://stackoverflow.com/a/11592042/104380
+        var parts = value.split(/<(.*?)>/g),
+            name = parts[0].trim(),
+            email = parts[1]?.replace(/<(.*?)>/g, '').trim();
+
+        return {name, email}
+    }
+    // work in the name of Jesus
 </script>
+<script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
+<script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
 
   @endsection
   <div class="container">
@@ -610,12 +614,7 @@ return {name, email}
                             <div class="form-group col-md-12">
                                 <input name="recipients_email" type="text" class="form-control" placeholder="To" id="user-selector">
                             </div>
-                            <div class="form-group col-md-6">
-                                <input name="cc" type="email" class="form-control" placeholder="Cc">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <input name="bcc" type="email" class="form-control" placeholder="Bcc">
-                            </div>
+
                             <div class="form-group col-md-12">
                                 <input name="subject" type="email" class="form-control" placeholder="Subject">
                             </div>
