@@ -168,24 +168,23 @@ class CompanyMaterialController extends Controller
      * @param  \App\Models\CompanyMaterial  $companyMaterial
      * @return \Illuminate\Http\Response
      */
+    
     public function show($id)
     {
         //
        
-        $id = decrypt($id); 
-        dd($id);
-        // $data['companyMaterialID'] = $id;
-        $data['prices'] = MaterialPrice::latest('created_at')->first();
+        // $id = decrypt($id);
+        // dd($id);
+        $data['companyMaterialID'] = $id;
+        $data['prices'] = MaterialPrice::where('companyMaterialId', $id)->latest('created_at')->first();
         $data['price_history'] = MaterialPrice::where('companyMaterialId', $id)->get();
-        $data['material'] = CompanyMaterial::
-        // join('materials', 'materials.materialID', '=', 'company_materials.materialID')
-        // ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
-        // ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
-        // ->
-        where('company_materials.companyMaterialId', $id)->first();
+        $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+        ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
+        ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
+        ->where('company_materials.companyMaterialId', $id)->first();
         $data['stockMovement'] = stock_movement::join('materials', 'materials.materialID', '=', 'stock_movements.materialID')
         ->where('companyMaterialId', $id)->get(['*', 'stock_movements.materialID as stk_move_material_id']);
-        dd($id);
+        // dd($id);
         // $data['availableBalance'] = $this->getBalance($id['companyMaterialId']);
         
         return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
