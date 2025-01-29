@@ -1321,46 +1321,67 @@
 
                     <div class="tab-pane p-3" id="water-usage" role="tabpanel">
                     <div class="card">
-                            <div class="card-body pt-0">
+                            <div class="card-body py-3">
                                 <form action="" method="post">
                                     <input type="hidden" class="form-control"
                                     name="company_id" value="{{ $company->company_id }}">
                                     <div class="row g-2">
-                                        <!-- Material  -->
+                                        @foreach($waterQuestions as $question)
+                                        <!-- question  -->
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" name="water_needed" id="flexCheckIndeterminate">
+                                            <input class="form-check-input" type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}" id="flexCheckIndeterminate">
                                             <label class="form-check-label" for="flexCheckIndeterminate">
-                                                
+                                                {{ $question->question }}
                                             </label>
                                             </div>
                                             <!-- form check -->
                                         </div>
-                                        <!-- Material ends -->
-                                         <!-- Serial Number -->
-                                         <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Serial Number(If any)</label>
-                                                <input type="text" class="form-control" placeholder="Serial Number"
-                                                    name="serial_number">
+                                        <!-- question ends -->
+                                        @endforeach
+                                    </div>
+                                </form>
+                                <hr>
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        @foreach($WaterConservationMethod as $method)
+                                        <!-- question  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                {{ $method->method }}
+                                            </label>
                                             </div>
+                                            <!-- form check -->
                                         </div>
-                                         <!-- Serial Number -->
-                                        <!-- Unit of measurement -->
-                                         <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
-                                                    name="unit_of_measurement">
+                                        <!-- question ends -->
+                                        @endforeach
+                                    </div>
+                                </form>
+                                <hr>
+                                <form action="" method="post">
+                                    <input type="hidden" class="form-control"
+                                    name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        @foreach($WaterSources as $sources)
+                                        <!-- question  -->
+                                        <div class="col-md-6">
+                                            <!-- form check -->
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $->label }}" id="flexCheckIndeterminate">
+                                            <label class="form-check-label" for="flexCheckIndeterminate">
+                                                {{ $sources->sources }}
+                                            </label>
                                             </div>
+                                            <!-- form check -->
                                         </div>
-                                         <!-- Unit of measurement -->
-                                          <div class="col-md-3">
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
-                                            </div>
-                                          </div>
+                                        <!-- question ends -->
+                                        @endforeach
                                     </div>
                                 </form>
                             </div>
