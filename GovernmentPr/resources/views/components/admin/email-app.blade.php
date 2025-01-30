@@ -538,24 +538,18 @@ input[type="file"] {
                             <div>
                                 <div class="nav nav-pills flex-column">
                                     <div class="header">Folders</div>
-                                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill"
-                                        href="#v-pills-home" role="tab" aria-controls="v-pills-home"
-                                        aria-selected="true"><i class="fa fa-inbox"></i> Inbox (14)</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-                                        href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
-                                        aria-selected="false"><i class="fa fa-star"></i> Starred</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-                                        href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
-                                        aria-selected="false"><i class="fa fa-bookmark"></i> Important</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-                                        href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
-                                        aria-selected="false"><i class="fa fa-mail-forward"></i> Sent</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-                                        href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
-                                        aria-selected="false"><i class="fa fa-pencil-square-o"></i> Drafts</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-                                        href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
-                                        aria-selected="false"><i class="fa fa-folder"></i> Spam (217)</a>
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#inbox" role="tab"
+                                    aria-selected="true"><i class="fa fa-inbox"></i> Inbox (14)</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#starred" role="tab"
+                                    aria-selected="false"><i class="fa fa-star"></i> Starred</a>
+                                    <a class="nav-link"data-bs-toggle="tab" href="#important" role="tab"
+                                    aria-selected="false"><i class="fa fa-bookmark"></i> Important</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#sent" role="tab"
+                                    aria-selected="false"><i class="fa fa-mail-forward"></i> Sent</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#draft" role="tab"
+                                    aria-selected="false"><i class="fa fa-pencil-square-o"></i> Drafts</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#spam" role="tab"
+                                    aria-selected="false"><i class="fa fa-folder"></i> Spam (217)</a>
                                 </div>
                             </div>
                         </div>
@@ -604,8 +598,10 @@ input[type="file"] {
                             </div>
 
                             <div class="padding"></div>
-
-                            <div class="table-responsive">
+                <!-- inbox -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="inbox">
+                    <div class="table-responsive">
                                 <table class="table table-bordered mt-2 table-centered">
                                     <tbody>
                                         <tr>
@@ -701,7 +697,27 @@ input[type="file"] {
                                     </tbody>
                                 </table>
                             </div>
-
+                    </div>
+                    <div class="tab-pane" id="starred">
+                        <h2>Starred Messages</h2>
+                    </div>
+                    <div class="tab-pane" id="important">
+                        <h2>Important </h2>
+                    </div>
+                    <div class="tab-pane" id="sent">
+                        <h2>Sent</h2>
+                    </div>
+                    <div class="tab-pane" id="draft">
+                        <h2>Draft</h2>
+                    </div>
+                    <div class="tab-pane" id="spam">
+                        <h2>Spam</h2>
+                    </div>
+                </div>
+                
+                
+                
+               
                             <ul class="pagination">
                                 <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
                                 <li class="page-item active"><a class="page-link" href="#">1</a></li>
