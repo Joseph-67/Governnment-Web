@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\MessageApp;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Image\ImageController;
 
 class EmailApp extends ImageController
@@ -25,9 +26,9 @@ class EmailApp extends ImageController
         //
        
 
-        // $user = User::first();
-        // Notification::send($user, new SystemNotification);
-       return view('components/admin/email-app');
+        $user = Auth::user();
+        $data['notifications'] = $user->notifications;
+       return view('components/admin/email-app', $data);
     }
 
     public function fetch_users()
@@ -121,7 +122,7 @@ class EmailApp extends ImageController
             'cc'      => $ccEmails,
             'bcc'     => $bccEmails,
         ];
-        dd($data['attachments']);
+        // dd($data['attachments']);
         try {
             //code...
             foreach ($recipients as $key => $recipient) {

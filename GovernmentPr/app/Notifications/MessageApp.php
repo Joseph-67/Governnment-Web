@@ -48,11 +48,11 @@ class MessageApp extends Notification
         ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
         ->subject($this->data['subject'])
-        ->line($this->data['body']);
-        // ->markdown('mail.message.template', [
-        //     'subject' => $this->data['subject'],
-        //     'body'    => $this->data['body']
-        // ]);
+        ->line($this->data['body'])
+        ->markdown('mail.message.template', [
+            'subject' => $this->data['subject'],
+            'body'    => $this->data['body']
+        ]);
 
         // Attach Files Properly
         // dd($data['attachments']);
