@@ -14,8 +14,6 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-
-
 class CompanyMaterialController extends Controller
 {
     /**
@@ -24,29 +22,29 @@ class CompanyMaterialController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getMovements(Request $request)
-{
-    $query = $request->query('query');
-    $company = $request->query('company');
+    {
+        $query = $request->query('query');
+        $company = $request->query('company');
 
-    $movements = stock_movement::where('companyMaterialId', $company);
+        $movements = stock_movement::where('companyMaterialId', $company);
 
-    switch ($query) {
-        case 'today':
-            $movements->whereDate('movement_date', Carbon::today());
-            break;
-        case 'last_week':
-            $movements->whereBetween('movement_date', [Carbon::now()->subWeek(), Carbon::now()]);
-            break;
-        case 'last_month':
-            $movements->whereBetween('movement_date', [Carbon::now()->subMonth(), Carbon::now()]);
-            break;
-        case 'this_year':
-            $movements->whereYear('movement_date', Carbon::now()->year);
-            break;
+        switch ($query) {
+            case 'today':
+                $movements->whereDate('movement_date', Carbon::today());
+                break;
+            case 'last_week':
+                $movements->whereBetween('movement_date', [Carbon::now()->subWeek(), Carbon::now()]);
+                break;
+            case 'last_month':
+                $movements->whereBetween('movement_date', [Carbon::now()->subMonth(), Carbon::now()]);
+                break;
+            case 'this_year':
+                $movements->whereYear('movement_date', Carbon::now()->year);
+                break;
+        }
+
+        return response()->json($movements->get());
     }
-
-    return response()->json($movements->get());
-}
     public function index()
     {
         //

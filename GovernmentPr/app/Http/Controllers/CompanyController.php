@@ -77,21 +77,6 @@ class CompanyController extends Controller
         // Extract the company ID from the request
         $companyId = $request->input('company_id');
     
-        // Validation rules and custom error messages
-        // $messages = [
-        //     'company_name.required' => 'The company name field is required.',
-        //     'industry.required' => 'The industry field is required.',
-        //     'industry_process.required' => 'The industry process field is required.',
-        //     'email.required' => 'The email field is required.',
-        //     'email.email' => 'The email must be a valid email address.',
-        //     'email.unique' => 'The email must be unique.',
-        //     'website_address.url' => 'The website address must be a valid URL.',
-        //     'phone_number.required' => 'The phone number field is required.',
-        //     'secondary_phone_number.numeric' => 'The secondary phone number must be a valid number.',
-        //     'number_of_employees.integer' => 'The number of employees must be an integer.',
-        //     'establishment_date.date' => 'The establishment date must be a valid date.',
-        // ];
-    
         // Validation rules
         $companyId = $request->company_id;
         $validator = Validator::make($request->all(), [

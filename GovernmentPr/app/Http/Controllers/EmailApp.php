@@ -57,27 +57,70 @@ class EmailApp extends Controller
     {
         //
         // dd($request);
-
-            $request->validate([
-                'recipients_email' => 'required|email',
-                'subject'          => 'required',
-                'message'          => 'required',
-                'cc'               =>  'nullable',
-                'bcc'               =>  'nullable'
+        $validator =Validator::make($request->all(),[
+            'recipients'   =>   'required|array',
+            'recipients.*' =>   'required|email',
+            'subject'      =>   'required|string|max:255|min:3',
+            'message'      =>   'required|string|min:3',
+            'cc'           =>   'nullable|array',
+            'cc.*'         =>   'nullable|email',
+            'bcc'          =>   'nullable|array',
+            'bcc.*'        =>   'nullable|email',
+            'files.*' => 'file|mimes:jpg,jpeg,png,gif,pdf,doc,docx|max:2048'
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
             ]);
-            $user = Admins::where('email', $request['recipients_email'])->first();
-              // Check if user exists
-                 if (!$user) {
-                     return response()->json([
-                         'error' => 'Recipient not found'
-                     ], 404);
-                 }
-            $data = [
-                // 'notification_id'   =>  $request->email_apps,
-                'subject'           =>  $request->subject,
-                'body'              =>  $request->message
-            ];
-            Notification::send($user, new MessageApp($data));
+        }
+
+        // Handle text input
+        $text = $request->input('text');
+
+        // Handle file uploads
+        $uploadedFiles = [];
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('uploads', 'public'); // Save file in storage/app/public/uploads
+                $uploadedFiles[] = $path;
+            }
+        }
+
+        // Handle base64 encoded images (from captured photos)
+        $uploadedImages = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'image') === 0) {
+                $imageData = explode(',', $value)[1];
+                $imageName = 'uploads/' . uniqid() . '.png';
+                Storage::disk('public')->put($imageName, base64_decode($imageData));
+                $uploadedImages[] = $imageName;
+            }
+        }
+
+        return response()->json([
+            'message' => 'Message received successfully',
+            'text' => $text,
+            'files' => $uploadedFiles,
+            'images' => $uploadedImages
+        ], 200);
+    }
+    
+        $user = Admins::where('email', $request['recipients_email'])->first();
+            // Check if user exists
+                if (!$user) {
+                    return response()->json([
+                        'error' => 'Recipient not found'
+                    ], 404);
+                }
+        $data = [
+            // 'notification_id'   =>  $request->email_apps,
+            'subject'           =>  $request->subject,
+            'body'              =>  $request->message
+        ];
+        Notification::send($user, new MessageApp($data));
     }
 
     /**

@@ -95,10 +95,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email-configuration');
     });
+    // email application
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
         Route::get ('/fetch-user', 'fetch_users')->name('get-user');
-        Route::post ('/save-email', 'store')->name('display-message');
+        Route::post ('/save-email', 'store')->name('send-mail');
     });
 
     //Material
@@ -177,7 +178,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
         Route::get('/stock-analysis', 'getMovements')->name('admin.stock-analysis');
-
     });
 
     Route::controller(StockMovementController::class)->group(function(){
