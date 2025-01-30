@@ -99,13 +99,12 @@ class EmailApp extends ImageController
             }
         }
 
-        return response()->json([
-            'message' => 'Message received successfully',
-            'text' => $text,
-            'files' => $uploadedFiles,
-            'images' => $uploadedImages
-        ], 200);
-    }
+        // return response()->json([
+        //     'message' => 'Message received successfully',
+        //     'text' => $text,
+        //     'files' => $uploadedFiles,
+        //     'images' => $uploadedImages
+        // ], 200);
 
         $user = Admins::where('email', $request['recipients_email'])->first();
             // Check if user exists
