@@ -19,6 +19,7 @@ use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use App\Models\Material;
 use App\Models\WaterQuestionaire;
+use App\Models\CompanyWaterQuestion;
 use App\Models\WaterConservationMethod;
 use App\Models\WaterSources;
 use App\Models\CompanyMaterial;
@@ -61,6 +62,7 @@ class CompanyController extends Controller
 
         // water things
         $data['waterQuestions'] =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
+        $data['CompanyWaterQuestions'] =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
         $data['WaterConservationMethod'] =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         // dd($data['company_hazarduous_material']);
@@ -76,21 +78,7 @@ class CompanyController extends Controller
     {
         // Extract the company ID from the request
         $companyId = $request->input('company_id');
-    
-        // Validation rules and custom error messages
-        // $messages = [
-        //     'company_name.required' => 'The company name field is required.',
-        //     'industry.required' => 'The industry field is required.',
-        //     'industry_process.required' => 'The industry process field is required.',
-        //     'email.required' => 'The email field is required.',
-        //     'email.email' => 'The email must be a valid email address.',
-        //     'email.unique' => 'The email must be unique.',
-        //     'website_address.url' => 'The website address must be a valid URL.',
-        //     'phone_number.required' => 'The phone number field is required.',
-        //     'secondary_phone_number.numeric' => 'The secondary phone number must be a valid number.',
-        //     'number_of_employees.integer' => 'The number of employees must be an integer.',
-        //     'establishment_date.date' => 'The establishment date must be a valid date.',
-        // ];
+
     
         // Validation rules
         $companyId = $request->company_id;
@@ -743,6 +731,54 @@ class CompanyController extends Controller
             'objective' => $request->objective
         ]);
     }
+
+    public function store_question(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'       => ['required', 'numeric'],
+            'question_id'   =>  ['required', Rule::unique('company_water_questions', 'questionID')->where(function ($query) use ($request) {
+                                return $query->where('companyID', $request['company']);
+                            }),]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyWaterQuestion::create([
+            'companyID'   =>  $request->company,
+            'questionID'  =>  $request->question_id
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Question added successfully.',
+            'objective' => $request->question_id
+        ]);
+    }
+
+    public function remove_question(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'   => ['required', 'numeric'],
+            'question_id'    =>  ['required']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyWaterQuestion::where('companyID', $request->company)->where('questionID',$request->question_id)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Question removed successfully.',
+            'objective' => $request->question_id
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -1,244 +1,147 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+<script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+<script src="{{asset('adminAssets/libs/apexcharts/apexcharts.min.js')}}"></script>
+<!-- <script src="{{asset('adminAssets/js/pages/analytics-reports.init.js')}}"></script> -->
 <script>
-    // work in the name of Jesus
-    var inputElm = document.querySelector('input[name=recipients_email]');
+    let stock_analysis = async (period, company) => {
+        const url = new URL("{{ route('admin.stock-analysis') }}");
+        url.searchParams.append("query", period);
+        url.searchParams.append("company", company);
+        const response = await fetch(url.toString());
+        const resp = await response.json();
 
-    function tagTemplate(tagData){
-        return `
-            <tag title="${tagData.email}"
-                    contenteditable='false'
-                    spellcheck='false'
-                    tabIndex="-1"
-                    class="tagify__tag ${tagData.class ? tagData.class : ""}"
-                    ${this.getAttributes(tagData)}>
-                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-                <div>
-                    <div class='tagify__tag__avatar-wrap'>
-                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-                    </div>
-                    <span class='tagify__tag-text'>${tagData.name}</span>
-                </div>
-            </tag>
-        `
-    }
+        const monthlyData = {};
+        const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    function suggestionItemTemplate(tagData){
-        return `
-            <div ${this.getAttributes(tagData)}
-                class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
-                tabindex="0"
-                role="option">
-                ${ tagData.avatar ? `
-                    <div class='tagify__dropdown__item__avatar-wrap'>
-                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-                    </div>` : ''
-                }
-                <strong>${tagData.name}</strong>
-                <span>${tagData.email}</span>
-            </div>
-        `
-    }
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentDay = currentDate.getDate();
+        const currentYear = currentDate.getFullYear();
+        const lastYear = currentYear - 1; // Calculate last year
 
-    function dropdownHeaderTemplate(suggestions){
-        return `
-            <header data-selector='tagify-suggestions-header' class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
-                <strong style='grid-area: add'>${this.value.length ? `Add Remaning` : 'Add All'}</strong>
-                <span style='grid-area: remaning'>${suggestions.length} members</span>
-                <a class='remove-all-tags'>Remove all</a>
-            </header>
-        `
-    }
+        // Dates for last week and previous day
+        const lastWeekStartDate = new Date(currentDate);
+        lastWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay() - 6);
 
-    // initialize Tagify on the above input node reference
-    var tagify = new Tagify(inputElm, {
-        tagTextProp: 'name', // very important since a custom template is used with this property as text
-        // enforceWhitelist: true,
-        skipInvalid: true, // do not remporarily add invalid tags
-        dropdown: {
-            closeOnSelect: false,
-            enabled: 1, // Show suggestions after typing one character
-            classname: 'users-list',
-            searchKeys: ['name', 'email'],  // very important to set by which keys to search for suggesttions when typing
-            position: "text", // Position suggestions relative to the cursor
-            mapValueTo: "email", // Use email for selection
-        },
-        templates: {
-            tag: tagTemplate,
-            dropdownItem: suggestionItemTemplate,
-            dropdownHeader: dropdownHeaderTemplate
-        },
-        whitelist: [],
+        const lastWeekEndDate = new Date(currentDate);
+        lastWeekEndDate.setDate(currentDate.getDate() - currentDate.getDay());
 
-        transformTag: (tagData, originalData) => {
-            var {name, email} = parseFullValue(tagData.name)
-            tagData.name = name
-            tagData.email = email || tagData.email
-        },
+        const previousDay = new Date(currentDate);
+        previousDay.setDate(currentDate.getDate() - 1);
 
-        validate({name, email}) {
-            // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
-            if( !email && name ) {
-                var parsed = parseFullValue(name)
-                name = parsed.name
-                email = parsed.email
+        resp.forEach((item) => {
+            const movementDate = new Date(item.movement_date);
+            const movementType = item.movement_type;
+            const month = movementDate.getMonth();
+            const year = movementDate.getFullYear();
+
+            // Filter by period
+            if (period === "this_year" && year !== currentYear) return;
+            if (period === "last_year" && year !== lastYear) return; // Filter for last year
+            if (period === "monthly" && month !== currentMonth) return;
+            if (period === "previous_day" && movementDate.toDateString() !== previousDay.toDateString()) return;
+            if (period === "last_week" && (movementDate < lastWeekStartDate || movementDate > lastWeekEndDate)) return;
+
+            if (!monthlyData[movementType]) {
+                monthlyData[movementType] = new Array(12).fill(0);
             }
 
-            if( !name ) return "Missing name"
-            if( !validateEmail(email) ) return "Invalid email"
+            monthlyData[movementType][month] += parseFloat(item.quantity);
+        });
 
-            return true
-        }
-    })
-
-    // The below code is printed as escaped, so please copy this function from:
-    // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
-    function escapeHTML( s ){
-        return typeof s == 'string' ? s
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/`|'/g, "&#039;")
-            : s;
-    }
-
-    // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
-    // (since each user also has a 'role' property)
-    tagify.dropdown.createListHTML = sugegstionsList  => {
-        const rolesOfUsers = sugegstionsList.reduce((acc, suggestion) => {
-            const role = suggestion.role || 'Not Assigned';
-
-            if( !acc[role] )
-                acc[role] = [suggestion]
-            else
-                acc[role].push(suggestion)
-
-            return acc
-        }, {})
-
-        const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
-            if( typeof suggestion == 'string' || typeof suggestion == 'number' )
-                suggestion = {value:suggestion}
-
-            var value = tagify.dropdown.getMappedValue.call(tagify, suggestion)
-
-            suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
-
-            return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
-        }).join("")
-
-
-        // assign the user to a group
-        return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
-            return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
-        }).join("")
-    }
-
-    // Event listener for input typing
-    tagify.on('input', async (e) => {
-    const searchTerm = e.detail.value.trim(); // Get the input value
-    if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
-    tagify.settings.whitelist.length = 0 
-    tagify.loading(true).dropdown.hide.call(tagify)
-    debounceTimer = setTimeout(async () => {
-    try {
-        tagify.loading(true).dropdown.hide()
-        // Fetch suggestions from the API
-        const url = new URL("{{ route('admins.details') }}");
-        url.searchParams.append("query", searchTerm);
-        console.log(url.toString());
-        
-        const response = await fetch(url.toString());
-        const users = await response.json();
-        console.log(users);
-
-        if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
-            console.error('Unexpected API response structure:', users);
-            return;
-        }
-        // Format the data to match Tagify's whitelist structure
-        let formattedAdmins = users.admin.map(user => ({
-            value: user.id,
-            name: `${user.first_name} ${user.last_name}`,
-            avatar: user.profile_photo_path || 'https://via.placeholder.com/80', // Default avatar if not provided
-            email: user.email,
-            role: 'admin'
-        }));
-        
-        // console.log(formattedAdmins);
-        
-        let formattedUsers = users.users.map(user => ({
-            value: user.id,
-            name: `${user.first_name} ${user.last_name}`,
-            avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
-            email: user.email,
-            role: 'user'
+        const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
+            name: key,
+            data: data
         }));
 
-        // Combine both admin and user lists
-        let formattedData = formattedAdmins.concat(formattedUsers);
-        console.log(formattedData);
-        
-        // Update Tagify's whitelist and show the dropdown
-        tagify.settings.whitelist = formattedData;
-        tagify.loading(false).dropdown.show.call(tagify, searchTerm)
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        tagify.settings.whitelist = [];
-        tagify.dropdown.show.call('Error fetching data. Try again later.');
-    }
-    }, 300); // Delay of 300ms
+        const chartOptions = {
+            series: seriesData,
+            chart: {
+                toolbar: { show: false },
+                type: "bar",
+                fontFamily: "inherit",
+                foreColor: "#adb0bb",
+                height: 292,
+                stacked: true,
+                offsetX: -15
+            },
+            colors: ["var(--bs-primary)", "var(--bs-secondary)"],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    barHeight: "80%",
+                    columnWidth: "12%",
+                    borderRadius: [3],
+                    borderRadiusApplication: "end",
+                    borderRadiusWhenStacked: "all"
+                }
+            },
+            dataLabels: { enabled: false },
+            legend: {
+                show: true,
+                position: "top",
+                horizontalAlign: "right",
+                markers: {
+                    width: 12,
+                    height: 12,
+                    radius: 3
+                }
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 3,
+                padding: { top: 0, bottom: 0, right: 0 },
+                borderColor: "rgba(0,0,0,0.05)",
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: false } }
+            },
+            yaxis: { tickAmount: 4 },
+            xaxis: {
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                categories: categories
+            }
+        };
+
+        const chartContainer = document.querySelector("#reports-bar");
+        const chart = new ApexCharts(chartContainer, chartOptions);
+        chart.render();
+
+        document.getElementById("download-csv").addEventListener("click", () => {
+            downloadCSV(resp, period);
+        });
+    };
+
+    const downloadCSV = (data, period) => {
+        const csvHeader = "Movement Date,Movement Type,Quantity\n";
+        const csvRows = data.map(
+            (item) => `${item.movement_date},${item.movement_type},${item.quantity}`
+        );
+        const csvContent = csvHeader + csvRows.join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `stock_analysis_${period}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Add an option for "Last Year" in the dropdown
+    document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
+        item.addEventListener("click", (e) => {
+            e.preventDefault();
+            const period = item.getAttribute("data-period");
+
+            document.getElementById("selected-period-label").textContent = `Selected Period: ${period
+                .charAt(0)
+                .toUpperCase()}${period.slice(1).replace("_", " ")}`;
+            stock_analysis(period, "{{$companyMaterialID}}");
+        });
     });
-    // attach events listeners
-    tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
-        .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
 
-    function onSelectSuggestion(e){
-        if( e.detail.event.target.matches('.remove-all-tags')) {
-            tagify.removeAllTags()
-        }
-
-        // custom class from "dropdownHeaderTemplate"
-        else if( e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`) )
-            tagify.dropdown.selectAll();
-    }
-
-    function onEditStart({detail:{tag, data}}){
-        tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
-    }
-
-    // https://stackoverflow.com/a/9204568/104380
-    function validateEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    }
-
-    function parseFullValue(value) {
-        // https://stackoverflow.com/a/11592042/104380
-        var parts = value.split(/<(.*?)>/g),
-            name = parts[0].trim(),
-            email = parts[1]?.replace(/<(.*?)>/g, '').trim();
-
-        return {name, email}
-    }
-    // work in the name of Jesus
-
+    // Initial Call
+    stock_analysis("this_year", "{{$companyMaterialID}}");
 </script>
-=======
-Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?
-Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production.
->>>>>>> Stashed changes
-=======
-Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?
-Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production.
->>>>>>> Stashed changes
-=======
-Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?
-Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production.
->>>>>>> Stashed changes
-=======
-Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?
-Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production.
->>>>>>> Stashed changes

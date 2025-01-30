@@ -1336,7 +1336,16 @@
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}" id="flexCheckIndeterminate">
+                                            <input class="form-check-input"
+                                             onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
+                                             type="checkbox"
+                                             value="{{ $question->questionId }}"
+                                             name="{{ $question->label }}" 
+                                             id="flexCheckIndeterminate"
+                                             {{(in_array($question->questionId,
+                                                        array_column($CompanyWaterQuestions->toArray(),
+                                                    'questionID')))? "checked": ""}}
+                                             >
                                             <label class="form-check-label" for="flexCheckIndeterminate">
                                                 {{ $question->question }}
                                             </label>
@@ -4086,6 +4095,36 @@
             });
         });
     });
+
+     // Questionaire
+     async function ChangeQuestionResult(ele, company, value) {
+            console.log(ele, company, value);
+            if (ele.checked) {
+                let uri = "{{ route('company.add-question') }}";
+                let formData = new FormData();
+                formData.append('company', company)
+                formData.append('question_id', value)
+                fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                });
+            } else {
+                if (confirm("Do you want to uncheck this?")) {
+                    let uri = "{{ route('company.remove-question') }}";
+                    let formData = new FormData();
+                    formData.append('company', company)
+                    formData.append('question_id', value)
+                    fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                    if (result.success) {
+                        
+                    }
+                });
+                }
+            }
+        }
+
 </script>
 
     <!-- end activate and deactivate -->

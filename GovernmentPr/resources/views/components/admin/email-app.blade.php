@@ -1,6 +1,7 @@
 <x-layouts.admin-app>
 @section('PageTitle', 'Notification')
 @section('styles')
+<link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -198,6 +199,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 2px 0px;
 }
 
 .chat-icons a {
@@ -336,7 +338,7 @@ input[type="file"] {
 
             return true
         }
-    })
+    });
 
     // The below code is printed as escaped, so please copy this function from:
     // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
@@ -362,7 +364,7 @@ input[type="file"] {
                 acc[role].push(suggestion)
 
             return acc
-        }, {})
+        }, {});
 
         const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
             if( typeof suggestion == 'string' || typeof suggestion == 'number' )
@@ -373,13 +375,13 @@ input[type="file"] {
             suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
 
             return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
-        }).join("")
+        }).join("");
 
 
         // assign the user to a group
         return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
             return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
-        }).join("")
+        }).join("");
     }
 
     // Event listener for input typing
@@ -423,19 +425,19 @@ input[type="file"] {
             role: 'user'
         }));
 
-        // Combine both admin and user lists
-        let formattedData = formattedAdmins.concat(formattedUsers);
-        console.log(formattedData);
-        
-        // Update Tagify's whitelist and show the dropdown
-        tagify.settings.whitelist = formattedData;
-        tagify.loading(false).dropdown.show.call(tagify, searchTerm)
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        tagify.settings.whitelist = [];
-        tagify.dropdown.show.call('Error fetching data. Try again later.');
-    }
-    }, 300); // Delay of 300ms
+    // Combine both admin and user lists
+    let formattedData = formattedAdmins.concat(formattedUsers);
+            console.log(formattedData);
+            
+            // Update Tagify's whitelist and show the dropdown
+            tagify.settings.whitelist = formattedData;
+            tagify.loading(false).dropdown.show.call(tagify, searchTerm)
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            tagify.settings.whitelist = [];
+            tagify.dropdown.show.call('Error fetching data. Try again later.');
+        }
+        }, 300); // Delay of 300ms
     });
     // attach events listeners
     tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
@@ -469,38 +471,30 @@ input[type="file"] {
         return {name, email}
     }
     // work in the name of Jesus
-</script>
-<script>
-    let sendBtn = document.querySelector('#send-btn')
-    sendBtn.addEventListener('click', (e) => {
-        let formData = new FormData();
-        let recipients = document.querySelector('input[name="recipients_email"]')
-        let subject = document.querySelector('input[name="subject"]')
-        let message = document.querySelector('input[name="  "]')
-        console.log(recipients.value);
-        
-    });
+    let bccInput = document.querySelector("input[name='bcc']")
+    new Tagify(bccInput)
+    let ccInput = document.querySelector("input[name='cc']")
+    new Tagify(ccInput)
 </script>
 <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
 <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>
 <script>
-            document.getElementById('file-input').addEventListener('change', function(event) {
-            const filePreview = document.getElementById('file-preview');
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                const fileItem = document.createElement('div');
-                fileItem.classList.add('file-item');
-                fileItem.innerHTML = `${files[i].name} <span class="remove-btn">×</span>`;
-                fileItem.querySelector('.remove-btn').addEventListener('click', function() {
-                    fileItem.remove();
-                });
-                filePreview.appendChild(fileItem);
-            }
-            filePreview.style.display = 'block';
-        });
+    document.getElementById('file-input').addEventListener('change', function(event) {
+    const filePreview = document.getElementById('file-preview');
+    const files = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+            const fileItem = document.createElement('div');
+            fileItem.classList.add('file-item');
+            fileItem.innerHTML = `${files[i].name} <span class="remove-btn">×</span>`;
+            fileItem.querySelector('.remove-btn').addEventListener('click', function() {
+                fileItem.remove();
+            });
+            filePreview.appendChild(fileItem);
+        }
+        filePreview.style.display = 'block';
+    });
 
     // camera trigger
-
     document.getElementById('camera-btn').addEventListener('click', async function() {
             const video = document.getElementById('camera-preview');
             const canvas = document.getElementById('camera-canvas');
@@ -607,6 +601,106 @@ input[type="file"] {
     });
   </script>
  
+    <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
+  <script>
+    let sendBtn = document.querySelector('#send-btn')
+    sendBtn.addEventListener('click', (e) => {
+        let recipients = document.querySelector('input[name="recipients_email"]')
+        let subject = document.querySelector('input[name="subject"]')
+        let bcc = document.querySelector('input[name="bcc"]')
+        let cc = document.querySelector('input[name="cc"]')
+        let message = quill.root.innerHTML;
+        const files = document.getElementById('file-input').files;
+        const images = Array.from(document.querySelectorAll('#captured-photos img')).map(img => img.src);
+        
+        console.log(recipients.value, subject.value, bcc.value, cc.value, message);
+        console.log('Files:', files);
+        console.log('Captured Images:', images);
+        let url = "{{ route('send-mail') }}"
+        let formData = new FormData();
+        formData.append('recipients', recipients);
+        formData.append('bcc', bcc);
+        formData.append('cc', cc);
+        formData.append('subject', subject);
+        formData.append('message', message);
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+        images.forEach((img, index) => {
+            formData.append(`image${index}`, img);
+        });
+
+        console.log(formData);
+        
+        fetch_cycle('--Send mail', url, 'POST', formData).then(result => {
+            // let data = await result.json()
+            console.log(result);
+            if (result.success) {
+                loader.style.display = 'none';
+            }
+        });
+    });
+
+    // end activate and deactivate start
+    async function fetch_cycle(subject, url, method, form_data) {
+        try {
+            let response = await fetch(url, {
+                method: method,
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
+                credentials: 'same-origin',
+                body: form_data
+            });
+
+            let data = await response.json();
+
+            // feedback
+            if (data.status == 'success') {
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+                return data
+            } else if (data.status == 'error') {
+                console.log(data.errors);
+                for (let key in data.errors) {
+                    Toastify({
+                        text: data.errors[key],
+                        duration: 3000,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                }
+            }
+            // end feedback
+        } catch (error) {
+            console.error('Fetch error:', error);
+            Toastify({
+                text: "An unexpected error occurred.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+        }
+    }
+
+</script>
   @endsection
   <div class="container">
   <x-validation-errors class="alert" alert />
@@ -888,7 +982,7 @@ input[type="file"] {
                     <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                         aria-hidden="true"></button>
                 </div>
-                <form action="{{route('display-message')}}" method="post">
+                <form action="" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="row g-3 chat-box">
@@ -917,7 +1011,7 @@ input[type="file"] {
                                             <label for="file-input">
                                             <i class="iconoir-attachment" title="Attach File"></i>
                                             </label>
-                                            <input type="file" id="file-input">
+                                            <input type="file" id="file-input" multiple>
                                         </a>
                                         <a href="#"><i class="iconoir-microphone"></i></a>
                                     </div>
