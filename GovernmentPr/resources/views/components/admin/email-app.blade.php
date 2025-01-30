@@ -471,10 +471,18 @@ input[type="file"] {
         return {name, email}
     }
     // work in the name of Jesus
-    let bccInput = document.querySelector("input[name='bcc']")
-    new Tagify(bccInput)
-    let ccInput = document.querySelector("input[name='cc']")
-    new Tagify(ccInput)
+let bccInput = document.querySelector("input[name='bcc']");
+let ccInput = document.querySelector("input[name='cc']");
+
+let tagifyBCC = new Tagify(bccInput, {
+    pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+});
+
+let tagifyCC = new Tagify(ccInput, {
+    pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+});
+
+
 </script>
 <script src="{{asset('adminAssets/js/popper.min.js')}}"></script>
 <script src="{{asset('adminAssets/js/bootstrap.min.js')}}"></script>

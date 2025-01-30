@@ -109,11 +109,11 @@ class EmailApp extends ImageController
 
         $user = Admins::where('email', $request['recipients_email'])->first();
             // Check if user exists
-                if (!$user) {
-                    return response()->json([
-                        'error' => 'Recipient not found'
-                    ], 404);
-                }
+                // if (!$user) {
+                //     return response()->json([
+                //         'error' => 'Recipient not found'
+                //     ], 404);
+                // }
         $data = [
             // 'notification_id'   =>  $request->email_apps,
             'subject'           =>  $request->subject,
