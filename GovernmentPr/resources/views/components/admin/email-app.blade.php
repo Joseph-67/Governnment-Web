@@ -606,6 +606,7 @@ input[type="file"] {
       };
     });
   </script>
+ 
   @endsection
   <div class="container">
   <x-validation-errors class="alert" alert />
@@ -690,116 +691,167 @@ input[type="file"] {
                 <div class="tab-content">
                     <div class="tab-pane active" id="inbox">
                     <div class="table-responsive">
-                                <table class="table table-bordered mt-2 table-centered">
-                                    <tbody>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star-o"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="action"><input type="checkbox" /></td>
-                                            <td class="action"><i class="fa fa-star"></i></td>
-                                            <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                            <td class="name"><a href="#">Larry Gardner</a></td>
-                                            <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit, sed </a></td>
-                                            <td class="time">08:30 PM</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <h5>INBOX</h5>
+                    <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                             </div>
                     </div>
                     <div class="tab-pane" id="starred">
-                        <h2>Starred Messages</h2>
+                        <h5>Starred Messages</h5>
+                        <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                     </div>
                     <div class="tab-pane" id="important">
-                        <h2>Important </h2>
+                        <h5>Important </h5>
+                        <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                     </div>
                     <div class="tab-pane" id="sent">
-                        <h2>Sent</h2>
+                        <h5>Sent</h5>
+                        <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                     </div>
                     <div class="tab-pane" id="draft">
-                        <h2>Draft</h2>
+                        <h5>DRAFT</h5>
+                        <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                     </div>
                     <div class="tab-pane" id="spam">
-                        <h2>Spam</h2>
+                        <h5>Spam</h5>
+                        <table class="table table-bordered mt-2 table-centered">
+    <tbody>
+        @php $hasRecords = false; @endphp
+
+        @foreach ($notifications as $notification)
+            @php $hasRecords = true; @endphp
+            <tr>
+                <td class="action"><input type="checkbox" /></td>
+                <td class="action"><i class="fa fa-star-o"></i></td>
+                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+            </tr>
+        @endforeach
+
+        @if (!$hasRecords)
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+
                     </div>
                 </div>
                 
@@ -850,7 +902,7 @@ input[type="file"] {
                                 <input name="bcc" type="email" class="form-control" placeholder="Bcc">
                             </div>
                             <div class="form-group col-md-12">
-                                <input name="subject" type="email" class="form-control" placeholder="Subject">
+                                <input name="subject" type="text" class="form-control" placeholder="Subject">
                             </div>
                             <div class="form-group">
                                 <div class="chat-input">

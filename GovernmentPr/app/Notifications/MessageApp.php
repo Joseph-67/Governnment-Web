@@ -47,8 +47,17 @@ class MessageApp extends Notification
         ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
         ->subject($this->data['subject'])
-        ->line($this->data['body'])
-        ->markdown('mail.message.template', [
+        ->line($this->data['body']);
+         // Add CC if provided
+    if (!empty($this->data['cc'])) {
+        $mail->cc($this->data['cc']);
+    }
+
+    // Add BCC if provided
+    if (!empty($this->data['bcc'])) {
+        $mail->bcc($this->data['bcc']);
+    }
+       return $mail->markdown('mail.message.template', [
             'subject'           => $this->data['subject'],
             'body'              => $this->data['body']
         ]);

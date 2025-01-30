@@ -1,3 +1,4 @@
+//METRICS
 let stock_analysis = async (period, company) => {
     const url = new URL("{{ route('admin.stock-analysis') }}");
     url.searchParams.append("query", period);

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\MessageApp;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class EmailApp extends Controller
 {
@@ -24,9 +25,9 @@ class EmailApp extends Controller
         //
        
 
-        // $user = User::first();
-        // Notification::send($user, new SystemNotification);
-       return view('components/admin/email-app');
+        $user = Auth::user();
+        $data['notifications'] = $user->notifications;
+       return view('components/admin/email-app', $data);
     }
 
     public function fetch_users()
@@ -59,25 +60,26 @@ class EmailApp extends Controller
         // dd($request);
 
             $request->validate([
-                'recipients_email' => 'required|email',
+                'recipients_email' => 'required',
                 'subject'          => 'required',
-                'message'          => 'required',
+                // 'message'          => 'required',
                 'cc'               =>  'nullable',
                 'bcc'               =>  'nullable'
             ]);
             $user = Admins::where('email', $request['recipients_email'])->first();
               // Check if user exists
-                 if (!$user) {
-                     return response()->json([
-                         'error' => 'Recipient not found'
-                     ], 404);
-                 }
+                //  if (!$user) {
+                //      return response()->json([
+                //          'error' => 'Recipient not found'
+                //      ], 404);
+                //  }
             $data = [
                 // 'notification_id'   =>  $request->email_apps,
                 'subject'           =>  $request->subject,
                 'body'              =>  $request->message
             ];
             Notification::send($user, new MessageApp($data));
+            return back()->with('success', 'Email sent successfully!');
     }
 
     /**
