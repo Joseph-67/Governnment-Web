@@ -19,6 +19,8 @@ use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
 use App\Models\Material;
 use App\Models\WaterQuestionaire;
+use App\Models\WaterConservationMethod;
+use App\Models\WaterSources;
 use App\Models\CompanyMaterial;
 use App\Models\Admins;
 use Illuminate\Http\Request;
@@ -59,9 +61,11 @@ class CompanyController extends Controller
 
         // water things
         $data['waterQuestions'] =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
+        $data['WaterConservationMethod'] =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
+        $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
-    }
+    }   
     /**
      * Display a listing of the resource.
      *

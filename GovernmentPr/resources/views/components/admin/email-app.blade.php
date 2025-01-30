@@ -1,8 +1,9 @@
 <x-layouts.admin-app>
 @section('PageTitle', 'Notification')
 @section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{asset('adminAssets/libs/quill/quill.snow.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
     .email table {
         font-weight: 600;
@@ -173,7 +174,18 @@
     width:auto;
     border-radius:8px;
 }
-.chat-input textarea {
+
+    /* Adjust the size of the Quill editor container */
+    .ql-container {
+      height: 200px; /* Set desired height */
+    }
+
+    /* Optional: Adjust the editor content size */
+    .ql-editor {
+      font-size: 14px; /* Control text size */
+    }
+
+/* .chat-input textarea {
     flex: 1;
     border: none;
     outline: none;
@@ -181,7 +193,7 @@
     padding: 10px;
     font-size: 16px;
     border-radius: 10px;
-}
+} */
 .chat-icons {
     display: flex;
     align-items: center;
@@ -232,6 +244,8 @@ input[type="file"] {
 </style>
 @endsection
 @section('scripts')
+<script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
 <script>
     // work in the name of Jesus
@@ -518,6 +532,80 @@ input[type="file"] {
         });
     // end camera trigger
 </script>
+<script>
+    // Full toolbar options
+    const toolbarOptions = [
+      // Basic formatting
+      ['bold', 'italic', 'underline', 'strike'],       // Bold, italic, underline, strikethrough
+      [{ 'header': 1 }, { 'header': 2 }],             // Header levels
+      [{ 'font': [] }],                               // Font options
+
+      // Text alignment and direction
+      [{ 'align': [] }],                              // Text alignment
+      [{ 'direction': 'rtl' }],                       // Text direction
+
+      // Lists and indents
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],  // Lists
+      [{ 'indent': '-1' }, { 'indent': '+1' }],       // Indents
+
+      // Subscript/superscript
+      [{ 'script': 'sub' }, { 'script': 'super' }],   // Subscript/superscript
+
+      // Colors and background
+      [{ 'color': [] }, { 'background': [] }],        // Text and background colors
+
+      // Embeds and links
+      ['link', 'image', 'video'],                     // Links, images, videos
+
+      // Headers and blockquote
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],      // Header dropdown
+      ['blockquote', 'code-block'],                  // Blockquote and code block
+
+      // Clear formatting
+      ['clean'],                                      // Clear formatting
+    ];
+
+    // Initialize Quill editor
+    const quill = new Quill('#editor', {
+      theme: 'snow', // Snow theme
+      modules: {
+        toolbar: toolbarOptions, // Dynamically add toolbar options
+      },
+    });
+
+    // Optional: Add image upload handler
+    quill.getModule('toolbar').addHandler('image', function () {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append('image', file);
+
+          // Replace this URL with your own image upload endpoint
+          const uploadURL = 'https://api.example.com/upload';
+
+          try {
+            const response = await fetch(uploadURL, {
+              method: 'POST',
+              body: formData,
+            });
+            const result = await response.json();
+            const imageUrl = result.url; // Assume the response contains the uploaded image URL
+            const range = quill.getSelection();
+            quill.insertEmbed(range.index, 'image', imageUrl);
+          } catch (error) {
+            console.error('Image upload failed:', error);
+            alert('Failed to upload image');
+          }
+        }
+      };
+    });
+  </script>
   @endsection
   <div class="container">
   <x-validation-errors class="alert" alert />
@@ -741,7 +829,7 @@ input[type="file"] {
 <!-- BEGIN COMPOSE MESSAGE -->
 <div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-wrapper">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header bg-black">
                     <h4 class="modal-title"><i class="fa fa-envelope"></i> Compose New Message</h4>
@@ -766,7 +854,7 @@ input[type="file"] {
                             </div>
                             <div class="form-group">
                                 <div class="chat-input">
-                                    <textarea class="form-control" placeholder="Type something here..." id="chat-textarea"></textarea>
+                                    <div id="editor"></div>
                                     <div class="chat-icons">
                                         <a href="#">
                                             <label for="">
@@ -780,7 +868,6 @@ input[type="file"] {
                                             <input type="file" id="file-input">
                                         </a>
                                         <a href="#"><i class="iconoir-microphone"></i></a>
-                                        <a href="#"><i class="iconoir-link"></i></a>
                                     </div>
                                 </div>
                             </div>
