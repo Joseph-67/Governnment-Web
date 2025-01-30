@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\MessageApp;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Image\ImageController;
 
-class EmailApp extends Controller
+class EmailApp extends ImageController
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +32,6 @@ class EmailApp extends Controller
 
     public function fetch_users()
     {
-        //
         // dd($query);
         $data['items']= Admins::get();
         return response()->Json($data, 200);
@@ -84,8 +84,7 @@ class EmailApp extends Controller
         $uploadedFiles = [];
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store('uploads', 'public'); // Save file in storage/app/public/uploads
-                $uploadedFiles[] = $path;
+                $this->UploadAnyFile($file, "EmailFiles");
             }
         }
 
@@ -107,7 +106,7 @@ class EmailApp extends Controller
             'images' => $uploadedImages
         ], 200);
     }
-    
+
         $user = Admins::where('email', $request['recipients_email'])->first();
             // Check if user exists
                 if (!$user) {

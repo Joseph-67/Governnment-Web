@@ -119,20 +119,22 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     }); 
 
     Route::controller(CompanyController::class)->group(function() {
-        Route::get ('/company', 'index')->name('admin.view-company');
-        Route::get ('/create-company', 'create')->name('admin.create-company');
-        Route::post ('/save-company', 'store')->name('admin.store-company');
-        Route::get ('/show-company/{company}', 'show')->name('admin.show-company');
-        Route::get ('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
-        Route::post ('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
-        Route::post ('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
-        Route::post ('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
-        Route::post ('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
-        Route::post ('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
-        Route::post ('/company/update', 'updateCompanyDetails')->name('update-company-details');
-        Route::post ('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
-        Route::post ('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::get('/company', 'index')->name('admin.view-company');
+        Route::get('/create-company', 'create')->name('admin.create-company');
+        Route::post('/save-company', 'store')->name('admin.store-company');
+        Route::get('/show-company/{company}', 'show')->name('admin.show-company');
+        Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
+        Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
+        Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
+        Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
+        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::post('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
+        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
+        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
         Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
+        Route::post('/company/add-question', 'store_question')->name('company.add-question');
+        Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
         Route::get('/company/{id}',  'display')->name('company.display');
         // fetch admin details
     });

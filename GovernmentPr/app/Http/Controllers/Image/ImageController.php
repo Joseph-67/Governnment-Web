@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-    public function UploadJstImage($file, $directory)
+    public function UploadAnyFile($file, $directory)
     {
         # code...
         // create new file name
