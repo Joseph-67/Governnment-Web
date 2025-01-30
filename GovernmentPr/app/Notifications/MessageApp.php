@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class MessageApp extends Notification
 {
@@ -43,15 +44,32 @@ class MessageApp extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        $mail = (new MailMessage)
         ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
         ->subject($this->data['subject'])
-        ->line($this->data['body'])
-        ->markdown('mail.message.template', [
-            'subject'           => $this->data['subject'],
-            'body'              => $this->data['body']
-        ]);
+        ->line($this->data['body']);
+        // ->markdown('mail.message.template', [
+        //     'subject' => $this->data['subject'],
+        //     'body'    => $this->data['body']
+        // ]);
+
+        // Attach Files Properly
+        // dd($data['attachments']);
+        if (!empty($this->data['attachments'])) {
+            foreach ($this->data['attachments'] as $filePath) {
+                $mail->attach(public_path().'/storage/EmailFiles/'.$filePath);
+            }
+        }
+
+        // Add CC and BCC
+        if (!empty($this->data['cc'])) {
+            $mail->cc($this->data['cc']);
+        }
+        if (!empty($this->data['bcc'])) {
+            $mail->bcc($this->data['bcc']);
+        }
+        return $mail;
     }
 
     /**

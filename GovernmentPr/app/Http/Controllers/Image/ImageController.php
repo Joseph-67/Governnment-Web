@@ -13,11 +13,12 @@ class ImageController extends Controller
         // create new file name
         
         $filename = strtotime(now())."_".rand(1111, 9999).".".$file->getClientOriginalExtension();
-        $file->storeAs($directory, $filename);
-        $file_path = $directory."/".$filename;
+        $file->storeAs($directory, $filename, 'public');
+        $file_path = asset('storage/'.$filename);
 
         // dd($file_path);
-        return $file_path;
+        // return $file_path;
+        return $filename;
     }
     /**
      * Display a listing of the resource.

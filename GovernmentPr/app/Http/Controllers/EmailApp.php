@@ -55,72 +55,114 @@ class EmailApp extends ImageController
      */
     public function store(Request $request)
     {
-        //
-        // dd($request);
-        $validator =Validator::make($request->all(),[
-            'recipients'   =>   'required|array',
-            'recipients.*' =>   'required|email',
-            'subject'      =>   'required|string|max:255|min:3',
-            'message'      =>   'required|string|min:3',
-            'cc'           =>   'nullable|array',
-            'cc.*'         =>   'nullable|email',
-            'bcc'          =>   'nullable|array',
-            'bcc.*'        =>   'nullable|email',
-            'files.*' => 'file|mimes:jpg,jpeg,png,gif,pdf,doc,docx|max:2048'
+        $validator = Validator::make($request->all(), [
+            'recipients'   => 'required|json',
+            'subject'      => 'required|string|max:255|min:3',
+            'message'      => 'required|string|min:3',
+            'cc'           => 'nullable|json',
+            'bcc'          => 'nullable|json',
+            'files.*'      => 'file|mimes:jpg,jpeg,png,gif,pdf,doc,docx|max:2048',
         ]);
+    
         if ($validator->fails()) {
-            # code...
             return response()->json([
                 'status'    => 'error',
                 'message'   => 'Validation failed.',
-                'errors'    => $validator->errors()
+                'errors'    => $validator->errors(),
             ]);
         }
-
-        // Handle text input
-        $text = $request->input('text');
-
-        // Handle file uploads
+    
+        // Handle files
         $uploadedFiles = [];
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $this->UploadAnyFile($file, "EmailFiles");
+                $uploadedFiles[] = $this->UploadAnyFile($file, "EmailFiles");
             }
         }
-
-        // Handle base64 encoded images (from captured photos)
+    
+        // Process base64 images (captured photos) with custom names
         $uploadedImages = [];
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'image') === 0) {
-                $imageData = explode(',', $value)[1];
-                $imageName = 'uploads/' . uniqid() . '.png';
-                Storage::disk('public')->put($imageName, base64_decode($imageData));
-                $uploadedImages[] = $imageName;
+        // dd($request);
+        if (!empty($request->images)) {
+            # code...
+            foreach ($request->images as $key => $value) {
+                // dd($value);
+                if (strpos($key, 'image') === 0) {
+                    if (is_string($value) && preg_match('/^data:image\/(\w+);base64,/', $value)) {
+                        try {
+                            $imageData = explode(',', $value)[1]; // Extract base64 content
+                            $imageName = 'uploads/image_' . uniqid() . '.png';
+                            Storage::disk('public')->put($imageName, base64_decode($imageData));
+                            $uploadedImages[] = asset('storage/' . $imageName);
+                        } catch (\Exception $e) {
+                            return response()->json(['error' => 'Error processing image.'], 400);
+                        }
+                    } else {
+                        return response()->json(['error' => 'Invalid image format.'], 400);
+                    }
+                }
             }
+        }    
+        // Recipient handling
+        // Parse recipients, cc, and bcc
+        $recipients = json_decode($request->recipients, true);
+        $cc = json_decode($request->cc, true) ?? [];
+        $bcc = json_decode($request->bcc, true) ?? [];
+
+        $recipientEmails = array_column($recipients, 'email');
+        $ccEmails = array_column($cc, 'email');
+        $bccEmails = array_column($bcc, 'email');
+
+        // Prepare data for notification
+        $data = [
+            'subject' => $request->subject,
+            'body'    => $request->message,
+            'attachments' => array_merge($uploadedFiles, $uploadedImages), // Combine all file URLs
+            'cc'      => $ccEmails,
+            'bcc'     => $bccEmails,
+        ];
+        dd($data['attachments']);
+        try {
+            //code...
+            foreach ($recipients as $key => $recipient) {
+                # code...
+                switch ($recipient['role']) {
+                    case 'admin':
+                        # code...
+                        $user = Admins::where('email', $recipient['email'])->first();
+                        if ($user) {
+                            Notification::send($user, new MessageApp($data));
+                        }
+                        break;
+                    case 'user':
+                        # code...
+                        $user = User::where('email', $recipient['email'])->first();
+                        if ($user) {
+                            Notification::send($user, new MessageApp($data));
+                        }
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+            }
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Message sent successfully!',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Message not sent!',
+            ]);
         }
 
-        // return response()->json([
-        //     'message' => 'Message received successfully',
-        //     'text' => $text,
-        //     'files' => $uploadedFiles,
-        //     'images' => $uploadedImages
-        // ], 200);
-
-        $user = Admins::where('email', $request['recipients_email'])->first();
-            // Check if user exists
-                if (!$user) {
-                    return response()->json([
-                        'error' => 'Recipient not found'
-                    ], 404);
-                }
-        $data = [
-            // 'notification_id'   =>  $request->email_apps,
-            'subject'           =>  $request->subject,
-            'body'              =>  $request->message
-        ];
-        Notification::send($user, new MessageApp($data));
     }
-
+    
     /**
      * Display the specified resource.
      *
