@@ -1367,7 +1367,13 @@
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate">
+                                            <input class="form-check-input"
+                                            onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
+                                            type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate"
+                                            {{(in_array($method->WaterConservationMethodId,
+                                                array_column($companyWaterConservationMethod->toArray(),
+                                                'waterConservationMethod_id')))? "checked": ""}}
+                                            >
                                             <label class="form-check-label" for="flexCheckIndeterminate">
                                                 {{ $method->method }}
                                             </label>
@@ -1389,7 +1395,13 @@
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}" id="flexCheckIndeterminate">
+                                            <input class="form-check-input" 
+                                            onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
+                                            type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}" id="flexCheckIndeterminate"
+                                            {{(in_array($sources->WaterSourcesId,
+                                                array_column($companyWaterSources->toArray(),
+                                                'watersources_id')))? "checked": ""}}
+                                            >
                                             <label class="form-check-label" for="flexCheckIndeterminate">
                                                 {{ $sources->sources }}
                                             </label>
@@ -4076,31 +4088,41 @@
                     status: status
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                const feedback = document.getElementById('feedback-message');
-                if (data.success) {
-                    feedback.textContent = data.message;
-                    feedback.style.color = 'green';
-                } else {
-                    feedback.textContent = 'Error updating status!';
+                .then(response => response.json())
+                .then(data => {
+                    const feedback = document.getElementById('feedback-message');
+                    if (data.success) {
+                        feedback.textContent = data.message;
+                        feedback.style.color = 'green';
+                    } else {
+                        feedback.textContent = 'Error updating status!';
+                        feedback.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const feedback = document.getElementById('feedback-message');
+                    feedback.textContent = 'An error occurred!';
                     feedback.style.color = 'red';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const feedback = document.getElementById('feedback-message');
-                feedback.textContent = 'An error occurred!';
-                feedback.style.color = 'red';
-            });
+                });
         });
     });
 
-     // Questionaire
-     async function ChangeQuestionResult(ele, company, value) {
-            console.log(ele, company, value);
-            if (ele.checked) {
-                let uri = "{{ route('company.add-question') }}";
+    // Questionaire
+    async function ChangeQuestionResult(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-question') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('question_id', value)
+            fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-question') }}";
                 let formData = new FormData();
                 formData.append('company', company)
                 formData.append('question_id', value)
@@ -4108,25 +4130,62 @@
                     // let data = await result.json()
                     console.log(result);
                 });
-            } else {
-                if (confirm("Do you want to uncheck this?")) {
-                    let uri = "{{ route('company.remove-question') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('question_id', value)
-                    fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
-                    if (result.success) {
-                        
-                    }
-                });
-                }
             }
         }
+    }
+    // WaterConservationMethod
+    async function ChangeWaterConservationOpportunity(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-water-conservation-method') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('water_conservation_method_id', value)
+            fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-water-conservation-method') }}";
+                let formData = new FormData();
+                formData.append('company', company)
+                formData.append('water_conservation_method_id', value)
+                fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                });
+            }
+        }
+    }
+    // WaterSources
+    async function ChangeWaterSources(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-water-sources') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('watersources_id', value)
+            fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-water-Sources') }}";
+                let formData = new FormData();
+                formData.append('company', company)
+                formData.append('watersources_id', value)
+                fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                });
+            }
+        }
+    }
 
 </script>
 
-    <!-- end activate and deactivate -->
+<!-- end activate and deactivate -->
     @endsection
 </x-layouts.admin-app>

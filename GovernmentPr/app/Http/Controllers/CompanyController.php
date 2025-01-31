@@ -21,7 +21,9 @@ use App\Models\Material;
 use App\Models\WaterQuestionaire;
 use App\Models\CompanyWaterQuestion;
 use App\Models\WaterConservationMethod;
+use App\Models\CompanyWaterConservationOpportunity;
 use App\Models\WaterSources;
+use App\Models\CompanyWaterSources;
 use App\Models\CompanyMaterial;
 use App\Models\Admins;
 use Illuminate\Http\Request;
@@ -61,10 +63,12 @@ class CompanyController extends Controller
         ->get();
 
         // water things
-        $data['waterQuestions'] =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
-        $data['CompanyWaterQuestions'] =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
-        $data['WaterConservationMethod'] =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
+        $data['waterQuestions']                 =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
+        $data['CompanyWaterQuestions']          =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
+        $data['WaterConservationMethod']        =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
+        $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['waterConservationMethod_id']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
+        $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['waterSources_id']);
         // dd($data['company_hazarduous_material']);
         return view('components.apps.companyProfile', $data);
     }   
@@ -757,7 +761,6 @@ class CompanyController extends Controller
             'objective' => $request->question_id
         ]);
     }
-
     public function remove_question(Request $request) {
         $validator =Validator::make($request->all(),[
             'company'   => ['required', 'numeric'],
@@ -779,6 +782,106 @@ class CompanyController extends Controller
         ]);
     }
 
+    // water conservation
+     public function store_water_conservation_method(Request $request) {
+        // dd($request);
+        $validator =    Validator::make($request->all(),[
+            'company'                      => ['required', 'numeric'],
+            'water_conservation_method_id'   =>  ['required', Rule::unique('company_water_conservation_opportunities', 'waterConservationMethod_id')->where(function ($query) use ($request) {
+                                return $query->where('companyID', $request['company']);
+                            }),]
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        CompanyWaterConservationOpportunity::create([
+            'companyID'   =>  $request->company,
+            'waterConservationMethod_id'  =>  $request->water_conservation_method_id
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Water conservation method added successfully.',
+            'objective' => $request->water_conservation_method_id
+        ]);
+
+    }
+
+    public function remove_water_conservation_method(Request $request) {
+        // dd($request);
+        $validator =Validator::make($request->all(),[
+            'company'                       => ['required', 'numeric'],
+            'water_conservation_method_id'    =>  ['required']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyWaterConservationOpportunity::where('companyID', $request->company)->where('waterConservationMethod_id',$request->water_conservation_method_id)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Water conservation method removed successfully.',
+            'objective' => $request->water_conservation_method_id
+        ]);
+    }
+
+    // water Sources
+    public function store_water_sources(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'           => ['required', 'numeric'],
+            'WaterSources_id'   =>  ['required', Rule::unique('CompanyWaterSources', 'WaterSourcesID')->where(function ($query) use ($request) {
+                                return $query->where('companyID', $request['company']);
+                            }),]
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyWaterSources::create([
+            'companyID'   =>  $request->company,
+            'WaterSourcesID'  =>  $request->WaterSources_id
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Water source added successfully.',
+            'objective' => $request->waterSources_id
+        ]);
+    }
+    public function remove_water_sources(Request $request) {
+        $validator =Validator::make($request->all(),[
+            'company'            => ['required', 'numeric'],
+            'WaterSources_id'    =>  ['required']
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        CompanyWaterSources::where('companyID', $request->company)->where('WaterSourcesID',$request->waterSources_id)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Water source removed successfully.',
+            'objective' => $request->waterSources_id
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
