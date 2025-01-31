@@ -1,10 +1,16 @@
-<x-mail::message>
-    {{ $subject }}
+@component('mail::message')
+# {{ $subject }}
 
-    {!! $body !!}
+<main>
+{!! $body !!}
+</main> <!-- Render the body content as raw HTML -->
 
-   
+@isset($url)
+@component('mail::button', ['url' => $url])
+View More
+@endcomponent
+@endisset
 
-    Thanks,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+Thanks,<br>
+{{ config('app.name') }}
+@endcomponent

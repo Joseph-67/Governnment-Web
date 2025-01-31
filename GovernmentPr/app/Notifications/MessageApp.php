@@ -46,14 +46,15 @@ class MessageApp extends Notification
     public function toMail($notifiable)
     {
         $mail = (new MailMessage)
-        // ->from('atumajoe24@gmail.com', 'Joseph Atuma')
+        ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
         ->subject($this->data['subject'])
-        ->line($this->data['body'])
+        // ->line($this->data['body'])
         ->markdown('mail.message.template', [
-            'subject' => $this->data['subject'],
-            'body'    => $this->data['body']
-            // 'url' => $this->data['url'] ?? '#',
+            'greeting'  => "Hello",
+            'subject'   => $this->data['subject'],
+            'body'      => $this->data['body'],
+            'url'       => $this->data['url'] ?? null,
         ]);
 
         // Attach Files Properly
