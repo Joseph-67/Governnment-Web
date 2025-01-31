@@ -550,552 +550,88 @@
             [{ 'header': 1 }, { 'header': 2 }],             // Header levels
             [{ 'font': [] }],                               // Font options
 
-            // Text alignment and direction
-            [{ 'align': [] }],                              // Text alignment
-            [{ 'direction': 'rtl' }],                       // Text direction
-
-            // Lists and indents
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],  // Lists
-            [{ 'indent': '-1' }, { 'indent': '+1' }],       // Indents
-
-            // Subscript/superscript
-            [{ 'script': 'sub' }, { 'script': 'super' }],   // Subscript/superscript
-
-            // Colors and background
-            [{ 'color': [] }, { 'background': [] }],        // Text and background colors
-
-            // Embeds and links
-            ['link', 'image', 'video'],                     // Links, images, videos
-
-            // Headers and blockquote
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],      // Header dropdown
-            ['blockquote', 'code-block'],                  // Blockquote and code block
-
-            // Clear formatting
-            ['clean'],                                      // Clear formatting
-        ];
-
-        // Initialize Quill editor
-        const quill = new Quill('#editor', {
-            theme: 'snow', // Snow theme
-            modules: {
-                toolbar: toolbarOptions, // Dynamically add toolbar options
-            },
-        });
-
-        // Optional: Add image upload handler
-        quill.getModule('toolbar').addHandler('image', function () {
-            const input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            input.click();
-
-            input.onchange = async () => {
-                const file = input.files[0];
-                if (file) {
-                    const formData = new FormData();
-                    formData.append('image', file);
-
-                    // Replace this URL with your own image upload endpoint
-                    const uploadURL = 'https://api.example.com/upload';
-
-                    try {
-                        const response = await fetch(uploadURL, {
-                            method: 'POST',
-                            body: formData,
-                        });
-                        const result = await response.json();
-                        const imageUrl = result.url; // Assume the response contains the uploaded image URL
-                        const range = quill.getSelection();
-                        quill.insertEmbed(range.index, 'image', imageUrl);
-                    } catch (error) {
-                        console.error('Image upload failed:', error);
-                        alert('Failed to upload image');
-                    }
-                }
-            };
-        });
-    </script>
-
-    <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
-    <script>
-        let sendBtn = document.querySelector('#send-btn')
-        sendBtn.addEventListener('click', (e) => {
-            let recipients = document.querySelector('input[name="recipients_email"]');
-            let subject = document.querySelector('input[name="subject"]');
-            let bcc = document.querySelector('input[name="bcc"]');
-            let cc = document.querySelector('input[name="cc"]');
-            let message = quill.root.innerHTML;
-            const files = document.getElementById('file-input').files;
-            const images = Array.from(document.querySelectorAll('#captured-photos img')).map(img => img.src);
-
-            try {
-                // Validate and parse JSON inputs safely
-                let recipientsData = recipients.value ? JSON.parse(recipients.value) : [];
-                let bccData = bcc.value ? JSON.parse(bcc.value) : [];
-                let ccData = cc.value ? JSON.parse(cc.value) : [];
-
-                console.log('Recipients:', recipientsData);
-                console.log('Subject:', subject.value);
-                console.log('BCC:', bccData);
-                console.log('CC:', ccData);
-                console.log('Message:', message);
-                console.log('Files:', files);
-                console.log('Captured Images:', images);
-
-                let url = "{{ route('send-mail') }}";
+    // Questionaire
+    async function ChangeQuestionResult(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-question') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('question_id', value)
+            fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-question') }}";
                 let formData = new FormData();
-
-                // Append data to FormData
-                formData.append('recipients', JSON.stringify(recipientsData)); // Convert back to JSON string
-                formData.append('bcc', JSON.stringify(bccData));
-                formData.append('cc', JSON.stringify(ccData));
-                formData.append('subject', subject.value);
-                formData.append('message', message);
-
-                // Append files
-                for (let file of files) {
-                    formData.append('files[]', file); // Use `files[]` for multiple files
-                }
-
-                // Append images (as Base64 strings)
-                images.forEach((image, index) => {
-                    formData.append(`images[${index}]`, image); // Use unique keys for each image
+                formData.append('company', company)
+                formData.append('question_id', value)
+                fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
                 });
-
-
-                fetch_cycle('--Send mail', url, 'POST', formData).then(result => {
+            }
+        }
+    }
+    // WaterCOnservationMethod
+    async function ChangeWaterConservationOpportunity(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-water-conservation-method') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('waterConservationMethod_id', value)
+            fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-water-conservation-method') }}";
+                let formData = new FormData();
+                formData.append('company', company)
+                formData.append('waterConservationMethod_id', value)
+                fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
                     // let data = await result.json()
                     console.log(result);
                     if (result.success) {
-                        loader.style.display = 'none';
+
                     }
                 });
-            } catch (error) {
-                console.error('Invalid JSON in input fields:', error.message);
-            }
-        });
-
-        // end activate and deactivate start
-        async function fetch_cycle(subject, url, method, form_data) {
-            try {
-                let response = await fetch(url, {
-                    method: method,
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: form_data
-                });
-
-                let data = await response.json();
-
-                // feedback
-                if (data.status == 'success') {
-                    Toastify({
-                        text: data.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top", // `top` or `bottom`
-                        position: "right", // `left`, `center` or `right`
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
-                    }).showToast();
-                    return data
-                } else if (data.status == 'error') {
-                    console.log(data.errors);
-                    for (let key in data.errors) {
-                        Toastify({
-                            text: data.errors[key],
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                    }
-                }
-                // end feedback
-            } catch (error) {
-                console.error('Fetch error:', error);
-                Toastify({
-                    text: "An unexpected error occurred.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
             }
         }
+    }
+    // WaterSources
+    async function ChangeWaterSources(ele, company, value) {
+        console.log(ele, company, value);
+        if (ele.checked) {
+            let uri = "{{ route('company.add-water-Sources') }}";
+            let formData = new FormData();
+            formData.append('company', company)
+            formData.append('watersources_id', value)
+            fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
+                // let data = await result.json()
+                console.log(result);
+            });
+        } else {
+            if (confirm("Do you want to uncheck this?")) {
+                let uri = "{{ route('company.remove-water-Sources') }}";
+                let formData = new FormData();
+                formData.append('company', company)
+                formData.append('watersources_id', value)
+                fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                    if (result.success) {
 
-    </script>
-    @endsection
-    <div class="container">
-        <x-validation-errors class="alert" alert />
-        @include('shared.feedback')
-        <div class="row">
-            <!-- BEGIN INBOX -->
-            <div class="col-md-12">
-                <div class="email card">
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- BEGIN INBOX MENU -->
-                            <div class="col-md-3">
-                                <h2 class="card-title"><i class="fa fa-inbox"></i> Inbox</h2>
-                                <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i
-                                        class="fa fa-pencil"></i>&nbsp;&nbsp;NEW MESSAGE</a>
-                                <hr>
+                    }
+                });
+            }
+        }
+    }
 
-                                <div>
-                                    <div class="nav nav-pills flex-column">
-                                        <div class="header">Folders</div>
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#inbox" role="tab"
-                                            aria-selected="true"><i class="fa fa-inbox"></i> Inbox (14)</a>
-                                        <a class="nav-link" data-bs-toggle="tab" href="#starred" role="tab"
-                                            aria-selected="false"><i class="fa fa-star"></i> Starred</a>
-                                        <a class="nav-link" data-bs-toggle="tab" href="#important" role="tab"
-                                            aria-selected="false"><i class="fa fa-bookmark"></i> Important</a>
-                                        <a class="nav-link" data-bs-toggle="tab" href="#sent" role="tab"
-                                            aria-selected="false"><i class="fa fa-mail-forward"></i> Sent</a>
-                                        <a class="nav-link" data-bs-toggle="tab" href="#draft" role="tab"
-                                            aria-selected="false"><i class="fa fa-pencil-square-o"></i> Drafts</a>
-                                        <a class="nav-link" data-bs-toggle="tab" href="#spam" role="tab"
-                                            aria-selected="false"><i class="fa fa-folder"></i> Spam (217)</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END INBOX MENU -->
+</script>
 
-                            <!-- BEGIN INBOX CONTENT -->
-                            <div class="col-md-9">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label style="margin-right: 8px;" class="">
-                                            <div class="icheckbox_square-blue" style="position: relative;"><input
-                                                    type="checkbox" id="check-all" class="icheck"
-                                                    style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"><ins
-                                                    class="iCheck-helper"
-                                                    style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>
-                                            </div>
-                                        </label>
-                                        <div class="btn-group">
-                                            <div class="dropdown">
-                                                <a href="#" class="btn bt btn-light dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    Action<i class="las la-angle-down ms-1"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Mark as read</a>
-                                                    <a class="dropdown-item" href="#">Mark as unread</a>
-                                                    <a class="dropdown-item" href="#">Mark as important</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">Report spam</a>
-                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 search-form">
-                                        <form action="#" class="text-right">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control input-sm" placeholder="Search"
-                                                    aria-describedby="button-search">
-                                                <button type="submit" name="search" class="btn btn-primary search"
-                                                    id="button-search"><i class="fa fa-search"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="padding"></div>
-                                <!-- inbox -->
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="inbox">
-                                        <div class="table-responsive">
-                                            <h5>INBOX</h5>
-                                            <table class="table table-bordered mt-2 table-centered">
-                                                <tbody>
-                                                    @php $hasRecords = false; @endphp
-
-                                                    @foreach ($notifications as $notification)
-                                                    @php $hasRecords = true; @endphp
-                                                    <tr>
-                                                        <td class="action"><input type="checkbox" /></td>
-                                                        <td class="action"><i class="fa fa-star-o"></i></td>
-                                                        <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                        <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                                'Unknown Sender' }}</a></td>
-                                                        <td class="subject"><a href="#">{{
-                                                                $notification->data['message'] ?? 'No message available'
-                                                                }}</a></td>
-                                                        <td class="time">{{ $notification->created_at->format('h:i A')
-                                                            }}</td>
-                                                    </tr>
-                                                    @endforeach
-
-                                                    @if (!$hasRecords)
-                                                    <tr>
-                                                        <td colspan="6" class="text-center">No records found</td>
-                                                    </tr>
-                                                    @endif
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="starred">
-                                        <h5>Starred Messages</h5>
-                                        <table class="table table-bordered mt-2 table-centered">
-                                            <tbody>
-                                                @php $hasRecords = false; @endphp
-
-                                                @foreach ($notifications as $notification)
-                                                @php $hasRecords = true; @endphp
-                                                <tr>
-                                                    <td class="action"><input type="checkbox" /></td>
-                                                    <td class="action"><i class="fa fa-star-o"></i></td>
-                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                            'Unknown Sender' }}</a></td>
-                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
-                                                            'No message available' }}</a></td>
-                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                                @if (!$hasRecords)
-                                                <tr>
-                                                    <td colspan="6" class="text-center">No records found</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                    <div class="tab-pane" id="important">
-                                        <h5>Important </h5>
-                                        <table class="table table-bordered mt-2 table-centered">
-                                            <tbody>
-                                                @php $hasRecords = false; @endphp
-
-                                                @foreach ($notifications as $notification)
-                                                @php $hasRecords = true; @endphp
-                                                <tr>
-                                                    <td class="action"><input type="checkbox" /></td>
-                                                    <td class="action"><i class="fa fa-star-o"></i></td>
-                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                            'Unknown Sender' }}</a></td>
-                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
-                                                            'No message available' }}</a></td>
-                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                                @if (!$hasRecords)
-                                                <tr>
-                                                    <td colspan="6" class="text-center">No records found</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                    <div class="tab-pane" id="sent">
-                                        <h5>Sent</h5>
-                                        <table class="table table-bordered mt-2 table-centered">
-                                            <tbody>
-                                                @php $hasRecords = false; @endphp
-
-                                                @foreach ($notifications as $notification)
-                                                @php $hasRecords = true; @endphp
-                                                <tr>
-                                                    <td class="action"><input type="checkbox" /></td>
-                                                    <td class="action"><i class="fa fa-star-o"></i></td>
-                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                            'Unknown Sender' }}</a></td>
-                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
-                                                            'No message available' }}</a></td>
-                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                                @if (!$hasRecords)
-                                                <tr>
-                                                    <td colspan="6" class="text-center">No records found</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                    <div class="tab-pane" id="draft">
-                                        <h5>DRAFT</h5>
-                                        <table class="table table-bordered mt-2 table-centered">
-                                            <tbody>
-                                                @php $hasRecords = false; @endphp
-
-                                                @foreach ($notifications as $notification)
-                                                @php $hasRecords = true; @endphp
-                                                <tr>
-                                                    <td class="action"><input type="checkbox" /></td>
-                                                    <td class="action"><i class="fa fa-star-o"></i></td>
-                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                            'Unknown Sender' }}</a></td>
-                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
-                                                            'No message available' }}</a></td>
-                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                                @if (!$hasRecords)
-                                                <tr>
-                                                    <td colspan="6" class="text-center">No records found</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                    <div class="tab-pane" id="spam">
-                                        <h5>Spam</h5>
-                                        <table class="table table-bordered mt-2 table-centered">
-                                            <tbody>
-                                                @php $hasRecords = false; @endphp
-
-                                                @foreach ($notifications as $notification)
-                                                @php $hasRecords = true; @endphp
-                                                <tr>
-                                                    <td class="action"><input type="checkbox" /></td>
-                                                    <td class="action"><i class="fa fa-star-o"></i></td>
-                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
-                                                            'Unknown Sender' }}</a></td>
-                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
-                                                            'No message available' }}</a></td>
-                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                                @if (!$hasRecords)
-                                                <tr>
-                                                    <td colspan="6" class="text-center">No records found</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
-
-
-
-
-                                <ul class="pagination">
-                                    <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                </ul>
-                            </div>
-                            <!-- END INBOX CONTENT -->
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- END INBOX -->
-        </div>
-    </div>
-
-    <!-- BEGIN COMPOSE MESSAGE -->
-    <div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-wrapper">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-black">
-                        <h4 class="modal-title"><i class="fa fa-envelope"></i> Compose New Message</h4>
-                        <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
-                            aria-hidden="true"></button>
-                    </div>
-                    <form action="" method="post">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row g-3 chat-box">
-                                <div class="form-group col-md-12">
-                                    <input name="recipients_email" type="text" class="form-control" placeholder="To"
-                                        id="user-selector">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <input name="cc" type="email" class="form-control" placeholder="Cc">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <input name="bcc" type="email" class="form-control" placeholder="Bcc">
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <input name="subject" type="text" class="form-control" placeholder="Subject">
-                                </div>
-                                <div class="form-group">
-                                    <div class="chat-input">
-                                        <div id="editor"></div>
-                                        <div class="chat-icons">
-                                            <a href="#">
-                                                <label for="">
-                                                    <i class="iconoir-camera" title="Take Photo" id="camera-btn"></i>
-                                                </label>
-                                            </a>
-                                            <a href="#">
-                                                <label for="file-input">
-                                                    <i class="iconoir-attachment" title="Attach File"></i>
-                                                </label>
-                                                <input type="file" id="file-input" multiple>
-                                            </a>
-                                            <a href="#"><i class="iconoir-microphone"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <video id="camera-preview" style="display:none;" autoplay></video>
-                                <canvas id="camera-canvas" style="display:none;"></canvas>
-                                <div id="captured-photos"></div>
-                                <div class="file-preview" id="file-preview"></div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>
-                                Discard</button>
-                            <button type="button" class="btn btn-primary pull-right" id="send-btn"><i
-                                    class="fa fa-envelope"></i> Send
-                                Message</button>
-                            <button class="btn btn-primary d-none" type="button" disabled>
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                Loading...
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END COMPOSE MESSAGE -->
-</x-layouts.admin-app>
+<!-- end activate and deactivate -->
