@@ -823,9 +823,8 @@ let tagifyCC = new Tagify(ccInput, {
                 <td class="action"><input type="checkbox" /></td>
                 <td class="action"><i class="fa fa-star-o"></i></td>
                 <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
-                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
-                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+                <td class="name"><a href="#">{{ $notification->data['sender_name'] ?? 'Unknown Sender' }}</a></td>                <td class="subject"><a href="#">{{ $notification->data['subject'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ \Carbon\Carbon::parse($notification->created_at)->format('h:i A') }}</td>
             </tr>
         @endforeach
 
