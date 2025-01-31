@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class usersManagement extends Model
+class AdminManagement extends Model
 {
     use HasFactory;
-    protected $table="users-managements";
-    protected $primaryKey = "userID";
+    protected $table="admin_management";
+    protected $primaryKey = "adminID";
     protected $fillable = [
         "firstname",
         "lastname",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\usersManagement;
+use App\Models\AdminManagement;
 use Illuminate\Http\Request;
 
 class UsersManagementController extends Controller
@@ -40,6 +41,33 @@ class UsersManagementController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'firstname'     => 'required|max:255',   
+            'lastname'      => 'required|max:255',   
+            'othername'     => 'nullable|max:255',
+            'email'         => ['required', 'regex:/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/'],
+            'mobileNumber'  => ['required', 'regex:/^[\+]?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{1,4}$/']
+
+        ]);
+       usersManagement::create([
+            'firstname'=>$request->firstname,
+            'lastname'=>$request->lastname,
+            'othername'=>$request->othername,
+            'email'=>$request->email,
+            'mobileNumber'=>$request->mobileNumber
+        ]);
+        AdminManagement::create([
+            'firstname'=>$request->firstname,
+            'lastname'=>$request->lastname,
+            'othername'=>$request->othername,
+            'email'=>$request->email,
+            'mobileNumber'=>$request->mobileNumber
+        ]);
+
+       
+      
+
+        return back()->with(['success' => 'Added successfully']);
     }
 
     /**

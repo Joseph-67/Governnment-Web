@@ -49,6 +49,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
         Route::get('/users-details',  'getAllUsers')->name('users.details');
+        Route::post('/view-users',  'store')->name('view.details');
 
     });
     // roles
