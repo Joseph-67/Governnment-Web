@@ -613,40 +613,59 @@ let tagifyCC = new Tagify(ccInput, {
   <script>
     let sendBtn = document.querySelector('#send-btn')
     sendBtn.addEventListener('click', (e) => {
-        let recipients = document.querySelector('input[name="recipients_email"]')
-        let subject = document.querySelector('input[name="subject"]')
-        let bcc = document.querySelector('input[name="bcc"]')
-        let cc = document.querySelector('input[name="cc"]')
+        let recipients = document.querySelector('input[name="recipients_email"]');
+        let subject = document.querySelector('input[name="subject"]');
+        let bcc = document.querySelector('input[name="bcc"]');
+        let cc = document.querySelector('input[name="cc"]');
         let message = quill.root.innerHTML;
         const files = document.getElementById('file-input').files;
         const images = Array.from(document.querySelectorAll('#captured-photos img')).map(img => img.src);
-        
-        console.log(recipients.value, subject.value, bcc.value, cc.value, message);
-        console.log('Files:', files);
-        console.log('Captured Images:', images);
-        let url = "{{ route('send-mail') }}"
-        let formData = new FormData();
-        formData.append('recipients', recipients);
-        formData.append('bcc', bcc);
-        formData.append('cc', cc);
-        formData.append('subject', subject);
-        formData.append('message', message);
-        for (let i = 0; i < files.length; i++) {
-            formData.append('files', files[i]);
-        }
-        images.forEach((img, index) => {
-            formData.append(`image${index}`, img);
-        });
 
-        console.log(formData);
-        
-        fetch_cycle('--Send mail', url, 'POST', formData).then(result => {
-            // let data = await result.json()
-            console.log(result);
-            if (result.success) {
-                loader.style.display = 'none';
+        try {
+            // Validate and parse JSON inputs safely
+            let recipientsData = recipients.value ? JSON.parse(recipients.value) : [];
+            let bccData = bcc.value ? JSON.parse(bcc.value) : [];
+            let ccData = cc.value ? JSON.parse(cc.value) : [];
+
+            console.log('Recipients:', recipientsData);
+            console.log('Subject:', subject.value);
+            console.log('BCC:', bccData);
+            console.log('CC:', ccData);
+            console.log('Message:', message);
+            console.log('Files:', files);
+            console.log('Captured Images:', images);
+
+            let url = "{{ route('send-mail') }}";
+            let formData = new FormData();
+
+            // Append data to FormData
+            formData.append('recipients', JSON.stringify(recipientsData)); // Convert back to JSON string
+            formData.append('bcc', JSON.stringify(bccData));
+            formData.append('cc', JSON.stringify(ccData));
+            formData.append('subject', subject.value);
+            formData.append('message', message);
+
+            // Append files
+            for (let file of files) {
+                formData.append('files[]', file); // Use `files[]` for multiple files
             }
-        });
+
+            // Append images (as Base64 strings)
+            images.forEach((image, index) => {
+                formData.append(`images[${index}]`, image); // Use unique keys for each image
+            });
+
+        
+                fetch_cycle('--Send mail', url, 'POST', formData).then(result => {
+                    // let data = await result.json()
+                    console.log(result);
+                    if (result.success) {
+                        loader.style.display = 'none';
+                    }
+                });
+            } catch (error) {
+            console.error('Invalid JSON in input fields:', error.message);
+        }
     });
 
     // end activate and deactivate start
