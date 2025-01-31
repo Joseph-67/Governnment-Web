@@ -805,6 +805,7 @@
                                         </div>
                                     </div>
 
+<<<<<<< Updated upstream
                                 <div class="col-md-6 search-form">
                                     <form action="#" class="text-right">
                                         <div class="input-group">
@@ -1061,6 +1062,284 @@
                             </div>
                         </div>
 
+=======
+                                    <div class="col-md-6 search-form">
+                                        <form action="#" class="text-right">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control input-sm" placeholder="Search"
+                                                    aria-describedby="button-search">
+                                                <button type="submit" name="search" class="btn btn-primary search"
+                                                    id="button-search"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="padding"></div>
+                                <!-- inbox -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="inbox">
+                                        <div class="table-responsive">
+                                            <h5>INBOX</h5>
+                                            <table class="table table-bordered mt-2 table-centered">
+                                                <tbody>
+                                                    @php $hasRecords = false; @endphp
+
+                                                    @foreach ($notifications as $notification)
+                                                    @php $hasRecords = true; @endphp
+                                                    <tr>
+                                                        <td class="action"><input type="checkbox" /></td>
+                                                        <td class="action"><i class="fa fa-star-o"></i></td>
+                                                        <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                        <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                                'Unknown Sender' }}</a></td>
+                                                        <td class="subject"><a href="#">{{
+                                                                $notification->data['message'] ?? 'No message available'
+                                                                }}</a></td>
+                                                        <td class="time">{{ $notification->created_at->format('h:i A')
+                                                            }}</td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                    @if (!$hasRecords)
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">No records found</td>
+                                                    </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="starred">
+                                        <h5>Starred Messages</h5>
+                                        <table class="table table-bordered mt-2 table-centered">
+                                            <tbody>
+                                                @php $hasRecords = false; @endphp
+
+                                                @foreach ($notifications as $notification)
+                                                @php $hasRecords = true; @endphp
+                                                <tr>
+                                                    <td class="action"><input type="checkbox" /></td>
+                                                    <td class="action"><i class="fa fa-star-o"></i></td>
+                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                            'Unknown Sender' }}</a></td>
+                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
+                                                            'No message available' }}</a></td>
+                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+                                                @if (!$hasRecords)
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No records found</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="important">
+                                        <h5>Important </h5>
+                                        <table class="table table-bordered mt-2 table-centered">
+                                            <tbody>
+                                                @php $hasRecords = false; @endphp
+
+                                                @foreach ($notifications as $notification)
+                                                @php $hasRecords = true; @endphp
+                                                <tr>
+                                                    <td class="action"><input type="checkbox" /></td>
+                                                    <td class="action"><i class="fa fa-star-o"></i></td>
+                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                            'Unknown Sender' }}</a></td>
+                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
+                                                            'No message available' }}</a></td>
+                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+                                                @if (!$hasRecords)
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No records found</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="sent">
+                                        <h5>Sent</h5>
+                                        <table class="table table-bordered mt-2 table-centered">
+                                            <tbody>
+                                                @php $hasRecords = false; @endphp
+
+                                                @foreach ($notifications as $notification)
+                                                @php $hasRecords = true; @endphp
+                                                <tr>
+                                                    <td class="action"><input type="checkbox" /></td>
+                                                    <td class="action"><i class="fa fa-star-o"></i></td>
+                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                            'Unknown Sender' }}</a></td>
+                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
+                                                            'No message available' }}</a></td>
+                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+                                                @if (!$hasRecords)
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No records found</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="draft">
+                                        <h5>DRAFT</h5>
+                                        <table class="table table-bordered mt-2 table-centered">
+                                            <tbody>
+                                                @php $hasRecords = false; @endphp
+
+                                                @foreach ($notifications as $notification)
+                                                @php $hasRecords = true; @endphp
+                                                <tr>
+                                                    <td class="action"><input type="checkbox" /></td>
+                                                    <td class="action"><i class="fa fa-star-o"></i></td>
+                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                            'Unknown Sender' }}</a></td>
+                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
+                                                            'No message available' }}</a></td>
+                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+                                                @if (!$hasRecords)
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No records found</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="spam">
+                                        <h5>Spam</h5>
+                                        <table class="table table-bordered mt-2 table-centered">
+                                            <tbody>
+                                                @php $hasRecords = false; @endphp
+
+                                                @foreach ($notifications as $notification)
+                                                @php $hasRecords = true; @endphp
+                                                <tr>
+                                                    <td class="action"><input type="checkbox" /></td>
+                                                    <td class="action"><i class="fa fa-star-o"></i></td>
+                                                    <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                    <td class="name"><a href="#">{{ $notification->data['sender'] ??
+                                                            'Unknown Sender' }}</a></td>
+                                                    <td class="subject"><a href="#">{{ $notification->data['message'] ??
+                                                            'No message available' }}</a></td>
+                                                    <td class="time">{{ $notification->created_at->format('h:i A') }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+                                                @if (!$hasRecords)
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No records found</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <ul class="pagination">
+                                    <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">»</a></li>
+                                </ul>
+                            </div>
+                            <!-- END INBOX CONTENT -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END INBOX -->
+        </div>
+    </div>
+
+    <!-- BEGIN COMPOSE MESSAGE -->
+    <div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-wrapper">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-black">
+                        <h4 class="modal-title"><i class="fa fa-envelope"></i> Compose New Message</h4>
+                        <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
+                            aria-hidden="true"></button>
+                    </div>
+                    <form action="" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row g-3 chat-box">
+                                <div class="form-group col-md-12">
+                                    <input name="recipients_email" type="text" class="form-control" placeholder="To"
+                                        id="user-selector">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input name="cc" type="email" class="form-control" placeholder="Cc">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input name="bcc" type="email" class="form-control" placeholder="Bcc">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <input name="subject" type="text" class="form-control" placeholder="Subject">
+                                </div>
+                                <div class="form-group">
+                                    <div class="chat-input">
+                                        <div id="editor"></div>
+                                        <div class="chat-icons">
+                                            <a href="#">
+                                                <label for="">
+                                                    <i class="iconoir-camera" title="Take Photo" id="camera-btn"></i>
+                                                </label>
+                                            </a>
+                                            <a href="#">
+                                                <label for="file-input">
+                                                    <i class="iconoir-attachment" title="Attach File"></i>
+                                                </label>
+                                                <input type="file" id="file-input" multiple>
+                                            </a>
+                                            <a href="#"><i class="iconoir-microphone"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <video id="camera-preview" style="display:none;" autoplay></video>
+                                <canvas id="camera-canvas" style="display:none;"></canvas>
+                                <div id="captured-photos"></div>
+                                <div class="file-preview" id="file-preview"></div>
+                            </div>
+                        </div>
+
+>>>>>>> Stashed changes
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i
                                     class="fa fa-times"></i>
@@ -1079,5 +1358,8 @@
         </div>
     </div>
     <!-- END COMPOSE MESSAGE -->
+<<<<<<< Updated upstream
    
+=======
+>>>>>>> Stashed changes
 </x-layouts.admin-app>
