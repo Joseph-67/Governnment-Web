@@ -3,6 +3,10 @@
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     @endsection
 <div class="container-xxl"> 
+<x-validation-errors class="alert" alert />
+@include('shared.feedback')
+
+
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -19,6 +23,7 @@
                                     </div><!--end row-->                                  
                                 </div><!--end card-header-->
                                 <div class="card-body pt-0">
+
                                     <div class="table-responsive">
                                         
                                         <table class="table mb-0" id="datatable_1">
@@ -122,30 +127,31 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form id="form-validation-2" class="form">
+      <form id="form-validation-2" class="form" action="{{route('view.details')}}" method="post">
+        @csrf
             <div class="row g-3">
             <div class="col-md-6">
                                                         <label for="firstName" class="form-label">First Name</label>
-                                                        <input class="form-control" type="text" id="firstname" placeholder="Enter First Name">
+                                                        <input class="form-control" type="text" name="firstname" placeholder="Enter First Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="LastName" class="form-label">Last Name</label>
-                                                        <input class="form-control" type="text" id="lastname" placeholder="Enter Last Name">
+                                                        <input class="form-control" type="text" name="lastname" placeholder="Enter Last Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="otherName" class="form-label">Other Name</label>
-                                                        <input class="form-control" type="text" id="othername" placeholder="Enter Other Name">
+                                                        <input class="form-control" type="text" name="othername" placeholder="Enter Other Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                     <label for="email" class="form-label">Email</label>
-                                                    <input class="form-control" type="text" id="email" placeholder="example@gmail.com">
+                                                    <input class="form-control" type="text" name="email" placeholder="example@gmail.com">
                                                     </div>
                                                     <div class="col-md-6">
                                                     <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                                    <input class="form-control" type="text" id="mobileNumber" placeholder="Enter Mobile Number">
+                                                    <input class="form-control" type="text" name="mobileNumber" placeholder="Enter Mobile Number">
                                                     </div>
 
                                                        </div>
@@ -169,30 +175,31 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="form-validation-2" class="form">
+        <form id="form-validation-2" class="form" action="{{route('view.details')}}" method="post">
+            @csrf
             <div class="row g-3">
             <div class="col-md-6">
-                                                        <label for="firstName" class="form-label">First Name</label>
-                                                        <input class="form-control" type="text" id="firstname" placeholder="Enter First Name">
+                                                    <label for="firstName" class="form-label">First Name</label>
+                                                    <input class="form-control" type="text" name="firstname" placeholder="Enter First Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="LastName" class="form-label">Last Name</label>
-                                                        <input class="form-control" type="text" id="lastname" placeholder="Enter Last Name">
+                                                        <input class="form-control" type="text" name="lastname" placeholder="Enter Last Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="otherName" class="form-label">Other Name</label>
-                                                        <input class="form-control" type="text" id="othername" placeholder="Enter Other Name">
+                                                        <input class="form-control" type="text" name="othername" placeholder="Enter Other Name">
                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                     <label for="email" class="form-label">Email</label>
-                                                    <input class="form-control" type="text" id="email" placeholder="example@gmail.com">
+                                                    <input class="form-control" type="text" name="email" placeholder="example@gmail.com">
                                                     </div>
                                                     <div class="col-md-6">
                                                     <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                                    <input class="form-control" type="text" id="mobileNumber" placeholder="Enter Mobile Number">
+                                                    <input class="form-control" type="text" name="mobileNumber" placeholder="Enter Mobile Number">
                                                     </div>
 
                                                        </div>
