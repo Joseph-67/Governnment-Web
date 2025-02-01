@@ -1414,6 +1414,52 @@
                                 </form>
                             </div>
                         </div>
+                        <div class="card">
+                        <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0">
+                            <input type="hidden" name="company_id">
+                            <div class="row g-2">
+                                <!-- Unit of measurement -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Quantity/Volume</label>
+                                        <div class="input-group qty-icons">
+                                            <button class="btn btn-primary"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                            <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                                style="pointer-events: none;">
+                                            <button class="btn btn-primary"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Unit of measurement -->
+                                <!-- Date -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Date</label>
+                                        <input type="date" min="0" class="form-control" name="date">
+                                    </div>
+                                </div>
+                                <!-- end Date -->
+
+                                <!-- Material name -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Remark</label>
+                                        <input type="text" class="form-control" name="remark">
+                                    </div>
+                                </div>
+                                <!-- Material name -->
+                            </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- tab water usage -->
                     <!-- tab chemical usage -->
