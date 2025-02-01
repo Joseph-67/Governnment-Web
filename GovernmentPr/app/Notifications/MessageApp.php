@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class MessageApp extends Notification
@@ -48,10 +49,12 @@ class MessageApp extends Notification
         ->from('atumajoe24@gmail.com', 'Joseph Atuma')
         ->greeting("Hello!")
         ->subject($this->data['subject'])
-        ->line($this->data['body'])
+        // ->line($this->data['body'])
         ->markdown('mail.message.template', [
-            'subject' => $this->data['subject'],
-            'body'    => $this->data['body']
+            'greeting'  => "Hello",
+            'subject'   => $this->data['subject'],
+            'body'      => $this->data['body'],
+            'url'       => $this->data['url'] ?? null,
         ]);
 
         // Attach Files Properly
@@ -82,6 +85,8 @@ class MessageApp extends Notification
     {
         return [
             //
+            'sender_name' => Auth::user() ? Auth::user()->first_name . ' ' . Auth::user()->last_name : 'Unknown Sender',  
+            'sender_email' => Auth::user() ? Auth::user()->email : 'No Email',
             'subject' => $this->data['subject'],
             'body' => $this->data['body']
         ];

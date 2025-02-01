@@ -28,6 +28,8 @@ class EmailApp extends ImageController
 
         $user = Auth::user();
         $data['notifications'] = $user->notifications;
+        // dd($user->notifications->toArray());
+        // dd(Auth::user());
        return view('components/admin/email-app', $data);
     }
 

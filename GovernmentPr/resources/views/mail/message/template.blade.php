@@ -1,12 +1,16 @@
-<x-mail::message>
-# Introduction
+@component('mail::message')
+# {{ $subject }}
 
-The body of your message.
+<main>
+{!! $body !!}
+</main> <!-- Render the body content as raw HTML -->
 
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+@isset($url)
+@component('mail::button', ['url' => $url])
+View More
+@endcomponent
+@endisset
 
 Thanks,<br>
 {{ config('app.name') }}
-</x-mail::message>
+@endcomponent
