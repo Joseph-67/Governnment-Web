@@ -11,7 +11,7 @@ class CompanyWaterSources extends Model
     protected $primaryKey = 'CompanyWaterSourcesID';
     protected $fillable = [
         'companyID',
-        'WaterSourcesID',
+        'WaterSources_id',
         'created_at',
         'updated_at',
     ];

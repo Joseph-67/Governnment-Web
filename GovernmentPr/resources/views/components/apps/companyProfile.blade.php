@@ -1400,7 +1400,7 @@
                                             type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}" id="flexCheckIndeterminate"
                                             {{(in_array($sources->WaterSourcesId,
                                                 array_column($companyWaterSources->toArray(),
-                                                'watersources_id')))? "checked": ""}}
+                                                'WaterSources_id')))? "checked": ""}}
                                             >
                                             <label class="form-check-label" for="flexCheckIndeterminate">
                                                 {{ $sources->sources }}
@@ -4165,7 +4165,7 @@
             let uri = "{{ route('company.add-water-sources') }}";
             let formData = new FormData();
             formData.append('company', company)
-            formData.append('watersources_id', value)
+            formData.append('water_sources_id', value)
             fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result);
@@ -4175,7 +4175,7 @@
                 let uri = "{{ route('company.remove-water-Sources') }}";
                 let formData = new FormData();
                 formData.append('company', company)
-                formData.append('watersources_id', value)
+                formData.append('water_sources_id', value)
                 fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
                     // let data = await result.json()
                     console.log(result);
