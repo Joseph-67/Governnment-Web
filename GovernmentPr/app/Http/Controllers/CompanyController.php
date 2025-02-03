@@ -38,8 +38,6 @@ class CompanyController extends Controller
    
     public function show($company)
     {
-        //
-        // return "hello";
         $companyID = decrypt($company);
         $data['company']                            =   Company::where('company_id', $companyID)->first();
         $data['company_policies']                   =   Policy::where('companyID', $companyID)->get();
@@ -63,6 +61,8 @@ class CompanyController extends Controller
         ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
         ->get();
 
+        
+
         // water things
         $data['waterQuestions']                 =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
         $data['CompanyWaterQuestions']          =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
@@ -70,7 +70,8 @@ class CompanyController extends Controller
         $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['waterConservationMethod_id']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id']);
-        // dd($data['company_hazarduous_material']);
+        $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date', 'remark']);
+        // dd($data['company_water_usage']);
         return view('components.apps.companyProfile', $data);
     }   
     /**

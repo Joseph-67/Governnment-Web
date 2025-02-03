@@ -1342,8 +1342,8 @@
                                                     type="checkbox" value="{{ $question->questionId }}"
                                                     name="{{ $question->label }}" id="flexCheckIndeterminate"
                                                     {{(in_array($question->questionId,
-                                                array_column($CompanyWaterQuestions->toArray(),
-                                                'questionID')))? "checked": ""}}
+                                                    array_column($CompanyWaterQuestions->toArray(),
+                                                    'questionID')))? "checked": ""}}
                                                 >
                                                 <label class="form-check-label" for="flexCheckIndeterminate">
                                                     {{ $question->question }}
@@ -1513,13 +1513,15 @@
                                                 <th class="text-end">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
+                                        <tbody id="water-usage-table">
+                                            @foreach($company_water_usage as $key=>$water_usage)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><span class=""></span></td>
+                                                <td>{{ $water_usage->volume }}</td>
+                                                @php
+                                                $water_usage_date = Carbon\Carbon::parse($water_usage->date);
+                                                @endphp
+                                                <td>{{ $water_usage_date->format('d M Y')}}</td>
+                                                <td>{{$water_usage->remark}}</td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11"
@@ -1536,6 +1538,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->
