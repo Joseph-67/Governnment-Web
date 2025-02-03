@@ -54,7 +54,7 @@ let getMap = async () => {
         
         let location =[
             // { lat: 4.21494, lng: -46.40625, title: "Afdin Petroleum lpg" },
-            { lat: 11.994609, lng: 8.58308, title: "Petrogas" },
+            // { lat: 11.994609, lng: 8.58308, title: "Petrogas" },
             // { lat: 6.5244, lng: 3.3792, title: "Lagos" },
             // { lat: 7.3775, lng: 3.9470, title: "Ibadan" },
             // { lat: 11.1247, lng: 7.7254, title: "Zaria" },
@@ -63,7 +63,7 @@ let getMap = async () => {
         ];
 
         // Add markers to the map
-        location.forEach((location) => {
+        locations.forEach((location) => {
             L.marker([location.lat, location.lng])
                 .addTo(map)
                 .bindPopup(
