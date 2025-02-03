@@ -14,7 +14,7 @@
                                         </h5>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
                                         <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>
-                                        {{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
+                                            {{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -75,7 +75,8 @@
                             <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
                                     Secondary Phone </b> : {{ $company->secondary_phone_number }}</li>
                             <li class="mt-2"><i class="las la-envelope me-2 text-secondary fs-22 align-middle me-2"></i>
-                                <b> Email </b> : {{ $company->email }}</li>
+                                <b> Email </b> : {{ $company->email }}
+                            </li>
                             <li class="mt-2"><i class="las la-link text-secondary fs-22 align-middle me-2"></i> <b>
                                     Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a>
                             </li>
@@ -1325,30 +1326,28 @@
                     </div>
                     <!-- water usage -->
                     <div class="tab-pane p-3" id="water-usage" role="tabpanel">
-                    <div class="card">
+                        <div class="card">
                             <div class="card-body py-3">
                                 <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
+                                    <input type="hidden" class="form-control" name="company_id"
+                                        value="{{ $company->company_id }}">
                                     <div class="row g-2">
                                         @foreach($waterQuestions as $question)
                                         <!-- question  -->
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input"
-                                             onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
-                                             type="checkbox"
-                                             value="{{ $question->questionId }}"
-                                             name="{{ $question->label }}" 
-                                             id="flexCheckIndeterminate"
-                                             {{(in_array($question->questionId,
-                                                        array_column($CompanyWaterQuestions->toArray(),
-                                                    'questionID')))? "checked": ""}}
-                                             >
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $question->question }}
-                                            </label>
+                                                <input class="form-check-input"
+                                                    onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
+                                                    type="checkbox" value="{{ $question->questionId }}"
+                                                    name="{{ $question->label }}" id="flexCheckIndeterminate"
+                                                    {{(in_array($question->questionId,
+                                                array_column($CompanyWaterQuestions->toArray(),
+                                                'questionID')))? "checked": ""}}
+                                                >
+                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                    {{ $question->question }}
+                                                </label>
                                             </div>
                                             <!-- form check -->
                                         </div>
@@ -1358,25 +1357,27 @@
                                 </form>
                                 <hr>
                                 <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
-                                    <label for="">Indicate the water conservations opportunity that is applicable or beneficial to your process</label>
+                                    <input type="hidden" class="form-control" name="company_id"
+                                        value="{{ $company->company_id }}">
+                                    <label for="">Indicate the water conservations opportunity that is applicable or
+                                        beneficial to your process</label>
                                     <div class="row g-2 mt-2">
                                         @foreach($WaterConservationMethod as $method)
                                         <!-- question  -->
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input"
-                                            onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
-                                            type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}" id="flexCheckIndeterminate"
-                                            {{(in_array($method->WaterConservationMethodId,
+                                                <input class="form-check-input"
+                                                    onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
+                                                    type="checkbox" value="{{ $method->WaterConservationMethodId }}"
+                                                    name="{{ $method->label }}" id="flexCheckIndeterminate"
+                                                    {{(in_array($method->WaterConservationMethodId,
                                                 array_column($companyWaterConservationMethod->toArray(),
                                                 'waterConservationMethod_id')))? "checked": ""}}
-                                            >
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $method->method }}
-                                            </label>
+                                                >
+                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                    {{ $method->method }}
+                                                </label>
                                             </div>
                                             <!-- form check -->
                                         </div>
@@ -1386,8 +1387,8 @@
                                 </form>
                                 <hr>
                                 <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
+                                    <input type="hidden" class="form-control" name="company_id"
+                                        value="{{ $company->company_id }}">
                                     <label for="">Select the water source used in your Organization</label>
                                     <div class="row g-2 mt-2">
                                         @foreach($WaterSources as $sources)
@@ -1395,16 +1396,17 @@
                                         <div class="col-md-6">
                                             <!-- form check -->
                                             <div class="form-check">
-                                            <input class="form-check-input" 
-                                            onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
-                                            type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}" id="flexCheckIndeterminate"
-                                            {{(in_array($sources->WaterSourcesId,
+                                                <input class="form-check-input"
+                                                    onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
+                                                    type="checkbox" value="{{ $sources->WaterSourcesId }}"
+                                                    name="{{ $sources->label }}" id="flexCheckIndeterminate"
+                                                    {{(in_array($sources->WaterSourcesId,
                                                 array_column($companyWaterSources->toArray(),
                                                 'WaterSources_id')))? "checked": ""}}
-                                            >
-                                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                                {{ $sources->sources }}
-                                            </label>
+                                                >
+                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                    {{ $sources->sources }}
+                                                </label>
                                             </div>
                                             <!-- form check -->
                                         </div>
@@ -1412,6 +1414,83 @@
                                         @endforeach
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0" id="water-usage-form">
+                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                <div class="row g-2">
+                                    <!-- Unit of measurement -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Volume of Water</label>
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="volume"
+                                                    value="0">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Unit of measurement -->
+                                    <!-- date type -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <label class="col my-1 control-label">Date Type</label>
+                                        <div class="col-md-9">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type"
+                                                    id="inlineRadio1" value="daily" checked onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio1">Daily</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type"
+                                                    id="inlineRadio2" value="weekly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type"
+                                                    id="inlineRadio3" value="monthly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type"
+                                                    id="inlineRadio4" value="yearly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio3">Yearly</label>
+                                            </div>
+                                        </div>
+                                    </div> <!--end row-->
+                                    <!-- date type -->
+                                    <!-- Date -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Date</label>
+                                            <input type="date" class="form-control" name="date">
+                                        </div>
+                                    </div>
+                                    <!-- end Date -->
+
+
+                                    <!-- Material name -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Remark</label>
+                                            <input type="text" class="form-control" name="remark">
+                                        </div>
+                                    </div>
+                                    <!-- Material name -->
+                                     <div class="col-12">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1428,8 +1507,7 @@
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
                                 <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="" value="">
+                                    <input type="hidden" class="form-control" name="" value="">
                                     <div class="row g-2 align-items-end">
                                         <!-- Chemicals  -->
                                         <div class="col-md-6">
@@ -1443,25 +1521,27 @@
                                         </div>
                                         <!-- Chemicals ends -->
                                         <!-- Unit of measurement -->
-                                         <div class="col-md-4">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
-                                                    name="unit_of_measurement">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Unit of Measurement" name="unit_of_measurement">
                                             </div>
                                         </div>
-                                         <!-- Unit of measurement -->
-                                          <div class="col">
+                                        <!-- Unit of measurement -->
+                                        <div class="col">
                                             <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                                <button type="button" class="btn btn-primary"
+                                                    id="btn-submit-material">Save</button><span class="loader"
+                                                    id="loader"></span>
                                             </div>
-                                          </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="card">
-                        <div class="card-header">
+                            <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company Chemical</h4>
@@ -1472,15 +1552,15 @@
                                 <div class="table-responsive">
                                     <table class="table mb-0" id="tbl-company-material">
                                         <thead class="table-light">
-                                        <tr>
-                                            <th>Material</th>
-                                            <th>Unit of Measurement</th>
-                                            <th>Chemical Status</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Material</th>
+                                                <th>Unit of Measurement</th>
+                                                <th>Chemical Status</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                           
+
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -1488,10 +1568,13 @@
                                                 <td><span class=""></span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                            data-bs-toggle="dropdown" href="#" role="button"
+                                                            aria-haspopup="false" aria-expanded="false">
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
-                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                            aria-labelledby="dLabel11">
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <hr class="dropdown-divider">
@@ -1517,8 +1600,8 @@
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
                                 <form action="" method="post">
-                                    <input type="hidden" class="form-control"
-                                    name="company_id" value="{{ $company->company_id }}">
+                                    <input type="hidden" class="form-control" name="company_id"
+                                        value="{{ $company->company_id }}">
                                     <div class="row g-2">
                                         <!-- Material  -->
                                         <div class="col-md-6">
@@ -1527,41 +1610,44 @@
                                                 <select name="material" id="material" class="form-select">
                                                     <option value="" selected disabled> Choose... </option>
                                                     @foreach($materials as $material)
-                                                    <option value="{{ $material->materialID }}"> {{ $material->material }} </option>
+                                                    <option value="{{ $material->materialID }}"> {{ $material->material
+                                                        }} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <!-- Material ends -->
-                                         <!-- Serial Number -->
-                                         <div class="col-md-3">
+                                        <!-- Serial Number -->
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">Serial Number(If any)</label>
                                                 <input type="text" class="form-control" placeholder="Serial Number"
                                                     name="serial_number">
                                             </div>
                                         </div>
-                                         <!-- Serial Number -->
+                                        <!-- Serial Number -->
                                         <!-- Unit of measurement -->
-                                         <div class="col-md-3">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control" placeholder="Unit of Measurement"
-                                                    name="unit_of_measurement">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Unit of Measurement" name="unit_of_measurement">
                                             </div>
                                         </div>
-                                         <!-- Unit of measurement -->
-                                          <div class="col-md-3">
+                                        <!-- Unit of measurement -->
+                                        <div class="col-md-3">
                                             <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                                <button type="button" class="btn btn-primary"
+                                                    id="btn-submit-material">Save</button><span class="loader"
+                                                    id="loader"></span>
                                             </div>
-                                          </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="card">
-                        <div class="card-header">
+                            <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company Materials</h4>
@@ -1572,13 +1658,13 @@
                                 <div class="table-responsive">
                                     <table class="table mb-0" id="tbl-company-material">
                                         <thead class="table-light">
-                                        <tr>
-                                            <th>Material</th>
-                                            <th>Serial No.</th>
-                                            <th>Unit of Measurement</th>
-                                            <th>Material Status</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Material</th>
+                                                <th>Serial No.</th>
+                                                <th>Unit of Measurement</th>
+                                                <th>Material Status</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($companyMaterials as $material)
@@ -1586,20 +1672,33 @@
                                                 <td>{{ $material->material }}</td>
                                                 <td>{{ $material->serial_number }}</td>
                                                 <td> {{ $material->unit_of_measure }} </td>
-                                                <td><span class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{ $material->company_material_status }}</span></td>
+                                                <td><span
+                                                        class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
+                                                        $material->company_material_status }}</span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                            data-bs-toggle="dropdown" href="#" role="button"
+                                                            aria-haspopup="false" aria-expanded="false">
                                                             <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                         </a>
-                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open Material</a>
+                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                            aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
+                                                                Material</a>
                                                             <a class="dropdown-item" href="#">Update Material</a>
                                                             <a class="dropdown-item" href="#">Delete Material</a>
                                                             <hr class="dropdown-divider">
-                                                            <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup Price</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check In Item</a>
-                                                            <a href="#" class="dropdown-item" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check Out Item</a>
+                                                            <a class="dropdown-item" href="#"
+                                                                onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
+                                                                Price</a>
+                                                            <a href="#" class="dropdown-item"
+                                                                onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                In Item</a>
+                                                            <a href="#" class="dropdown-item"
+                                                                onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                Out Item</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1621,7 +1720,7 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                            <x-validation-errors class="alert" alert />
+                                <x-validation-errors class="alert" alert />
                                 @include('shared.feedback')
                                 <form id="general-settings" action="{{route('update-company-details')}}" method="post">
                                     @csrf
@@ -1655,7 +1754,8 @@
                                             <div class="form-group">
                                                 <label for="">Email</label>
                                                 <input type="email" class="form-control"
-                                                    placeholder="Example: company@domain.com" name="email" value="{{ $company->email }}">
+                                                    placeholder="Example: company@domain.com" name="email"
+                                                    value="{{ $company->email }}">
                                             </div>
                                         </div>
 
@@ -1672,7 +1772,7 @@
                                                 <label for="">Primary Phone Number</label>
                                                 <input id="mobile_code_primary" type="tel" class="form-control"
                                                     placeholder="">
-                                                <input type="hidden" name="primary_phone_number" >
+                                                <input type="hidden" name="primary_phone_number">
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
@@ -1688,18 +1788,22 @@
                                             <div class="form-group">
                                                 <label for="">Number Of Employees.</label>
                                                 <input type="number" class="form-control" placeholder=""
-                                                    name="number_of_employees" value="{{$company->number_of_employees}}">
+                                                    name="number_of_employees"
+                                                    value="{{$company->number_of_employees}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <label for="">Date of Establishment</label>
-                                            <input class="form-control" type="date" id="" name="date_of_establishment" value="{{$company->date_of_establishment}}">
+                                            <input class="form-control" type="date" id="" name="date_of_establishment"
+                                                value="{{$company->date_of_establishment}}">
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class="col-md-3 py-3">
                                                 <div class="d-flex g-1">
-                                                <button type="button" class="btn btn-primary" id="btn-general-settings">Save</button><span class="loader" id="loader"></span>
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-general-settings">Save</button><span class="loader"
+                                                        id="loader"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1712,14 +1816,14 @@
                                 <h4 class="card-title">Company's Location</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
+                                <form action="{{route('update-company-location')}}" method="post"
+                                    id="location_settings">
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
                                                 <label for="">Country</label>
-                                                <select name="country" class="form-select countries"
-                                                    id="countryId">
+                                                <select name="country" class="form-select countries" id="countryId">
                                                     <option value="" selected disabled> Choose... </option>
                                                 </select>
                                             </div>
@@ -1748,7 +1852,8 @@
                                         <div class="col-md-12 mt-2">
                                             <div class="form-group">
                                                 <label for="">Address</label>
-                                                <input type="text" class="form-control" placeholder="" name="address" value="{{$company->address}}">
+                                                <input type="text" class="form-control" placeholder="" name="address"
+                                                    value="{{$company->address}}">
                                             </div>
                                         </div>
 
@@ -1757,35 +1862,41 @@
                                         </div>
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                            <label for="">ZIP code</label>
-                                                <input type="text" class="form-control" placeholder="" name="zip_code" value="{{$company->zip_code}}">
+                                                <label for="">ZIP code</label>
+                                                <input type="text" class="form-control" placeholder="" name="zip_code"
+                                                    value="{{$company->zip_code}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                            <label for="">Longitude</label>
-                                                <input type="text" class="form-control" placeholder="" name="longitude" value="{{$company->longitude}}">
+                                                <label for="">Longitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="longitude"
+                                                    value="{{$company->longitude}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                            <label for="">Latitude</label>
-                                                <input type="text" class="form-control" placeholder="" name="latitude" value="{{$company->latitude}}">
+                                                <label for="">Latitude</label>
+                                                <input type="text" class="form-control" placeholder="" name="latitude"
+                                                    value="{{$company->latitude}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                            <label for="">Military Grid Reference System (MGRS) coordinate</label>
-                                                <input type="text" class="form-control" placeholder="" name="mgrs" value="{{$company->mgrs}}">
+                                                <label for="">Military Grid Reference System (MGRS) coordinate</label>
+                                                <input type="text" class="form-control" placeholder="" name="mgrs"
+                                                    value="{{$company->mgrs}}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="col-md-3 py-3">
-                                            <button type="button" class="btn btn-primary" id="btn-location-settings">Save</button><span class="loader" id="loader"></span>
+                                            <button type="button" class="btn btn-primary"
+                                                id="btn-location-settings">Save</button><span class="loader"
+                                                id="loader"></span>
                                         </div>
                                     </div>
                                 </form>
@@ -1797,43 +1908,45 @@
                                 <h4 class="card-title">Contact Personnel</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                           <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
-                           <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                           <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control"
-                                            placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                            name="enviromental_operations_manager" 
-                                            value="{{ $company->operations_manager }}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control"
-                                            placeholder="Full Name Of Contact Person" name="contact_person_name"
-                                            value="{{$company->contact_person_full_name}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control"
-                                            placeholder="Office Position of Contact Person"
-                                            name="contact_person_position" 
-                                            value="{{$company->contact_person_position}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <div class="form-group">
-                                            <label for="">Contact Personnel Phone Number</label>
-                                            <input id="mobile_code_contact" type="tel" class="form-control"
-                                                placeholder="">
-                                            <input type="hidden" name="contact_person_phone_number">
+                                <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control"
+                                                placeholder="Full Name Of Enviromental Operations Specialist or Manager"
+                                                name="enviromental_operations_manager"
+                                                value="{{ $company->operations_manager }}">
                                         </div>
-                                    </div>
-                                    <div class="row justify-content-end">
-                                            <div class="col-md-3 py-3">
-                                                <button type="button" class="btn btn-primary" id="btn_contact_settings">Save</button><span class="loader" id="loader"></span>
+                                        <div class="col-md-6 mt-2">
+                                            <input type="text" class="form-control"
+                                                placeholder="Full Name Of Contact Person" name="contact_person_name"
+                                                value="{{$company->contact_person_full_name}}">
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <input type="text" class="form-control"
+                                                placeholder="Office Position of Contact Person"
+                                                name="contact_person_position"
+                                                value="{{$company->contact_person_position}}">
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-group">
+                                                <label for="">Contact Personnel Phone Number</label>
+                                                <input id="mobile_code_contact" type="tel" class="form-control"
+                                                    placeholder="">
+                                                <input type="hidden" name="contact_person_phone_number">
                                             </div>
                                         </div>
-                                    
-                                   
-                                </div>
-                           </form>
+                                        <div class="row justify-content-end">
+                                            <div class="col-md-3 py-3">
+                                                <button type="button" class="btn btn-primary"
+                                                    id="btn_contact_settings">Save</button><span class="loader"
+                                                    id="loader"></span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </form>
                             </div><!--end card-body-->
                         </div><!--end card-->
                         <div class="card">
@@ -1841,28 +1954,31 @@
                                 <h4 class="card-title">Other Settings</h4>
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                            <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse"
-                            name="is_sharable" value="active">
-                            <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
-                            your information to be shared with other companies?</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse"
+                                        name="is_sharable" value="active">
+                                    <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
+                                        your information to be shared with other companies?</label>
                                 </div>
-          
+
                                 <div class="form-check form-switch mb-2">
-                                <label>
-    <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
-    Activate or Deactivate Company
-</label>
-                    <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
+                                    <label>
+                                        <input type="checkbox" class="form-check-input toggle-status"
+                                            id="settings-switch1" data-company-id="{{ $company->company_id }}" {{
+                                            $company->status === 'active' ? 'checked' : '' }}>
+                                        Activate or Deactivate Company
+                                    </label>
+                                    <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
                     <label class="form-check-label" for="settings-switch1">Activate Company</label> -->
-                </div>
-                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;"></div>
-                <!--end form-switch-->
-                                <div class="mt-2">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
-                                    <button type="button" class="btn btn-danger">Delete Company</button>
                                 </div>
+                                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;">
+                                </div>
+                                <!--end form-switch-->
+                                <div class="mt-2">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
+                                        <button type="button" class="btn btn-danger">Delete Company</button>
+                                    </div>
                                 </div>
                             </div><!--end card-body-->
                         </div><!--end card-->
@@ -1871,7 +1987,7 @@
                 </div>
             </div> <!--end col-->
         </div><!--end row-->
-    
+
     </div><!-- container -->
     <!--Start Rightbar-->
     <!--Start Rightbar/offcanvas-->
@@ -1918,203 +2034,209 @@
     <!--end Rightbar-->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title"> Setup Price </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" name="material_price_id" >
-            <div class="row g-2">
-            <!-- Unit of measurement -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Per Unit</label>
-                    <input type="number" value="1" min="0" class="form-control" placeholder="Unit of Measurement"
-                        name="unit">
+    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Setup Price </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="material_price_id">
+                    <div class="row g-2">
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Per Unit</label>
+                                <input type="number" value="1" min="0" class="form-control"
+                                    placeholder="Unit of Measurement" name="unit">
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Price -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Price of Disposal in Naira(₦).</label>
+                                <input type="number" min="0" class="form-control" placeholder="Price" name="price">
+                            </div>
+                        </div>
+                        <!-- end Price -->
+                        <!-- Price -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Price -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-material-price">Save changes</button>
+                    <span class="loader" id="loader"></span>
                 </div>
             </div>
-             <!-- Unit of measurement -->
-            <!-- Price -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Price of Disposal in Naira(₦).</label>
-                    <input type="number" min="0" class="form-control" placeholder="Price"
-                        name="price">
-                </div>
-            </div>
-             <!-- end Price -->
-            <!-- Price -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Date</label>
-                    <input type="date" min="0" class="form-control" 
-                        name="date">
-                </div>
-            </div>
-             <!-- end Price -->
-            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id = "btn-submit-material-price">Save changes</button>
-            <span class="loader" id="loader"></span>
-        </div>
-        </div>
-    </div>
-    </div>
-    <!-- end modal -->
-
-    <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title"> Check In Item </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" name="checkIn_material_id" >
-            <input type="hidden" name="material_id" >
-            <input type="hidden" name="company_id" >
-            <div class="row g-2">
-            <!-- Material name -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Material</label>
-                    <input type="text" class="form-control" readonly name="checkIn_material_name">
-                </div>
-            </div>
-             <!-- Material name -->
-            <!-- Date -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Date</label>
-                    <input type="date" min="0" class="form-control" 
-                        name="date">
-                </div>
-            </div>
-             <!-- end Date -->
-            <!-- Unit of measurement -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Quantity/Volume</label>
-                    <div class="input-group qty-icons">
-                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
-                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>   
-                </div>
-            </div>
-             <!-- Unit of measurement -->
-            <!-- Material name -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Remark</label>
-                    <input type="text" class="form-control" name="remark">
-                </div>
-            </div>
-             <!-- Material name -->
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id = "btn-submit-check-in">Save changes</button>
-            <span class="loader" id="loader"></span>
-        </div>
-        </div>
-    </div>
     </div>
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title"> Check Out Item </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" name="checkOut_material_id" >
-            <input type="hidden" name="material_id" >
-            <input type="hidden" name="company_id" >
-            <div class="row g-2">
-            <!-- Material name -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Material</label>
-                    <input type="text" class="form-control" readonly name="checkOut_material_name">
+    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Check In Item </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkIn_material_id">
+                    <input type="hidden" name="material_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Material</label>
+                                <input type="text" class="form-control" readonly name="checkIn_material_name">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-in">Save changes</button>
+                    <span class="loader" id="loader"></span>
                 </div>
             </div>
-             <!-- Material name -->
-            <!-- Date -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Date</label>
-                    <input type="date" min="0" class="form-control" 
-                        name="date">
-                </div>
-            </div>
-             <!-- end Date -->
-            <!-- Unit of measurement -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Quantity/Volume</label>
-                    <div class="input-group qty-icons">
-                        <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
-                        <button class="btn btn-primary"  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>   
-                </div>
-            </div>
-             <!-- Unit of measurement -->
-            <!-- Material name -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Remark</label>
-                    <input type="text" class="form-control" name="remark">
-                </div>
-            </div>
-             <!-- Material name -->
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id = "btn-submit-check-out">Save changes</button>
-            <span class="loader" id="loader"></span>
-        </div>
         </div>
     </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Check Out Item </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkOut_material_id">
+                    <input type="hidden" name="material_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Material</label>
+                                <input type="text" class="form-control" readonly name="checkOut_material_name">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- end modal -->
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
-    /* Loader style */
-    .loader {
-      display: none;
-      margin: 20px auto;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-    }
+        /* Loader style */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
 
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     @endsection
 
     @section('scripts')
@@ -3246,12 +3368,12 @@
                         let id = material.companyMaterialId;
                         const baseUrl = "{{ route('admin.view-material', ['material' => '__PLACEHOLDER__']) }}";
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
-                        
+
                         tableBody.innerHTML += `<tr>
                             <td>${material.material}</td>
                             <td>${material.serial_number ?? ''}</td>
                             <td>${material.unit_of_measure ?? ''}</td>
-                            <td> <span class="badge bg-${(material.company_material_status == 'active')?'success':'danger'}">${material.company_material_status}</span>
+                            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
                             </td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
@@ -3264,8 +3386,8 @@
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">
                                         <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }", "${material.material}")'>Check In Item</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID }", "${material.companyID }",  "${material.material}")'>Check Out Item</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'>Check In Item</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'>Check Out Item</a>
                                     </div>
                                 </div>
                             </td>
@@ -3659,7 +3781,7 @@
             let longitude = document.querySelector('#location_settings  input[name="longitude"]').value.trim();
             let latitude = document.querySelector('#location_settings  input[name="latitude"]').value.trim();
             let mgrs = document.querySelector('#location_settings  input[name="mgrs"]').value.trim();
-            
+
             if (!company_id) {
                 loader.style.display = 'none';
                 Toastify({
@@ -3735,7 +3857,7 @@
                 }).showToast();
                 return
             }
-           
+
             let url = document.querySelector('#location_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3747,7 +3869,7 @@
             formData.append('longitude', longitude);
             formData.append('latitude', latitude);
             formData.append('mgrs', mgrs);
-           
+
             fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3876,7 +3998,7 @@
                 }).showToast();
                 return
             }
-           
+
             let url = document.querySelector('#contact_settings').action;
             let formData = new FormData();
             formData.append('company_id', company_id);
@@ -3884,7 +4006,7 @@
             formData.append('contact_person_name', contact_person_name);
             formData.append('contact_person_position', contact_person_position);
             formData.append('contact_person_phone_number', contact_person_phone_number);
-           
+
             fetch_cycle('--Update Contact Personnel', url, 'POST', formData).then(result => {
                 // let data = await result.json()
                 console.log(result, result.companies_info);
@@ -3897,7 +4019,7 @@
         });
         // end company contact update
         // activate and deactivate start
-            
+
         // end activate and deactivate start
         async function fetch_cycle(subject, url, method, form_data) {
             try {
@@ -4030,9 +4152,9 @@
             for (let index = 0; index < countriesEle.options.length; index++) {
                 const element = countriesEle.options[index];
                 console.log(element);
-                
+
             }
-            let loadCountries = Array.from(countriesEle.options).map(option=> option.value)
+            let loadCountries = Array.from(countriesEle.options).map(option => option.value)
             console.log(loadCountries);
         }, 1000);
     </script>
@@ -4062,67 +4184,57 @@
         let triggerCheckOut = (companyMaterialID, materialID, companyID, materialName) => {
             let checkOutModal = document.querySelector('#checkOutModal');
             // Initialize Bootstrap modal
-            document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value      = companyMaterialID;
+            document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value = companyMaterialID;
             document.querySelector('#checkOutModal input[name="material_id"]').value = materialID;
             document.querySelector('#checkOutModal input[name="company_id"]').value = companyID;
-            document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value    = materialName;
+            document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value = materialName;
             const myModal = new bootstrap.Modal(checkOutModal);
             myModal.show();
         }
     </script>
     <!-- activate and deactivate -->
     <script>
-    document.querySelectorAll('.toggle-status').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const companyId = this.getAttribute('data-company-id');
-            const status = this.checked ? 1 : 0; // Convert to a boolean-friendly value
+        document.querySelectorAll('.toggle-status').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const companyId = this.getAttribute('data-company-id');
+                const status = this.checked ? 1 : 0; // Convert to a boolean-friendly value
 
-            fetch("{{ route('company.toggleStatus') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    company_id: companyId,
-                    status: status
+                fetch("{{ route('company.toggleStatus') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        company_id: companyId,
+                        status: status
+                    })
                 })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const feedback = document.getElementById('feedback-message');
-                    if (data.success) {
-                        feedback.textContent = data.message;
-                        feedback.style.color = 'green';
-                    } else {
-                        feedback.textContent = 'Error updating status!';
+                    .then(response => response.json())
+                    .then(data => {
+                        const feedback = document.getElementById('feedback-message');
+                        if (data.success) {
+                            feedback.textContent = data.message;
+                            feedback.style.color = 'green';
+                        } else {
+                            feedback.textContent = 'Error updating status!';
+                            feedback.style.color = 'red';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        const feedback = document.getElementById('feedback-message');
+                        feedback.textContent = 'An error occurred!';
                         feedback.style.color = 'red';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    const feedback = document.getElementById('feedback-message');
-                    feedback.textContent = 'An error occurred!';
-                    feedback.style.color = 'red';
-                });
-        });
-    });
-
-    // Questionaire
-    async function ChangeQuestionResult(ele, company, value) {
-        console.log(ele, company, value);
-        if (ele.checked) {
-            let uri = "{{ route('company.add-question') }}";
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('question_id', value)
-            fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
+                    });
             });
-        } else {
-            if (confirm("Do you want to uncheck this?")) {
-                let uri = "{{ route('company.remove-question') }}";
+        });
+
+        // Questionaire
+        async function ChangeQuestionResult(ele, company, value) {
+            console.log(ele, company, value);
+            if (ele.checked) {
+                let uri = "{{ route('company.add-question') }}";
                 let formData = new FormData();
                 formData.append('company', company)
                 formData.append('question_id', value)
@@ -4130,24 +4242,24 @@
                     // let data = await result.json()
                     console.log(result);
                 });
+            } else {
+                if (confirm("Do you want to uncheck this?")) {
+                    let uri = "{{ route('company.remove-question') }}";
+                    let formData = new FormData();
+                    formData.append('company', company)
+                    formData.append('question_id', value)
+                    fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
+                        // let data = await result.json()
+                        console.log(result);
+                    });
+                }
             }
         }
-    }
-    // WaterConservationMethod
-    async function ChangeWaterConservationOpportunity(ele, company, value) {
-        console.log(ele, company, value);
-        if (ele.checked) {
-            let uri = "{{ route('company.add-water-conservation-method') }}";
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('water_conservation_method_id', value)
-            fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
-        } else {
-            if (confirm("Do you want to uncheck this?")) {
-                let uri = "{{ route('company.remove-water-conservation-method') }}";
+        // WaterConservationMethod
+        async function ChangeWaterConservationOpportunity(ele, company, value) {
+            console.log(ele, company, value);
+            if (ele.checked) {
+                let uri = "{{ route('company.add-water-conservation-method') }}";
                 let formData = new FormData();
                 formData.append('company', company)
                 formData.append('water_conservation_method_id', value)
@@ -4155,24 +4267,24 @@
                     // let data = await result.json()
                     console.log(result);
                 });
+            } else {
+                if (confirm("Do you want to uncheck this?")) {
+                    let uri = "{{ route('company.remove-water-conservation-method') }}";
+                    let formData = new FormData();
+                    formData.append('company', company)
+                    formData.append('water_conservation_method_id', value)
+                    fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
+                        // let data = await result.json()
+                        console.log(result);
+                    });
+                }
             }
         }
-    }
-    // WaterSources
-    async function ChangeWaterSources(ele, company, value) {
-        console.log(ele, company, value);
-        if (ele.checked) {
-            let uri = "{{ route('company.add-water-sources') }}";
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('water_sources_id', value)
-            fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
-        } else {
-            if (confirm("Do you want to uncheck this?")) {
-                let uri = "{{ route('company.remove-water-Sources') }}";
+        // WaterSources
+        async function ChangeWaterSources(ele, company, value) {
+            console.log(ele, company, value);
+            if (ele.checked) {
+                let uri = "{{ route('company.add-water-sources') }}";
                 let formData = new FormData();
                 formData.append('company', company)
                 formData.append('water_sources_id', value)
@@ -4180,12 +4292,159 @@
                     // let data = await result.json()
                     console.log(result);
                 });
+            } else {
+                if (confirm("Do you want to uncheck this?")) {
+                    let uri = "{{ route('company.remove-water-Sources') }}";
+                    let formData = new FormData();
+                    formData.append('company', company)
+                    formData.append('water_sources_id', value)
+                    fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
+                        // let data = await result.json()
+                        console.log(result);
+                    });
+                }
             }
         }
-    }
 
-</script>
+    </script>
+    <!-- end activate and deactivate -->
+     <!-- water usage -->
+      <script>
+        const water_usage_date = document.querySelector('#water-usage-form #date')
+        function addDate(ele) {
+            if (ele.checked) {
+                switch (ele.value) {
+                    case "daily":
+                        water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
+                                            <input type="date" min="0" class="form-control" name="date">`);
+                        break;
+                    case "weekly":
+                        water_usage_date.innerHTML = (`<label for="example-month-input" class="col col-form-label">Date</label>
+                        <input class="form-control" type="week" value="2011-W33" id="example-week-input" name="date">`);
+                        break;
+                    case "monthly":
+                        water_usage_date.innerHTML = `<label for="example-month-input" class="col col-form-label">Date</label>
+                                            <input class="form-control" type="month" value="2011-08"
+                                                id="example-month-input" name="date">`;
+                        break;
+                    case "yearly":
+                        // Create the select element dynamically
+                        const yearlyLabel = `<label for="yearly-select" class="col col-form-label">Year</label>`;
+                        const yearlySelect = document.createElement("select");
+                        yearlySelect.className = "form-control";
+                        yearlySelect.name = "date";
+                        yearlySelect.id = "yearly-select";
 
-<!-- end activate and deactivate -->
+                        // Populate the select with year options
+                        const currentYear = new Date().getFullYear();
+                        for (let year = 1900; year <= currentYear; year++) {
+                            const option = document.createElement("option");
+                            option.value = year;
+                            option.textContent = year;
+                            if (year == currentYear) {option.setAttribute("selected", true)}
+                            yearlySelect.appendChild(option);
+                        }
+
+                        // Clear existing content and append new content
+                        water_usage_date.innerHTML = yearlyLabel;
+                        water_usage_date.appendChild(yearlySelect);
+                        break;
+                    
+                    default:
+                        water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
+                        <input type="date" min="0" class="form-control" name="date">`);
+                        break;
+                }
+            }
+        }
+        // checkout water
+        // company material checkout
+        let btn_submit_water_usage = document.querySelector('#water-usage-form #btn-submit-water-usage');
+        btn_submit_water_usage.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
+            let volume          = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
+            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]').value.trim();
+            let date            = document.querySelector('#water-usage-form input[name="date"]').value.trim();
+            let remark          = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
+            if (!company_id) {
+                Toastify({
+                    text: "Company id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!volume) {
+                Toastify({
+                    text: "Volume of water field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date_type) {
+                Toastify({
+                    text: "Date type field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('company.add-water-usage') }}"
+            let formData = new FormData();
+
+            formData.append('company_id', company_id);
+            formData.append('volume', volume);
+            formData.append('date_type', date_type);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+           
+        });
+        // end water usage
+      </script>
+     <!-- water usage -->
     @endsection
 </x-layouts.admin-app>

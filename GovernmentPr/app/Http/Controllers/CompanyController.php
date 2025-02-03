@@ -26,6 +26,7 @@ use App\Models\WaterSources;
 use App\Models\CompanyWaterSources;
 use App\Models\CompanyMaterial;
 use App\Models\Admins;
+use App\Models\company_water_usage;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -888,6 +889,44 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
+
+    // water Sources
+    public function store_water_usage(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'company_id'   =>  ['required', 'numeric'],
+            'volume'       =>  ['required', 'numeric', 'min:1'],
+            'date_type'    =>  ['required', 'string'],
+            'date'         =>  ['required', 'date'],
+            'remark'       =>  ['nullable', 'string', 'min:4'],
+        ]);
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        $result = company_water_usage::create([
+            'companyID' =>  $request->company_id,
+            'volume'    =>  $request->volume,
+            'date_type' =>  $request->date_type,
+            'date'      =>  $request->date,
+            'remark'    =>  $request->remark,
+        ]);
+
+        if ($result) {
+            # code...
+            $water_usage = company_water_usage::where('companyID', $request->company_id)
+            ->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Water usage added successfully.',
+                'water_usage' => $water_usage
+            ]);
+        }
+    }
+
     public function edit(Company $company)
     {
         //
