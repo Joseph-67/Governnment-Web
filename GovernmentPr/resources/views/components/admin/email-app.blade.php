@@ -737,6 +737,18 @@
             }
         }
     </script>
+    <script>
+    function changeTab(button) {
+      // Change the active class
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      button.classList.add('active');
+
+      // Update the tab title
+      const tabTitle = document.getElementById('tab-title');
+      const tabName = button.getAttribute('data-tab');
+      tabTitle.innerHTML = `<i class="bi bi-folder"></i> ${tabName}`;
+    }
+  </script>
     @endsection
     <div class="container">
         <x-validation-errors class="alert" alert />
@@ -749,7 +761,7 @@
                         <div class="row">
                             <!-- BEGIN INBOX MENU -->
                             <div class="col-md-3">
-                                <h2 class="card-title"><i class="fa fa-inbox"></i> Inbox</h2>
+                                <h2 class="card-title" id="tab-title"><i class="fa fa-inbox"></i> Inbox</h2>
                                 <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i
                                         class="fa fa-pencil"></i>&nbsp;&nbsp;NEW MESSAGE</a>
                                 <hr>
@@ -758,17 +770,17 @@
                                     <div class="nav nav-pills flex-column">
                                         <div class="header">Folders</div>
                                         <a class="nav-link active" data-bs-toggle="tab" href="#inbox" role="tab"
-                                            aria-selected="true"><i class="fa fa-inbox"></i> Inbox (14)</a>
+                                            aria-selected="true"  data-tab="Inbox" onclick="changeTab(this)"><i class="fa fa-inbox"></i> Inbox (14)</a>
                                         <a class="nav-link" data-bs-toggle="tab" href="#starred" role="tab"
-                                            aria-selected="false"><i class="fa fa-star"></i> Starred</a>
+                                            aria-selected="false" data-tab="Starred" onclick="changeTab(this)"><i class="fa fa-star"></i> Starred</a>
                                         <a class="nav-link" data-bs-toggle="tab" href="#important" role="tab"
-                                            aria-selected="false"><i class="fa fa-bookmark"></i> Important</a>
+                                            aria-selected="false" data-tab="Important" onclick="changeTab(this)"><i class="fa fa-bookmark"></i> Important</a>
                                         <a class="nav-link" data-bs-toggle="tab" href="#sent" role="tab"
-                                            aria-selected="false"><i class="fa fa-mail-forward"></i> Sent</a>
+                                            aria-selected="false"  data-tab="Sent" onclick="changeTab(this)"><i class="fa fa-mail-forward"></i> Sent</a>
                                         <a class="nav-link" data-bs-toggle="tab" href="#draft" role="tab"
-                                            aria-selected="false"><i class="fa fa-pencil-square-o"></i> Drafts</a>
+                                            aria-selected="false" data-tab="Drafts" onclick="changeTab(this)"><i class="fa fa-pencil-square-o"></i> Drafts</a>
                                         <a class="nav-link" data-bs-toggle="tab" href="#spam" role="tab"
-                                            aria-selected="false"><i class="fa fa-folder"></i> Spam (217)</a>
+                                            aria-selected="false" data-tab="Spam" onclick="changeTab(this)"><i class="fa fa-folder"></i> Spam (217)</a>
                                     </div>
                                 </div>
                             </div>
@@ -829,7 +841,7 @@
 
         @foreach ($notifications as $notification)
             @php $hasRecords = true; @endphp
-            <tr>
+            <tr class="notification-row" data-id="{{ $notification->id }}">
                 <td class="action"><input type="checkbox" /></td>
                 <td class="action"><i class="fa fa-star-o"></i></td>
                 <td class="action"><i class="fa fa-bookmark-o"></i></td>
@@ -999,7 +1011,38 @@
                             </ul>
                         </div>
                         <!-- END INBOX CONTENT -->
+                        <!-- email view start -->
+                    
+                        <div class="col-12" id="detail-view" style="display:none;">
+                        <div style=" border: 1px dashed #a5adc3; padding: 20px;">
+                        <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: transparent; margin: 0;" bgcolor="transparent">
+                        <button id="back-button" class="back-button">Back</button>
+                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                                    <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+                                        <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                                            <table class="main" width="100%" cellpadding="0" cellspacing="0" itemprop="action" itemscope itemtype="http://schema.org/ConfirmAction" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: transparent; margin: 0; border: 1px dashed #a5adc3;" bgcolor="#fff">
+                        
+                                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                    <td class="content-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+                                                        <meta itemprop="name" content="Confirm Email" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
+                                                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                            <tbody id="detail-content">
 
+                                                </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table><!--end table-->                                                
+                                        </div><!--end content-->
+                                    </td>
+                                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                                </tr>
+                            </table><!--end table-->   
+                        </div>
+                        </div> <!--end col-->                                                       
+                 
+                        <!-- email view end -->
                     </div>
                 </div>
             </div>

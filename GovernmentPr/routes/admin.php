@@ -101,6 +101,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
         Route::get ('/fetch-user', 'fetch_users')->name('get-user');
         Route::post ('/save-email', 'store')->name('send-mail');
+    
     });
 
     //Material
