@@ -174,7 +174,7 @@ class EmailApp extends ImageController
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
