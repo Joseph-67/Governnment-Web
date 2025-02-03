@@ -30,30 +30,49 @@ let getMap = async () => {
             attribution: "&copy; OpenStreetMap contributors",
         }).addTo(map);
 
-        // Extract locations from the response
-        const locations = resp.map((company) => ({
-            lat: company.latitude,
-            lng: company.longitude,
-            title: company.company_name,
+        function parseDMS(dmsString) {
+            const regex = /(\d+)[º°](\d+)'(\d+(?:\.\d+)?)"?([NSEW])/;
+            const [, degrees, minutes, seconds, direction] = dmsString.match(regex);
+            return dmsToDecimal(
+                parseFloat(degrees),
+                parseFloat(minutes),
+                parseFloat(seconds),
+                direction
+            );
+        }
+        const locations = resp.filter(
+        (company) => company.latitude !== null && company.longitude !== null && company.latitude >= -90 && company.latitude <= 90 && company.longitude >= -180 && company.longitude <= 180) // Filter out invalid entries
+        .map((company) => ({
+            lat: company.latitude ?? 0,     // Use the value or default to 0
+            lng: company.longitude ?? 0,   // Use the value or default to 0
+            title: company.company_name || 'Unknown Company ', // Default title if name is missing
+            address: company.state+company.address || 'No Address Provided', // Include address if available
+            description: company.industry || 'No Description Available', // Include description if available
         }));
 
         console.log(locations);
         
         let location =[
-            { lat: 9.8965, lng: 8.8583, title: "Jos" },
-            { lat: 10.5036, lng: 7.4337, title: "Kaduna" },
-            { lat: 6.5244, lng: 3.3792, title: "Lagos" },
-            { lat: 7.3775, lng: 3.9470, title: "Ibadan" },
-            { lat: 11.1247, lng: 7.7254, title: "Zaria" },
-            { lat: 9.1099, lng: 7.4042, title: "Gwarinpa" },
-            { lat: 9.0228, lng: 7.5702, title: "Nyanya" },
+            // { lat: 4.21494, lng: -46.40625, title: "Afdin Petroleum lpg" },
+            // { lat: 8.58308, lng: 11.994609, title: "Petrogas" },
+            // { lat: 6.5244, lng: 3.3792, title: "Lagos" },
+            // { lat: 7.3775, lng: 3.9470, title: "Ibadan" },
+            // { lat: 11.1247, lng: 7.7254, title: "Zaria" },
+            // { lat: 9.1099, lng: 7.4042, title: "Gwarinpa" },
+            // { lat: 9.0228, lng: 7.5702, title: "Nyanya" },
         ];
 
         // Add markers to the map
-        location.forEach((location) => {
+        locations.forEach((location) => {
             L.marker([location.lat, location.lng])
                 .addTo(map)
-                .bindPopup(location.title)
+                .bindPopup(
+                    `
+                        <b>${location.title}</b><br>
+                        <i>Address:</i> ${location.address}<br>
+                        <i>Description:</i> ${location.description}
+                    `
+                )
                 .openPopup();
         });
     } catch (error) {
