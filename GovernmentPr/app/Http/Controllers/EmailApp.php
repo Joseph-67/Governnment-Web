@@ -12,6 +12,7 @@ use App\Notifications\MessageApp;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\DatabaseNotification;
 use App\Http\Controllers\Image\ImageController;
 
 class EmailApp extends ImageController
@@ -30,6 +31,11 @@ class EmailApp extends ImageController
         $data['notifications'] = $user->notifications;
         // dd($user->notifications->toArray());
         // dd(Auth::user());
+          // Fetch notifications based on category
+          $data['sentMessages'] = DatabaseNotification::where('data->is_sent', true)->get();
+          $data['importantMessages'] = DatabaseNotification::where('data->is_important', true)->get();
+          $data['starredMessages'] = DatabaseNotification::where('data->is_starred', true)->get();
+  
        return view('components/admin/email-app', $data);
     }
 
@@ -176,7 +182,7 @@ class EmailApp extends ImageController
     {
        
     }
-
+   
     /**
      * Show the form for editing the specified resource.
      *

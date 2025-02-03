@@ -23,6 +23,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\MapReport;
+use App\Http\Controllers\viewEmailController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -101,9 +102,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
         Route::get ('/fetch-user', 'fetch_users')->name('get-user');
         Route::post ('/save-email', 'store')->name('send-mail');
-    
+       
     });
-
+    Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
+    Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
+    
     //Material
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
