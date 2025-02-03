@@ -1425,7 +1425,7 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0" id="water-usage-form">
-                                <input type="hidden" name="company_id">
+                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
                                 <div class="row g-2">
                                     <!-- Unit of measurement -->
                                     <div class="col-md-4 col-sm-6">
@@ -4360,7 +4360,7 @@
         // checkout water
         // company material checkout
         let btn_submit_water_usage = document.querySelector('#water-usage-form #btn-submit-water-usage');
-        btn_submit_check_out.addEventListener('click', () => {
+        btn_submit_water_usage.addEventListener('click', () => {
             console.log("clicked");
             // Show the loader
             let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
@@ -4429,7 +4429,7 @@
                 return
             }
 
-            let url = "{{ route('admin.save-company-material-check-out') }}"
+            let url = "{{ route('company.add-water-usage') }}"
             let formData = new FormData();
 
             formData.append('company_id', company_id);
@@ -4441,6 +4441,7 @@
                 console.log(result);
                 loader.style.display = 'none';
             });
+           
         });
         // end water usage
       </script>

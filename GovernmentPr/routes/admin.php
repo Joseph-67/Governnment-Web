@@ -140,6 +140,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
         Route::post('/company/remove-water-conservation-method', 'remove_water_conservation_method')->name('company.remove-water-conservation-method');
         Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
+        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
         // fetch admin details
     });
