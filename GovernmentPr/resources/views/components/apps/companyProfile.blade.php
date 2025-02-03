@@ -1342,8 +1342,8 @@
                                                     type="checkbox" value="{{ $question->questionId }}"
                                                     name="{{ $question->label }}" id="flexCheckIndeterminate"
                                                     {{(in_array($question->questionId,
-                                                array_column($CompanyWaterQuestions->toArray(),
-                                                'questionID')))? "checked": ""}}
+                                                    array_column($CompanyWaterQuestions->toArray(),
+                                                    'questionID')))? "checked": ""}}
                                                 >
                                                 <label class="form-check-label" for="flexCheckIndeterminate">
                                                     {{ $question->question }}
@@ -1493,6 +1493,60 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- water usage card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0" id="tbl-company-material">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Volume</th>
+                                                <th>Date type</th>
+                                                <th>Date</th>
+                                                <th>Remark</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="water-usage-table">
+                                            @foreach($company_water_usage as $key=>$water_usage)
+                                            <tr>
+                                                <td>{{ $water_usage->volume }}</td>
+                                                @php
+                                                $water_usage_date = Carbon\Carbon::parse($water_usage->date);
+                                                @endphp
+                                                <td>{{$water_usage->date_type}}</td>
+                                                <td>{{ $water_usage_date->format('d M Y')}}</td>
+                                                <td>{{$water_usage->remark}}</td>
+                                                <td class="text-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                            data-bs-toggle="dropdown" href="#" role="button"
+                                                            aria-haspopup="false" aria-expanded="false">
+                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                            aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+                            </div>
+                        </div>
+                        <!-- end water usage card -->
                     </div>
                     <!-- tab water usage -->
                     <!-- tab chemical usage -->
@@ -4365,8 +4419,8 @@
             // Show the loader
             let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
             let volume          = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
-            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]').value.trim();
-            let date            = document.querySelector('#water-usage-form input[name="date"]').value.trim();
+            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
+            let date            = document.querySelector('#water-usage-form [name="date"]').value.trim();
             let remark          = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
             if (!company_id) {
                 Toastify({

@@ -126,6 +126,60 @@ class StockMovementController extends Controller
         }
     }
 
+    public function store_chemical_checkin(Request $request)
+    {
+        //
+        // dd($request);
+        $validator = Validator::make($request->all(), [
+            'checkIn_chemical_id'   =>  ['required', 'numeric'],
+            'chemical_id'           =>  ['required', 'numeric'],
+            'company_id'            =>  ['required', 'numeric'],
+            'quantity'              =>  ['required', 'numeric', 'min:1'],
+            'date'                  =>  ['required', 'date'],
+            'remark'                =>  ['nullable', 'string', 'min:4'],
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        if (!empty($request['date'])) {
+            # code...
+            // Extract the year using Carbon
+            $year = Carbon::parse($request->input('dateInput'))->year;
+        }
+        $result = stock_movement::create([
+            'companyChemicalId'  => $request['checkIn_chemical_id'],
+            'chemicalID'        => $request['chemical_id'],
+            'companyID'         => $request['company_id'],
+            'quantity'           => $request['quantity'],
+            'movement_type'      => 'in',
+            'calendar_year'      => $year,
+            'movement_date'      => $request['date'],
+            'remark'             => $request['remark'],
+        ]);
+
+        if ($result) {
+            # code...
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Chemical checked in successfully.',
+                // 'company_material_price' => $companyMaterial,
+            ]);
+        }else{
+            $validator->errors()->add('creation_error', 'Chemical failed to check in.');
+            return response()->json([
+                'status' => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors(),
+            ], 400);
+        }
+    }
     public function store_checkout(Request $request)
     {
         //
