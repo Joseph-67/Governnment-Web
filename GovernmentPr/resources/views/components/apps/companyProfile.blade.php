@@ -4419,8 +4419,8 @@
             // Show the loader
             let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
             let volume          = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
-            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]').value.trim();
-            let date            = document.querySelector('#water-usage-form input[name="date"]').value.trim();
+            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
+            let date            = document.querySelector('#water-usage-form [name="date"]').value.trim();
             let remark          = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
             if (!company_id) {
                 Toastify({

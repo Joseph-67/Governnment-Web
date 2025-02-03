@@ -897,7 +897,7 @@ class CompanyController extends Controller
             'company_id'   =>  ['required', 'numeric'],
             'volume'       =>  ['required', 'numeric', 'min:1'],
             'date_type'    =>  ['required', 'string'],
-            'date'         =>  ['required', 'date'],
+            'date'         =>  ['required'],
             'remark'       =>  ['nullable', 'string', 'min:4'],
         ]);
         if ($validator->fails()) {
