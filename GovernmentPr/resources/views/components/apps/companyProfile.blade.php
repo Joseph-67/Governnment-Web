@@ -1493,6 +1493,9 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- water usage card -->
+                         <div class="card"></div>
+                        <!-- end water usage card -->
                     </div>
                     <!-- tab water usage -->
                     <!-- tab chemical usage -->
