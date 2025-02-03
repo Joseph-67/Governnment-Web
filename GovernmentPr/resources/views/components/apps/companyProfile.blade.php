@@ -1494,7 +1494,53 @@
                             </div>
                         </div>
                         <!-- water usage card -->
-                         <div class="card"></div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0" id="tbl-company-material">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Volume</th>
+                                                <th>Date</th>
+                                                <th>Remark</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><span class=""></span></td>
+                                                <td class="text-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                            data-bs-toggle="dropdown" href="#" role="button"
+                                                            aria-haspopup="false" aria-expanded="false">
+                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                            aria-labelledby="dLabel11">
+                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <hr class="dropdown-divider">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+                            </div>
+                        </div>
                         <!-- end water usage card -->
                     </div>
                     <!-- tab water usage -->
