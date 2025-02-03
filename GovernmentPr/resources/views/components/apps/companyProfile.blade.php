@@ -1508,6 +1508,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Volume</th>
+                                                <th>Date type</th>
                                                 <th>Date</th>
                                                 <th>Remark</th>
                                                 <th class="text-end">Action</th>
@@ -1520,6 +1521,7 @@
                                                 @php
                                                 $water_usage_date = Carbon\Carbon::parse($water_usage->date);
                                                 @endphp
+                                                <td>{{$water_usage->date_type}}</td>
                                                 <td>{{ $water_usage_date->format('d M Y')}}</td>
                                                 <td>{{$water_usage->remark}}</td>
                                                 <td class="text-end">

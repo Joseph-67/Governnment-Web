@@ -70,7 +70,7 @@ class CompanyController extends Controller
         $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['waterConservationMethod_id']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id']);
-        $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date', 'remark']);
+        $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
         // dd($data['company_water_usage']);
         return view('components.apps.companyProfile', $data);
     }   
