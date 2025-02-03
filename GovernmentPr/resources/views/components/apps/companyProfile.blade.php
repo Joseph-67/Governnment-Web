@@ -185,8 +185,7 @@
                                                 name="policy[]" {{(in_array("environmental policy",
                                                 array_column($company_policies->toArray(), 'policy_title')))? "checked":
                                             ""}}>
-                                            <label class="form-check-label" for="environmental-policy">Enviromental
-                                                Policy. </label>
+                                            <label class="form-check-label" for="environmental-policy">Enviromental Policy.</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -4491,7 +4490,7 @@
             formData.append('date_type', date_type);
             formData.append('date', date);
             formData.append('remark', remark);
-            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+            fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
                 console.log(result);
                 loader.style.display = 'none';
             });
