@@ -1495,6 +1495,83 @@
                         </div>
                         <!-- water usage card -->
                         <div class="card">
+    <div class="card-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="card-title">Water Usage Re-adjustment</h4>
+            </div><!--end col-->
+        </div> <!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body pt-0" id="water-usage-form">
+        <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+        <div class="row g-2">
+            <!-- Unit of measurement -->
+            <div class="col-md-4 col-sm-6">
+                <div class="form-group">
+                    <label for="" class="col col-form-label">Volume of Water</label>
+                    <div class="input-group qty-icons">
+                        <button class="btn btn-primary"
+                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="form-control" min="0" name="volume"
+                            value="0">
+                        <button class="btn btn-primary"
+                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Unit of measurement -->
+            <!-- date type -->
+            <div class="col-md-4 col-sm-6">
+                <label class="col my-1 control-label">Date Type</label>
+                <div class="col-md-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="date_type"
+                            id="inlineRadio1" value="daily" checked onchange="addDate(this)">
+                        <label class="form-check-label" for="inlineRadio1">Daily</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="date_type"
+                            id="inlineRadio2" value="weekly" onchange="addDate(this)">
+                        <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="date_type"
+                            id="inlineRadio3" value="monthly" onchange="addDate(this)">
+                        <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="date_type"
+                            id="inlineRadio4" value="yearly" onchange="addDate(this)">
+                        <label class="form-check-label" for="inlineRadio3">Yearly</label>
+                    </div>
+                </div>
+            </div> <!--end row-->
+            <!-- date type -->
+            <!-- Date -->
+            <div class="col-md-4 col-sm-6">
+                <div class="form-group" id="date">
+                    <label for="" class="col col-form-label">Date</label>
+                    <input type="date" class="form-control" name="date">
+                </div>
+            </div>
+            <!-- end Date -->
+
+
+            <!-- Material name -->
+            <div class="col-md-4 col-sm-6">
+                <div class="form-group">
+                    <label for="" class="col col-form-label">Remark</label>
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+            <!-- Material name -->
+             <div class="col-12">
+                <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+             </div>
+        </div>
+    </div>
+</div>
+                        <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
