@@ -1507,7 +1507,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Volume</th>
-                                                <th>Date type</th>
+                                                <!-- <th>Date type</th> -->
                                                 <th>Date</th>
                                                 <th>Remark</th>
                                                 <th class="text-end">Action</th>
@@ -1517,11 +1517,16 @@
                                             @foreach($company_water_usage as $key=>$water_usage)
                                             <tr>
                                                 <td>{{ $water_usage->volume }}</td>
-                                                @php
-                                                $water_usage_date = Carbon\Carbon::parse($water_usage->date);
-                                                @endphp
-                                                <td>{{$water_usage->date_type}}</td>
-                                                <td>{{ $water_usage_date->format('d M Y')}}</td>
+                                                <!-- <td>{{$water_usage->date_type}}</td> -->
+                                                @if($water_usage->date_type === 'monthly')
+                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('M Y') }}</td>
+                                                @elseif($water_usage->date_type === 'yearly')
+                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('Y') }}</td>
+                                                @elseif($water_usage->date_type === 'weekly')
+                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d M Y') }} - {{ \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d M Y') }}</td>
+                                                @else
+                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('d M Y') }}</td>
+                                                @endif
                                                 <td>{{$water_usage->remark}}</td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
@@ -4361,6 +4366,7 @@
 
     </script>
     <!-- end activate and deactivate -->
+     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
      <!-- water usage -->
       <script>
         const water_usage_date = document.querySelector('#water-usage-form #date')
@@ -4492,9 +4498,78 @@
             formData.append('remark', remark);
             fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
                 console.log(result);
-                loader.style.display = 'none';
+                // loader.style.display = 'none';
+                let water_usage_tbody = document.querySelector('#water-usage-table')
+                water_usage_tbody.innerHTML = '';
+                result.water_usage.forEach(data => {
+                let parsedDate;
+                
+                // Check if the date is in ISO week-date format (e.g., "YYYY-Www")
+                if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
+                    console.log('got in here');
+                    
+                    const [year, week] = data.date.split("-W");
+                    const januaryFourth = new Date(`${year}-01-04`); // Jan 4 is always in the first ISO week
+                    const dayOfWeek = januaryFourth.getDay() || 7; // Ensure Sunday is 7, not 0
+                    parsedDate = new Date(januaryFourth);
+                    parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1); // Calculate ISO week start
+                } else {
+                    parsedDate = new Date(data.date); // Parse other formats normally
+                }
+
+                if (isNaN(parsedDate)) {
+                    console.error("Invalid date:", data.date);
+                    return; // Skip invalid dates
+                }
+
+                const options = { year: "numeric", month: "short", day: "numeric" };
+                let usage_date = "";
+
+                switch (data.date_type) {
+                    case "monthly":
+                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" }); // e.g., "Feb 2025"
+                        break;
+                    case "yearly":
+                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" }); // e.g., "2025"
+                        break;
+                    case "weekly":
+                        const startOfWeek = new Date(parsedDate);
+                        const endOfWeek = new Date(startOfWeek);
+                        endOfWeek.setDate(startOfWeek.getDate() + 6);
+                        usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
+                        break;
+                    default:
+                        usage_date = parsedDate.toLocaleDateString(undefined, options); // e.g., "04 Feb 2025"
+                        break;
+                }
+
+                // Append row to table
+                water_usage_tbody.innerHTML += `
+                <tr>
+                    <td>${data.volume??""}</td>
+                    <td>${usage_date??""}</td>
+                    <td>${data.remark??""}</td>
+                    <td class="text-end">
+                        <div class="dropdown d-inline-block">
+                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                data-bs-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="false" aria-expanded="false">
+                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end"
+                                aria-labelledby="dLabel11">
+                                <a class="dropdown-item" href="#">Update Material</a>
+                                <a class="dropdown-item" href="#">Delete Material</a>
+                                <hr class="dropdown-divider">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                `;
             });
-           
+
+
+            });
         });
         // end water usage
       </script>

@@ -25,6 +25,18 @@ class stock_movement extends Model
 
     public function material()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Material::class, 'materialID', 'materialID'); // Adjust 'id' as the primary key in the Material model
     }
+
+    public $timestamps = false;
+    public function scopeByYear($query, $year)
+    {
+        return $query->where('calendar_year', $year);
+    }
+    
+    public function scopeByType($query, $type)
+    {
+        return $query->where('movement_type', $type);
+    }
+    
 }
