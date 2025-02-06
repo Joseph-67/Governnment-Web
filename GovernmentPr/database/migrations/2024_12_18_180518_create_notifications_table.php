@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('type');
             $table->morphs('notifiable');
             $table->text('data');
+            $table->boolean('is_sent')->default(false);
+            $table->boolean('is_important')->default(false);
+            $table->boolean('is_starred')->default(false);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

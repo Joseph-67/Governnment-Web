@@ -88,7 +88,10 @@ class MessageApp extends Notification
             'sender_name' => Auth::user() ? Auth::user()->first_name . ' ' . Auth::user()->last_name : 'Unknown Sender',  
             'sender_email' => Auth::user() ? Auth::user()->email : 'No Email',
             'subject' => $this->data['subject'],
-            'body' => $this->data['body']
+            'body' => $this->data['body'],
+            'is_sent'      => true, // Mark as sent
+            'is_important' => $this->data['is_important'] ?? false,
+            'is_starred'   => $this->data['is_starred'] ?? false
         ];
     }
 }

@@ -845,7 +845,8 @@
                 <td class="action"><input type="checkbox" /></td>
                 <td class="action"><i class="fa fa-star-o"></i></td>
                 <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                <td class="name"><a href="#">{{ $notification->data['sender_name'] ?? 'Unknown Sender' }}</a></td>                <td class="subject"><a href="#">{{ $notification->data['subject'] ?? 'No message available' }}</a></td>
+                <td class="name"><a href="{{ route('admin.show-email', ['email' => encrypt($notification->id)]) }}">{{ $notification->data['sender_name'] ?? 'Unknown Sender' }}</a></td>                
+                <td class="subject"><a href="#">{{ $notification->data['subject'] ?? 'No message available' }}</a></td>
                 <td class="time">{{ \Carbon\Carbon::parse($notification->created_at)->format('h:i A') }}</td>
             </tr>
         @endforeach
@@ -864,25 +865,32 @@
                         <h5>Starred Messages</h5>
                         <table class="table table-bordered mt-2 table-centered">
     <tbody>
-        @php $hasRecords = false; @endphp
+    @php $hasRecords = false; @endphp
 
-        @foreach ($notifications as $notification)
-            @php $hasRecords = true; @endphp
-            <tr>
-                <td class="action"><input type="checkbox" /></td>
-                <td class="action"><i class="fa fa-star-o"></i></td>
-                <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
-                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
-                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
-            </tr>
-        @endforeach
+@foreach ($starredMessages as $starred)
+    @php $hasRecords = true; @endphp
+    <tr>
+        <td class="action"><input type="checkbox" /></td>
+        <td class="action"><i class="fa fa-star-o"></i></td>
+        <td class="action"><i class="fa fa-bookmark-o"></i></td>
+        <!-- Display Sender Name -->
+        <td class="name">
+            <a href="#">{{ $starred->data['sender_name'] ?? 'Unknown Sender' }}</a>
+        </td>
+        <!-- Display Message -->
+        <td class="subject">
+            <a href="#">{{ $starred->data['subject'] ?? 'No message available' }}</a>
+        </td>
+        <!-- Display the time of the message -->
+        <td class="time">{{ $starred->created_at->format('h:i A') }}</td>
+    </tr>
+@endforeach
 
-        @if (!$hasRecords)
-            <tr>
-                <td colspan="6" class="text-center">No records found</td>
-            </tr>
-        @endif
+@if (!$hasRecords)
+    <tr>
+        <td colspan="6" class="text-center">No records found</td>
+    </tr>
+@endif
     </tbody>
 </table>
 
@@ -893,15 +901,15 @@
     <tbody>
         @php $hasRecords = false; @endphp
 
-        @foreach ($notifications as $notification)
+        @foreach ($importantMessages as $important)
             @php $hasRecords = true; @endphp
             <tr>
                 <td class="action"><input type="checkbox" /></td>
                 <td class="action"><i class="fa fa-star-o"></i></td>
                 <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
-                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
-                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
+                <td class="name"><a href="#">{{ $important->data['sender'] ?? 'Unknown Sender' }}</a></td>
+                <td class="subject"><a href="#">{{ $important->data['message'] ?? 'No message available' }}</a></td>
+                <td class="time">{{ $important->created_at->format('h:i A') }}</td>
             </tr>
         @endforeach
 
@@ -918,25 +926,32 @@
                         <h5>Sent</h5>
                         <table class="table table-bordered mt-2 table-centered">
     <tbody>
-        @php $hasRecords = false; @endphp
+    @php $hasRecords = false; @endphp
 
-        @foreach ($notifications as $notification)
-            @php $hasRecords = true; @endphp
-            <tr>
-                <td class="action"><input type="checkbox" /></td>
-                <td class="action"><i class="fa fa-star-o"></i></td>
-                <td class="action"><i class="fa fa-bookmark-o"></i></td>
-                <td class="name"><a href="#">{{ $notification->data['sender'] ?? 'Unknown Sender' }}</a></td>
-                <td class="subject"><a href="#">{{ $notification->data['message'] ?? 'No message available' }}</a></td>
-                <td class="time">{{ $notification->created_at->format('h:i A') }}</td>
-            </tr>
-        @endforeach
+@foreach ($sentMessages as $message)
+    @php $hasRecords = true; @endphp
+    <tr>
+        <td class="action"><input type="checkbox" /></td>
+        <td class="action"><i class="fa fa-star-o"></i></td>
+        <td class="action"><i class="fa fa-bookmark-o"></i></td>
+        <!-- Display Sender Name -->
+        <td class="name">
+            <a href="#">{{ $message->data['sender_name'] ?? 'Unknown Sender' }}</a>
+        </td>
+        <!-- Display Message -->
+        <td class="subject">
+            <a href="#">{{ $message->data['subject'] ?? 'No message available' }}</a>
+        </td>
+        <!-- Display the time of the message -->
+        <td class="time">{{ $message->created_at->format('h:i A') }}</td>
+    </tr>
+@endforeach
 
-        @if (!$hasRecords)
-            <tr>
-                <td colspan="6" class="text-center">No records found</td>
-            </tr>
-        @endif
+@if (!$hasRecords)
+    <tr>
+        <td colspan="6" class="text-center">No records found</td>
+    </tr>
+@endif
     </tbody>
 </table>
 
