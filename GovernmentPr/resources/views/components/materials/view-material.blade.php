@@ -147,7 +147,7 @@
             </div> <!-- end col -->
             <!--end col-->
             <div class="col-lg-9">
-                        <div class="card card-h-100">
+                        <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -194,13 +194,13 @@
                                                     {{ $stock->remark }}
                                                 </td>
                                             </tr>
-                                          
                                             <!--end tr-->
                                             @endforeach
                                             
                                         </tbody>
                                     </table>
                                     <!--end table-->
+                                    
                                 </div>
                                 <!--end /div-->
                                 <!-- <p class="m-0 fs-12 fst-italic ps-2 text-muted">Last data updated - 13min ago <a href="#!" class="link-danger ms-1 "><i class="align-middle iconoir-refresh"></i></a></p> -->

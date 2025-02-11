@@ -1834,6 +1834,8 @@
                                                             <a href="#" class="dropdown-item"
                                                                 onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
                                                                 Out Item</a>
+                                                            <a href="#" class="dropdown-item"
+                                                                onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make Adjustment</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -2320,6 +2322,71 @@
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
                                     <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" id="adjustmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Make Adjustment </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="adjustment_material_id">
+                    <input type="hidden" name="material_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Material name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Material</label>
+                                <input type="text" class="form-control" readonly name="checkOut_material_name">
+                            </div>
+                        </div>
+                        <!-- Material name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Change in Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" name="quantity" value="0"
                                         style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
@@ -3521,8 +3588,9 @@
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">
                                         <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'>Check In Item</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'>Check Out Item</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
+                                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
                                     </div>
                                 </div>
                             </td>
@@ -4324,6 +4392,18 @@
             document.querySelector('#checkOutModal input[name="company_id"]').value = companyID;
             document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value = materialName;
             const myModal = new bootstrap.Modal(checkOutModal);
+            myModal.show();
+        }
+
+        // Trigger adjustment
+        let triggerAdjustment = (companyMaterialID, materialID, companyID, materialName) => {
+            let adjustmentModal = document.querySelector('#adjustmentModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#adjustmentModal input[name="adjustment_material_id"]').value = companyMaterialID;
+            document.querySelector('#adjustmentModal input[name="material_id"]').value = materialID;
+            document.querySelector('#adjustmentModal input[name="company_id"]').value = companyID;
+            document.querySelector('#adjustmentModal input[name="checkOut_material_name"]').value = materialName;
+            const myModal = new bootstrap.Modal(adjustmentModal);
             myModal.show();
         }
     </script>
