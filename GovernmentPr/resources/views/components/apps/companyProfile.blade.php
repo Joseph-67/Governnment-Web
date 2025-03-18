@@ -1650,7 +1650,9 @@
                                                 <label for="">Chemicals</label>
                                                 <select name="chemical" id="chemical" class="form-select">
                                                     <option value="" selected disabled> Choose... </option>
-                                                    <option value=""> </option>
+                                                    @foreach($chemicals as $chemical)
+                                                        <option value="{{ $chemical->id }}">{{ $chemical->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
