@@ -16,6 +16,11 @@ return new class extends Migration
         Schema::create('company_water_usages', function (Blueprint $table) {
             $table->id('companyWaterUsageID');
             $table->unsignedBigInteger('companyID');
+            $table->unsignedBigInteger('CompanyWaterSourcesID');
+            $table->foreign('CompanyWaterSourcesID')
+                ->references('CompanyWaterSourcesID')
+                ->on('company_water_sources')
+                ->onDelete('cascade');
             $table->string('volume');
             $table->enum('date_type', ['daily', 'weekly', 'monthly', 'yearly']);
             $table->string('date');
