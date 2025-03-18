@@ -21,8 +21,8 @@ return new class extends Migration
                     ->references('company_id')
                     ->on('companies')
                     ->onDelete('cascade');
-            $table->foreign('WaterSourcesID')
-                    ->references('WaterSources_id')
+            $table->foreign('WaterSources_id')
+                    ->references('WaterSourcesId')
                     ->on('water_sources')
                     ->onDelete('cascade');
             $table->timestamps();

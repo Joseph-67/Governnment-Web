@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyChemical;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class CompanyChemicalController extends Controller
 {
@@ -36,13 +38,20 @@ class CompanyChemicalController extends Controller
 
     public function store_company_chemical(Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(), [
             'company_id' => 'required|integer',
             'chemical_id' => 'required|integer',
             'unit' => 'required|numeric',
         ]);
 
-        
+        // Return validation errors if any
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
         $companyChemical = new CompanyChemical();
         $companyChemical->company_id = $validatedData['company_id'];
@@ -55,7 +64,7 @@ class CompanyChemicalController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Chemical usage recorded successfully.',
-            'data' => $companyChemical
+            'data'      => $companyChemical
         ]);
     }
 

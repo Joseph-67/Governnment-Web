@@ -70,7 +70,7 @@ class CompanyController extends Controller
         $data['waterQuestions']                 =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
         $data['CompanyWaterQuestions']          =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
         $data['WaterConservationMethod']        =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
-        $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['waterConservationMethod_id']);
+        $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['conservation_id']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id']);
         $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);

@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyWaterConservationOpportunity extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'CompanyWaterConservationOpportunityID';
+    protected $primaryKey = 'opportunityID';
     protected $fillable = [
         'companyID',
-        'waterConservationMethod_id',
+        'conservation_id',
         'created_at',
         'updated_at',
     ];
