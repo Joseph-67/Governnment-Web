@@ -41,14 +41,14 @@ class ChemicalUsageController extends Controller
     {
         //
         $request->validate([
-            'chemical_name'     => 'required|max:255|unique:chemical_usages,chemical',
-            'description'       => 'nullable|max:255'
+            'chemical_name'             => 'required|max:255|unique:chemical_usages,chemical',
+            'unit_of_measurement'       => 'nullable|max:255'
         ]);
 
         $chemical = new chemicalUsage();
 
-        $chemical -> chemical       =   $request-> chemical_name;
-        $chemical -> description    =   $request-> description;
+        $chemical -> chemical               =   $request-> chemical_name;
+        $chemical -> unit_of_measurement    =   $request-> unit_of_measurement;
         $chemical -> status         =   "1";
         $chemical -> save();
 

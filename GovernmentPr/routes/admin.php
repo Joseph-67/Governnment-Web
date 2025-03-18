@@ -19,6 +19,7 @@ use App\Http\Controllers\RECPController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\ChemicalUsageController;
+use App\Http\Controllers\CompanyChemicalController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
@@ -119,9 +120,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
     }); 
 
-    Route::controller(CompanyChemicalUsageController::class)->group(function() {
-        Route::get('/chemical-view/{chemicalUsage}', 'show')->name('admin.view-chemicalUsage');
-    }); 
+    Route::controller(CompanyChemicalController::class)->group(function() {
+        Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
+        Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
+    });
 
     Route::controller(CompanyController::class)->group(function() {
         Route::get('/company', 'index')->name('admin.view-company');

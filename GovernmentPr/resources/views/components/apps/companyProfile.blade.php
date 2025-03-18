@@ -1630,7 +1630,7 @@
                         <!-- end water usage card -->
                     </div>
                     <!-- tab water usage -->
-                    <!-- tab chemical usage -->
+                    <!-- tab chemical inventory -->
                     <div class="tab-pane p-3" id="chemical-usage" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
@@ -1641,8 +1641,8 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="" value="">
+                                <form action="" method="post" id="chemical-form">
+                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row g-2 align-items-end">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -1650,7 +1650,7 @@
                                                 <select name="chemical" id="chemical" class="form-select">
                                                     <option value="" selected disabled>Choose...</option>
                                                     @foreach($approved_chemicals as $chemical)
-                                                        <option value="{{ $chemical->id }}">{{ $chemical->name }}</option>
+                                                        <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -1729,13 +1729,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- tab chemical usage -->
+                    <!-- end chemical inventory -->
+                    <!-- tab Material Inventory -->
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Material</h4>
+                                        <h4 class="card-title">Add New Material</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
@@ -4273,7 +4274,7 @@
                 }
                 // end feedback
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.log('Fetch error:', error);
                 Toastify({
                     text: "An unexpected error occurred.",
                     duration: 3000,
@@ -4737,5 +4738,112 @@
         // end water usage
       </script>
      <!-- water usage -->
+
+     <!-- Chemical  -->
+      <script>
+        let btn_submit_chemical = document.querySelector('#btn-submit-chemical');
+        btn_submit_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#chemical-usage #loader');
+            loader.style.display = 'inline-block';
+
+            let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
+            let chemical = document.querySelector('#chemical-usage select[name="chemical"]').value.trim();
+            let unit_of_measurement = document.querySelector('#chemical-usage input[name="unit_of_measurement"]').value.trim();
+            console.log('====================================');
+            console.log(chemical, unit_of_measurement);
+            console.log('====================================');
+            if (!company_id) {
+                Toastify({
+                    text: "Company ID field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return;
+            }
+            if (!chemical) {
+                Toastify({
+                    text: "Chemical field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!unit_of_measurement) {
+                Toastify({
+                    text: "Unit of measurement field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.store-company-chemical') }}"
+            let formData = new FormData();
+            formData.append('chemical', chemical);
+            formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('company_id', company_id);
+            fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+                if (result.data) {
+                    let tableBody = document.querySelector('#tbl-company-material tbody')
+                    tableBody.innerHTML = ""
+                    result.company_chemicals.forEach(chemical => {
+                        let id = chemical.companyChemicalId;
+                        const baseUrl = "{{ route('admin.view-chemical', ['chemical' => '__PLACEHOLDER__']) }}";
+                        const url = baseUrl.replace('__PLACEHOLDER__', id);
+
+                        tableBody.innerHTML += `<tr>
+                            <td>${chemical.chemical}</td>
+                            <td>${chemical.unit_of_measure ?? ''}</td>
+                            <td> <span class="badge bg-${(chemical.company_chemical_status == 'active') ? 'success' : 'danger'}">${chemical.company_chemical_status}</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="${url}">Open Chemical</a>
+                                        <a class="dropdown-item" href="#">Update Chemical</a>
+                                        <a class="dropdown-item" href="#">Delete Chemical</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#">Setup Price</a>
+                                        <a href="#" class="dropdown-item">Check In Item</a>
+                                        <a href="#" class="dropdown-item">Check Out Item</a>
+                                        <a href="#" class="dropdown-item">Adjustment</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`
+                    });
+                }
+            });
+        });
+      </script>
+     <!-- Chemical  -->
     @endsection
 </x-layouts.admin-app>

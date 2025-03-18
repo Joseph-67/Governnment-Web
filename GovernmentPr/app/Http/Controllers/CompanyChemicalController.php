@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CompanyChemicalUsage;
+use App\Models\CompanyChemical;
 use Illuminate\Http\Request;
 
-class CompanyChemicalUsageController extends Controller
+class CompanyChemicalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -33,23 +33,32 @@ class CompanyChemicalUsageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function store_company_chemical(Request $request)
     {
-        //
-        $request->validate([
-            'chemical_name'     => 'required|max:255|unique:chemical_usages,chemical',
-            'unit_of_measurement'       => 'nullable|max:255'
+        $validatedData = $request->validate([
+            'company_id' => 'required|integer',
+            'chemical_id' => 'required|integer',
+            'unit' => 'required|numeric',
         ]);
 
-        $chemical = new chemicalUsage();
+        
 
-        $chemical -> chemical               =   $request-> chemical_name;
-        $chemical -> unit_of_measurement    =   $request-> unit_of_measurement;
-        $chemical -> status         =   "1";
-        $chemical -> save();
+        $companyChemical = new CompanyChemical();
+        $companyChemical->company_id = $validatedData['company_id'];
+        $companyChemical->chemical_id = $validatedData['chemical_id'];
+        $companyChemical->unit = $validatedData['unit'];
+        $companyChemical->status = "active";
+        $companyChemical->is_deleted = FALSE;
+        $companyChemical->save();
 
-        return back()->with(['success' => 'Chemical added successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Chemical usage recorded successfully.',
+            'data' => $companyChemical
+        ]);
     }
+
 
     /**
      * Display the specified resource.

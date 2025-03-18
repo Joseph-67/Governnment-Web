@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('company_water_conservation_opportunities', function (Blueprint $table) {
             $table->id('CompanyWaterConservationOpportunityID');
             $table->unsignedBigInteger('companyID');
-            $table->unsignedBigInteger('waterConservationMethod_id');
+            $table->unsignedBigInteger('conservation_id');
             $table->foreign('companyID')
                     ->references('company_id')
                     ->on('companies')
                     ->onDelete('cascade');
-            $table->foreign('waterConservationMethod_id')
+            $table->foreign('conservation_id')
                     ->references('WaterConservationMethodId')
                     ->on('water_conservation_methods')
                     ->onDelete('cascade');
