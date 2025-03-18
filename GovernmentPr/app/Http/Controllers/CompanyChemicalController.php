@@ -64,7 +64,7 @@ class CompanyChemicalController extends Controller
         $companyChemical->save();
 
         $company_chemicals = CompanyChemical::join('chemicals', 'chemicals.chemical_id', '=', 'company_chemicals.chemical_id')->
-        where('is_deleted', false)->get(['company_chemicals.chemical_id as id', 'name', 'formular', 'unit', 'company_chemicals.status as chemical_status']);
+        where('company_chemicals.is_deleted', false)->get(['company_chemicals.chemical_id as id', 'name', 'formula', 'unit', 'company_chemicals.status as chemical_status', 'company_chemical_id']);
         return response()->json([
             'status'  => 'success',
             'message' => 'Chemical recorded successfully.',
@@ -79,9 +79,10 @@ class CompanyChemicalController extends Controller
      * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function show(CompanyChemicalUsage $companyChemicalUsage)
+    public function show($chemical)
     {
         //
+        return view('');
     }
 
     /**
@@ -90,7 +91,7 @@ class CompanyChemicalController extends Controller
      * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function edit(CompanyChemicalUsage $companyChemicalUsage)
+    public function edit($chemical)
     {
         //
     }
@@ -102,7 +103,7 @@ class CompanyChemicalController extends Controller
      * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CompanyChemicalUsage $companyChemicalUsage)
+    public function update(Request $request, $chemical)
     {
         //
     }
@@ -113,7 +114,7 @@ class CompanyChemicalController extends Controller
      * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CompanyChemicalUsage $companyChemicalUsage)
+    public function destroy($chemical)
     {
         //
     }

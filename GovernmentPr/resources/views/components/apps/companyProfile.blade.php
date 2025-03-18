@@ -4813,15 +4813,15 @@
                 if (result.status == "success") {
                     let tableBody = document.querySelector('#tbl-company-chemical tbody')
                     tableBody.innerHTML = ""
-                    result.company_chemicals.forEach(chemical => {
+                    result.data.forEach(chemical => {
                         let id = chemical.company_chemical_id;
                         const baseUrl = "{{ route('admin.view-chemical', ['chemical' => '__PLACEHOLDER__']) }}";
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-                            <td>${chemical.chemical}</td>
-                            <td>${chemical.unit_of_measure ?? ''}</td>
-                            <td> <span class="badge bg-${(chemical.company_chemical_status == 'active') ? 'success' : 'danger'}">${chemical.company_chemical_status}</span>
+                            <td>${chemical.name}</td>
+                            <td>${chemical.unit ?? ''}</td>
+                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
                             </td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
