@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('company_water_sources', function (Blueprint $table) {
             $table->id('CompanyWaterSourcesID');
             $table->string('WaterSourcesName');
-            $table->enum('watertype', ['Groundwater', 'Surface Water', 'Municipal Supply', 'Recycled Water']);
             $table->string('location')->nullable();
             $table->decimal('capacity', 10, 2);
             $table->enum('status', ['active', 'inactive'])->default('active');
