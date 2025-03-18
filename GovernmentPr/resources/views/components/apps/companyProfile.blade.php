@@ -136,15 +136,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
-                            aria-selected="false">Water Usage</a>
+                            aria-selected="false">Water Inventory</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
-                            aria-selected="false">Chemical Usage</a>
+                            aria-selected="false">Chemical Inventory</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
-                            aria-selected="false">Materials</a>
+                            aria-selected="false">Material Inventory</a>
                     </li>
 
                     <li class="nav-item">
@@ -1636,7 +1636,7 @@
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Chemical Usage</h4>
+                                        <h4 class="card-title">Add New Chemical</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
@@ -1644,33 +1644,28 @@
                                 <form action="" method="post">
                                     <input type="hidden" class="form-control" name="" value="">
                                     <div class="row g-2 align-items-end">
-                                        <!-- Chemicals  -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Chemicals</label>
+                                                <label for="chemical">Chemical</label>
                                                 <select name="chemical" id="chemical" class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
-                                                    @foreach($chemicals as $chemical)
+                                                    <option value="" selected disabled>Choose...</option>
+                                                    @foreach($approved_chemicals as $chemical)
                                                         <option value="{{ $chemical->id }}">{{ $chemical->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- Chemicals ends -->
-                                        <!-- Unit of measurement -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Unit of Measurement" name="unit_of_measurement">
+                                                <label for="unit_of_measurement">Unit of Measurement</label>
+                                                <input type="text" class="form-control" name="unit_of_measurement"
+                                                    placeholder="Unit of Measurement">
                                             </div>
                                         </div>
-                                        <!-- Unit of measurement -->
-                                        <div class="col">
+                                        <div class="col-md-4">
                                             <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary"
-                                                    id="btn-submit-material">Save</button><span class="loader"
-                                                    id="loader"></span>
+                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">Save</button>
+                                                <span class="loader" id="loader"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1697,12 +1692,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                            @foreach($company_chemicals as $chemical)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><span class=""></span></td>
+                                                <td>{{ $chemical->chemical }}</td>
+                                                <td>{{ $chemical->unit_of_measure }}</td>
+                                                <td><span
+                                                        class="badge bg-{{ ($chemical->company_chemical_status == 'active')? 'success':'danger'}}">{{
+                                                        $chemical->company_chemical_status }}</span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11"
@@ -1712,13 +1708,21 @@
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-end"
                                                             aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->companyChemicalId]) }}">Open
+                                                                Chemical</a>
+                                                            <a class="dropdown-item" href="#">Update Chemical</a>
+                                                            <a class="dropdown-item" href="#">Delete Chemical</a>
                                                             <hr class="dropdown-divider">
+                                                            <a class="dropdown-item" href="#">Setup Price</a>
+                                                            <a href="#" class="dropdown-item">Check In Item</a>
+                                                            <a href="#" class="dropdown-item">Check Out Item</a>
+                                                            <a href="#" class="dropdown-item">Adjustment</a>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->

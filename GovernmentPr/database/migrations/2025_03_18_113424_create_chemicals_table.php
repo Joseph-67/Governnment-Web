@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id('chemical_id');
             $table->string('name');
             $table->string('chemical_category');
-            $table->string('chemical_code')->nullable();
             $table->string('chemical_image')->nullable();
             $table->string('cas_number')->nullable();
             $table->string('ec_number')->nullable();
