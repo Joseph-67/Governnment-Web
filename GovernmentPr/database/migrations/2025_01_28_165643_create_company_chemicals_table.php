@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('company_chemical_id');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('chemical_id');
-            $table->integer('unit')->nullable();
+            $table->string('unit')->nullable();
             $table->enum('status', ['active', 'inactive', 'banned'])->default('active');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

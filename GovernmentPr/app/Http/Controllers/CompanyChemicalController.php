@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyChemical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Validation\Rule;
 
 class CompanyChemicalController extends Controller
 {
@@ -40,31 +40,35 @@ class CompanyChemicalController extends Controller
     {
         $validatedData = Validator::make($request->all(), [
             'company_id' => 'required|integer',
-            'chemical_id' => 'required|integer',
-            'unit' => 'required|numeric',
+            'chemical_id' => 'required|integer|unique:company_chemicals,company_id',
+            'unit_of_measurement' => 'required|string',
+        ],[
+            'chemical_id.unique' => "Chemical has already been added."
         ]);
 
         // Return validation errors if any
         if ($validatedData->fails()) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
+                'errors'  => $validatedData->errors(),
             ], 422);
         }
 
         $companyChemical = new CompanyChemical();
-        $companyChemical->company_id = $validatedData['company_id'];
-        $companyChemical->chemical_id = $validatedData['chemical_id'];
-        $companyChemical->unit = $validatedData['unit'];
+        $companyChemical->company_id = $request['company_id'];
+        $companyChemical->chemical_id = $request['chemical_id'];
+        $companyChemical->unit = $request['unit_of_measurement'];
         $companyChemical->status = "active";
         $companyChemical->is_deleted = FALSE;
         $companyChemical->save();
 
+        $company_chemicals = CompanyChemical::join('chemicals', 'chemicals.chemical_id', '=', 'company_chemicals.chemical_id')->
+        where('is_deleted', false)->get(['company_chemicals.chemical_id as id', 'name', 'formular', 'unit', 'company_chemicals.status as chemical_status']);
         return response()->json([
-            'success' => true,
-            'message' => 'Chemical usage recorded successfully.',
-            'data'      => $companyChemical
+            'status'  => 'success',
+            'message' => 'Chemical recorded successfully.',
+            'data'    => $company_chemicals
         ]);
     }
 

@@ -18,4 +18,14 @@ class CompanyChemical extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function chemical()
+    {
+        return $this->belongsTo(Chemicals::class, 'chemical_id');
+    }
 }
