@@ -15,23 +15,22 @@ return new class extends Migration
     {
         Schema::create('company_water_sources', function (Blueprint $table) {
             $table->id('CompanyWaterSourcesID');
-            $table->string('WaterSourcesName');
-            $table->string('location')->nullable();
-            $table->decimal('capacity', 10, 2);
-            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('WaterSources_id');
+        
             $table->foreign('companyID')
-                    ->references('company_id')
-                    ->on('companies')
-                    ->onDelete('cascade');
+                ->references('id') // Specify the primary key in the water_sources table
+                ->on('water_sources')
+                ->onDelete('cascade');
+        
             $table->foreign('WaterSources_id')
-                    ->references('WaterSourcesId')
-                    ->on('water_sources')
-                    ->onDelete('cascade');
+                ->references('id') // Assuming water_sources has 'id' as its primary key
+                ->on('water_sources')
+                ->onDelete('cascade');
+        
             $table->timestamps();
-
         });
+        
     }
 
     /**
