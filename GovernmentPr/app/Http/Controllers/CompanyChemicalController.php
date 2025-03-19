@@ -82,7 +82,8 @@ class CompanyChemicalController extends Controller
     public function show($chemical)
     {
         //
-        return view('');
+        $data['CompanyChemical'] = CompanyChemical::where('company_chemical_id', $chemical)->first();
+        return view('components.chemical.view-chemical', $data);
     }
 
     /**
