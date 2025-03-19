@@ -134,25 +134,25 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-check form-switch">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
-                            aria-selected="false">Water Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
-                            aria-selected="false">Chemical Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
-                            aria-selected="false">Material Inventory</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
-                            aria-selected="false">Settings</a>
-                    </li>
-                </ul>
-                <!-- Tab panes -->
+                                            <input class="form-check-input" type="checkbox" role="switch" id="environmental-policy" value="environmental policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'environmental policy')" name="policy[]" {{(in_array("environmental policy", array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for="environmental-policy">Enviromental Policy.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="health-and-safety-policy" value="health and safety policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'health and safety policy')" name="policy[]" {{(in_array('health and safety policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for="health-and-safety-policy">Health and safety policy. </label>
+                                        </div>
+                                    </div>
+                                    <x-section-border />
+                                    <div class="col-md-4 mt-2">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="human-resource-policy" value="human resource policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'human resource policy')" name="policy[]" {{(in_array('human resource policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for="human-resource-policy">Human resource policy. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2">
+                                        <div class="form-check form-switch">
                 <div class="tab-content">
                     <div class="tab-pane active" id="policy" role="tabpanel">
                         <div class="card">
