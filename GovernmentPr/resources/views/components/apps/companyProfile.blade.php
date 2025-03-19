@@ -1739,10 +1739,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table mb-0" id="tbl-company-material">
+                                    <table class="table mb-0" id="tbl-company-chemical">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Material</th>
+                                                <th>Chemical</th>
                                                 <th>Unit of Measurement</th>
                                                 <th>Chemical Status</th>
                                                 <th class="text-end">Action</th>
@@ -1751,11 +1751,13 @@
                                         <tbody>
                                             @foreach($company_chemicals as $chemical)
                                             <tr>
-                                                <td>{{ $chemical->chemical }}</td>
-                                                <td>{{ $chemical->unit_of_measure }}</td>
-                                                <td><span
-                                                        class="badge bg-{{ ($chemical->company_chemical_status == 'active')? 'success':'danger'}}">{{
-                                                        $chemical->company_chemical_status }}</span></td>
+                                                <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
+                                                <td>{{ $chemical->unit }}</td>
+                                                <td>
+                                                    <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                        {{ $chemical->status }}
+                                                    </span>
+                                                </td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11"
@@ -1766,7 +1768,7 @@
                                                         <div class="dropdown-menu dropdown-menu-end"
                                                             aria-labelledby="dLabel11">
                                                             <a class="dropdown-item"
-                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->companyChemicalId]) }}">Open
+                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
                                                                 Chemical</a>
                                                             <a class="dropdown-item" href="#">Update Chemical</a>
                                                             <a class="dropdown-item" href="#">Delete Chemical</a>
@@ -1774,7 +1776,7 @@
                                                             <a class="dropdown-item" href="#">Setup Price</a>
                                                             <a href="#" class="dropdown-item">Check In Item</a>
                                                             <a href="#" class="dropdown-item">Check Out Item</a>
-                                                            <a href="#" class="dropdown-item">Adjustment</a>
+                                                            <a href="#" class="dropdown-item">Make Adjustment</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -4862,24 +4864,24 @@
 
             let url = "{{ route('admin.store-company-chemical') }}"
             let formData = new FormData();
-            formData.append('chemical', chemical);
+            formData.append('chemical_id', chemical);
             formData.append('unit_of_measurement', unit_of_measurement);
             formData.append('company_id', company_id);
             fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
                 console.log(result);
                 loader.style.display = 'none';
-                if (result.data) {
-                    let tableBody = document.querySelector('#tbl-company-material tbody')
+                if (result.status == "success") {
+                    let tableBody = document.querySelector('#tbl-company-chemical tbody')
                     tableBody.innerHTML = ""
-                    result.company_chemicals.forEach(chemical => {
-                        let id = chemical.companyChemicalId;
+                    result.data.forEach(chemical => {
+                        let id = chemical.company_chemical_id;
                         const baseUrl = "{{ route('admin.view-chemical', ['chemical' => '__PLACEHOLDER__']) }}";
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-                            <td>${chemical.chemical}</td>
-                            <td>${chemical.unit_of_measure ?? ''}</td>
-                            <td> <span class="badge bg-${(chemical.company_chemical_status == 'active') ? 'success' : 'danger'}">${chemical.company_chemical_status}</span>
+                            <td>${chemical.name}</td>
+                            <td>${chemical.unit ?? ''}</td>
+                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
                             </td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">

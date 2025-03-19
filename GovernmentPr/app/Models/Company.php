@@ -42,4 +42,89 @@ class Company extends Model
     {
         return $this->hasMany(CompanyMaterial::class);
     }
+
+    public function companyChemicals()
+    {
+        return $this->hasMany(CompanyChemical::class);
+    }
+
+    public function companyWaterConservationOpportunities()
+    {
+        return $this->hasMany(CompanyWaterConservationOpportunity::class);
+    }
+
+    public function companyEnergyConservationOpportunities()
+    {
+        return $this->hasMany(CompanyEnergyConservationOpportunity::class);
+    }
+
+    public function companyWasteManagementOpportunities()
+    {
+        return $this->hasMany(CompanyWasteManagementOpportunity::class);
+    }
+
+    public function companyWasteWaterOpportunities()
+    {
+        return $this->hasMany(CompanyWasteWaterOpportunity::class);
+    }
+
+    public function companyAirPollutionOpportunities()
+    {
+        return $this->hasMany(CompanyAirPollutionOpportunity::class);
+    }
+
+    public function companyGreenhouseGasEmissionOpportunities()
+    {
+        return $this->hasMany(CompanyGreenhouseGasEmissionOpportunity::class);
+    }
+
+    public function companyWaterPollutionOpportunities()
+    {
+        return $this->hasMany(CompanyWaterPollutionOpportunity::class);
+    }
+
+    public function companyEnergyConsumptionOpportunities()
+    {
+        return $this->hasMany(CompanyEnergyConsumptionOpportunity::class);
+    }
+
+    public function companyWasteGenerationOpportunities()
+    {
+        return $this->hasMany(CompanyWasteGenerationOpportunity::class);
+    }
+
+    public function companyChemicalUsages()
+    {
+        return $this->hasMany(ChemicalUsage::class);
+    }
+
+    public function companyWaterUsages()
+    {
+        return $this->hasMany(WaterUsage::class);
+    }
+
+    public function companyEnergyUsages()
+    {
+        return $this->hasMany(EnergyUsage::class);
+    }
+
+    public function companyWasteUsages()
+    {
+        return $this->hasMany(WasteUsage::class);
+    }
+
+    public function companyAirPollutionUsages()
+    {
+        return $this->hasMany(AirPollutionUsage::class);
+    }
+
+    public function companyGreenhouseGasEmissionUsages()
+    {
+        return $this->hasMany(GreenhouseGasEmissionUsage::class);
+    }
+
+    public function companyWaterPollutionUsages()
+    {
+        return $this->hasMany(WaterPollutionUsage::class);
+    }
 }

@@ -21,4 +21,9 @@ class Chemicals extends Model
         'formula',
         'status'
     ];
+
+    public function companyChemicals()
+    {
+        return $this->hasMany(CompanyChemical::class);
+    }
 }
