@@ -86,40 +86,7 @@
                             <li class="text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental Operations Manager </b> : {{ $company->operations_manager }}</li>
                             <li class="mt-2 text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact Person </b> : {{ $company->contact_person_full_name }}</li>
                             <li class="mt-2 text-capitalize"><i class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position </b> : {{ $company->contact_person_position }}</li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> Latitude </b> : {{ $company->latitude }}
-                            </li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> MGRS </b> : {{ $company->mgrs }}
-                            </li>
-                        </ul>
-                    </div><!--end card-body-->
-                </div><!--end card-->
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Extra</h4>
-                            </div><!--end col-->
-                        </div> <!--end row-->
-                    </div><!--end card-header-->
-                    <div class="card-body pt-0">
-                        <p class="text-muted fw-medium mb-1">
-                            <!-- This section displays the personal information you’ve provided to us. Please review the details below to ensure they’re accurate and up-to-date. -->
-                        </p>
-                        <ul class="list-unstyled mb-0">
-                            <li class="text-capitalize"><i
-                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental
-                                    Operations Manager </b> : {{ $company->operations_manager }}</li>
-                            <li class="mt-2 text-capitalize"><i
-                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact
-                                    Person </b> : {{ $company->contact_person_full_name }}</li>
-                            <li class="mt-2 text-capitalize"><i
-                                    class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position
-                                </b> : {{ $company->contact_person_position }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
-                                    Mobile </b> : {{ $company->contact_person_contact_number }}</li>
+                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Mobile </b> : {{ $company->contact_person_contact_number }}</li>
                         </ul>
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -127,13 +94,46 @@
             <div class="col-md-8">
                 <ul class="nav nav-tabs mb-3" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab"
-                            aria-selected="true">Policies & Objectives</a>
+                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab" aria-selected="true">Policies & Objectives</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
-                            aria-selected="false">R.E.C.P</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab" aria-selected="false">R.E.C.P</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab" aria-selected="false">Water Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab" aria-selected="false">Chemical Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab" aria-selected="false">Material Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab" aria-selected="false">Settings</a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="policy" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Company Policies</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0">
+                                <!-- Policy -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="quality-policy" value="quality policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'quality policy')" name="policy[]" {{(in_array('quality policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for="quality-policy">Quality policy </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch">
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
                             aria-selected="false">Water Inventory</a>
