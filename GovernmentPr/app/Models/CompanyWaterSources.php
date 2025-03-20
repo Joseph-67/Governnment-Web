@@ -12,8 +12,6 @@ class CompanyWaterSources extends Model
     protected $fillable = [
         'companyID',
         'WaterSources_id',
-        'location',
-        'capacity',
-        'status'
+       
     ];
 }

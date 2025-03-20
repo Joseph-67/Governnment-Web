@@ -4956,11 +4956,51 @@
 
       fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
           console.log(result);
+        if (result.status === "success") {
+            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+            waterSourceSelect.innerHTML = ""; // Clear existing options
+
+            result.water_sources.forEach(source => {
+                const option = document.createElement("option");
+                option.value = source.WaterSourcesId;
+                option.textContent = source.sources;
+                if (result.company_water_sources.includes(source.WaterSourcesId)) {
+                    option.selected = true; // Mark as selected if already associated with the company
+                }
+                waterSourceSelect.appendChild(option);
+            });
+
+            Toastify({
+                text: result.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+            }).showToast();
+        } else {
+            Toastify({
+                text: result.message || "An error occurred.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+        }
       });
     });
           
 
         // end company water sources
      </script>
+     
+
     @endsection
 </x-layouts.admin-app>
