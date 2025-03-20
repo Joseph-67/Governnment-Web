@@ -282,6 +282,26 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         
     });
 
+    // Real-Time Updates
+    Route::controller(RealTimeUpdateController::class)->group(function() {
+        Route::get('/real-time-updates', 'index')->name('admin.real-time-updates');
+        
+    });
+
+    // Reporting and Analytics
+    Route::controller(ReportingAnalyticsController::class)->group(function() {
+         Route::get('/reporting-analytics', 'index')->name('admin.reporting-analytics');
+         Route::get('/reporting-analytics/stock-performance', 'getStockPerformance')->name('admin.stock-performance');
+         Route::get('/reporting-analytics/trading-summary', 'getTradingSummary')->name('admin.trading-summary');
+         Route::get('/reporting-analytics/user-activity', 'getUserActivity')->name('admin.user-activity');
+     });
+
+    // Inventory Forecasting
+    Route::controller(InventoryForecastingController::class)->group(function() {
+        Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
+        
+    });
+
     // Chemical Stock Movement
     Route::controller(ChemicalStockMovementController::class)->group(function(){
         Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
