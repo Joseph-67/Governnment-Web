@@ -346,6 +346,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
                                     </li><!--end nav-item-->
+                                    
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->

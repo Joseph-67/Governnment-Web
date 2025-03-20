@@ -155,6 +155,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
+        Route::post('/company/add-water-source-details', 'store_water_source')->name('admin.store-company-water-source');
+        // fetch admin details
     });
 
     // RECP
