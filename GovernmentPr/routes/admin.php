@@ -24,16 +24,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\MapReport;
-<<<<<<< Updated upstream
 use App\Http\Controllers\ViewEmailController;
 use App\Http\Controllers\ChemicalStockMovementController;
-=======
 use App\Http\Controllers\viewEmailController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\ReportingAnalyticsController;
->>>>>>> Stashed changes
+
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -243,6 +241,26 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
          Route::post('/stock-trading/sell', 'sellStock')->name('admin.sell-stock');
          Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
      });
+
+    // Real-Time Updates
+    Route::controller(RealTimeUpdateController::class)->group(function() {
+        Route::get('/real-time-updates', 'index')->name('admin.real-time-updates');
+        
+    });
+
+    // Reporting and Analytics
+    Route::controller(ReportingAnalyticsController::class)->group(function() {
+         Route::get('/reporting-analytics', 'index')->name('admin.reporting-analytics');
+         Route::get('/reporting-analytics/stock-performance', 'getStockPerformance')->name('admin.stock-performance');
+         Route::get('/reporting-analytics/trading-summary', 'getTradingSummary')->name('admin.trading-summary');
+         Route::get('/reporting-analytics/user-activity', 'getUserActivity')->name('admin.user-activity');
+     });
+
+    // Inventory Forecasting
+    Route::controller(InventoryForecastingController::class)->group(function() {
+        Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
+        
+    });
 
     // Real-Time Updates
     Route::controller(RealTimeUpdateController::class)->group(function() {
