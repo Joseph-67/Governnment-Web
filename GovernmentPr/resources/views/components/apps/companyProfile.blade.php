@@ -5388,7 +5388,7 @@
       </script>
      <!-- Chemical  -->
   
-
+            <!-- location opulate water source -->
      <script>
     const waterSourceMapping = @json($water_source_details->groupBy('location'));
 
@@ -5412,5 +5412,6 @@
         }
     }
 </script>
+<!-- end location populate water source -->
     @endsection
 </x-layouts.admin-app>
