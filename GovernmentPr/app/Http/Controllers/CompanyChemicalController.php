@@ -17,6 +17,7 @@ class CompanyChemicalController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -28,6 +29,7 @@ class CompanyChemicalController extends Controller
     {
         //
     }
+    
 
     /**
      * Store a newly created resource in storage.

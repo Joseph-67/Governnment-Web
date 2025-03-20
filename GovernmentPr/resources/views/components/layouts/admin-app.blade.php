@@ -346,11 +346,24 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
                                     </li><!--end nav-item-->
-                                    
+                                    <li class="nav-item">
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.stock-trading') }}">Stock Trading</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.real-time-updates') }}">Real-Time Update</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Reporting Analytics</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.inventory-forecasting') }}">Inventory Forecasting</a>
+                                    </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->
-                             
+    
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
