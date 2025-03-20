@@ -6,8 +6,9 @@ use App\Models\CompanyChemical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\ChemicalStockMovementController;
 
-class CompanyChemicalController extends Controller
+class CompanyChemicalController extends ChemicalStockMovementController
 {
     /**
      * Display a listing of the resource.
@@ -120,7 +121,10 @@ class CompanyChemicalController extends Controller
     public function show($chemical)
     {
         //
+        $chemicalStockMovementController = new ChemicalStockMovementController();
+        $data['balance'] = $chemicalStockMovementController->getBalance($chemical);
         $data['CompanyChemical'] = CompanyChemical::where('company_chemical_id', $chemical)->first();
+        $data['transactions'] = CompanyChemical::where('company_chemical_id', $chemical)->get();
         return view('components.chemical.view-chemical', $data);
     }
 

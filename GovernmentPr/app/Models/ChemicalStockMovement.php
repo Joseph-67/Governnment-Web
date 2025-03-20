@@ -23,4 +23,9 @@ class ChemicalStockMovement extends Model
     ];
 
     public $timestamps = true;
+
+    public function companyChemical()
+    {
+        return $this->belongsTo(CompanyChemical::class, 'company_chemical_id');
+    }
 }

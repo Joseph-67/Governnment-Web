@@ -14,28 +14,28 @@ class ChemicalStockMovementController extends Controller
 
     public function getTotalCheckIn($companyChemicalId)
     {
-        $totalCheckIn = ChemicalStockMovement::where('companyChemicalId', $companyChemicalId)
+        $totalCheckIn = ChemicalStockMovement::where('company_chemical_id', $companyChemicalId)
             ->where('movement_type', 'in')->sum('quantity');
         return $totalCheckIn;
     }
 
     public function getTotalTransfer($companyChemicalId)
     {
-        $totalTransfer = ChemicalStockMovement::where('companyChemicalId', $companyChemicalId)
+        $totalTransfer = ChemicalStockMovement::where('company_chemical_id', $companyChemicalId)
             ->where('movement_type', 'transfer')->sum('quantity');
         return $totalTransfer;
     }
 
     public function getTotalAdjustment($companyChemicalId)
     {
-        $totalAdjustment = ChemicalStockMovement::where('companyChemicalId', $companyChemicalId)
+        $totalAdjustment = ChemicalStockMovement::where('company_chemical_id', $companyChemicalId)
             ->where('movement_type', 'adjustment')->sum('quantity');
         return $totalAdjustment;
     }
 
     public function getTotalCheckOut($companyChemicalId)
     {
-        $totalCheckOut = ChemicalStockMovement::where('companyChemicalId', $companyChemicalId)
+        $totalCheckOut = ChemicalStockMovement::where('company_chemical_id', $companyChemicalId)
             ->where('movement_type', 'out')->sum('quantity');
         return $totalCheckOut;
     }
@@ -145,11 +145,23 @@ class ChemicalStockMovementController extends Controller
             ]);
         }
 
-        $balance = $this->getBalance($request['checkout_chemical_id']);
-        if ($balance < $request['quantity']) {
+        $availableBalance = $this->getBalance($request['checkout_chemical_id']);
+
+        if ($availableBalance <= 0) {
+            $validator->errors()->add('balance_error', 'No chemical stock is available. The balance is 0.');
             return response()->json([
-                'status'    => 'error',
-                'message'   => 'Insufficient inventory balance.',
+            'status' => 'error',
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors(),
+            'available_balance' => $availableBalance
+            ], 400);
+        } elseif ($request['quantity'] > $availableBalance) {
+            $validator->errors()->add('balance_error', 'The quantity demanded exceeds the available chemical stock balance.');
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors(),
+            'available_balance' => $availableBalance
             ], 400);
         }
 

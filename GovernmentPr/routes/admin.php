@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChemicalStockMovementController;
 use App\Http\Controllers\ChemicalsController;
+use App\Http\Controllers\CompanyChemicalController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\EmailApp;
@@ -68,6 +69,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/chemicals/{id}', 'show')->name('admin.show-chemical');
         Route::put('/chemicals/{id}', 'update')->name('admin.update-chemical');
         Route::delete('/chemicals/{id}', 'destroy')->name('admin.delete-chemical');
+    });
+
+    Route::controller(CompanyChemicalController::class)->group(function() {
+        Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
+        Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
+        Route::post('/company/chemical-setup/price', 'store_price')->name('admin.save-company-chemical-price');
     });
 
     // Company

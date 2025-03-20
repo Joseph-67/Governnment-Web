@@ -28,4 +28,9 @@ class CompanyChemical extends Model
     {
         return $this->belongsTo(Chemicals::class, 'chemical_id');
     }
+
+    public function stockMovements()
+    {
+        return $this->hasMany(ChemicalStockMovement::class, 'company_chemical_id');
+    }
 }

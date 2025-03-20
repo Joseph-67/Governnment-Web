@@ -5192,7 +5192,7 @@
 
             let url = "{{ route('admin.save-company-chemical-check-out') }}"
             let formData = new FormData();
-            formData.append('checkOut_chemical_id', checkOut_chemical_id);
+            formData.append('checkout_chemical_id', checkOut_chemical_id);
             formData.append('chemical_id', chemical_id);
             formData.append('company_id', company_id);
             formData.append('quantity', quantity);
