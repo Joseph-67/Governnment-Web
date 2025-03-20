@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chemicals;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ChemicalsController extends Controller
 {
@@ -15,6 +16,7 @@ class ChemicalsController extends Controller
     public function index()
     {
         //
+        
     }
 
     /**
@@ -25,6 +27,9 @@ class ChemicalsController extends Controller
     public function create()
     {
         //
+        $data['categories'] = Category::all();
+        $data['chemical'] = Chemicals::get();
+        return view('components.chemical.create-chemical', $data);
     }
 
     /**

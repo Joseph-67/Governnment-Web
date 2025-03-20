@@ -62,35 +62,158 @@
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form method="post" action="{{ route('admin.store-chemical')}}" >
+                                <form method="post" action="{{ route('admin.store-chemical') }}" enctype="multipart/form-data">
                                     @csrf
-                                    <div class="row g-2 align-items-end"> 
+                                    <div class="row g-2 align-items-end">
                                         <!-- Chemical Name -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Chemical name</label>
-                                                <input type="text" class="form-control" placeholder="Chemical Name"
-                                                    name="chemical_name">
+                                                <label for="chemical_name">Chemical Name</label>
+                                                <input type="text" class="form-control" id="chemical_name" placeholder="Chemical Name" name="chemical_name" required>
                                             </div>
                                         </div>
-                                         <!-- Chemical Name -->
+                                        <!-- Chemical Name -->
 
-                                        
+                                        <!-- Chemical Category -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="chemical_category">Chemical Category</label>
+                                                <select class="form-control" id="chemical_category" name="chemical_category" required>
+                                                    <option value="organic">Organic</option>
+                                                    <option value="inorganic">Inorganic</option>
+                                                    <option value="polymer">Polymer</option>
+                                                    <option value="biochemical">Biochemical</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Chemical Category -->
+
+                                        <!-- Chemical Image -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="chemical_image">Chemical Image</label>
+                                                <input type="file" class="form-control" id="chemical_image" name="chemical_image" accept="image/*">
+                                            </div>
+                                        </div>
+                                        <!-- Chemical Image -->
+
+                                        <!-- CAS No -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="cas_no">CAS No</label>
+                                                <input type="text" class="form-control" id="cas_no" placeholder="CAS No" name="cas_no" required>
+                                            </div>
+                                        </div>
+                                        <!-- CAS No -->
+
+                                        <!-- EC No -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="ec_no">EC No</label>
+                                                <input type="text" class="form-control" id="ec_no" placeholder="EC No" name="ec_no" required>
+                                            </div>
+                                        </div>
+                                        <!-- EC No -->
+
+                                        <!-- REACH Registration No -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="reach_registration_no">REACH Registration No</label>
+                                                <input type="text" class="form-control" id="reach_registration_no" placeholder="REACH Registration No" name="reach_registration_no">
+                                            </div>
+                                        </div>
+                                        <!-- REACH Registration No -->
+
+                                        <!-- GHS Classification -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="ghs_classification">GHS Classification</label>
+                                                <input type="text" class="form-control" id="ghs_classification" placeholder="GHS Classification" name="ghs_classification">
+                                            </div>
+                                        </div>
+                                        <!-- GHS Classification -->
 
                                         <!-- Description -->
-                                         <div class="col-md-4">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Description</label>
-                                                <input type="text" class="form-control" placeholder="Description"
-                                                    name="description">
+                                                <label for="description">Description</label>
+                                                <textarea class="form-control" id="description" placeholder="Description" name="description" rows="3" required></textarea>
                                             </div>
                                         </div>
-                                         <!-- Description -->
-                                          <div class="col">
-                                            <div class="d-flex align-items-center">
-                                                <button type="submit" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                                        <!-- Description -->
+
+                                        <!-- Formula -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="formula">Formula</label>
+                                                <input type="text" class="form-control" id="formula" placeholder="Formula" name="formula">
                                             </div>
-                                          </div>
+                                        </div>
+                                        <!-- Formula -->
+
+                                        <!-- Hazard Information -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="hazard_information">Hazard Information</label>
+                                                <textarea class="form-control" id="hazard_information" placeholder="Hazard Information" name="hazard_information" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- Hazard Information -->
+
+                                        <!-- First Aid -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="first_aid">First Aid</label>
+                                                <textarea class="form-control" id="first_aid" placeholder="First Aid" name="first_aid" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- First Aid -->
+
+                                        <!-- Fire Fighting -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="fire_fighting">Fire Fighting</label>
+                                                <textarea class="form-control" id="fire_fighting" placeholder="Fire Fighting" name="fire_fighting" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- Fire Fighting -->
+
+                                        <!-- Accidental Release -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="accidental_release">Accidental Release</label>
+                                                <textarea class="form-control" id="accidental_release" placeholder="Accidental Release" name="accidental_release" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- Accidental Release -->
+
+                                        <!-- Storage Handling and Disposal -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="storage_handling_disposal">Storage, Handling, and Disposal</label>
+                                                <textarea class="form-control" id="storage_handling_disposal" placeholder="Storage, Handling, and Disposal" name="storage_handling_disposal" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- Storage Handling and Disposal -->
+
+                                        <!-- Status -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="form-control" id="status" name="status" required>
+                                                    <option value="active">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Status -->
+
+                                        <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <button type="submit" class="btn btn-primary" id="btn-submit-chemical">Save</button>
+                                                <span class="loader" id="loader"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

@@ -26,8 +26,7 @@ class ChemicalUsageController extends Controller
     public function create()
     {
         //
-        $data['chemical'] = ChemicalUsage::get();
-        return view('components.chemical.create-chemical', $data);
+
     }
 
     /**
