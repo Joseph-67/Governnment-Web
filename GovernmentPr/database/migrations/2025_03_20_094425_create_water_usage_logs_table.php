@@ -13,22 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('water_log_qualities', function (Blueprint $table) {
+        Schema::create('water_usage_logs', function (Blueprint $table) {
             $table->id('usage_id');
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('CompanyWaterSourcesID');
             $table->decimal('quantity_used', 10, 2);
             $table->string('unit', 20);
             $table->date('usage_date');
+            $table->time('location');
             $table->text('purpose');
-
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
             $table->foreign('companyID')->references('company_id')
             ->on('companies')
             ->onDelete('cascade');
             $table->foreign('CompanyWaterSourcesID')->references('CompanyWaterSourcesID')->on('company_water_sources')->onDelete('cascade');
-    $table->enum('status', ['active', 'inactive'])->default('active');
-    });
+          
+        });
+
     }
 
     /**
@@ -38,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('water_usage_logs');
     }
 };
