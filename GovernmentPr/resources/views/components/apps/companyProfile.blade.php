@@ -1550,170 +1550,148 @@
                             </div>
                         </div>
                         <!-- water usage card -->
-                         <!-- water usage logs card -->
+                        <!-- water usage logs card -->
                         <div class="card">
-    <div class="card-header">
-        <h4 class="card-title mb-0">Water Usage Logs</h4>
-    </div> <!-- end card-header -->
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Water Usage Logs</h4>
+                            </div> <!-- end card-header -->
 
-    <div class="card-body pt-0" id="waterSourceForm">
-        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                            <div class="card-body pt-0" id="waterSourceForm">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
-        <div class="row g-3">
+                                <div class="row g-3">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="water_source" class="form-label">Water Source</label>
+                                            <select name="water_source_selected" id="water_source_selected" class="form-select">
+                                                <option value="" selected disabled>Choose...</option>
+                                                @foreach($WaterSources as $source)
+                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                                                        <option value="{{ $source->WaterSourcesId }}" selected>
+                                                            {{ $source->sources }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
 
-            
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="water_source" class="form-label">Water Source</label>
-                    <select name="water_source_selected" id="water_source_selected" class="form-select">
-                        <option value="" selected disabled>Choose...</option>
-                    @foreach($WaterSources as $source)
-                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
-                            <option value="{{ $source->WaterSourcesId }}" selected>
-                                {{ $source->sources }}
-                            </option>
-                        @endif
-                    @endforeach
-
-                    
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="col-md-4 col-sm-6">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="" class="col col-form-label">Quantity Used(LTR)</label>
-                                            
                                             <div class="input-group qty-icons">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="unit_of_water"
-                                                    value="0">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="unit_of_water" value="0">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                             </div>
                                         </div>
                                     </div>
-            <!-- unit of Water -->
-            <div class="col-md-4 col-sm-6">
+
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="" class="col col-form-label">Unit of Measurement</label>
-                                            
                                             <select name="water_source" id="source" class="form-select">
-                        <option value="" selected disabled>Choose...</option>
-                        <option value="kg">Kilogram (kg)</option>
-    <option value="g">Gram (g)</option>
-    <option value="lb">Pound (lb)</option>
-    <option value="oz">Ounce (oz)</option>
-    <option value="cm">Centimeter (cm)</option>
-    <option value="m">Meter (m)</option>
-    <option value="in">Inch (in)</option>
-    <option value="ft">Foot (ft)</option>
-    <option value="l">Liter (L)</option>
-    <option value="ml">Milliliter (mL)</option>                    
-                    </select>
+                                                <option value="" selected disabled>Choose...</option>
+                                                <option value="kg">Kilogram (kg)</option>
+                                                <option value="g">Gram (g)</option>
+                                                <option value="lb">Pound (lb)</option>
+                                                <option value="oz">Ounce (oz)</option>
+                                                <option value="cm">Centimeter (cm)</option>
+                                                <option value="m">Meter (m)</option>
+                                                <option value="in">Inch (in)</option>
+                                                <option value="ft">Foot (ft)</option>
+                                                <option value="l">Liter (L)</option>
+                                                <option value="ml">Milliliter (mL)</option>
+                                            </select>
                                         </div>
                                     </div>
-                        <!-- Date -->
-                        <div class="col-md-4 col-sm-6">
+
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group" id="date">
                                             <label for="" class="col col-form-label">Date</label>
                                             <input type="date" class="form-control" name="date">
                                         </div>
                                     </div>
-                                    <!-- end Date -->
+
                                     <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="" class="col col-form-label">Purpose</label>
-                    <input type="text" class="form-control" name="purpose">
-                </div>
-            </div>
-            <!-- Save Button (Moved Down) -->
-            <div class="col-12 mt-3">
-                <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
-            </div>
-        </div>
-    </div> <!-- end card-body -->
-</div>
-<!-- End Water Usage Logs -->
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Purpose</label>
+                                            <input type="text" class="form-control" name="purpose">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
+                                    </div>
+                                </div>
+                            </div> <!-- end card-body -->
+                        </div>
+                        <!-- End Water Usage Logs -->
+
                         <div class="card">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h4 class="card-title">Water Usage Re-adjustment</h4>
-            </div><!--end col-->
-        </div> <!--end row-->
-    </div><!--end card-header-->
-    <div class="card-body pt-0" id="water-usage-form">
-        <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-        <div class="row g-2">
-            <!-- Unit of measurement -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="" class="col col-form-label">Volume of Water</label>
-                    <div class="input-group qty-icons">
-                        <button class="btn btn-primary"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="form-control" min="0" name="volume"
-                            value="0">
-                        <button class="btn btn-primary"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Unit of measurement -->
-            <!-- date type -->
-            <div class="col-md-4 col-sm-6">
-                <label class="col my-1 control-label">Date Type</label>
-                <div class="col-md-9">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio1" value="daily" checked onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio1">Daily</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio2" value="weekly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio3" value="monthly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio4" value="yearly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio3">Yearly</label>
-                    </div>
-                </div>
-            </div> <!--end row-->
-            <!-- date type -->
-            <!-- Date -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group" id="date">
-                    <label for="" class="col col-form-label">Date</label>
-                    <input type="date" class="form-control" name="date">
-                </div>
-            </div>
-            <!-- end Date -->
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage Re-adjustment</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0" id="water-usage-form">
+                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                <div class="row g-2">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Volume of Water</label>
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="volume" value="0">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-md-4 col-sm-6">
+                                        <label class="col my-1 control-label">Date Type</label>
+                                        <div class="col-md-9">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1" value="daily" checked onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio1">Daily</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2" value="weekly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3" value="monthly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4" value="yearly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio4">Yearly</label>
+                                            </div>
+                                        </div>
+                                    </div> <!--end row-->
 
-            <!-- Material name -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="" class="col col-form-label">Remark</label>
-                    <input type="text" class="form-control" name="remark">
-                </div>
-            </div>
-            <!-- Material name -->
-             <div class="col-12">
-                <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-             </div>
-        </div>
-    </div>
-</div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Date</label>
+                                            <input type="date" class="form-control" name="date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Remark</label>
+                                            <input type="text" class="form-control" name="remark">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
