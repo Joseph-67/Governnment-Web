@@ -16,8 +16,6 @@ class ChemicalUsageController extends Controller
     public function index()
     { 
         //
-        $data['chemical'] = ChemicalUsage::get();
-        return view('components.chemicals.chemicalUsage', $data); 
     }
 
     /**
@@ -28,7 +26,8 @@ class ChemicalUsageController extends Controller
     public function create()
     {
         //
-        
+        $data['chemical'] = ChemicalUsage::get();
+        return view('components.chemical.create-chemical', $data);
     }
 
     /**

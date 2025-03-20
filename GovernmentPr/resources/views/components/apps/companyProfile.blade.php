@@ -2536,8 +2536,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" id="loader"></span>
                         Save changes
-                        <span class="loader" id="loader"></span>
                     </button>
                 </div>
             </div>
@@ -5038,6 +5038,8 @@
             document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value = chemicalID;
             document.querySelector('#checkInChemicalModal input[name="company_id"]').value = companyID;
             document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_name"]').value = chemicalName;
+            let loader = document.querySelector('#checkInChemicalModal #loader');
+            loader.style.display = 'none';
             const myModal = new bootstrap.Modal(checkInChemicalModal);
             myModal.show();
         }

@@ -124,7 +124,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Chemicals
     Route::controller(ChemicalUsageController::class)->group(function() {
-        Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
+        Route::get ('/chemicals', 'create')->name('admin.create-chemical');
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
     });
 

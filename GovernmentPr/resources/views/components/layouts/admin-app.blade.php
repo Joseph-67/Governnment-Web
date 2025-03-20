@@ -380,7 +380,7 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('chemicals.chemicalUsage') }}">
+                            <a class="nav-link" href="{{ route('admin.create-chemical') }}">
                             <i class="iconoir-page-star menu-icon"></i>
                             <span>Chemicals</span>
                             </a>
