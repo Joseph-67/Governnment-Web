@@ -41,6 +41,49 @@ class ChemicalsController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'chemical_name' => 'required|unique:chemicals,name',
+            'chemical_category' => 'required',
+            'chemical_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cas_no' => 'nullable',
+            'ec_no' => 'nullable',
+            'reach_registration_no' => 'nullable',
+            'ghs_classification' => 'nullable',
+            'description' => 'nullable',
+            'formula' => 'nullable',
+            'hazard_information' => 'nullable',
+            'first_aid' => 'nullable',
+            'fire_fighting' => 'nullable',
+            'accidental_release' => 'nullable',
+            'storage_handling' => 'nullable',
+            'disposal' => 'nullable',
+        ]);
+
+        $chemical = new Chemicals();
+        $chemical->name = $request->chemical_name;
+        $chemical->chemical_category = $request->chemical_category;
+
+        if ($request->hasFile('chemical_image')) {
+            $imagePath = $request->file('chemical_image')->store('chemical_images', 'public');
+            $chemical->chemical_image = $imagePath;
+        }
+
+        $chemical->cas_number = $request->cas_no;
+        $chemical->description = $request->description;
+        $chemical->ec_number = $request->ec_no;
+        $chemical->reach_registration_number = $request->reach_registration_no;
+        $chemical->ghs_classification = $request->ghs_classification;
+        $chemical->formula = $request->formula;
+        $chemical->hazard_information = $request->hazard_information;
+        $chemical->first_aid = $request->first_aid;
+        $chemical->fire_fighting = $request->fire_fighting;
+        $chemical->accidental_release = $request->accidental_release;
+        $chemical->storage_handling = $request->storage_handling;
+        $chemical->disposal = $request->disposal;
+
+        $chemical->save();
+
+        return back()->with('success', 'Chemical created successfully.');
     }
 
     /**

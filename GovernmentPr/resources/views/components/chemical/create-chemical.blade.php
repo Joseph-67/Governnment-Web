@@ -79,10 +79,10 @@
                                             <div class="form-group">
                                                 <label for="chemical_category">Chemical Category</label>
                                                 <select class="form-control" id="chemical_category" name="chemical_category" required>
-                                                    <option value="organic">Organic</option>
-                                                    <option value="inorganic">Inorganic</option>
-                                                    <option value="polymer">Polymer</option>
-                                                    <option value="biochemical">Biochemical</option>
+                                                    <option value="" selected disabled>Select Category</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->categoryID }}" class="text-capitalize">{{ $category->category_name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="cas_no">CAS No</label>
-                                                <input type="text" class="form-control" id="cas_no" placeholder="CAS No" name="cas_no" required>
+                                                <input type="text" class="form-control" id="cas_no" placeholder="CAS No" name="cas_no">
                                             </div>
                                         </div>
                                         <!-- CAS No -->
@@ -110,7 +110,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="ec_no">EC No</label>
-                                                <input type="text" class="form-control" id="ec_no" placeholder="EC No" name="ec_no" required>
+                                                <input type="text" class="form-control" id="ec_no" placeholder="EC No" name="ec_no" >
                                             </div>
                                         </div>
                                         <!-- EC No -->
@@ -137,7 +137,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="description">Description</label>
-                                                <textarea class="form-control" id="description" placeholder="Description" name="description" rows="3" required></textarea>
+                                                <textarea class="form-control" id="description" placeholder="Description" name="description" rows="3" ></textarea>
                                             </div>
                                         </div>
                                         <!-- Description -->
@@ -187,28 +187,25 @@
                                         </div>
                                         <!-- Accidental Release -->
 
-                                        <!-- Storage Handling and Disposal -->
+                                        <!-- Storage Handling -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="storage_handling_disposal">Storage, Handling, and Disposal</label>
-                                                <textarea class="form-control" id="storage_handling_disposal" placeholder="Storage, Handling, and Disposal" name="storage_handling_disposal" rows="3"></textarea>
+                                                <label for="storage_handling">Storage Handling</label>
+                                                <textarea class="form-control" id="storage_handling" placeholder="Storage Handling" name="storage_handling" rows="3"></textarea>
                                             </div>
                                         </div>
-                                        <!-- Storage Handling and Disposal -->
+                                        <!-- Storage Handling -->
 
-                                        <!-- Status -->
+                                        <!-- Disposal -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="status">Status</label>
-                                                <select class="form-control" id="status" name="status" required>
-                                                    <option value="active">Active</option>
-                                                    <option value="inactive">Inactive</option>
-                                                </select>
+                                                <label for="disposal">Disposal</label>
+                                                <textarea class="form-control" id="disposal" placeholder="Disposal" name="disposal" rows="3"></textarea>
                                             </div>
                                         </div>
-                                        <!-- Status -->
+                                        <!-- Disposal -->
 
-                                        <div class="col">
+                                        <div class="col-12">
                                             <div class="d-flex align-items-center">
                                                 <button type="submit" class="btn btn-primary" id="btn-submit-chemical">Save</button>
                                                 <span class="loader" id="loader"></span>
@@ -232,17 +229,27 @@
                                         <thead>
                                         <tr>
                                             <th>Chemical Name</th>
+                                            <th>Category</th>
+                                            <th>CAS No</th>
+                                            <th>EC No</th>
+                                            <th>REACH Registration No</th>
+                                            <th>GHS Classification</th>
                                             <th>Description</th>
-                                            <th>chemical Status</th>
+                                            <th>Status</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($chemical as $chemical_detail)
                                             <tr>
-                                                <td>{{$chemical_detail -> chemical}}</td>
-                                                <td>{{$chemical_detail -> description}}</td>
-                                                <td><span class="badge bg-{{ ($chemical_detail -> status == 'active')? 'success':'danger'}}">{{$chemical_detail -> status }}</span></td>
+                                                <td>{{$chemical_detail->name}}({!! $chemical_detail->formula !!})</td>
+                                                <td>{{$chemical_detail->chemical_category}}</td>
+                                                <td>{{$chemical_detail->cas_number}}</td>
+                                                <td>{{$chemical_detail->ec_number}}</td>
+                                                <td>{{$chemical_detail->reach_registration_number}}</td>
+                                                <td>{{$chemical_detail->ghs_classification}}</td>
+                                                <td>{{$chemical_detail->description}}</td>
+                                                <td><span class="badge bg-{{ ($chemical_detail->status == 'active') ? 'success' : 'danger' }}">{{$chemical_detail->status}}</span></td>
                                                 <td class="text-end">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -255,7 +262,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @endforeach
+                                        @endforeach
                                         </tbody>
                                     </table><!--end /table-->
                                 </div><!--end /tableresponsive-->

@@ -1550,6 +1550,93 @@
                             </div>
                         </div>
                         <!-- water usage card -->
+                         <!-- water usage logs card -->
+                        <div class="card">
+    <div class="card-header">
+        <h4 class="card-title mb-0">Water Usage Logs</h4>
+    </div> <!-- end card-header -->
+
+    <div class="card-body pt-0" id="waterSourceForm">
+        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+        <div class="row g-3">
+
+            
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="water_source" class="form-label">Water Source</label>
+                    <select name="water_source_selected" id="water_source_selected" class="form-select">
+                        <option value="" selected disabled>Choose...</option>
+                    @foreach($WaterSources as $source)
+                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                            <option value="{{ $source->WaterSourcesId }}" selected>
+                                {{ $source->sources }}
+                            </option>
+                        @endif
+                    @endforeach
+
+                    
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Quantity Used(LTR)</label>
+                                            
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="unit_of_water"
+                                                    value="0">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+            <!-- unit of Water -->
+            <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Unit of Measurement</label>
+                                            
+                                            <select name="water_source" id="source" class="form-select">
+                        <option value="" selected disabled>Choose...</option>
+                        <option value="kg">Kilogram (kg)</option>
+    <option value="g">Gram (g)</option>
+    <option value="lb">Pound (lb)</option>
+    <option value="oz">Ounce (oz)</option>
+    <option value="cm">Centimeter (cm)</option>
+    <option value="m">Meter (m)</option>
+    <option value="in">Inch (in)</option>
+    <option value="ft">Foot (ft)</option>
+    <option value="l">Liter (L)</option>
+    <option value="ml">Milliliter (mL)</option>                    
+                    </select>
+                                        </div>
+                                    </div>
+                        <!-- Date -->
+                        <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Date</label>
+                                            <input type="date" class="form-control" name="date">
+                                        </div>
+                                    </div>
+                                    <!-- end Date -->
+                                    <div class="col-md-4 col-sm-6">
+                <div class="form-group">
+                    <label for="" class="col col-form-label">Purpose</label>
+                    <input type="text" class="form-control" name="purpose">
+                </div>
+            </div>
+            <!-- Save Button (Moved Down) -->
+            <div class="col-12 mt-3">
+                <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
+            </div>
+        </div>
+    </div> <!-- end card-body -->
+</div>
+<!-- End Water Usage Logs -->
                         <div class="card">
     <div class="card-header">
         <div class="row align-items-center">
@@ -4923,6 +5010,99 @@
         });
         // end water usage
       </script>
+         <script>
+          // company water sources
+            
+  // AJAX implementation to store water sources details
+  document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
+      const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
+      const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
+      const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
+      const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
+
+      if (!water_source) {
+          Toastify({
+              text: "Please select a water source.",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                  background: "linear-gradient(to right, #ff0000, #ff1745)",
+              },
+          }).showToast();
+          return;
+      }
+
+      if (!location) {
+          Toastify({
+              text: "Please provide a location.",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                  background: "linear-gradient(to right, #ff0000, #ff1745)",
+              },
+          }).showToast();
+          return;
+      }
+
+      let url = "{{ route('admin.store-company-water-source') }}";
+      const formData = new FormData();
+    formData.append('company_id', company_id);
+    formData.append('water_source_id', water_source);
+    formData.append('location', location);
+    formData.append('capacity', capacity);
+
+      fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
+          console.log(result);
+        if (result.status === "success") {
+            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+            waterSourceSelect.innerHTML = ""; // Clear existing options
+
+            result.water_sources.forEach(source => {
+                const option = document.createElement("option");
+                option.value = source.WaterSourcesId;
+                option.textContent = source.sources;
+                if (result.company_water_sources.includes(source.WaterSourcesId)) {
+                    option.selected = true; // Mark as selected if already associated with the company
+                }
+                waterSourceSelect.appendChild(option);
+            });
+
+            Toastify({
+                text: result.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+            }).showToast();
+        } else {
+            Toastify({
+                text: result.message || "An error occurred.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+        }
+      });
+    });
+          
+
+        // end company water sources
+     </script>
      <!-- water usage -->
 
      <!-- Chemical  -->
@@ -5205,100 +5385,46 @@
         });
       </script>
      <!-- Chemical  -->
-     <script>
-          // company water sources
-            
-  // AJAX implementation to store water sources details
-  document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
-      const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
-      const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
-      const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
-      const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
+    
 
-      if (!water_source) {
-          Toastify({
-              text: "Please select a water source.",
-              duration: 3000,
-              close: true,
-              gravity: "top",
-              position: "right",
-              stopOnFocus: true,
-              style: {
-                  background: "linear-gradient(to right, #ff0000, #ff1745)",
-              },
-          }).showToast();
-          return;
-      }
-
-      if (!location) {
-          Toastify({
-              text: "Please provide a location.",
-              duration: 3000,
-              close: true,
-              gravity: "top",
-              position: "right",
-              stopOnFocus: true,
-              style: {
-                  background: "linear-gradient(to right, #ff0000, #ff1745)",
-              },
-          }).showToast();
-          return;
-      }
-
-      let url = "{{ route('admin.store-company-water-source') }}";
-      const formData = new FormData();
-    formData.append('company_id', company_id);
-    formData.append('water_source_id', water_source);
-    formData.append('location', location);
-    formData.append('capacity', capacity);
-
-      fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
-          console.log(result);
-        if (result.status === "success") {
+     <!-- populate into the select -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
             const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
-            waterSourceSelect.innerHTML = ""; // Clear existing options
 
-            result.water_sources.forEach(source => {
-                const option = document.createElement("option");
-                option.value = source.WaterSourcesId;
-                option.textContent = source.sources;
-                if (result.company_water_sources.includes(source.WaterSourcesId)) {
-                    option.selected = true; // Mark as selected if already associated with the company
+            async function fetchWaterSources() {
+                try {
+                    const response = await fetch("{{ route('company.add-water-sources') }}", {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
+                        data.water_sources.forEach(source => {
+                            const option = document.createElement('option');
+                            option.value = source.WaterSourcesId;
+                            option.textContent = source.sources;
+                            waterSourceSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Failed to fetch water sources:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching water sources:', error);
                 }
-                waterSourceSelect.appendChild(option);
-            });
+            }
 
-            Toastify({
-                text: result.message,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                },
-            }).showToast();
-        } else {
-            Toastify({
-                text: result.message || "An error occurred.",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                },
-            }).showToast();
-        }
-      });
-    });
-          
+            // Fetch water sources when the page loads
+            fetchWaterSources();
+        });
+    </script>
 
-        // end company water sources
-     </script>
      
-
     @endsection
 </x-layouts.admin-app>
