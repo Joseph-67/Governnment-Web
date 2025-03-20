@@ -1561,23 +1561,21 @@
 
         <div class="row g-3">
 
-            <!-- Water Usage logs -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="log_location" class="form-label">Location</label>
-                    <select name="log_location" id="log_location" class="form-select" onchange="updateWaterSources(this.value)">
-                        <option value="" selected disabled>Choose...</option>
-                        @foreach($water_source_details as $waterSource)
-                            <option value="{{ $waterSource->location }}">{{ $waterSource->location }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+            
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="water_source" class="form-label">Water Source</label>
                     <select name="water_source_selected" id="water_source_selected" class="form-select">
                         <option value="" selected disabled>Choose...</option>
+                    @foreach($WaterSources as $source)
+                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                            <option value="{{ $source->WaterSourcesId }}" selected>
+                                {{ $source->sources }}
+                            </option>
+                        @endif
+                    @endforeach
+
+                    
                     </select>
                 </div>
             </div>
@@ -5387,31 +5385,46 @@
         });
       </script>
      <!-- Chemical  -->
-  
-            <!-- location opulate water source -->
-     <script>
-    const waterSourceMapping = @json($water_source_details->groupBy('location'));
+    
 
-    function updateWaterSources(selectedLocation) {
-        const waterSourceDropdown = document.getElementById('water_source_selected');
-        waterSourceDropdown.innerHTML = '<option value="" selected disabled>Choose...</option>';
+     <!-- populate into the select -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
 
-        if (waterSourceMapping && waterSourceMapping[selectedLocation]) {
-            waterSourceMapping[selectedLocation].forEach(source => {
-                const option = document.createElement('option');
-                option.value = source?.water_source_detail_ID ?? 'unknown-id';
-                option.textContent = source?.sources ?? `Unnamed Source (ID: ${source?.water_source_detail_ID ?? 'unknown'})`;
-                waterSourceDropdown.appendChild(option);
-            });
-        } else {
-            console.warn(`No water sources found for location: ${selectedLocation}`);
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'No sources available';
-            waterSourceDropdown.appendChild(option);
-        }
-    }
-</script>
-<!-- end location populate water source -->
+            async function fetchWaterSources() {
+                try {
+                    const response = await fetch("{{ route('company.add-water-sources') }}", {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
+                        data.water_sources.forEach(source => {
+                            const option = document.createElement('option');
+                            option.value = source.WaterSourcesId;
+                            option.textContent = source.sources;
+                            waterSourceSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Failed to fetch water sources:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching water sources:', error);
+                }
+            }
+
+            // Fetch water sources when the page loads
+            fetchWaterSources();
+        });
+    </script>
+
+     
     @endsection
 </x-layouts.admin-app>

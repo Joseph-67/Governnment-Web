@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('quantity_used', 10, 2);
             $table->string('unit', 20);
             $table->date('usage_date');
-            $table->time('location');
             $table->text('purpose');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
