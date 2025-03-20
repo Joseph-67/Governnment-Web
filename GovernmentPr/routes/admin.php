@@ -24,7 +24,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\MapReport;
-use App\Http\Controllers\viewEmailController;
+use App\Http\Controllers\ViewEmailController;
+use App\Http\Controllers\ChemicalStockMovementController;
 
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -42,19 +43,19 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
     });
 
-    // permissions
+    // Permissions
     Route::controller(PermissionsController::class)->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
-    //users
+    // Users
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
         Route::get('/users-details',  'getAllUsers')->name('users.details');
         Route::post('/view-users',  'store')->name('view.details');
-
     });
-    // roles
+
+    // Roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
@@ -63,58 +64,62 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
         Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
-    // settings
+
+    // Settings
     Route::controller(generalSetting::class)->group(function() {
         Route::get('/general-setting', 'create')->name('admin.general-setting');
         Route::post ('/register-settings', 'store')->name('admin.store-settings');
     });
+
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
     }); 
 
-    //Pages
+    // Pages
     Route::controller(PagesController::class)->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
     }); 
 
-      //Posts
-      Route::controller(PostsController::class)->group(function() {
+    // Posts
+    Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
     }); 
-      Route::controller(AddPostController::class)->group(function() {
+    Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });
 
-    //Events
+    // Events
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
     }); 
     Route::controller(AddEventController::class)->group(function() {
         Route::get ('/create-events', 'index')->name('CMS.add-event');
     }); 
-    // Email integration
+
+    // Email Integration
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email-configuration');
     });
-    // email application
+
+    // Email Application
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
         Route::get ('/fetch-user', 'fetch_users')->name('get-user');
         Route::post ('/save-email', 'store')->name('send-mail');
-       
     });
+
     Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
-    
-    //Material
+
+    // Material
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
     }); 
 
-    //Chemicals
+    // Chemicals
     Route::controller(ChemicalUsageController::class)->group(function() {
         Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
@@ -123,8 +128,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(CompanyChemicalController::class)->group(function() {
         Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
+        Route::post('/company/chemical-setup/price', 'store_price')->name('admin.save-company-chemical-price');
     });
 
+    // Company
     Route::controller(CompanyController::class)->group(function() {
         Route::get('/company', 'index')->name('admin.view-company');
         Route::get('/create-company', 'create')->name('admin.create-company');
@@ -148,11 +155,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
-        // fetch admin details
     });
 
+    // RECP
     Route::controller(RECPController::class)->group(function(){
-        // add
+        // Add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
         Route::post('/add-environmental-benefit', 'add_environmental_benefit')->name('admin.add-recp-environmental');
         Route::post('/add-house-keeping', 'add_house_keeping')->name('admin.add-house-keeping');
@@ -163,9 +170,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-product-innovation', 'add_product_innovation')->name('admin.add-product-innovation');
         Route::post('/add-hazarduous-material', 'add_hazarduous_material')->name('admin.add-hazarduous-material');
         Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
-        Route::post('/add-problem-solution', 'add_problem_solution')->name('admin.add-problem-solution');
+        Route::post('/add-problem-solution', 'add_problem_solutions')->name('admin.add-problem-solution');
         
-        // update
+        // Update
         Route::post('/update-improvement-key-area', 'update_improvement_key_area')->name('admin.update-improvement-key-area');
         Route::post('/update-product-innovation', 'update_product_innovation')->name('admin.update-product-innovation');
         Route::post('/update-hazarduous-material', 'update_hazarduous_material')->name('admin.update-hazarduous-material');
@@ -173,7 +180,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/update-problem-summary', 'update_problem')->name('admin.update-problem-summary');
         Route::post('/update-suggested-solution', 'update_solution')->name('admin.update-suggested-solution');
         
-        // remove
+        // Remove
         Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
         Route::post('/remove-environmental-benefit', 'remove_environmetal_benefit')->name('admin.remove-recp-environmental');
         Route::post('/remove-house-keeping', 'remove_house_keeping')->name('admin.remove-house-keeping');
@@ -187,6 +194,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-problem-solution', 'remove_problem_solution')->name('admin.remove-problem-solution');
     });
 
+    // Company Material
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
@@ -194,23 +202,32 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/stock-analysis', 'getMovements')->name('admin.stock-analysis');
     });
 
+    // Stock Movement
     Route::controller(StockMovementController::class)->group(function(){
         Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
         Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
     });
 
+    // Category
     Route::controller(CategoryController::class)->group(function(){
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
     });
 
+    // Team Member
     Route::controller(TeamMemberController::class)->group(function(){
         Route::get ('/team-member', 'index')->name('admin.team-member');
     });
 
+    // Map Report
     Route::controller(MapReport::class)->group(function(){
         Route::get ('/companies-map', 'show_all_companies')->name('admin.show-all-companies');
         Route::get ('/all-companies', 'get_all_companies')->name('admin.get-all-companies');
     });
 
+    // Chemical Stock Movement
+    Route::controller(ChemicalStockMovementController::class)->group(function(){
+        Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
+        Route::post('/company/chemical-setup/check-out', 'store_chemical_checkout')->name('admin.save-company-chemical-check-out');
+    });
 });

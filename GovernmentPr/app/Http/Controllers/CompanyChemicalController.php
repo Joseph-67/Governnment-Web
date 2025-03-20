@@ -72,6 +72,42 @@ class CompanyChemicalController extends Controller
         ]);
     }
 
+    public function check_in_chemical(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), [
+            'company_id' => 'required|integer',
+            'chemical_id' => 'required|integer',
+        ]);
+
+        // Return validation errors if any
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation failed.',
+                'errors'  => $validatedData->errors(),
+            ], 422);
+        }
+
+        $companyChemical = CompanyChemical::where('company_id', $request['company_id'])
+            ->where('chemical_id', $request['chemical_id'])
+            ->first();
+
+        if (!$companyChemical) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Chemical not found for the specified company.',
+            ], 404);
+        }
+
+        $companyChemical->status = "active";
+        $companyChemical->save();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Chemical checked in successfully.',
+            'data'    => $companyChemical
+        ]);
+    }
 
     /**
      * Display the specified resource.

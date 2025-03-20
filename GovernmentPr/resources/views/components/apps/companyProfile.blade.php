@@ -21,7 +21,8 @@
 
                             <div class="col-lg-1 ms-auto align-self-center">
                                 <div class="d-flex justify-content-center">
-                                    <div class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
+                                    <div
+                                        class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
                                         <h5 class="fw-semibold fs-22 mb-1">{{ $company->number_of_employees }}</h5>
                                         <p class="text-muted mb-0 fw-medium">Employees</p>
                                     </div>
@@ -42,33 +43,55 @@
                                 <h4 class="card-title">Personal Information</h4>
                             </div><!--end col-->
                             <div class="col-auto">
-                                <a href="#" class="float-end text-muted d-inline-flex text-decoration-underline"><i class="iconoir-edit-pencil fs-18 me-1"></i>Edit</a>
+                                <a href="#" class="float-end text-muted d-inline-flex text-decoration-underline"><i
+                                        class="iconoir-edit-pencil fs-18 me-1"></i>Edit</a>
                             </div><!--end col-->
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
                         <p class="text-muted fw-medium mb-1">
-                            This section displays the personal information you’ve provided to us. Please review the details below to ensure they’re accurate and up-to-date.
+                            This section displays the personal information you’ve provided to us. Please review the
+                            details below to ensure they’re accurate and up-to-date.
                         </p>
                         <p class="text-muted fw-medium mb-3">
-                            If you need to make any changes, simply click the "Edit" button. Your privacy is important to us, and all your information is securely stored in compliance with our [Privacy Policy].
+                            If you need to make any changes, simply click the "Edit" button. Your privacy is important
+                            to us, and all your information is securely stored in compliance with our [Privacy Policy].
                         </p>
                         <div class="mb-3">
-                            <span class="badge bg-transparent border border-light text-gray-700 fs-12 fw-medium mb-1">{{ $company->industry_process }}</span>
+                            <span class="badge bg-transparent border border-light text-gray-700 fs-12 fw-medium mb-1">{{
+                                $company->industry_process }}</span>
                         </div>
                         @php
                         $est_date = Carbon\Carbon::parse($company->date_of_establishment);
                         @endphp
                         <ul class="list-unstyled mb-0">
-                            <li class=""><i class="las la-birthday-cake me-2 text-secondary fs-22 align-middle"></i> <b> Establishment Date </b> : {{ $est_date->format('d M Y') }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Primary Phone </b> : {{ $company->primary_phone_number }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Secondary Phone </b> : {{ $company->secondary_phone_number }}</li>
-                            <li class="mt-2"><i class="las la-envelope me-2 text-secondary fs-22 align-middle me-2"></i> <b> Email </b> : {{ $company->email }}</li>
-                            <li class="mt-2"><i class="las la-link text-secondary fs-22 align-middle me-2"></i> <b> Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a></li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i> <b> ZIP Code </b> : {{ $company->zip_code }}</li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i> <b> Longitude </b> : {{ $company->longitude }}</li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i> <b> Latitude </b> : {{ $company->latitude }}</li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i> <b> MGRS </b> : {{ $company->mgrs }}</li>
+                            <li class=""><i class="las la-birthday-cake me-2 text-secondary fs-22 align-middle"></i> <b>
+                                    Establishment Date </b> : {{ $est_date->format('d M Y') }}</li>
+                            <!-- <li class="mt-2"><i class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Industry </b> : {{ $company->industry }}</li> -->
+                            <!-- <li class="mt-2"><i class="las la-university me-2 text-secondary fs-22 align-middle"></i> <b> Education </b> : Stanford Univercity</li> -->
+                            <!-- <li class="mt-2"><i class="las la-language me-2 text-secondary fs-22 align-middle"></i> <b> Languages </b> : English, French, Spanish</li> -->
+                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
+                                    Primary Phone </b> : {{ $company->primary_phone_number }}</li>
+                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
+                                    Secondary Phone </b> : {{ $company->secondary_phone_number }}</li>
+                            <li class="mt-2"><i class="las la-envelope me-2 text-secondary fs-22 align-middle me-2"></i>
+                                <b> Email </b> : {{ $company->email }}
+                            </li>
+                            <li class="mt-2"><i class="las la-link text-secondary fs-22 align-middle me-2"></i> <b>
+                                    Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a>
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> ZIP Code </b> : {{ $company->zip_code }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Longitude </b> : {{ $company->longitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> Latitude </b> : {{ $company->latitude }}
+                            </li>
+                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
+                                <b> MGRS </b> : {{ $company->mgrs }}
+                            </li>
                         </ul>
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -82,11 +105,21 @@
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
+                        <p class="text-muted fw-medium mb-1">
+                            <!-- This section displays the personal information you’ve provided to us. Please review the details below to ensure they’re accurate and up-to-date. -->
+                        </p>
                         <ul class="list-unstyled mb-0">
-                            <li class="text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental Operations Manager </b> : {{ $company->operations_manager }}</li>
-                            <li class="mt-2 text-capitalize"><i class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact Person </b> : {{ $company->contact_person_full_name }}</li>
-                            <li class="mt-2 text-capitalize"><i class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position </b> : {{ $company->contact_person_position }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b> Mobile </b> : {{ $company->contact_person_contact_number }}</li>
+                            <li class="text-capitalize"><i
+                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental
+                                    Operations Manager </b> : {{ $company->operations_manager }}</li>
+                            <li class="mt-2 text-capitalize"><i
+                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact
+                                    Person </b> : {{ $company->contact_person_full_name }}</li>
+                            <li class="mt-2 text-capitalize"><i
+                                    class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position
+                                </b> : {{ $company->contact_person_position }}</li>
+                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
+                                    Mobile </b> : {{ $company->contact_person_contact_number }}</li>
                         </ul>
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -94,65 +127,32 @@
             <div class="col-md-8">
                 <ul class="nav nav-tabs mb-3" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab" aria-selected="true">Policies & Objectives</a>
+                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab"
+                            aria-selected="true">Policies & Objectives</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab" aria-selected="false">R.E.C.P</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
+                            aria-selected="false">R.E.C.P</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab" aria-selected="false">Water Inventory</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
+                            aria-selected="false">Water Inventory</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab" aria-selected="false">Chemical Inventory</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
+                            aria-selected="false">Chemical Inventory</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab" aria-selected="false">Material Inventory</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
+                            aria-selected="false">Material Inventory</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab" aria-selected="false">Settings</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
+                            aria-selected="false">Settings</a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane active" id="policy" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Policies</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <!-- Policy -->
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="quality-policy" value="quality policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'quality policy')" name="policy[]" {{(in_array('quality policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="quality-policy">Quality policy </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="environmental-policy" value="environmental policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'environmental policy')" name="policy[]" {{(in_array("environmental policy", array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="environmental-policy">Enviromental Policy.</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="health-and-safety-policy" value="health and safety policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'health and safety policy')" name="policy[]" {{(in_array('health and safety policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="health-and-safety-policy">Health and safety policy. </label>
-                                        </div>
-                                    </div>
-                                    <x-section-border />
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="human-resource-policy" value="human resource policy" onchange="ChangePolicy(this, '{{$company->company_id}}', 'human resource policy')" name="policy[]" {{(in_array('human resource policy', array_column($company_policies->toArray(), 'policy_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="human-resource-policy">Human resource policy. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
                 <div class="tab-content">
                     <div class="tab-pane active" id="policy" role="tabpanel">
                         <div class="card">
@@ -1632,11 +1632,11 @@
                     <!-- tab water usage -->
                     <!-- tab chemical inventory -->
                     <div class="tab-pane p-3" id="chemical-usage" role="tabpanel">
-                        <div class="card">
+                        <div class="card shadow-sm border-0">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Add New Chemical</h4>
+                                        <h4 class="card-title mb-0">Add New Chemical</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
@@ -1664,74 +1664,78 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">Save</button>
-                                                <span class="loader" id="loader"></span>
+                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">
+                                                    Save
+                                                    <span class="loader" id="loader"></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Chemical</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
+                        <div class="card shadow-sm border-0 mt-4">
+                            <div class="card-header bg-primary text-white" id="headingChemicals">
+                                <h4 class="card-title mb-0">
+                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse" href="#collapseChemicals" aria-expanded="true" aria-controls="collapseChemicals">
+                                        Company Chemicals
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0" id="tbl-company-chemical">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Chemical</th>
-                                                <th>Unit of Measurement</th>
-                                                <th>Chemical Status</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($company_chemicals as $chemical)
-                                            <tr>
-                                                <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
-                                                <td>{{ $chemical->unit }}</td>
-                                                <td>
-                                                    <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
-                                                        {{ $chemical->status }}
-                                                    </span>
-                                                </td>
-                                                <td class="text-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                            data-bs-toggle="dropdown" href="#" role="button"
-                                                            aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                            aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
-                                                                Chemical</a>
-                                                            <a class="dropdown-item" href="#">Update Chemical</a>
-                                                            <a class="dropdown-item" href="#">Delete Chemical</a>
-                                                            <hr class="dropdown-divider">
-                                                            <a class="dropdown-item" href="#">Setup Price</a>
-                                                            <a href="#" class="dropdown-item">Check In Item</a>
-                                                            <a href="#" class="dropdown-item">Check Out Item</a>
-                                                            <a href="#" class="dropdown-item">Make Adjustment</a>
+                            <div id="collapseChemicals" class="collapse show" aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" id="tbl-company-chemical">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Chemical</th>
+                                                    <th>Unit of Measurement</th>
+                                                    <th>Chemical Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($company_chemicals as $chemical)
+                                                <tr>
+                                                    <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
+                                                    <td>{{ $chemical->unit }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                            {{ $chemical->status }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block" style="position: relative ! important;z-index: 99999999999999;">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11" style="z-index: 99999999999999;">
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
+                                                                    Chemical</a>
+                                                                <a class="dropdown-item" href="#">Update Chemical</a>
+                                                                <a class="dropdown-item" href="#">Delete Chemical</a>
+                                                                <hr class="dropdown-divider">
+                                                                <a class="dropdown-item" href="#">Setup Price</a>
+                                                                <a href="#" class="dropdown-item" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check In Item</a>
+                                                                <a href="#" class="dropdown-item" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check Out Item</a>
+                                                                <a href="#" class="dropdown-item">Make Adjustment</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table><!--end /table-->
-                                </div><!--end /tableresponsive-->
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table><!--end /table-->
+                                    </div><!--end /tableresponsive-->
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- end chemical inventory -->
+                    <!-- end tab chemical inventory -->
                     <!-- tab Material Inventory -->
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
@@ -2294,12 +2298,11 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Check Out Item </h5>
+                    <h5 class="modal-title">Check Out Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2359,12 +2362,11 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="adjustmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Make Adjustment </h5>
+                    <h5 class="modal-title">Make Adjustment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2422,6 +2424,126 @@
         </div>
     </div>
     <!-- end modal -->
+    <!-- checkout chemical modal -->
+    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Check In Chemical</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkIn_chemical_id">
+                    <input type="hidden" name="chemical_id">
+                    <input type="hidden" name="company_id">
+
+                    <div class="row g-2">
+                        <!-- Chemical name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Chemical</label>
+                                <input type="text" class="form-control" readonly name="checkIn_chemical_name">
+                            </div>
+                        </div>
+                        <!-- Chemical name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Remark -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+     <!-- checkout modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutChemicalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Check Out Chemical</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkOut_chemical_id">
+                    <input type="hidden" name="chemical_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Chemical name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Chemical</label>
+                                <input type="text" class="form-control" readonly name="checkOut_chemical_name">
+                            </div>
+                        </div>
+                        <!-- Chemical name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Remark -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out-chemical">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -4843,6 +4965,178 @@
                         </tr>`
                     });
                 }
+            });
+        });
+
+        // Trigger CheckIn Chemical
+        let triggerCheckInChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+            let checkInChemicalModal = document.querySelector('#checkInChemicalModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value = companyChemicalID;
+            document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value = chemicalID;
+            document.querySelector('#checkInChemicalModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_name"]').value = chemicalName;
+            const myModal = new bootstrap.Modal(checkInChemicalModal);
+            myModal.show();
+        }
+
+        // Trigger CheckOut Chemical
+        let triggerCheckOutChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+            let checkOutChemicalModal = document.querySelector('#checkOutChemicalModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value = companyChemicalID;
+            document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value = chemicalID;
+            document.querySelector('#checkOutChemicalModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_name"]').value = chemicalName;
+            const myModal = new bootstrap.Modal(checkOutChemicalModal);
+            myModal.show();
+        }
+
+        // checkin chemical
+        let btn_submit_check_in_chemical = document.querySelector('#btn-submit-check-in-chemical');
+        btn_submit_check_in_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkInChemicalModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkIn_chemical_id = document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value.trim();
+            let chemical_id = document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value.trim();
+            let company_id = document.querySelector('#checkInChemicalModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkInChemicalModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkInChemicalModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkInChemicalModal input[name="remark"]').value.trim();
+            if (!checkIn_chemical_id) {
+                Toastify({
+                    text: "Chemical id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-chemical-check-in') }}"
+            let formData = new FormData();
+            formData.append('checkIn_chemical_id', checkIn_chemical_id);
+            formData.append('chemical_id', chemical_id);
+            formData.append('company_id', company_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
+        // checkout chemical
+        let btn_submit_check_out_chemical = document.querySelector('#btn-submit-check-out-chemical');
+        btn_submit_check_out_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkOutChemicalModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkOut_chemical_id = document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value.trim();
+            let chemical_id = document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value.trim();
+            let company_id = document.querySelector('#checkOutChemicalModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkOutChemicalModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkOutChemicalModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkOutChemicalModal input[name="remark"]').value.trim();
+            if (!checkOut_chemical_id) {
+                Toastify({
+                    text: "Chemical id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-chemical-check-out') }}"
+            let formData = new FormData();
+            formData.append('checkOut_chemical_id', checkOut_chemical_id);
+            formData.append('chemical_id', chemical_id);
+            formData.append('company_id', company_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
             });
         });
       </script>
