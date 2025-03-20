@@ -4781,9 +4781,10 @@
     </script>
     <!-- end activate and deactivate -->
      <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
-     <!-- water usage -->
-      <script>
-        const water_usage_date = document.querySelector('#water-usage-form #date')
+    <!-- water usage -->
+    <script>
+        const water_usage_date = document.querySelector('#water-usage-form #date');
+
         function addDate(ele) {
             if (ele.checked) {
                 switch (ele.value) {
@@ -4801,28 +4802,26 @@
                                                 id="example-month-input" name="date">`;
                         break;
                     case "yearly":
-                        // Create the select element dynamically
                         const yearlyLabel = `<label for="yearly-select" class="col col-form-label">Year</label>`;
                         const yearlySelect = document.createElement("select");
                         yearlySelect.className = "form-control";
                         yearlySelect.name = "date";
                         yearlySelect.id = "yearly-select";
 
-                        // Populate the select with year options
                         const currentYear = new Date().getFullYear();
                         for (let year = 1900; year <= currentYear; year++) {
                             const option = document.createElement("option");
                             option.value = year;
                             option.textContent = year;
-                            if (year == currentYear) {option.setAttribute("selected", true)}
+                            if (year == currentYear) {
+                                option.setAttribute("selected", true);
+                            }
                             yearlySelect.appendChild(option);
                         }
 
-                        // Clear existing content and append new content
                         water_usage_date.innerHTML = yearlyLabel;
                         water_usage_date.appendChild(yearlySelect);
                         break;
-                    
                     default:
                         water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
                         <input type="date" min="0" class="form-control" name="date">`);
@@ -4830,21 +4829,20 @@
                 }
             }
         }
-        // checkout water
-      
-        // company material checkout
+
         let btn_submit_water_usage = document.querySelector('#water-usage-form #btn-submit-water-usage');
         btn_submit_water_usage.addEventListener('click', () => {
             console.log("clicked");
-            // Show the loader
-            let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
-            let volume          = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
-            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
-            let date            = document.querySelector('#water-usage-form [name="date"]').value.trim();
-            let remark          = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
-            if (!company_id) {
+
+            let company_id = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
+            let volume = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
+            let date_type = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
+            let date = document.querySelector('#water-usage-form [name="date"]').value.trim();
+            let remark = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
+
+            if (!company_id || !volume || !date_type || !date) {
                 Toastify({
-                    text: "Company id field cannot be empty.",
+                    text: "All fields are required.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -4854,140 +4852,86 @@
                         background: "linear-gradient(to right, #ff0000, #ff1745)",
                     },
                 }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!volume) {
-                Toastify({
-                    text: "Volume of water field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!date_type) {
-                Toastify({
-                    text: "Date type field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!date) {
-                Toastify({
-                    text: "Date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
+                return;
             }
 
-            let url = "{{ route('company.add-water-usage') }}"
+            let url = "{{ route('company.add-water-usage') }}";
             let formData = new FormData();
-
             formData.append('company_id', company_id);
             formData.append('volume', volume);
             formData.append('date_type', date_type);
             formData.append('date', date);
             formData.append('remark', remark);
+
             fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
                 console.log(result);
-                // loader.style.display = 'none';
-                let water_usage_tbody = document.querySelector('#water-usage-table')
+                let water_usage_tbody = document.querySelector('#water-usage-table');
                 water_usage_tbody.innerHTML = '';
                 result.water_usage.forEach(data => {
-                let parsedDate;
-                
-                // Check if the date is in ISO week-date format (e.g., "YYYY-Www")
-                if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
-                    console.log('got in here');
-                    
-                    const [year, week] = data.date.split("-W");
-                    const januaryFourth = new Date(`${year}-01-04`); // Jan 4 is always in the first ISO week
-                    const dayOfWeek = januaryFourth.getDay() || 7; // Ensure Sunday is 7, not 0
-                    parsedDate = new Date(januaryFourth);
-                    parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1); // Calculate ISO week start
-                } else {
-                    parsedDate = new Date(data.date); // Parse other formats normally
-                }
+                    let parsedDate;
 
-                if (isNaN(parsedDate)) {
-                    console.error("Invalid date:", data.date);
-                    return; // Skip invalid dates
-                }
+                    if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
+                        const [year, week] = data.date.split("-W");
+                        const januaryFourth = new Date(`${year}-01-04`);
+                        const dayOfWeek = januaryFourth.getDay() || 7;
+                        parsedDate = new Date(januaryFourth);
+                        parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1);
+                    } else {
+                        parsedDate = new Date(data.date);
+                    }
 
-                const options = { year: "numeric", month: "short", day: "numeric" };
-                let usage_date = "";
+                    if (isNaN(parsedDate)) {
+                        console.error("Invalid date:", data.date);
+                        return;
+                    }
 
-                switch (data.date_type) {
-                    case "monthly":
-                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" }); // e.g., "Feb 2025"
-                        break;
-                    case "yearly":
-                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" }); // e.g., "2025"
-                        break;
-                    case "weekly":
-                        const startOfWeek = new Date(parsedDate);
-                        const endOfWeek = new Date(startOfWeek);
-                        endOfWeek.setDate(startOfWeek.getDate() + 6);
-                        usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
-                        break;
-                    default:
-                        usage_date = parsedDate.toLocaleDateString(undefined, options); // e.g., "04 Feb 2025"
-                        break;
-                }
+                    const options = { year: "numeric", month: "short", day: "numeric" };
+                    let usage_date = "";
 
-                // Append row to table
-                water_usage_tbody.innerHTML += `
-                <tr>
-                    <td>${data.volume??""}</td>
-                    <td>${usage_date??""}</td>
-                    <td>${data.remark??""}</td>
-                    <td class="text-end">
-                        <div class="dropdown d-inline-block">
-                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                data-bs-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="false" aria-expanded="false">
-                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end"
-                                aria-labelledby="dLabel11">
-                                <a class="dropdown-item" href="#">Update Material</a>
-                                <a class="dropdown-item" href="#">Delete Material</a>
-                                <hr class="dropdown-divider">
+                    switch (data.date_type) {
+                        case "monthly":
+                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+                            break;
+                        case "yearly":
+                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" });
+                            break;
+                        case "weekly":
+                            const startOfWeek = new Date(parsedDate);
+                            const endOfWeek = new Date(startOfWeek);
+                            endOfWeek.setDate(startOfWeek.getDate() + 6);
+                            usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
+                            break;
+                        default:
+                            usage_date = parsedDate.toLocaleDateString(undefined, options);
+                            break;
+                    }
+
+                    water_usage_tbody.innerHTML += `
+                    <tr>
+                        <td>${data.volume ?? ""}</td>
+                        <td>${usage_date ?? ""}</td>
+                        <td>${data.remark ?? ""}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                    data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-haspopup="false" aria-expanded="false">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="dLabel11">
+                                    <a class="dropdown-item" href="#">Update Material</a>
+                                    <a class="dropdown-item" href="#">Delete Material</a>
+                                    <hr class="dropdown-divider">
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                `;
-            });
-
-
+                        </td>
+                    </tr>
+                    `;
+                });
             });
         });
-        // end water usage
-      </script>
+    </script>
          <script>
           // company water sources
             
