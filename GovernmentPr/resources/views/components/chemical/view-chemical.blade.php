@@ -45,9 +45,10 @@
                                 <i class="icofont-calendar fs-5 me-1"></i> This Year<i class="las la-angle-down ms-1"></i>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" data-period="this_week">This Week</a></li>
                                 <li><a class="dropdown-item" data-period="last_week">Last Week</a></li>
-                                <li><a class="dropdown-item" data-period="previous_day">Previous Day</a></li>
-                                <li><a class="dropdown-item" data-period="monthly">This Month</a></li>
+                                <li><a class="dropdown-item" data-period="this_month">This Month</a></li>
+                                <li><a class="dropdown-item" data-period="last_month">Last Month</a></li>
                                 <li><a class="dropdown-item" data-period="this_year">This Year</a></li>
                                 <li><a class="dropdown-item" data-period="last_year">Last Year</a></li>
                             </ul>
@@ -114,142 +115,102 @@
 </div>
 @section('scripts')
 <script>
- let stock_analysis = async (period, company) => {
-            const url = new URL("{{ route('admin.stock-analysis') }}");
-            url.searchParams.append("query", period);
-            url.searchParams.append("company", company);
-            const response = await fetch(url.toString());
-            const resp = await response.json();
+const stock_analysis = async (period, company_chemical_id) => {
+    const url = new URL("{{ route('admin.chemical-stock-analysis') }}");
+    url.searchParams.append("period", period);
+    url.searchParams.append("company_chemical_id", company_chemical_id);
 
-            const monthlyData = {};
-            const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const response = await fetch(url.toString());
+    const resp = await response.json();
 
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentDay = currentDate.getDate();
-            const currentYear = currentDate.getFullYear();
-            const lastYear = currentYear - 1;
+    const analysisData = {};
+    let categories = [];
+    const currentDate = new Date();
 
-            const lastWeekStartDate = new Date(currentDate);
-            lastWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay() - 6);
-
-            const lastWeekEndDate = new Date(currentDate);
-            lastWeekEndDate.setDate(currentDate.getDate() - currentDate.getDay());
-
-            const previousDay = new Date(currentDate);
-            previousDay.setDate(currentDate.getDate() - 1);
-
-            resp.forEach((item) => {
-                const movementDate = new Date(item.movement_date);
-                const movementType = item.movement_type;
-                const month = movementDate.getMonth();
-                const year = movementDate.getFullYear();
-
-                if (period === "this_year" && year !== currentYear) return;
-                if (period === "last_year" && year !== lastYear) return;
-                if (period === "monthly" && month !== currentMonth) return;
-                if (period === "previous_day" && movementDate.toDateString() !== previousDay.toDateString()) return;
-                if (period === "last_week" && (movementDate < lastWeekStartDate || movementDate > lastWeekEndDate)) return;
-
-                if (!monthlyData[movementType]) {
-                    monthlyData[movementType] = new Array(12).fill(0);
-                }
-
-                monthlyData[movementType][month] += parseFloat(item.quantity);
-            });
-
-            const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
-                name: key,
-                data: data
-            }));
-
-            const chartOptions = {
-                series: seriesData,
-                chart: {
-                    toolbar: { show: false },
-                    type: "bar",
-                    fontFamily: "inherit",
-                    foreColor: "#adb0bb",
-                    height: 292,
-                    stacked: true,
-                    offsetX: -15
-                },
-                colors: ["var(--bs-primary)", "var(--bs-secondary)"],
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        barHeight: "80%",
-                        columnWidth: "12%",
-                        borderRadius: [3],
-                        borderRadiusApplication: "end",
-                        borderRadiusWhenStacked: "all"
-                    }
-                },
-                dataLabels: { enabled: false },
-                legend: {
-                    show: true,
-                    position: "top",
-                    horizontalAlign: "right",
-                    markers: {
-                        width: 12,
-                        height: 12,
-                        radius: 3
-                    }
-                },
-                grid: {
-                    show: true,
-                    strokeDashArray: 3,
-                    padding: { top: 0, bottom: 0, right: 0 },
-                    borderColor: "rgba(0,0,0,0.05)",
-                    xaxis: { lines: { show: true } },
-                    yaxis: { lines: { show: false } }
-                },
-                yaxis: { tickAmount: 4 },
-                xaxis: {
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    categories: categories
-                }
-            };
-
-            const chartContainer = document.querySelector("#reports-bar");
-            const chart = new ApexCharts(chartContainer, chartOptions);
-            chart.render();
-
-            document.getElementById("download-csv").addEventListener("click", () => {
-                downloadCSV(resp, period);
-            });
-        };
-
-        const downloadCSV = (data, period) => {
-            const csvHeader = "Movement Date,Movement Type,Quantity\n";
-            const csvRows = data.map(
-                (item) => `${item.movement_date},${item.movement_type},${item.quantity}`
-            );
-            const csvContent = csvHeader + csvRows.join("\n");
-
-            const blob = new Blob([csvContent], { type: "text/csv" });
-            const url = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `stock_analysis_${period}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
-            item.addEventListener("click", (e) => {
-                e.preventDefault();
-                const period = item.getAttribute("data-period");
-
-                document.getElementById("selected-period-label").textContent = `Selected Period: ${period.charAt(0).toUpperCase()}${period.slice(1).replace("_", " ")}`;
-                stock_analysis(period, "{{ $CompanyChemical->company_chemical_id }}");
-            });
+    // Generate categories based on period
+    if (period === "this_month") {
+        const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+        categories = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}`);
+    } else if (period === "last_month") {
+        const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+        const lastMonthDays = new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 0).getDate();
+        categories = Array.from({ length: lastMonthDays }, (_, i) => `${i + 1}`);
+    } else if (period === "this_week" || period === "last_week") {
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(currentDate.getDate() - (period === "last_week" ? currentDate.getDay() + 7 : currentDate.getDay()));
+        weekStart.setHours(0, 0, 0, 0);
+        categories = Array.from({ length: 7 }, (_, i) => {
+            const day = new Date(weekStart);
+            day.setDate(weekStart.getDate() + i);
+            return day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         });
+    } else if (period === "this_year" || period === "last_year") {
+        categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    }
 
-        stock_analysis("this_year", "{{ $CompanyChemical->company_chemical_id }}");
+    // Process data
+    resp.forEach((item) => {
+        const movementDate = new Date(item.movement_date);
+        const movementType = item.movement_type;
+
+        let categoryIndex;
+        if (period === "this_month" || period === "last_month") {
+            categoryIndex = movementDate.getDate() - 1;
+        } else if (period === "this_week" || period === "last_week") {
+            const formattedDate = movementDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            categoryIndex = categories.indexOf(formattedDate);
+        } else {
+            categoryIndex = movementDate.getMonth();
+        }
+
+        if (!analysisData[movementType]) {
+            analysisData[movementType] = Array(categories.length).fill(0);
+        }
+
+        analysisData[movementType][categoryIndex] += parseFloat(item.quantity);
+    });
+
+    // Prepare chart series
+    const seriesData = Object.entries(analysisData).map(([key, data]) => ({
+        name: key,
+        data: data,
+    }));
+
+    // Configure chart options
+    const chartOptions = {
+        series: seriesData,
+        chart: {
+            toolbar: { show: false },
+            type: "bar",
+            stacked: true,
+            height: 300,
+        },
+        xaxis: {
+            categories: categories,
+        },
+        legend: {
+            position: "top",
+        },
+    };
+
+    // Render chart
+    const chartContainer = document.querySelector("#reports-bar");
+    chartContainer.innerHTML = "";
+    const chart = new ApexCharts(chartContainer, chartOptions);
+    chart.render();
+};
+
+document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', (event) => {
+        event.preventDefault();
+        const period = event.target.getAttribute('data-period');
+        document.getElementById('selected-period-label').innerText = `Selected Period: ${event.target.innerText}`;
+        stock_analysis(period, "{{ $CompanyChemical->company_chemical_id }}");
+    });
+});
+// Initialize with default period
+stock_analysis("this_year", "{{ $CompanyChemical->company_chemical_id }}");
+
 </script>
 @endsection                
 </x-layouts.admin-app>

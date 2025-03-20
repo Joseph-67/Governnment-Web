@@ -179,142 +179,108 @@
     <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('adminAssets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
-        let stock_analysis = async (period, company) => {
-            const url = new URL("{{ route('admin.stock-analysis') }}");
-            url.searchParams.append("query", period);
-            url.searchParams.append("company", company);
-            const response = await fetch(url.toString());
-            const resp = await response.json();
+        const fetchChemicalStockAnalysis = async (query, companyChemicalId) => {
+    const url = new URL("{{ route('admin.chemical-stock-analysis') }}"); // Replace with actual route
+    url.searchParams.append("query", query);
+    url.searchParams.append("company_chemical_id", companyChemicalId);
 
-            const monthlyData = {};
-            const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    try {
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        return [];
+    }
+};
 
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentDay = currentDate.getDate();
-            const currentYear = currentDate.getFullYear();
-            const lastYear = currentYear - 1;
+const analyzeStockData = (data) => {
+    const monthlyData = {
+        checkin: new Array(12).fill(0),
+        checkout: new Array(12).fill(0),
+    };
 
-            const lastWeekStartDate = new Date(currentDate);
-            lastWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay() - 6);
+    data.forEach((item) => {
+        const movementDate = new Date(item.movement_date);
+        const month = movementDate.getMonth(); // 0 = January, 11 = December
 
-            const lastWeekEndDate = new Date(currentDate);
-            lastWeekEndDate.setDate(currentDate.getDate() - currentDate.getDay());
+        if (item.movement_type === "checkin") {
+            monthlyData.checkin[month] += parseFloat(item.quantity);
+        } else if (item.movement_type === "checkout") {
+            monthlyData.checkout[month] += parseFloat(item.quantity);
+        }
+    });
 
-            const previousDay = new Date(currentDate);
-            previousDay.setDate(currentDate.getDate() - 1);
+    return monthlyData;
+};
 
-            resp.forEach((item) => {
-                const movementDate = new Date(item.movement_date);
-                const movementType = item.movement_type;
-                const month = movementDate.getMonth();
-                const year = movementDate.getFullYear();
+const renderStockChart = (monthlyData) => {
+    const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const seriesData = [
+        { name: "Checked In", data: monthlyData.checkin },
+        { name: "Checked Out", data: monthlyData.checkout },
+    ];
 
-                if (period === "this_year" && year !== currentYear) return;
-                if (period === "last_year" && year !== lastYear) return;
-                if (period === "monthly" && month !== currentMonth) return;
-                if (period === "previous_day" && movementDate.toDateString() !== previousDay.toDateString()) return;
-                if (period === "last_week" && (movementDate < lastWeekStartDate || movementDate > lastWeekEndDate)) return;
+    const chartOptions = {
+        series: seriesData,
+        chart: {
+            type: "bar",
+            height: 350,
+            stacked: true,
+            toolbar: { show: false },
+        },
+        colors: ["#0d6efd", "#dc3545"], // Blue for checkin, red for checkout
+        plotOptions: {
+            bar: {
+                columnWidth: "50%",
+                borderRadius: 5,
+            },
+        },
+        xaxis: {
+            categories: categories,
+            title: { text: "Months" },
+        },
+        yaxis: {
+            title: { text: "Quantity" },
+        },
+        legend: {
+            position: "top",
+            horizontalAlign: "right",
+        },
+    };
 
-                if (!monthlyData[movementType]) {
-                    monthlyData[movementType] = new Array(12).fill(0);
-                }
+    const chartContainer = document.querySelector("#stock-analysis-chart");
+    chartContainer.innerHTML = ""; // Clear previous chart
+    const chart = new ApexCharts(chartContainer, chartOptions);
+    chart.render();
+};
 
-                monthlyData[movementType][month] += parseFloat(item.quantity);
-            });
+const initializeStockAnalysis = async () => {
+    const query = "this_year"; // Adjust based on selected query
+    const companyChemicalId = "{{ $companyChemicalID }}"; // Replace with dynamic ID if needed
 
-            const seriesData = Object.entries(monthlyData).map(([key, data]) => ({
-                name: key,
-                data: data
-            }));
+    const data = await fetchChemicalStockAnalysis(query, companyChemicalId);
+    const monthlyData = analyzeStockData(data);
+    renderStockChart(monthlyData);
+};
 
-            const chartOptions = {
-                series: seriesData,
-                chart: {
-                    toolbar: { show: false },
-                    type: "bar",
-                    fontFamily: "inherit",
-                    foreColor: "#adb0bb",
-                    height: 292,
-                    stacked: true,
-                    offsetX: -15
-                },
-                colors: ["var(--bs-primary)", "var(--bs-secondary)"],
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        barHeight: "80%",
-                        columnWidth: "12%",
-                        borderRadius: [3],
-                        borderRadiusApplication: "end",
-                        borderRadiusWhenStacked: "all"
-                    }
-                },
-                dataLabels: { enabled: false },
-                legend: {
-                    show: true,
-                    position: "top",
-                    horizontalAlign: "right",
-                    markers: {
-                        width: 12,
-                        height: 12,
-                        radius: 3
-                    }
-                },
-                grid: {
-                    show: true,
-                    strokeDashArray: 3,
-                    padding: { top: 0, bottom: 0, right: 0 },
-                    borderColor: "rgba(0,0,0,0.05)",
-                    xaxis: { lines: { show: true } },
-                    yaxis: { lines: { show: false } }
-                },
-                yaxis: { tickAmount: 4 },
-                xaxis: {
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    categories: categories
-                }
-            };
+// Run the analysis on page load
+initializeStockAnalysis();
 
-            const chartContainer = document.querySelector("#reports-bar");
-            const chart = new ApexCharts(chartContainer, chartOptions);
-            chart.render();
+// Optionally add event listeners for user interaction (e.g., dropdown menu for queries)
+document.querySelectorAll(".dropdown-item[data-query]").forEach((item) => {
+    item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const query = item.getAttribute("data-query");
+        document.getElementById("selected-query-label").textContent = `Selected Query: ${query}`;
+        fetchChemicalStockAnalysis(query, "{{ $companyChemicalID }}")
+            .then(analyzeStockData)
+            .then(renderStockChart);
+    });
+});
 
-            document.getElementById("download-csv").addEventListener("click", () => {
-                downloadCSV(resp, period);
-            });
-        };
-
-        const downloadCSV = (data, period) => {
-            const csvHeader = "Movement Date,Movement Type,Quantity\n";
-            const csvRows = data.map(
-                (item) => `${item.movement_date},${item.movement_type},${item.quantity}`
-            );
-            const csvContent = csvHeader + csvRows.join("\n");
-
-            const blob = new Blob([csvContent], { type: "text/csv" });
-            const url = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `stock_analysis_${period}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        document.querySelectorAll(".dropdown-item[data-period]").forEach((item) => {
-            item.addEventListener("click", (e) => {
-                e.preventDefault();
-                const period = item.getAttribute("data-period");
-
-                document.getElementById("selected-period-label").textContent = `Selected Period: ${period.charAt(0).toUpperCase()}${period.slice(1).replace("_", " ")}`;
-                stock_analysis(period, "{{ $companyMaterialID }}");
-            });
-        });
-
-        stock_analysis("this_year", "{{ $companyMaterialID }}");
     </script>
     @endsection
 </x-layouts.admin-app>

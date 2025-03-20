@@ -200,6 +200,61 @@ class ChemicalStockMovementController extends Controller
      * @param  \App\Models\ChemicalStockMovement  $chemicalStockMovement
      * @return \Illuminate\Http\Response
      */
+    public function getChemicalStockAnalysis(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'query' => 'nullable|string|in:today,this_week,last_week,this_month,last_month,this_year,last_year',
+            'company_chemical_id' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $query = $request->query('period');
+        $companyChemicalId = $request->query('company_chemical_id');
+        // dd($query);
+        
+        $movements = ChemicalStockMovement::where('company_chemical_id', $companyChemicalId);
+
+        switch ($query) {
+            case 'today':
+            $movements->whereDate('movement_date', Carbon::today());
+            break;
+            case 'this_week':
+            $movements->whereBetween('movement_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            break;
+            case 'last_week':
+            $movements->whereBetween('movement_date', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]);
+            break;
+            case 'this_month':
+            $movements->whereMonth('movement_date', Carbon::now()->month)
+                      ->whereYear('movement_date', Carbon::now()->year);
+            break;
+            case 'last_month':
+            $movements->whereMonth('movement_date', Carbon::now()->subMonth()->month)
+                      ->whereYear('movement_date', Carbon::now()->subMonth()->year);
+            break;
+            case 'this_year':
+            $movements->whereYear('movement_date', Carbon::now()->year);
+            break;
+            case 'last_year':
+            $movements->whereYear('movement_date', Carbon::now()->subYear()->year);
+            // dd($movements);
+            break;
+        }
+
+        if ($movements->doesntExist()) {
+            return response()->json(['message' => 'No movements found for the given parameters.'], 404);
+        }
+        // dd($movements->get());
+        return response()->json($movements->get());
+    }
+
     public function show(ChemicalStockMovement $chemicalStockMovement)
     {
         //

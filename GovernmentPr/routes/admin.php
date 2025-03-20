@@ -209,6 +209,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(ChemicalStockMovementController::class)->group(function(){
         Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
         Route::post('/company/chemical-setup/check-out', 'store_chemical_checkout')->name('admin.save-company-chemical-check-out');
+        Route::get('/chemical-stock-analysis', 'getChemicalStockAnalysis')->name('admin.chemical-stock-analysis');
     });
 
     // Chemicals
