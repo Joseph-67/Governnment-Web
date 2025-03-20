@@ -2517,7 +2517,7 @@
                                 <label for="">Quantity/Volume</label>
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0">
                                     <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
                             </div>
@@ -2535,8 +2535,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">Save changes</button>
-                    <span class="loader" id="loader"></span>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
+                        Save changes
+                        <span class="loader" id="loader"></span>
+                    </button>
                 </div>
             </div>
         </div>

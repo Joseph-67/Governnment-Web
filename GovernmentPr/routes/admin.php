@@ -27,6 +27,7 @@ use App\Http\Controllers\MapReport;
 use App\Http\Controllers\ViewEmailController;
 use App\Http\Controllers\ChemicalStockMovementController;
 
+// Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
         Route::get('/register', 'create_register')->name('admin.register');
@@ -36,7 +37,9 @@ Route::prefix('admin')->middleware('guest:admin')->group(function(){
     });
 });
 
+// Authenticated Admin Routes
 Route::prefix('admin')->middleware('auth:admin')->group(function() {
+    // Admin Dashboard and Logout
     Route::controller(AdminsController::class)->group(function(){
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
@@ -48,7 +51,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
 
-    // Users
+    // Users Management
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
         Route::get('/users-details',  'getAllUsers')->name('users.details');
@@ -65,7 +68,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
 
-    // Settings
+    // General Settings
     Route::controller(generalSetting::class)->group(function() {
         Route::get('/general-setting', 'create')->name('admin.general-setting');
         Route::post ('/register-settings', 'store')->name('admin.store-settings');
@@ -74,18 +77,18 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
-    }); 
+    });
 
     // Pages
     Route::controller(PagesController::class)->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
-    }); 
+    });
 
     // Posts
     Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
-    }); 
+    });
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });
@@ -93,10 +96,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Events
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
-    }); 
+    });
     Route::controller(AddEventController::class)->group(function() {
         Route::get ('/create-events', 'index')->name('CMS.add-event');
-    }); 
+    });
 
     // Email Integration
     Route::controller(EmailIntegration::class)->group(function() {
@@ -117,13 +120,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
-    }); 
+    });
 
     // Chemicals
     Route::controller(ChemicalUsageController::class)->group(function() {
         Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
-    }); 
+    });
 
     Route::controller(CompanyChemicalController::class)->group(function() {
         Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
@@ -156,7 +159,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
         Route::post('/company/add-water-source-details', 'store_water_source')->name('admin.store-company-water-source');
-        // fetch admin details
     });
 
     // RECP
