@@ -121,6 +121,10 @@ const stock_analysis = async (period, company_chemical_id) => {
     url.searchParams.append("company_chemical_id", company_chemical_id);
 
     const response = await fetch(url.toString());
+    if (response.status === 404) {
+        document.querySelector("#reports-bar").innerHTML = "<p>No data available for the selected period.</p>";
+        return;
+    }
     const resp = await response.json();
 
     const analysisData = {};
@@ -176,7 +180,7 @@ const stock_analysis = async (period, company_chemical_id) => {
         data: data,
     }));
 
-    // Configure chart options
+    // Configure chart options with site-matching color gradients
     const chartOptions = {
         series: seriesData,
         chart: {
@@ -191,6 +195,20 @@ const stock_analysis = async (period, company_chemical_id) => {
         legend: {
             position: "top",
         },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.25,
+                gradientToColors: ['#17a2b8', '#28a745', '#ffc107'], // site-matching colors
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [50, 0, 100]
+            },
+        },
+        colors: ['#17a2b8', '#28a745', '#ffc107'], // site-matching colors
     };
 
     // Render chart
@@ -198,7 +216,7 @@ const stock_analysis = async (period, company_chemical_id) => {
     chartContainer.innerHTML = "";
     const chart = new ApexCharts(chartContainer, chartOptions);
     chart.render();
-};
+}
 
 document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', (event) => {
