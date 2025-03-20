@@ -5024,6 +5024,83 @@
           
 
         // end company water sources
+
+        document.querySelector('#waterSourceForm select[name="water_source"]').addEventListener('click', async function () {
+            if (!company_id) {
+                Toastify({
+                    text: "Company ID is missing.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            try {
+                let formData = new FormData();
+                formData.append('company_id', "{{$company->company_id}}");
+                fetch_cycle('--Fetch Water  Sources', "{{ route('company.get-water-sources') }}", 'POST', formData).then(response => {
+                    console.log(response);
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
+                        data.water_sources.forEach(source => {
+                            const option = document.createElement('option');
+                            option.value = source.WaterSourcesId;
+                            option.textContent = source.sources;
+                            waterSourceSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Failed to fetch water sources:', data.message);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching water sources:', error);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+
+            async function fetchWaterSources() {
+                try {
+                    const response = await fetch("{{ route('company.add-water-sources') }}", {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
+                        data.water_sources.forEach(source => {
+                            const option = document.createElement('option');
+                            option.value = source.WaterSourcesId;
+                            option.textContent = source.sources;
+                            waterSourceSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Failed to fetch water sources:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching water sources:', error);
+                }
+            }
+
+            // Fetch water sources when the page loads
+            fetchWaterSources();
+        });
      </script>
      <!-- water usage -->
 
@@ -5307,45 +5384,6 @@
         });
       </script>
      <!-- Chemical  -->
-    
-
-     <!-- populate into the select -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
-
-            async function fetchWaterSources() {
-                try {
-                    const response = await fetch("{{ route('company.add-water-sources') }}", {
-                        method: 'GET',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        },
-                    });
-
-                    const data = await response.json();
-
-                    if (data.status === 'success') {
-                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
-                        data.water_sources.forEach(source => {
-                            const option = document.createElement('option');
-                            option.value = source.WaterSourcesId;
-                            option.textContent = source.sources;
-                            waterSourceSelect.appendChild(option);
-                        });
-                    } else {
-                        console.error('Failed to fetch water sources:', data.message);
-                    }
-                } catch (error) {
-                    console.error('Error fetching water sources:', error);
-                }
-            }
-
-            // Fetch water sources when the page loads
-            fetchWaterSources();
-        });
-    </script>
 
      
     @endsection
