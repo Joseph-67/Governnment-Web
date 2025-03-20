@@ -1576,7 +1576,7 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="water_source" class="form-label">Water Source</label>
-                    <select name="water_source" id="water_source" class="form-select">
+                    <select name="water_source_selected" id="water_source_selected" class="form-select">
                         <option value="" selected disabled>Choose...</option>
                     </select>
                 </div>
@@ -5389,6 +5389,28 @@
      <!-- Chemical  -->
   
 
+     <script>
+    const waterSourceMapping = @json($water_source_details->groupBy('location'));
 
+    function updateWaterSources(selectedLocation) {
+        const waterSourceDropdown = document.getElementById('water_source_selected');
+        waterSourceDropdown.innerHTML = '<option value="" selected disabled>Choose...</option>';
+
+        if (waterSourceMapping && waterSourceMapping[selectedLocation]) {
+            waterSourceMapping[selectedLocation].forEach(source => {
+                const option = document.createElement('option');
+                option.value = source?.water_source_detail_ID ?? 'unknown-id';
+                option.textContent = source?.sources ?? `Unnamed Source (ID: ${source?.water_source_detail_ID ?? 'unknown'})`;
+                waterSourceDropdown.appendChild(option);
+            });
+        } else {
+            console.warn(`No water sources found for location: ${selectedLocation}`);
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No sources available';
+            waterSourceDropdown.appendChild(option);
+        }
+    }
+</script>
     @endsection
 </x-layouts.admin-app>

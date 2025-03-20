@@ -80,9 +80,7 @@ class CompanyController extends Controller
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
         $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
-        $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
-            ->where('status', 'active')
-            ->get(['water_source_detail_ID', 'location']);
+        $data['water_source_details'] = WaterSourceDetails::where('status', 'active')->get(['water_source_detail_ID', 'location']);
         return view('components.apps.companyProfile', $data);
     }   
     /**
