@@ -43,7 +43,9 @@ class CompanyChemicalController extends ChemicalStockMovementController
     {
         $validatedData = Validator::make($request->all(), [
             'company_id' => 'required|integer',
-            'chemical_id' => 'required|integer|unique:company_chemicals,company_id',
+            'chemical_id' => ['required', 'integer',Rule::unique('company_chemicals', 'chemical_id')->where(function ($query) use ($request) {
+                return $query->where('company_id', $request['company_id']);
+            })],
             'unit_of_measurement' => 'required|string',
             'threshold' => 'nullable',
         ],[
