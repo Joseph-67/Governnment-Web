@@ -24,4 +24,14 @@ class Material extends Model
     {
         return $this->hasMany(StockMovement::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function companyMaterials()
+    {
+        return $this->hasMany(CompanyMaterial::class);
+    }
 }

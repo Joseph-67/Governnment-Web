@@ -18,8 +18,13 @@ class CompanyMaterial extends Model
         'status'
     ];
 
+    public function stockMovements()
+    {
+        return $this->hasMany(stock_movement::class, 'companyMaterialId');
+    }
+
     public function material()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Material::class, 'materialID');
     }
 }

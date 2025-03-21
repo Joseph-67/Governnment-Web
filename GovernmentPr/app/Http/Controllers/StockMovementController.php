@@ -268,6 +268,60 @@ class StockMovementController extends Controller
         //
     }
 
+    public function MaterialStockAnalysis(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'period' => 'nullable|string|in:today,this_week,last_week,this_month,last_month,this_year,last_year',
+            'company_material_id' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Validation failed.',
+                'errors'    => $validator->errors()
+            ]);
+        }
+        // dd($request);
+        $query = $request->query('period');
+        $company = $request->query('company_material_id');
+
+        $movements = stock_movement::where('companyMaterialId', $company);
+
+        switch ($query) {
+            case 'today':
+            $movements->whereDate('movement_date', Carbon::today());
+            break;
+            case 'this_week':
+            $movements->whereBetween('movement_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            break;
+            case 'last_week':
+            $movements->whereBetween('movement_date', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]);
+            break;
+            case 'this_month':
+            $movements->whereMonth('movement_date', Carbon::now()->month)
+                      ->whereYear('movement_date', Carbon::now()->year);
+            break;
+            case 'last_month':
+            $movements->whereMonth('movement_date', Carbon::now()->subMonth()->month)
+                      ->whereYear('movement_date', Carbon::now()->subMonth()->year);
+            break;
+            case 'this_year':
+            $movements->whereYear('movement_date', Carbon::now()->year);
+            break;
+            case 'last_year':
+            $movements->whereYear('movement_date', Carbon::now()->subYear()->year);
+            // dd($movements);
+            break;
+        }
+
+        if ($movements->doesntExist()) {
+            return response()->json(['message' => 'No movements found for the given parameters.'], 404);
+        }
+        // dd($movements->get());
+        return response()->json($movements->get());
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

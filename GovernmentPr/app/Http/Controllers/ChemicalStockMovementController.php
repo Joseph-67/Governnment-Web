@@ -203,7 +203,7 @@ class ChemicalStockMovementController extends Controller
     public function getChemicalStockAnalysis(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'query' => 'nullable|string|in:today,this_week,last_week,this_month,last_month,this_year,last_year',
+            'period' => 'nullable|string|in:today,this_week,last_week,this_month,last_month,this_year,last_year',
             'company_chemical_id' => 'required|integer'
         ]);
 

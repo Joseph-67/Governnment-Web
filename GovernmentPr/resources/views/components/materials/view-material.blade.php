@@ -14,7 +14,7 @@
                     <div class="card-body pt-0">
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Material Name:</h5><span>{{ $material->material }}</span>
+                                <h5 class="m-0">Material Name:</h5><span>{{ $company_material->material->material }}</span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
@@ -23,7 +23,7 @@
                                     @php
                                         $category = DB::table('materials')
                                             ->join('categories', 'materials.categoryID', '=', 'categories.categoryID')
-                                            ->where('materials.materialID', '=', $material->materialID)
+                                            ->where('materials.materialID', '=', $company_material->materialID)
                                             ->first(['category_name']);
                                     @endphp
                                     {{ $category->category_name }}
@@ -32,7 +32,7 @@
                         </div>
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Description:</h5><span>{{ $material->description }}</span>
+                                <h5 class="m-0">Description:</h5><span>{{ $company_material->material->description }}</span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
@@ -42,12 +42,12 @@
                         </div>
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Unit Of Measure:</h5><span>{{ $material->unit_of_measure }}</span>
+                                <h5 class="m-0">Unit Of Measure:</h5><span>{{ $company_material->unit_of_measure }}</span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center border-dashed-bottom py-2">
                             <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Serial Number:</h5><span>{{ $material->serial_number }}</span>
+                                <h5 class="m-0">Serial Number:</h5><span>{{ $company_material->serial_number }}</span>
                             </div>
                         </div>
                     </div>
@@ -68,9 +68,10 @@
                                 <i class="icofont-calendar fs-5 me-1"></i> This Year<i class="las la-angle-down ms-1"></i>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" data-period="this_week">This Week</a></li>
                                 <li><a class="dropdown-item" data-period="last_week">Last Week</a></li>
-                                <li><a class="dropdown-item" data-period="previous_day">Previous Day</a></li>
-                                <li><a class="dropdown-item" data-period="monthly">This Month</a></li>
+                                <li><a class="dropdown-item" data-period="this_month">This Month</a></li>
+                                <li><a class="dropdown-item" data-period="last_month">Last Month</a></li>
                                 <li><a class="dropdown-item" data-period="this_year">This Year</a></li>
                                 <li><a class="dropdown-item" data-period="last_year">Last Year</a></li>
                             </ul>
@@ -179,107 +180,120 @@
     <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('adminAssets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
-        const fetchChemicalStockAnalysis = async (query, companyChemicalId) => {
-    const url = new URL("{{ route('admin.chemical-stock-analysis') }}"); // Replace with actual route
-    url.searchParams.append("query", query);
-    url.searchParams.append("company_chemical_id", companyChemicalId);
+        const stock_analysis = async (period, material_id) => {
+            const url = new URL("{{ route('admin.material-stock-analysis') }}");
+            url.searchParams.append("period", period);
+            url.searchParams.append("company_material_id", material_id);
 
-    try {
-        const response = await fetch(url.toString());
-        if (!response.ok) {
-            throw new Error("Failed to fetch data");
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching stock data:", error);
-        return [];
-    }
-};
+            const response = await fetch(url.toString());
+            if (response.status === 404) {
+            document.querySelector("#reports-bar").innerHTML = "<p>No data available for the selected period.</p>";
+            return;
+            }
+            const resp = await response.json();
 
-const analyzeStockData = (data) => {
-    const monthlyData = {
-        checkin: new Array(12).fill(0),
-        checkout: new Array(12).fill(0),
-    };
+            const analysisData = {};
+            let categories = [];
+            const currentDate = new Date();
 
-    data.forEach((item) => {
-        const movementDate = new Date(item.movement_date);
-        const month = movementDate.getMonth(); // 0 = January, 11 = December
+            // Generate categories based on period
+            if (period === "this_month") {
+            const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+            categories = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}`);
+            } else if (period === "last_month") {
+            const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+            const lastMonthDays = new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 0).getDate();
+            categories = Array.from({ length: lastMonthDays }, (_, i) => `${i + 1}`);
+            } else if (period === "this_week" || period === "last_week") {
+            const weekStart = new Date(currentDate);
+            weekStart.setDate(currentDate.getDate() - (period === "last_week" ? currentDate.getDay() + 7 : currentDate.getDay()));
+            weekStart.setHours(0, 0, 0, 0);
+            categories = Array.from({ length: 7 }, (_, i) => {
+                const day = new Date(weekStart);
+                day.setDate(weekStart.getDate() + i);
+                return day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            });
+            } else if (period === "this_year" || period === "last_year") {
+            categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            }
 
-        if (item.movement_type === "checkin") {
-            monthlyData.checkin[month] += parseFloat(item.quantity);
-        } else if (item.movement_type === "checkout") {
-            monthlyData.checkout[month] += parseFloat(item.quantity);
-        }
-    });
+            // Process data
+            resp.forEach((item) => {
+            const movementDate = new Date(item.movement_date);
+            const movementType = item.movement_type;
 
-    return monthlyData;
-};
+            let categoryIndex;
+            if (period === "this_month" || period === "last_month") {
+                categoryIndex = movementDate.getDate() - 1;
+            } else if (period === "this_week" || period === "last_week") {
+                const formattedDate = movementDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                categoryIndex = categories.indexOf(formattedDate);
+            } else {
+                categoryIndex = movementDate.getMonth();
+            }
 
-const renderStockChart = (monthlyData) => {
-    const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const seriesData = [
-        { name: "Checked In", data: monthlyData.checkin },
-        { name: "Checked Out", data: monthlyData.checkout },
-    ];
+            if (!analysisData[movementType]) {
+                analysisData[movementType] = Array(categories.length).fill(0);
+            }
 
-    const chartOptions = {
-        series: seriesData,
-        chart: {
-            type: "bar",
-            height: 350,
-            stacked: true,
-            toolbar: { show: false },
-        },
-        colors: ["#0d6efd", "#dc3545"], // Blue for checkin, red for checkout
-        plotOptions: {
-            bar: {
-                columnWidth: "50%",
-                borderRadius: 5,
+            analysisData[movementType][categoryIndex] += parseFloat(item.quantity);
+            });
+
+            // Prepare chart series
+            const seriesData = Object.entries(analysisData).map(([key, data]) => ({
+            name: key,
+            data: data,
+            }));
+
+            // Configure chart options with vibrant colors
+            const chartOptions = {
+            series: seriesData,
+            chart: {
+                toolbar: { show: false },
+                type: "bar",
+                stacked: true,
+                height: 300,
             },
-        },
-        xaxis: {
-            categories: categories,
-            title: { text: "Months" },
-        },
-        yaxis: {
-            title: { text: "Quantity" },
-        },
-        legend: {
-            position: "top",
-            horizontalAlign: "right",
-        },
-    };
+            xaxis: {
+                categories: categories,
+            },
+            legend: {
+                position: "top",
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.25,
+                gradientToColors: ['#ff5733', '#33ff57', '#3357ff'], // vibrant colors
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [50, 0, 100]
+                },
+            },
+            colors: ['#ff5733', '#33ff57', '#3357ff'], // vibrant colors
+            };
 
-    const chartContainer = document.querySelector("#stock-analysis-chart");
-    chartContainer.innerHTML = ""; // Clear previous chart
-    const chart = new ApexCharts(chartContainer, chartOptions);
-    chart.render();
-};
+            // Render chart
+            const chartContainer = document.querySelector("#reports-bar");
+            chartContainer.innerHTML = "";
+            const chart = new ApexCharts(chartContainer, chartOptions);
+            chart.render();
+        }
 
-const initializeStockAnalysis = async () => {
-    const query = "this_year"; // Adjust based on selected query
-    const companyChemicalId = "{{ $companyChemicalID }}"; // Replace with dynamic ID if needed
-
-    const data = await fetchChemicalStockAnalysis(query, companyChemicalId);
-    const monthlyData = analyzeStockData(data);
-    renderStockChart(monthlyData);
-};
-
-// Run the analysis on page load
-initializeStockAnalysis();
-
-// Optionally add event listeners for user interaction (e.g., dropdown menu for queries)
-document.querySelectorAll(".dropdown-item[data-query]").forEach((item) => {
-    item.addEventListener("click", (e) => {
-        e.preventDefault();
-        const query = item.getAttribute("data-query");
-        document.getElementById("selected-query-label").textContent = `Selected Query: ${query}`;
-        fetchChemicalStockAnalysis(query, "{{ $companyChemicalID }}")
-            .then(analyzeStockData)
-            .then(renderStockChart);
-    });
-});
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (event) => {
+            event.preventDefault();
+            const period = event.target.getAttribute('data-period');
+            document.getElementById('selected-period-label').innerText = `Selected Period: ${event.target.innerText}`;
+            stock_analysis(period, "{{ $company_material->companyMaterialId }}");
+            });
+        });
+        // Initialize with default period
+        stock_analysis("this_year", "{{ $company_material->companyMaterialId }}");
+    </script>
 
     </script>
     @endsection
