@@ -4972,7 +4972,7 @@
           return;
       }
 
-      let url = "{{ route('admin.store-company-water-source') }}";
+      let url = "{{ route('admin.store-water-source-details') }}";
       const formData = new FormData();
     formData.append('company_id', company_id);
     formData.append('water_source_id', water_source);
@@ -5048,7 +5048,7 @@
             try {
                 let formData = new FormData();
                 formData.append('company_id', company_id);
-                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.get-water-sources') }}", 'POST', formData).then(async response => {
+                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.store-water-source-details') }}", 'POST', formData).then(async response => {
                     console.log(response);
                     const data = await response.json();
 
