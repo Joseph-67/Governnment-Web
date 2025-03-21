@@ -17,9 +17,19 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\MapReport;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\RealTimeUpdateController;
+use App\Http\Controllers\RECPController;
+use App\Http\Controllers\ReportingAnalyticsController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTradingController;
-use App\Http\Controllers\viewEmailController;
+use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\UsersManagementController;
+use App\Http\Controllers\ViewEmailController;
 use App\Http\Controllers\WaterUsageLogsController;
 
 
