@@ -23,12 +23,27 @@ class stock_movement extends Model
         'status'
     ];
 
+    protected $casts = [
+        'movement_date' => 'datetime:Y-m-d',
+    ];
+
+    public $timestamps = true;
+
+
     public function material()
     {
         return $this->belongsTo(Material::class, 'materialID', 'materialID'); // Adjust 'id' as the primary key in the Material model
     }
 
-    public $timestamps = false;
+    public function companyMaterial()
+    {
+        return $this->belongsTo(CompanyMaterial::class, 'companyMaterialId', 'companyMaterialId'); // Adjust 'id' as the primary key in the CompanyMaterial model
+    }
+
+    public function company() {
+        return $this->belongsTo(Company::class, 'companyID', 'companyID'); // Adjust 'id' as the primary key in the Company model
+    }
+
     public function scopeByYear($query, $year)
     {
         return $query->where('calendar_year', $year);

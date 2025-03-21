@@ -17,9 +17,28 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\MapReport;
+<<<<<<< HEAD
 use App\Http\Controllers\viewEmailController;
 
 use App\Http\Controllers\WaterSourceDetailsController;
+=======
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\RealTimeUpdateController;
+use App\Http\Controllers\RECPController;
+use App\Http\Controllers\ReportingAnalyticsController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\StockTradingController;
+use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\UsersManagementController;
+use App\Http\Controllers\ViewEmailController;
+use App\Http\Controllers\WaterUsageLogsController;
+
+
+>>>>>>> 2485be3a0f860c209c8ae4a5f873c02e8a4501ff
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -192,7 +211,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
-        Route::get('/stock-analysis', 'getMovements')->name('admin.stock-analysis');
+        
     });
 
     Route::controller(StockMovementController::class)->group(function(){
@@ -257,7 +276,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Company Material
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
-        Route::get('/stock-analysis', 'getMovements')->name('admin.stock-analysis');
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
     });
@@ -393,6 +411,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(StockMovementController::class)->group(function(){
         Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
         Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
+        Route::get('/material-stock-analysis', 'MaterialStockAnalysis')->name('admin.material-stock-analysis');
     });
 
     // Stock Trading

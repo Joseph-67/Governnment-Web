@@ -48,6 +48,16 @@ class Company extends Model
         return $this->hasMany(CompanyChemical::class);
     }
 
+    public function companyWaterConservations()
+    {
+        return $this->hasMany(CompanyWaterConservation::class);
+    }
+
+    public function stock_movements()
+    {
+        return $this->hasMany(stock_movement::class, 'companyID');
+    }
+
     public function companyWaterConservationOpportunities()
     {
         return $this->hasMany(CompanyWaterConservationOpportunity::class);
