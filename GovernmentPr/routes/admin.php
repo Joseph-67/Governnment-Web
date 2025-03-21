@@ -17,6 +17,9 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\MapReport;
+use App\Http\Controllers\viewEmailController;
+
+use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionsController;
@@ -29,7 +32,6 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersManagementController;
-use App\Http\Controllers\ViewEmailController;
 use App\Http\Controllers\WaterUsageLogsController;
 
 
@@ -159,11 +161,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
-        Route::post('/company/get-water-source-details', 'get_water_source')->name('admin.get-water-sources');
         // fetch admin details
     });
-    // water usage logs
-    // Route::get('water-usage-logs', [WaterUsageLogsController::class, 'create'])->name('water-usage-logs.create');
+    // Water Sources Details Route
+    Route::controller(WaterSourceDetailsController::class)->group(function() {
+        Route::post('/store-water-source-details', 'store')->name('admin.store-water-source-details');
+    });
     Route::controller(RECPController::class)->group(function(){
         // add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
@@ -246,7 +249,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
         Route::post('/company/add-question', 'store_question')->name('company.add-question');
         Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
-        Route::post('/company/add-water-source-details', 'store_water_source')->name('admin.store-company-water-source');
         Route::post('/company/add-water-sources', 'store_water_sources')->name('company.add-water-sources');
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');

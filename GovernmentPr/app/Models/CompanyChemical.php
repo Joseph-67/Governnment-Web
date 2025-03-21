@@ -13,6 +13,7 @@ class CompanyChemical extends Model
         'company_id',
         'chemical_id',
         'unit',
+        'threshold',
         'status',
         'is_deleted',
         'created_at',

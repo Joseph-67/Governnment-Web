@@ -6,9 +6,10 @@ use App\Models\WaterSources;
 use App\Models\CompanyWaterSources;
 use Illuminate\Support\Facades\Validator;
 
+
 use Illuminate\Http\Request;
 
-class WaterUsageLogsController extends Controller
+class WaterSourceDetailsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +29,8 @@ class WaterUsageLogsController extends Controller
     public function create()
     {
         //
-        
+        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+        return view('components.apps.companyProfile', $data);
     }
 
     /**
@@ -40,8 +42,7 @@ class WaterUsageLogsController extends Controller
     public function store(Request $request)
     {
         //
-          //
-          $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'company_id'       => ['required', 'numeric'],
             'water_source_id'     => ['required', 'string', 'max:255'],
             'location'         => ['required', 'string', 'max:255'],
@@ -67,17 +68,17 @@ class WaterUsageLogsController extends Controller
         if ($result) {
             return response()->json([
                 'status'  => 'success',
-                'message' => 'Water usage logs added successfully.',
+                'message' => 'Water source details added successfully.',
                 'data'    => $result
             ], 200);
         } else {
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Failed to add water usage logs.',
+                'message' => 'Failed to add water source details.',
             ], 500);
         }
     }
-
+    
     /**
      * Display the specified resource.
      *

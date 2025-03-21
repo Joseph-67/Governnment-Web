@@ -15,6 +15,7 @@ class CompanyMaterial extends Model
         'materialID',
         'serial_number',
         'unit_of_measure',
+        'threshold',
         'status'
     ];
 

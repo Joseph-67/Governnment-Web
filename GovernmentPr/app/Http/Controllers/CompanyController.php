@@ -30,7 +30,6 @@ use App\Models\ChemicalUsage;
 use App\Models\CompanyChemical;
 use App\Models\Admins;
 use App\Models\company_water_usage;
-use App\Models\WaterSourceDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -892,43 +891,7 @@ class CompanyController extends Controller
             'objective' => $request->waterSources_id
         ]);
     }
-        public function store_water_source(Request $request) {
-            $validator = Validator::make($request->all(), [
-                'company_id'       => ['required', 'numeric'],
-                'water_source_id'     => ['required', 'string', 'max:255'],
-                'location'         => ['required', 'string', 'max:255'],
-                'capacity'         => ['nullable', 'numeric', 'min:1'],
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Validation failed.',
-                    'errors'  => $validator->errors()
-                ], 422);
-            }
-
-            $result = WaterSourceDetails::create([
-                'companyID'          => $request->company_id,
-                'WaterSources_id'    => $request->water_source_id,
-                'location'        => $request->location,
-                'capacity'        => $request->capacity,
-                'status'          => "active",
-            ]);
-
-            if ($result) {
-                return response()->json([
-                    'status'  => 'success',
-                    'message' => 'Water source details added successfully.',
-                    'data'    => $result
-                ], 200);
-            } else {
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Failed to add water source details.',
-                ], 500);
-            }
-        }
+       
     /**
      * Show the form for editing the specified resource.
      *

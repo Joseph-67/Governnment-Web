@@ -52,7 +52,8 @@ class CompanyMaterialController extends Controller
                 return $query->where('companyID', $request['companyID']);
             })],
             'serial_number'   =>  ['nullable', 'string'],
-            'unit_of_measurement' => ['nullable', 'string']
+            'unit_of_measurement' => ['nullable', 'string'],
+            'threshold' => ['nullable', 'string']
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +70,7 @@ class CompanyMaterialController extends Controller
             'materialID'        => $request['material'],
             'serial_number'     => $request['serial_number'],
             'unit_of_measure'   => $request['unit_of_measurement'],
+            'threshold'         => $request['threshold'],
         ]);
 
     

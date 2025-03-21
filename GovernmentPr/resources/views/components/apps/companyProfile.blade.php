@@ -1785,6 +1785,12 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="threshold">Threshold</label>
+                                                <input type="number" class="form-control" name="threshold" placeholder="Minimum Stock Threshold" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="d-flex align-items-center">
                                                 <button type="button" class="btn btn-primary" id="btn-submit-chemical">
                                                     Save
@@ -1873,45 +1879,46 @@
                                     <input type="hidden" class="form-control" name="company_id"
                                         value="{{ $company->company_id }}">
                                     <div class="row g-2">
-                                        <!-- Material  -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">Material</label>
-                                                <select name="material" id="material" class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
-                                                    @foreach($materials as $material)
-                                                    <option value="{{ $material->materialID }}"> {{ $material->material
-                                                        }} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!-- Material ends -->
-                                        <!-- Serial Number -->
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Serial Number(If any)</label>
-                                                <input type="text" class="form-control" placeholder="Serial Number"
-                                                    name="serial_number">
-                                            </div>
-                                        </div>
-                                        <!-- Serial Number -->
-                                        <!-- Unit of measurement -->
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Unit of Measurement" name="unit_of_measurement">
-                                            </div>
-                                        </div>
-                                        <!-- Unit of measurement -->
-                                        <div class="col-md-3">
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary"
-                                                    id="btn-submit-material">Save</button><span class="loader"
-                                                    id="loader"></span>
-                                            </div>
-                                        </div>
+                                      <!-- Material -->
+<div class="col-md-6">
+    <div class="form-group">
+        <label for="material">Material</label>
+        <select name="material" id="material" class="form-select">
+            <option value="" selected disabled>Choose...</option>
+            @foreach($materials as $material)
+                <option value="{{ $material->materialID }}">{{ $material->material }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+<!-- Serial Number -->
+<div class="col-md-3">
+    <div class="form-group">
+        <label for="serial_number">Serial Number (If any)</label>
+        <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
+    </div>
+</div>
+<!-- Unit of Measurement -->
+<div class="col-md-3">
+    <div class="form-group">
+        <label for="unit_of_measurement">Unit of Measurement</label>
+        <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement" placeholder="Unit of Measurement">
+    </div>
+</div>
+<!-- Threshold -->
+<div class="col-md-5">
+    <div class="form-group">
+        <label for="threshold">Threshold</label>
+        <input type="number" class="form-control" id="threshold" name="threshold" placeholder="Minimum Stock Threshold" min="0">
+    </div>
+</div>
+<!-- Save Button-->
+<div class="col-12 mt-3">
+    <div class="d-flex">
+        <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button>
+        <span class="loader" id="loader"></span>
+    </div>
+</div>
                                     </div>
                                 </form>
                             </div>
@@ -4972,7 +4979,7 @@
           return;
       }
 
-      let url = "{{ route('admin.store-company-water-source') }}";
+      let url = "{{ route('admin.store-water-source-details') }}";
       const formData = new FormData();
     formData.append('company_id', company_id);
     formData.append('water_source_id', water_source);
@@ -5048,7 +5055,7 @@
             try {
                 let formData = new FormData();
                 formData.append('company_id', company_id);
-                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.get-water-sources') }}", 'POST', formData).then(async response => {
+                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.store-water-source-details') }}", 'POST', formData).then(async response => {
                     console.log(response);
                     const data = await response.json();
 
