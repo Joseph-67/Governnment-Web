@@ -136,15 +136,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
-                            aria-selected="false">Water Usage</a>
+                            aria-selected="false">Water Inventory</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
-                            aria-selected="false">Chemical Usage</a>
+                            aria-selected="false">Chemical Inventory</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
-                            aria-selected="false">Materials</a>
+                            aria-selected="false">Material Inventory</a>
                     </li>
 
                     <li class="nav-item">
@@ -1415,6 +1415,63 @@
                                 </form>
                             </div>
                         </div>
+                      <!-- Water Sources -->
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title mb-0">Water Sources Details</h4>
+    </div> <!-- end card-header -->
+
+    <div class="card-body pt-0" id="waterSourceForm">
+        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+        <div class="row g-3">
+            <!-- Water Source -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="water_source" class="form-label">Water Source</label>
+                    <select name="water_source" id="source" class="form-select">
+                        <option value="" selected disabled>Choose...</option>
+                    @foreach($waterSources as $source)
+                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                            <option value="{{ $source->WaterSourcesId }}" selected>
+                                {{ $source->sources }}
+                            </option>
+                        @endif
+                    @endforeach
+                    </select>
+                </div>
+            </div>
+            <!-- Location -->
+            <div class="col-md-4 col-sm-6">
+                <div class="form-group">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="remark" class="form-control" name="location">
+                </div>
+            </div>
+            <!-- capacity of Water -->
+            <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Capacity of Water(LTR)</label>
+                                            
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="capacity"
+                                                    value="0">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+            <!-- Save Button (Moved Down) -->
+            <div class="col-12 mt-3">
+                <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save</button>
+            </div>
+        </div>
+    </div> <!-- end card-body -->
+</div>
+<!-- End Water Sources -->
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -1493,83 +1550,148 @@
                             </div>
                         </div>
                         <!-- water usage card -->
+                        <!-- water usage logs card -->
                         <div class="card">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h4 class="card-title">Water Usage Re-adjustment</h4>
-            </div><!--end col-->
-        </div> <!--end row-->
-    </div><!--end card-header-->
-    <div class="card-body pt-0" id="water-usage-form">
-        <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-        <div class="row g-2">
-            <!-- Unit of measurement -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="" class="col col-form-label">Volume of Water</label>
-                    <div class="input-group qty-icons">
-                        <button class="btn btn-primary"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="form-control" min="0" name="volume"
-                            value="0">
-                        <button class="btn btn-primary"
-                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Unit of measurement -->
-            <!-- date type -->
-            <div class="col-md-4 col-sm-6">
-                <label class="col my-1 control-label">Date Type</label>
-                <div class="col-md-9">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio1" value="daily" checked onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio1">Daily</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio2" value="weekly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio3" value="monthly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="date_type"
-                            id="inlineRadio4" value="yearly" onchange="addDate(this)">
-                        <label class="form-check-label" for="inlineRadio3">Yearly</label>
-                    </div>
-                </div>
-            </div> <!--end row-->
-            <!-- date type -->
-            <!-- Date -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group" id="date">
-                    <label for="" class="col col-form-label">Date</label>
-                    <input type="date" class="form-control" name="date">
-                </div>
-            </div>
-            <!-- end Date -->
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Water Usage Logs</h4>
+                            </div> <!-- end card-header -->
 
+                            <div class="card-body pt-0" id="waterSourceForm">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
-            <!-- Material name -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="" class="col col-form-label">Remark</label>
-                    <input type="text" class="form-control" name="remark">
-                </div>
-            </div>
-            <!-- Material name -->
-             <div class="col-12">
-                <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-             </div>
-        </div>
-    </div>
-</div>
+                                <div class="row g-3">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="water_source" class="form-label">Water Source</label>
+                                            <select name="water_source_selected" id="water_source_selected" class="form-select">
+                                                <option value="" selected disabled>Choose...</option>
+                                                @foreach($WaterSources as $source)
+                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                                                        <option value="{{ $source->WaterSourcesId }}" selected>
+                                                            {{ $source->sources }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Quantity Used(LTR)</label>
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="unit_of_water" value="0">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Unit of Measurement</label>
+                                            <select name="water_source" id="source" class="form-select">
+                                                <option value="" selected disabled>Choose...</option>
+                                                <option value="kg">Kilogram (kg)</option>
+                                                <option value="g">Gram (g)</option>
+                                                <option value="lb">Pound (lb)</option>
+                                                <option value="oz">Ounce (oz)</option>
+                                                <option value="cm">Centimeter (cm)</option>
+                                                <option value="m">Meter (m)</option>
+                                                <option value="in">Inch (in)</option>
+                                                <option value="ft">Foot (ft)</option>
+                                                <option value="l">Liter (L)</option>
+                                                <option value="ml">Milliliter (mL)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Date</label>
+                                            <input type="date" class="form-control" name="date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Purpose</label>
+                                            <input type="text" class="form-control" name="purpose">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
+                                    </div>
+                                </div>
+                            </div> <!-- end card-body -->
+                        </div>
+                        <!-- End Water Usage Logs -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Water Usage Re-adjustment</h4>
+                                    </div><!--end col-->
+                                </div> <!--end row-->
+                            </div><!--end card-header-->
+                            <div class="card-body pt-0" id="water-usage-form">
+                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                <div class="row g-2">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Volume of Water</label>
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="volume" value="0">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <label class="col my-1 control-label">Date Type</label>
+                                        <div class="col-md-9">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1" value="daily" checked onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio1">Daily</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2" value="weekly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3" value="monthly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4" value="yearly" onchange="addDate(this)">
+                                                <label class="form-check-label" for="inlineRadio4">Yearly</label>
+                                            </div>
+                                        </div>
+                                    </div> <!--end row-->
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Date</label>
+                                            <input type="date" class="form-control" name="date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Remark</label>
+                                            <input type="text" class="form-control" name="remark">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -1630,106 +1752,119 @@
                         <!-- end water usage card -->
                     </div>
                     <!-- tab water usage -->
-                    <!-- tab chemical usage -->
+                    <!-- tab chemical inventory -->
                     <div class="tab-pane p-3" id="chemical-usage" role="tabpanel">
-                        <div class="card">
+                        <div class="card shadow-sm border-0">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Chemical Usage</h4>
+                                        <h4 class="card-title mb-0">Add New Chemical</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
                             <div class="card-body pt-0">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="" value="">
+                                <form action="" method="post" id="chemical-form">
+                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row g-2 align-items-end">
-                                        <!-- Chemicals  -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Chemicals</label>
+                                                <label for="chemical">Chemical</label>
                                                 <select name="chemical" id="chemical" class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
-                                                    <option value=""> </option>
+                                                    <option value="" selected disabled>Choose...</option>
+                                                    @foreach($approved_chemicals as $chemical)
+                                                        <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- Chemicals ends -->
-                                        <!-- Unit of measurement -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="">Unit of Measurement</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Unit of Measurement" name="unit_of_measurement">
+                                                <label for="unit_of_measurement">Unit of Measurement</label>
+                                                <input type="text" class="form-control" name="unit_of_measurement"
+                                                    placeholder="Unit of Measurement">
                                             </div>
                                         </div>
-                                        <!-- Unit of measurement -->
-                                        <div class="col">
+                                        <div class="col-md-4">
                                             <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary"
-                                                    id="btn-submit-material">Save</button><span class="loader"
-                                                    id="loader"></span>
+                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">
+                                                    Save
+                                                    <span class="loader" id="loader"></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Chemical</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
+                        <div class="card shadow-sm border-0 mt-4">
+                            <div class="card-header bg-primary text-white" id="headingChemicals">
+                                <h4 class="card-title mb-0">
+                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse" href="#collapseChemicals" aria-expanded="true" aria-controls="collapseChemicals">
+                                        Company Chemicals
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0" id="tbl-company-material">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Material</th>
-                                                <th>Unit of Measurement</th>
-                                                <th>Chemical Status</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><span class=""></span></td>
-                                                <td class="text-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                            data-bs-toggle="dropdown" href="#" role="button"
-                                                            aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                            aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <hr class="dropdown-divider">
+                            <div id="collapseChemicals" class="collapse show" aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" id="tbl-company-chemical">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Chemical</th>
+                                                    <th>Unit of Measurement</th>
+                                                    <th>Chemical Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($company_chemicals as $chemical)
+                                                <tr>
+                                                    <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
+                                                    <td>{{ $chemical->unit }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                            {{ $chemical->status }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block" style="position: relative ! important;z-index: 99999999999999;">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11" style="z-index: 99999999999999;">
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
+                                                                    Chemical</a>
+                                                                <a class="dropdown-item" href="#">Update Chemical</a>
+                                                                <a class="dropdown-item" href="#">Delete Chemical</a>
+                                                                <hr class="dropdown-divider">
+                                                                <a class="dropdown-item" href="#">Setup Price</a>
+                                                                <a href="#" class="dropdown-item" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check In Item</a>
+                                                                <a href="#" class="dropdown-item" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check Out Item</a>
+                                                                <a href="#" class="dropdown-item">Make Adjustment</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table><!--end /table-->
-                                </div><!--end /tableresponsive-->
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table><!--end /table-->
+                                    </div><!--end /tableresponsive-->
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- tab chemical usage -->
+                    <!-- end tab chemical inventory -->
+                    <!-- tab Material Inventory -->
                     <div class="tab-pane p-3" id="materials" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title">Material</h4>
+                                        <h4 class="card-title">Add New Material</h4>
                                     </div><!--end col-->
                                 </div> <!--end row-->
                             </div><!--end card-header-->
@@ -2285,12 +2420,11 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Check Out Item </h5>
+                    <h5 class="modal-title">Check Out Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2350,12 +2484,11 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="adjustmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Make Adjustment </h5>
+                    <h5 class="modal-title">Make Adjustment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2413,6 +2546,128 @@
         </div>
     </div>
     <!-- end modal -->
+    <!-- checkout chemical modal -->
+    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Check In Chemical</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkIn_chemical_id">
+                    <input type="hidden" name="chemical_id">
+                    <input type="hidden" name="company_id">
+
+                    <div class="row g-2">
+                        <!-- Chemical name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Chemical</label>
+                                <input type="text" class="form-control" readonly name="checkIn_chemical_name">
+                            </div>
+                        </div>
+                        <!-- Chemical name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Remark -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" id="loader"></span>
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+     <!-- checkout modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutChemicalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Check Out Chemical</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="checkOut_chemical_id">
+                    <input type="hidden" name="chemical_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Chemical name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Chemical</label>
+                                <input type="text" class="form-control" readonly name="checkOut_chemical_name">
+                            </div>
+                        </div>
+                        <!-- Chemical name -->
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                <input type="date" min="0" class="form-control" name="date">
+                            </div>
+                        </div>
+                        <!-- end Date -->
+                        <!-- Unit of measurement -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Quantity/Volume</label>
+                                <div class="input-group qty-icons">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
+                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Unit of measurement -->
+                        <!-- Remark -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <input type="text" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out-chemical">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -2443,6 +2698,8 @@
 
     @section('scripts')
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
+    <script src=""></script>
+
     <script>
         async function ChangePolicy(ele, company, policy) {
             console.log(ele, company, policy);
@@ -4267,7 +4524,7 @@
                 }
                 // end feedback
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.log('Fetch error:', error);
                 Toastify({
                     text: "An unexpected error occurred.",
                     duration: 3000,
@@ -4524,9 +4781,10 @@
     </script>
     <!-- end activate and deactivate -->
      <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
-     <!-- water usage -->
-      <script>
-        const water_usage_date = document.querySelector('#water-usage-form #date')
+    <!-- water usage -->
+    <script>
+        const water_usage_date = document.querySelector('#water-usage-form #date');
+
         function addDate(ele) {
             if (ele.checked) {
                 switch (ele.value) {
@@ -4544,28 +4802,26 @@
                                                 id="example-month-input" name="date">`;
                         break;
                     case "yearly":
-                        // Create the select element dynamically
                         const yearlyLabel = `<label for="yearly-select" class="col col-form-label">Year</label>`;
                         const yearlySelect = document.createElement("select");
                         yearlySelect.className = "form-control";
                         yearlySelect.name = "date";
                         yearlySelect.id = "yearly-select";
 
-                        // Populate the select with year options
                         const currentYear = new Date().getFullYear();
                         for (let year = 1900; year <= currentYear; year++) {
                             const option = document.createElement("option");
                             option.value = year;
                             option.textContent = year;
-                            if (year == currentYear) {option.setAttribute("selected", true)}
+                            if (year == currentYear) {
+                                option.setAttribute("selected", true);
+                            }
                             yearlySelect.appendChild(option);
                         }
 
-                        // Clear existing content and append new content
                         water_usage_date.innerHTML = yearlyLabel;
                         water_usage_date.appendChild(yearlySelect);
                         break;
-                    
                     default:
                         water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
                         <input type="date" min="0" class="form-control" name="date">`);
@@ -4573,20 +4829,282 @@
                 }
             }
         }
-        // checkout water
-        // company material checkout
+
         let btn_submit_water_usage = document.querySelector('#water-usage-form #btn-submit-water-usage');
         btn_submit_water_usage.addEventListener('click', () => {
             console.log("clicked");
-            // Show the loader
-            let company_id      = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
-            let volume          = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
-            let date_type       = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
-            let date            = document.querySelector('#water-usage-form [name="date"]').value.trim();
-            let remark          = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
+
+            let company_id = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
+            let volume = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
+            let date_type = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
+            let date = document.querySelector('#water-usage-form [name="date"]').value.trim();
+            let remark = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
+
+            if (!company_id || !volume || !date_type || !date) {
+                Toastify({
+                    text: "All fields are required.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            let url = "{{ route('company.add-water-usage') }}";
+            let formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('volume', volume);
+            formData.append('date_type', date_type);
+            formData.append('date', date);
+            formData.append('remark', remark);
+
+            fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
+                console.log(result);
+                let water_usage_tbody = document.querySelector('#water-usage-table');
+                water_usage_tbody.innerHTML = '';
+                result.water_usage.forEach(data => {
+                    let parsedDate;
+
+                    if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
+                        const [year, week] = data.date.split("-W");
+                        const januaryFourth = new Date(`${year}-01-04`);
+                        const dayOfWeek = januaryFourth.getDay() || 7;
+                        parsedDate = new Date(januaryFourth);
+                        parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1);
+                    } else {
+                        parsedDate = new Date(data.date);
+                    }
+
+                    if (isNaN(parsedDate)) {
+                        console.error("Invalid date:", data.date);
+                        return;
+                    }
+
+                    const options = { year: "numeric", month: "short", day: "numeric" };
+                    let usage_date = "";
+
+                    switch (data.date_type) {
+                        case "monthly":
+                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+                            break;
+                        case "yearly":
+                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" });
+                            break;
+                        case "weekly":
+                            const startOfWeek = new Date(parsedDate);
+                            const endOfWeek = new Date(startOfWeek);
+                            endOfWeek.setDate(startOfWeek.getDate() + 6);
+                            usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
+                            break;
+                        default:
+                            usage_date = parsedDate.toLocaleDateString(undefined, options);
+                            break;
+                    }
+
+                    water_usage_tbody.innerHTML += `
+                    <tr>
+                        <td>${data.volume ?? ""}</td>
+                        <td>${usage_date ?? ""}</td>
+                        <td>${data.remark ?? ""}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                    data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-haspopup="false" aria-expanded="false">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="dLabel11">
+                                    <a class="dropdown-item" href="#">Update Material</a>
+                                    <a class="dropdown-item" href="#">Delete Material</a>
+                                    <hr class="dropdown-divider">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                });
+            });
+        });
+    </script>
+         <script>
+          // company water sources
+            
+  // AJAX implementation to store water sources details
+  document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
+      const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
+      const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
+      const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
+      const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
+
+      if (!water_source) {
+          Toastify({
+              text: "Please select a water source.",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                  background: "linear-gradient(to right, #ff0000, #ff1745)",
+              },
+          }).showToast();
+          return;
+      }
+
+      if (!location) {
+          Toastify({
+              text: "Please provide a location.",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                  background: "linear-gradient(to right, #ff0000, #ff1745)",
+              },
+          }).showToast();
+          return;
+      }
+
+      let url = "{{ route('admin.store-company-water-source') }}";
+      const formData = new FormData();
+    formData.append('company_id', company_id);
+    formData.append('water_source_id', water_source);
+    formData.append('location', location);
+    formData.append('capacity', capacity);
+
+      fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
+          console.log(result);
+        if (result.status === "success") {
+            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+            waterSourceSelect.innerHTML = ""; // Clear existing options
+
+            result.water_sources.forEach(source => {
+                const option = document.createElement("option");
+                option.value = source.WaterSourcesId;
+                option.textContent = source.sources;
+                if (result.company_water_sources.includes(source.WaterSourcesId)) {
+                    option.selected = true; // Mark as selected if already associated with the company
+                }
+                waterSourceSelect.appendChild(option);
+            });
+
+            Toastify({
+                text: result.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+            }).showToast();
+        } else {
+            Toastify({
+                text: result.message || "An error occurred.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+        }
+      });
+    });
+          
+
+        // end company water sources
+
+        document.querySelector('#waterSourceForm select[name="water_source"]').addEventListener('click', function () {
+            console.log('====================================');
+            console.log("Hello Water source");
+            console.log('====================================');
+            let company_id = "{{$company->company_id}}"
             if (!company_id) {
                 Toastify({
-                    text: "Company id field cannot be empty.",
+                    text: "Company ID is missing.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            try {
+                let formData = new FormData();
+                formData.append('company_id', company_id);
+                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.get-water-sources') }}", 'POST', formData).then(async response => {
+                    console.log(response);
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
+                        data.water_sources.forEach(source => {
+                            const option = document.createElement('option');
+                            option.value = source.WaterSourcesId;
+                            option.textContent = source.sources;
+                            waterSourceSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Failed to fetch water sources:', data.message);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching water sources:', error);
+            }
+        });
+     </script>
+     <!-- water usage -->
+
+     <!-- Chemical  -->
+      <script>
+        let btn_submit_chemical = document.querySelector('#btn-submit-chemical');
+        btn_submit_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#chemical-usage #loader');
+            loader.style.display = 'inline-block';
+
+            let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
+            let chemical = document.querySelector('#chemical-usage select[name="chemical"]').value.trim();
+            let unit_of_measurement = document.querySelector('#chemical-usage input[name="unit_of_measurement"]').value.trim();
+            console.log('====================================');
+            console.log(chemical, unit_of_measurement);
+            console.log('====================================');
+            if (!company_id) {
+                Toastify({
+                    text: "Company ID field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return;
+            }
+            if (!chemical) {
+                Toastify({
+                    text: "Chemical field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -4599,9 +5117,9 @@
                 loader.style.display = 'none';
                 return
             }
-            if (!volume) {
+            if (!unit_of_measurement) {
                 Toastify({
-                    text: "Volume of water field cannot be empty.",
+                    text: "Unit of measurement field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -4614,9 +5132,109 @@
                 loader.style.display = 'none';
                 return
             }
-            if (!date_type) {
+
+            let url = "{{ route('admin.store-company-chemical') }}"
+            let formData = new FormData();
+            formData.append('chemical_id', chemical);
+            formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('company_id', company_id);
+            fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+                if (result.status == "success") {
+                    let tableBody = document.querySelector('#tbl-company-chemical tbody')
+                    tableBody.innerHTML = ""
+                    result.data.forEach(chemical => {
+                        let id = chemical.company_chemical_id;
+                        const baseUrl = "{{ route('admin.view-chemical', ['chemical' => '__PLACEHOLDER__']) }}";
+                        const url = baseUrl.replace('__PLACEHOLDER__', id);
+
+                        tableBody.innerHTML += `<tr>
+                            <td>${chemical.name}</td>
+                            <td>${chemical.unit ?? ''}</td>
+                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="${url}">Open Chemical</a>
+                                        <a class="dropdown-item" href="#">Update Chemical</a>
+                                        <a class="dropdown-item" href="#">Delete Chemical</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#">Setup Price</a>
+                                        <a href="#" class="dropdown-item">Check In Item</a>
+                                        <a href="#" class="dropdown-item">Check Out Item</a>
+                                        <a href="#" class="dropdown-item">Adjustment</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`
+                    });
+                }
+            });
+        });
+
+        // Trigger CheckIn Chemical
+        let triggerCheckInChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+            let checkInChemicalModal = document.querySelector('#checkInChemicalModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value = companyChemicalID;
+            document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value = chemicalID;
+            document.querySelector('#checkInChemicalModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_name"]').value = chemicalName;
+            let loader = document.querySelector('#checkInChemicalModal #loader');
+            loader.style.display = 'none';
+            const myModal = new bootstrap.Modal(checkInChemicalModal);
+            myModal.show();
+        }
+
+        // Trigger CheckOut Chemical
+        let triggerCheckOutChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+            let checkOutChemicalModal = document.querySelector('#checkOutChemicalModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value = companyChemicalID;
+            document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value = chemicalID;
+            document.querySelector('#checkOutChemicalModal input[name="company_id"]').value = companyID;
+            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_name"]').value = chemicalName;
+            const myModal = new bootstrap.Modal(checkOutChemicalModal);
+            myModal.show();
+        }
+
+        // checkin chemical
+        let btn_submit_check_in_chemical = document.querySelector('#btn-submit-check-in-chemical');
+        btn_submit_check_in_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkInChemicalModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkIn_chemical_id = document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value.trim();
+            let chemical_id = document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value.trim();
+            let company_id = document.querySelector('#checkInChemicalModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkInChemicalModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkInChemicalModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkInChemicalModal input[name="remark"]').value.trim();
+            if (!checkIn_chemical_id) {
                 Toastify({
-                    text: "Date type field cannot be empty.",
+                    text: "Chemical id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -4645,91 +5263,96 @@
                 return
             }
 
-            let url = "{{ route('company.add-water-usage') }}"
+            let url = "{{ route('admin.save-company-chemical-check-in') }}"
             let formData = new FormData();
-
+            formData.append('checkIn_chemical_id', checkIn_chemical_id);
+            formData.append('chemical_id', chemical_id);
             formData.append('company_id', company_id);
-            formData.append('volume', volume);
-            formData.append('date_type', date_type);
+            formData.append('quantity', quantity);
             formData.append('date', date);
             formData.append('remark', remark);
-            fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
+            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
                 console.log(result);
-                // loader.style.display = 'none';
-                let water_usage_tbody = document.querySelector('#water-usage-table')
-                water_usage_tbody.innerHTML = '';
-                result.water_usage.forEach(data => {
-                let parsedDate;
-                
-                // Check if the date is in ISO week-date format (e.g., "YYYY-Www")
-                if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
-                    console.log('got in here');
-                    
-                    const [year, week] = data.date.split("-W");
-                    const januaryFourth = new Date(`${year}-01-04`); // Jan 4 is always in the first ISO week
-                    const dayOfWeek = januaryFourth.getDay() || 7; // Ensure Sunday is 7, not 0
-                    parsedDate = new Date(januaryFourth);
-                    parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1); // Calculate ISO week start
-                } else {
-                    parsedDate = new Date(data.date); // Parse other formats normally
-                }
-
-                if (isNaN(parsedDate)) {
-                    console.error("Invalid date:", data.date);
-                    return; // Skip invalid dates
-                }
-
-                const options = { year: "numeric", month: "short", day: "numeric" };
-                let usage_date = "";
-
-                switch (data.date_type) {
-                    case "monthly":
-                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" }); // e.g., "Feb 2025"
-                        break;
-                    case "yearly":
-                        usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" }); // e.g., "2025"
-                        break;
-                    case "weekly":
-                        const startOfWeek = new Date(parsedDate);
-                        const endOfWeek = new Date(startOfWeek);
-                        endOfWeek.setDate(startOfWeek.getDate() + 6);
-                        usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
-                        break;
-                    default:
-                        usage_date = parsedDate.toLocaleDateString(undefined, options); // e.g., "04 Feb 2025"
-                        break;
-                }
-
-                // Append row to table
-                water_usage_tbody.innerHTML += `
-                <tr>
-                    <td>${data.volume??""}</td>
-                    <td>${usage_date??""}</td>
-                    <td>${data.remark??""}</td>
-                    <td class="text-end">
-                        <div class="dropdown d-inline-block">
-                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                data-bs-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="false" aria-expanded="false">
-                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end"
-                                aria-labelledby="dLabel11">
-                                <a class="dropdown-item" href="#">Update Material</a>
-                                <a class="dropdown-item" href="#">Delete Material</a>
-                                <hr class="dropdown-divider">
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                `;
-            });
-
-
+                loader.style.display = 'none';
             });
         });
-        // end water usage
+        // checkout chemical
+        let btn_submit_check_out_chemical = document.querySelector('#btn-submit-check-out-chemical');
+        btn_submit_check_out_chemical.addEventListener('click', () => {
+            console.log("clicked");
+            // Show the loader
+            let loader = document.querySelector('#checkOutChemicalModal #loader');
+            loader.style.display = 'inline-block';
+
+            let checkOut_chemical_id = document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value.trim();
+            let chemical_id = document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value.trim();
+            let company_id = document.querySelector('#checkOutChemicalModal input[name="company_id"]').value.trim();
+            let quantity = document.querySelector('#checkOutChemicalModal input[name="quantity"]').value.trim();
+            let date = document.querySelector('#checkOutChemicalModal input[name="date"]').value.trim();
+            let remark = document.querySelector('#checkOutChemicalModal input[name="remark"]').value.trim();
+            if (!checkOut_chemical_id) {
+                Toastify({
+                    text: "Chemical id field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+            if (!quantity) {
+                Toastify({
+                    text: "Quantity field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            if (!date) {
+                Toastify({
+                    text: "Date field cannot be empty.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                loader.style.display = 'none';
+                return
+            }
+
+            let url = "{{ route('admin.save-company-chemical-check-out') }}"
+            let formData = new FormData();
+            formData.append('checkout_chemical_id', checkOut_chemical_id);
+            formData.append('chemical_id', chemical_id);
+            formData.append('company_id', company_id);
+            formData.append('quantity', quantity);
+            formData.append('date', date);
+            formData.append('remark', remark);
+            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
+                console.log(result);
+                loader.style.display = 'none';
+            });
+        });
       </script>
-     <!-- water usage -->
+     <!-- Chemical  -->
+
+     
     @endsection
 </x-layouts.admin-app>

@@ -17,16 +17,20 @@ return new class extends Migration
             $table->id('CompanyWaterSourcesID');
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('WaterSources_id');
+        
             $table->foreign('companyID')
-                    ->references('company_id')
-                    ->on('companies')
-                    ->onDelete('cascade');
-            $table->foreign('WaterSourcesID')
-                    ->references('WaterSources_id')
-                    ->on('water_sources')
-                    ->onDelete('cascade');
+                ->references('id') // Specify the primary key in the water_sources table
+                ->on('water_sources')
+                ->onDelete('cascade');
+        
+            $table->foreign('WaterSources_id')
+                ->references('id') // Assuming water_sources has 'id' as its primary key
+                ->on('water_sources')
+                ->onDelete('cascade');
+        
             $table->timestamps();
         });
+        
     }
 
     /**

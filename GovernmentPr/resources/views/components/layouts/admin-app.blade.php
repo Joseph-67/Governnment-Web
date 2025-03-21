@@ -347,33 +347,23 @@
                                         <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
-                                    </li><!--end nav-item-->
-
-                                    </ul><!--end nav-->
-                                    </div><!--end startbarApplications-->
-                                    </li><!--end nav-item-->
-                                    <li class="menu-label mt-2">
-                                    <small class="label-border">
-                                        <div class="border_left hidden-xs"></div>
-                                        <div class="border_right"></div>
-                                    </small>
-                                    <span>Management Systems</span>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="{{route('admin.users-management')}}">
-                                        <i class="iconoir-community menu-icon"></i>
-                                        <span>People</span>
-                                    </a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.create-category') }}">
-                                        <i class="iconoir-page-star menu-icon"></i>
-                                        <span>Category</span>
+                                        <a class="nav-link" href="{{ route('admin.stock-trading') }}">Stock Trading</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.real-time-updates') }}">Real-Time Update</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Reporting Analytics</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.inventory-forecasting') }}">Inventory Forecasting</a>
+                                    </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->
-                             
+    
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
@@ -403,7 +393,7 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('chemicals.chemicalUsage') }}">
+                            <a class="nav-link" href="{{ route('admin.create-chemical') }}">
                             <i class="iconoir-page-star menu-icon"></i>
                             <span>Chemicals</span>
                             </a>

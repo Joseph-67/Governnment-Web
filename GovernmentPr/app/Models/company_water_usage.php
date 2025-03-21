@@ -16,4 +16,9 @@ class company_water_usage extends Model
         'date',
         'remark'
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'companyID');
+    }
 }

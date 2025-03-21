@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CompanyChemicalUsage;
 use Illuminate\Http\Request;
 
-class CompanyChemicalUsageController extends Controller
+class StockTradingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +14,7 @@ class CompanyChemicalUsageController extends Controller
     public function index()
     {
         //
+        return view('components.stocktrading.stocktrading');
     }
 
     /**
@@ -36,28 +36,15 @@ class CompanyChemicalUsageController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'chemical_name'     => 'required|max:255|unique:chemical_usages,chemical',
-            'unit_of_measurement'       => 'nullable|max:255'
-        ]);
-
-        $chemical = new chemicalUsage();
-
-        $chemical -> chemical               =   $request-> chemical_name;
-        $chemical -> unit_of_measurement    =   $request-> unit_of_measurement;
-        $chemical -> status         =   "1";
-        $chemical -> save();
-
-        return back()->with(['success' => 'Chemical added successfully']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(CompanyChemicalUsage $companyChemicalUsage)
+    public function show($id)
     {
         //
     }
@@ -65,10 +52,10 @@ class CompanyChemicalUsageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(CompanyChemicalUsage $companyChemicalUsage)
+    public function edit($id)
     {
         //
     }
@@ -77,10 +64,10 @@ class CompanyChemicalUsageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CompanyChemicalUsage $companyChemicalUsage)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -88,10 +75,10 @@ class CompanyChemicalUsageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CompanyChemicalUsage  $companyChemicalUsage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CompanyChemicalUsage $companyChemicalUsage)
+    public function destroy($id)
     {
         //
     }
