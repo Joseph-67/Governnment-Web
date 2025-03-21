@@ -17,11 +17,9 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\MapReport;
-<<<<<<< HEAD
 use App\Http\Controllers\viewEmailController;
 
 use App\Http\Controllers\WaterSourceDetailsController;
-=======
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionsController;
@@ -34,11 +32,9 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersManagementController;
-use App\Http\Controllers\ViewEmailController;
 use App\Http\Controllers\WaterUsageLogsController;
 
 
->>>>>>> 2485be3a0f860c209c8ae4a5f873c02e8a4501ff
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
