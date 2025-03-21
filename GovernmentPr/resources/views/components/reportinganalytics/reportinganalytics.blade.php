@@ -1,7 +1,7 @@
 <x-layouts.admin-app>
-@section('PageTitle', 'Reporting and Analytics')
+@section('PageTitle', $page_title)
 <div class="container-xxl mt-4">
-    <h1 class="text-3xl font-bold text-center mb-6">Reporting & Analytics</h1>
+    <h1 class="text-3xl font-bold text-center mb-6">{{ $page_description }}</h1>
     <ul class="nav nav-tabs justify-content-center mb-4" id="reportTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary Report</button>
@@ -28,7 +28,7 @@
         <div class="tab-pane fade show active" id="summary" role="tabpanel">
             <div class="card shadow-lg mb-4">
                 <div class="card-header">
-                    <h2 class="text-xl font-semibold">Inventory Summary Report</h2>
+                    <h2 class="text-xl font-semibold">Summary Report</h2>
                 </div>
                 <div class="card-body">
                     <div class="row mb-4">
@@ -36,7 +36,7 @@
                             <div class="card bg-light">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Total Products</h5>
-                                    <p class="card-text display-6">1,245</p>
+                                    <p class="card-text display-6">{{ $total_company_materials }}</p>
                                 </div>
                             </div>
                         </div>

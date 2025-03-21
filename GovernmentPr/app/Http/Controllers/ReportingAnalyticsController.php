@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\CompanyMaterial;
 
 class ReportingAnalyticsController extends Controller
 {
@@ -14,7 +15,14 @@ class ReportingAnalyticsController extends Controller
     public function index()
     {
         //
-        return view('components.reportinganalytics.reportinganalytics');
+        $data['page_title'] = "Reporting & Analytics";
+        $data['page_description'] = "Reporting & Analytics";
+        $data['breadcrumb'] = [
+            ['title' => 'Reporting & Analytics', 'path' => '/reporting-analytics', 'icon' => 'fa fa-dashboard', 'active' => 0, 'is_module' => 1]
+        ];
+
+        $data['total_company_materials'] = CompanyMaterial::totalMaterials();
+        return view('components.reportinganalytics.reportinganalytics', $data);
     }
 
     /**

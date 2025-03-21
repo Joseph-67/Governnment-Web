@@ -33,4 +33,34 @@ class CompanyChemical extends Model
     {
         return $this->hasMany(ChemicalStockMovement::class, 'company_chemical_id');
     }
+    
+    public function scopeByCompany($query, $company_id)
+    {
+        return $query->where('company_id', $company_id);
+    }
+
+    public function scopeByChemical($query, $chemical_id)
+    {
+        return $query->where('chemical_id', $chemical_id);
+    }
+
+    public function scopeByYear($query, $year)
+    {
+        return $query->whereYear('created_at', $year);
+    }
+
+    public function scopeByMonth($query, $month)
+    {
+        return $query->whereMonth('created_at', $month);
+    }
+
+    public function scopeByDate($query, $date)
+    {
+        return $query->whereDate('created_at', $date);
+    }
+
+    public function scopeTotalChemicals()
+    {
+        return $query->count();
+    }
 }

@@ -27,4 +27,9 @@ class CompanyMaterial extends Model
     {
         return $this->belongsTo(Material::class, 'materialID');
     }
+
+    public static function totalMaterials()
+    {
+        return self::where('status', 'active')->count();
+    }
 }
