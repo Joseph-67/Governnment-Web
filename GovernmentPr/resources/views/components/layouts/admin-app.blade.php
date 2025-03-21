@@ -349,6 +349,30 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->
+
+                                    </ul><!--end nav-->
+                                    </div><!--end startbarApplications-->
+                                    </li><!--end nav-item-->
+                                    <li class="menu-label mt-2">
+                                    <small class="label-border">
+                                        <div class="border_left hidden-xs"></div>
+                                        <div class="border_right"></div>
+                                    </small>
+                                    <span>Management Systems</span>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="{{route('admin.users-management')}}">
+                                        <i class="iconoir-community menu-icon"></i>
+                                        <span>People</span>
+                                    </a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.create-category') }}">
+                                        <i class="iconoir-page-star menu-icon"></i>
+                                        <span>Category</span>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
+                                    </li><!--end nav-item-->
                              
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
