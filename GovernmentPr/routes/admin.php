@@ -20,6 +20,9 @@ use App\Http\Controllers\MapReport;
 use App\Http\Controllers\viewEmailController;
 
 use App\Http\Controllers\WaterSourceDetailsController;
+use App\Http\Controllers\WaterUsageLogsController;
+use App\Http\Controllers\WaterRecyclingLogsController;
+use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionsController;
@@ -32,7 +35,6 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersManagementController;
-use App\Http\Controllers\WaterUsageLogsController;
 
 
 // Guest Admin Routes
@@ -170,6 +172,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Water Usage Logs Route
     Route::controller(WaterUsageLogsController::class)->group(function() {
     Route::post('/store-water-usage-logs', 'store')->name('admin.store-water-usage-logs');
+    });
+    // Water Recycling Logs Route
+    Route::controller(WaterRecyclingLogsController::class)->group(function() {
+        Route::post('/store-water-recycling-logs', 'store')->name('admin.store-water-recycling-logs');
+    });
+    // Water Quality Logs Route
+    Route::controller(WaterQualityLogsController::class)->group(function() {
+        Route::post('/store-water-quality-logs', 'store')->name('admin.store-water-quality-logs');
     });
     Route::controller(RECPController::class)->group(function(){
         // add

@@ -17,19 +17,14 @@ return new class extends Migration
         Schema::create('water_quality_logs', function (Blueprint $table) {
             $table->id('quality_id');
             $table->unsignedBigInteger('companyID');
-            $table->unsignedBigInteger('CompanyWaterSourcesID');
-            $table->decimal('quantity_used', 10, 2);
-            $table->string('ph_level', 20);
+            $table->date('test_date');
+            $table->decimal('ph_level', 10, 2);
+            $table->decimal('turbidity', 10, 2);
             $table->text('contaminants');
             $table->text('test_results');
-            $table->date('usage_date');
-            $table->text('purpose');
-
-            $table->foreign('companyID')->references('company_id')
-            ->on('companies')
-            ->onDelete('cascade');
-            $table->foreign('CompanyWaterSourcesID')->references('CompanyWaterSourcesID')->on('company_water_sources')->onDelete('cascade');
-    $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+            $table->foreign('companyID')->references('company_id')->on('companies');
     });
     }
     /**
