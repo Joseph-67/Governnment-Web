@@ -54,4 +54,8 @@ class stock_movement extends Model
         return $query->where('movement_type', $type);
     }
     
+    public function scopeLowStock($query, $threshold)
+    {
+        return $query->where('quantity', '<', $threshold);
+    }
 }
