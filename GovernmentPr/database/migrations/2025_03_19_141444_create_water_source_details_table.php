@@ -18,10 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('WaterSources_id');
             $table->string('location');
-            $table->string('capacity');
+            $table->string('capacity')->nullable();
             $table->string('status');
             $table->foreign('companyID')->references('company_id')->on('companies');
-            $table->foreign('WaterSourcesId')->references('WaterSourcesId')->on('water_sources');
+            $table->foreign('WaterSources_id')->references('WaterSourcesId')->on('water_sources');
             $table->timestamps();
         });
     }

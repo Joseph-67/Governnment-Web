@@ -1445,7 +1445,7 @@
             <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" id="remark" class="form-control" name="location">
+                    <input type="text" id="location" class="form-control" name="location">
                 </div>
             </div>
             <!-- capacity of Water -->
@@ -1581,7 +1581,7 @@
                                             <label for="" class="col col-form-label">Quantity Used(LTR)</label>
                                             <div class="input-group qty-icons">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="quantity_of_water_used" value="0">
+                                                <input type="number" class="form-control" min="0" name="quantity_used" value="">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                             </div>
                                         </div>
@@ -3786,6 +3786,7 @@
             let materialID = document.querySelector('select[name="material"]').value.trim();
             let serialNo = document.querySelector('input[name="serial_number"]').value.trim();
             let unit = document.querySelector('input[name="unit_of_measurement"]').value.trim();
+            let threshold = document.querySelector('input[name="threshold"]').value.trim();
             if (!companyID) {
                 Toastify({
                     text: "Company id field cannot be empty.",
@@ -3823,6 +3824,7 @@
             formData.append('material', materialID);
             formData.append('serial_number', serialNo);
             formData.append('unit_of_measurement', unit);
+            formData.append('threshold', threshold);
             fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
                 console.log(result);
                 loader.style.display = 'none';
@@ -5084,8 +5086,8 @@
         document.querySelector('#btn-submit-water-usage-logs').addEventListener('click', function () {
             const company_id = document.querySelector('#waterUsageLogsForm input[name="company_id"]').value.trim();
             const water_source = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]').value.trim();
-            const quantity_used = document.querySelector('#waterUsageLogsForm input[name="quantity_of_water_used"]').value.trim();
-            const unit_of_measurement = document.querySelector('#waterUsageLogsForm select[name="unit_of_water_measured"]').value.trim();
+            const quantity_used = document.querySelector('#waterUsageLogsForm input[name="quantity_used"]').value.trim();
+            const unit_of_water_measured = document.querySelector('#waterUsageLogsForm select[name="unit_of_water_measured"]').value.trim();
             const date = document.querySelector('#waterUsageLogsForm input[name="date"]').value.trim();
             const purpose = document.querySelector('#waterUsageLogsForm input[name="purpose"]').value.trim();
 
@@ -5119,7 +5121,7 @@
                 return;
             }
 
-            if (!unit_of_measurement) {
+            if (!unit_of_water_measured) {
                 Toastify({
                     text: "Please select a unit of measurement.",
                     duration: 3000,
@@ -5154,7 +5156,7 @@
             formData.append('company_id', company_id);
             formData.append('water_source_id', water_source);
             formData.append('quantity_used', quantity_used);
-            formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('unit_of_water_measured', unit_of_water_measured);
             formData.append('date', date);
             formData.append('purpose', purpose);
 
@@ -5217,6 +5219,7 @@
             let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
             let chemical = document.querySelector('#chemical-usage select[name="chemical"]').value.trim();
             let unit_of_measurement = document.querySelector('#chemical-usage input[name="unit_of_measurement"]').value.trim();
+            let threshold = document.querySelector('#chemical-usage input[name="threshold"]').value.trim();
             console.log('====================================');
             console.log(chemical, unit_of_measurement);
             console.log('====================================');
@@ -5270,6 +5273,7 @@
             let formData = new FormData();
             formData.append('chemical_id', chemical);
             formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('threshold', threshold);
             formData.append('company_id', company_id);
             fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
                 console.log(result);

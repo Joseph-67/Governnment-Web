@@ -11,11 +11,10 @@ class WaterUsageLogs extends Model
     protected $primaryKey = 'WaterUsageLogsID';
     protected $fillable = [
         'companyID',
-        'WaterSources_id',
-        'WaterUsage',
+        'WaterSourcesId',
         'quantity_used',
-        'unit',
-        'usage_date',
+        'unit_of_water_measured',
+        'date',
         'purpose'
     ];
     

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\WaterSourceDetails;
 use App\Models\WaterSources;
-use App\Models\CompanyWaterSources;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -30,7 +29,7 @@ class WaterSourceDetailsController extends Controller
     {
         //
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
-        return view('components.apps.companyProfile', $data);
+        
     }
 
     /**
@@ -44,7 +43,6 @@ class WaterSourceDetailsController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'company_id'       => ['required', 'numeric'],
-            'water_source_id'     => ['required', 'string', 'max:255'],
             'location'         => ['required', 'string', 'max:255'],
             'capacity'         => ['nullable', 'numeric', 'min:1'],
         ]);

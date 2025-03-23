@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('water_usage_logs', function (Blueprint $table) {
             $table->id('WaterUsageLogsID');
             $table->unsignedBigInteger('companyID');
-            $table->unsignedBigInteger('WaterSources_id');
+            $table->unsignedBigInteger('WaterSourcesId');
             $table->decimal('quantity_used', 10, 2);
-            $table->string('unit', 20)->nullable();
-            $table->date('usage_date')->nullable();
-            $table->text('purpose');
+            $table->string('unit_of_water_measured', 20);
+            $table->string('date');
+            $table->string('purpose')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->foreign('companyID')->references('company_id')->on('companies');

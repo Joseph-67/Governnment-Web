@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\WaterSourceDetails;
 use App\Models\WaterSources;
-use App\Models\CompanyWaterSources;
 use App\Models\WaterUsageLogs;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +27,8 @@ class WaterUsageLogsController extends Controller
     public function create()
     {
         //
-        
+        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+
     }
 
     /**
@@ -45,8 +44,8 @@ class WaterUsageLogsController extends Controller
           $validator = Validator::make($request->all(), [
             'company_id'       => ['required', 'numeric'],
             'quantity_used'     => ['required', 'string', 'max:255'],
-            'unit'     => ['nullable', 'string', 'max:255'],
-            'usage_date'     => ['nullable', 'string', 'max:255'],
+            'unit_of_water_measured'     => ['required', 'string', 'max:255'],
+            'date'     => ['required', 'string', 'max:255'],
             'purpose'     => ['nullable', 'string', 'max:255'],
 
             
@@ -62,10 +61,10 @@ class WaterUsageLogsController extends Controller
 
         $result = WaterUsageLogs::create([
             'companyID'          => $request->company_id,
-            'WaterSources_id'    => $request->water_source_id,
+            'WaterSourcesId'    => $request->water_source_id,
             'quantity_used'        => $request->quantity_used,
-            'unit'        => $request->unit,
-            'usage_date'        => $request->usage_date,
+            'unit_of_water_measured'                 => $request->unit_of_water_measured,
+            'date'        => $request->date,
             'purpose'        => $request->purpose,   
             'status'          => "active",
         ]);
