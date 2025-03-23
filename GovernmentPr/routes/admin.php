@@ -167,6 +167,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(WaterSourceDetailsController::class)->group(function() {
         Route::post('/store-water-source-details', 'store')->name('admin.store-water-source-details');
     });
+    // Water Usage Logs Route
+    Route::controller(WaterUsageLogsController::class)->group(function() {
+    Route::post('/store-water-usage-logs', 'store')->name('admin.store-water-usage-logs');
+    });
     Route::controller(RECPController::class)->group(function(){
         // add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');

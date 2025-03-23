@@ -13,7 +13,10 @@ class WaterUsageLogs extends Model
         'companyID',
         'WaterSources_id',
         'WaterUsage',
-        'WaterUsageDate',
+        'quantity_used',
+        'unit',
+        'usage_date',
+        'purpose'
     ];
     
 }

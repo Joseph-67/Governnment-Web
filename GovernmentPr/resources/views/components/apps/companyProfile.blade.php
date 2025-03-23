@@ -1556,7 +1556,7 @@
                                 <h4 class="card-title mb-0">Water Usage Logs</h4>
                             </div> <!-- end card-header -->
 
-                            <div class="card-body pt-0" id="waterSourceForm">
+                            <div class="card-body pt-0" id="waterUsageLogsForm">
                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
                                 <div class="row g-3">
@@ -1581,7 +1581,7 @@
                                             <label for="" class="col col-form-label">Quantity Used(LTR)</label>
                                             <div class="input-group qty-icons">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="unit_of_water" value="0">
+                                                <input type="number" class="form-control" min="0" name="quantity_of_water_used" value="0">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                             </div>
                                         </div>
@@ -1590,7 +1590,7 @@
                                     <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="" class="col col-form-label">Unit of Measurement</label>
-                                            <select name="water_source" id="source" class="form-select">
+                                            <select name="unit_of_water_measured" id="source" class="form-select">
                                                 <option value="" selected disabled>Choose...</option>
                                                 <option value="kg">Kilogram (kg)</option>
                                                 <option value="g">Gram (g)</option>
@@ -5077,6 +5077,132 @@
             }
         });
      </script>
+
+     <!-- water usage logs -->
+        <script>
+        // AJAX implementation to store water usage logs
+        document.querySelector('#btn-submit-water-usage-logs').addEventListener('click', function () {
+            const company_id = document.querySelector('#waterUsageLogsForm input[name="company_id"]').value.trim();
+            const water_source = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]').value.trim();
+            const quantity_used = document.querySelector('#waterUsageLogsForm input[name="quantity_of_water_used"]').value.trim();
+            const unit_of_measurement = document.querySelector('#waterUsageLogsForm select[name="unit_of_water_measured"]').value.trim();
+            const date = document.querySelector('#waterUsageLogsForm input[name="date"]').value.trim();
+            const purpose = document.querySelector('#waterUsageLogsForm input[name="purpose"]').value.trim();
+
+            if (!water_source) {
+                Toastify({
+                    text: "Please select a water source.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!quantity_used) {
+                Toastify({
+                    text: "Please provide the quantity of water used.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!unit_of_measurement) {
+                Toastify({
+                    text: "Please select a unit of measurement.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!date) {
+                Toastify({
+                    text: "Please provide a date.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            let url = "{{ route('admin.store-water-usage-logs') }}";
+            const formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('water_source_id', water_source);
+            formData.append('quantity_used', quantity_used);
+            formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('date', date);
+            formData.append('purpose', purpose);
+
+            fetch_cycle('--Save Water Usage Logs', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === "success") {
+                    const waterUsageLogsTable = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]');
+                    waterUsageLogsTable.innerHTML = ""; // Clear existing options
+
+                    result.water_usage_logs.forEach(log => {
+                        const option = document.createElement("option");
+                        option.value = log.WaterSourcesId;
+                        option.textContent = log.sources;
+                        if (result.company_water_sources.includes(log.WaterSourcesId)) {
+                            option.selected = true; // Mark as selected if already associated with the company
+                        }
+                        waterUsageLogsTable.appendChild(option);
+                    });
+
+                    Toastify({
+                        text: result.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: result.message || "An error occurred.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                }
+            });
+        });
+        </script>
+     <!-- water usage logs -->
+      
      <!-- water usage -->
 
      <!-- Chemical  -->

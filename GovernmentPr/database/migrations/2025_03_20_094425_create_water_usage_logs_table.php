@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('WaterSources_id');
             $table->decimal('quantity_used', 10, 2);
-            $table->string('unit', 20);
-            $table->date('usage_date');
+            $table->string('unit', 20)->nullable();
+            $table->date('usage_date')->nullable();
             $table->text('purpose');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
