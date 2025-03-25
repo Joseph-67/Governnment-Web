@@ -292,8 +292,19 @@
     </x-slot>
     <x-slot name="form">
         <div class="row">
-            <div class="col-md-12">
-                <input type="text" class="form-control" placeholder="Full Name Of Enviromental Operations Specialist or Manager" name="enviromental_operations_manager">
+            <div class="col-md-6 mt-2">
+                <select class="form-select" name="enviromental_operations_manager">
+                    <option value="" selected disabled>Choose...</option>
+                    @if(!empty($usersList) && $usersList->count())
+                        @foreach($usersList as $user)
+                            <option value="{{ $user->id }}">{{ $user->first_name }} {{$user->last_name}}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No users available</option>
+                    @endif
+                    
+                </select>
+                
             </div>
             <div class="col-md-6 mt-2">
                 <input type="text" class="form-control" placeholder="Full Name Of Contact Person" name="contact_person_name">
