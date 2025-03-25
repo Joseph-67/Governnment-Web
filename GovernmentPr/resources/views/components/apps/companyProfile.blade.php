@@ -28,6 +28,11 @@
                             aria-selected="false">Inventory Management</a>
                     </li>
 
+                    <li class="nav-">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#operations" role="tab"
+                        aria-selected="false">Operations Management</a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
                             aria-selected="false">Settings</a>
