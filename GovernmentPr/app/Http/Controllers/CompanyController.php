@@ -30,6 +30,7 @@ use App\Models\ChemicalUsage;
 use App\Models\CompanyChemical;
 use App\Models\Admins;
 use App\Models\company_water_usage;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -314,7 +315,8 @@ class CompanyController extends Controller
     public function create()
     {
         //
-        return view('components.apps.create-company');
+        $data['usersList'] = User::where('status','active')->select('first_name','last_name')->get();
+        return view('components.apps.create-company', $data);
     }
 
     public function create_resp($id)
