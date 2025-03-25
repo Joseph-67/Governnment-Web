@@ -294,10 +294,14 @@
         <div class="row">
             <div class="col-md-6 mt-2">
                 <select class="form-select" name="enviromental_operations_manager">
-                    <option value="" selected>Choose...</option>
-                    @foreach($usersList as $user)
-                        <option value="{{ $user->id }}">{{ $user->first_name }} {{$user->last_name}}</option>
-                    @endforeach
+                    <option value="" selected disabled>Choose...</option>
+                    @if(!empty($usersList) && $usersList->count())
+                        @foreach($usersList as $user)
+                            <option value="{{ $user->id }}">{{ $user->first_name }} {{$user->last_name}}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No users available</option>
+                    @endif
                     
                 </select>
                 
