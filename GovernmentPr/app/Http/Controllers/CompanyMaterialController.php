@@ -70,7 +70,7 @@ class CompanyMaterialController extends Controller
             'materialID'        => $request['material'],
             'serial_number'     => $request['serial_number'],
             'unit_of_measure'   => $request['unit_of_measurement'],
-            'threshold'         => $request['threshold'],
+            'threshold_quantity'         => $request['threshold'],
         ]);
 
     

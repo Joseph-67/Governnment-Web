@@ -1,160 +1,141 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
     <div class="container-xxl">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
-                                <div class="d-flex align-items-center flex-row flex-wrap">
-                                    <div class="">
-                                        <h5 class="fw-semibold fs-22 mb-1 text-uppercase">
-                                            {{ $company->company_name }}
-                                        </h5>
-                                        <p class="mb-0 text-muted fw-medium">{{ $company->industry }}</p>
-                                        <p class="mb-0 text-muted fw-medium">{{ $company->address }}, <br>
-                                            {{ $company->city }}, {{ $company->state }}, {{ $company->country }}.</p>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
+        <!-- Header -->
+        <div class="profile-header text-center py-5">
+            <h1 class="display-4 fw-bold">Company Profile</h1>
+            <p class="">Your company's information at a glance</p>
+        </div>
 
-                            <div class="col-lg-1 ms-auto align-self-center">
-                                <div class="d-flex justify-content-center">
-                                    <div
-                                        class="border-dashed rounded border-theme-color p-2 me-2 flex-grow-1 flex-basis-0">
-                                        <h5 class="fw-semibold fs-22 mb-1">{{ $company->number_of_employees }}</h5>
-                                        <p class="text-muted mb-0 fw-medium">Employees</p>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!--end col-->
-        </div><!--end row-->
-
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Personal Information</h4>
-                            </div><!--end col-->
-                            <div class="col-auto">
-                                <a href="#" class="float-end text-muted d-inline-flex text-decoration-underline"><i
-                                        class="iconoir-edit-pencil fs-18 me-1"></i>Edit</a>
-                            </div><!--end col-->
-                        </div> <!--end row-->
-                    </div><!--end card-header-->
-                    <div class="card-body pt-0">
-                        <p class="text-muted fw-medium mb-1">
-                            This section displays the personal information you’ve provided to us. Please review the
-                            details below to ensure they’re accurate and up-to-date.
-                        </p>
-                        <p class="text-muted fw-medium mb-3">
-                            If you need to make any changes, simply click the "Edit" button. Your privacy is important
-                            to us, and all your information is securely stored in compliance with our [Privacy Policy].
-                        </p>
-                        <div class="mb-3">
-                            <span class="badge bg-transparent border border-light text-gray-700 fs-12 fw-medium mb-1">{{
-                                $company->industry_process }}</span>
-                        </div>
-                        @php
-                        $est_date = Carbon\Carbon::parse($company->date_of_establishment);
-                        @endphp
-                        <ul class="list-unstyled mb-0">
-                            <li class=""><i class="las la-birthday-cake me-2 text-secondary fs-22 align-middle"></i> <b>
-                                    Establishment Date </b> : {{ $est_date->format('d M Y') }}</li>
-                            <!-- <li class="mt-2"><i class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Industry </b> : {{ $company->industry }}</li> -->
-                            <!-- <li class="mt-2"><i class="las la-university me-2 text-secondary fs-22 align-middle"></i> <b> Education </b> : Stanford Univercity</li> -->
-                            <!-- <li class="mt-2"><i class="las la-language me-2 text-secondary fs-22 align-middle"></i> <b> Languages </b> : English, French, Spanish</li> -->
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
-                                    Primary Phone </b> : {{ $company->primary_phone_number }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
-                                    Secondary Phone </b> : {{ $company->secondary_phone_number }}</li>
-                            <li class="mt-2"><i class="las la-envelope me-2 text-secondary fs-22 align-middle me-2"></i>
-                                <b> Email </b> : {{ $company->email }}
-                            </li>
-                            <li class="mt-2"><i class="las la-link text-secondary fs-22 align-middle me-2"></i> <b>
-                                    Website </b> : <a href="{{ $company->website_url }}">{{ $company->website_url }}</a>
-                            </li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> ZIP Code </b> : {{ $company->zip_code }}
-                            </li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> Longitude </b> : {{ $company->longitude }}
-                            </li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> Latitude </b> : {{ $company->latitude }}
-                            </li>
-                            <li class="mt-2"><i class="las la-map-marked text-secondary fs-22 align-middle me-2"></i>
-                                <b> MGRS </b> : {{ $company->mgrs }}
-                            </li>
-                        </ul>
-                    </div><!--end card-body-->
-                </div><!--end card-->
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Extra</h4>
-                            </div><!--end col-->
-                        </div> <!--end row-->
-                    </div><!--end card-header-->
-                    <div class="card-body pt-0">
-                        <p class="text-muted fw-medium mb-1">
-                            <!-- This section displays the personal information you’ve provided to us. Please review the details below to ensure they’re accurate and up-to-date. -->
-                        </p>
-                        <ul class="list-unstyled mb-0">
-                            <li class="text-capitalize"><i
-                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Enviromental
-                                    Operations Manager </b> : {{ $company->operations_manager }}</li>
-                            <li class="mt-2 text-capitalize"><i
-                                    class="las la-user-alt me-2 text-secondary fs-22 align-middle"></i> <b> Contact
-                                    Person </b> : {{ $company->contact_person_full_name }}</li>
-                            <li class="mt-2 text-capitalize"><i
-                                    class="las la-briefcase me-2 text-secondary fs-22 align-middle"></i> <b> Position
-                                </b> : {{ $company->contact_person_position }}</li>
-                            <li class="mt-2"><i class="las la-phone me-2 text-secondary fs-22 align-middle"></i> <b>
-                                    Mobile </b> : {{ $company->contact_person_contact_number }}</li>
-                        </ul>
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!--end col-->
-            <div class="col-md-8">
-                <ul class="nav nav-tabs mb-3" role="tablist">
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#policy" role="tab"
-                            aria-selected="true">Policies & Objectives</a>
+                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#overview" role="tab"
+                            aria-selected="true">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#policy" role="tab"
+                            aria-selected="false">Policies & Objectives</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
                             aria-selected="false">R.E.C.P</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#water-usage" role="tab"
-                            aria-selected="false">Water Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#chemical-usage" role="tab"
-                            aria-selected="false">Chemical Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#materials" role="tab"
-                            aria-selected="false">Material Inventory</a>
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#inventory" role="tab"
+                            aria-selected="false">Inventory Management</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
                             aria-selected="false">Settings</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
+                            aria-selected="false">Contact Details</a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane active" id="policy" role="tabpanel">
+                    <!-- Overview -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Company Name</h5>
+                                        <p class="card-text">{{ $company->company_name }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Founded</h5>
+                                        <p class="card-text">{{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Industry</h5>
+                                        <p class="card-text">{{ $company->industry }} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Headquarters</h5>
+                                        <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{ $company->state }}, {{
+                                            $company->country }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Contact Details</h5>
+                                        <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{ $company->secondary_phone_number }}</p>
+                                        <p class="card-text">Email: {{ $company->email }}</p>
+                                        <p class="card-text">Website: <a href="{{ $company->website_url }}">{{ $company->website_url }}</a></p>
+                                        <p class="card-text">ZIP Code: {{ $company->zip_code }}</p>
+                                        <p class="card-text">Longitude: {{ $company->longitude }}</p>
+                                        <p class="card-text">Latitude: {{ $company->latitude }}</p>
+                                        <p class="card-text">MGRS: {{ $company->mgrs }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Environmental Manager</h5>
+                                        <p class="card-text">Name: {{ $company->operations_manager }}</p>
+                                        <p class="card-text">Phone: (123) 555-7890</p>
+                                        <p class="card-text">Email: jane.doe@abccorp.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Contact Person</h5>
+                                        <p class="card-text">Name: {{ $company->contact_person_full_name }}</p>
+                                        <p class="card-text">Phone: {{ $company->contact_person_contact_number }}</p>
+                                        <p class="card-text">Position: {{ $company->contact_person_position }}</p>
+                                        <p class="card-text">Email: john.smith@abccorp.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Number of Employees</h5>
+                                        <p class="card-text">{{ $company->number_of_employees }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Industry Process Used</h5>
+                                        <p class="card-text">This company primarily utilizes processes such as {{ $company->industry_process }}.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="policy" role="tabpanel">
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -1323,815 +1304,820 @@
                             </div>
                         </div>
                     </div>
-                    <!-- water usage -->
-                    <div class="tab-pane p-3" id="water-usage" role="tabpanel">
-                        <div class="card">
-                            <div class="card-body py-3">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="company_id"
-                                        value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        @foreach($waterQuestions as $question)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                                <input class="form-check-input"
-                                                    onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
-                                                    type="checkbox" value="{{ $question->questionId }}"
-                                                    name="{{ $question->label }}" id="flexCheckIndeterminate"
-                                                    {{(in_array($question->questionId,
-                                                    array_column($CompanyWaterQuestions->toArray(),
-                                                    'questionID')))? "checked": ""}}
-                                                >
-                                                <label class="form-check-label" for="flexCheckIndeterminate">
-                                                    {{ $question->question }}
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                                <hr>
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="company_id"
-                                        value="{{ $company->company_id }}">
-                                    <label for="">Indicate the water conservations opportunity that is applicable or
-                                        beneficial to your process</label>
-                                    <div class="row g-2 mt-2">
-                                        @foreach($WaterConservationMethod as $method)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                                <input class="form-check-input"
-                                                    onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
-                                                    type="checkbox" value="{{ $method->WaterConservationMethodId }}"
-                                                    name="{{ $method->label }}" id="flexCheckIndeterminate"
-                                                    {{(in_array($method->WaterConservationMethodId,
-                                                array_column($companyWaterConservationMethod->toArray(),
-                                                'waterConservationMethod_id')))? "checked": ""}}
-                                                >
-                                                <label class="form-check-label" for="flexCheckIndeterminate">
-                                                    {{ $method->method }}
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                                <hr>
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="company_id"
-                                        value="{{ $company->company_id }}">
-                                    <label for="">Select the water source used in your Organization</label>
-                                    <div class="row g-2 mt-2">
-                                        @foreach($WaterSources as $sources)
-                                        <!-- question  -->
-                                        <div class="col-md-6">
-                                            <!-- form check -->
-                                            <div class="form-check">
-                                                <input class="form-check-input"
-                                                    onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
-                                                    type="checkbox" value="{{ $sources->WaterSourcesId }}"
-                                                    name="{{ $sources->label }}" id="flexCheckIndeterminate"
-                                                    {{(in_array($sources->WaterSourcesId,
-                                                array_column($companyWaterSources->toArray(),
-                                                'WaterSources_id')))? "checked": ""}}
-                                                >
-                                                <label class="form-check-label" for="flexCheckIndeterminate">
-                                                    {{ $sources->sources }}
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                        </div>
-                                        <!-- question ends -->
-                                        @endforeach
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                      <!-- Water Sources -->
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title mb-0">Water Sources Details</h4>
-    </div> <!-- end card-header -->
-
-    <div class="card-body pt-0" id="waterSourceForm">
-        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-        <div class="row g-3">
-            <!-- Water Source -->
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="water_source" class="form-label">Water Source</label>
-                    <select name="water_source" id="source" class="form-select">
-                        <option value="" selected disabled>Choose...</option>
-                    @foreach($waterSources as $source)
-                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
-                            <option value="{{ $source->WaterSourcesId }}" selected>
-                                {{ $source->sources }}
-                            </option>
-                        @endif
-                    @endforeach
-                    </select>
-                </div>
-            </div>
-            <!-- Location -->
-            <div class="col-md-4 col-sm-6">
-                <div class="form-group">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" id="location" class="form-control" name="location">
-                </div>
-            </div>
-            <!-- capacity of Water -->
-            <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Capacity of Water(LTR)</label>
-                                            
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="capacity"
-                                                    value="0">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-            <!-- Save Button (Moved Down) -->
-            <div class="col-12 mt-3">
-                <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save</button>
-            </div>
-        </div>
-    </div> <!-- end card-body -->
-</div>
-<!-- End Water Sources -->
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Water Usage</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0" id="water-usage-form">
-                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                <div class="row g-2">
-                                    <!-- Unit of measurement -->
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Volume of Water</label>
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="volume"
-                                                    value="0">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Unit of measurement -->
-                                    <!-- date type -->
-                                    <div class="col-md-4 col-sm-6">
-                                        <label class="col my-1 control-label">Date Type</label>
-                                        <div class="col-md-9">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type"
-                                                    id="inlineRadio1" value="daily" checked onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio1">Daily</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type"
-                                                    id="inlineRadio2" value="weekly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type"
-                                                    id="inlineRadio3" value="monthly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type"
-                                                    id="inlineRadio4" value="yearly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio3">Yearly</label>
-                                            </div>
-                                        </div>
-                                    </div> <!--end row-->
-                                    <!-- date type -->
-                                    <!-- Date -->
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group" id="date">
-                                            <label for="" class="col col-form-label">Date</label>
-                                            <input type="date" class="form-control" name="date">
-                                        </div>
-                                    </div>
-                                    <!-- end Date -->
-
-
-                                    <!-- Material name -->
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Remark</label>
-                                            <input type="text" class="form-control" name="remark">
-                                        </div>
-                                    </div>
-                                    <!-- Material name -->
-                                     <div class="col-12">
-                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- water usage card -->
-                        <!-- water usage logs card -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title mb-0">Water Usage Logs</h4>
-                            </div> <!-- end card-header -->
-
-                            <div class="card-body pt-0" id="waterUsageLogsForm">
-                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                                <div class="row g-3">
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label for="water_source" class="form-label">Water Source</label>
-                                            <select name="water_source_selected" id="water_source_selected" class="form-select">
-                                                <option value="" selected disabled>Choose...</option>
-                                                @foreach($WaterSources as $source)
-                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
-                                                        <option value="{{ $source->WaterSourcesId }}" selected>
-                                                            {{ $source->sources }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Quantity Used</label>
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="quantity_used" value="">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Unit of Measurement</label>
-                                            <select name="unit_of_water_measured" id="source" class="form-select">
-                                                <option value="" selected disabled>Choose...</option>
-                                                <option value="kg">Kilogram (kg)</option>
-                                                <option value="g">Gram (g)</option>
-                                                <option value="lb">Pound (lb)</option>
-                                                <option value="oz">Ounce (oz)</option>
-                                                <option value="cm">Centimeter (cm)</option>
-                                                <option value="m">Meter (m)</option>
-                                                <option value="in">Inch (in)</option>
-                                                <option value="ft">Foot (ft)</option>
-                                                <option value="l">Liter (L)</option>
-                                                <option value="ml">Milliliter (mL)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group" id="date">
-                                            <label for="" class="col col-form-label">Date</label>
-                                            <input type="date" class="form-control" name="date">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Purpose</label>
-                                            <input type="text" class="form-control" name="purpose">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 mt-3">
-                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
-                                    </div>
-                                </div>
-                            </div> <!-- end card-body -->
-                        </div>
-                        <!-- End Water Usage Logs -->
-
-                         <!-- water recycling logs -->
-                    <!-- water usage logs card -->
-                    <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                            </div> <!-- end card-header -->
-
-                            <div class="card-body pt-0" id="waterRecyclingLogsForm">
-                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                                <div class="row g-3">
-                                    
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Quantity Recycled</label>
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="quantity_recycled" value="">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Unit</label>
-                                            <select name="unit_of_water_recycled" id="unit_of_water_recycled" class="form-select">
-                                                <option value="" selected disabled>Choose...</option>
-                                                <option value="kg">Kilogram (kg)</option>
-                                                <option value="g">Gram (g)</option>
-                                                <option value="lb">Pound (lb)</option>
-                                                <option value="oz">Ounce (oz)</option>
-                                                <option value="cm">Centimeter (cm)</option>
-                                                <option value="m">Meter (m)</option>
-                                                <option value="in">Inch (in)</option>
-                                                <option value="ft">Foot (ft)</option>
-                                                <option value="l">Liter (L)</option>
-                                                <option value="ml">Milliliter (mL)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group" id="date">
-                                            <label for="" class="col col-form-label">Reycling Date</label>
-                                            <input type="date" class="form-control" name="recycling_date">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Method</label>
-                                            <input type="text" class="form-control" name="method">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 mt-3">
-                                        <button type="button" class="btn btn-primary" id="btn-submit-water-recycling-logs">Save</button>
-                                    </div>
-                                </div>
-                            </div> <!-- end card-body -->
-                        </div>
-                        
-                         <!-- end water recycling logs -->
-                            
-                         <!-- water quality log -->
-                                              
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title mb-0">Water Quality Logs </h4>
-    </div> <!-- end card-header -->
-
-    <div class="card-body pt-0" id="waterQualityLogForm">
-        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-        <div class="row g-3">
-            
-            <div class="col-md-4 col-sm-6">
-                                        <div class="form-group" id="date">
-                                            <label for="" class="col col-form-label">Test Date</label>
-                                            <input type="date" class="form-control" name="test_date">
-                                        </div>
-                                    </div>
-            <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">PH Level</label>
-                                            
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="ph_level"
-                                                    value="0">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Turbidity Level</label>
-                                            
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="turbidity_level"
-                                                    value="0">
-                                                <button class="btn btn-primary"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-group">
-                                                    <label for="contaminants_detected" class="form-label">Contaminants Detected</label>
-                                                    <textarea class="form-control" id="contaminants_detected" name="contaminants_detected" rows="3" placeholder="Enter contaminants detected"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-group">
-                                                    <label for="test_results" class="form-label">Test Results</label>
-                                                    <textarea class="form-control" id="test_results" name="test_results" rows="3" placeholder="Enter test results"></textarea>
-                                                </div>
-                                            </div>
-            <!-- Save Button (Moved Down) -->
-            <div class="col-12 mt-3">
-                <button type="button" class="btn btn-primary" id="btn-submit-water-quality-logs">Save</button>
-            </div>
-        </div>
-    </div> <!-- end card-body -->
-</div>
-
-                         <!-- end water quality log -->
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Water Usage Re-adjustment</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0" id="water-usage-form">
-                                <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                <div class="row g-2">
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Volume of Water</label>
-                                            <div class="input-group qty-icons">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="volume" value="0">
-                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <label class="col my-1 control-label">Date Type</label>
-                                        <div class="col-md-9">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1" value="daily" checked onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio1">Daily</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2" value="weekly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3" value="monthly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4" value="yearly" onchange="addDate(this)">
-                                                <label class="form-check-label" for="inlineRadio4">Yearly</label>
-                                            </div>
-                                        </div>
-                                    </div> <!--end row-->
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group" id="date">
-                                            <label for="" class="col col-form-label">Date</label>
-                                            <input type="date" class="form-control" name="date">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label for="" class="col col-form-label">Remark</label>
-                                            <input type="text" class="form-control" name="remark">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Water Usage</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0" id="tbl-company-material">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Volume</th>
-                                                <!-- <th>Date type</th> -->
-                                                <th>Date</th>
-                                                <th>Remark</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="water-usage-table">
-                                            @foreach($company_water_usage as $key=>$water_usage)
-                                            <tr>
-                                                <td>{{ $water_usage->volume }}</td>
-                                                <!-- <td>{{$water_usage->date_type}}</td> -->
-                                                @if($water_usage->date_type === 'monthly')
-                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('M Y') }}</td>
-                                                @elseif($water_usage->date_type === 'yearly')
-                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('Y') }}</td>
-                                                @elseif($water_usage->date_type === 'weekly')
-                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d M Y') }} - {{ \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d M Y') }}</td>
-                                                @else
-                                                <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('d M Y') }}</td>
-                                                @endif
-                                                <td>{{$water_usage->remark}}</td>
-                                                <td class="text-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                            data-bs-toggle="dropdown" href="#" role="button"
-                                                            aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                            aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <hr class="dropdown-divider">
+                    
+                    <!-- Inventory Management -->
+                    <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+                        <h3>Inventory Management</h3>
+                        <div class="accordion" id="inventoryAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="waterHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#waterCollapse" aria-expanded="true" aria-controls="waterCollapse">
+                                        Water Inventory
+                                    </button>
+                                </h2>
+                                <div id="waterCollapse" class="accordion-collapse collapse show" aria-labelledby="waterHeading">
+                                    <div class="accordion-body">
+                                        <!-- Water inventory -->
+                                         <!-- water inventory -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-body py-3">
+                                                <form action="" method="post">
+                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-2">
+                                                        @foreach($waterQuestions as $question)
+                                                        <!-- question  -->
+                                                        <div class="col-md-6">
+                                                            <!-- form check -->
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"
+                                                                    onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
+                                                                    type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $question->questionId }}" {{(in_array($question->questionId,
+                                                                array_column($CompanyWaterQuestions->toArray(),
+                                                                'questionID')))? "checked": ""}}
+                                                                >
+                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                    {{ $question->question }}
+                                                                </label>
+                                                            </div>
+                                                            <!-- form check -->
                                                         </div>
+                                                        <!-- question ends -->
+                                                        @endforeach
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table><!--end /table-->
-                                </div><!--end /tableresponsive-->
-                            </div>
-                        </div>
-                        <!-- end water usage card -->
-                    </div>
-                    <!-- tab water usage -->
-                    <!-- tab chemical inventory -->
-                    <div class="tab-pane p-3" id="chemical-usage" role="tabpanel">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title mb-0">Add New Chemical</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <form action="" method="post" id="chemical-form">
-                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2 align-items-end">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="chemical">Chemical</label>
-                                                <select name="chemical" id="chemical" class="form-select">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                    @foreach($approved_chemicals as $chemical)
-                                                        <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="unit_of_measurement">Unit of Measurement</label>
-                                                <input type="text" class="form-control" name="unit_of_measurement"
-                                                    placeholder="Unit of Measurement">
+
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <form action="" method="post">
+                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <label for="">Indicate the water conservations opportunity that is applicable or
+                                                        beneficial to your process</label>
+                                                    <div class="row g-2 mt-2">
+                                                        @foreach($WaterConservationMethod as $method)
+                                                        <!-- question  -->
+                                                        <div class="col-md-6">
+                                                            <!-- form check -->
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"
+                                                                    onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
+                                                                    type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}" {{(in_array($method->WaterConservationMethodId,
+                                                                array_column($companyWaterConservationMethod->toArray(),
+                                                                'waterConservationMethod_id')))? "checked": ""}}
+                                                                >
+                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                    {{ $method->method }}
+                                                                </label>
+                                                            </div>
+                                                            <!-- form check -->
+                                                        </div>
+                                                        <!-- question ends -->
+                                                        @endforeach
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="threshold">Threshold</label>
-                                                <input type="number" class="form-control" name="threshold" placeholder="Minimum Stock Threshold" min="0">
+                                            
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <form action="" method="post">
+                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <label for="">Select the water source used in your Organization</label>
+                                                    <div class="row g-2 mt-2">
+                                                        @foreach($WaterSources as $sources)
+                                                        <!-- question  -->
+                                                        <div class="col-md-6">
+                                                            <!-- form check -->
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"
+                                                                    onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
+                                                                    type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}" {{(in_array($sources->WaterSourcesId,
+                                                                array_column($companyWaterSources->toArray(),
+                                                                'WaterSources_id')))? "checked": ""}}
+                                                                >
+                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                    {{ $sources->sources }}
+                                                                </label>
+                                                            </div>
+                                                            <!-- form check -->
+                                                        </div>
+                                                        <!-- question ends -->
+                                                        @endforeach
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">
-                                                    Save
-                                                    <span class="loader" id="loader"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card shadow-sm border-0 mt-4">
-                            <div class="card-header bg-primary text-white" id="headingChemicals">
-                                <h4 class="card-title mb-0">
-                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse" href="#collapseChemicals" aria-expanded="true" aria-controls="collapseChemicals">
-                                        Company Chemicals
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseChemicals" class="collapse show" aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped mb-0" id="tbl-company-chemical">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Chemical</th>
-                                                    <th>Unit of Measurement</th>
-                                                    <th>Chemical Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($company_chemicals as $chemical)
-                                                <tr>
-                                                    <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
-                                                    <td>{{ $chemical->unit }}</td>
-                                                    <td>
-                                                        <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
-                                                            {{ $chemical->status }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block" style="position: relative ! important;z-index: 99999999999999;">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11" style="z-index: 99999999999999;">
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
-                                                                    Chemical</a>
-                                                                <a class="dropdown-item" href="#">Update Chemical</a>
-                                                                <a class="dropdown-item" href="#">Delete Chemical</a>
-                                                                <hr class="dropdown-divider">
-                                                                <a class="dropdown-item" href="#">Setup Price</a>
-                                                                <a href="#" class="dropdown-item" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check In Item</a>
-                                                                <a href="#" class="dropdown-item" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check Out Item</a>
-                                                                <a href="#" class="dropdown-item">Make Adjustment</a>
+                                            <!-- Water Sources -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="card-title mb-0">Water Sources Details</h4>
+                                                </div> <!-- end card-header -->
+
+                                                <div class="card-body pt-0" id="waterSourceForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                                    <div class="row g-3">
+                                                        <!-- Water Source -->
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label for="water_source" class="form-label">Water Source</label>
+                                                                <select name="water_source" id="source" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    @foreach($waterSources as $source)
+                                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(),
+                                                                    'WaterSources_id')))
+                                                                    <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                        {{ $source->sources }}
+                                                                    </option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table><!--end /table-->
-                                    </div><!--end /tableresponsive-->
+                                                        <!-- Location -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="location" class="form-label">Location</label>
+                                                                <input type="text" id="location" class="form-control" name="location">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Capacity of Water -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="capacity" class="col col-form-label">Capacity of Water (LTR)</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="capacity" value="0">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Save Button -->
+                                                        <div class="col-12 mt-3">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- end card-body -->
+                                            </div>
+                                            <!-- End Water Sources -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <div class="row align-items-center">
+                                                        <div class="col">
+                                                            <h4 class="card-title">Water Usage</h4>
+                                                        </div><!--end col-->
+                                                    </div> <!--end row-->
+                                                </div><!--end card-header-->
+                                                <div class="card-body pt-0" id="water-usage-form">
+                                                    <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                                    <div class="row g-2">
+                                                        <!-- Unit of measurement -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Volume of Water</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="volume" value="0">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Unit of measurement -->
+                                                        <!-- date type -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <label class="col my-1 control-label">Date Type</label>
+                                                            <div class="col-md-9">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1"
+                                                                        value="daily" checked onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio1">Daily</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2"
+                                                                        value="weekly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3"
+                                                                        value="monthly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4"
+                                                                        value="yearly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio3">Yearly</label>
+                                                                </div>
+                                                            </div>
+                                                        </div> <!--end row-->
+                                                        <!-- date type -->
+                                                        <!-- Date -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group" id="date">
+                                                                <label for="" class="col col-form-label">Date</label>
+                                                                <input type="date" class="form-control" name="date">
+                                                            </div>
+                                                        </div>
+                                                        <!-- end Date -->
+                                                        <!-- Material name -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Remark</label>
+                                                                <input type="text" class="form-control" name="remark">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Material name -->
+                                                        <div class="col-12">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- water usage card -->
+                                            <!-- water usage logs card -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="card-title mb-0">Water Usage Logs</h4>
+                                                </div> <!-- end card-header -->
+
+                                                <div class="card-body pt-0" id="waterUsageLogsForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label for="water_source" class="form-label">Water Source</label>
+                                                                <select name="water_source_selected" id="water_source_selected" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    @foreach($WaterSources as $source)
+                                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(),
+                                                                    'WaterSources_id')))
+                                                                    <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                        {{ $source->sources }}
+                                                                    </option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Quantity Used</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="quantity_used" value="">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Unit of Measurement</label>
+                                                                <select name="unit_of_water_measured" id="source" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    <option value="kg">Kilogram (kg)</option>
+                                                                    <option value="g">Gram (g)</option>
+                                                                    <option value="lb">Pound (lb)</option>
+                                                                    <option value="oz">Ounce (oz)</option>
+                                                                    <option value="cm">Centimeter (cm)</option>
+                                                                    <option value="m">Meter (m)</option>
+                                                                    <option value="in">Inch (in)</option>
+                                                                    <option value="ft">Foot (ft)</option>
+                                                                    <option value="l">Liter (L)</option>
+                                                                    <option value="ml">Milliliter (mL)</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group" id="date">
+                                                                <label for="" class="col col-form-label">Date</label>
+                                                                <input type="date" class="form-control" name="date">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Purpose</label>
+                                                                <input type="text" class="form-control" name="purpose">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 mt-3">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- end card-body -->
+                                            </div>
+                                            <!-- End Water Usage Logs -->
+                                            <!-- water recycling logs -->
+                                            <!-- water usage logs card -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="card-title mb-0">Water Recycling Logs</h4>
+                                                </div> <!-- end card-header -->
+                                                <div class="card-body pt-0" id="waterRecyclingLogsForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Quantity Recycled</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="quantity_recycled" value="">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Unit</label>
+                                                                <select name="unit_of_water_recycled" id="unit_of_water_recycled" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    <option value="kg">Kilogram (kg)</option>
+                                                                    <option value="g">Gram (g)</option>
+                                                                    <option value="lb">Pound (lb)</option>
+                                                                    <option value="oz">Ounce (oz)</option>
+                                                                    <option value="cm">Centimeter (cm)</option>
+                                                                    <option value="m">Meter (m)</option>
+                                                                    <option value="in">Inch (in)</option>
+                                                                    <option value="ft">Foot (ft)</option>
+                                                                    <option value="l">Liter (L)</option>
+                                                                    <option value="ml">Milliliter (mL)</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group" id="date">
+                                                                <label for="" class="col col-form-label">Reycling Date</label>
+                                                                <input type="date" class="form-control" name="recycling_date">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Method</label>
+                                                                <input type="text" class="form-control" name="method">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 mt-3">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-recycling-logs">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- end card-body -->
+                                            </div>
+                                            <!-- end water recycling logs -->
+                                            <!-- water quality log -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="card-title mb-0">Water Quality Logs</h4>
+                                                </div> <!-- end card-header -->
+                                                <div class="card-body pt-0" id="waterQualityLogForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group" id="date">
+                                                                <label for="" class="col col-form-label">Test Date</label>
+                                                                <input type="date" class="form-control" name="test_date">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">PH Level</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="ph_level" value="0">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Turbidity Level</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="turbidity_level" value="0">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-group">
+                                                                <label for="contaminants_detected" class="form-label">Contaminants Detected</label>
+                                                                <textarea class="form-control" id="contaminants_detected" name="contaminants_detected" rows="3"
+                                                                    placeholder="Enter contaminants detected"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="form-group">
+                                                                <label for="test_results" class="form-label">Test Results</label>
+                                                                <textarea class="form-control" id="test_results" name="test_results" rows="3"
+                                                                    placeholder="Enter test results"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 mt-3">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-quality-logs">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- end card-body -->
+                                            </div>
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
+                                                </div> <!-- end card-header -->
+                                                <div class="card-body pt-0" id="water-usage-form">
+                                                    <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                                    <div class="row g-2">
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Volume of Water</label>
+                                                                <div class="input-group qty-icons">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                    <input type="number" class="form-control" min="0" name="volume" value="0">
+                                                                    <button class="btn btn-primary"
+                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <label class="col my-1 control-label">Date Type</label>
+                                                            <div class="col-md-9">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1"
+                                                                        value="daily" checked onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio1">Daily</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2"
+                                                                        value="weekly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio2">Weekly</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3"
+                                                                        value="monthly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4"
+                                                                        value="yearly" onchange="addDate(this)">
+                                                                    <label class="form-check-label" for="inlineRadio4">Yearly</label>
+                                                                </div>
+                                                            </div>
+                                                        </div> <!--end row-->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group" id="date">
+                                                                <label for="" class="col col-form-label">Date</label>
+                                                                <input type="date" class="form-control" name="date">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="" class="col col-form-label">Remark</label>
+                                                                <input type="text" class="form-control" name="remark">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <div class="row align-items-center">
+                                                        <div class="col">
+                                                            <h4 class="card-title">Water Usage</h4>
+                                                        </div><!--end col-->
+                                                    </div> <!--end row-->
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table mb-0" id="tbl-company-material">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th>Volume</th>
+                                                                    <!-- <th>Date type</th> -->
+                                                                    <th>Date</th>
+                                                                    <th>Remark</th>
+                                                                    <th class="text-end">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="water-usage-table">
+                                                                @foreach($company_water_usage as $key=>$water_usage)
+                                                                <tr>
+                                                                    <td>{{ $water_usage->volume }}</td>
+                                                                    <!-- <td>{{$water_usage->date_type}}</td> -->
+                                                                    @if($water_usage->date_type === 'monthly')
+                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('M Y') }}</td>
+                                                                    @elseif($water_usage->date_type === 'yearly')
+                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('Y') }}</td>
+                                                                    @elseif($water_usage->date_type === 'weekly')
+                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d M Y') }} - {{
+                                                                        \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d M Y') }}</td>
+                                                                    @else
+                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('d M Y') }}</td>
+                                                                    @endif
+                                                                    <td>{{$water_usage->remark}}</td>
+                                                                    <td class="text-end">
+                                                                        <div class="dropdown d-inline-block">
+                                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown"
+                                                                                href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                                <a class="dropdown-item" href="#">Update Material</a>
+                                                                                <a class="dropdown-item" href="#">Delete Material</a>
+                                                                                <hr class="dropdown-divider">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table><!--end /table-->
+                                                    </div><!--end /tableresponsive-->
+                                                </div>
+                                            </div>
+                                            <!-- end water usage card -->
+
+                                        <!-- Water inventory -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="chemicalHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chemicalCollapse" aria-expanded="false" aria-controls="chemicalCollapse">
+                                        Chemical Inventory
+                                    </button>
+                                </h2>
+                                <div id="chemicalCollapse" class="accordion-collapse collapse" aria-labelledby="chemicalHeading">
+                                    <div class="accordion-body">
+                                        <!-- chemical -->
+                                        <div class="card shadow-sm border-0">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h4 class="card-title mb-0">Add New Chemical</h4>
+                                                    </div><!--end col-->
+                                                </div> <!--end row-->
+                                            </div><!--end card-header-->
+                                            <div class="card-body pt-0">
+                                                <form action="" method="post" id="chemical-form">
+                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-2 align-items-end">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="chemical">Chemical</label>
+                                                                <select name="chemical" id="chemical" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    @foreach($approved_chemicals as $chemical)
+                                                                        <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="unit_of_measurement">Unit of Measurement</label>
+                                                                <input type="text" class="form-control" name="unit_of_measurement" placeholder="Unit of Measurement">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="threshold">Threshold</label>
+                                                                <input type="number" class="form-control" name="threshold" placeholder="Minimum Stock Threshold" min="0">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="d-flex align-items-center">
+                                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">
+                                                                    Save
+                                                                    <span class="loader" id="loader"></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="card shadow-sm border-0 mt-4">
+                                            <div class="card-header bg-primary text-white" id="headingChemicals">
+                                                <h4 class="card-title mb-0">
+                                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse" href="#collapseChemicals" aria-expanded="true" aria-controls="collapseChemicals">
+                                                        Company Chemicals
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseChemicals" class="collapse show" aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped mb-0" id="tbl-company-chemical">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th>Chemical</th>
+                                                                    <th>Unit of Measurement</th>
+                                                                    <th>Chemical Status</th>
+                                                                    <th class="text-end">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($company_chemicals as $chemical)
+                                                                <tr>
+                                                                    <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
+                                                                    <td>{{ $chemical->unit }}</td>
+                                                                    <td>
+                                                                        <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                                            {{ $chemical->status }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        <div class="dropdown d-inline-block" style="position: relative !important; z-index: 99999999999999;">
+                                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11" style="z-index: 99999999999999;">
+                                                                                <a class="dropdown-item" href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open Chemical</a>
+                                                                                <a class="dropdown-item" href="#">Update Chemical</a>
+                                                                                <a class="dropdown-item" href="#">Delete Chemical</a>
+                                                                                <hr class="dropdown-divider">
+                                                                                <a class="dropdown-item" href="#">Setup Price</a>
+                                                                                <a href="#" class="dropdown-item" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check In Item</a>
+                                                                                <a href="#" class="dropdown-item" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check Out Item</a>
+                                                                                <a href="#" class="dropdown-item">Make Adjustment</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table><!--end /table-->
+                                                    </div><!--end /tableresponsive-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- chemical -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="materialHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#materialCollapse" aria-expanded="false" aria-controls="materialCollapse">
+                                        Material Inventory
+                                    </button>
+                                </h2>
+                                <div id="materialCollapse" class="accordion-collapse collapse" aria-labelledby="materialHeading">
+                                    <div class="accordion-body">
+                                        <!-- Material Inventory -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h4 class="card-title">Add New Material</h4>
+                                                    </div><!--end col-->
+                                                </div> <!--end row-->
+                                            </div><!--end card-header-->
+                                            <div class="card-body pt-0">
+                                                <form action="" method="post">
+                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-2">
+                                                        <!-- Material -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="material">Material</label>
+                                                                <select name="material" id="material" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    @foreach($materials as $material)
+                                                                    <option value="{{ $material->materialID }}">{{ $material->material }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Serial Number -->
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="serial_number">Serial Number (If any)</label>
+                                                                <input type="text" class="form-control" id="serial_number" name="serial_number"
+                                                                    placeholder="Serial Number">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Unit of Measurement -->
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="unit_of_measurement">Unit of Measurement</label>
+                                                                <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement"
+                                                                    placeholder="Unit of Measurement">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Threshold -->
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <label for="threshold">Threshold</label>
+                                                                <input type="number" class="form-control" id="threshold" name="threshold"
+                                                                    placeholder="Minimum Stock Threshold" min="0">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Save Button-->
+                                                        <div class="col-12 mt-3">
+                                                            <div class="d-flex">
+                                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button>
+                                                                <span class="loader" id="loader"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h4 class="card-title">Company Materials</h4>
+                                                    </div><!--end col-->
+                                                </div> <!--end row-->
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped mb-0" id="tbl-company-material">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Material</th>
+                                                                <th>Serial No.</th>
+                                                                <th>Unit of Measurement</th>
+                                                                <th>Material Status</th>
+                                                                <th class="text-end">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($companyMaterials as $material)
+                                                            <tr>
+                                                                <td>{{ $material->material }}</td>
+                                                                <td>{{ $material->serial_number }}</td>
+                                                                <td> {{ $material->unit_of_measure }} </td>
+                                                                <td><span
+                                                                        class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
+                                                                        $material->company_material_status }}</span></td>
+                                                                <td class="text-end">
+                                                                    <div class="dropdown d-inline-block">
+                                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown"
+                                                                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                            <a class="dropdown-item"
+                                                                                href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
+                                                                                Material</a>
+                                                                            <a class="dropdown-item" href="#">Update Material</a>
+                                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                                            <hr class="dropdown-divider">
+                                                                            <a class="dropdown-item" href="#"
+                                                                                onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
+                                                                                Price</a>
+                                                                            <a href="#" class="dropdown-item"
+                                                                                onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                                In Item</a>
+                                                                            <a href="#" class="dropdown-item"
+                                                                                onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                                Out Item</a>
+                                                                            <a href="#" class="dropdown-item"
+                                                                                onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make
+                                                                                Adjustment</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table><!--end /table-->
+                                                </div><!--end /tableresponsive-->
+                                            </div>
+                                        </div>
+                                        <!-- Material Inventory -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- end tab chemical inventory -->
-                    <!-- tab Material Inventory -->
-                    <div class="tab-pane p-3" id="materials" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Add New Material</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <form action="" method="post">
-                                    <input type="hidden" class="form-control" name="company_id"
-                                        value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                      <!-- Material -->
-<div class="col-md-6">
-    <div class="form-group">
-        <label for="material">Material</label>
-        <select name="material" id="material" class="form-select">
-            <option value="" selected disabled>Choose...</option>
-            @foreach($materials as $material)
-                <option value="{{ $material->materialID }}">{{ $material->material }}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<!-- Serial Number -->
-<div class="col-md-3">
-    <div class="form-group">
-        <label for="serial_number">Serial Number (If any)</label>
-        <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
-    </div>
-</div>
-<!-- Unit of Measurement -->
-<div class="col-md-3">
-    <div class="form-group">
-        <label for="unit_of_measurement">Unit of Measurement</label>
-        <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement" placeholder="Unit of Measurement">
-    </div>
-</div>
-<!-- Threshold -->
-<div class="col-md-5">
-    <div class="form-group">
-        <label for="threshold">Threshold</label>
-        <input type="number" class="form-control" id="threshold" name="threshold" placeholder="Minimum Stock Threshold" min="0">
-    </div>
-</div>
-<!-- Save Button-->
-<div class="col-12 mt-3">
-    <div class="d-flex">
-        <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button>
-        <span class="loader" id="loader"></span>
-    </div>
-</div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Materials</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0" id="tbl-company-material">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Material</th>
-                                                <th>Serial No.</th>
-                                                <th>Unit of Measurement</th>
-                                                <th>Material Status</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($companyMaterials as $material)
-                                            <tr>
-                                                <td>{{ $material->material }}</td>
-                                                <td>{{ $material->serial_number }}</td>
-                                                <td> {{ $material->unit_of_measure }} </td>
-                                                <td><span
-                                                        class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
-                                                        $material->company_material_status }}</span></td>
-                                                <td class="text-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                            data-bs-toggle="dropdown" href="#" role="button"
-                                                            aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                            aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
-                                                                Material</a>
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                            <hr class="dropdown-divider">
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
-                                                                Price</a>
-                                                            <a href="#" class="dropdown-item"
-                                                                onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
-                                                                In Item</a>
-                                                            <a href="#" class="dropdown-item"
-                                                                onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
-                                                                Out Item</a>
-                                                            <a href="#" class="dropdown-item"
-                                                                onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make Adjustment</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table><!--end /table-->
-                                </div><!--end /tableresponsive-->
-                            </div>
-                        </div>
-                    </div>
+                    <!-- General Settings -->
                     <div class="tab-pane p-3" id="settings" role="tabpanel">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-primary text-white">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h4 class="card-title">Company's Personal Information</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card-body pt-0">
                                 <x-validation-errors class="alert" alert />
                                 @include('shared.feedback')
@@ -2140,312 +2126,261 @@
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <input type="text" class="form-control" placeholder="Company name"
-                                                name="company_name" value="{{ $company->company_name }}">
+                                            <input type="text" class="form-control" placeholder="Company name" name="company_name" value="{{ $company->company_name }}">
                                         </div>
-
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="">Industry</label>
+                                                <label for="industry">Industry</label>
                                                 <select name="industry" id="industry" class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
+                                                    <option value="" selected disabled>Choose...</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="">Industrial Process Used</label>
-                                                <select id="industry-process" name="industry_process_used"
-                                                    class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
+                                                <label for="industry-process">Industrial Process Used</label>
+                                                <select id="industry-process" name="industry_process_used" class="form-select">
+                                                    <option value="" selected disabled>Choose...</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="">Email</label>
-                                                <input type="email" class="form-control"
-                                                    placeholder="Example: company@domain.com" name="email"
-                                                    value="{{ $company->email }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="">Website Address</label>
-                                                <input type="url" class="form-control" placeholder=""
-                                                    name="website_address" value="{{ $company->website_url}}">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="">Primary Phone Number</label>
-                                                <input id="mobile_code_primary" type="tel" class="form-control"
-                                                    placeholder="">
-                                                <input type="hidden" name="primary_phone_number">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" placeholder="Example: company@domain.com" name="email" value="{{ $company->email }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="">Secondary Phone Number</label>
-                                                <input id="mobile_code_secondary" type="tel" class="form-control"
-                                                    placeholder="">
-                                                <input type="hidden" name="secondary_phone_number">
+                                                <label for="website_address">Website Address</label>
+                                                <input type="url" class="form-control" name="website_address" value="{{ $company->website_url }}">
                                             </div>
                                         </div>
-
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-group">
+                                                <label for="mobile_code_primary">Primary Phone Number</label>
+                                                <div class="">
+                                                    <input id="mobile_code_primary" type="tel" class="form-control">
+                                                    <input type="hidden" name="primary_phone_number">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-group">
+                                                <label for="mobile_code_secondary">Secondary Phone Number</label>
+                                                <div class="">
+                                                    <input id="mobile_code_secondary" type="tel" class="form-control">
+                                                    <input type="hidden" name="secondary_phone_number">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Number Of Employees.</label>
-                                                <input type="number" class="form-control" placeholder=""
-                                                    name="number_of_employees"
-                                                    value="{{$company->number_of_employees}}">
+                                                <label for="number_of_employees">Number Of Employees</label>
+                                                <input type="number" class="form-control" name="number_of_employees" value="{{$company->number_of_employees}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
-                                            <label for="">Date of Establishment</label>
-                                            <input class="form-control" type="date" id="" name="date_of_establishment"
-                                                value="{{$company->date_of_establishment}}">
+                                            <label for="date_of_establishment">Date of Establishment</label>
+                                            <input class="form-control" type="date" name="date_of_establishment" value="{{$company->date_of_establishment}}">
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class="col-md-3 py-3">
                                                 <div class="d-flex g-1">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-general-settings">Save</button><span class="loader"
-                                                        id="loader"></span>
+                                                    <button type="button" class="btn btn-primary" id="btn-general-settings">Save</button>
+                                                    <span class="loader" id="loader"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-                            </div><!--end card-body-->
-                        </div><!--end card-->
+                            </div>
+                        </div>
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-primary text-white">
                                 <h4 class="card-title">Company's Location</h4>
-                            </div><!--end card-header-->
+                            </div>
                             <div class="card-body pt-0">
-                                <form action="{{route('update-company-location')}}" method="post"
-                                    id="location_settings">
+                                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Country</label>
+                                                <label for="countryId">Country</label>
                                                 <select name="country" class="form-select countries" id="countryId">
-                                                    <option value="" selected disabled> Choose... </option>
+                                                    <option value="" selected disabled>Choose...</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">State</label>
-                                                <select id="" class="form-select states" onchange="toggleLGA(this);"
-                                                    id="stateId" name="state">
-                                                    <option value="" selected disabled> Choose... </option>
+                                                <label for="stateId">State</label>
+                                                <select class="form-select states" id="stateId" name="state" onchange="toggleLGA(this);">
+                                                    <option value="" selected disabled>Choose...</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">City</label>
-                                                <select id="lga" class="form-select select-lga cities" id="cityId"
-                                                    name="city">
-                                                    <option value="" selected disabled> Choose... </option>
+                                                <label for="cityId">City</label>
+                                                <select id="lga" class="form-select select-lga cities" id="cityId" name="city">
+                                                    <option value="" selected disabled>Choose...</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="col-md-12 mt-2">
                                             <div class="form-group">
-                                                <label for="">Address</label>
-                                                <input type="text" class="form-control" placeholder="" name="address"
-                                                    value="{{$company->address}}">
+                                                <label for="address">Address</label>
+                                                <input type="text" class="form-control" name="address" value="{{$company->address}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-12 mt-2">
                                             <label>Geographic Information System(GIS) Location</label>
                                         </div>
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">ZIP code</label>
-                                                <input type="text" class="form-control" placeholder="" name="zip_code"
-                                                    value="{{$company->zip_code}}">
+                                                <label for="zip_code">ZIP code</label>
+                                                <input type="text" class="form-control" name="zip_code" value="{{$company->zip_code}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Longitude</label>
-                                                <input type="text" class="form-control" placeholder="" name="longitude"
-                                                    value="{{$company->longitude}}">
+                                                <label for="longitude">Longitude</label>
+                                                <input type="text" class="form-control" name="longitude" value="{{$company->longitude}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Latitude</label>
-                                                <input type="text" class="form-control" placeholder="" name="latitude"
-                                                    value="{{$company->latitude}}">
+                                                <label for="latitude">Latitude</label>
+                                                <input type="text" class="form-control" name="latitude" value="{{$company->latitude}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 mt-2">
                                             <div class="form-group">
-                                                <label for="">Military Grid Reference System (MGRS) coordinate</label>
-                                                <input type="text" class="form-control" placeholder="" name="mgrs"
-                                                    value="{{$company->mgrs}}">
+                                                <label for="mgrs">Military Grid Reference System (MGRS) coordinate</label>
+                                                <input type="text" class="form-control" name="mgrs" value="{{$company->mgrs}}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="col-md-3 py-3">
-                                            <button type="button" class="btn btn-primary"
-                                                id="btn-location-settings">Save</button><span class="loader"
-                                                id="loader"></span>
+                                            <button type="button" class="btn btn-primary" id="btn-location-settings">Save</button>
+                                            <span class="loader" id="loader"></span>
                                         </div>
                                     </div>
                                 </form>
-
-                            </div><!--end card-body-->
-                        </div><!--end card-->
+                            </div>
+                        </div>
                         <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Contact Personnel</h4>
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control"
-                                                placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                                name="enviromental_operations_manager"
-                                                value="{{ $company->operations_manager }}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <input type="text" class="form-control"
-                                                placeholder="Full Name Of Contact Person" name="contact_person_name"
-                                                value="{{$company->contact_person_full_name}}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <input type="text" class="form-control"
-                                                placeholder="Office Position of Contact Person"
-                                                name="contact_person_position"
-                                                value="{{$company->contact_person_position}}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="">Contact Personnel Phone Number</label>
-                                                <input id="mobile_code_contact" type="tel" class="form-control"
-                                                    placeholder="">
-                                                <input type="hidden" name="contact_person_phone_number">
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-end">
-                                            <div class="col-md-3 py-3">
-                                                <button type="button" class="btn btn-primary"
-                                                    id="btn_contact_settings">Save</button><span class="loader"
-                                                    id="loader"></span>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </form>
-                            </div><!--end card-body-->
-                        </div><!--end card-->
-                        <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-primary text-white">
                                 <h4 class="card-title">Other Settings</h4>
-                            </div><!--end card-header-->
+                            </div>
                             <div class="card-body pt-0">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse"
-                                        name="is_sharable" value="active">
-                                    <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for
-                                        your information to be shared with other companies?</label>
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse" name="is_sharable" value="active">
+                                    <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for your information to be shared with other companies?</label>
                                 </div>
-
                                 <div class="form-check form-switch mb-2">
                                     <label>
-                                        <input type="checkbox" class="form-check-input toggle-status"
-                                            id="settings-switch1" data-company-id="{{ $company->company_id }}" {{
-                                            $company->status === 'active' ? 'checked' : '' }}>
+                                        <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
                                         Activate or Deactivate Company
                                     </label>
-                                    <!-- <input class="form-check-input" type="checkbox" id="settings-switch1">
-                    <label class="form-check-label" for="settings-switch1">Activate Company</label> -->
                                 </div>
-                                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;">
-                                </div>
-                                <!--end form-switch-->
+                                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;"></div>
                                 <div class="mt-2">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <!-- <button type="button" class="btn btn-warning">Deactivate Company</button> -->
                                         <button type="button" class="btn btn-danger">Delete Company</button>
                                     </div>
                                 </div>
-                            </div><!--end card-body-->
-                        </div><!--end card-->
+                            </div>
+                        </div>
 
+
+                    <!--Start Rightbar-->
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
+                        <div class="offcanvas-header border-bottom justify-content-between">
+                            <h5 class="m-0 font-14" id="AppearanceLabel">Appearance</h5>
+                            <button type="button" class="btn-close text-reset p-0 m-0 align-self-center" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <h6>Account Settings</h6>
+                            <div class="p-2 text-start mt-3">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch1">
+                                    <label class="form-check-label" for="settings-switch1">Auto updates</label>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch2" checked>
+                                    <label class="form-check-label" for="settings-switch2">Location Permission</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch3">
+                                    <label class="form-check-label" for="settings-switch3">Show offline Contacts</label>
+                                </div>
+                            </div>
+                            <h6>General Settings</h6>
+                            <div class="p-2 text-start mt-3">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch4">
+                                    <label class="form-check-label" for="settings-switch4">Show me Online</label>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch5" checked>
+                                    <label class="form-check-label" for="settings-switch5">Status visible to all</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="settings-switch6">
+                                    <label class="form-check-label" for="settings-switch6">Notifications Popup</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div> <!--end col-->
-        </div><!--end row-->
-
-    </div><!-- container -->
-    <!--Start Rightbar-->
-    <!--Start Rightbar/offcanvas-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
-        <div class="offcanvas-header border-bottom justify-content-between">
-            <h5 class="m-0 font-14" id="AppearanceLabel">Appearance</h5>
-            <button type="button" class="btn-close text-reset p-0 m-0 align-self-center" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <h6>Account Settings</h6>
-            <div class="p-2 text-start mt-3">
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch1">
-                    <label class="form-check-label" for="settings-switch1">Auto updates</label>
-                </div><!--end form-switch-->
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch2" checked>
-                    <label class="form-check-label" for="settings-switch2">Location Permission</label>
-                </div><!--end form-switch-->
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="settings-switch3">
-                    <label class="form-check-label" for="settings-switch3">Show offline Contacts</label>
-                </div><!--end form-switch-->
-            </div><!--end /div-->
-            <h6>General Settings</h6>
-            <div class="p-2 text-start mt-3">
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch4">
-                    <label class="form-check-label" for="settings-switch4">Show me Online</label>
-                </div><!--end form-switch-->
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="settings-switch5" checked>
-                    <label class="form-check-label" for="settings-switch5">Status visible to all</label>
-                </div><!--end form-switch-->
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="settings-switch6">
-                    <label class="form-check-label" for="settings-switch6">Notifications Popup</label>
-                </div><!--end form-switch-->
-            </div><!--end /div-->
-        </div><!--end offcanvas-body-->
-    </div>
-    <!--end Rightbar/offcanvas-->
-    <!--end Rightbar-->
-
+                    <!--end Rightbar-->
+                    </div>
+                    <!-- General Settings -->
+                    <!-- contact personel details  -->
+                    <!-- Contact Details -->
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="card-title mb-0">Contact Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control"
+                                            placeholder="Full Name Of Enviromental Operations Specialist or Manager"
+                                            name="enviromental_operations_manager" value="{{ $company->operations_manager }}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <input type="text" class="form-control" placeholder="Full Name Of Contact Person"
+                                            name="contact_person_name" value="{{$company->contact_person_full_name}}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <input type="text" class="form-control" placeholder="Office Position of Contact Person"
+                                            name="contact_person_position" value="{{$company->contact_person_position}}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <div class="form-group">
+                                            <label for="">Contact Personnel Phone Number</label>
+                                            <div class="">
+                                            <input id="mobile_code_contact" type="tel" class="form-control" placeholder="">
+                                            <input type="hidden" name="contact_person_phone_number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-2">
+                                    <button type="button" class="btn btn-primary" id="btn_contact_settings">Save Contact</button>
+                                    <span class="loader" id="loader"></span>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end contact personel details  -->
     <!-- modal -->
     <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -2823,6 +2758,13 @@
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
+        }
+
+        .profile-header {
+            background: linear-gradient(to right, #4e73df, #1cc88a);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
         }
 
         @keyframes spin {
