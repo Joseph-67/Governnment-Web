@@ -77,7 +77,7 @@ class CompanyController extends Controller
         // dd($data['company_water_usage']);
         // chemical inventory
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
-        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id']);
+        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
         return view('components.apps.companyProfile', $data);
     }   

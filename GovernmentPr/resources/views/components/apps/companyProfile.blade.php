@@ -2562,9 +2562,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="checkIn_chemical_id">
-                    <input type="hidden" name="chemical_id">
-                    <input type="hidden" name="company_id">
+                    <input type="text" name="checkIn_chemical_id">
+                    <input type="text" name="chemical_id">
+                    <input type="text" name="company_id">
 
                     <div class="row g-2">
                         <!-- Chemical name -->
@@ -5031,7 +5031,6 @@
           
 
         // end company water sources
-
         document.querySelector('#waterSourceForm select[name="water_source"]').addEventListener('click', function () {
             console.log('====================================');
             console.log("Hello Water source");
