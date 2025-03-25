@@ -2113,6 +2113,171 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Operations Management -->
+                    <div class="tab-pane p-3" id="operations" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="card-title">Operation Type</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">Description</label>
+                                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="card-title">Operation Category</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">Description</label>
+                                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title">Add Operation</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- operations -->
+                                <form action="" method="post" id="operations-form">
+                                    @csrf
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="operation_name">Operation Name</label>
+                                                <input type="text" class="form-control" id="operation_name" name="operation_name" placeholder="Operation Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea class="form-control" id="description" name="description" placeholder="Description" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="operation_code">Operation Code</label>
+                                                <input type="text" class="form-control" id="operation_code" name="operation_code" placeholder="Operation Code" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="operation_type">Operation Type</label>
+                                                <select class="form-select" id="operation_type" name="operation_type" required>
+                                                    <option value="" selected disabled>Choose...</option>
+                                                    <option value="type1">Type 1</option>
+                                                    <option value="type2">Type 2</option>
+                                                    <option value="type3">Type 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="operation_category">Operation Category</label>
+                                                <select class="form-select" id="operation_category" name="operation_category" required>
+                                                    <option value="" selected disabled>Choose...</option>
+                                                    <option value="category1">Category 1</option>
+                                                    <option value="category2">Category 2</option>
+                                                    <option value="category3">Category 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="operation_unit">Operation Unit</label>
+                                                <input type="text" class="form-control" id="operation_unit" name="operation_unit" placeholder="Operation Unit" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="operation_unit_price">Operation Unit Price</label>
+                                                <input type="number" class="form-control" id="operation_unit_price" name="operation_unit_price" placeholder="Operation Unit Price" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="operation_unit_cost">Operation Unit Cost</label>
+                                                <input type="number" class="form-control" id="operation_unit_cost" name="operation_unit_cost" placeholder="Operation Unit Cost" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="operation_unit_time">Operation Unit Time</label>
+                                                <input type="text" class="form-control" id="operation_unit_time" name="operation_unit_time" placeholder="Operation Unit Time" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
+                                                <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
+                                                <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="expected_unit_produced_for_goods">Expected Unit Produced For Goods</label>
+                                                <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_unit_produced_for_goods" placeholder="Expected Unit Produced For Goods" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <button type="submit" class="btn btn-primary">Save Operation</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Operations Management -->
                     <!-- General Settings -->
                     <div class="tab-pane p-3" id="settings" role="tabpanel">
                         <div class="card">
