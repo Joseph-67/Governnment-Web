@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\WaterSourceDetails;
-use App\Models\WaterSources;
+use App\Models\WaterRecyclingLog;
 use Illuminate\Support\Facades\Validator;
-
-
 use Illuminate\Http\Request;
 
-class WaterSourceDetailsController extends Controller
+class WaterRecyclingLogsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,8 +25,6 @@ class WaterSourceDetailsController extends Controller
     public function create()
     {
         //
-        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
-        
     }
 
     /**
@@ -40,43 +35,49 @@ class WaterSourceDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'company_id'       => ['required', 'numeric'],
-            'location'         => ['required', 'string', 'max:255'],
-            'capacity'         => ['nullable', 'numeric', 'min:1'],
+            'company_id'         => ['required', 'numeric'],
+            'quantity_recycled'  => ['required', 'numeric', 'min:1'],
+            'unit_of_water_recycled' => ['required', 'string', 'max:20'],
+            'recycling_date'     => ['required', 'date'],
+            'method'             => ['nullable', 'string', 'max:100'],
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status'  => 'error',
-                'message' => 'Validation failed.',
-                'errors'  => $validator->errors()
+            'status'  => 'error',
+            'message' => 'Validation failed.',
+            'errors'  => $validator->errors(),
             ], 422);
         }
 
-        $result = WaterSourceDetails::create([
-            'companyID'          => $request->company_id,
-            'WaterSources_id'    => $request->water_source_id,
-            'location'        => $request->location,
-            'capacity'        => $request->capacity,
-            'status'          => "active",
-        ]);
+        $data = [
+            'companyID'        => $request->company_id,
+            'quantity_recycled' => $request->quantity_recycled,
+            'unit'              => $request->unit_of_water_recycled,
+            'recycling_date'    => $request->recycling_date,
+            'method'            => $request->method,
+            'status'            => 'active',
+        ];
+
+        $result = WaterRecyclingLog::create($data);
 
         if ($result) {
             return response()->json([
-                'status'  => 'success',
-                'message' => 'Water source details added successfully.',
-                'data'    => $result
+            'status'  => 'success',
+            'message' => 'Water recycling log added successfully.',
+            'data'    => $result,
             ], 200);
-        } else {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Failed to add water source details.',
-            ], 500);
         }
+
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Failed to add water recycling log.',
+        ], 500);
+        
+
     }
-    
+
     /**
      * Display the specified resource.
      *

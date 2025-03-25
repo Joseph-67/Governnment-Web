@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\WaterSourceDetails;
-use App\Models\WaterSources;
+use App\Models\WaterQualityLogs;
 use Illuminate\Support\Facades\Validator;
-
-
 use Illuminate\Http\Request;
 
-class WaterSourceDetailsController extends Controller
+class WaterQualityLogsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,8 +25,6 @@ class WaterSourceDetailsController extends Controller
     public function create()
     {
         //
-        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
-        
     }
 
     /**
@@ -42,41 +37,46 @@ class WaterSourceDetailsController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'company_id'       => ['required', 'numeric'],
-            'location'         => ['required', 'string', 'max:255'],
-            'capacity'         => ['nullable', 'numeric', 'min:1'],
-        ]);
+            'test_date'          => ['required', 'date'],
+            'ph_level'           => ['required', 'numeric'],
+            'turbidity_level'    => ['required', 'numeric'],
+            'contaminants_detected' => ['required', 'string', 'max:255'],
+            'test_results'       => ['required', 'string', 'max:255']
 
+        ]);
         if ($validator->fails()) {
             return response()->json([
-                'status'  => 'error',
-                'message' => 'Validation failed.',
-                'errors'  => $validator->errors()
+            'status'  => 'error',
+            'message' => 'Validation failed.',
+            'errors'  => $validator->errors(),
             ], 422);
         }
 
-        $result = WaterSourceDetails::create([
-            'companyID'          => $request->company_id,
-            'WaterSources_id'    => $request->water_source_id,
-            'location'        => $request->location,
-            'capacity'        => $request->capacity,
-            'status'          => "active",
-        ]);
+        $data = [
+            'companyID'         => $request->company_id,
+            'test_date'          => $request->test_date,
+            'ph_level'           => $request->ph_level,
+            'turbidity'    => $request->turbidity_level,
+            'contaminants'       => $request->contaminants_detected,
+            'test_results'       => $request->test_results,
+        ];
+
+        $result = WaterQualityLogs::create($data);
 
         if ($result) {
             return response()->json([
-                'status'  => 'success',
-                'message' => 'Water source details added successfully.',
-                'data'    => $result
+            'status'  => 'success',
+            'message' => 'Water quality log added successfully.',
+            'data'    => $result,
             ], 200);
-        } else {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Failed to add water source details.',
-            ], 500);
         }
+
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Failed to add water quality log.',
+        ], 500);
     }
-    
+
     /**
      * Display the specified resource.
      *

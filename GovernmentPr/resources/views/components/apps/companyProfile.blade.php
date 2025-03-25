@@ -1445,7 +1445,7 @@
             <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" id="remark" class="form-control" name="location">
+                    <input type="text" id="location" class="form-control" name="location">
                 </div>
             </div>
             <!-- capacity of Water -->
@@ -1556,7 +1556,7 @@
                                 <h4 class="card-title mb-0">Water Usage Logs</h4>
                             </div> <!-- end card-header -->
 
-                            <div class="card-body pt-0" id="waterSourceForm">
+                            <div class="card-body pt-0" id="waterUsageLogsForm">
                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
                                 <div class="row g-3">
@@ -1578,10 +1578,10 @@
 
                                     <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
-                                            <label for="" class="col col-form-label">Quantity Used(LTR)</label>
+                                            <label for="" class="col col-form-label">Quantity Used</label>
                                             <div class="input-group qty-icons">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                <input type="number" class="form-control" min="0" name="unit_of_water" value="0">
+                                                <input type="number" class="form-control" min="0" name="quantity_used" value="">
                                                 <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                             </div>
                                         </div>
@@ -1590,7 +1590,7 @@
                                     <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="" class="col col-form-label">Unit of Measurement</label>
-                                            <select name="water_source" id="source" class="form-select">
+                                            <select name="unit_of_water_measured" id="source" class="form-select">
                                                 <option value="" selected disabled>Choose...</option>
                                                 <option value="kg">Kilogram (kg)</option>
                                                 <option value="g">Gram (g)</option>
@@ -1628,6 +1628,140 @@
                         </div>
                         <!-- End Water Usage Logs -->
 
+                         <!-- water recycling logs -->
+                    <!-- water usage logs card -->
+                    <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Water Recycling Logs</h4>
+                            </div> <!-- end card-header -->
+
+                            <div class="card-body pt-0" id="waterRecyclingLogsForm">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                <div class="row g-3">
+                                    
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Quantity Recycled</label>
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="quantity_recycled" value="">
+                                                <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Unit</label>
+                                            <select name="unit_of_water_recycled" id="unit_of_water_recycled" class="form-select">
+                                                <option value="" selected disabled>Choose...</option>
+                                                <option value="kg">Kilogram (kg)</option>
+                                                <option value="g">Gram (g)</option>
+                                                <option value="lb">Pound (lb)</option>
+                                                <option value="oz">Ounce (oz)</option>
+                                                <option value="cm">Centimeter (cm)</option>
+                                                <option value="m">Meter (m)</option>
+                                                <option value="in">Inch (in)</option>
+                                                <option value="ft">Foot (ft)</option>
+                                                <option value="l">Liter (L)</option>
+                                                <option value="ml">Milliliter (mL)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Reycling Date</label>
+                                            <input type="date" class="form-control" name="recycling_date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Method</label>
+                                            <input type="text" class="form-control" name="method">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-water-recycling-logs">Save</button>
+                                    </div>
+                                </div>
+                            </div> <!-- end card-body -->
+                        </div>
+                        
+                         <!-- end water recycling logs -->
+                            
+                         <!-- water quality log -->
+                                              
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title mb-0">Water Quality Logs </h4>
+    </div> <!-- end card-header -->
+
+    <div class="card-body pt-0" id="waterQualityLogForm">
+        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+        <div class="row g-3">
+            
+            <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" id="date">
+                                            <label for="" class="col col-form-label">Test Date</label>
+                                            <input type="date" class="form-control" name="test_date">
+                                        </div>
+                                    </div>
+            <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">PH Level</label>
+                                            
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="ph_level"
+                                                    value="0">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="col col-form-label">Turbidity Level</label>
+                                            
+                                            <div class="input-group qty-icons">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                <input type="number" class="form-control" min="0" name="turbidity_level"
+                                                    value="0">
+                                                <button class="btn btn-primary"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            <div class="col-md-6 mt-2">
+                                                <div class="form-group">
+                                                    <label for="contaminants_detected" class="form-label">Contaminants Detected</label>
+                                                    <textarea class="form-control" id="contaminants_detected" name="contaminants_detected" rows="3" placeholder="Enter contaminants detected"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mt-2">
+                                                <div class="form-group">
+                                                    <label for="test_results" class="form-label">Test Results</label>
+                                                    <textarea class="form-control" id="test_results" name="test_results" rows="3" placeholder="Enter test results"></textarea>
+                                                </div>
+                                            </div>
+            <!-- Save Button (Moved Down) -->
+            <div class="col-12 mt-3">
+                <button type="button" class="btn btn-primary" id="btn-submit-water-quality-logs">Save</button>
+            </div>
+        </div>
+    </div> <!-- end card-body -->
+</div>
+
+                         <!-- end water quality log -->
                         <div class="card">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -3786,6 +3920,7 @@
             let materialID = document.querySelector('select[name="material"]').value.trim();
             let serialNo = document.querySelector('input[name="serial_number"]').value.trim();
             let unit = document.querySelector('input[name="unit_of_measurement"]').value.trim();
+            let threshold = document.querySelector('input[name="threshold"]').value.trim();
             if (!companyID) {
                 Toastify({
                     text: "Company id field cannot be empty.",
@@ -3823,6 +3958,7 @@
             formData.append('material', materialID);
             formData.append('serial_number', serialNo);
             formData.append('unit_of_measurement', unit);
+            formData.append('threshold', threshold);
             fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
                 console.log(result);
                 loader.style.display = 'none';
@@ -5076,7 +5212,355 @@
             }
         });
      </script>
-     <!-- water usage -->
+
+     <!-- water usage logs -->
+        <script>
+        // AJAX implementation to store water usage logs
+        document.querySelector('#btn-submit-water-usage-logs').addEventListener('click', function () {
+            const company_id = document.querySelector('#waterUsageLogsForm input[name="company_id"]').value.trim();
+            const water_source = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]').value.trim();
+            const quantity_used = document.querySelector('#waterUsageLogsForm input[name="quantity_used"]').value.trim();
+            const unit_of_water_measured = document.querySelector('#waterUsageLogsForm select[name="unit_of_water_measured"]').value.trim();
+            const date = document.querySelector('#waterUsageLogsForm input[name="date"]').value.trim();
+            const purpose = document.querySelector('#waterUsageLogsForm input[name="purpose"]').value.trim();
+
+            if (!water_source) {
+                Toastify({
+                    text: "Please select a water source.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!quantity_used) {
+                Toastify({
+                    text: "Please provide the quantity of water used.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!unit_of_water_measured) {
+                Toastify({
+                    text: "Please select a unit of measurement.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!date) {
+                Toastify({
+                    text: "Please provide a date.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            let url = "{{ route('admin.store-water-usage-logs') }}";
+            const formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('water_source_id', water_source);
+            formData.append('quantity_used', quantity_used);
+            formData.append('unit_of_water_measured', unit_of_water_measured);
+            formData.append('date', date);
+            formData.append('purpose', purpose);
+
+            fetch_cycle('--Save Water Usage Logs', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === "success") {
+                    const waterUsageLogsTable = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]');
+                    waterUsageLogsTable.innerHTML = ""; // Clear existing options
+
+                    result.water_usage_logs.forEach(log => {
+                        const option = document.createElement("option");
+                        option.value = log.WaterSourcesId;
+                        option.textContent = log.sources;
+                        if (result.company_water_sources.includes(log.WaterSourcesId)) {
+                            option.selected = true; // Mark as selected if already associated with the company
+                        }
+                        waterUsageLogsTable.appendChild(option);
+                    });
+
+                    Toastify({
+                        text: result.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: result.message || "An error occurred.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                }
+            });
+        });
+        </script>
+
+        <!-- water recycling logs -->
+        <script>
+            document.querySelector('#btn-submit-water-recycling-logs').addEventListener('click', function () {
+                const company_id = document.querySelector('#waterRecyclingLogsForm input[name="company_id"]').value.trim();
+                const quantity_recycled = document.querySelector('#waterRecyclingLogsForm input[name="quantity_recycled"]').value.trim();
+                const unit_of_water_recycled = document.querySelector('#waterRecyclingLogsForm select[name="unit_of_water_recycled"]').value.trim();
+                const recycling_date = document.querySelector('#waterRecyclingLogsForm input[name="recycling_date"]').value.trim();
+                const method = document.querySelector('#waterRecyclingLogsForm input[name="method"]').value.trim();
+
+                if (!quantity_recycled) {
+                    Toastify({
+                        text: "Please provide the quantity of water recycled.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                    return;
+                }
+
+                if (!unit_of_water_recycled) {
+                    Toastify({
+                        text: "Please select a unit of measurement.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                    return;
+                }
+
+                if (!recycling_date) {
+                    Toastify({
+                        text: "Please provide a recycling date.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                    return;
+                }
+
+                let url = "{{ route('admin.store-water-recycling-logs') }}";
+                const formData = new FormData();
+                formData.append('company_id', company_id);
+                formData.append('quantity_recycled', quantity_recycled);
+                formData.append('unit_of_water_recycled', unit_of_water_recycled);
+                formData.append('recycling_date', recycling_date);
+                formData.append('method', method);
+
+                fetch_cycle('--Save Water Recycling Logs', url, 'POST', formData).then(result => {
+                    console.log(result);
+                    if (result.status === "success" && !document.querySelector('.toastify-success')) {
+                        Toastify({
+                            text: result.message,
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            },
+                            className: "toastify-success"
+                        }).showToast();
+                    } else if (!document.querySelector('.toastify-error')) {
+                        Toastify({
+                            text: result.message || "An error occurred.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                            className: "toastify-error"
+                        }).showToast();
+                    }
+                });
+            });
+        </script>
+        <!-- end water recycling logs -->
+            <!-- start water quality logs -->
+             <script>
+                // AJAX implementation to store water quality logs
+                document.querySelector('#btn-submit-water-quality-logs').addEventListener('click', function () {
+                    const company_id = document.querySelector('#waterQualityLogForm input[name="company_id"]').value.trim();
+                    const test_date = document.querySelector('#waterQualityLogForm input[name="test_date"]').value.trim();
+                    const ph_level = document.querySelector('#waterQualityLogForm input[name="ph_level"]').value.trim();
+                    const turbidity_level = document.querySelector('#waterQualityLogForm input[name="turbidity_level"]').value.trim();
+                    const contaminants_detected = document.querySelector('#waterQualityLogForm textarea[name="contaminants_detected"]').value.trim();
+                    const test_results = document.querySelector('#waterQualityLogForm textarea[name="test_results"]').value.trim();
+
+                    if (!test_date) {
+                        Toastify({
+                            text: "Please provide a test date.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                        }).showToast();
+                        return;
+                    }
+
+                    if (!ph_level) {
+                        Toastify({
+                            text: "Please provide the pH level.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                        }).showToast();
+                        return;
+                    }
+
+                    if (!turbidity_level) {
+                        Toastify({
+                            text: "Please provide the turbidity level.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                        }).showToast();
+                        return;
+                    }
+
+                    if (!contaminants_detected) {
+                        Toastify({
+                            text: "Please provide the contaminants detected.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                        }).showToast();
+                        return;
+                    }
+
+                    if (!test_results) {
+                        Toastify({
+                            text: "Please provide the test results.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, #ff0000, #ff1745)",
+                            },
+                        }).showToast();
+                        return;
+                    }
+
+                    let url = "{{ route('admin.store-water-quality-logs') }}";
+                    const formData = new FormData();
+                    formData.append('company_id', company_id);
+                    formData.append('test_date', test_date);
+                    formData.append('ph_level', ph_level);
+                    formData.append('turbidity_level', turbidity_level);
+                    formData.append('contaminants_detected', contaminants_detected);
+                    formData.append('test_results', test_results);
+
+                    fetch_cycle('--Save Water Quality Logs', url, 'POST', formData).then(result => {
+                        console.log(result);
+                        if (result.status === "success") {
+                            Toastify({
+                                text: result.message,
+                                duration: 3000,
+                                close: true,
+                                gravity: "top",
+                                position: "right",
+                                stopOnFocus: true,
+                                style: {
+                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                },
+                            }).showToast();
+                        } else {
+                            Toastify({
+                                text: result.message || "An error occurred.",
+                                duration: 3000,
+                                close: true,
+                                gravity: "top",
+                                position: "right",
+                                stopOnFocus: true,
+                                style: {
+                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                                },
+                            }).showToast();
+                        }
+                    });
+                });
+             </script>
+        <!-- water quality Logs -->
+     <!-- water usage logs -->
+     
+
 
      <!-- Chemical  -->
       <script>
@@ -5090,6 +5574,7 @@
             let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
             let chemical = document.querySelector('#chemical-usage select[name="chemical"]').value.trim();
             let unit_of_measurement = document.querySelector('#chemical-usage input[name="unit_of_measurement"]').value.trim();
+            let threshold = document.querySelector('#chemical-usage input[name="threshold"]').value.trim();
             console.log('====================================');
             console.log(chemical, unit_of_measurement);
             console.log('====================================');
@@ -5143,6 +5628,7 @@
             let formData = new FormData();
             formData.append('chemical_id', chemical);
             formData.append('unit_of_measurement', unit_of_measurement);
+            formData.append('threshold', threshold);
             formData.append('company_id', company_id);
             fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
                 console.log(result);

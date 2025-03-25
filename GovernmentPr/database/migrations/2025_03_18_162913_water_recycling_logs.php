@@ -20,12 +20,11 @@ return new class extends Migration
             $table->decimal('quantity_recycled', 10, 2);
             $table->string('unit', 20);
             $table->date('recycling_date');
-            $table->string('method', 100);
-
-            $table->foreign('companyID')->references('company_id')
-            ->on('companies')
-            ->onDelete('cascade');
-            $table->enum('status', ['active', 'inactive'])->default('active');});
+            $table->string('method', 100)->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+            $table->foreign('companyID')->references('company_id')->on('companies');
+        });
     }
 
     /**

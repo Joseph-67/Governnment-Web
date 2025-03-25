@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\WaterSourceDetails;
 use App\Models\WaterSources;
-use App\Models\CompanyWaterSources;
+use App\Models\WaterUsageLogs;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
@@ -28,7 +27,8 @@ class WaterUsageLogsController extends Controller
     public function create()
     {
         //
-        
+        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+
     }
 
     /**
@@ -43,9 +43,12 @@ class WaterUsageLogsController extends Controller
           //
           $validator = Validator::make($request->all(), [
             'company_id'       => ['required', 'numeric'],
-            'water_source_id'     => ['required', 'string', 'max:255'],
-            'location'         => ['required', 'string', 'max:255'],
-            'capacity'         => ['nullable', 'numeric', 'min:1'],
+            'quantity_used'     => ['required', 'string', 'max:255'],
+            'unit_of_water_measured'     => ['required', 'string', 'max:255'],
+            'date'     => ['required', 'string', 'max:255'],
+            'purpose'     => ['nullable', 'string', 'max:255'],
+
+            
         ]);
 
         if ($validator->fails()) {
@@ -56,11 +59,13 @@ class WaterUsageLogsController extends Controller
             ], 422);
         }
 
-        $result = WaterSourceDetails::create([
+        $result = WaterUsageLogs::create([
             'companyID'          => $request->company_id,
-            'WaterSources_id'    => $request->water_source_id,
-            'location'        => $request->location,
-            'capacity'        => $request->capacity,
+            'WaterSourcesId'    => $request->water_source_id,
+            'quantity_used'        => $request->quantity_used,
+            'unit_of_water_measured'                 => $request->unit_of_water_measured,
+            'date'        => $request->date,
+            'purpose'        => $request->purpose,   
             'status'          => "active",
         ]);
 
