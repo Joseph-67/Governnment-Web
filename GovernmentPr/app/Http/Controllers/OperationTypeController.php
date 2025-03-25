@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\OperationType;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OperationTypeController extends Controller
 {
@@ -36,6 +40,24 @@ class OperationTypeController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:operation_types,name'],
+            'description' => ['nullable', 'string'],
+            'company_id' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $operationType = OperationType::create($request->only(['name', 'description', 'company_id']));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create Operation Type', 'message' => $e->getMessage()], 500);
+        }
+        $operationType = OperationType::where('is_delete', false)->get();
+        return response()->json(['status' => 'success', 'message' => 'Operation Type created successfully', 'operation_types' => $operationType], 201);
     }
 
     /**

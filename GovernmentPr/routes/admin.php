@@ -10,6 +10,7 @@ use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\CompanyChemicalController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyMaterialController;
+use App\Http\Controllers\CompanyOperationController;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EventController;
@@ -17,13 +18,9 @@ use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\MapReport;
-use App\Http\Controllers\viewEmailController;
-
-use App\Http\Controllers\WaterSourceDetailsController;
-use App\Http\Controllers\WaterUsageLogsController;
-use App\Http\Controllers\WaterRecyclingLogsController;
-use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\OperationTypeController;
+use App\Http\Controllers\OperationCategoryController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\PostsController;
@@ -35,6 +32,11 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersManagementController;
+use App\Http\Controllers\viewEmailController;
+use App\Http\Controllers\WaterSourceDetailsController;
+use App\Http\Controllers\WaterUsageLogsController;
+use App\Http\Controllers\WaterRecyclingLogsController;
+use App\Http\Controllers\WaterQualityLogsController;
 
 
 // Guest Admin Routes
@@ -290,6 +292,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
     });
 
+    // Company Operation
+    Route::controller(CompanyOperationController::class)->group(function(){
+        Route::get('/operation', 'index')->name('admin.operation');
+        Route::post('/operation/store', 'store')->name('admin.store-operation');
+        Route::get('/operation/{id}', 'show')->name('admin.show-operation');
+        Route::put('/operation/{id}', 'update')->name('admin.update-operation');
+        Route::delete('/operation/{id}', 'destroy')->name('admin.delete-operation');
+    });
+
     // Email Application
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
@@ -336,6 +347,24 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
+    });
+
+    // Operation Category
+    Route::controller(OperationCategoryController::class)->group(function(){
+        Route::get('/operation-category', 'index')->name('admin.operation-category');
+        Route::post('/operation-category/store', 'store')->name('admin.store-operation-category');
+        Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
+        Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
+        Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
+    });
+
+    // Operation Type
+    Route::controller(OperationTypeController::class)->group(function(){
+        Route::get('/operation-type', 'index')->name('admin.operation-type');
+        Route::post('/operation-type/store', 'store')->name('admin.store-operation-type');
+        Route::get('/operation-type/{id}', 'show')->name('admin.show-operation-type');
+        Route::put('/operation-type/{id}', 'update')->name('admin.update-operation-type');
+        Route::delete('/operation-type/{id}', 'destroy')->name('admin.delete-operation-type');
     });
 
     // Pages

@@ -2115,14 +2115,16 @@
                     </div>
                     <!-- Operations Management -->
                     <div class="tab-pane p-3" id="operations" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="card-title">Operation Type</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="" method="post">
+                        <div class="accordion" id="operationsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="operationTypeHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#operationTypeCollapse" aria-expanded="true" aria-controls="operationTypeCollapse">
+                                        Operation Type
+                                    </button>
+                                </h2>
+                                <div id="operationTypeCollapse" class="accordion-collapse collapse show" aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
+                                    <div class="accordion-body bg-white">
+                                        <form action="" method="post" id="company_operation_type_form">
                                             @csrf
                                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                             <div class="mb-3">
@@ -2135,16 +2137,49 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
+
+                                        <div class="table-responsive mt-4">
+                                            <table class="table table-striped mb-0" id="tbl-operation-types">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($operation_types as $type)
+                                                    <tr>
+                                                        <td>{{ $type->name }}</td>
+                                                        <td>{{ $type->description }}</td>
+                                                        <td class="text-end">
+                                                            <div class="dropdown d-inline-block">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                    <a class="dropdown-item" href="#">Update</a>
+                                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="card-title">Operation Category</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="" method="post">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="operationCategoryHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#operationCategoryCollapse" aria-expanded="false" aria-controls="operationCategoryCollapse">
+                                        Operation Category
+                                    </button>
+                                </h2>
+                                <div id="operationCategoryCollapse" class="accordion-collapse collapse" aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
+                                    <div class="accordion-body bg-white">
+                                        <form action="" method="post" id="operation_category_form">
                                             @csrf
                                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                             <div class="mb-3">
@@ -2157,125 +2192,271 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
+                                        <div class="table-responsive mt-4">
+                                            <table class="table table-striped mb-0" id="tbl-operation-categories">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($operation_categories as $category)
+                                                    <tr>
+                                                        <td>{{ $category->name }}</td>
+                                                        <td>{{ $category->description }}</td>
+                                                        <td class="text-end">
+                                                            <div class="dropdown d-inline-block">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                    <a class="dropdown-item" href="#">Update</a>
+                                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="operationsLogHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#operationsLogCollapse" aria-expanded="false" aria-controls="operationsLogCollapse">
+                                        Operations Log
+                                    </button>
+                                </h2>
+                                <div id="operationsLogCollapse" class="accordion-collapse collapse" aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
+                                    <div class="accordion-body bg-white">
+                                        <form action="" method="post" id="operations-form">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-2">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="operation_name">Operation Name</label>
+                                                        <input type="text" class="form-control" id="operation_name" name="operation_name" placeholder="Operation Name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="description">Description</label>
+                                                        <textarea class="form-control" id="description" name="description" placeholder="Description" rows="3" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="operation_code">Operation Code</label>
+                                                        <input type="text" class="form-control" id="operation_code" name="operation_code" placeholder="Operation Code" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="operation_type">Operation Type</label>
+                                                        <select class="form-select" id="operation_type" name="operation_type" required>
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            @foreach($operation_types as $type)
+                                                                <option value="{{ $type->operation_type_id }}">{{ $type->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="operation_category">Operation Category</label>
+                                                        <select class="form-select" id="operation_category" name="operation_category" required>
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            @foreach($operation_categories as $category)
+                                                                <option value="{{ $category->operation_category_id }}">{{ $category->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="operation_unit">Operation Unit</label>
+                                                        <input type="text" class="form-control" id="operation_unit" name="operation_unit" placeholder="Operation Unit" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="operation_unit_price">Operation Unit Price</label>
+                                                        <input type="number" class="form-control" id="operation_unit_price" name="operation_unit_price" placeholder="Operation Unit Price" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="operation_unit_cost">Operation Unit Cost</label>
+                                                        <input type="number" class="form-control" id="operation_unit_cost" name="operation_unit_cost" placeholder="Operation Unit Cost" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="operation_unit_time">Operation Unit Time</label>
+                                                        <input type="text" class="form-control" id="operation_unit_time" name="operation_unit_time" placeholder="Operation Unit Time" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
+                                                        <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
+                                                        <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="expected_unit_produced_for_goods">Expected Unit Produced For Goods</label>
+                                                        <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_unit_produced_for_goods" placeholder="Expected Unit Produced For Goods" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="start_date">Start Date</label>
+                                                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="end_date">End Date</label>
+                                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-3">
+                                                    <button type="submit" class="btn btn-primary">Save Operation</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="table-responsive mt-4">
+                                            <table class="table table-striped mb-0" id="tbl-operations-log">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Operation Name</th>
+                                                        <th>Description</th>
+                                                        <th>Operation Code</th>
+                                                        <th>Operation Type</th>
+                                                        <th>Operation Category</th>
+                                                        <th>Operation Unit</th>
+                                                        <th>Expected Waste Per Operation</th>
+                                                        <th>Expected Water Usage Per Operation</th>
+                                                        <th>Expected Unit Produced For Goods</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Status</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($company_operations as $log)
+                                                    <tr>
+                                                        <td>{{ $log->operation_name }}</td>
+                                                        <td>{{ $log->description }}</td>
+                                                        <td>{{ $log->operation_code }}</td>
+                                                        <td>{{ $log->operation_type }}</td>
+                                                        <td>{{ $log->operation_category }}</td>
+                                                        <td>{{ $log->operation_unit }}</td>
+                                                        <td>{{ $log->expected_waste_per_operation }}</td>
+                                                        <td>{{ $log->expected_water_usage_per_operation }}</td>
+                                                        <td>{{ $log->expected_unit_produced_for_goods }}</td>
+                                                        <td>{{ $log->start_date }}</td>
+                                                        <td>{{ $log->end_date }}</td>
+                                                        <td>
+                                                            <span class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+                                                                {{ ucfirst($log->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div class="dropdown d-inline-block">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                    <a class="dropdown-item" href="#">Update</a>
+                                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false" aria-controls="wasteDisposalTrackingCollapse">
+                                        Waste Disposal Tracking
+                                    </button>
+                                </h2>
+                                <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
+                                    <div class="accordion-body bg-white">
+                                        <!-- Waste Disposal Tracking Form -->
+                                        <form action="" method="post">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="mb-3">
+                                                <label for="waste_type" class="form-label">Waste Type</label>
+                                                <input type="text" class="form-control" id="waste_type" name="waste_type" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="quantity" class="form-label">Quantity</label>
+                                                <input type="number" class="form-control" id="quantity" name="quantity" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="disposal_method" class="form-label">Disposal Method</label>
+                                                <input type="text" class="form-control" id="disposal_method" name="disposal_method" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="disposal_date" class="form-label">Disposal Date</label>
+                                                <input type="date" class="form-control" id="disposal_date" name="disposal_date" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="productionTrackingHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productionTrackingCollapse" aria-expanded="false" aria-controls="productionTrackingCollapse">
+                                        Production Tracking
+                                    </button>
+                                </h2>
+                                <div id="productionTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
+                                    <div class="accordion-body bg-white">
+                                        <!-- Production Tracking Form -->
+                                        <form action="" method="post">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="mb-3">
+                                                <label for="product_name" class="form-label">Product Name</label>
+                                                <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="quantity_produced" class="form-label">Quantity Produced</label>
+                                                <input type="number" class="form-control" id="quantity_produced" name="quantity_produced" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="production_date" class="form-label">Production Date</label>
+                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Add Operation</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <!-- operations -->
-                                <form action="" method="post" id="operations-form">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-2">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="operation_name">Operation Name</label>
-                                                <input type="text" class="form-control" id="operation_name" name="operation_name" placeholder="Operation Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="description">Description</label>
-                                                <textarea class="form-control" id="description" name="description" placeholder="Description" rows="3" required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="operation_code">Operation Code</label>
-                                                <input type="text" class="form-control" id="operation_code" name="operation_code" placeholder="Operation Code" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="operation_type">Operation Type</label>
-                                                <select class="form-select" id="operation_type" name="operation_type" required>
-                                                    <option value="" selected disabled>Choose...</option>
-                                                    <option value="type1">Type 1</option>
-                                                    <option value="type2">Type 2</option>
-                                                    <option value="type3">Type 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="operation_category">Operation Category</label>
-                                                <select class="form-select" id="operation_category" name="operation_category" required>
-                                                    <option value="" selected disabled>Choose...</option>
-                                                    <option value="category1">Category 1</option>
-                                                    <option value="category2">Category 2</option>
-                                                    <option value="category3">Category 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="operation_unit">Operation Unit</label>
-                                                <input type="text" class="form-control" id="operation_unit" name="operation_unit" placeholder="Operation Unit" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="operation_unit_price">Operation Unit Price</label>
-                                                <input type="number" class="form-control" id="operation_unit_price" name="operation_unit_price" placeholder="Operation Unit Price" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                <input type="number" class="form-control" id="operation_unit_cost" name="operation_unit_cost" placeholder="Operation Unit Cost" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="operation_unit_time">Operation Unit Time</label>
-                                                <input type="text" class="form-control" id="operation_unit_time" name="operation_unit_time" placeholder="Operation Unit Time" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
-                                                <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
-                                                <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="expected_unit_produced_for_goods">Expected Unit Produced For Goods</label>
-                                                <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_unit_produced_for_goods" placeholder="Expected Unit Produced For Goods" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="start_date">Start Date</label>
-                                                <input type="date" class="form-control" id="start_date" name="start_date" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="end_date">End Date</label>
-                                                <input type="date" class="form-control" id="end_date" name="end_date" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-3">
-                                            <button type="submit" class="btn btn-primary">Save Operation</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
                     </div>
                     <!-- Operations Management -->
                     <!-- General Settings -->
@@ -5957,6 +6138,113 @@
       </script>
      <!-- Chemical  -->
 
+     <!-- operations -->
+    <script>
+        // Store Operation Type
+        document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-operation-type') }}";
+            fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation types table or UI as needed
+                    let tableBody = document.querySelector('#tbl-operation-types tbody');
+                    tableBody.innerHTML = "";
+                    result.operation_types.forEach(type => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${type.name}</td>
+                            <td>${type.description}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Store Operation Category
+        document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-operation-category') }}";
+            fetch_cycle('--Store Operation Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation categories table or UI as needed
+                    let tableBody = document.querySelector('#tbl-operation-categories tbody');
+                    tableBody.innerHTML = "";
+                    result.operation_categories.forEach(category => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${category.name}</td>
+                            <td>${category.description}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Store Operation Log
+        document.querySelector('#operations-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-operation') }}";
+            fetch_cycle('--Store Operation Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-operations-log tbody');
+                    tableBody.innerHTML = "";
+                    result.operation_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${log.operation_name}</td>
+                            <td>${log.description}</td>
+                            <td>${log.operation_code}</td>
+                            <td>${log.operation_type}</td>
+                            <td>${log.operation_category}</td>
+                            <td>${log.operation_unit}</td>
+                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+                            <td>${log.expected_waste_per_operation}</td>
+                            <td>${log.expected_water_usage_per_operation}</td>
+                            <td>${log.expected_unit_produced_for_goods}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+    </script>
+     <!-- operations -->
      
     @endsection
 </x-layouts.admin-app>

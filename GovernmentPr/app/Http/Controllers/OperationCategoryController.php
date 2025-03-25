@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\OperationCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OperationCategoryController extends Controller
 {
@@ -36,6 +39,23 @@ class OperationCategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:operation_categories,name'],
+            'description' => ['nullable', 'string'],
+            'company_id' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $operationCategory = OperationCategory::create($request->only(['name', 'description', 'company_id']));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create Operation Category', 'message' => $e->getMessage()], 500);
+        }
+        $operationCategories = OperationCategory::where('is_delete', false)->get();
+        return response()->json(['status' => 'success', 'message' => 'Operation Category created successfully', 'operation_categories' => $operationCategories], 201);
     }
 
     /**

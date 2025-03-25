@@ -30,6 +30,9 @@ use App\Models\ChemicalUsage;
 use App\Models\CompanyChemical;
 use App\Models\Admins;
 use App\Models\company_water_usage;
+use App\Models\OperationCategory;
+use App\Models\OperationType;
+use App\Models\CompanyOperation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -80,6 +83,12 @@ class CompanyController extends Controller
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
         $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+        // operation categories
+        $data['operation_categories'] = OperationCategory::where('is_delete', false)->get(['operation_category_id', 'name']);
+        // operation types
+        $data['operation_types'] = OperationType::where('is_delete', false)->get(['operation_type_id', 'name']);
+        // company operations
+        $data['company_operations'] = CompanyOperation::get();
         return view('components.apps.companyProfile', $data);
     }   
     /**

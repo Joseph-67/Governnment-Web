@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyOperation;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CompanyOperationController extends Controller
 {
@@ -36,6 +39,47 @@ class CompanyOperationController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'operation_name' => ['required', 'string', 'max:255', 'unique:company_operations,operation_name'],
+            'description' => ['nullable', 'string'],
+            'operation_code' => ['nullable', 'string', 'max:255'],
+            'operation_type' => ['required', 'string', 'max:255'],
+            'operation_category' => ['required', 'string', 'max:255'],
+            'operation_unit' => ['required', 'string', 'max:255'],
+            'operation_unit_price' => ['nullable', 'numeric'],
+            'operation_unit_cost' => ['nullable', 'numeric'],
+            'operation_unit_time' => ['nullable', 'numeric'],
+            'company_id' => ['required', 'numeric'],
+            'expected_waste_per_operation' => ['required', 'numeric'],
+            'expected_water_usage_per_operation' => ['required', 'numeric'],
+            'expected_unit_produced_for_goods' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $companyOperation = CompanyOperation::create([
+            'operation_name' => $request->input('operation_name'),
+            'description' => $request->input('description'),
+            'operation_code' => $request->input('operation_code'),
+            'operation_type_id' => $request->input('operation_type'),
+            'operation_category_id' => $request->input('operation_category'),
+            'operation_unit' => $request->input('operation_unit'),
+            'operation_unit_price' => $request->input('operation_unit_price'),
+            'operation_unit_cost' => $request->input('operation_unit_cost'),
+            'operation_unit_time' => $request->input('operation_unit_time'),
+            'company_id' => $request->input('company_id'),
+            'expected_waste_per_operation' => $request->input('expected_waste_per_operation'),
+            'expected_water_usage_per_operation' => $request->input('expected_water_usage_per_operation'),
+            'expected_unit_produced_for_goods' => $request->input('expected_unit_produced_for_goods')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create Company Operation', 'message' => $e->getMessage()], 500);
+        }
+        $companyOperations = CompanyOperation::get();
+        return response()->json(['status' => 'success', 'message' => 'Company Operation created successfully', 'operation_logs' => $companyOperations], 201);
     }
 
     /**
