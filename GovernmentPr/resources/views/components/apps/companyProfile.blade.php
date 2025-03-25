@@ -1308,14 +1308,14 @@
                     <!-- Inventory Management -->
                     <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
                         <h3>Inventory Management</h3>
-                        <div class="accordion" id="inventoryAccordion">
+                        <div class="accordion my-3" id="inventoryAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="waterHeading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#waterCollapse" aria-expanded="true" aria-controls="waterCollapse">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#waterCollapse" aria-expanded="false" aria-controls="waterCollapse">
                                         Water Inventory
                                     </button>
                                 </h2>
-                                <div id="waterCollapse" class="accordion-collapse collapse show" aria-labelledby="waterHeading">
+                                <div id="waterCollapse" class="accordion-collapse collapse" aria-labelledby="waterHeading">
                                     <div class="accordion-body">
                                         <!-- Water inventory -->
                                          <!-- water inventory -->
