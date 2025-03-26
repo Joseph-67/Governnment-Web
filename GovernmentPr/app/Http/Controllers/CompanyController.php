@@ -89,6 +89,7 @@ class CompanyController extends Controller
         $data['operation_types'] = OperationType::where('is_delete', false)->get(['operation_type_id', 'name']);
         // company operations
         $data['company_operations'] = CompanyOperation::get();
+        $data['approved_operations'] = CompanyOperation::where('status', '<>', 'iinactiven')->get();
         return view('components.apps.companyProfile', $data);
     }   
     /**

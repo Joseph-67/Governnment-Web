@@ -131,6 +131,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-material', 'store')->name('admin.store-material');
     }); 
 
+
     //Chemicals
     Route::controller(ChemicalUsageController::class)->group(function() {
         Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
@@ -226,10 +227,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         
     });
 
-    Route::controller(StockMovementController::class)->group(function(){
-        Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
-        Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
-    });
+
 
     // Category
     Route::controller(CategoryController::class)->group(function(){
@@ -297,7 +295,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation', 'index')->name('admin.operation');
         Route::post('/operation/store', 'store')->name('admin.store-operation');
         Route::get('/operation/{id}', 'show')->name('admin.show-operation');
-        Route::put('/operation/{id}', 'update')->name('admin.update-operation');
+        Route::post('/operation', 'update')->name('admin.update-operation');
         Route::delete('/operation/{id}', 'destroy')->name('admin.delete-operation');
     });
 

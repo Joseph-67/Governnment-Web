@@ -30,7 +30,7 @@
 
                     <li class="nav-">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#operations" role="tab"
-                        aria-selected="false">Operations Management</a>
+                            aria-selected="false">Operations Management</a>
                     </li>
 
                     <li class="nav-item">
@@ -60,7 +60,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Founded</h5>
-                                        <p class="card-text">{{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
+                                        <p class="card-text">{{
+                                            \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +79,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Headquarters</h5>
-                                        <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{ $company->state }}, {{
+                                        <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{
+                                            $company->state }}, {{
                                             $company->country }}</p>
                                     </div>
                                 </div>
@@ -89,9 +91,11 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Contact Details</h5>
-                                        <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{ $company->secondary_phone_number }}</p>
+                                        <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{
+                                            $company->secondary_phone_number }}</p>
                                         <p class="card-text">Email: {{ $company->email }}</p>
-                                        <p class="card-text">Website: <a href="{{ $company->website_url }}">{{ $company->website_url }}</a></p>
+                                        <p class="card-text">Website: <a href="{{ $company->website_url }}">{{
+                                                $company->website_url }}</a></p>
                                         <p class="card-text">ZIP Code: {{ $company->zip_code }}</p>
                                         <p class="card-text">Longitude: {{ $company->longitude }}</p>
                                         <p class="card-text">Latitude: {{ $company->latitude }}</p>
@@ -134,7 +138,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Industry Process Used</h5>
-                                        <p class="card-text">This company primarily utilizes processes such as {{ $company->industry_process }}.</p>
+                                        <p class="card-text">This company primarily utilizes processes such as {{
+                                            $company->industry_process }}.</p>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +176,8 @@
                                                 name="policy[]" {{(in_array("environmental policy",
                                                 array_column($company_policies->toArray(), 'policy_title')))? "checked":
                                             ""}}>
-                                            <label class="form-check-label" for="environmental-policy">Enviromental Policy.</label>
+                                            <label class="form-check-label" for="environmental-policy">Enviromental
+                                                Policy.</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -1309,25 +1315,29 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Inventory Management -->
                     <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
                         <h3>Inventory Management</h3>
                         <div class="accordion my-3" id="inventoryAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="waterHeading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#waterCollapse" aria-expanded="false" aria-controls="waterCollapse">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#waterCollapse" aria-expanded="false"
+                                        aria-controls="waterCollapse">
                                         Water Inventory
                                     </button>
                                 </h2>
-                                <div id="waterCollapse" class="accordion-collapse collapse" aria-labelledby="waterHeading">
+                                <div id="waterCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="waterHeading">
                                     <div class="accordion-body">
                                         <!-- Water inventory -->
-                                         <!-- water inventory -->
+                                        <!-- water inventory -->
                                         <div class="card shadow-sm">
                                             <div class="card-body py-3">
                                                 <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <input type="hidden" class="form-control" name="company_id"
+                                                        value="{{ $company->company_id }}">
                                                     <div class="row g-2">
                                                         @foreach($waterQuestions as $question)
                                                         <!-- question  -->
@@ -1336,12 +1346,15 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input"
                                                                     onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
-                                                                    type="checkbox" value="{{ $question->questionId }}" name="{{ $question->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $question->questionId }}" {{(in_array($question->questionId,
+                                                                    type="checkbox" value="{{ $question->questionId }}"
+                                                                    name="{{ $question->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $question->questionId }}"
+                                                                    {{(in_array($question->questionId,
                                                                 array_column($CompanyWaterQuestions->toArray(),
                                                                 'questionID')))? "checked": ""}}
                                                                 >
-                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                <label class="form-check-label"
+                                                                    for="flexCheckIndeterminate">
                                                                     {{ $question->question }}
                                                                 </label>
                                                             </div>
@@ -1357,8 +1370,10 @@
                                         <div class="card shadow-sm">
                                             <div class="card-body">
                                                 <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
-                                                    <label for="">Indicate the water conservations opportunity that is applicable or
+                                                    <input type="hidden" class="form-control" name="company_id"
+                                                        value="{{ $company->company_id }}">
+                                                    <label for="">Indicate the water conservations opportunity that is
+                                                        applicable or
                                                         beneficial to your process</label>
                                                     <div class="row g-2 mt-2">
                                                         @foreach($WaterConservationMethod as $method)
@@ -1368,12 +1383,16 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input"
                                                                     onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
-                                                                    type="checkbox" value="{{ $method->WaterConservationMethodId }}" name="{{ $method->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}" {{(in_array($method->WaterConservationMethodId,
+                                                                    type="checkbox"
+                                                                    value="{{ $method->WaterConservationMethodId }}"
+                                                                    name="{{ $method->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}"
+                                                                    {{(in_array($method->WaterConservationMethodId,
                                                                 array_column($companyWaterConservationMethod->toArray(),
                                                                 'waterConservationMethod_id')))? "checked": ""}}
                                                                 >
-                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                <label class="form-check-label"
+                                                                    for="flexCheckIndeterminate">
                                                                     {{ $method->method }}
                                                                 </label>
                                                             </div>
@@ -1385,12 +1404,14 @@
                                                 </form>
                                             </div>
                                         </div>
-                                            
+
                                         <div class="card shadow-sm">
                                             <div class="card-body">
                                                 <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
-                                                    <label for="">Select the water source used in your Organization</label>
+                                                    <input type="hidden" class="form-control" name="company_id"
+                                                        value="{{ $company->company_id }}">
+                                                    <label for="">Select the water source used in your
+                                                        Organization</label>
                                                     <div class="row g-2 mt-2">
                                                         @foreach($WaterSources as $sources)
                                                         <!-- question  -->
@@ -1399,12 +1420,16 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input"
                                                                     onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
-                                                                    type="checkbox" value="{{ $sources->WaterSourcesId }}" name="{{ $sources->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}" {{(in_array($sources->WaterSourcesId,
+                                                                    type="checkbox"
+                                                                    value="{{ $sources->WaterSourcesId }}"
+                                                                    name="{{ $sources->label }}"
+                                                                    id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}"
+                                                                    {{(in_array($sources->WaterSourcesId,
                                                                 array_column($companyWaterSources->toArray(),
                                                                 'WaterSources_id')))? "checked": ""}}
                                                                 >
-                                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                                <label class="form-check-label"
+                                                                    for="flexCheckIndeterminate">
                                                                     {{ $sources->sources }}
                                                                 </label>
                                                             </div>
@@ -1416,445 +1441,516 @@
                                                 </form>
                                             </div>
                                         </div>
-                                            <!-- Water Sources -->
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h4 class="card-title mb-0">Water Sources Details</h4>
-                                                </div> <!-- end card-header -->
+                                        <!-- Water Sources -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4 class="card-title mb-0">Water Sources Details</h4>
+                                            </div> <!-- end card-header -->
 
-                                                <div class="card-body pt-0" id="waterSourceForm">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="card-body pt-0" id="waterSourceForm">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
 
-                                                    <div class="row g-3">
-                                                        <!-- Water Source -->
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <label for="water_source" class="form-label">Water Source</label>
-                                                                <select name="water_source" id="source" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
-                                                                    @foreach($waterSources as $source)
-                                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(),
-                                                                    'WaterSources_id')))
-                                                                    <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                        {{ $source->sources }}
-                                                                    </option>
-                                                                    @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Location -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="location" class="form-label">Location</label>
-                                                                <input type="text" id="location" class="form-control" name="location">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Capacity of Water -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="capacity" class="col col-form-label">Capacity of Water (LTR)</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="capacity" value="0">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Save Button -->
-                                                        <div class="col-12 mt-3">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                            <!-- End Water Sources -->
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">
-                                                            <h4 class="card-title">Water Usage</h4>
-                                                        </div><!--end col-->
-                                                    </div> <!--end row-->
-                                                </div><!--end card-header-->
-                                                <div class="card-body pt-0" id="water-usage-form">
-                                                    <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                                    <div class="row g-2">
-                                                        <!-- Unit of measurement -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Volume of Water</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="volume" value="0">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Unit of measurement -->
-                                                        <!-- date type -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <label class="col my-1 control-label">Date Type</label>
-                                                            <div class="col-md-9">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1"
-                                                                        value="daily" checked onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio1">Daily</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2"
-                                                                        value="weekly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3"
-                                                                        value="monthly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4"
-                                                                        value="yearly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio3">Yearly</label>
-                                                                </div>
-                                                            </div>
-                                                        </div> <!--end row-->
-                                                        <!-- date type -->
-                                                        <!-- Date -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group" id="date">
-                                                                <label for="" class="col col-form-label">Date</label>
-                                                                <input type="date" class="form-control" name="date">
-                                                            </div>
-                                                        </div>
-                                                        <!-- end Date -->
-                                                        <!-- Material name -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Remark</label>
-                                                                <input type="text" class="form-control" name="remark">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Material name -->
-                                                        <div class="col-12">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- water usage card -->
-                                            <!-- water usage logs card -->
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h4 class="card-title mb-0">Water Usage Logs</h4>
-                                                </div> <!-- end card-header -->
-
-                                                <div class="card-body pt-0" id="waterUsageLogsForm">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <label for="water_source" class="form-label">Water Source</label>
-                                                                <select name="water_source_selected" id="water_source_selected" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
-                                                                    @foreach($WaterSources as $source)
-                                                                    @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(),
-                                                                    'WaterSources_id')))
-                                                                    <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                        {{ $source->sources }}
-                                                                    </option>
-                                                                    @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Quantity Used</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="quantity_used" value="">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Unit of Measurement</label>
-                                                                <select name="unit_of_water_measured" id="source" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
-                                                                    <option value="kg">Kilogram (kg)</option>
-                                                                    <option value="g">Gram (g)</option>
-                                                                    <option value="lb">Pound (lb)</option>
-                                                                    <option value="oz">Ounce (oz)</option>
-                                                                    <option value="cm">Centimeter (cm)</option>
-                                                                    <option value="m">Meter (m)</option>
-                                                                    <option value="in">Inch (in)</option>
-                                                                    <option value="ft">Foot (ft)</option>
-                                                                    <option value="l">Liter (L)</option>
-                                                                    <option value="ml">Milliliter (mL)</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group" id="date">
-                                                                <label for="" class="col col-form-label">Date</label>
-                                                                <input type="date" class="form-control" name="date">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Purpose</label>
-                                                                <input type="text" class="form-control" name="purpose">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 mt-3">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                            <!-- End Water Usage Logs -->
-                                            <!-- water recycling logs -->
-                                            <!-- water usage logs card -->
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                                                </div> <!-- end card-header -->
-                                                <div class="card-body pt-0" id="waterRecyclingLogsForm">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Quantity Recycled</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="quantity_recycled" value="">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Unit</label>
-                                                                <select name="unit_of_water_recycled" id="unit_of_water_recycled" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
-                                                                    <option value="kg">Kilogram (kg)</option>
-                                                                    <option value="g">Gram (g)</option>
-                                                                    <option value="lb">Pound (lb)</option>
-                                                                    <option value="oz">Ounce (oz)</option>
-                                                                    <option value="cm">Centimeter (cm)</option>
-                                                                    <option value="m">Meter (m)</option>
-                                                                    <option value="in">Inch (in)</option>
-                                                                    <option value="ft">Foot (ft)</option>
-                                                                    <option value="l">Liter (L)</option>
-                                                                    <option value="ml">Milliliter (mL)</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group" id="date">
-                                                                <label for="" class="col col-form-label">Reycling Date</label>
-                                                                <input type="date" class="form-control" name="recycling_date">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Method</label>
-                                                                <input type="text" class="form-control" name="method">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 mt-3">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-recycling-logs">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                            <!-- end water recycling logs -->
-                                            <!-- water quality log -->
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h4 class="card-title mb-0">Water Quality Logs</h4>
-                                                </div> <!-- end card-header -->
-                                                <div class="card-body pt-0" id="waterQualityLogForm">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group" id="date">
-                                                                <label for="" class="col col-form-label">Test Date</label>
-                                                                <input type="date" class="form-control" name="test_date">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">PH Level</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="ph_level" value="0">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Turbidity Level</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="turbidity_level" value="0">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 mt-2">
-                                                            <div class="form-group">
-                                                                <label for="contaminants_detected" class="form-label">Contaminants Detected</label>
-                                                                <textarea class="form-control" id="contaminants_detected" name="contaminants_detected" rows="3"
-                                                                    placeholder="Enter contaminants detected"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 mt-2">
-                                                            <div class="form-group">
-                                                                <label for="test_results" class="form-label">Test Results</label>
-                                                                <textarea class="form-control" id="test_results" name="test_results" rows="3"
-                                                                    placeholder="Enter test results"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 mt-3">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-quality-logs">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
-                                                </div> <!-- end card-header -->
-                                                <div class="card-body pt-0" id="water-usage-form">
-                                                    <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                                    <div class="row g-2">
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Volume of Water</label>
-                                                                <div class="input-group qty-icons">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                    <input type="number" class="form-control" min="0" name="volume" value="0">
-                                                                    <button class="btn btn-primary"
-                                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <label class="col my-1 control-label">Date Type</label>
-                                                            <div class="col-md-9">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio1"
-                                                                        value="daily" checked onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio1">Daily</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio2"
-                                                                        value="weekly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio2">Weekly</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio3"
-                                                                        value="monthly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio3">Monthly</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="date_type" id="inlineRadio4"
-                                                                        value="yearly" onchange="addDate(this)">
-                                                                    <label class="form-check-label" for="inlineRadio4">Yearly</label>
-                                                                </div>
-                                                            </div>
-                                                        </div> <!--end row-->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group" id="date">
-                                                                <label for="" class="col col-form-label">Date</label>
-                                                                <input type="date" class="form-control" name="date">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="" class="col col-form-label">Remark</label>
-                                                                <input type="text" class="form-control" name="remark">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">
-                                                            <h4 class="card-title">Water Usage</h4>
-                                                        </div><!--end col-->
-                                                    </div> <!--end row-->
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table mb-0" id="tbl-company-material">
-                                                            <thead class="table-light">
-                                                                <tr>
-                                                                    <th>Volume</th>
-                                                                    <!-- <th>Date type</th> -->
-                                                                    <th>Date</th>
-                                                                    <th>Remark</th>
-                                                                    <th class="text-end">Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="water-usage-table">
-                                                                @foreach($company_water_usage as $key=>$water_usage)
-                                                                <tr>
-                                                                    <td>{{ $water_usage->volume }}</td>
-                                                                    <!-- <td>{{$water_usage->date_type}}</td> -->
-                                                                    @if($water_usage->date_type === 'monthly')
-                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('M Y') }}</td>
-                                                                    @elseif($water_usage->date_type === 'yearly')
-                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('Y') }}</td>
-                                                                    @elseif($water_usage->date_type === 'weekly')
-                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d M Y') }} - {{
-                                                                        \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d M Y') }}</td>
-                                                                    @else
-                                                                    <td>{{ \Carbon\Carbon::parse($water_usage->date)->format('d M Y') }}</td>
-                                                                    @endif
-                                                                    <td>{{$water_usage->remark}}</td>
-                                                                    <td class="text-end">
-                                                                        <div class="dropdown d-inline-block">
-                                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown"
-                                                                                href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                            </a>
-                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                                                <a class="dropdown-item" href="#">Update Material</a>
-                                                                                <a class="dropdown-item" href="#">Delete Material</a>
-                                                                                <hr class="dropdown-divider">
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                <div class="row g-3">
+                                                    <!-- Water Source -->
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="water_source" class="form-label">Water
+                                                                Source</label>
+                                                            <select name="water_source" id="source" class="form-select">
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                @foreach($waterSources as $source)
+                                                                @if(in_array($source->WaterSourcesId,
+                                                                array_column($companyWaterSources->toArray(),
+                                                                'WaterSources_id')))
+                                                                <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                    {{ $source->sources }}
+                                                                </option>
+                                                                @endif
                                                                 @endforeach
-                                                            </tbody>
-                                                        </table><!--end /table-->
-                                                    </div><!--end /tableresponsive-->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Location -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="location" class="form-label">Location</label>
+                                                            <input type="text" id="location" class="form-control"
+                                                                name="location">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Capacity of Water -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="capacity" class="col col-form-label">Capacity of
+                                                                Water (LTR)</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="capacity" value="0">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Save Button -->
+                                                    <div class="col-12 mt-3">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-source">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end card-body -->
+                                        </div>
+                                        <!-- End Water Sources -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h4 class="card-title">Water Usage</h4>
+                                                    </div><!--end col-->
+                                                </div> <!--end row-->
+                                            </div><!--end card-header-->
+                                            <div class="card-body pt-0" id="water-usage-form">
+                                                <input type="hidden" value="{{ $company->company_id }}"
+                                                    name="company_id">
+                                                <div class="row g-2">
+                                                    <!-- Unit of measurement -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Volume of
+                                                                Water</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="volume" value="0">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Unit of measurement -->
+                                                    <!-- date type -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <label class="col my-1 control-label">Date Type</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio1" value="daily"
+                                                                    checked onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio1">Daily</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio2" value="weekly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio2">Weekly</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio3" value="monthly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio3">Monthly</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio4" value="yearly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio3">Yearly</label>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!--end row-->
+                                                    <!-- date type -->
+                                                    <!-- Date -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group" id="date">
+                                                            <label for="" class="col col-form-label">Date</label>
+                                                            <input type="date" class="form-control" name="date">
+                                                        </div>
+                                                    </div>
+                                                    <!-- end Date -->
+                                                    <!-- Material name -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Remark</label>
+                                                            <input type="text" class="form-control" name="remark">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Material name -->
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-usage">Save</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <!-- end water usage card -->
+                                        </div>
+                                        <!-- water usage card -->
+                                        <!-- water usage logs card -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4 class="card-title mb-0">Water Usage Logs</h4>
+                                            </div> <!-- end card-header -->
+
+                                            <div class="card-body pt-0" id="waterUsageLogsForm">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="water_source" class="form-label">Water
+                                                                Source</label>
+                                                            <select name="water_source_selected"
+                                                                id="water_source_selected" class="form-select">
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                @foreach($WaterSources as $source)
+                                                                @if(in_array($source->WaterSourcesId,
+                                                                array_column($companyWaterSources->toArray(),
+                                                                'WaterSources_id')))
+                                                                <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                    {{ $source->sources }}
+                                                                </option>
+                                                                @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Quantity
+                                                                Used</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="quantity_used" value="">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Unit of
+                                                                Measurement</label>
+                                                            <select name="unit_of_water_measured" id="source"
+                                                                class="form-select">
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                <option value="kg">Kilogram (kg)</option>
+                                                                <option value="g">Gram (g)</option>
+                                                                <option value="lb">Pound (lb)</option>
+                                                                <option value="oz">Ounce (oz)</option>
+                                                                <option value="cm">Centimeter (cm)</option>
+                                                                <option value="m">Meter (m)</option>
+                                                                <option value="in">Inch (in)</option>
+                                                                <option value="ft">Foot (ft)</option>
+                                                                <option value="l">Liter (L)</option>
+                                                                <option value="ml">Milliliter (mL)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group" id="date">
+                                                            <label for="" class="col col-form-label">Date</label>
+                                                            <input type="date" class="form-control" name="date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Purpose</label>
+                                                            <input type="text" class="form-control" name="purpose">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-usage-logs">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end card-body -->
+                                        </div>
+                                        <!-- End Water Usage Logs -->
+                                        <!-- water recycling logs -->
+                                        <!-- water usage logs card -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4 class="card-title mb-0">Water Recycling Logs</h4>
+                                            </div> <!-- end card-header -->
+                                            <div class="card-body pt-0" id="waterRecyclingLogsForm">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Quantity
+                                                                Recycled</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="quantity_recycled" value="">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Unit</label>
+                                                            <select name="unit_of_water_recycled"
+                                                                id="unit_of_water_recycled" class="form-select">
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                <option value="kg">Kilogram (kg)</option>
+                                                                <option value="g">Gram (g)</option>
+                                                                <option value="lb">Pound (lb)</option>
+                                                                <option value="oz">Ounce (oz)</option>
+                                                                <option value="cm">Centimeter (cm)</option>
+                                                                <option value="m">Meter (m)</option>
+                                                                <option value="in">Inch (in)</option>
+                                                                <option value="ft">Foot (ft)</option>
+                                                                <option value="l">Liter (L)</option>
+                                                                <option value="ml">Milliliter (mL)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group" id="date">
+                                                            <label for="" class="col col-form-label">Reycling
+                                                                Date</label>
+                                                            <input type="date" class="form-control"
+                                                                name="recycling_date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Method</label>
+                                                            <input type="text" class="form-control" name="method">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-recycling-logs">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end card-body -->
+                                        </div>
+                                        <!-- end water recycling logs -->
+                                        <!-- water quality log -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4 class="card-title mb-0">Water Quality Logs</h4>
+                                            </div> <!-- end card-header -->
+                                            <div class="card-body pt-0" id="waterQualityLogForm">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group" id="date">
+                                                            <label for="" class="col col-form-label">Test Date</label>
+                                                            <input type="date" class="form-control" name="test_date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">PH Level</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="ph_level" value="0">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Turbidity
+                                                                Level</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="turbidity_level" value="0">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="contaminants_detected"
+                                                                class="form-label">Contaminants Detected</label>
+                                                            <textarea class="form-control" id="contaminants_detected"
+                                                                name="contaminants_detected" rows="3"
+                                                                placeholder="Enter contaminants detected"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="test_results" class="form-label">Test
+                                                                Results</label>
+                                                            <textarea class="form-control" id="test_results"
+                                                                name="test_results" rows="3"
+                                                                placeholder="Enter test results"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-quality-logs">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end card-body -->
+                                        </div>
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
+                                            </div> <!-- end card-header -->
+                                            <div class="card-body pt-0" id="water-usage-form">
+                                                <input type="hidden" value="{{ $company->company_id }}"
+                                                    name="company_id">
+                                                <div class="row g-2">
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Volume of
+                                                                Water</label>
+                                                            <div class="input-group qty-icons">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0"
+                                                                    name="volume" value="0">
+                                                                <button class="btn btn-primary"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <label class="col my-1 control-label">Date Type</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio1" value="daily"
+                                                                    checked onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio1">Daily</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio2" value="weekly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio2">Weekly</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio3" value="monthly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio3">Monthly</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="date_type" id="inlineRadio4" value="yearly"
+                                                                    onchange="addDate(this)">
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio4">Yearly</label>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!--end row-->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group" id="date">
+                                                            <label for="" class="col col-form-label">Date</label>
+                                                            <input type="date" class="form-control" name="date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="" class="col col-form-label">Remark</label>
+                                                            <input type="text" class="form-control" name="remark">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn btn-primary"
+                                                            id="btn-submit-water-usage">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h4 class="card-title">Water Usage</h4>
+                                                    </div><!--end col-->
+                                                </div> <!--end row-->
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table mb-0" id="tbl-company-material">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Volume</th>
+                                                                <!-- <th>Date type</th> -->
+                                                                <th>Date</th>
+                                                                <th>Remark</th>
+                                                                <th class="text-end">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="water-usage-table">
+                                                            @foreach($company_water_usage as $key=>$water_usage)
+                                                            <tr>
+                                                                <td>{{ $water_usage->volume }}</td>
+                                                                <!-- <td>{{$water_usage->date_type}}</td> -->
+                                                                @if($water_usage->date_type === 'monthly')
+                                                                <td>{{
+                                                                    \Carbon\Carbon::parse($water_usage->date)->format('M
+                                                                    Y') }}</td>
+                                                                @elseif($water_usage->date_type === 'yearly')
+                                                                <td>{{
+                                                                    \Carbon\Carbon::parse($water_usage->date)->format('Y')
+                                                                    }}</td>
+                                                                @elseif($water_usage->date_type === 'weekly')
+                                                                <td>{{
+                                                                    \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d
+                                                                    M Y') }} - {{
+                                                                    \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d
+                                                                    M Y') }}</td>
+                                                                @else
+                                                                <td>{{
+                                                                    \Carbon\Carbon::parse($water_usage->date)->format('d
+                                                                    M Y') }}</td>
+                                                                @endif
+                                                                <td>{{$water_usage->remark}}</td>
+                                                                <td class="text-end">
+                                                                    <div class="dropdown d-inline-block">
+                                                                        <a class="dropdown-toggle arrow-none"
+                                                                            id="dLabel11" data-bs-toggle="dropdown"
+                                                                            href="#" role="button" aria-haspopup="false"
+                                                                            aria-expanded="false">
+                                                                            <i
+                                                                                class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                                            aria-labelledby="dLabel11">
+                                                                            <a class="dropdown-item" href="#">Update
+                                                                                Material</a>
+                                                                            <a class="dropdown-item" href="#">Delete
+                                                                                Material</a>
+                                                                            <hr class="dropdown-divider">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table><!--end /table-->
+                                                </div><!--end /tableresponsive-->
+                                            </div>
+                                        </div>
+                                        <!-- end water usage card -->
 
                                         <!-- Water inventory -->
                                     </div>
@@ -1862,11 +1958,14 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="chemicalHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chemicalCollapse" aria-expanded="false" aria-controls="chemicalCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#chemicalCollapse" aria-expanded="false"
+                                        aria-controls="chemicalCollapse">
                                         Chemical Inventory
                                     </button>
                                 </h2>
-                                <div id="chemicalCollapse" class="accordion-collapse collapse" aria-labelledby="chemicalHeading">
+                                <div id="chemicalCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="chemicalHeading">
                                     <div class="accordion-body">
                                         <!-- chemical -->
                                         <div class="card shadow-sm border-0">
@@ -1879,34 +1978,44 @@
                                             </div><!--end card-header-->
                                             <div class="card-body pt-0">
                                                 <form action="" method="post" id="chemical-form">
-                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <input type="hidden" class="form-control" name="company_id"
+                                                        value="{{ $company->company_id }}">
                                                     <div class="row g-2 align-items-end">
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="chemical">Chemical</label>
-                                                                <select name="chemical" id="chemical" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
+                                                                <select name="chemical" id="chemical"
+                                                                    class="form-select">
+                                                                    <option value="" selected disabled>Choose...
+                                                                    </option>
                                                                     @foreach($approved_chemicals as $chemical)
-                                                                        <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
+                                                                    <option value="{{ $chemical->chemical_id }}">{{
+                                                                        $chemical->name }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <label for="unit_of_measurement">Unit of Measurement</label>
-                                                                <input type="text" class="form-control" name="unit_of_measurement" placeholder="Unit of Measurement">
+                                                                <label for="unit_of_measurement">Unit of
+                                                                    Measurement</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="unit_of_measurement"
+                                                                    placeholder="Unit of Measurement">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="threshold">Threshold</label>
-                                                                <input type="number" class="form-control" name="threshold" placeholder="Minimum Stock Threshold" min="0">
+                                                                <input type="number" class="form-control"
+                                                                    name="threshold"
+                                                                    placeholder="Minimum Stock Threshold" min="0">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="d-flex align-items-center">
-                                                                <button type="button" class="btn btn-primary" id="btn-submit-chemical">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    id="btn-submit-chemical">
                                                                     Save
                                                                     <span class="loader" id="loader"></span>
                                                                 </button>
@@ -1919,15 +2028,19 @@
                                         <div class="card shadow-sm border-0 mt-4">
                                             <div class="card-header bg-primary text-white" id="headingChemicals">
                                                 <h4 class="card-title mb-0">
-                                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse" href="#collapseChemicals" aria-expanded="true" aria-controls="collapseChemicals">
+                                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse"
+                                                        href="#collapseChemicals" aria-expanded="true"
+                                                        aria-controls="collapseChemicals">
                                                         Company Chemicals
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseChemicals" class="collapse show" aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
+                                            <div id="collapseChemicals" class="collapse show"
+                                                aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
                                                 <div class="card-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-striped mb-0" id="tbl-company-chemical">
+                                                        <table class="table table-striped mb-0"
+                                                            id="tbl-company-chemical">
                                                             <thead class="table-light">
                                                                 <tr>
                                                                     <th>Chemical</th>
@@ -1939,27 +2052,47 @@
                                                             <tbody>
                                                                 @foreach($company_chemicals as $chemical)
                                                                 <tr>
-                                                                    <td>{{ $chemical->chemical->name }} ({!! $chemical->chemical->formula !!})</td>
+                                                                    <td>{{ $chemical->chemical->name }} ({!!
+                                                                        $chemical->chemical->formula !!})</td>
                                                                     <td>{{ $chemical->unit }}</td>
                                                                     <td>
-                                                                        <span class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                                        <span
+                                                                            class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
                                                                             {{ $chemical->status }}
                                                                         </span>
                                                                     </td>
                                                                     <td class="text-end">
-                                                                        <div class="dropdown d-inline-block" style="position: relative !important; z-index: 99999999999999;">
-                                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                        <div class="dropdown d-inline-block"
+                                                                            style="position: relative !important; z-index: 99999999999999;">
+                                                                            <a class="dropdown-toggle arrow-none"
+                                                                                id="dLabel11" data-bs-toggle="dropdown"
+                                                                                href="#" role="button"
+                                                                                aria-haspopup="false"
+                                                                                aria-expanded="false">
+                                                                                <i
+                                                                                    class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                             </a>
-                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11" style="z-index: 99999999999999;">
-                                                                                <a class="dropdown-item" href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open Chemical</a>
-                                                                                <a class="dropdown-item" href="#">Update Chemical</a>
-                                                                                <a class="dropdown-item" href="#">Delete Chemical</a>
+                                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                                aria-labelledby="dLabel11"
+                                                                                style="z-index: 99999999999999;">
+                                                                                <a class="dropdown-item"
+                                                                                    href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
+                                                                                    Chemical</a>
+                                                                                <a class="dropdown-item" href="#">Update
+                                                                                    Chemical</a>
+                                                                                <a class="dropdown-item" href="#">Delete
+                                                                                    Chemical</a>
                                                                                 <hr class="dropdown-divider">
-                                                                                <a class="dropdown-item" href="#">Setup Price</a>
-                                                                                <a href="#" class="dropdown-item" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check In Item</a>
-                                                                                <a href="#" class="dropdown-item" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check Out Item</a>
-                                                                                <a href="#" class="dropdown-item">Make Adjustment</a>
+                                                                                <a class="dropdown-item" href="#">Setup
+                                                                                    Price</a>
+                                                                                <a href="#" class="dropdown-item"
+                                                                                    onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
+                                                                                    In Item</a>
+                                                                                <a href="#" class="dropdown-item"
+                                                                                    onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
+                                                                                    Out Item</a>
+                                                                                <a href="#" class="dropdown-item">Make
+                                                                                    Adjustment</a>
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -1977,11 +2110,14 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="materialHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#materialCollapse" aria-expanded="false" aria-controls="materialCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#materialCollapse" aria-expanded="false"
+                                        aria-controls="materialCollapse">
                                         Material Inventory
                                     </button>
                                 </h2>
-                                <div id="materialCollapse" class="accordion-collapse collapse" aria-labelledby="materialHeading">
+                                <div id="materialCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="materialHeading">
                                     <div class="accordion-body">
                                         <!-- Material Inventory -->
                                         <div class="card shadow-sm">
@@ -1994,16 +2130,20 @@
                                             </div><!--end card-header-->
                                             <div class="card-body pt-0">
                                                 <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                    <input type="hidden" class="form-control" name="company_id"
+                                                        value="{{ $company->company_id }}">
                                                     <div class="row g-2">
                                                         <!-- Material -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="material">Material</label>
-                                                                <select name="material" id="material" class="form-select">
-                                                                    <option value="" selected disabled>Choose...</option>
+                                                                <select name="material" id="material"
+                                                                    class="form-select">
+                                                                    <option value="" selected disabled>Choose...
+                                                                    </option>
                                                                     @foreach($materials as $material)
-                                                                    <option value="{{ $material->materialID }}">{{ $material->material }}</option>
+                                                                    <option value="{{ $material->materialID }}">{{
+                                                                        $material->material }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -2011,16 +2151,20 @@
                                                         <!-- Serial Number -->
                                                         <div class="col-md-3">
                                                             <div class="form-group">
-                                                                <label for="serial_number">Serial Number (If any)</label>
-                                                                <input type="text" class="form-control" id="serial_number" name="serial_number"
+                                                                <label for="serial_number">Serial Number (If
+                                                                    any)</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="serial_number" name="serial_number"
                                                                     placeholder="Serial Number">
                                                             </div>
                                                         </div>
                                                         <!-- Unit of Measurement -->
                                                         <div class="col-md-3">
                                                             <div class="form-group">
-                                                                <label for="unit_of_measurement">Unit of Measurement</label>
-                                                                <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement"
+                                                                <label for="unit_of_measurement">Unit of
+                                                                    Measurement</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="unit_of_measurement" name="unit_of_measurement"
                                                                     placeholder="Unit of Measurement">
                                                             </div>
                                                         </div>
@@ -2028,14 +2172,16 @@
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label for="threshold">Threshold</label>
-                                                                <input type="number" class="form-control" id="threshold" name="threshold"
+                                                                <input type="number" class="form-control" id="threshold"
+                                                                    name="threshold"
                                                                     placeholder="Minimum Stock Threshold" min="0">
                                                             </div>
                                                         </div>
                                                         <!-- Save Button-->
                                                         <div class="col-12 mt-3">
                                                             <div class="d-flex">
-                                                                <button type="button" class="btn btn-primary" id="btn-submit-material">Save</button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    id="btn-submit-material">Save</button>
                                                                 <span class="loader" id="loader"></span>
                                                             </div>
                                                         </div>
@@ -2071,19 +2217,26 @@
                                                                 <td> {{ $material->unit_of_measure }} </td>
                                                                 <td><span
                                                                         class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
-                                                                        $material->company_material_status }}</span></td>
+                                                                        $material->company_material_status }}</span>
+                                                                </td>
                                                                 <td class="text-end">
                                                                     <div class="dropdown d-inline-block">
-                                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown"
-                                                                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                        <a class="dropdown-toggle arrow-none"
+                                                                            id="dLabel11" data-bs-toggle="dropdown"
+                                                                            href="#" role="button" aria-haspopup="false"
+                                                                            aria-expanded="false">
+                                                                            <i
+                                                                                class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                         </a>
-                                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                        <div class="dropdown-menu dropdown-menu-end"
+                                                                            aria-labelledby="dLabel11">
                                                                             <a class="dropdown-item"
                                                                                 href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
                                                                                 Material</a>
-                                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                                            <a class="dropdown-item" href="#">Delete Material</a>
+                                                                            <a class="dropdown-item" href="#">Update
+                                                                                Material</a>
+                                                                            <a class="dropdown-item" href="#">Delete
+                                                                                Material</a>
                                                                             <hr class="dropdown-divider">
                                                                             <a class="dropdown-item" href="#"
                                                                                 onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
@@ -2118,11 +2271,14 @@
                         <div class="accordion" id="operationsAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="operationTypeHeading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#operationTypeCollapse" aria-expanded="true" aria-controls="operationTypeCollapse">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#operationTypeCollapse" aria-expanded="true"
+                                        aria-controls="operationTypeCollapse">
                                         Operation Type
                                     </button>
                                 </h2>
-                                <div id="operationTypeCollapse" class="accordion-collapse collapse show" aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
+                                <div id="operationTypeCollapse" class="accordion-collapse collapse show"
+                                    aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
                                     <div class="accordion-body bg-white">
                                         <form action="" method="post" id="company_operation_type_form">
                                             @csrf
@@ -2133,7 +2289,8 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                                <textarea class="form-control" id="description" name="description"
+                                                    rows="3" required></textarea>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
@@ -2148,23 +2305,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($operation_types as $type)
+                                                    @foreach($operation_types as $type)
                                                     <tr>
                                                         <td>{{ $type->name }}</td>
                                                         <td>{{ $type->description }}</td>
                                                         <td class="text-end">
                                                             <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                    data-bs-toggle="dropdown" href="#" role="button"
+                                                                    aria-haspopup="false" aria-expanded="false">
                                                                     <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                 </a>
-                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                <div class="dropdown-menu dropdown-menu-end"
+                                                                    aria-labelledby="dLabel11">
                                                                     <a class="dropdown-item" href="#">Update</a>
                                                                     <a class="dropdown-item" href="#">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -2173,11 +2333,14 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="operationCategoryHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#operationCategoryCollapse" aria-expanded="false" aria-controls="operationCategoryCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#operationCategoryCollapse" aria-expanded="false"
+                                        aria-controls="operationCategoryCollapse">
                                         Operation Category
                                     </button>
                                 </h2>
-                                <div id="operationCategoryCollapse" class="accordion-collapse collapse" aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
+                                <div id="operationCategoryCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
                                     <div class="accordion-body bg-white">
                                         <form action="" method="post" id="operation_category_form">
                                             @csrf
@@ -2188,7 +2351,8 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                                <textarea class="form-control" id="description" name="description"
+                                                    rows="3" required></textarea>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
@@ -2208,10 +2372,13 @@
                                                         <td>{{ $category->description }}</td>
                                                         <td class="text-end">
                                                             <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                    data-bs-toggle="dropdown" href="#" role="button"
+                                                                    aria-haspopup="false" aria-expanded="false">
                                                                     <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                 </a>
-                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                <div class="dropdown-menu dropdown-menu-end"
+                                                                    aria-labelledby="dLabel11">
                                                                     <a class="dropdown-item" href="#">Update</a>
                                                                     <a class="dropdown-item" href="#">Delete</a>
                                                                 </div>
@@ -2227,11 +2394,14 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="operationsLogHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#operationsLogCollapse" aria-expanded="false" aria-controls="operationsLogCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#operationsLogCollapse" aria-expanded="false"
+                                        aria-controls="operationsLogCollapse">
                                         Operations Log
                                     </button>
                                 </h2>
-                                <div id="operationsLogCollapse" class="accordion-collapse collapse" aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
+                                <div id="operationsLogCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
                                     <div class="accordion-body bg-white">
                                         <form action="" method="post" id="operations-form">
                                             @csrf
@@ -2240,28 +2410,34 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="operation_name">Operation Name</label>
-                                                        <input type="text" class="form-control" id="operation_name" name="operation_name" placeholder="Operation Name" required>
+                                                        <input type="text" class="form-control" id="operation_name"
+                                                            name="operation_name" placeholder="Operation Name" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="description">Description</label>
-                                                        <textarea class="form-control" id="description" name="description" placeholder="Description" rows="3" required></textarea>
+                                                        <textarea class="form-control" id="description"
+                                                            name="description" placeholder="Description" rows="3"
+                                                            required></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="operation_code">Operation Code</label>
-                                                        <input type="text" class="form-control" id="operation_code" name="operation_code" placeholder="Operation Code" required>
+                                                        <input type="text" class="form-control" id="operation_code"
+                                                            name="operation_code" placeholder="Operation Code" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="operation_type">Operation Type</label>
-                                                        <select class="form-select" id="operation_type" name="operation_type" required>
+                                                        <select class="form-select" id="operation_type"
+                                                            name="operation_type" required>
                                                             <option value="" selected disabled>Choose...</option>
                                                             @foreach($operation_types as $type)
-                                                                <option value="{{ $type->operation_type_id }}">{{ $type->name }}</option>
+                                                            <option value="{{ $type->operation_type_id }}">{{
+                                                                $type->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -2269,10 +2445,12 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="operation_category">Operation Category</label>
-                                                        <select class="form-select" id="operation_category" name="operation_category" required>
+                                                        <select class="form-select" id="operation_category"
+                                                            name="operation_category" required>
                                                             <option value="" selected disabled>Choose...</option>
                                                             @foreach($operation_categories as $category)
-                                                                <option value="{{ $category->operation_category_id }}">{{ $category->name }}</option>
+                                                            <option value="{{ $category->operation_category_id }}">{{
+                                                                $category->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -2280,59 +2458,81 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="operation_unit">Operation Unit</label>
-                                                        <input type="text" class="form-control" id="operation_unit" name="operation_unit" placeholder="Operation Unit" required>
+                                                        <input type="text" class="form-control" id="operation_unit"
+                                                            name="operation_unit" placeholder="Operation Unit" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="operation_unit_price">Operation Unit Price</label>
-                                                        <input type="number" class="form-control" id="operation_unit_price" name="operation_unit_price" placeholder="Operation Unit Price" required>
+                                                        <input type="number" class="form-control"
+                                                            id="operation_unit_price" name="operation_unit_price"
+                                                            placeholder="Operation Unit Price" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                        <input type="number" class="form-control" id="operation_unit_cost" name="operation_unit_cost" placeholder="Operation Unit Cost" required>
+                                                        <input type="number" class="form-control"
+                                                            id="operation_unit_cost" name="operation_unit_cost"
+                                                            placeholder="Operation Unit Cost" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="operation_unit_time">Operation Unit Time</label>
-                                                        <input type="text" class="form-control" id="operation_unit_time" name="operation_unit_time" placeholder="Operation Unit Time" required>
+                                                        <input type="text" class="form-control" id="operation_unit_time"
+                                                            name="operation_unit_time" placeholder="Operation Unit Time"
+                                                            required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
-                                                        <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
+                                                        <label for="expected_waste_per_operation">Expected Waste Per
+                                                            Operation</label>
+                                                        <input type="number" class="form-control"
+                                                            id="expected_waste_per_operation"
+                                                            name="expected_waste_per_operation"
+                                                            placeholder="Expected Waste Per Operation" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
-                                                        <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
+                                                        <label for="expected_water_usage_per_operation">Expected Water
+                                                            Usage Per Operation</label>
+                                                        <input type="number" class="form-control"
+                                                            id="expected_water_usage_per_operation"
+                                                            name="expected_water_usage_per_operation"
+                                                            placeholder="Expected Water Usage Per Operation" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="expected_unit_produced_for_goods">Expected Unit Produced For Goods</label>
-                                                        <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_unit_produced_for_goods" placeholder="Expected Unit Produced For Goods" required>
+                                                        <label for="expected_unit_produced_for_goods">Expected Unit
+                                                            Produced For Goods</label>
+                                                        <input type="number" class="form-control"
+                                                            id="expected_unit_produced_for_goods"
+                                                            name="expected_unit_produced_for_goods"
+                                                            placeholder="Expected Unit Produced For Goods" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="start_date">Start Date</label>
-                                                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                                        <input type="date" class="form-control" id="start_date"
+                                                            name="start_date" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="end_date">End Date</label>
-                                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                                        <input type="date" class="form-control" id="end_date"
+                                                            name="end_date" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-3">
-                                                    <button type="submit" class="btn btn-primary">Save Operation</button>
+                                                    <button type="submit" class="btn btn-primary">Save
+                                                        Operation</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -2340,19 +2540,19 @@
                                             <table class="table table-striped mb-0" id="tbl-operations-log">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>Operation Name</th>
-                                                        <th>Description</th>
-                                                        <th>Operation Code</th>
-                                                        <th>Operation Type</th>
-                                                        <th>Operation Category</th>
-                                                        <th>Operation Unit</th>
-                                                        <th>Expected Waste Per Operation</th>
-                                                        <th>Expected Water Usage Per Operation</th>
-                                                        <th>Expected Unit Produced For Goods</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                        <th>Status</th>
-                                                        <th class="text-end">Action</th>
+                                                        <th style="width: 15%;">Operation Name</th>
+                                                        <th style="width: 20%;">Description</th>
+                                                        <th style="width: 10%;">Operation Code</th>
+                                                        <th style="width: 10%;">Operation Type</th>
+                                                        <th style="width: 10%;">Operation Category</th>
+                                                        <th style="width: 10%;">Operation Unit</th>
+                                                        <th style="width: 10%;">Expected Waste Per Operation</th>
+                                                        <th style="width: 10%;">Expected Water Usage Per Operation</th>
+                                                        <th style="width: 10%;">Expected Unit Produced For Goods</th>
+                                                        <th style="width: 10%;">Start Date</th>
+                                                        <th style="width: 10%;">End Date</th>
+                                                        <th style="width: 10%;">Status</th>
+                                                        <th class="text-end" style="width: 5%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -2370,17 +2570,22 @@
                                                         <td>{{ $log->start_date }}</td>
                                                         <td>{{ $log->end_date }}</td>
                                                         <td>
-                                                            <span class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+                                                            <span
+                                                                class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
                                                                 {{ ucfirst($log->status) }}
                                                             </span>
                                                         </td>
                                                         <td class="text-end">
                                                             <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                    data-bs-toggle="dropdown" href="#" role="button"
+                                                                    aria-haspopup="false" aria-expanded="false">
                                                                     <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                 </a>
-                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                                    <a class="dropdown-item" href="#">Update</a>
+                                                                <div class="dropdown-menu dropdown-menu-end"
+                                                                    aria-labelledby="dLabel11">
+                                                                    <a class="dropdown-item" href="#"
+                                                                        onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
                                                                     <a class="dropdown-item" href="#">Delete</a>
                                                                 </div>
                                                             </div>
@@ -2395,31 +2600,66 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false" aria-controls="wasteDisposalTrackingCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
+                                        aria-controls="wasteDisposalTrackingCollapse">
                                         Waste Disposal Tracking
                                     </button>
                                 </h2>
-                                <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="wasteDisposalTrackingHeading"
+                                    data-bs-parent="#operationsAccordion">
                                     <div class="accordion-body bg-white">
                                         <!-- Waste Disposal Tracking Form -->
                                         <form action="" method="post">
                                             @csrf
                                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="mb-3">
-                                                <label for="waste_type" class="form-label">Waste Type</label>
-                                                <input type="text" class="form-control" id="waste_type" name="waste_type" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="quantity" class="form-label">Quantity</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="disposal_method" class="form-label">Disposal Method</label>
-                                                <input type="text" class="form-control" id="disposal_method" name="disposal_method" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="disposal_date" class="form-label">Disposal Date</label>
-                                                <input type="date" class="form-control" id="disposal_date" name="disposal_date" required>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="waste_type" class="form-label">Waste Type</label>
+                                                        <input type="text" class="form-control" id="waste_type"
+                                                            name="waste_type" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="operation_status"
+                                                            class="form-label">Operation</label>
+                                                        <select class="form-select" id="operation_status"
+                                                            name="operation_status" required>
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            @foreach($approved_operations as $operation)
+                                                            <option value="{{ $operation->operation_id }}">{{
+                                                                $operation->operation_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="quantity_disposed" class="form-label">Quantity
+                                                            Disposed</label>
+                                                        <input type="number" class="form-control" id="quantity_disposed"
+                                                            name="quantity_disposed" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="disposal_method" class="form-label">Disposal
+                                                            Method</label>
+                                                        <input type="text" class="form-control" id="disposal_method"
+                                                            name="disposal_method" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="disposal_date" class="form-label">Disposal
+                                                            Date</label>
+                                                        <input type="date" class="form-control" id="disposal_date"
+                                                            name="disposal_date" required>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
@@ -2428,11 +2668,14 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="productionTrackingHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productionTrackingCollapse" aria-expanded="false" aria-controls="productionTrackingCollapse">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#productionTrackingCollapse" aria-expanded="false"
+                                        aria-controls="productionTrackingCollapse">
                                         Production Tracking
                                     </button>
                                 </h2>
-                                <div id="productionTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div id="productionTrackingCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
                                     <div class="accordion-body bg-white">
                                         <!-- Production Tracking Form -->
                                         <form action="" method="post">
@@ -2440,15 +2683,19 @@
                                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                             <div class="mb-3">
                                                 <label for="product_name" class="form-label">Product Name</label>
-                                                <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                                <input type="text" class="form-control" id="product_name"
+                                                    name="product_name" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="quantity_produced" class="form-label">Quantity Produced</label>
-                                                <input type="number" class="form-control" id="quantity_produced" name="quantity_produced" required>
+                                                <label for="quantity_produced" class="form-label">Quantity
+                                                    Produced</label>
+                                                <input type="number" class="form-control" id="quantity_produced"
+                                                    name="quantity_produced" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="production_date" class="form-label">Production Date</label>
-                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
+                                                <input type="date" class="form-control" id="production_date"
+                                                    name="production_date" required>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
@@ -2456,238 +2703,252 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <!-- Operations Management -->
                     <!-- General Settings -->
                     <div class="tab-pane p-3" id="settings" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company's Personal Information</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body pt-0">
-                                <x-validation-errors class="alert" alert />
-                                @include('shared.feedback')
-                                <form id="general-settings" action="{{route('update-company-details')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" placeholder="Company name" name="company_name" value="{{ $company->company_name }}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="industry">Industry</label>
-                                                <select name="industry" id="industry" class="form-select">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="industry-process">Industrial Process Used</label>
-                                                <select id="industry-process" name="industry_process_used" class="form-select">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control" placeholder="Example: company@domain.com" name="email" value="{{ $company->email }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="website_address">Website Address</label>
-                                                <input type="url" class="form-control" name="website_address" value="{{ $company->website_url }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="mobile_code_primary">Primary Phone Number</label>
-                                                <div class="">
-                                                    <input id="mobile_code_primary" type="tel" class="form-control">
-                                                    <input type="hidden" name="primary_phone_number">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="mobile_code_secondary">Secondary Phone Number</label>
-                                                <div class="">
-                                                    <input id="mobile_code_secondary" type="tel" class="form-control">
-                                                    <input type="hidden" name="secondary_phone_number">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="number_of_employees">Number Of Employees</label>
-                                                <input type="number" class="form-control" name="number_of_employees" value="{{$company->number_of_employees}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <label for="date_of_establishment">Date of Establishment</label>
-                                            <input class="form-control" type="date" name="date_of_establishment" value="{{$company->date_of_establishment}}">
-                                        </div>
-                                        <div class="row justify-content-end">
-                                            <div class="col-md-3 py-3">
-                                                <div class="d-flex g-1">
-                                                    <button type="button" class="btn btn-primary" id="btn-general-settings">Save</button>
-                                                    <span class="loader" id="loader"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                <h4 class="card-title">Company's Location</h4>
-                            </div>
-                            <div class="card-body pt-0">
-                                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row">
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="countryId">Country</label>
-                                                <select name="country" class="form-select countries" id="countryId">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="stateId">State</label>
-                                                <select class="form-select states" id="stateId" name="state" onchange="toggleLGA(this);">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="cityId">City</label>
-                                                <select id="lga" class="form-select select-lga cities" id="cityId" name="city">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-2">
-                                            <div class="form-group">
-                                                <label for="address">Address</label>
-                                                <input type="text" class="form-control" name="address" value="{{$company->address}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-2">
-                                            <label>Geographic Information System(GIS) Location</label>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="zip_code">ZIP code</label>
-                                                <input type="text" class="form-control" name="zip_code" value="{{$company->zip_code}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="longitude">Longitude</label>
-                                                <input type="text" class="form-control" name="longitude" value="{{$company->longitude}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="latitude">Latitude</label>
-                                                <input type="text" class="form-control" name="latitude" value="{{$company->latitude}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="mgrs">Military Grid Reference System (MGRS) coordinate</label>
-                                                <input type="text" class="form-control" name="mgrs" value="{{$company->mgrs}}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row justify-content-end">
-                                        <div class="col-md-3 py-3">
-                                            <button type="button" class="btn btn-primary" id="btn-location-settings">Save</button>
-                                            <span class="loader" id="loader"></span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                <h4 class="card-title">Other Settings</h4>
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse" name="is_sharable" value="active">
-                                    <label class="form-check-label" for="flexSwitchCheckReverse">Do you wish for your information to be shared with other companies?</label>
-                                </div>
-                                <div class="form-check form-switch mb-2">
-                                    <label>
-                                        <input type="checkbox" class="form-check-input toggle-status" id="settings-switch1" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
-                                        Activate or Deactivate Company
-                                    </label>
-                                </div>
-                                <div id="feedback-message" style="margin-top: 10px; color: green; font-weight: bold;"></div>
-                                <div class="mt-2">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-danger">Delete Company</button>
-                                    </div>
-                                </div>
-                            </div>
+     <!-- Company Information Section -->
+     <div class="card fancy-card mb-4">
+            <div class="card-header">
+                <h4>Company's Personal Information</h4>
+            </div>
+            <div class="card-body">
+                <form id="general-settings" action="{{route('update-company-details')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                    <div class="mb-3">
+                        <label for="company_name" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" value="{{ $company->company_name }}" placeholder="Company name">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="industry" class="form-label">Industry</label>
+                            <select name="industry" id="industry" class="form-select">
+                                <option value="" selected disabled>Choose...</option>
+                            </select>
                         </div>
 
-
-                    <!--Start Rightbar-->
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
-                        <div class="offcanvas-header border-bottom justify-content-between">
-                            <h5 class="m-0 font-14" id="AppearanceLabel">Appearance</h5>
-                            <button type="button" class="btn-close text-reset p-0 m-0 align-self-center" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <div class="col-md-6 mb-3">
+                            <label for="industry_process_used" class="form-label">Industrial Process Used</label>
+                            <select id="industry_process_used" name="industry_process_used" class="form-select">
+                                <option value="" selected disabled>Choose...</option>
+                            </select>
                         </div>
-                        <div class="offcanvas-body">
-                            <h6>Account Settings</h6>
-                            <div class="p-2 text-start mt-3">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch1">
-                                    <label class="form-check-label" for="settings-switch1">Auto updates</label>
-                                </div>
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch2" checked>
-                                    <label class="form-check-label" for="settings-switch2">Location Permission</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch3">
-                                    <label class="form-check-label" for="settings-switch3">Show offline Contacts</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ $company->email }}" placeholder="Example: company@domain.com">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="website_address" class="form-label">Website Address</label>
+                            <input type="url" class="form-control" id="website_address" name="website_address" value="{{ $company->website_url }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mt-2">
+                            <div class="form-group">
+                                <label for="mobile_code_primary">Primary Phone Number</label>
+                                <div class="">
+                                    <input id="mobile_code_primary" type="tel" class="form-control">
+                                    <input type="hidden" name="primary_phone_number">
                                 </div>
                             </div>
-                            <h6>General Settings</h6>
-                            <div class="p-2 text-start mt-3">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch4">
-                                    <label class="form-check-label" for="settings-switch4">Show me Online</label>
-                                </div>
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch5" checked>
-                                    <label class="form-check-label" for="settings-switch5">Status visible to all</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="settings-switch6">
-                                    <label class="form-check-label" for="settings-switch6">Notifications Popup</label>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <div class="form-group">
+                                <label for="mobile_code_secondary">Secondary Phone Number</label>
+                                <div class="">
+                                    <input id="mobile_code_secondary" type="tel" class="form-control">
+                                    <input type="hidden" name="secondary_phone_number">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--end Rightbar-->
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="number_of_employees" class="form-label">Number Of Employees</label>
+                            <input type="number" class="form-control" id="number_of_employees" name="number_of_employees" value="{{ $company->number_of_employees }}">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="date_of_establishment" class="form-label">Date of Establishment</label>
+                            <input type="date" class="form-control" id="date_of_establishment" name="date_of_establishment" value="{{ $company->date_of_establishment }}">
+                        </div>
                     </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Company Location Section -->
+        <div class="card fancy-card mb-4">
+            <div class="card-header">
+                <h4>Company's Location</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="countryId" class="form-label">Country</label>
+                            <select name="country" class="form-select" id="countryId">
+                                <option value="" selected disabled>Choose...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="stateId" class="form-label">State</label>
+                            <select class="form-select" id="stateId" name="state">
+                                <option value="" selected disabled>Choose...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="cityId" class="form-label">City</label>
+                            <select id="cityId" class="form-select" name="city">
+                                <option value="" selected disabled>Choose...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" value="{{ $company->address }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="zip_code" class="form-label">ZIP Code</label>
+                            <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ $company->zip_code }}">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="longitude" class="form-label">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $company->longitude }}">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="latitude" class="form-label">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $company->latitude }}">
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Save Location</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Calendar Year Section -->
+        <div class="card fancy-card mb-4">
+            <div class="card-header">
+                <h4>Calendar Year Setup</h4>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" id="calendar_year_form">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="end_date" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Save Calendar Year</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Other Settings Section -->
+        <div class="card fancy-card mb-4">
+            <div class="card-header">
+                <h4>Other Settings</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="share_info" name="is_sharable" value="active">
+                    <label class="form-check-label" for="share_info">Share information with other companies?</label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="activate_company" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="activate_company">Activate or Deactivate Company</label>
+                </div>
+
+                <!-- Add this button wherever you want the Appearance settings to be triggered -->
+                <div class="text-end mb-4">
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#Appearance" aria-controls="Appearance">
+                        Appearance Settings
+                    </button>
+                </div>
+
+                <div class="text-end">
+                    <button type="button" class="btn btn-danger">Delete Company</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appearance Settings Section -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="AppearanceLabel">Appearance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h6>Account Settings</h6>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="auto_updates">
+                    <label class="form-check-label" for="auto_updates">Auto Updates</label>
+                </div>
+
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="location_permission" checked>
+                    <label class="form-check-label" for="location_permission">Location Permission</label>
+                </div>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="show_offline_contacts">
+                    <label class="form-check-label" for="show_offline_contacts">Show Offline Contacts</label>
+                </div>
+
+                <h6 class="mt-3">General Settings</h6>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="show_online">
+                    <label class="form-check-label" for="show_online">Show Me Online</label>
+                </div>
+
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="status_visible" checked>
+                    <label class="form-check-label" for="status_visible">Status Visible to All</label>
+                </div>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="notifications_popup">
+                    <label class="form-check-label" for="notifications_popup">Notifications Popup</label>
+                </div>
+            </div>
+        </div>                    </div>
                     <!-- General Settings -->
                     <!-- contact personel details  -->
                     <!-- Contact Details -->
@@ -2698,48 +2959,59 @@
                             </div>
                             <div class="card-body">
                                 <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
-                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control"
-                                            placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                            name="enviromental_operations_manager" value="{{ $company->operations_manager }}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control" placeholder="Full Name Of Contact Person"
-                                            name="contact_person_name" value="{{$company->contact_person_full_name}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control" placeholder="Office Position of Contact Person"
-                                            name="contact_person_position" value="{{$company->contact_person_position}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <div class="form-group">
-                                            <label for="">Contact Personnel Phone Number</label>
-                                            <div class="">
-                                            <input id="mobile_code_contact" type="tel" class="form-control" placeholder="">
-                                            <input type="hidden" name="contact_person_phone_number">
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control"
+                                                placeholder="Full Name Of Enviromental Operations Specialist or Manager"
+                                                name="enviromental_operations_manager"
+                                                value="{{ $company->operations_manager }}">
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <input type="text" class="form-control"
+                                                placeholder="Full Name Of Contact Person" name="contact_person_name"
+                                                value="{{$company->contact_person_full_name}}">
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <input type="text" class="form-control"
+                                                placeholder="Office Position of Contact Person"
+                                                name="contact_person_position"
+                                                value="{{$company->contact_person_position}}">
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-group">
+                                                <label for="">Contact Personnel Phone Number</label>
+                                                <div class="">
+                                                    <input id="mobile_code_contact" type="tel" class="form-control"
+                                                        placeholder="">
+                                                    <input type="hidden" name="contact_person_phone_number">
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12 mt-2">
+                                            <button type="button" class="btn btn-primary" id="btn_contact_settings">Save
+                                                Contact</button>
+                                            <span class="loader" id="loader"></span>
+                                        </div>
                                     </div>
-                                    <div class="col-md-12 mt-2">
-                                    <button type="button" class="btn btn-primary" id="btn_contact_settings">Save Contact</button>
-                                    <span class="loader" id="loader"></span>
-                                    </div>
-                                </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <!-- end contact personel details  -->
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"> Setup Price </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="material_price_id">
@@ -2757,7 +3029,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Price of Disposal in Naira(₦).</label>
-                                <input type="number" min="0" class="form-control" placeholder="Price" name="price">
+                                <input type="number" min="0" class="form-control" placeholder="Price"
+                                    name="price">
                             </div>
                         </div>
                         <!-- end Price -->
@@ -2772,8 +3045,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-material-price">Save changes</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-material-price">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -2782,13 +3057,14 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"> Check In Item </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkIn_material_id">
@@ -2799,7 +3075,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkIn_material_name">
+                                <input type="text" class="form-control" readonly
+                                    name="checkIn_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -2818,8 +3095,8 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
-                                        style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity"
+                                        value="0" style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -2837,8 +3114,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-in">Save changes</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-in">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -2847,12 +3126,14 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check Out Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkOut_material_id">
@@ -2863,7 +3144,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkOut_material_name">
+                                <input type="text" class="form-control" readonly
+                                    name="checkOut_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -2882,8 +3164,8 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
-                                        style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity"
+                                        value="0" style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -2901,8 +3183,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save changes</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -2911,12 +3195,14 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Make Adjustment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="adjustment_material_id">
@@ -2927,7 +3213,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkOut_material_name">
+                                <input type="text" class="form-control" readonly
+                                    name="checkOut_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -2965,8 +3252,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save changes</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -2974,12 +3263,14 @@
     </div>
     <!-- end modal -->
     <!-- checkout chemical modal -->
-    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check In Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="text" name="checkIn_chemical_id">
@@ -2991,7 +3282,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly name="checkIn_chemical_name">
+                                <input type="text" class="form-control" readonly
+                                    name="checkIn_chemical_name">
                             </div>
                         </div>
                         <!-- Chemical name -->
@@ -3008,9 +3300,12 @@
                             <div class="form-group">
                                 <label for="">Quantity/Volume</label>
                                 <div class="input-group qty-icons">
-                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0">
-                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity"
+                                        value="0">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
                             </div>
                         </div>
@@ -3026,9 +3321,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" id="loader"></span>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"
+                            id="loader"></span>
                         Save changes
                     </button>
                 </div>
@@ -3036,13 +3333,15 @@
         </div>
     </div>
     <!-- end modal -->
-     <!-- checkout modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutChemicalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- checkout modal -->
+    <div class="modal fade" tabindex="-1" id="checkOutChemicalModal" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check Out Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkOut_chemical_id">
@@ -3053,7 +3352,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly name="checkOut_chemical_name">
+                                <input type="text" class="form-control" readonly
+                                    name="checkOut_chemical_name">
                             </div>
                         </div>
                         <!-- Chemical name -->
@@ -3070,9 +3370,12 @@
                             <div class="form-group">
                                 <label for="">Quantity/Volume</label>
                                 <div class="input-group qty-icons">
-                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0" style="pointer-events: none;">
-                                    <button class="btn btn-primary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                    <input type="number" class="form-control" min="0" name="quantity"
+                                        value="0" style="pointer-events: none;">
+                                    <button class="btn btn-primary"
+                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
                             </div>
                         </div>
@@ -3088,16 +3391,179 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out-chemical">Save changes</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"
+                        id="btn-submit-check-out-chemical">Save changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- update operation log modal -->
+    <div class="modal fade" tabindex="-1" id="updateOperationModal" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Operation Log</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="operation_id">
+                    <input type="hidden" name="company_id">
+                    <div class="row g-2">
+                        <!-- Operation Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Operation Name</label>
+                                <input type="text" class="form-control" name="operation_name">
+                            </div>
+                        </div>
+                        <!-- end Operation Name -->
+                        <!-- Operation Code -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Operation Code</label>
+                                <input type="text" class="form-control" name="operation_code">
+                            </div>
+                        </div>
+                        <!-- end Operation Code -->
+                        <!-- Description -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea class="form-control" name="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <!-- end Description -->
+
+                        <!-- Operation Type -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Operation Type</label>
+                                <input type="text" class="form-control" name="operation_type">
+                            </div>
+                        </div>
+                        <!-- end Operation Type -->
+                        <!-- Operation Category -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Operation Category</label>
+                                <input type="text" class="form-control" name="operation_category">
+                            </div>
+                        </div>
+                        <!-- end Operation Category -->
+                        <!-- Operation Unit -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Operation Unit</label>
+                                <input type="text" class="form-control" name="operation_unit">
+                            </div>
+                        </div>
+                        <!-- end Operation Unit -->
+                        <!-- Operation Unit Price -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Operation Unit Price</label>
+                                <input type="number" step="0.01" class="form-control"
+                                    name="operation_unit_price">
+                            </div>
+                        </div>
+                        <!-- end Operation Unit Price -->
+                        <!-- Operation Unit Cost -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Operation Unit Cost</label>
+                                <input type="number" step="0.01" class="form-control"
+                                    name="operation_unit_cost">
+                            </div>
+                        </div>
+                        <!-- end Operation Unit Cost -->
+                        <!-- Operation Unit Time -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Operation Unit Time</label>
+                                <input type="text" class="form-control" name="operation_unit_time">
+                            </div>
+                        </div>
+                        <!-- end Operation Unit Time -->
+                        <!-- Expected Waste Per Operation -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Expected Waste Per Operation</label>
+                                <input type="number" step="0.01" class="form-control"
+                                    name="expected_waste_per_operation">
+                            </div>
+                        </div>
+                        <!-- end Expected Waste Per Operation -->
+                        <!-- Expected Water Usage Per Operation -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Expected Water Usage Per Operation</label>
+                                <input type="number" step="0.01" class="form-control"
+                                    name="expected_water_usage_per_operation">
+                            </div>
+                        </div>
+                        <!-- end Expected Water Usage Per Operation -->
+                        <!-- Expected Unit Produced For Goods -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Expected Unit Produced For Goods</label>
+                                <input type="number" step="0.01" class="form-control"
+                                    name="expected_unit_produced_for_goods">
+                            </div>
+                        </div>
+                        <!-- end Expected Unit Produced For Goods -->
+                        <!-- Status -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- end Status -->
+                        <!-- Start Date -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" class="form-control" id="start_date"
+                                    name="start_date" required>
+                            </div>
+                        </div>
+                        <!-- End Start Date -->
+                        <!-- End Date -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="end_date">End Date</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date"
+                                    required>
+                            </div>
+                        </div>
+                        <!-- End End Date -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"
+                        id="btn-submit-update-operation-log">Save changes</button>
+                    <span class="loader" id="loader"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end update operation log modal -->
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
         /* Loader style */
         .loader {
@@ -3116,6 +3582,38 @@
             color: white;
             padding: 20px;
             border-radius: 8px;
+        }
+
+        .fancy-card {
+            /* border: 1px solid #dee2e6; */
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .fancy-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .fancy-card .card-header {
+            /* background-color: #f8f9fa; */
+            /* font-weight: 600; */
+            /* border-bottom: 1px solid #dee2e6; */
+        }
+
+        .offcanvas {
+            border-top-left-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            border-radius: 0.5rem;
+        }
+
+        .btn-danger {
+            border-radius: 0.5rem;
         }
 
         @keyframes spin {
@@ -3697,15 +4195,15 @@
                     result.key_areas.forEach(element => {
                         console.log(element.area_title);
                         container.innerHTML += `
-                        <div class="row g-2 my-1">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.area_title}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", ${element.improvementAreaID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, ${element.improvementAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                        </div>
-                    `
+        <div class="row g-2 my-1">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.area_title}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", ${element.improvementAreaID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, ${element.improvementAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+        </div>
+    `
                     });
                 }
             });
@@ -3795,15 +4293,15 @@
                     result.product_innovation.forEach(element => {
                         console.log(element.product_innovation);
                         container.innerHTML += `
-                        <div class="row g-2 my-1">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                        </div>
-                    `
+        <div class="row g-2 my-1">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+        </div>
+    `
                     });
                 }
             });
@@ -3894,15 +4392,15 @@
                     result.hazarduous_materials.forEach(element => {
                         console.log(element);
                         container.innerHTML += `
-                        <div class="row g-2 my-1">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                        </div>
-                    `
+        <div class="row g-2 my-1">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+        </div>
+    `
                     });
                 }
             });
@@ -3990,15 +4488,15 @@
                     result.unit_processes.forEach(element => {
                         console.log(element);
                         container.innerHTML += `
-                        <div class="row g-2 my-1">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                        </div>
-                    `
+        <div class="row g-2 my-1">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+        </div>
+    `
                     });
                 }
             });
@@ -4102,22 +4600,22 @@
                     result.problems_solutions.forEach(element => {
                         console.log(element);
                         container.innerHTML += `
-                        <div class="row g-2 my-1 align-items-end">
-                            <div class="col-md-5">
-                                <label for="">Problem Summary</label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <label for="">Suggested Solution</label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                                </div>
-                            </div>
-                            <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                        </div>
-                    `
+        <div class="row g-2 my-1 align-items-end">
+            <div class="col-md-5">
+                <label for="">Problem Summary</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label for="">Suggested Solution</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                </div>
+            </div>
+            <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+        </div>
+    `
                     });
                 }
             });
@@ -4265,29 +4763,29 @@
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-                            <td>${material.material}</td>
-                            <td>${material.serial_number ?? ''}</td>
-                            <td>${material.unit_of_measure ?? ''}</td>
-                            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
-                            </td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="${url}">Open Material</a>
-                                        <a class="dropdown-item" href="#">Update Material</a>
-                                        <a class="dropdown-item" href="#">Delete Material</a>
-                                        <hr class="dropdown-divider">
-                                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
-                                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`
+            <td>${material.material}</td>
+            <td>${material.serial_number ?? ''}</td>
+            <td>${material.unit_of_measure ?? ''}</td>
+            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
+            </td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="${url}">Open Material</a>
+                        <a class="dropdown-item" href="#">Update Material</a>
+                        <a class="dropdown-item" href="#">Delete Material</a>
+                        <hr class="dropdown-divider">
+                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
+                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
+                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
+                    </div>
+                </div>
+            </td>
+        </tr>`
                     });
                 }
             });
@@ -4978,7 +5476,8 @@
     </script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script>
         // -----Country Code Selection
@@ -5216,7 +5715,7 @@
 
     </script>
     <!-- end activate and deactivate -->
-     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
     <!-- water usage -->
     <script>
         const water_usage_date = document.querySelector('#water-usage-form #date');
@@ -5226,16 +5725,16 @@
                 switch (ele.value) {
                     case "daily":
                         water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
-                                            <input type="date" min="0" class="form-control" name="date">`);
+                            <input type="date" min="0" class="form-control" name="date">`);
                         break;
                     case "weekly":
                         water_usage_date.innerHTML = (`<label for="example-month-input" class="col col-form-label">Date</label>
-                        <input class="form-control" type="week" value="2011-W33" id="example-week-input" name="date">`);
+        <input class="form-control" type="week" value="2011-W33" id="example-week-input" name="date">`);
                         break;
                     case "monthly":
                         water_usage_date.innerHTML = `<label for="example-month-input" class="col col-form-label">Date</label>
-                                            <input class="form-control" type="month" value="2011-08"
-                                                id="example-month-input" name="date">`;
+                            <input class="form-control" type="month" value="2011-08"
+                                id="example-month-input" name="date">`;
                         break;
                     case "yearly":
                         const yearlyLabel = `<label for="yearly-select" class="col col-form-label">Year</label>`;
@@ -5260,7 +5759,7 @@
                         break;
                     default:
                         water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
-                        <input type="date" min="0" class="form-control" name="date">`);
+        <input type="date" min="0" class="form-control" name="date">`);
                         break;
                 }
             }
@@ -5343,121 +5842,121 @@
                     }
 
                     water_usage_tbody.innerHTML += `
-                    <tr>
-                        <td>${data.volume ?? ""}</td>
-                        <td>${usage_date ?? ""}</td>
-                        <td>${data.remark ?? ""}</td>
-                        <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                    data-bs-toggle="dropdown" href="#" role="button"
-                                    aria-haspopup="false" aria-expanded="false">
-                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="dLabel11">
-                                    <a class="dropdown-item" href="#">Update Material</a>
-                                    <a class="dropdown-item" href="#">Delete Material</a>
-                                    <hr class="dropdown-divider">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    `;
+    <tr>
+        <td>${data.volume ?? ""}</td>
+        <td>${usage_date ?? ""}</td>
+        <td>${data.remark ?? ""}</td>
+        <td class="text-end">
+            <div class="dropdown d-inline-block">
+                <a class="dropdown-toggle arrow-none" id="dLabel11"
+                    data-bs-toggle="dropdown" href="#" role="button"
+                    aria-haspopup="false" aria-expanded="false">
+                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="dLabel11">
+                    <a class="dropdown-item" href="#">Update Material</a>
+                    <a class="dropdown-item" href="#">Delete Material</a>
+                    <hr class="dropdown-divider">
+                </div>
+            </div>
+        </td>
+    </tr>
+    `;
                 });
             });
         });
     </script>
-         <script>
-          // company water sources
-            
-  // AJAX implementation to store water sources details
-  document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
-      const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
-      const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
-      const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
-      const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
+    <script>
+        // company water sources
 
-      if (!water_source) {
-          Toastify({
-              text: "Please select a water source.",
-              duration: 3000,
-              close: true,
-              gravity: "top",
-              position: "right",
-              stopOnFocus: true,
-              style: {
-                  background: "linear-gradient(to right, #ff0000, #ff1745)",
-              },
-          }).showToast();
-          return;
-      }
+        // AJAX implementation to store water sources details
+        document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
+            const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
+            const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
+            const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
+            const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
 
-      if (!location) {
-          Toastify({
-              text: "Please provide a location.",
-              duration: 3000,
-              close: true,
-              gravity: "top",
-              position: "right",
-              stopOnFocus: true,
-              style: {
-                  background: "linear-gradient(to right, #ff0000, #ff1745)",
-              },
-          }).showToast();
-          return;
-      }
+            if (!water_source) {
+                Toastify({
+                    text: "Please select a water source.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-      let url = "{{ route('admin.store-water-source-details') }}";
-      const formData = new FormData();
-    formData.append('company_id', company_id);
-    formData.append('water_source_id', water_source);
-    formData.append('location', location);
-    formData.append('capacity', capacity);
+            if (!location) {
+                Toastify({
+                    text: "Please provide a location.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-      fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
-          console.log(result);
-        if (result.status === "success") {
-            const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
-            waterSourceSelect.innerHTML = ""; // Clear existing options
+            let url = "{{ route('admin.store-water-source-details') }}";
+            const formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('water_source_id', water_source);
+            formData.append('location', location);
+            formData.append('capacity', capacity);
 
-            result.water_sources.forEach(source => {
-                const option = document.createElement("option");
-                option.value = source.WaterSourcesId;
-                option.textContent = source.sources;
-                if (result.company_water_sources.includes(source.WaterSourcesId)) {
-                    option.selected = true; // Mark as selected if already associated with the company
+            fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === "success") {
+                    const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
+                    waterSourceSelect.innerHTML = ""; // Clear existing options
+
+                    result.water_sources.forEach(source => {
+                        const option = document.createElement("option");
+                        option.value = source.WaterSourcesId;
+                        option.textContent = source.sources;
+                        if (result.company_water_sources.includes(source.WaterSourcesId)) {
+                            option.selected = true; // Mark as selected if already associated with the company
+                        }
+                        waterSourceSelect.appendChild(option);
+                    });
+
+                    Toastify({
+                        text: result.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: result.message || "An error occurred.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
                 }
-                waterSourceSelect.appendChild(option);
             });
+        });
 
-            Toastify({
-                text: result.message,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                },
-            }).showToast();
-        } else {
-            Toastify({
-                text: result.message || "An error occurred.",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                },
-            }).showToast();
-        }
-      });
-    });
-          
 
         // end company water sources
         document.querySelector('#waterSourceForm select[name="water_source"]').addEventListener('click', function () {
@@ -5504,10 +6003,10 @@
                 console.error('Error fetching water sources:', error);
             }
         });
-     </script>
+    </script>
 
-     <!-- water usage logs -->
-        <script>
+    <!-- water usage logs -->
+    <script>
         // AJAX implementation to store water usage logs
         document.querySelector('#btn-submit-water-usage-logs').addEventListener('click', function () {
             const company_id = document.querySelector('#waterUsageLogsForm input[name="company_id"]').value.trim();
@@ -5628,20 +6127,88 @@
                 }
             });
         });
-        </script>
+    </script>
 
-        <!-- water recycling logs -->
-        <script>
-            document.querySelector('#btn-submit-water-recycling-logs').addEventListener('click', function () {
-                const company_id = document.querySelector('#waterRecyclingLogsForm input[name="company_id"]').value.trim();
-                const quantity_recycled = document.querySelector('#waterRecyclingLogsForm input[name="quantity_recycled"]').value.trim();
-                const unit_of_water_recycled = document.querySelector('#waterRecyclingLogsForm select[name="unit_of_water_recycled"]').value.trim();
-                const recycling_date = document.querySelector('#waterRecyclingLogsForm input[name="recycling_date"]').value.trim();
-                const method = document.querySelector('#waterRecyclingLogsForm input[name="method"]').value.trim();
+    <!-- water recycling logs -->
+    <script>
+        document.querySelector('#btn-submit-water-recycling-logs').addEventListener('click', function () {
+            const company_id = document.querySelector('#waterRecyclingLogsForm input[name="company_id"]').value.trim();
+            const quantity_recycled = document.querySelector('#waterRecyclingLogsForm input[name="quantity_recycled"]').value.trim();
+            const unit_of_water_recycled = document.querySelector('#waterRecyclingLogsForm select[name="unit_of_water_recycled"]').value.trim();
+            const recycling_date = document.querySelector('#waterRecyclingLogsForm input[name="recycling_date"]').value.trim();
+            const method = document.querySelector('#waterRecyclingLogsForm input[name="method"]').value.trim();
 
-                if (!quantity_recycled) {
+            if (!quantity_recycled) {
+                Toastify({
+                    text: "Please provide the quantity of water recycled.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!unit_of_water_recycled) {
+                Toastify({
+                    text: "Please select a unit of measurement.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            if (!recycling_date) {
+                Toastify({
+                    text: "Please provide a recycling date.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+
+            let url = "{{ route('admin.store-water-recycling-logs') }}";
+            const formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('quantity_recycled', quantity_recycled);
+            formData.append('unit_of_water_recycled', unit_of_water_recycled);
+            formData.append('recycling_date', recycling_date);
+            formData.append('method', method);
+
+            fetch_cycle('--Save Water Recycling Logs', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === "success" && !document.querySelector('.toastify-success')) {
                     Toastify({
-                        text: "Please provide the quantity of water recycled.",
+                        text: result.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                        className: "toastify-success"
+                    }).showToast();
+                } else if (!document.querySelector('.toastify-error')) {
+                    Toastify({
+                        text: result.message || "An error occurred.",
                         duration: 3000,
                         close: true,
                         gravity: "top",
@@ -5650,213 +6217,145 @@
                         style: {
                             background: "linear-gradient(to right, #ff0000, #ff1745)",
                         },
+                        className: "toastify-error"
                     }).showToast();
-                    return;
                 }
-
-                if (!unit_of_water_recycled) {
-                    Toastify({
-                        text: "Please select a unit of measurement.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                    }).showToast();
-                    return;
-                }
-
-                if (!recycling_date) {
-                    Toastify({
-                        text: "Please provide a recycling date.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                    }).showToast();
-                    return;
-                }
-
-                let url = "{{ route('admin.store-water-recycling-logs') }}";
-                const formData = new FormData();
-                formData.append('company_id', company_id);
-                formData.append('quantity_recycled', quantity_recycled);
-                formData.append('unit_of_water_recycled', unit_of_water_recycled);
-                formData.append('recycling_date', recycling_date);
-                formData.append('method', method);
-
-                fetch_cycle('--Save Water Recycling Logs', url, 'POST', formData).then(result => {
-                    console.log(result);
-                    if (result.status === "success" && !document.querySelector('.toastify-success')) {
-                        Toastify({
-                            text: result.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                            className: "toastify-success"
-                        }).showToast();
-                    } else if (!document.querySelector('.toastify-error')) {
-                        Toastify({
-                            text: result.message || "An error occurred.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                            className: "toastify-error"
-                        }).showToast();
-                    }
-                });
             });
-        </script>
-        <!-- end water recycling logs -->
-            <!-- start water quality logs -->
-             <script>
-                // AJAX implementation to store water quality logs
-                document.querySelector('#btn-submit-water-quality-logs').addEventListener('click', function () {
-                    const company_id = document.querySelector('#waterQualityLogForm input[name="company_id"]').value.trim();
-                    const test_date = document.querySelector('#waterQualityLogForm input[name="test_date"]').value.trim();
-                    const ph_level = document.querySelector('#waterQualityLogForm input[name="ph_level"]').value.trim();
-                    const turbidity_level = document.querySelector('#waterQualityLogForm input[name="turbidity_level"]').value.trim();
-                    const contaminants_detected = document.querySelector('#waterQualityLogForm textarea[name="contaminants_detected"]').value.trim();
-                    const test_results = document.querySelector('#waterQualityLogForm textarea[name="test_results"]').value.trim();
+        });
+    </script>
+    <!-- end water recycling logs -->
+    <!-- start water quality logs -->
+    <script>
+        // AJAX implementation to store water quality logs
+        document.querySelector('#btn-submit-water-quality-logs').addEventListener('click', function () {
+            const company_id = document.querySelector('#waterQualityLogForm input[name="company_id"]').value.trim();
+            const test_date = document.querySelector('#waterQualityLogForm input[name="test_date"]').value.trim();
+            const ph_level = document.querySelector('#waterQualityLogForm input[name="ph_level"]').value.trim();
+            const turbidity_level = document.querySelector('#waterQualityLogForm input[name="turbidity_level"]').value.trim();
+            const contaminants_detected = document.querySelector('#waterQualityLogForm textarea[name="contaminants_detected"]').value.trim();
+            const test_results = document.querySelector('#waterQualityLogForm textarea[name="test_results"]').value.trim();
 
-                    if (!test_date) {
-                        Toastify({
-                            text: "Please provide a test date.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                        return;
-                    }
+            if (!test_date) {
+                Toastify({
+                    text: "Please provide a test date.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-                    if (!ph_level) {
-                        Toastify({
-                            text: "Please provide the pH level.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                        return;
-                    }
+            if (!ph_level) {
+                Toastify({
+                    text: "Please provide the pH level.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-                    if (!turbidity_level) {
-                        Toastify({
-                            text: "Please provide the turbidity level.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                        return;
-                    }
+            if (!turbidity_level) {
+                Toastify({
+                    text: "Please provide the turbidity level.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-                    if (!contaminants_detected) {
-                        Toastify({
-                            text: "Please provide the contaminants detected.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                        return;
-                    }
+            if (!contaminants_detected) {
+                Toastify({
+                    text: "Please provide the contaminants detected.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-                    if (!test_results) {
-                        Toastify({
-                            text: "Please provide the test results.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                        return;
-                    }
+            if (!test_results) {
+                Toastify({
+                    text: "Please provide the test results.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
 
-                    let url = "{{ route('admin.store-water-quality-logs') }}";
-                    const formData = new FormData();
-                    formData.append('company_id', company_id);
-                    formData.append('test_date', test_date);
-                    formData.append('ph_level', ph_level);
-                    formData.append('turbidity_level', turbidity_level);
-                    formData.append('contaminants_detected', contaminants_detected);
-                    formData.append('test_results', test_results);
+            let url = "{{ route('admin.store-water-quality-logs') }}";
+            const formData = new FormData();
+            formData.append('company_id', company_id);
+            formData.append('test_date', test_date);
+            formData.append('ph_level', ph_level);
+            formData.append('turbidity_level', turbidity_level);
+            formData.append('contaminants_detected', contaminants_detected);
+            formData.append('test_results', test_results);
 
-                    fetch_cycle('--Save Water Quality Logs', url, 'POST', formData).then(result => {
-                        console.log(result);
-                        if (result.status === "success") {
-                            Toastify({
-                                text: result.message,
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                stopOnFocus: true,
-                                style: {
-                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                                },
-                            }).showToast();
-                        } else {
-                            Toastify({
-                                text: result.message || "An error occurred.",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                stopOnFocus: true,
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                },
-                            }).showToast();
-                        }
-                    });
-                });
-             </script>
-        <!-- water quality Logs -->
-     <!-- water usage logs -->
-     
+            fetch_cycle('--Save Water Quality Logs', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === "success") {
+                    Toastify({
+                        text: result.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: result.message || "An error occurred.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                }
+            });
+        });
+    </script>
+    <!-- water quality Logs -->
+    <!-- water usage logs -->
 
 
-     <!-- Chemical  -->
-      <script>
+
+    <!-- Chemical  -->
+    <script>
         let btn_submit_chemical = document.querySelector('#btn-submit-chemical');
         btn_submit_chemical.addEventListener('click', () => {
             console.log("clicked");
@@ -5935,28 +6434,28 @@
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-                            <td>${chemical.name}</td>
-                            <td>${chemical.unit ?? ''}</td>
-                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
-                            </td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="${url}">Open Chemical</a>
-                                        <a class="dropdown-item" href="#">Update Chemical</a>
-                                        <a class="dropdown-item" href="#">Delete Chemical</a>
-                                        <hr class="dropdown-divider">
-                                        <a class="dropdown-item" href="#">Setup Price</a>
-                                        <a href="#" class="dropdown-item">Check In Item</a>
-                                        <a href="#" class="dropdown-item">Check Out Item</a>
-                                        <a href="#" class="dropdown-item">Adjustment</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`
+            <td>${chemical.name}</td>
+            <td>${chemical.unit ?? ''}</td>
+            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
+            </td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="${url}">Open Chemical</a>
+                        <a class="dropdown-item" href="#">Update Chemical</a>
+                        <a class="dropdown-item" href="#">Delete Chemical</a>
+                        <hr class="dropdown-divider">
+                        <a class="dropdown-item" href="#">Setup Price</a>
+                        <a href="#" class="dropdown-item">Check In Item</a>
+                        <a href="#" class="dropdown-item">Check Out Item</a>
+                        <a href="#" class="dropdown-item">Adjustment</a>
+                    </div>
+                </div>
+            </td>
+        </tr>`
                     });
                 }
             });
@@ -6135,10 +6634,10 @@
                 loader.style.display = 'none';
             });
         });
-      </script>
-     <!-- Chemical  -->
+    </script>
+    <!-- Chemical  -->
 
-     <!-- operations -->
+    <!-- operations -->
     <script>
         // Store Operation Type
         document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
@@ -6153,20 +6652,20 @@
                     tableBody.innerHTML = "";
                     result.operation_types.forEach(type => {
                         tableBody.innerHTML += `<tr>
-                            <td>${type.name}</td>
-                            <td>${type.description}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
+            <td>${type.name}</td>
+            <td>${type.description}</td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="#">Update</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
                     });
                 }
             });
@@ -6185,20 +6684,20 @@
                     tableBody.innerHTML = "";
                     result.operation_categories.forEach(category => {
                         tableBody.innerHTML += `<tr>
-                            <td>${category.name}</td>
-                            <td>${category.description}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
+            <td>${category.name}</td>
+            <td>${category.description}</td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="#">Update</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
                     });
                 }
             });
@@ -6217,34 +6716,87 @@
                     tableBody.innerHTML = "";
                     result.operation_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                            <td>${log.operation_name}</td>
-                            <td>${log.description}</td>
-                            <td>${log.operation_code}</td>
-                            <td>${log.operation_type}</td>
-                            <td>${log.operation_category}</td>
-                            <td>${log.operation_unit}</td>
-                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-                            <td>${log.expected_waste_per_operation}</td>
-                            <td>${log.expected_water_usage_per_operation}</td>
-                            <td>${log.expected_unit_produced_for_goods}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
+            <td>${log.operation_name}</td>
+            <td>${log.description}</td>
+            <td>${log.operation_code}</td>
+            <td>${log.operation_type}</td>
+            <td>${log.operation_category}</td>
+            <td>${log.operation_unit}</td>
+            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+            <td>${log.expected_waste_per_operation}</td>
+            <td>${log.expected_water_usage_per_operation}</td>
+            <td>${log.expected_unit_produced_for_goods}</td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="#">Update</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Trigger Update Operation Log
+        let triggerUpdateOperation = (operationID) => {
+            console.log(operationID);
+
+            let updateOperationModal = document.querySelector('#updateOperationModal');
+            // Initialize Bootstrap modal
+            document.querySelector('#updateOperationModal input[name="operation_id"]').value = operationID;
+            let loader = document.querySelector('#updateOperationModal #loader');
+            loader.style.display = 'none';
+            const myModal = new bootstrap.Modal(updateOperationModal);
+            myModal.show();
+        }
+
+        // Update Operation Log
+        document.querySelector('#operations-form-update').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.update-operation') }}";
+            fetch_cycle('--Update Operation Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-operations-log tbody');
+                    tableBody.innerHTML = "";
+                    result.operation_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
+            <td>${log.operation_name}</td>
+            <td>${log.description}</td>
+            <td>${log.operation_code}</td>
+            <td>${log.operation_type}</td>
+            <td>${log.operation_category}</td>
+            <td>${log.operation_unit}</td>
+            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+            <td>${log.expected_waste_per_operation}</td>
+            <td>${log.expected_water_usage_per_operation}</td>
+            <td>${log.expected_unit_produced_for_goods}</td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="#">Update</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
                     });
                 }
             });
         });
     </script>
-     <!-- operations -->
-     
+    <!-- operations -->
+
     @endsection
 </x-layouts.admin-app>
