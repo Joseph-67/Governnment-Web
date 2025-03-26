@@ -40,7 +40,14 @@ class CompanyOperationController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'operation_name' => ['required', 'string', 'max:255', 'unique:company_operations,operation_name'],
+            'operation_name' => [
+                'required', 
+                'string', 
+                'max:255', 
+                Rule::unique('company_operations')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->input('company_id'));
+                })
+            ],
             'description' => ['nullable', 'string'],
             'operation_code' => ['nullable', 'string', 'max:255'],
             'operation_type' => ['required', 'string', 'max:255'],

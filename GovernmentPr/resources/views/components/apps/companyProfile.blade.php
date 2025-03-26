@@ -3008,7 +3008,7 @@
 
                                                 <div class="row g-2">
                                                     <div class="col-md-6">
-                                                        <label for="calendar_name" class="form-label">Calendar Title</label>
+                                                        <label for="calendar_name" class="form-label">Calendar Name</label>
                                                         <input type="text" class="form-control" id="calendar_name" name="calendar_name" required>
                                                     </div>
                                                     <div class="col-md-3">
@@ -6921,5 +6921,41 @@
     </script>
     <!-- operations -->
 
+    <!-- Calendar Year Management Script -->
+     <script>
+        // Calendar Year Management Script
+        document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-calendar-year') }}";
+
+            fetch_cycle('--Store Calendar Year', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the calendar year table or UI as needed
+                    let tableBody = document.querySelector('#calendar_year_table tbody');
+                    tableBody.innerHTML = "";
+                    result.calendar_years.forEach(year => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${year.year}</td>
+                            <td>${year.description ?? ''}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+     </script>
+    <!-- Calendar Year Management Script -->
     @endsection
 </x-layouts.admin-app>

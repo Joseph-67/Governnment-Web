@@ -41,7 +41,14 @@ class CalendarYearController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|integer',
-            'name' => 'required|string|max:255',
+            'calendar_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('calendar_years', 'name')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->input('company_id'));
+                }),
+            ],
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
         ]);
@@ -57,7 +64,7 @@ class CalendarYearController extends Controller
         try {
             $calendarYear = CalendarYear::create([
             'company_id' => $request->input('company_id'),
-            'name' => $request->input('name'),
+            'name' => $request->input('calendar_name'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
             ]);

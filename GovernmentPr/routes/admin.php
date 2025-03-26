@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\CalendarYearController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChemicalStockMovementController;
 use App\Http\Controllers\ChemicalsController;
@@ -37,6 +38,7 @@ use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\WaterUsageLogsController;
 use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
+
 
 
 // Guest Admin Routes
@@ -120,8 +122,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
         Route::get ('/fetch-user', 'fetch_users')->name('get-user');
         Route::post ('/save-email', 'store')->name('send-mail');
-       
     });
+    
     Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
     
@@ -131,6 +133,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post ('/save-material', 'store')->name('admin.store-material');
     }); 
 
+    // Calendar Year
+    Route::controller(CalendarYearController::class)->group(function() {
+        Route::get('/calendar-year', 'index')->name('admin.calendar-year');
+        Route::post('/calendar-year/store', 'store')->name('admin.store-calendar-year');
+        Route::get('/calendar-year/{id}', 'show')->name('admin.show-calendar-year');
+        Route::put('/calendar-year/{id}', 'update')->name('admin.update-calendar-year');
+        Route::delete('/calendar-year/{id}', 'destroy')->name('admin.delete-calendar-year');
+    });
 
     //Chemicals
     Route::controller(ChemicalUsageController::class)->group(function() {

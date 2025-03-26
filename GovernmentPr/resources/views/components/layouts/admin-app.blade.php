@@ -345,7 +345,7 @@
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('view-email') }}">Notification</a>
+                                        <a class="nav-link" href="{{ route('view-email') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                     </li><!--end nav-item-->
@@ -378,25 +378,25 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.users-management')}}">
                                 <i class="iconoir-community menu-icon"></i>
-                                <span>People</span>
+                                <span>User & Admin Management</span>
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.create-category') }}">
-                                <i class="iconoir-page-star menu-icon"></i>
-                                <span>Category</span>    
+                                <i class="iconoir-folder menu-icon"></i>
+                                <span>Category Management</span>    
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('materials.material') }}">
-                            <i class="iconoir-page-star menu-icon"></i>
-                            <span>Material</span>
+                            <i class="iconoir-box menu-icon"></i>
+                            <span>Material Management</span>
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.create-chemical') }}">
-                            <i class="iconoir-page-star menu-icon"></i>
-                            <span>Chemicals</span>
+                            <i class="iconoir-flask menu-icon"></i>
+                            <span>Chemicals Management</span>
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
@@ -460,19 +460,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.team-member')}}">
-                                <i class="iconoir-settings menu-icon"></i>
+                                <i class="iconoir-user menu-icon"></i>
                                 <span> Team Member Settings</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.display-roles')}}">
-                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                <i class="iconoir-shield-check menu-icon"></i>
                                 <span>Security & Permissions</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('email-configuration')}}">
-                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                <i class="iconoir-mail menu-icon"></i>
                                 <span>Email Integration</span>
                             </a>
                         </li>
