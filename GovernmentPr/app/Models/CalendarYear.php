@@ -19,10 +19,18 @@ class CalendarYear extends Model
         'is_delete',
     ];
     public $timestamps = true;
+
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
+
+    
+    public function companyOperations()
+    {
+        return $this->hasMany(CompanyOperation::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

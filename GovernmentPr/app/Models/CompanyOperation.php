@@ -16,8 +16,8 @@ class CompanyOperation extends Model
         'operation_name',
         'description',
         'operation_code',
-        'operation_type',
-        'operation_category',
+        'operation_type_id',
+        'operation_category_id',
         'operation_unit',
         'operation_unit_price',
         'operation_unit_cost',
@@ -26,13 +26,34 @@ class CompanyOperation extends Model
         'status',
         'expected_waste_per_operation',
         'expected_water_usage_per_operation',
-        'expected_unit_produced_for_goods'
+        'expected_unit_produced_for_goods',
+        'calendar_year_id',
+        'start_date',
+        'end_date'
     ];
+
+    public $timestamps = true;
+
+    public function operationCategory()
+    {
+        return $this->belongsTo(OperationCategory::class, 'operation_category_id', 'operation_category_id');
+    }
+
+    public function operationType()
+    {
+        return $this->belongsTo(OperationType::class, 'operation_type_id', 'operation_type_id');
+    }
 
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
+
+    public function calendarYear()
+    {
+        return $this->belongsTo(CalendarYear::class, 'calendar_year_id', 'calendar_year_id');
+    }
+
 
     public function scopeActive($query)
     {

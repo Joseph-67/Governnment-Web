@@ -41,17 +41,17 @@ class CompanyOperationController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'operation_name' => [
-                'required', 
-                'string', 
-                'max:255', 
-                Rule::unique('company_operations')->where(function ($query) use ($request) {
-                    return $query->where('company_id', $request->input('company_id'));
-                })
+            'required', 
+            'string', 
+            'max:255', 
+            Rule::unique('company_operations')->where(function ($query) use ($request) {
+                return $query->where('company_id', $request->input('company_id'));
+            })
             ],
             'description' => ['nullable', 'string'],
             'operation_code' => ['nullable', 'string', 'max:255'],
-            'operation_type' => ['required', 'string', 'max:255'],
-            'operation_category' => ['required', 'string', 'max:255'],
+            'operation_type' => ['required', 'numeric'],
+            'operation_category' => ['required', 'numeric'],
             'operation_unit' => ['required', 'string', 'max:255'],
             'operation_unit_price' => ['nullable', 'numeric'],
             'operation_unit_cost' => ['nullable', 'numeric'],
@@ -60,6 +60,9 @@ class CompanyOperationController extends Controller
             'expected_waste_per_operation' => ['required', 'numeric'],
             'expected_water_usage_per_operation' => ['required', 'numeric'],
             'expected_unit_produced_for_goods' => ['required', 'numeric'],
+            'calendar_year' => ['required', 'numeric'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +83,10 @@ class CompanyOperationController extends Controller
             'company_id' => $request->input('company_id'),
             'expected_waste_per_operation' => $request->input('expected_waste_per_operation'),
             'expected_water_usage_per_operation' => $request->input('expected_water_usage_per_operation'),
-            'expected_unit_produced_for_goods' => $request->input('expected_unit_produced_for_goods')
+            'expected_unit_produced_for_goods' => $request->input('expected_unit_produced_for_goods'),
+            'calendar_year_id' => $request->input('calendar_year'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create Company Operation', 'message' => $e->getMessage()], 500);

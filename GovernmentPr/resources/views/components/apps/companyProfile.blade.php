@@ -2401,9 +2401,13 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="year" class="">Year</label>
-                                                    <input type="date" class="form-control" id="year" name="year"
-                                                        placeholder="Year (e.g., 2023)" required>
+                                                    <label for="calendar_year">Calendar Year</label>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($active_calendar_years as $calendar)
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -2586,6 +2590,17 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label for="calendar_year">Calendar Year</label>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($active_calendar_years as $calendar)
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
                                                     <label for="start_date">Start Date</label>
                                                     <input type="date" class="form-control" id="start_date"
                                                         name="start_date" required>
@@ -2609,14 +2624,14 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th style="width: 15%;">Operation Name</th>
-                                                    <th style="width: 20%;">Description</th>
-                                                    <th style="width: 10%;">Operation Code</th>
+                                                    <th style="width: 5%;">Operation Code</th>
                                                     <th style="width: 10%;">Operation Type</th>
                                                     <th style="width: 10%;">Operation Category</th>
-                                                    <th style="width: 10%;">Operation Unit</th>
+                                                    <th style="width: 5%;">Operation Unit</th>
                                                     <th style="width: 10%;">Expected Waste Per Operation</th>
                                                     <th style="width: 10%;">Expected Water Usage Per Operation</th>
                                                     <th style="width: 10%;">Expected Unit Produced For Goods</th>
+                                                    <th style="width: 10%;">Calendar Year</th>
                                                     <th style="width: 10%;">Start Date</th>
                                                     <th style="width: 10%;">End Date</th>
                                                     <th style="width: 10%;">Status</th>
@@ -2627,14 +2642,14 @@
                                                 @foreach($company_operations as $log)
                                                 <tr>
                                                     <td>{{ $log->operation_name }}</td>
-                                                    <td>{{ $log->description }}</td>
                                                     <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operation_type }}</td>
-                                                    <td>{{ $log->operation_category }}</td>
+                                                    <td>{{ $log->operationType->name }}</td>
+                                                    <td>{{ $log->operationCategory->name }}</td>
                                                     <td>{{ $log->operation_unit }}</td>
                                                     <td>{{ $log->expected_waste_per_operation }}</td>
                                                     <td>{{ $log->expected_water_usage_per_operation }}</td>
                                                     <td>{{ $log->expected_unit_produced_for_goods }}</td>
+                                                    <td>{{ $log->calendarYear->name }}</td>
                                                     <td>{{ $log->start_date }}</td>
                                                     <td>{{ $log->end_date }}</td>
                                                     <td>
@@ -6849,28 +6864,30 @@
                     tableBody.innerHTML = "";
                     result.operation_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-            <td>${log.operation_name}</td>
-            <td>${log.description}</td>
-            <td>${log.operation_code}</td>
-            <td>${log.operation_type}</td>
-            <td>${log.operation_category}</td>
-            <td>${log.operation_unit}</td>
-            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-            <td>${log.expected_waste_per_operation}</td>
-            <td>${log.expected_water_usage_per_operation}</td>
-            <td>${log.expected_unit_produced_for_goods}</td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`;
+                            <td>${log.operation_name}</td>
+                            <td>${log.operation_code}</td>
+                            <td>${log.operation_type}</td>
+                            <td>${log.operation_category}</td>
+                            <td>${log.operation_unit}</td>
+                            <td>${log.expected_waste_per_operation}</td>
+                            <td>${log.expected_water_usage_per_operation}</td>
+                            <td>${log.expected_unit_produced_for_goods}</td>
+                            <td>${log.calendar_year_name}</td>
+                            <td>${log.start_date}</td>
+                            <td>${log.end_date}</td>
+                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
                     });
                 }
             });
@@ -6902,28 +6919,30 @@
                     tableBody.innerHTML = "";
                     result.operation_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-            <td>${log.operation_name}</td>
-            <td>${log.description}</td>
-            <td>${log.operation_code}</td>
-            <td>${log.operation_type}</td>
-            <td>${log.operation_category}</td>
-            <td>${log.operation_unit}</td>
-            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-            <td>${log.expected_waste_per_operation}</td>
-            <td>${log.expected_water_usage_per_operation}</td>
-            <td>${log.expected_unit_produced_for_goods}</td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`;
+                            <td>${log.operation_name}</td>
+                            <td>${log.operation_code??""}</td>
+                            <td>${log.operation_type??""}</td>
+                            <td>${log.operation_category??""}</td>
+                            <td>${log.operation_unit??""}</td>
+                            <td>${log.expected_waste_per_operation??""}</td>
+                            <td>${log.expected_water_usage_per_operation??""}</td>
+                            <td>${log.expected_unit_produced_for_goods??""}</td>
+                            <td>${log.calendar_year_name??""}</td>
+                            <td>${log.start_date??""}</td>
+                            <td>${log.end_date??""}</td>
+                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
                     });
                 }
             });
