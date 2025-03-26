@@ -458,7 +458,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
     });
-
     // Team Member
     Route::controller(TeamMemberController::class)->group(function(){
         Route::get ('/team-member', 'index')->name('admin.team-member');

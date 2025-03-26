@@ -2402,36 +2402,36 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="year" class="">Year</label>
-                                                    <input type="number" class="form-control" id="year" name="year"
+                                                    <input type="date" class="form-control" id="year" name="year"
                                                         placeholder="Year (e.g., 2023)" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_operations">Total Operations</label>
-                                                    <input type="number" class="form-control" id="total_operations" name="total_operations"
-                                                        placeholder="Total Operations" required>
+                                                    <label for="total_operations">Expected Number Of Operations Per Year</label>
+                                                    <input type="number" class="form-control" id="operations_per_year" name="operations_per_year"
+                                                        placeholder="Expected Number Of Operations Per Year" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_waste_generated">Total Waste Generated</label>
-                                                    <input type="number" class="form-control" id="total_waste_generated"
-                                                        name="total_waste_generated" placeholder="Total Waste Generated" required>
+                                                    <label for="total_waste_generated">Expected Number of Waste to be Generated Per Year</label>
+                                                    <input type="number" class="form-control" id="waste_generated_per_year"
+                                                        name="waste_generated_per_year" placeholder="Expected Number of Waste to be Generated Per Year" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_water_used">Total Water Used</label>
-                                                    <input type="number" class="form-control" id="total_water_used" name="total_water_used"
-                                                        placeholder="Total Water Used" required>
+                                                    <label for="total_water_used">Expected Number of Water to be Used Per Year</label>
+                                                    <input type="number" class="form-control" id="water_used_per_year" name="water_used_per_year"
+                                                        placeholder="Expected Number of Water to be Used Per Year" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_units_produced">Total Units Produced</label>
-                                                    <input type="number" class="form-control" id="total_units_produced"
-                                                        name="total_units_produced" placeholder="Total Units Produced" required>
+                                                    <label for="total_units_produced">Expected Number of Units to be Produced per Year</label>
+                                                    <input type="number" class="form-control" id="units_produced_per_year"
+                                                        name="units_produced_per_year" placeholder="Expected Number of Units to be Produced per Year" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -2447,10 +2447,10 @@
                                                     <th>Operation Name</th>
                                                     <th>Description</th>
                                                     <th>Year</th>
-                                                    <th>Total Operations</th>
-                                                    <th>Total Waste Generated</th>
-                                                    <th>Total Water Used</th>
-                                                    <th>Total Units Produced</th>
+                                                    <th>Expected Number of Operations per year</th>
+                                                    <th>Expected Number of Waste to be Generated per year</th>
+                                                    <th>Expected Number of Water to be Used per year</th>
+                                                    <th>Expected Number of Units to be Produced</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
