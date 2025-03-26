@@ -8,2219 +8,2043 @@
         </div>
 
         <div class="row justify-content-center mt-3">
-            <div class="col-md-12">
+            <div class="col-md-12 nav-tabs-custom text-center">
                 <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#overview" role="tab"
-                            aria-selected="true">Overview</a>
+                            aria-selected="true"><i class="la la-info-circle d-block"></i>Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#policy" role="tab"
-                            aria-selected="false">Policies & Objectives</a>
+                            aria-selected="false"><i class="la la-file-alt d-block"></i>Policies & Objectives</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
-                            aria-selected="false">R.E.C.P</a>
+                            aria-selected="false"><i class="la la-chart-line d-block"></i>R.E.C.P</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#inventory" role="tab"
-                            aria-selected="false">Inventory Management</a>
+                            aria-selected="false"><i class="la la-box d-block"></i>Inventory Management</a>
                     </li>
 
-                    <li class="nav-">
+                    <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#operations" role="tab"
-                            aria-selected="false">Operations Management</a>
+                            aria-selected="false"><i class="la la-cogs d-block"></i>Operations Management</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
-                            aria-selected="false">Settings</a>
+                            aria-selected="false"><i class="la la-cog d-block"></i>General Settings</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
-                            aria-selected="false">Contact Details</a>
+                            aria-selected="false"><i class="la la-user d-block"></i>Contact Personnel Details</a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
-                <div class="tab-content">
-                    <!-- Overview -->
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Company Name</h5>
-                                        <p class="card-text">{{ $company->company_name }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Founded</h5>
-                                        <p class="card-text">{{
-                                            \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
-                                    </div>
+            </div>
+            <div class="tab-content">
+                <!-- Overview -->
+                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Company Name</h5>
+                                    <p class="card-text">{{ $company->company_name }}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Industry</h5>
-                                        <p class="card-text">{{ $company->industry }} </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Headquarters</h5>
-                                        <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{
-                                            $company->state }}, {{
-                                            $company->country }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Contact Details</h5>
-                                        <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{
-                                            $company->secondary_phone_number }}</p>
-                                        <p class="card-text">Email: {{ $company->email }}</p>
-                                        <p class="card-text">Website: <a href="{{ $company->website_url }}">{{
-                                                $company->website_url }}</a></p>
-                                        <p class="card-text">ZIP Code: {{ $company->zip_code }}</p>
-                                        <p class="card-text">Longitude: {{ $company->longitude }}</p>
-                                        <p class="card-text">Latitude: {{ $company->latitude }}</p>
-                                        <p class="card-text">MGRS: {{ $company->mgrs }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Environmental Manager</h5>
-                                        <p class="card-text">Name: {{ $company->operations_manager }}</p>
-                                        <p class="card-text">Phone: (123) 555-7890</p>
-                                        <p class="card-text">Email: jane.doe@abccorp.com</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Contact Person</h5>
-                                        <p class="card-text">Name: {{ $company->contact_person_full_name }}</p>
-                                        <p class="card-text">Phone: {{ $company->contact_person_contact_number }}</p>
-                                        <p class="card-text">Position: {{ $company->contact_person_position }}</p>
-                                        <p class="card-text">Email: john.smith@abccorp.com</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Number of Employees</h5>
-                                        <p class="card-text">{{ $company->number_of_employees }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Industry Process Used</h5>
-                                        <p class="card-text">This company primarily utilizes processes such as {{
-                                            $company->industry_process }}.</p>
-                                    </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Founded</h5>
+                                    <p class="card-text">{{
+                                        \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="policy" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Policies</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <!-- Policy -->
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="quality-policy" value="quality policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'quality policy')"
-                                                name="policy[]" {{(in_array('quality policy',
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label" for="quality-policy">Quality policy </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="environmental-policy" value="environmental policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'environmental policy')"
-                                                name="policy[]" {{(in_array("environmental policy",
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label" for="environmental-policy">Enviromental
-                                                Policy.</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="health-and-safety-policy" value="health and safety policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'health and safety policy')"
-                                                name="policy[]" {{(in_array('health and safety policy',
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label" for="health-and-safety-policy">Health and
-                                                safety policy. </label>
-                                        </div>
-                                    </div>
-                                    <x-section-border />
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="human-resource-policy" value="human resource policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'human resource policy')"
-                                                name="policy[]" {{(in_array('human resource policy',
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label" for="human-resource-policy">Human resource
-                                                policy. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="data-protection-policy" value="data protection policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'data protection policy')"
-                                                name="policy[]" {{(in_array('data protection policy',
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label" for="data-protection-policy">Data protection
-                                                policy. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="cooperate-social-responsibility-policy"
-                                                value="cooperate social responsibility policy"
-                                                onchange="ChangePolicy(this, '{{$company->company_id}}', 'cooperate social responsibility policy')"
-                                                name="policy[]" {{(in_array('cooperate social responsibility policy',
-                                                array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                            ""}}>
-                                            <label class="form-check-label"
-                                                for="cooperate-social-responsibility-policy">Cooperate social
-                                                reponsibility policy. </label>
-                                        </div>
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Industry</h5>
+                                    <p class="card-text">{{ $company->industry }} </p>
                                 </div>
-                                <!-- End Policy -->
-                            </div><!--end card-body-->
-                        </div><!--end card-->
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Company Objectives</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <!-- objective -->
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="business-growth"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'business growth')"
-                                                value="business growth" name="objective[]" {{(in_array("business
-                                                growth", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="business-growth"> Business growth
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="customer-satisfaction"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'customer satisfaction')"
-                                                value="customer satisfaction" name="objective[]" {{(in_array("customer
-                                                satisfaction", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="customer-satisfaction"> Customer
-                                                satisfaction. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="material-optimization"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'material optimization')"
-                                                value="material optimization" name="objective[]" {{(in_array("material
-                                                optimization", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="material-optimization"> Material
-                                                optimization. </label>
-                                        </div>
-                                    </div>
-                                    <x-section-border />
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="waste-minimization"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'waste minimization')"
-                                                value="waste minimization" name="objective[]" {{(in_array("waste
-                                                minimization", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="waste-minimization"> Waste
-                                                minimization. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="measurable-and-timely-targets"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'measurable and timely targets')"
-                                                value="measurable and timely targets" name="objective[]"
-                                                {{(in_array("measurable and timely targets",
-                                                array_column($company_objectives->toArray(), 'objective_title')))?
-                                            "checked": ""}}>
-                                            <label class="form-check-label" for="measurable-and-timely-targets">
-                                                Measurable & timely targets. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="innovation"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'innovation')"
-                                                value="innovation" name="objective[]" {{(in_array("innovation",
-                                                array_column($company_objectives->toArray(), 'objective_title')))?
-                                            "checked": ""}}>
-                                            <label class="form-check-label" for="innovation"> Innovation. </label>
-                                        </div>
-                                    </div>
-                                    <x-section-border />
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="sustainability"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'sustainability')"
-                                                value="sustainability" name="objective[]" {{(in_array("sustainability",
-                                                array_column($company_objectives->toArray(), 'objective_title')))?
-                                            "checked": ""}}>
-                                            <label class="form-check-label" for="sustainability"> Sustainability.
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="employee-management"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'employee management')"
-                                                value="employee management" name="objective[]" {{(in_array("employee
-                                                management", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="employee-management"> Employee
-                                                management. </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="market-expansion"
-                                                onchange="ChangeObjectives(this, '{{$company->company_id}}', 'market expansion')"
-                                                value="market expansion" name="objective[]" {{(in_array("market
-                                                expansion", array_column($company_objectives->toArray(),
-                                            'objective_title')))? "checked": ""}}>
-                                            <label class="form-check-label" for="market-expansion"> Market expansion.
-                                            </label>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Headquarters</h5>
+                                    <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{
+                                        $company->state }}, {{
+                                        $company->country }}</p>
                                 </div>
-                                <!-- End Policy -->
-                            </div><!--end card-body-->
-                        </div><!--end card-->
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane" id="recp" role="tabpanel">
-                        <h4 class="">General Knowledge of Nigeria IEE RECP Concept/Benefit</h4>
-                        <p class="subtitle">In Nigeria, Industrial Energy Efficiency (IEE) and Resource Efficiency
-                            and Cleaner Production (RECP) focus on optimizing energy and resource use while minimizing
-                            waste.
-                            These practices help businesses reduce costs, enhance sustainability, and lower
-                            environmental impacts.
-                            The benefits include cost savings, compliance with regulations, improved competitiveness,
-                            and positive
-                            contributions to Nigeria's economic growth and environmental protection. Adopting IEE and
-                            RECP strategies
-                            enables industries to operate more efficiently and sustainably, fostering a cleaner, greener
-                            future.</p>
-                        <!-- this projct -->
-                        <div class="card">
-                            <!-- card header -->
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="true" href="#this-project"
-                                            data-bs-toggle="tab">This Project</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#environmental-health" data-bs-toggle="tab">Human and
-                                            Environmental Health/Business Benefits</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#tab-innovation" data-bs-toggle="tab">Innovation</a>
-                                    </li>
-                                </ul>
-                            </div><!--end card-header-->
-                            <div class="card-body pt-2">
-                                <div class="tab-content">
-                                    <div class="row tab-pane fade show active" id="this-project">
-                                        <div class="col-md-12">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)"
-                                                    value="Develop policy and regulation that deliver economic, human and environmental health gain to your company."
-                                                    name="areas_of_company_benefit[]" {{(in_array("Develop policy and
-                                                    regulation that deliver economic, human and environmental health
-                                                    gain to your company.", array_column($company_benefits->toArray(),
-                                                'benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Develop policy and regulation
-                                                    that deliver economic, humanand environmental health gain to your
-                                                    company. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)"
-                                                    value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To offer standard
-                                                    accreditation and certification capacity building on ISO 15000 and
-                                                    14000 series to your enterprise.",
-                                                    array_column($company_benefits->toArray(), 'benefit_title')))?
-                                                "checked": ""}}>
-                                                <label class="form-check-label" for=""> To offer standard accreditation
-                                                    and certification capacity building on ISO 15000 and 14000 series to
-                                                    your enterprise </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)"
-                                                    value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To deliver impactful
-                                                    training on Resource Efficient and Cleaner Production (RECP),
-                                                    including comprehensive support materials, toolkits, and learning
-                                                    resources, tailored for staff and employees across Nigeria's
-                                                    industrial manufacturing sector.",
-                                                    array_column($company_benefits->toArray(), 'benefit_title')))?
-                                                "checked": ""}}>
-                                                <label class="form-check-label" for=""> To deliver impactful training on
-                                                    Resource Efficient and Cleaner Production (RECP), including
-                                                    comprehensive support materials, toolkits, and learning resources,
-                                                    tailored for staff and employees across Nigeria's industrial
-                                                    manufacturing sector. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)"
-                                                    value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To strengthen the
-                                                    internal capacity for delivering RECP training and related technical
-                                                    assistance to your enterprise, ensuring long-term impact and
-                                                    achieving commercially sustainable outcomes.",
-                                                    array_column($company_benefits->toArray(), 'benefit_title')))?
-                                                "checked": ""}}>
-                                                <label class="form-check-label" for=""> To strengthen the internal
-                                                    capacity for delivering RECP training and related technical
-                                                    assistance to your enterprise, ensuring long-term impact and
-                                                    achieving commercially sustainable outcomes. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)"
-                                                    value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To raise awareness
-                                                    and implement pilot programs on RECP, aimed at enhancing
-                                                    productivity through efficient use of manufacturing inputs (water,
-                                                    chemicals, and materials), minimizing waste and emissions, and
-                                                    promoting regulatory compliance while boosting competitiveness
-                                                    within your industrial sector.",
-                                                    array_column($company_benefits->toArray(), 'benefit_title')))?
-                                                "checked": ""}}>
-                                                <label class="form-check-label" for=""> To raise awareness and implement
-                                                    pilot programs on RECP, aimed at enhancing productivity through
-                                                    efficient use of manufacturing inputs (water, chemicals, and
-                                                    materials), minimizing waste and emissions, and promoting regulatory
-                                                    compliance while boosting competitiveness within your industrial
-                                                    sector. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)"
-                                                    value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To enhance the
-                                                    adoption of RECP practices and associated investments by providing a
-                                                    targeted financial assistance package for companies participating in
-                                                    RECP pilot programs.", array_column($company_benefits->toArray(),
-                                                'benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> To enhance the adoption of RECP
-                                                    practices and associated investments by providing a targeted
-                                                    financial assistance package for companies participating in RECP
-                                                    pilot programs. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)"
-                                                    value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects."
-                                                    name="areas_of_company_benefit[]" {{(in_array("To deliver the
-                                                    cost-saving benefits of RECP to your industrial manufacturing sector
-                                                    by facilitating greater access to financial mechanisms—both
-                                                    commercial and government—to support the financing of RECP
-                                                    projects.", array_column($company_benefits->toArray(),
-                                                'benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> To deliver the cost-saving
-                                                    benefits of RECP to your industrial manufacturing sector by
-                                                    facilitating greater access to financial mechanisms—both commercial
-                                                    and government—to support the financing of RECP projects. </label>
-                                            </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Contact Details</h5>
+                                    <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{
+                                        $company->secondary_phone_number }}</p>
+                                    <p class="card-text">Email: {{ $company->email }}</p>
+                                    <p class="card-text">Website: <a href="{{ $company->website_url }}">{{
+                                            $company->website_url }}</a></p>
+                                    <p class="card-text">ZIP Code: {{ $company->zip_code }}</p>
+                                    <p class="card-text">Longitude: {{ $company->longitude }}</p>
+                                    <p class="card-text">Latitude: {{ $company->latitude }}</p>
+                                    <p class="card-text">MGRS: {{ $company->mgrs }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Environmental Manager</h5>
+                                    <p class="card-text">Name: {{ $company->operations_manager }}</p>
+                                    <p class="card-text">Phone: (123) 555-7890</p>
+                                    <p class="card-text">Email: jane.doe@abccorp.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Contact Person</h5>
+                                    <p class="card-text">Name: {{ $company->contact_person_full_name }}</p>
+                                    <p class="card-text">Phone: {{ $company->contact_person_contact_number }}</p>
+                                    <p class="card-text">Position: {{ $company->contact_person_position }}</p>
+                                    <p class="card-text">Email: john.smith@abccorp.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Number of Employees</h5>
+                                    <p class="card-text">{{ $company->number_of_employees }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Industry Process Used</h5>
+                                    <p class="card-text">This company primarily utilizes processes such as {{
+                                        $company->industry_process }}.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="policy" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h4 class="card-title">Company Policies</h4>
+                                </div><!--end col-->
+                            </div> <!--end row-->
+                        </div><!--end card-header-->
+                        <div class="card-body pt-0">
+                            <!-- Policy -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="quality-policy" value="quality policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'quality policy')"
+                                            name="policy[]" {{(in_array('quality policy',
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label" for="quality-policy">Quality policy </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="environmental-policy" value="environmental policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'environmental policy')"
+                                            name="policy[]" {{(in_array("environmental policy",
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label" for="environmental-policy">Enviromental
+                                            Policy.</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="health-and-safety-policy" value="health and safety policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'health and safety policy')"
+                                            name="policy[]" {{(in_array('health and safety policy',
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label" for="health-and-safety-policy">Health and
+                                            safety policy. </label>
+                                    </div>
+                                </div>
+                                <x-section-border />
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="human-resource-policy" value="human resource policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'human resource policy')"
+                                            name="policy[]" {{(in_array('human resource policy',
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label" for="human-resource-policy">Human resource
+                                            policy. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="data-protection-policy" value="data protection policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'data protection policy')"
+                                            name="policy[]" {{(in_array('data protection policy',
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label" for="data-protection-policy">Data protection
+                                            policy. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="cooperate-social-responsibility-policy"
+                                            value="cooperate social responsibility policy"
+                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'cooperate social responsibility policy')"
+                                            name="policy[]" {{(in_array('cooperate social responsibility policy',
+                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
+                                        ""}}>
+                                        <label class="form-check-label"
+                                            for="cooperate-social-responsibility-policy">Cooperate social
+                                            reponsibility policy. </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Policy -->
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h4 class="card-title">Company Objectives</h4>
+                                </div><!--end col-->
+                            </div> <!--end row-->
+                        </div><!--end card-header-->
+                        <div class="card-body pt-0">
+                            <!-- objective -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="business-growth"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'business growth')"
+                                            value="business growth" name="objective[]" {{(in_array("business growth",
+                                            array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="business-growth"> Business growth
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="customer-satisfaction"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'customer satisfaction')"
+                                            value="customer satisfaction" name="objective[]" {{(in_array("customer
+                                            satisfaction", array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="customer-satisfaction"> Customer
+                                            satisfaction. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="material-optimization"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'material optimization')"
+                                            value="material optimization" name="objective[]" {{(in_array("material
+                                            optimization", array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="material-optimization"> Material
+                                            optimization. </label>
+                                    </div>
+                                </div>
+                                <x-section-border />
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="waste-minimization"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'waste minimization')"
+                                            value="waste minimization" name="objective[]" {{(in_array("waste
+                                            minimization", array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="waste-minimization"> Waste
+                                            minimization. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="measurable-and-timely-targets"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'measurable and timely targets')"
+                                            value="measurable and timely targets" name="objective[]"
+                                            {{(in_array("measurable and timely targets",
+                                            array_column($company_objectives->toArray(), 'objective_title')))?
+                                        "checked": ""}}>
+                                        <label class="form-check-label" for="measurable-and-timely-targets">
+                                            Measurable & timely targets. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="innovation"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'innovation')"
+                                            value="innovation" name="objective[]" {{(in_array("innovation",
+                                            array_column($company_objectives->toArray(), 'objective_title')))?
+                                        "checked": ""}}>
+                                        <label class="form-check-label" for="innovation"> Innovation. </label>
+                                    </div>
+                                </div>
+                                <x-section-border />
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="sustainability"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'sustainability')"
+                                            value="sustainability" name="objective[]" {{(in_array("sustainability",
+                                            array_column($company_objectives->toArray(), 'objective_title')))?
+                                        "checked": ""}}>
+                                        <label class="form-check-label" for="sustainability"> Sustainability.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="employee-management"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'employee management')"
+                                            value="employee management" name="objective[]" {{(in_array("employee
+                                            management", array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="employee-management"> Employee
+                                            management. </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="market-expansion"
+                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'market expansion')"
+                                            value="market expansion" name="objective[]" {{(in_array("market expansion",
+                                            array_column($company_objectives->toArray(),
+                                        'objective_title')))? "checked": ""}}>
+                                        <label class="form-check-label" for="market-expansion"> Market expansion.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Policy -->
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div>
+                <div class="tab-pane" id="recp" role="tabpanel">
+                    <h4 class="">General Knowledge of Nigeria IEE RECP Concept/Benefit</h4>
+                    <p class="subtitle">In Nigeria, Industrial Energy Efficiency (IEE) and Resource Efficiency
+                        and Cleaner Production (RECP) focus on optimizing energy and resource use while minimizing
+                        waste.
+                        These practices help businesses reduce costs, enhance sustainability, and lower
+                        environmental impacts.
+                        The benefits include cost savings, compliance with regulations, improved competitiveness,
+                        and positive
+                        contributions to Nigeria's economic growth and environmental protection. Adopting IEE and
+                        RECP strategies
+                        enables industries to operate more efficiently and sustainably, fostering a cleaner, greener
+                        future.</p>
+                    <!-- this projct -->
+                    <div class="card">
+                        <!-- card header -->
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="true" href="#this-project"
+                                        data-bs-toggle="tab">This Project</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#environmental-health" data-bs-toggle="tab">Human and
+                                        Environmental Health/Business Benefits</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab-innovation" data-bs-toggle="tab">Innovation</a>
+                                </li>
+                            </ul>
+                        </div><!--end card-header-->
+                        <div class="card-body pt-2">
+                            <div class="tab-content">
+                                <div class="row tab-pane fade show active" id="this-project">
+                                    <div class="col-md-12">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)"
+                                                value="Develop policy and regulation that deliver economic, human and environmental health gain to your company."
+                                                name="areas_of_company_benefit[]" {{(in_array("Develop policy and
+                                                regulation that deliver economic, human and environmental health gain to
+                                                your company.", array_column($company_benefits->toArray(),
+                                            'benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Develop policy and regulation
+                                                that deliver economic, humanand environmental health gain to your
+                                                company. </label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)"
+                                                value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise."
+                                                name="areas_of_company_benefit[]" {{(in_array("To offer standard
+                                                accreditation and certification capacity building on ISO 15000 and 14000
+                                                series to your enterprise.", array_column($company_benefits->toArray(),
+                                            'benefit_title')))?
+                                            "checked": ""}}>
+                                            <label class="form-check-label" for=""> To offer standard accreditation
+                                                and certification capacity building on ISO 15000 and 14000 series to
+                                                your enterprise </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)"
+                                                value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector."
+                                                name="areas_of_company_benefit[]" {{(in_array("To deliver impactful
+                                                training on Resource Efficient and Cleaner Production (RECP), including
+                                                comprehensive support materials, toolkits, and learning resources,
+                                                tailored for staff and employees across Nigeria's industrial
+                                                manufacturing sector.", array_column($company_benefits->toArray(),
+                                            'benefit_title')))?
+                                            "checked": ""}}>
+                                            <label class="form-check-label" for=""> To deliver impactful training on
+                                                Resource Efficient and Cleaner Production (RECP), including
+                                                comprehensive support materials, toolkits, and learning resources,
+                                                tailored for staff and employees across Nigeria's industrial
+                                                manufacturing sector. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)"
+                                                value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes."
+                                                name="areas_of_company_benefit[]" {{(in_array("To strengthen the
+                                                internal capacity for delivering RECP training and related technical
+                                                assistance to your enterprise, ensuring long-term impact and achieving
+                                                commercially sustainable outcomes.",
+                                                array_column($company_benefits->toArray(), 'benefit_title')))?
+                                            "checked": ""}}>
+                                            <label class="form-check-label" for=""> To strengthen the internal
+                                                capacity for delivering RECP training and related technical
+                                                assistance to your enterprise, ensuring long-term impact and
+                                                achieving commercially sustainable outcomes. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)"
+                                                value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector."
+                                                name="areas_of_company_benefit[]" {{(in_array("To raise awareness and
+                                                implement pilot programs on RECP, aimed at enhancing productivity
+                                                through efficient use of manufacturing inputs (water, chemicals, and
+                                                materials), minimizing waste and emissions, and promoting regulatory
+                                                compliance while boosting competitiveness within your industrial
+                                                sector.", array_column($company_benefits->toArray(), 'benefit_title')))?
+                                            "checked": ""}}>
+                                            <label class="form-check-label" for=""> To raise awareness and implement
+                                                pilot programs on RECP, aimed at enhancing productivity through
+                                                efficient use of manufacturing inputs (water, chemicals, and
+                                                materials), minimizing waste and emissions, and promoting regulatory
+                                                compliance while boosting competitiveness within your industrial
+                                                sector. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)"
+                                                value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs."
+                                                name="areas_of_company_benefit[]" {{(in_array("To enhance the adoption
+                                                of RECP practices and associated investments by providing a targeted
+                                                financial assistance package for companies participating in RECP pilot
+                                                programs.", array_column($company_benefits->toArray(),
+                                            'benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> To enhance the adoption of RECP
+                                                practices and associated investments by providing a targeted
+                                                financial assistance package for companies participating in RECP
+                                                pilot programs. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)"
+                                                value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects."
+                                                name="areas_of_company_benefit[]" {{(in_array("To deliver the
+                                                cost-saving benefits of RECP to your industrial manufacturing sector by
+                                                facilitating greater access to financial mechanisms—both commercial and
+                                                government—to support the financing of RECP projects.",
+                                                array_column($company_benefits->toArray(),
+                                            'benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> To deliver the cost-saving
+                                                benefits of RECP to your industrial manufacturing sector by
+                                                facilitating greater access to financial mechanisms—both commercial
+                                                and government—to support the financing of RECP projects. </label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    <!-- environmental health -->
-                                    <div class="row tab-pane fade" id="environmental-health">
-                                        <div class="col-md-12">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)"
-                                                    value="Achieve a minimum 20% reduction in energy consumption within one year."
-                                                    name="environment_health_benefit[]" {{(in_array("Achieve a minimum
-                                                    20% reduction in energy consumption within one year.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Achieve a minimum 20% reduction
-                                                    in energy consumption within one year. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)"
-                                                    value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months."
-                                                    name="environment_health_benefit[]" {{(in_array("Achieve a 40%
-                                                    reduction in CO<sub>2</sub> emissions within 18 months.",
+                                <!-- environmental health -->
+                                <div class="row tab-pane fade" id="environmental-health">
+                                    <div class="col-md-12">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)"
+                                                value="Achieve a minimum 20% reduction in energy consumption within one year."
+                                                name="environment_health_benefit[]" {{(in_array("Achieve a minimum 20%
+                                                reduction in energy consumption within one year.",
                                                 array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Achieve a 40% reduction in
-                                                    CO<sub>2</sub> emissions within 18 months.</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)"
-                                                    value="Double your water productivity within one year."
-                                                    name="environment_health_benefit[]" {{(in_array("Double your water
-                                                    productivity within one year.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Double your water productivity
-                                                    within one year. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)"
-                                                    value="Achieve a 50% increase in overall material productivity within one year."
-                                                    name="environment_health_benefit[]" {{(in_array("Achieve a 50%
-                                                    increase in overall material productivity within one year.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Achieve a 50% increase in
-                                                    overall material productivity within one year. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)"
-                                                    value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices."
-                                                    name="environment_health_benefit[]" {{(in_array("Attain ISO 14000
-                                                    certification to demonstrate your commitment to effective
-                                                    environmental management and sustainability practices.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Attain ISO 14000 certification
-                                                    to demonstrate your commitment to effective environmental management
-                                                    and sustainability practices. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)"
-                                                    value="Achieve an increase in overall annual financial savings."
-                                                    name="environment_health_benefit[]" {{(in_array("Achieve an increase
-                                                    in overall annual financial savings.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Achieve an increase in overall
-                                                    annual financial savings. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)"
-                                                    value="Enhance customer satisfaction through improved products, services, and overall experience."
-                                                    name="environment_health_benefit[]" {{(in_array("Enhance customer
-                                                    satisfaction through improved products, services, and overall
-                                                    experience.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Enhance customer satisfaction
-                                                    through improved products, services, and overall experience.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-md-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                    onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)"
-                                                    value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management."
-                                                    name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000
-                                                    series certification to demonstrate adherence to international
-                                                    standards for information and communication technology management.",
-                                                    array_column($company_enviromental_benefits->toArray(),
-                                                'environmental_benefit_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Achieve ISO 15000 series
-                                                    certification to demonstrate adherence to international standards
-                                                    for information and communication technology management. </label>
-                                            </div>
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Achieve a minimum 20% reduction
+                                                in energy consumption within one year. </label>
                                         </div>
                                     </div>
-                                    <!-- environmental health -->
-                                    <!-- Innovation -->
-                                    <div class="row tab-pane fade g-2" id="tab-innovation">
-                                        <div class="col-md-12">
-                                            <div class="col-md-8">
-                                                <label for="">Key areas for improving performance in your
-                                                    industry.</label>
-                                            </div>
-                                            <div class="col-md-12 key-areas-container">
-                                                @foreach($company_areas_of_improvement as $keyArea)
-                                                <div class="row g-2 my-1">
-                                                    <div class="col-md-9">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $keyArea->area_title }}"
-                                                                placeholder="Key area for improving performance in your industry"
-                                                                onblur='update_key_area("{{$company->company_id}}", "{{ $keyArea->improvementAreaID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3"><button class="btn btn-outline-danger"
-                                                            onclick='remove_key_area(this, "{{ $keyArea->improvementAreaID }}")'
-                                                            type="button"> <i class="iconoir-trash"></i> </button></div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="row g-2">
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)"
+                                                value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months."
+                                                name="environment_health_benefit[]" {{(in_array("Achieve a 40% reduction
+                                                in CO<sub>2</sub> emissions within 18 months.",
+                                            array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Achieve a 40% reduction in
+                                                CO<sub>2</sub> emissions within 18 months.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)"
+                                                value="Double your water productivity within one year."
+                                                name="environment_health_benefit[]" {{(in_array("Double your water
+                                                productivity within one year.",
+                                                array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Double your water productivity
+                                                within one year. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)"
+                                                value="Achieve a 50% increase in overall material productivity within one year."
+                                                name="environment_health_benefit[]" {{(in_array("Achieve a 50% increase
+                                                in overall material productivity within one year.",
+                                                array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Achieve a 50% increase in
+                                                overall material productivity within one year. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)"
+                                                value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices."
+                                                name="environment_health_benefit[]" {{(in_array("Attain ISO 14000
+                                                certification to demonstrate your commitment to effective environmental
+                                                management and sustainability practices.",
+                                                array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Attain ISO 14000 certification
+                                                to demonstrate your commitment to effective environmental management
+                                                and sustainability practices. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)"
+                                                value="Achieve an increase in overall annual financial savings."
+                                                name="environment_health_benefit[]" {{(in_array("Achieve an increase in
+                                                overall annual financial savings.",
+                                                array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Achieve an increase in overall
+                                                annual financial savings. </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)"
+                                                value="Enhance customer satisfaction through improved products, services, and overall experience."
+                                                name="environment_health_benefit[]" {{(in_array("Enhance customer
+                                                satisfaction through improved products, services, and overall
+                                                experience.", array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Enhance customer satisfaction
+                                                through improved products, services, and overall experience.
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-md-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)"
+                                                value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management."
+                                                name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000
+                                                series certification to demonstrate adherence to international standards
+                                                for information and communication technology management.",
+                                                array_column($company_enviromental_benefits->toArray(),
+                                            'environmental_benefit_title')))? "checked": ""}}>
+                                            <label class="form-check-label" for=""> Achieve ISO 15000 series
+                                                certification to demonstrate adherence to international standards
+                                                for information and communication technology management. </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- environmental health -->
+                                <!-- Innovation -->
+                                <div class="row tab-pane fade g-2" id="tab-innovation">
+                                    <div class="col-md-12">
+                                        <div class="col-md-8">
+                                            <label for="">Key areas for improving performance in your
+                                                industry.</label>
+                                        </div>
+                                        <div class="col-md-12 key-areas-container">
+                                            @foreach($company_areas_of_improvement as $keyArea)
+                                            <div class="row g-2 my-1">
                                                 <div class="col-md-9">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            placeholder="Key area for performance improvement"
-                                                            id="key_area_for_improvent">
+                                                            value="{{ $keyArea->area_title }}"
+                                                            placeholder="Key area for improving performance in your industry"
+                                                            onblur='update_key_area("{{$company->company_id}}", "{{ $keyArea->improvementAreaID }}", this)'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3"><button
-                                                        class="btn btn-outline-primary btn-sm add_more_key_areas"
-                                                        type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                                <div class="col-md-3"><button class="btn btn-outline-danger"
+                                                        onclick='remove_key_area(this, "{{ $keyArea->improvementAreaID }}")'
+                                                        type="button"> <i class="iconoir-trash"></i> </button></div>
                                             </div>
-
+                                            @endforeach
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Key area for performance improvement"
+                                                        id="key_area_for_improvent">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3"><button
+                                                    class="btn btn-outline-primary btn-sm add_more_key_areas"
+                                                    type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
                                         </div>
 
-                                        <div class="col-md-12">
-                                            <div class="col-md-8">
-                                                <label for="">Highlight innovations that enhance your product's
-                                                    environmental compatibility.</label>
-                                            </div>
-                                            <div class="col-md-12 product-innovation-container">
-                                                @foreach($company_product_innovation as $productInnovation)
-                                                <div class="row g-2 my-1">
-                                                    <div class="col-md-9">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $productInnovation->innovation_area_title }}"
-                                                                placeholder="Key innovation that enhance your product's environmental compatibility"
-                                                                onblur='update_product_innovation("{{$company->company_id}}", "{{ $productInnovation->innovationAreaID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3"><button class="btn btn-outline-danger"
-                                                            onclick='remove_product_innovation(this, "{{ $productInnovation->innovationAreaID }}")'
-                                                            type="button"> <i class="iconoir-trash"></i> </button></div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="row g-2">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-8">
+                                            <label for="">Highlight innovations that enhance your product's
+                                                environmental compatibility.</label>
+                                        </div>
+                                        <div class="col-md-12 product-innovation-container">
+                                            @foreach($company_product_innovation as $productInnovation)
+                                            <div class="row g-2 my-1">
                                                 <div class="col-md-9">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
+                                                            value="{{ $productInnovation->innovation_area_title }}"
                                                             placeholder="Key innovation that enhance your product's environmental compatibility"
-                                                            id="key_product_innovation">
+                                                            onblur='update_product_innovation("{{$company->company_id}}", "{{ $productInnovation->innovationAreaID }}", this)'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3"><button
-                                                        class="btn btn-outline-primary btn-sm add_more_key_innovation"
-                                                        type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                                <div class="col-md-3"><button class="btn btn-outline-danger"
+                                                        onclick='remove_product_innovation(this, "{{ $productInnovation->innovationAreaID }}")'
+                                                        type="button"> <i class="iconoir-trash"></i> </button></div>
                                             </div>
+                                            @endforeach
                                         </div>
-
-                                        <div class="col-md-12">
-                                            <div class="col-md-8">
-                                                <label for="">Identify hazarduous materials in your process system that
-                                                    can be reduced, eliminated, or replaced with safer
-                                                    alternatives.</label>
-                                            </div>
-                                            <div class="col-md-12 hazarduous-material-container">
-                                                @foreach($company_hazarduous_material as $hazarduousMaterial)
-                                                <div class="row g-2 my-1">
-                                                    <div class="col-md-9">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $hazarduousMaterial->material_title }}"
-                                                                placeholder="Key innovation that enhance your product's environmental compatibility"
-                                                                onblur='update_hazarduous_material("{{$company->company_id}}", "{{ $hazarduousMaterial->hazarduousMaterialID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3"><button class="btn btn-outline-danger"
-                                                            onclick='remove_harzardous_material(this, "{{ $hazarduousMaterial->hazarduousMaterialID }}")'
-                                                            type="button"> <i class="iconoir-trash"></i> </button></div>
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Key innovation that enhance your product's environmental compatibility"
+                                                        id="key_product_innovation">
                                                 </div>
-                                                @endforeach
                                             </div>
-                                            <div class="row g-2">
+                                            <div class="col-md-3"><button
+                                                    class="btn btn-outline-primary btn-sm add_more_key_innovation"
+                                                    type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-8">
+                                            <label for="">Identify hazarduous materials in your process system that
+                                                can be reduced, eliminated, or replaced with safer
+                                                alternatives.</label>
+                                        </div>
+                                        <div class="col-md-12 hazarduous-material-container">
+                                            @foreach($company_hazarduous_material as $hazarduousMaterial)
+                                            <div class="row g-2 my-1">
                                                 <div class="col-md-9">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            placeholder="Hazarduous material " id="hazarduous_material">
+                                                            value="{{ $hazarduousMaterial->material_title }}"
+                                                            placeholder="Key innovation that enhance your product's environmental compatibility"
+                                                            onblur='update_hazarduous_material("{{$company->company_id}}", "{{ $hazarduousMaterial->hazarduousMaterialID }}", this)'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3"><button
-                                                        class="btn btn-outline-primary btn-sm add_more_hazardous_material"
-                                                        type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                                <div class="col-md-3"><button class="btn btn-outline-danger"
+                                                        onclick='remove_harzardous_material(this, "{{ $hazarduousMaterial->hazarduousMaterialID }}")'
+                                                        type="button"> <i class="iconoir-trash"></i> </button></div>
                                             </div>
+                                            @endforeach
                                         </div>
-                                        <!-- Innovation -->
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Hazarduous material " id="hazarduous_material">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3"><button
+                                                    class="btn btn-outline-primary btn-sm add_more_hazardous_material"
+                                                    type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                        </div>
                                     </div>
+                                    <!-- Innovation -->
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <h4 class="">Resource Efficiency & Cleaner Production Opportunities</h4>
-                        <p>Resource Efficiency and Cleaner Production (RECP) focus on optimizing
-                            the use of resources while minimizing waste and environmental impacts
-                            throughout production processes. By adopting these strategies, industries
-                            can enhance productivity, reduce costs, and achieve sustainability goals.</p>
-                        <div class="card">
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="true" href="#tab-housekeeping"
-                                            data-bs-toggle="tab">Good Housekeeping</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#process-specific-optimization"
-                                            data-bs-toggle="tab">Process Specific Optimization</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#process-waste-reduction-measures"
-                                            data-bs-toggle="tab">Waste Reduction Measures</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#waste-management-method" data-bs-toggle="tab">Waste
-                                            Management & Disposal Methods</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#product-recovery" data-bs-toggle="tab">Product
-                                            Recovery Measures</a>
-                                    </li>
-                                </ul>
-                            </div><!--end card-header-->
-                            <div class="card-body pt-2">
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="tab-housekeeping">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Attitudinal change (negligence attitude).`)"
-                                                        value="Attitudinal change (negligence attitude)."
-                                                        name="house_keeping[]" {{(in_array("Attitudinal change
-                                                        (negligence attitude).",
-                                                        array_column($company_house_keeping->toArray(),
-                                                    'practice_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Attitudinal change
-                                                        (negligence attitude). </label>
-                                                </div>
+                    <h4 class="">Resource Efficiency & Cleaner Production Opportunities</h4>
+                    <p>Resource Efficiency and Cleaner Production (RECP) focus on optimizing
+                        the use of resources while minimizing waste and environmental impacts
+                        throughout production processes. By adopting these strategies, industries
+                        can enhance productivity, reduce costs, and achieve sustainability goals.</p>
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="true" href="#tab-housekeeping"
+                                        data-bs-toggle="tab">Good Housekeeping</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#process-specific-optimization"
+                                        data-bs-toggle="tab">Process Specific Optimization</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#process-waste-reduction-measures"
+                                        data-bs-toggle="tab">Waste Reduction Measures</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#waste-management-method" data-bs-toggle="tab">Waste
+                                        Management & Disposal Methods</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#product-recovery" data-bs-toggle="tab">Product
+                                        Recovery Measures</a>
+                                </li>
+                            </ul>
+                        </div><!--end card-header-->
+                        <div class="card-body pt-2">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-housekeeping">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Attitudinal change (negligence attitude).`)"
+                                                    value="Attitudinal change (negligence attitude)."
+                                                    name="house_keeping[]" {{(in_array("Attitudinal change (negligence
+                                                    attitude).", array_column($company_house_keeping->toArray(),
+                                                'practice_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Attitudinal change
+                                                    (negligence attitude). </label>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Improved workplace management.`)"
-                                                        value="Improved workplace management." name="house_keeping[]"
-                                                        {{(in_array("Improved workplace management.",
-                                                        array_column($company_house_keeping->toArray(),
-                                                    'practice_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Improved Workplace
-                                                        management. </label>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Improved workplace management.`)"
+                                                    value="Improved workplace management." name="house_keeping[]"
+                                                    {{(in_array("Improved workplace management.",
+                                                    array_column($company_house_keeping->toArray(),
+                                                'practice_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Improved Workplace
+                                                    management. </label>
                                             </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Good operating practices(personel practices, waste segregation etc.).`)"
-                                                        value="Good operating practices(personel practices, waste segregation etc.)."
-                                                        name="house_keeping[]" {{(in_array("Good operating
-                                                        practices(personel practices, waste segregation etc.).",
-                                                        array_column($company_house_keeping->toArray(),
-                                                    'practice_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Good operating
-                                                        practices(personel practices, waste segregation etc.). </label>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Good operating practices(personel practices, waste segregation etc.).`)"
+                                                    value="Good operating practices(personel practices, waste segregation etc.)."
+                                                    name="house_keeping[]" {{(in_array("Good operating
+                                                    practices(personel practices, waste segregation etc.).",
+                                                    array_column($company_house_keeping->toArray(),
+                                                'practice_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Good operating
+                                                    practices(personel practices, waste segregation etc.). </label>
                                             </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Workers motivation.`)"
-                                                        value="Workers motivation." name="house_keeping[]"
-                                                        {{(in_array("Workers motivation.",
-                                                        array_column($company_house_keeping->toArray(),
-                                                    'practice_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Workers motivation. </label>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Workers motivation.`)"
+                                                    value="Workers motivation." name="house_keeping[]"
+                                                    {{(in_array("Workers motivation.",
+                                                    array_column($company_house_keeping->toArray(),
+                                                'practice_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Workers motivation. </label>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Process  Specific Specialization -->
-                                    <div class="row g-2 tab-pane fade " id="process-specific-optimization">
-                                        <div class="col-md-12">
-                                            <div class="col-md-8">
-                                                <label for="">List Unit Processes Requiring Intervention (if
-                                                    applicable)</label>
-                                            </div>
-                                            <div class="col-md-12 unit-process-container">
-                                                @foreach($company_unit_process as $unitProcess)
-                                                <div class="row g-2 my-1">
-                                                    <div class="col-md-9">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $unitProcess->unit_process_title }}"
-                                                                placeholder="Unit process"
-                                                                onblur='update_unit_process("{{$company->company_id}}", "{{ $unitProcess->unitProcessID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3"><button class="btn btn-outline-danger"
-                                                            onclick='remove_unit_process(this, "{{ $unitProcess->unitProcessID }}")'
-                                                            type="button"> <i class="iconoir-trash"></i> </button></div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="row g-2">
+                                <!-- Process  Specific Specialization -->
+                                <div class="row g-2 tab-pane fade " id="process-specific-optimization">
+                                    <div class="col-md-12">
+                                        <div class="col-md-8">
+                                            <label for="">List Unit Processes Requiring Intervention (if
+                                                applicable)</label>
+                                        </div>
+                                        <div class="col-md-12 unit-process-container">
+                                            @foreach($company_unit_process as $unitProcess)
+                                            <div class="row g-2 my-1">
                                                 <div class="col-md-9">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            placeholder="Unit process" id="unit_process">
+                                                            value="{{ $unitProcess->unit_process_title }}"
+                                                            placeholder="Unit process"
+                                                            onblur='update_unit_process("{{$company->company_id}}", "{{ $unitProcess->unitProcessID }}", this)'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3"><button
-                                                        class="btn btn-outline-primary btn-sm add_more_unit_process"
-                                                        type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                                <div class="col-md-3"><button class="btn btn-outline-danger"
+                                                        onclick='remove_unit_process(this, "{{ $unitProcess->unitProcessID }}")'
+                                                        type="button"> <i class="iconoir-trash"></i> </button></div>
                                             </div>
+                                            @endforeach
                                         </div>
-
-                                        <div class="col-md-12">
-                                            <div class="col-md-8">
-                                                <label for=""> Problem Summary and Suggested Solutions. </label>
-                                            </div>
-                                            <div class="col-md-12 problems-solutions-container">
-                                                @foreach($company_problems_and_solutions as $problemSolution)
-                                                <div class="row g-2 my-1 align-items-end">
-                                                    <div class="col-md-5">
-                                                        <label for="">Problem Summary</label>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $problemSolution->problem_title }}"
-                                                                placeholder="Problem Summary"
-                                                                onblur='update_problem_summary("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <label for="">Suggested Solution</label>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $problemSolution->solution_title }}"
-                                                                placeholder="Suggested solution"
-                                                                onblur='update_suggested_solution("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2"><button class="btn btn-outline-danger"
-                                                            onclick='remove_problem_solution(this, "{{ $problemSolution->problemSolutionID }}")'
-                                                            type="button"> <i class="iconoir-trash"></i> </button></div>
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Unit process"
+                                                        id="unit_process">
                                                 </div>
-                                                @endforeach
                                             </div>
+                                            <div class="col-md-3"><button
+                                                    class="btn btn-outline-primary btn-sm add_more_unit_process"
+                                                    type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                        </div>
+                                    </div>
 
-                                            <div class="row g-2 align-items-end">
+                                    <div class="col-md-12">
+                                        <div class="col-md-8">
+                                            <label for=""> Problem Summary and Suggested Solutions. </label>
+                                        </div>
+                                        <div class="col-md-12 problems-solutions-container">
+                                            @foreach($company_problems_and_solutions as $problemSolution)
+                                            <div class="row g-2 my-1 align-items-end">
                                                 <div class="col-md-5">
-                                                    <label for="">Problem summary</label>
+                                                    <label for="">Problem Summary</label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            placeholder="Problem summary" id="problem_summary">
+                                                            value="{{ $problemSolution->problem_title }}"
+                                                            placeholder="Problem Summary"
+                                                            onblur='update_problem_summary("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="">Suggested Solution</label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            placeholder="Suggested solution" id="suggested_solution">
+                                                            value="{{ $problemSolution->solution_title }}"
+                                                            placeholder="Suggested solution"
+                                                            onblur='update_suggested_solution("{{$company->company_id}}", "{{ $problemSolution->problemSolutionID }}", this)'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2 "><button
-                                                        class="btn btn-outline-primary btn-sm add_more_problem_solution"
-                                                        type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
+                                                <div class="col-md-2"><button class="btn btn-outline-danger"
+                                                        onclick='remove_problem_solution(this, "{{ $problemSolution->problemSolutionID }}")'
+                                                        type="button"> <i class="iconoir-trash"></i> </button></div>
                                             </div>
+                                            @endforeach
                                         </div>
-                                    </div>
-                                    <!-- Process specific specialization -->
-                                    <!-- waste reduction measures -->
-                                    <div class="tab-pane fade" id="process-waste-reduction-measures">
-                                        <div class="row mb-2">
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Water recycling flow.`)"
-                                                        id="" value="Water recycling flow."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Water
-                                                        recycling flow.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Water recycling flow.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Waste water treatment.`)"
-                                                        value="Waste water treatment."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Waste water
-                                                        treatment.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Waste water treatment.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Monitoring of the quality and quantity of waste water.`)"
-                                                        value="Monitoring of the quality and quantity of waste water."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Monitoring
-                                                        of the quality and quantity of waste water.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Monitoring of the quality
-                                                        and quantity of wastewater. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Using production equipment or technology that supports energy/resource-efficient production.`)"
-                                                        value="Using production equipment or technology that supports energy/resource-efficient production."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Using
-                                                        production equipment or technology that supports
-                                                        energy/resource-efficient production.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Using production equipment
-                                                        or technology that supports energy/resource-efficient
-                                                        production. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of waste for internal energy sources.`)"
-                                                        value="Use of waste for internal energy sources."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Use of waste
-                                                        for internal energy sources.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Use of waste for internal
-                                                        energy sources. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Installation of lighting sensor.`)"
-                                                        value="Installation of lighting sensor."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Installation
-                                                        of lighting sensor.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Installation of lighting
-                                                        sensor. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Utilization of sunlight for daytime lighting.`)"
-                                                        value="Utilization of sunlight for daytime lighting."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Utilization
-                                                        of sunlight for daytime lighting.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Utilization of sunlight for
-                                                        daytime lighting. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of enviromentally friendly/renewable energy.`)"
-                                                        value="Use of enviromentally friendly/renewable energy."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Use of
-                                                        enviromentally friendly/renewable energy.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Use of enviromentally
-                                                        friendly/renewable energy. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Recording of fuel usage.`)"
-                                                        value="Recording of fuel usage."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Recording of
-                                                        fuel usage.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Recording of fuel usage.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Minimize the use of generating sets.`)"
-                                                        value="Minimize the use of generating sets."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Minimize the
-                                                        use of generating sets.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Minimize the use of
-                                                        generating sets. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Substitute high yield pollutant raw materials with other less polluting materials.`)"
-                                                        value="Substitute high yield pollutant raw materials with other less polluting materials."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Substitute
-                                                        high yield pollutant raw materials with other less polluting
-                                                        materials.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Substitute high yield
-                                                        pollutant raw materials with other less polluting materials.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Maintain the unit process/equipment to minimize emission of pollutants.`)"
-                                                        value="Maintain the unit process/equipment to minimize emission of pollutants."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Maintain the
-                                                        unit process/equipment to minimize emission of pollutants.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Maintain the unit
-                                                        process/equipment to minimize emission of pollutants. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Diluting the air pollutants.`)"
-                                                        value="Diluting the air pollutants."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Diluting the
-                                                        air pollutants.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Diluting the air pollutants.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Plant flowers and trees around the premises to reduce large number of pollutants in the air.`)"
-                                                        value="Plant flowers and trees around the premises to reduce large number of pollutants in the air."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Plant
-                                                        flowers and trees around the premises to reduce large number of
-                                                        pollutants in the air.",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Plant flowers and trees
-                                                        around the premises to reduce large number of pollutants in the
-                                                        air. </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).`)"
-                                                        value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)."
-                                                        name="RECP_waste_reduction_measures[]" {{(in_array("Fuel
-                                                        substituting(petrol and diesel can be replaced with compressed
-                                                        natural gas, solar and wind energy).",
-                                                        array_column($company_waste_reduction_measures->toArray(),
-                                                    'waste_reduction_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Fuel substituting(petrol and
-                                                        diesel can be replaced with compressed natural gas, solar and
-                                                        wind energy). </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- waste reduction measures -->
-                                    <!-- waste management and disposal methods -->
-                                    <div class="tab-pane fade" id="waste-management-method">
-                                        <div class="row g-2 mb-2">
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Landfill`)"
-                                                        value="Landfill" name="waste_management_methods[]"
-                                                        {{(in_array("Landfill",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Landfill </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Recycling`)"
-                                                        value="Recycling" name="waste_management_methods[]"
-                                                        {{(in_array("Recycling",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Recycling </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste segregation`)"
-                                                        value="Waste segregation" name="waste_management_methods[]"
-                                                        {{(in_array("Waste segregation",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Waste segregation </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Incineration`)"
-                                                        value="Incineration" name="waste_management_methods[]"
-                                                        {{(in_array("Incineration",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Incineration </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Composting`)"
-                                                        value="Composting" name="waste_management_methods[]"
-                                                        {{(in_array("Composting",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Composting </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste Symbiosis`)"
-                                                        value="Waste Symbiosis" name="waste_management_methods[]"
-                                                        {{(in_array("Waste Symbiosis",
-                                                        array_column($company_management_measures->toArray(),
-                                                    'management_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Waste Symbiosis </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--  -->
-                                    <!--  -->
-                                    <div class="tab-pane fade" id="product-recovery">
-                                        <div class="row mb-2">
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `High temperature recovery method`)"
-                                                        value="High temperature recovery method"
-                                                        name="product_recovery_measures[]" {{(in_array("High temperature
-                                                        recovery method",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> High temperature recovery
-                                                        method </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using correct material ratio`)"
-                                                        value="Using correct material ratio"
-                                                        name="product_recovery_measures[]" {{(in_array("Using correct
-                                                        material ratio",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Using correct material ratio
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using standard measuring equipment`)"
-                                                        value="Using standard measuring equipment"
-                                                        name="product_recovery_measures[]" {{(in_array("Using standard
-                                                        measuring equipment",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Using standard measuring
-                                                        equipment </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate chemical/ material storage facility`)"
-                                                        value="Adequate chemical/ material storage facility"
-                                                        name="product_recovery_measures[]" {{(in_array("Adequate
-                                                        chemical/ material storage facility",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Adequate chemical/ material
-                                                        storage facility </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate container seal to prevent spill`)"
-                                                        value="Adequate container seal to prevent spill"
-                                                        name="product_recovery_measures[]" {{(in_array("Adequate
-                                                        container seal to prevent spill",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Adequate container seal to
-                                                        prevent spill </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Recycling`)"
-                                                        value="Recycling" name="product_recovery_measures[]"
-                                                        {{(in_array("Recycling",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Recycling </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Filtration`)"
-                                                        value="Filtration" name="product_recovery_measures[]"
-                                                        {{(in_array("Filtration",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Filtration </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                        onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Extended Producer Responsibility(EPR)`)"
-                                                        value="Extended Producer Responsibility(EPR)"
-                                                        name="product_recovery_measures[]" {{(in_array("Extended
-                                                        Producer Responsibility(EPR)",
-                                                        array_column($company_product_recovery_measures->toArray(),
-                                                    'recovery_method_title')))? "checked": ""}}>
-                                                    <label class="form-check-label" for=""> Extended Producer
-                                                        Responsibility(EPR) </label>
-                                                </div>
-                                            </div>
 
+                                        <div class="row g-2 align-items-end">
+                                            <div class="col-md-5">
+                                                <label for="">Problem summary</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Problem summary" id="problem_summary">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="">Suggested Solution</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Suggested solution" id="suggested_solution">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 "><button
+                                                    class="btn btn-outline-primary btn-sm add_more_problem_solution"
+                                                    type="button"> <i class="iconoir-plus fs-4"></i> </button></div>
                                         </div>
                                     </div>
-                                    <!--  -->
                                 </div>
+                                <!-- Process specific specialization -->
+                                <!-- waste reduction measures -->
+                                <div class="tab-pane fade" id="process-waste-reduction-measures">
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Water recycling flow.`)"
+                                                    id="" value="Water recycling flow."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Water recycling
+                                                    flow.", array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Water recycling flow.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Waste water treatment.`)"
+                                                    value="Waste water treatment."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Waste water
+                                                    treatment.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Waste water treatment.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Monitoring of the quality and quantity of waste water.`)"
+                                                    value="Monitoring of the quality and quantity of waste water."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Monitoring of
+                                                    the quality and quantity of waste water.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Monitoring of the quality
+                                                    and quantity of wastewater. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Using production equipment or technology that supports energy/resource-efficient production.`)"
+                                                    value="Using production equipment or technology that supports energy/resource-efficient production."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Using production
+                                                    equipment or technology that supports energy/resource-efficient
+                                                    production.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Using production equipment
+                                                    or technology that supports energy/resource-efficient
+                                                    production. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of waste for internal energy sources.`)"
+                                                    value="Use of waste for internal energy sources."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Use of waste for
+                                                    internal energy sources.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Use of waste for internal
+                                                    energy sources. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Installation of lighting sensor.`)"
+                                                    value="Installation of lighting sensor."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Installation of
+                                                    lighting sensor.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Installation of lighting
+                                                    sensor. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Utilization of sunlight for daytime lighting.`)"
+                                                    value="Utilization of sunlight for daytime lighting."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Utilization of
+                                                    sunlight for daytime lighting.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Utilization of sunlight for
+                                                    daytime lighting. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of enviromentally friendly/renewable energy.`)"
+                                                    value="Use of enviromentally friendly/renewable energy."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Use of
+                                                    enviromentally friendly/renewable energy.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Use of enviromentally
+                                                    friendly/renewable energy. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Recording of fuel usage.`)"
+                                                    value="Recording of fuel usage."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Recording of
+                                                    fuel usage.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Recording of fuel usage.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Minimize the use of generating sets.`)"
+                                                    value="Minimize the use of generating sets."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Minimize the use
+                                                    of generating sets.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Minimize the use of
+                                                    generating sets. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Substitute high yield pollutant raw materials with other less polluting materials.`)"
+                                                    value="Substitute high yield pollutant raw materials with other less polluting materials."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Substitute high
+                                                    yield pollutant raw materials with other less polluting materials.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Substitute high yield
+                                                    pollutant raw materials with other less polluting materials.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Maintain the unit process/equipment to minimize emission of pollutants.`)"
+                                                    value="Maintain the unit process/equipment to minimize emission of pollutants."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Maintain the
+                                                    unit process/equipment to minimize emission of pollutants.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Maintain the unit
+                                                    process/equipment to minimize emission of pollutants. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Diluting the air pollutants.`)"
+                                                    value="Diluting the air pollutants."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Diluting the air
+                                                    pollutants.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Diluting the air pollutants.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Plant flowers and trees around the premises to reduce large number of pollutants in the air.`)"
+                                                    value="Plant flowers and trees around the premises to reduce large number of pollutants in the air."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Plant flowers
+                                                    and trees around the premises to reduce large number of pollutants
+                                                    in the air.",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Plant flowers and trees
+                                                    around the premises to reduce large number of pollutants in the
+                                                    air. </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).`)"
+                                                    value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)."
+                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Fuel
+                                                    substituting(petrol and diesel can be replaced with compressed
+                                                    natural gas, solar and wind energy).",
+                                                    array_column($company_waste_reduction_measures->toArray(),
+                                                'waste_reduction_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Fuel substituting(petrol and
+                                                    diesel can be replaced with compressed natural gas, solar and
+                                                    wind energy). </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- waste reduction measures -->
+                                <!-- waste management and disposal methods -->
+                                <div class="tab-pane fade" id="waste-management-method">
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Landfill`)"
+                                                    value="Landfill" name="waste_management_methods[]"
+                                                    {{(in_array("Landfill",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Landfill </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Recycling`)"
+                                                    value="Recycling" name="waste_management_methods[]"
+                                                    {{(in_array("Recycling",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Recycling </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste segregation`)"
+                                                    value="Waste segregation" name="waste_management_methods[]"
+                                                    {{(in_array("Waste segregation",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Waste segregation </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Incineration`)"
+                                                    value="Incineration" name="waste_management_methods[]"
+                                                    {{(in_array("Incineration",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Incineration </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Composting`)"
+                                                    value="Composting" name="waste_management_methods[]"
+                                                    {{(in_array("Composting",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Composting </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeWasteDisposalMethod(this, '{{$company->company_id}}', `Waste Symbiosis`)"
+                                                    value="Waste Symbiosis" name="waste_management_methods[]"
+                                                    {{(in_array("Waste Symbiosis",
+                                                    array_column($company_management_measures->toArray(),
+                                                'management_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Waste Symbiosis </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <!--  -->
+                                <div class="tab-pane fade" id="product-recovery">
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `High temperature recovery method`)"
+                                                    value="High temperature recovery method"
+                                                    name="product_recovery_measures[]" {{(in_array("High temperature
+                                                    recovery method",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> High temperature recovery
+                                                    method </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using correct material ratio`)"
+                                                    value="Using correct material ratio"
+                                                    name="product_recovery_measures[]" {{(in_array("Using correct
+                                                    material ratio",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Using correct material ratio
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using standard measuring equipment`)"
+                                                    value="Using standard measuring equipment"
+                                                    name="product_recovery_measures[]" {{(in_array("Using standard
+                                                    measuring equipment",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Using standard measuring
+                                                    equipment </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate chemical/ material storage facility`)"
+                                                    value="Adequate chemical/ material storage facility"
+                                                    name="product_recovery_measures[]" {{(in_array("Adequate chemical/
+                                                    material storage facility",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Adequate chemical/ material
+                                                    storage facility </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate container seal to prevent spill`)"
+                                                    value="Adequate container seal to prevent spill"
+                                                    name="product_recovery_measures[]" {{(in_array("Adequate container
+                                                    seal to prevent spill",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Adequate container seal to
+                                                    prevent spill </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Recycling`)"
+                                                    value="Recycling" name="product_recovery_measures[]"
+                                                    {{(in_array("Recycling",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Recycling </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Filtration`)"
+                                                    value="Filtration" name="product_recovery_measures[]"
+                                                    {{(in_array("Filtration",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Filtration </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id=""
+                                                    onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Extended Producer Responsibility(EPR)`)"
+                                                    value="Extended Producer Responsibility(EPR)"
+                                                    name="product_recovery_measures[]" {{(in_array("Extended Producer
+                                                    Responsibility(EPR)",
+                                                    array_column($company_product_recovery_measures->toArray(),
+                                                'recovery_method_title')))? "checked": ""}}>
+                                                <label class="form-check-label" for=""> Extended Producer
+                                                    Responsibility(EPR) </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--  -->
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Inventory Management -->
-                    <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
-                        <h3>Inventory Management</h3>
-                        <div class="accordion my-3" id="inventoryAccordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="waterHeading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#waterCollapse" aria-expanded="false"
-                                        aria-controls="waterCollapse">
-                                        Water Inventory
-                                    </button>
-                                </h2>
-                                <div id="waterCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="waterHeading">
-                                    <div class="accordion-body">
-                                        <!-- Water inventory -->
-                                        <!-- water inventory -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-body py-3">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id"
-                                                        value="{{ $company->company_id }}">
-                                                    <div class="row g-2">
-                                                        @foreach($waterQuestions as $question)
-                                                        <!-- question  -->
-                                                        <div class="col-md-6">
-                                                            <!-- form check -->
-                                                            <div class="form-check">
-                                                                <input class="form-check-input"
-                                                                    onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
-                                                                    type="checkbox" value="{{ $question->questionId }}"
-                                                                    name="{{ $question->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $question->questionId }}"
-                                                                    {{(in_array($question->questionId,
-                                                                array_column($CompanyWaterQuestions->toArray(),
-                                                                'questionID')))? "checked": ""}}
-                                                                >
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckIndeterminate">
-                                                                    {{ $question->question }}
-                                                                </label>
-                                                            </div>
-                                                            <!-- form check -->
-                                                        </div>
-                                                        <!-- question ends -->
-                                                        @endforeach
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                        <div class="card shadow-sm">
-                                            <div class="card-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id"
-                                                        value="{{ $company->company_id }}">
-                                                    <label for="">Indicate the water conservations opportunity that is
-                                                        applicable or
-                                                        beneficial to your process</label>
-                                                    <div class="row g-2 mt-2">
-                                                        @foreach($WaterConservationMethod as $method)
-                                                        <!-- question  -->
-                                                        <div class="col-md-6">
-                                                            <!-- form check -->
-                                                            <div class="form-check">
-                                                                <input class="form-check-input"
-                                                                    onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
-                                                                    type="checkbox"
-                                                                    value="{{ $method->WaterConservationMethodId }}"
-                                                                    name="{{ $method->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}"
-                                                                    {{(in_array($method->WaterConservationMethodId,
-                                                                array_column($companyWaterConservationMethod->toArray(),
-                                                                'waterConservationMethod_id')))? "checked": ""}}
-                                                                >
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckIndeterminate">
-                                                                    {{ $method->method }}
-                                                                </label>
-                                                            </div>
-                                                            <!-- form check -->
-                                                        </div>
-                                                        <!-- question ends -->
-                                                        @endforeach
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                        <div class="card shadow-sm">
-                                            <div class="card-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id"
-                                                        value="{{ $company->company_id }}">
-                                                    <label for="">Select the water source used in your
-                                                        Organization</label>
-                                                    <div class="row g-2 mt-2">
-                                                        @foreach($WaterSources as $sources)
-                                                        <!-- question  -->
-                                                        <div class="col-md-6">
-                                                            <!-- form check -->
-                                                            <div class="form-check">
-                                                                <input class="form-check-input"
-                                                                    onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
-                                                                    type="checkbox"
-                                                                    value="{{ $sources->WaterSourcesId }}"
-                                                                    name="{{ $sources->label }}"
-                                                                    id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}"
-                                                                    {{(in_array($sources->WaterSourcesId,
-                                                                array_column($companyWaterSources->toArray(),
-                                                                'WaterSources_id')))? "checked": ""}}
-                                                                >
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckIndeterminate">
-                                                                    {{ $sources->sources }}
-                                                                </label>
-                                                            </div>
-                                                            <!-- form check -->
-                                                        </div>
-                                                        <!-- question ends -->
-                                                        @endforeach
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- Water Sources -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <h4 class="card-title mb-0">Water Sources Details</h4>
-                                            </div> <!-- end card-header -->
-
-                                            <div class="card-body pt-0" id="waterSourceForm">
-                                                <input type="hidden" name="company_id"
+                <!-- Inventory Management -->
+                <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+                    <h3>Inventory Management</h3>
+                    <div class="accordion my-3" id="inventoryAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="waterHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#waterCollapse" aria-expanded="false" aria-controls="waterCollapse">
+                                    Water Inventory
+                                </button>
+                            </h2>
+                            <div id="waterCollapse" class="accordion-collapse collapse" aria-labelledby="waterHeading">
+                                <div class="accordion-body">
+                                    <!-- Water inventory -->
+                                    <!-- water inventory -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-body py-3">
+                                            <form action="" method="post">
+                                                <input type="hidden" class="form-control" name="company_id"
                                                     value="{{ $company->company_id }}">
-
-                                                <div class="row g-3">
-                                                    <!-- Water Source -->
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <label for="water_source" class="form-label">Water
-                                                                Source</label>
-                                                            <select name="water_source" id="source" class="form-select">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                @foreach($waterSources as $source)
-                                                                @if(in_array($source->WaterSourcesId,
-                                                                array_column($companyWaterSources->toArray(),
-                                                                'WaterSources_id')))
-                                                                <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                    {{ $source->sources }}
-                                                                </option>
-                                                                @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Location -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="location" class="form-label">Location</label>
-                                                            <input type="text" id="location" class="form-control"
-                                                                name="location">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Capacity of Water -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="capacity" class="col col-form-label">Capacity of
-                                                                Water (LTR)</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="capacity" value="0">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Save Button -->
-                                                    <div class="col-12 mt-3">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-source">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end card-body -->
-                                        </div>
-                                        <!-- End Water Sources -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <h4 class="card-title">Water Usage</h4>
-                                                    </div><!--end col-->
-                                                </div> <!--end row-->
-                                            </div><!--end card-header-->
-                                            <div class="card-body pt-0" id="water-usage-form">
-                                                <input type="hidden" value="{{ $company->company_id }}"
-                                                    name="company_id">
                                                 <div class="row g-2">
-                                                    <!-- Unit of measurement -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Volume of
-                                                                Water</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="volume" value="0">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
+                                                    @foreach($waterQuestions as $question)
+                                                    <!-- question  -->
+                                                    <div class="col-md-6">
+                                                        <!-- form check -->
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
+                                                                type="checkbox" value="{{ $question->questionId }}"
+                                                                name="{{ $question->label }}"
+                                                                id="flexCheckIndeterminate_{{ $question->questionId }}"
+                                                                {{(in_array($question->questionId,
+                                                            array_column($CompanyWaterQuestions->toArray(),
+                                                            'questionID')))? "checked": ""}}
+                                                            >
+                                                            <label class="form-check-label"
+                                                                for="flexCheckIndeterminate">
+                                                                {{ $question->question }}
+                                                            </label>
                                                         </div>
+                                                        <!-- form check -->
                                                     </div>
-                                                    <!-- Unit of measurement -->
-                                                    <!-- date type -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <label class="col my-1 control-label">Date Type</label>
-                                                        <div class="col-md-9">
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio1" value="daily"
-                                                                    checked onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio1">Daily</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio2" value="weekly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio2">Weekly</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio3" value="monthly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio3">Monthly</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio4" value="yearly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio3">Yearly</label>
-                                                            </div>
-                                                        </div>
-                                                    </div> <!--end row-->
-                                                    <!-- date type -->
-                                                    <!-- Date -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group" id="date">
-                                                            <label for="" class="col col-form-label">Date</label>
-                                                            <input type="date" class="form-control" name="date">
-                                                        </div>
-                                                    </div>
-                                                    <!-- end Date -->
-                                                    <!-- Material name -->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Remark</label>
-                                                            <input type="text" class="form-control" name="remark">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Material name -->
-                                                    <div class="col-12">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-usage">Save</button>
-                                                    </div>
+                                                    <!-- question ends -->
+                                                    @endforeach
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                        <!-- water usage card -->
-                                        <!-- water usage logs card -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <h4 class="card-title mb-0">Water Usage Logs</h4>
-                                            </div> <!-- end card-header -->
+                                    </div>
 
-                                            <div class="card-body pt-0" id="waterUsageLogsForm">
-                                                <input type="hidden" name="company_id"
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <form action="" method="post">
+                                                <input type="hidden" class="form-control" name="company_id"
                                                     value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <label for="water_source" class="form-label">Water
-                                                                Source</label>
-                                                            <select name="water_source_selected"
-                                                                id="water_source_selected" class="form-select">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                @foreach($WaterSources as $source)
-                                                                @if(in_array($source->WaterSourcesId,
-                                                                array_column($companyWaterSources->toArray(),
-                                                                'WaterSources_id')))
-                                                                <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                    {{ $source->sources }}
-                                                                </option>
-                                                                @endif
-                                                                @endforeach
-                                                            </select>
+                                                <label for="">Indicate the water conservations opportunity that is
+                                                    applicable or
+                                                    beneficial to your process</label>
+                                                <div class="row g-2 mt-2">
+                                                    @foreach($WaterConservationMethod as $method)
+                                                    <!-- question  -->
+                                                    <div class="col-md-6">
+                                                        <!-- form check -->
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
+                                                                type="checkbox"
+                                                                value="{{ $method->WaterConservationMethodId }}"
+                                                                name="{{ $method->label }}"
+                                                                id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}"
+                                                                {{(in_array($method->WaterConservationMethodId,
+                                                            array_column($companyWaterConservationMethod->toArray(),
+                                                            'waterConservationMethod_id')))? "checked": ""}}
+                                                            >
+                                                            <label class="form-check-label"
+                                                                for="flexCheckIndeterminate">
+                                                                {{ $method->method }}
+                                                            </label>
                                                         </div>
+                                                        <!-- form check -->
                                                     </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Quantity
-                                                                Used</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="quantity_used" value="">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Unit of
-                                                                Measurement</label>
-                                                            <select name="unit_of_water_measured" id="source"
-                                                                class="form-select">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                <option value="kg">Kilogram (kg)</option>
-                                                                <option value="g">Gram (g)</option>
-                                                                <option value="lb">Pound (lb)</option>
-                                                                <option value="oz">Ounce (oz)</option>
-                                                                <option value="cm">Centimeter (cm)</option>
-                                                                <option value="m">Meter (m)</option>
-                                                                <option value="in">Inch (in)</option>
-                                                                <option value="ft">Foot (ft)</option>
-                                                                <option value="l">Liter (L)</option>
-                                                                <option value="ml">Milliliter (mL)</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group" id="date">
-                                                            <label for="" class="col col-form-label">Date</label>
-                                                            <input type="date" class="form-control" name="date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Purpose</label>
-                                                            <input type="text" class="form-control" name="purpose">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-usage-logs">Save</button>
-                                                    </div>
+                                                    <!-- question ends -->
+                                                    @endforeach
                                                 </div>
-                                            </div> <!-- end card-body -->
+                                            </form>
                                         </div>
-                                        <!-- End Water Usage Logs -->
-                                        <!-- water recycling logs -->
-                                        <!-- water usage logs card -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                                            </div> <!-- end card-header -->
-                                            <div class="card-body pt-0" id="waterRecyclingLogsForm">
-                                                <input type="hidden" name="company_id"
+                                    </div>
+
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <form action="" method="post">
+                                                <input type="hidden" class="form-control" name="company_id"
                                                     value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Quantity
-                                                                Recycled</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="quantity_recycled" value="">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
+                                                <label for="">Select the water source used in your
+                                                    Organization</label>
+                                                <div class="row g-2 mt-2">
+                                                    @foreach($WaterSources as $sources)
+                                                    <!-- question  -->
+                                                    <div class="col-md-6">
+                                                        <!-- form check -->
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
+                                                                type="checkbox" value="{{ $sources->WaterSourcesId }}"
+                                                                name="{{ $sources->label }}"
+                                                                id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}"
+                                                                {{(in_array($sources->WaterSourcesId,
+                                                            array_column($companyWaterSources->toArray(),
+                                                            'WaterSources_id')))? "checked": ""}}
+                                                            >
+                                                            <label class="form-check-label"
+                                                                for="flexCheckIndeterminate">
+                                                                {{ $sources->sources }}
+                                                            </label>
                                                         </div>
+                                                        <!-- form check -->
                                                     </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Unit</label>
-                                                            <select name="unit_of_water_recycled"
-                                                                id="unit_of_water_recycled" class="form-select">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                <option value="kg">Kilogram (kg)</option>
-                                                                <option value="g">Gram (g)</option>
-                                                                <option value="lb">Pound (lb)</option>
-                                                                <option value="oz">Ounce (oz)</option>
-                                                                <option value="cm">Centimeter (cm)</option>
-                                                                <option value="m">Meter (m)</option>
-                                                                <option value="in">Inch (in)</option>
-                                                                <option value="ft">Foot (ft)</option>
-                                                                <option value="l">Liter (L)</option>
-                                                                <option value="ml">Milliliter (mL)</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group" id="date">
-                                                            <label for="" class="col col-form-label">Reycling
-                                                                Date</label>
-                                                            <input type="date" class="form-control"
-                                                                name="recycling_date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Method</label>
-                                                            <input type="text" class="form-control" name="method">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-recycling-logs">Save</button>
-                                                    </div>
+                                                    <!-- question ends -->
+                                                    @endforeach
                                                 </div>
-                                            </div> <!-- end card-body -->
+                                            </form>
                                         </div>
-                                        <!-- end water recycling logs -->
-                                        <!-- water quality log -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <h4 class="card-title mb-0">Water Quality Logs</h4>
-                                            </div> <!-- end card-header -->
-                                            <div class="card-body pt-0" id="waterQualityLogForm">
-                                                <input type="hidden" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group" id="date">
-                                                            <label for="" class="col col-form-label">Test Date</label>
-                                                            <input type="date" class="form-control" name="test_date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">PH Level</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="ph_level" value="0">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Turbidity
-                                                                Level</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="turbidity_level" value="0">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="contaminants_detected"
-                                                                class="form-label">Contaminants Detected</label>
-                                                            <textarea class="form-control" id="contaminants_detected"
-                                                                name="contaminants_detected" rows="3"
-                                                                placeholder="Enter contaminants detected"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="test_results" class="form-label">Test
-                                                                Results</label>
-                                                            <textarea class="form-control" id="test_results"
-                                                                name="test_results" rows="3"
-                                                                placeholder="Enter test results"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-quality-logs">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end card-body -->
-                                        </div>
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
-                                            </div> <!-- end card-header -->
-                                            <div class="card-body pt-0" id="water-usage-form">
-                                                <input type="hidden" value="{{ $company->company_id }}"
-                                                    name="company_id">
-                                                <div class="row g-2">
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Volume of
-                                                                Water</label>
-                                                            <div class="input-group qty-icons">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                                <input type="number" class="form-control" min="0"
-                                                                    name="volume" value="0">
-                                                                <button class="btn btn-primary"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <label class="col my-1 control-label">Date Type</label>
-                                                        <div class="col-md-9">
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio1" value="daily"
-                                                                    checked onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio1">Daily</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio2" value="weekly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio2">Weekly</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio3" value="monthly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio3">Monthly</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="date_type" id="inlineRadio4" value="yearly"
-                                                                    onchange="addDate(this)">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio4">Yearly</label>
-                                                            </div>
-                                                        </div>
-                                                    </div> <!--end row-->
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group" id="date">
-                                                            <label for="" class="col col-form-label">Date</label>
-                                                            <input type="date" class="form-control" name="date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="" class="col col-form-label">Remark</label>
-                                                            <input type="text" class="form-control" name="remark">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="btn-submit-water-usage">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <h4 class="card-title">Water Usage</h4>
-                                                    </div><!--end col-->
-                                                </div> <!--end row-->
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table mb-0" id="tbl-company-material">
-                                                        <thead class="table-light">
-                                                            <tr>
-                                                                <th>Volume</th>
-                                                                <!-- <th>Date type</th> -->
-                                                                <th>Date</th>
-                                                                <th>Remark</th>
-                                                                <th class="text-end">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="water-usage-table">
-                                                            @foreach($company_water_usage as $key=>$water_usage)
-                                                            <tr>
-                                                                <td>{{ $water_usage->volume }}</td>
-                                                                <!-- <td>{{$water_usage->date_type}}</td> -->
-                                                                @if($water_usage->date_type === 'monthly')
-                                                                <td>{{
-                                                                    \Carbon\Carbon::parse($water_usage->date)->format('M
-                                                                    Y') }}</td>
-                                                                @elseif($water_usage->date_type === 'yearly')
-                                                                <td>{{
-                                                                    \Carbon\Carbon::parse($water_usage->date)->format('Y')
-                                                                    }}</td>
-                                                                @elseif($water_usage->date_type === 'weekly')
-                                                                <td>{{
-                                                                    \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d
-                                                                    M Y') }} - {{
-                                                                    \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d
-                                                                    M Y') }}</td>
-                                                                @else
-                                                                <td>{{
-                                                                    \Carbon\Carbon::parse($water_usage->date)->format('d
-                                                                    M Y') }}</td>
-                                                                @endif
-                                                                <td>{{$water_usage->remark}}</td>
-                                                                <td class="text-end">
-                                                                    <div class="dropdown d-inline-block">
-                                                                        <a class="dropdown-toggle arrow-none"
-                                                                            id="dLabel11" data-bs-toggle="dropdown"
-                                                                            href="#" role="button" aria-haspopup="false"
-                                                                            aria-expanded="false">
-                                                                            <i
-                                                                                class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                        </a>
-                                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                                            aria-labelledby="dLabel11">
-                                                                            <a class="dropdown-item" href="#">Update
-                                                                                Material</a>
-                                                                            <a class="dropdown-item" href="#">Delete
-                                                                                Material</a>
-                                                                            <hr class="dropdown-divider">
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                    </div>
+                                    <!-- Water Sources -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h4 class="card-title mb-0">Water Sources Details</h4>
+                                        </div> <!-- end card-header -->
+
+                                        <div class="card-body pt-0" id="waterSourceForm">
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                            <div class="row g-3">
+                                                <!-- Water Source -->
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="water_source" class="form-label">Water
+                                                            Source</label>
+                                                        <select name="water_source" id="source" class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            @foreach($waterSources as $source)
+                                                            @if(in_array($source->WaterSourcesId,
+                                                            array_column($companyWaterSources->toArray(),
+                                                            'WaterSources_id')))
+                                                            <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                {{ $source->sources }}
+                                                            </option>
+                                                            @endif
                                                             @endforeach
-                                                        </tbody>
-                                                    </table><!--end /table-->
-                                                </div><!--end /tableresponsive-->
-                                            </div>
-                                        </div>
-                                        <!-- end water usage card -->
-
-                                        <!-- Water inventory -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="chemicalHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#chemicalCollapse" aria-expanded="false"
-                                        aria-controls="chemicalCollapse">
-                                        Chemical Inventory
-                                    </button>
-                                </h2>
-                                <div id="chemicalCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="chemicalHeading">
-                                    <div class="accordion-body">
-                                        <!-- chemical -->
-                                        <div class="card shadow-sm border-0">
-                                            <div class="card-header bg-primary text-white">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <h4 class="card-title mb-0">Add New Chemical</h4>
-                                                    </div><!--end col-->
-                                                </div> <!--end row-->
-                                            </div><!--end card-header-->
-                                            <div class="card-body pt-0">
-                                                <form action="" method="post" id="chemical-form">
-                                                    <input type="hidden" class="form-control" name="company_id"
-                                                        value="{{ $company->company_id }}">
-                                                    <div class="row g-2 align-items-end">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="chemical">Chemical</label>
-                                                                <select name="chemical" id="chemical"
-                                                                    class="form-select">
-                                                                    <option value="" selected disabled>Choose...
-                                                                    </option>
-                                                                    @foreach($approved_chemicals as $chemical)
-                                                                    <option value="{{ $chemical->chemical_id }}">{{
-                                                                        $chemical->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="unit_of_measurement">Unit of
-                                                                    Measurement</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="unit_of_measurement"
-                                                                    placeholder="Unit of Measurement">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="threshold">Threshold</label>
-                                                                <input type="number" class="form-control"
-                                                                    name="threshold"
-                                                                    placeholder="Minimum Stock Threshold" min="0">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="d-flex align-items-center">
-                                                                <button type="button" class="btn btn-primary"
-                                                                    id="btn-submit-chemical">
-                                                                    Save
-                                                                    <span class="loader" id="loader"></span>
-                                                                </button>
-                                                            </div>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Location -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="location" class="form-label">Location</label>
+                                                        <input type="text" id="location" class="form-control"
+                                                            name="location">
+                                                    </div>
+                                                </div>
+                                                <!-- Capacity of Water -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="capacity" class="col col-form-label">Capacity of
+                                                            Water (LTR)</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="capacity" value="0">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
+                                                <!-- Save Button -->
+                                                <div class="col-12 mt-3">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-source">Save</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card shadow-sm border-0 mt-4">
-                                            <div class="card-header bg-primary text-white" id="headingChemicals">
-                                                <h4 class="card-title mb-0">
-                                                    <a class="accordion-toggle text-white" data-bs-toggle="collapse"
-                                                        href="#collapseChemicals" aria-expanded="true"
-                                                        aria-controls="collapseChemicals">
-                                                        Company Chemicals
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseChemicals" class="collapse show"
-                                                aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped mb-0"
-                                                            id="tbl-company-chemical">
-                                                            <thead class="table-light">
-                                                                <tr>
-                                                                    <th>Chemical</th>
-                                                                    <th>Unit of Measurement</th>
-                                                                    <th>Chemical Status</th>
-                                                                    <th class="text-end">Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($company_chemicals as $chemical)
-                                                                <tr>
-                                                                    <td>{{ $chemical->chemical->name }} ({!!
-                                                                        $chemical->chemical->formula !!})</td>
-                                                                    <td>{{ $chemical->unit }}</td>
-                                                                    <td>
-                                                                        <span
-                                                                            class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
-                                                                            {{ $chemical->status }}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td class="text-end">
-                                                                        <div class="dropdown d-inline-block"
-                                                                            style="position: relative !important; z-index: 99999999999999;">
-                                                                            <a class="dropdown-toggle arrow-none"
-                                                                                id="dLabel11" data-bs-toggle="dropdown"
-                                                                                href="#" role="button"
-                                                                                aria-haspopup="false"
-                                                                                aria-expanded="false">
-                                                                                <i
-                                                                                    class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                            </a>
-                                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                                aria-labelledby="dLabel11"
-                                                                                style="z-index: 99999999999999;">
-                                                                                <a class="dropdown-item"
-                                                                                    href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
-                                                                                    Chemical</a>
-                                                                                <a class="dropdown-item" href="#">Update
-                                                                                    Chemical</a>
-                                                                                <a class="dropdown-item" href="#">Delete
-                                                                                    Chemical</a>
-                                                                                <hr class="dropdown-divider">
-                                                                                <a class="dropdown-item" href="#">Setup
-                                                                                    Price</a>
-                                                                                <a href="#" class="dropdown-item"
-                                                                                    onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
-                                                                                    In Item</a>
-                                                                                <a href="#" class="dropdown-item"
-                                                                                    onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
-                                                                                    Out Item</a>
-                                                                                <a href="#" class="dropdown-item">Make
-                                                                                    Adjustment</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table><!--end /table-->
-                                                    </div><!--end /tableresponsive-->
+                                        </div> <!-- end card-body -->
+                                    </div>
+                                    <!-- End Water Sources -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title">Water Usage</h4>
+                                                </div><!--end col-->
+                                            </div> <!--end row-->
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0" id="water-usage-form">
+                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                            <div class="row g-2">
+                                                <!-- Unit of measurement -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Volume of
+                                                            Water</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="volume" value="0">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Unit of measurement -->
+                                                <!-- date type -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <label class="col my-1 control-label">Date Type</label>
+                                                    <div class="col-md-9">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio1" value="daily" checked
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio1">Daily</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio2" value="weekly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio2">Weekly</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio3" value="monthly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio3">Monthly</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio4" value="yearly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio3">Yearly</label>
+                                                        </div>
+                                                    </div>
+                                                </div> <!--end row-->
+                                                <!-- date type -->
+                                                <!-- Date -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group" id="date">
+                                                        <label for="" class="col col-form-label">Date</label>
+                                                        <input type="date" class="form-control" name="date">
+                                                    </div>
+                                                </div>
+                                                <!-- end Date -->
+                                                <!-- Material name -->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Remark</label>
+                                                        <input type="text" class="form-control" name="remark">
+                                                    </div>
+                                                </div>
+                                                <!-- Material name -->
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-usage">Save</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- chemical -->
                                     </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="materialHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#materialCollapse" aria-expanded="false"
-                                        aria-controls="materialCollapse">
-                                        Material Inventory
-                                    </button>
-                                </h2>
-                                <div id="materialCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="materialHeading">
-                                    <div class="accordion-body">
-                                        <!-- Material Inventory -->
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <h4 class="card-title">Add New Material</h4>
-                                                    </div><!--end col-->
-                                                </div> <!--end row-->
-                                            </div><!--end card-header-->
-                                            <div class="card-body pt-0">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="company_id"
-                                                        value="{{ $company->company_id }}">
-                                                    <div class="row g-2">
-                                                        <!-- Material -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="material">Material</label>
-                                                                <select name="material" id="material"
-                                                                    class="form-select">
-                                                                    <option value="" selected disabled>Choose...
-                                                                    </option>
-                                                                    @foreach($materials as $material)
-                                                                    <option value="{{ $material->materialID }}">{{
-                                                                        $material->material }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Serial Number -->
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="serial_number">Serial Number (If
-                                                                    any)</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="serial_number" name="serial_number"
-                                                                    placeholder="Serial Number">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Unit of Measurement -->
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="unit_of_measurement">Unit of
-                                                                    Measurement</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="unit_of_measurement" name="unit_of_measurement"
-                                                                    placeholder="Unit of Measurement">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Threshold -->
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <label for="threshold">Threshold</label>
-                                                                <input type="number" class="form-control" id="threshold"
-                                                                    name="threshold"
-                                                                    placeholder="Minimum Stock Threshold" min="0">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Save Button-->
-                                                        <div class="col-12 mt-3">
-                                                            <div class="d-flex">
-                                                                <button type="button" class="btn btn-primary"
-                                                                    id="btn-submit-material">Save</button>
-                                                                <span class="loader" id="loader"></span>
-                                                            </div>
+                                    <!-- water usage card -->
+                                    <!-- water usage logs card -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h4 class="card-title mb-0">Water Usage Logs</h4>
+                                        </div> <!-- end card-header -->
+
+                                        <div class="card-body pt-0" id="waterUsageLogsForm">
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-3">
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="water_source" class="form-label">Water
+                                                            Source</label>
+                                                        <select name="water_source_selected" id="water_source_selected"
+                                                            class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            @foreach($WaterSources as $source)
+                                                            @if(in_array($source->WaterSourcesId,
+                                                            array_column($companyWaterSources->toArray(),
+                                                            'WaterSources_id')))
+                                                            <option value="{{ $source->WaterSourcesId }}" selected>
+                                                                {{ $source->sources }}
+                                                            </option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Quantity
+                                                            Used</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="quantity_used" value="">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Unit of
+                                                            Measurement</label>
+                                                        <select name="unit_of_water_measured" id="source"
+                                                            class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            <option value="kg">Kilogram (kg)</option>
+                                                            <option value="g">Gram (g)</option>
+                                                            <option value="lb">Pound (lb)</option>
+                                                            <option value="oz">Ounce (oz)</option>
+                                                            <option value="cm">Centimeter (cm)</option>
+                                                            <option value="m">Meter (m)</option>
+                                                            <option value="in">Inch (in)</option>
+                                                            <option value="ft">Foot (ft)</option>
+                                                            <option value="l">Liter (L)</option>
+                                                            <option value="ml">Milliliter (mL)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group" id="date">
+                                                        <label for="" class="col col-form-label">Date</label>
+                                                        <input type="date" class="form-control" name="date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Purpose</label>
+                                                        <input type="text" class="form-control" name="purpose">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-3">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-usage-logs">Save</button>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end card-body -->
+                                    </div>
+                                    <!-- End Water Usage Logs -->
+                                    <!-- water recycling logs -->
+                                    <!-- water usage logs card -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h4 class="card-title mb-0">Water Recycling Logs</h4>
+                                        </div> <!-- end card-header -->
+                                        <div class="card-body pt-0" id="waterRecyclingLogsForm">
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-3">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Quantity
+                                                            Recycled</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="quantity_recycled" value="">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Unit</label>
+                                                        <select name="unit_of_water_recycled"
+                                                            id="unit_of_water_recycled" class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            <option value="kg">Kilogram (kg)</option>
+                                                            <option value="g">Gram (g)</option>
+                                                            <option value="lb">Pound (lb)</option>
+                                                            <option value="oz">Ounce (oz)</option>
+                                                            <option value="cm">Centimeter (cm)</option>
+                                                            <option value="m">Meter (m)</option>
+                                                            <option value="in">Inch (in)</option>
+                                                            <option value="ft">Foot (ft)</option>
+                                                            <option value="l">Liter (L)</option>
+                                                            <option value="ml">Milliliter (mL)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group" id="date">
+                                                        <label for="" class="col col-form-label">Reycling
+                                                            Date</label>
+                                                        <input type="date" class="form-control" name="recycling_date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Method</label>
+                                                        <input type="text" class="form-control" name="method">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-3">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-recycling-logs">Save</button>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end card-body -->
+                                    </div>
+                                    <!-- end water recycling logs -->
+                                    <!-- water quality log -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h4 class="card-title mb-0">Water Quality Logs</h4>
+                                        </div> <!-- end card-header -->
+                                        <div class="card-body pt-0" id="waterQualityLogForm">
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-3">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group" id="date">
+                                                        <label for="" class="col col-form-label">Test Date</label>
+                                                        <input type="date" class="form-control" name="test_date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">PH Level</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="ph_level" value="0">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Turbidity
+                                                            Level</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="turbidity_level" value="0">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="contaminants_detected"
+                                                            class="form-label">Contaminants Detected</label>
+                                                        <textarea class="form-control" id="contaminants_detected"
+                                                            name="contaminants_detected" rows="3"
+                                                            placeholder="Enter contaminants detected"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="test_results" class="form-label">Test
+                                                            Results</label>
+                                                        <textarea class="form-control" id="test_results"
+                                                            name="test_results" rows="3"
+                                                            placeholder="Enter test results"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-3">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-quality-logs">Save</button>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end card-body -->
+                                    </div>
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
+                                        </div> <!-- end card-header -->
+                                        <div class="card-body pt-0" id="water-usage-form">
+                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
+                                            <div class="row g-2">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Volume of
+                                                            Water</label>
+                                                        <div class="input-group qty-icons">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0"
+                                                                name="volume" value="0">
+                                                            <button class="btn btn-primary"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <label class="col my-1 control-label">Date Type</label>
+                                                    <div class="col-md-9">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio1" value="daily" checked
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio1">Daily</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio2" value="weekly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio2">Weekly</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio3" value="monthly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio3">Monthly</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="date_type" id="inlineRadio4" value="yearly"
+                                                                onchange="addDate(this)">
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio4">Yearly</label>
+                                                        </div>
+                                                    </div>
+                                                </div> <!--end row-->
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group" id="date">
+                                                        <label for="" class="col col-form-label">Date</label>
+                                                        <input type="date" class="form-control" name="date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="col col-form-label">Remark</label>
+                                                        <input type="text" class="form-control" name="remark">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="btn-submit-water-usage">Save</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card shadow-sm">
-                                            <div class="card-header bg-primary text-white">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <h4 class="card-title">Company Materials</h4>
-                                                    </div><!--end col-->
-                                                </div> <!--end row-->
-                                            </div>
+                                    </div>
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title">Water Usage</h4>
+                                                </div><!--end col-->
+                                            </div> <!--end row-->
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table mb-0" id="tbl-company-material">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Volume</th>
+                                                            <!-- <th>Date type</th> -->
+                                                            <th>Date</th>
+                                                            <th>Remark</th>
+                                                            <th class="text-end">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="water-usage-table">
+                                                        @foreach($company_water_usage as $key=>$water_usage)
+                                                        <tr>
+                                                            <td>{{ $water_usage->volume }}</td>
+                                                            <!-- <td>{{$water_usage->date_type}}</td> -->
+                                                            @if($water_usage->date_type === 'monthly')
+                                                            <td>{{
+                                                                \Carbon\Carbon::parse($water_usage->date)->format('M
+                                                                Y') }}</td>
+                                                            @elseif($water_usage->date_type === 'yearly')
+                                                            <td>{{
+                                                                \Carbon\Carbon::parse($water_usage->date)->format('Y')
+                                                                }}</td>
+                                                            @elseif($water_usage->date_type === 'weekly')
+                                                            <td>{{
+                                                                \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d
+                                                                M Y') }} - {{
+                                                                \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d
+                                                                M Y') }}</td>
+                                                            @else
+                                                            <td>{{
+                                                                \Carbon\Carbon::parse($water_usage->date)->format('d
+                                                                M Y') }}</td>
+                                                            @endif
+                                                            <td>{{$water_usage->remark}}</td>
+                                                            <td class="text-end">
+                                                                <div class="dropdown d-inline-block">
+                                                                    <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                        data-bs-toggle="dropdown" href="#" role="button"
+                                                                        aria-haspopup="false" aria-expanded="false">
+                                                                        <i
+                                                                            class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                                        aria-labelledby="dLabel11">
+                                                                        <a class="dropdown-item" href="#">Update
+                                                                            Material</a>
+                                                                        <a class="dropdown-item" href="#">Delete
+                                                                            Material</a>
+                                                                        <hr class="dropdown-divider">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table><!--end /table-->
+                                            </div><!--end /tableresponsive-->
+                                        </div>
+                                    </div>
+                                    <!-- end water usage card -->
+
+                                    <!-- Water inventory -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="chemicalHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#chemicalCollapse" aria-expanded="false"
+                                    aria-controls="chemicalCollapse">
+                                    Chemical Inventory
+                                </button>
+                            </h2>
+                            <div id="chemicalCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="chemicalHeading">
+                                <div class="accordion-body">
+                                    <!-- chemical -->
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-header bg-primary text-white">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title mb-0">Add New Chemical</h4>
+                                                </div><!--end col-->
+                                            </div> <!--end row-->
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <form action="" method="post" id="chemical-form">
+                                                <input type="hidden" class="form-control" name="company_id"
+                                                    value="{{ $company->company_id }}">
+                                                <div class="row g-2 align-items-end">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="chemical">Chemical</label>
+                                                            <select name="chemical" id="chemical" class="form-select">
+                                                                <option value="" selected disabled>Choose...
+                                                                </option>
+                                                                @foreach($approved_chemicals as $chemical)
+                                                                <option value="{{ $chemical->chemical_id }}">{{
+                                                                    $chemical->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="unit_of_measurement">Unit of
+                                                                Measurement</label>
+                                                            <input type="text" class="form-control"
+                                                                name="unit_of_measurement"
+                                                                placeholder="Unit of Measurement">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="threshold">Threshold</label>
+                                                            <input type="number" class="form-control" name="threshold"
+                                                                placeholder="Minimum Stock Threshold" min="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="d-flex align-items-center">
+                                                            <button type="button" class="btn btn-primary"
+                                                                id="btn-submit-chemical">
+                                                                Save
+                                                                <span class="loader" id="loader"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow-sm border-0 mt-4">
+                                        <div class="card-header bg-primary text-white" id="headingChemicals">
+                                            <h4 class="card-title mb-0">
+                                                <a class="accordion-toggle text-white" data-bs-toggle="collapse"
+                                                    href="#collapseChemicals" aria-expanded="true"
+                                                    aria-controls="collapseChemicals">
+                                                    Company Chemicals
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseChemicals" class="collapse show"
+                                            aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-striped mb-0" id="tbl-company-material">
+                                                    <table class="table table-striped mb-0" id="tbl-company-chemical">
                                                         <thead class="table-light">
                                                             <tr>
-                                                                <th>Material</th>
-                                                                <th>Serial No.</th>
+                                                                <th>Chemical</th>
                                                                 <th>Unit of Measurement</th>
-                                                                <th>Material Status</th>
+                                                                <th>Chemical Status</th>
                                                                 <th class="text-end">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach($companyMaterials as $material)
+                                                            @foreach($company_chemicals as $chemical)
                                                             <tr>
-                                                                <td>{{ $material->material }}</td>
-                                                                <td>{{ $material->serial_number }}</td>
-                                                                <td> {{ $material->unit_of_measure }} </td>
-                                                                <td><span
-                                                                        class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
-                                                                        $material->company_material_status }}</span>
+                                                                <td>{{ $chemical->chemical->name }} ({!!
+                                                                    $chemical->chemical->formula !!})</td>
+                                                                <td>{{ $chemical->unit }}</td>
+                                                                <td>
+                                                                    <span
+                                                                        class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
+                                                                        {{ $chemical->status }}
+                                                                    </span>
                                                                 </td>
                                                                 <td class="text-end">
-                                                                    <div class="dropdown d-inline-block">
+                                                                    <div class="dropdown d-inline-block"
+                                                                        style="position: relative !important; z-index: 99999999999999;">
                                                                         <a class="dropdown-toggle arrow-none"
                                                                             id="dLabel11" data-bs-toggle="dropdown"
                                                                             href="#" role="button" aria-haspopup="false"
@@ -2229,26 +2053,25 @@
                                                                                 class="las la-ellipsis-v fs-20 text-muted"></i>
                                                                         </a>
                                                                         <div class="dropdown-menu dropdown-menu-end"
-                                                                            aria-labelledby="dLabel11">
+                                                                            aria-labelledby="dLabel11"
+                                                                            style="z-index: 99999999999999;">
                                                                             <a class="dropdown-item"
-                                                                                href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
-                                                                                Material</a>
+                                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
+                                                                                Chemical</a>
                                                                             <a class="dropdown-item" href="#">Update
-                                                                                Material</a>
+                                                                                Chemical</a>
                                                                             <a class="dropdown-item" href="#">Delete
-                                                                                Material</a>
+                                                                                Chemical</a>
                                                                             <hr class="dropdown-divider">
-                                                                            <a class="dropdown-item" href="#"
-                                                                                onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
+                                                                            <a class="dropdown-item" href="#">Setup
                                                                                 Price</a>
                                                                             <a href="#" class="dropdown-item"
-                                                                                onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                                onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
                                                                                 In Item</a>
                                                                             <a href="#" class="dropdown-item"
-                                                                                onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                                onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
                                                                                 Out Item</a>
-                                                                            <a href="#" class="dropdown-item"
-                                                                                onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make
+                                                                            <a href="#" class="dropdown-item">Make
                                                                                 Adjustment</a>
                                                                         </div>
                                                                     </div>
@@ -2260,758 +2083,1087 @@
                                                 </div><!--end /tableresponsive-->
                                             </div>
                                         </div>
-                                        <!-- Material Inventory -->
                                     </div>
+                                    <!-- chemical -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="materialHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#materialCollapse" aria-expanded="false"
+                                    aria-controls="materialCollapse">
+                                    Material Inventory
+                                </button>
+                            </h2>
+                            <div id="materialCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="materialHeading">
+                                <div class="accordion-body">
+                                    <!-- Material Inventory -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title">Add New Material</h4>
+                                                </div><!--end col-->
+                                            </div> <!--end row-->
+                                        </div><!--end card-header-->
+                                        <div class="card-body pt-0">
+                                            <form action="" method="post">
+                                                <input type="hidden" class="form-control" name="company_id"
+                                                    value="{{ $company->company_id }}">
+                                                <div class="row g-2">
+                                                    <!-- Material -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="material">Material</label>
+                                                            <select name="material" id="material" class="form-select">
+                                                                <option value="" selected disabled>Choose...
+                                                                </option>
+                                                                @foreach($materials as $material)
+                                                                <option value="{{ $material->materialID }}">{{
+                                                                    $material->material }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Serial Number -->
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="serial_number">Serial Number (If
+                                                                any)</label>
+                                                            <input type="text" class="form-control" id="serial_number"
+                                                                name="serial_number" placeholder="Serial Number">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Unit of Measurement -->
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="unit_of_measurement">Unit of
+                                                                Measurement</label>
+                                                            <input type="text" class="form-control"
+                                                                id="unit_of_measurement" name="unit_of_measurement"
+                                                                placeholder="Unit of Measurement">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Threshold -->
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="threshold">Threshold</label>
+                                                            <input type="number" class="form-control" id="threshold"
+                                                                name="threshold" placeholder="Minimum Stock Threshold"
+                                                                min="0">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Save Button-->
+                                                    <div class="col-12 mt-3">
+                                                        <div class="d-flex">
+                                                            <button type="button" class="btn btn-primary"
+                                                                id="btn-submit-material">Save</button>
+                                                            <span class="loader" id="loader"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title">Company Materials</h4>
+                                                </div><!--end col-->
+                                            </div> <!--end row-->
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0" id="tbl-company-material">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Material</th>
+                                                            <th>Serial No.</th>
+                                                            <th>Unit of Measurement</th>
+                                                            <th>Material Status</th>
+                                                            <th class="text-end">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($companyMaterials as $material)
+                                                        <tr>
+                                                            <td>{{ $material->material }}</td>
+                                                            <td>{{ $material->serial_number }}</td>
+                                                            <td> {{ $material->unit_of_measure }} </td>
+                                                            <td><span
+                                                                    class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
+                                                                    $material->company_material_status }}</span>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="dropdown d-inline-block">
+                                                                    <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                        data-bs-toggle="dropdown" href="#" role="button"
+                                                                        aria-haspopup="false" aria-expanded="false">
+                                                                        <i
+                                                                            class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                                        aria-labelledby="dLabel11">
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
+                                                                            Material</a>
+                                                                        <a class="dropdown-item" href="#">Update
+                                                                            Material</a>
+                                                                        <a class="dropdown-item" href="#">Delete
+                                                                            Material</a>
+                                                                        <hr class="dropdown-divider">
+                                                                        <a class="dropdown-item" href="#"
+                                                                            onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
+                                                                            Price</a>
+                                                                        <a href="#" class="dropdown-item"
+                                                                            onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                            In Item</a>
+                                                                        <a href="#" class="dropdown-item"
+                                                                            onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
+                                                                            Out Item</a>
+                                                                        <a href="#" class="dropdown-item"
+                                                                            onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make
+                                                                            Adjustment</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table><!--end /table-->
+                                            </div><!--end /tableresponsive-->
+                                        </div>
+                                    </div>
+                                    <!-- Material Inventory -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Operations Management -->
-                    <div class="tab-pane p-3" id="operations" role="tabpanel">
-                        <div class="accordion" id="operationsAccordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="operationTypeHeading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#operationTypeCollapse" aria-expanded="true"
-                                        aria-controls="operationTypeCollapse">
-                                        Operation Type
-                                    </button>
-                                </h2>
-                                <div id="operationTypeCollapse" class="accordion-collapse collapse show"
-                                    aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
-                                    <div class="accordion-body bg-white">
-                                        <form action="" method="post" id="company_operation_type_form">
-                                            @csrf
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description"
-                                                    rows="3" required></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
+                </div>
+                <!-- Operations Management -->
+                <div class="tab-pane p-3" id="operations" role="tabpanel">
+                    <div class="accordion" id="operationsAccordion">
 
-                                        <div class="table-responsive mt-4">
-                                            <table class="table table-striped mb-0" id="tbl-operation-types">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th class="text-end">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($operation_types as $type)
-                                                    <tr>
-                                                        <td>{{ $type->name }}</td>
-                                                        <td>{{ $type->description }}</td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                    data-bs-toggle="dropdown" href="#" role="button"
-                                                                    aria-haspopup="false" aria-expanded="false">
-                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                </a>
-                                                                <div class="dropdown-menu dropdown-menu-end"
-                                                                    aria-labelledby="dLabel11">
-                                                                    <a class="dropdown-item" href="#">Update</a>
-                                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                                </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="operationTypeHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationTypeCollapse" aria-expanded="true"
+                                    aria-controls="operationTypeCollapse">
+                                    Operation Type
+                                </button>
+                            </h2>
+                            <div id="operationTypeCollapse" class="accordion-collapse collapse show"
+                                aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <form action="" method="post" id="company_operation_type_form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="description" name="description" rows="3"
+                                                required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-operation-types">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($operation_types as $type)
+                                                <tr>
+                                                    <td>{{ $type->name }}</td>
+                                                    <td>{{ $type->description }}</td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#">Update</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="operationCategoryHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationCategoryCollapse" aria-expanded="false"
+                                    aria-controls="operationCategoryCollapse">
+                                    Operation Category
+                                </button>
+                            </h2>
+                            <div id="operationCategoryCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <form action="" method="post" id="operation_category_form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="description" name="description" rows="3"
+                                                required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-operation-categories">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($operation_categories as $category)
+                                                <tr>
+                                                    <td>{{ $category->name }}</td>
+                                                    <td>{{ $category->description }}</td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#">Update</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="annualOperationsLogHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#annualOperationsLogCollapse" aria-expanded="false"
+                                    aria-controls="annualOperationsLogCollapse">
+                                    Annual Operations Log
+                                </button>
+                            </h2>
+                            <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Annual Operations Log Form -->
+                                    <form action="" method="post" id="annual-operations-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="operation_status" class="">Operation</label>
+                                                    <select class="form-select" id="operation_status"
+                                                        name="operation_status" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($approved_operations as $operation)
+                                                        <option value="{{ $operation->operation_id }}">{{
+                                                            $operation->operation_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="year" class="">Year</label>
+                                                    <input type="number" class="form-control" id="year" name="year"
+                                                        placeholder="Year (e.g., 2023)" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="total_operations">Total Operations</label>
+                                                    <input type="number" class="form-control" id="total_operations" name="total_operations"
+                                                        placeholder="Total Operations" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="total_waste_generated">Total Waste Generated</label>
+                                                    <input type="number" class="form-control" id="total_waste_generated"
+                                                        name="total_waste_generated" placeholder="Total Waste Generated" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="total_water_used">Total Water Used</label>
+                                                    <input type="number" class="form-control" id="total_water_used" name="total_water_used"
+                                                        placeholder="Total Water Used" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="total_units_produced">Total Units Produced</label>
+                                                    <input type="number" class="form-control" id="total_units_produced"
+                                                        name="total_units_produced" placeholder="Total Units Produced" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Save Annual Log</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Annual Operations Log Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-annual-operations-log">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Operation Name</th>
+                                                    <th>Description</th>
+                                                    <th>Year</th>
+                                                    <th>Total Operations</th>
+                                                    <th>Total Waste Generated</th>
+                                                    <th>Total Water Used</th>
+                                                    <th>Total Units Produced</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="operationsLogHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
+                                    aria-controls="operationsLogCollapse">
+                                    Operations Log
+                                </button>
+                            </h2>
+                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <form action="" method="post" id="operations-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="operation_name">Operation Name</label>
+                                                    <input type="text" class="form-control" id="operation_name"
+                                                        name="operation_name" placeholder="Operation Name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="description">Description</label>
+                                                    <textarea class="form-control" id="description" name="description"
+                                                        placeholder="Description" rows="3" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_code">Operation Code</label>
+                                                    <input type="text" class="form-control" id="operation_code"
+                                                        name="operation_code" placeholder="Operation Code" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_type">Operation Type</label>
+                                                    <select class="form-select" id="operation_type"
+                                                        name="operation_type" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($operation_types as $type)
+                                                        <option value="{{ $type->operation_type_id }}">{{
+                                                            $type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_category">Operation Category</label>
+                                                    <select class="form-select" id="operation_category"
+                                                        name="operation_category" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($operation_categories as $category)
+                                                        <option value="{{ $category->operation_category_id }}">{{
+                                                            $category->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit">Operation Unit</label>
+                                                    <input type="text" class="form-control" id="operation_unit"
+                                                        name="operation_unit" placeholder="Operation Unit" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_price">Operation Unit Price</label>
+                                                    <input type="number" class="form-control" id="operation_unit_price"
+                                                        name="operation_unit_price" placeholder="Operation Unit Price"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_cost">Operation Unit Cost</label>
+                                                    <input type="number" class="form-control" id="operation_unit_cost"
+                                                        name="operation_unit_cost" placeholder="Operation Unit Cost"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_time">Operation Unit Time</label>
+                                                    <input type="text" class="form-control" id="operation_unit_time"
+                                                        name="operation_unit_time" placeholder="Operation Unit Time"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="expected_waste_per_operation">Expected Waste Per
+                                                        Operation</label>
+                                                    <input type="number" class="form-control"
+                                                        id="expected_waste_per_operation"
+                                                        name="expected_waste_per_operation"
+                                                        placeholder="Expected Waste Per Operation" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="expected_water_usage_per_operation">Expected Water
+                                                        Usage Per Operation</label>
+                                                    <input type="number" class="form-control"
+                                                        id="expected_water_usage_per_operation"
+                                                        name="expected_water_usage_per_operation"
+                                                        placeholder="Expected Water Usage Per Operation" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="expected_unit_produced_for_goods">Expected Unit
+                                                        Produced For Goods</label>
+                                                    <input type="number" class="form-control"
+                                                        id="expected_unit_produced_for_goods"
+                                                        name="expected_unit_produced_for_goods"
+                                                        placeholder="Expected Unit Produced For Goods" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="start_date">Start Date</label>
+                                                    <input type="date" class="form-control" id="start_date"
+                                                        name="start_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="end_date">End Date</label>
+                                                    <input type="date" class="form-control" id="end_date"
+                                                        name="end_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Save
+                                                    Operation</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-operations-log">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="width: 15%;">Operation Name</th>
+                                                    <th style="width: 20%;">Description</th>
+                                                    <th style="width: 10%;">Operation Code</th>
+                                                    <th style="width: 10%;">Operation Type</th>
+                                                    <th style="width: 10%;">Operation Category</th>
+                                                    <th style="width: 10%;">Operation Unit</th>
+                                                    <th style="width: 10%;">Expected Waste Per Operation</th>
+                                                    <th style="width: 10%;">Expected Water Usage Per Operation</th>
+                                                    <th style="width: 10%;">Expected Unit Produced For Goods</th>
+                                                    <th style="width: 10%;">Start Date</th>
+                                                    <th style="width: 10%;">End Date</th>
+                                                    <th style="width: 10%;">Status</th>
+                                                    <th class="text-end" style="width: 5%;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($company_operations as $log)
+                                                <tr>
+                                                    <td>{{ $log->operation_name }}</td>
+                                                    <td>{{ $log->description }}</td>
+                                                    <td>{{ $log->operation_code }}</td>
+                                                    <td>{{ $log->operation_type }}</td>
+                                                    <td>{{ $log->operation_category }}</td>
+                                                    <td>{{ $log->operation_unit }}</td>
+                                                    <td>{{ $log->expected_waste_per_operation }}</td>
+                                                    <td>{{ $log->expected_water_usage_per_operation }}</td>
+                                                    <td>{{ $log->expected_unit_produced_for_goods }}</td>
+                                                    <td>{{ $log->start_date }}</td>
+                                                    <td>{{ $log->end_date }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+                                                            {{ ucfirst($log->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#"
+                                                                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
+                                    aria-controls="wasteDisposalTrackingCollapse">
+                                    Waste Disposal Tracking
+                                </button>
+                            </h2>
+                            <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Waste Disposal Tracking Form -->
+                                    <form action="" method="post">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="waste_type" class="form-label">Waste Type</label>
+                                                    <input type="text" class="form-control" id="waste_type"
+                                                        name="waste_type" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="operation_status" class="form-label">Operation</label>
+                                                    <select class="form-select" id="operation_status"
+                                                        name="operation_status" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($approved_operations as $operation)
+                                                        <option value="{{ $operation->operation_id }}">{{
+                                                            $operation->operation_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="quantity_disposed" class="form-label">Quantity
+                                                        Disposed</label>
+                                                    <input type="number" class="form-control" id="quantity_disposed"
+                                                        name="quantity_disposed" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="disposal_method" class="form-label">Disposal
+                                                        Method</label>
+                                                    <input type="text" class="form-control" id="disposal_method"
+                                                        name="disposal_method" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="disposal_date" class="form-label">Disposal
+                                                        Date</label>
+                                                    <input type="date" class="form-control" id="disposal_date"
+                                                        name="disposal_date" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="productionTrackingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#productionTrackingCollapse" aria-expanded="false"
+                                    aria-controls="productionTrackingCollapse">
+                                    Production Tracking
+                                </button>
+                            </h2>
+                            <div id="productionTrackingCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Production Tracking Form -->
+                                    <form action="" method="post">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="mb-3">
+                                            <label for="product_name" class="form-label">Product Name</label>
+                                            <input type="text" class="form-control" id="product_name"
+                                                name="product_name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="quantity_produced" class="form-label">Quantity
+                                                Produced</label>
+                                            <input type="number" class="form-control" id="quantity_produced"
+                                                name="quantity_produced" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="production_date" class="form-label">Production Date</label>
+                                            <input type="date" class="form-control" id="production_date"
+                                                name="production_date" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Operations Management -->
+                <!-- General Settings -->
+                <div class="tab-pane p-3" id="settings" role="tabpanel">
+                    <!-- Company Profile Setup Accordion -->
+                    <div class="accordion mb-4" id="companyProfileAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="companyProfileHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#companyProfileCollapse" aria-expanded="true"
+                                    aria-controls="companyProfileCollapse">
+                                    Account Setup
+                                </button>
+                            </h2>
+                            <div id="companyProfileCollapse" class="accordion-collapse collapse show"
+                                aria-labelledby="companyProfileHeading" data-bs-parent="#companyProfileAccordion">
+                                <div class="accordion-body">
+                                    <!-- Company Information Section -->
+                                    <div class="card fancy-card mb-4">
+                                        <div class="card-header">
+                                            <h4>Company's Personal Information</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="general-settings" action="{{route('update-company-details')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                                <div class="mb-3">
+                                                    <label for="company_name" class="form-label">Company Name</label>
+                                                    <input type="text" class="form-control" id="company_name" name="company_name"
+                                                        value="{{ $company->company_name }}" placeholder="Company name">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="industry" class="form-label">Industry</label>
+                                                        <select name="industry" id="industry" class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="industry_process_used" class="form-label">Industrial Process
+                                                            Used</label>
+                                                        <select id="industry_process_used" name="industry_process_used"
+                                                            class="form-select">
+                                                            <option value="" selected disabled>Choose...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="email" class="form-label">Email</label>
+                                                        <input type="email" class="form-control" id="email" name="email"
+                                                            value="{{ $company->email }}" placeholder="Example: company@domain.com">
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="website_address" class="form-label">Website Address</label>
+                                                        <input type="url" class="form-control" id="website_address"
+                                                            name="website_address" value="{{ $company->website_url }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="mobile_code_primary">Primary Phone Number</label>
+                                                            <div class="">
+                                                                <input id="mobile_code_primary" type="tel" class="form-control">
+                                                                <input type="hidden" name="primary_phone_number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="mobile_code_secondary">Secondary Phone Number</label>
+                                                            <div class="">
+                                                                <input id="mobile_code_secondary" type="tel" class="form-control">
+                                                                <input type="hidden" name="secondary_phone_number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="number_of_employees" class="form-label">Number Of
+                                                            Employees</label>
+                                                        <input type="number" class="form-control" id="number_of_employees"
+                                                            name="number_of_employees" value="{{ $company->number_of_employees }}">
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="date_of_establishment" class="form-label">Date of
+                                                            Establishment</label>
+                                                        <input type="date" class="form-control" id="date_of_establishment"
+                                                            name="date_of_establishment" value="{{ $company->date_of_establishment }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Company Location Section -->
+                                    <div class="card fancy-card mb-4">
+                                        <div class="card-header">
+                                            <h4>Company's Location</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="{{route('update-company-location')}}" method="post" id="location_settings">
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="">Country</label>
+                                                            <select name="country" id="" class="form-select countries" id="countryId">
+                                                                <option value="" selected disabled> Choose... </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="">State</label>
+                                                            <select id="" class="form-select states" onchange="toggleLGA(this);" id="stateId" name="state">
+                                                                <option value="" selected disabled> Choose... </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="">City</label>
+                                                            <select id="lga" class="form-select select-lga cities" id="cityId" name="city">
+                                                                <option value="" selected disabled> Choose... </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="address" class="form-label">Address</label>
+                                                    <input type="text" class="form-control" id="address" name="address"
+                                                        value="{{ $company->address }}">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="zip_code" class="form-label">ZIP Code</label>
+                                                        <input type="text" class="form-control" id="zip_code" name="zip_code"
+                                                            value="{{ $company->zip_code }}">
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="longitude" class="form-label">Longitude</label>
+                                                        <input type="text" class="form-control" id="longitude" name="longitude"
+                                                            value="{{ $company->longitude }}">
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="latitude" class="form-label">Latitude</label>
+                                                        <input type="text" class="form-control" id="latitude" name="latitude"
+                                                            value="{{ $company->latitude }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-primary">Save Location</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Other Settings Section -->
+                                    <div class="card fancy-card mb-4">
+                                        <div class="card-header">
+                                            <h4>Other Settings</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="share_info" name="is_sharable"
+                                                    value="active">
+                                                <label class="form-check-label" for="share_info">Share information with other
+                                                    companies?</label>
+                                            </div>
+
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" id="activate_company"
+                                                    data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ?
+                                                'checked' : '' }}>
+                                                <label class="form-check-label" for="activate_company">Activate or Deactivate
+                                                    Company</label>
+                                            </div>
+
+                                            <!-- Add this button wherever you want the Appearance settings to be triggered -->
+                                            <div class="text-start">
+                                                <button type="button" class="btn btn-danger">Delete Company</button>
+                                                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                                                    data-bs-target="#Appearance" aria-controls="Appearance">
+                                                    Appearance Settings
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="operationCategoryHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#operationCategoryCollapse" aria-expanded="false"
-                                        aria-controls="operationCategoryCollapse">
-                                        Operation Category
-                                    </button>
-                                </h2>
-                                <div id="operationCategoryCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
-                                    <div class="accordion-body bg-white">
-                                        <form action="" method="post" id="operation_category_form">
-                                            @csrf
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description"
-                                                    rows="3" required></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
-                                        <div class="table-responsive mt-4">
-                                            <table class="table table-striped mb-0" id="tbl-operation-categories">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th class="text-end">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($operation_categories as $category)
-                                                    <tr>
-                                                        <td>{{ $category->name }}</td>
-                                                        <td>{{ $category->description }}</td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                    data-bs-toggle="dropdown" href="#" role="button"
-                                                                    aria-haspopup="false" aria-expanded="false">
-                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                </a>
-                                                                <div class="dropdown-menu dropdown-menu-end"
-                                                                    aria-labelledby="dLabel11">
-                                                                    <a class="dropdown-item" href="#">Update</a>
-                                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                        </div>
+
+                        <!-- Calendar Year Setup Accordion -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="calendarYearHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#calendarYearCollapse" aria-expanded="false"
+                                    aria-controls="calendarYearCollapse">
+                                    Calendar Year Setup
+                                </button>
+                            </h2>
+                            <div id="calendarYearCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="calendarYearHeading" data-bs-parent="#companyProfileAccordion">
+                                <div class="accordion-body">
+                                    <!-- Calendar Year Section -->
+                                    <div class="card fancy-card mb-4">
+                                        <div class="card-header">
+                                            <h4>Calendar Year Setup</h4>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="operationsLogHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#operationsLogCollapse" aria-expanded="false"
-                                        aria-controls="operationsLogCollapse">
-                                        Operations Log
-                                    </button>
-                                </h2>
-                                <div id="operationsLogCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                    <div class="accordion-body bg-white">
-                                        <form action="" method="post" id="operations-form">
-                                            @csrf
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="row g-2">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="operation_name">Operation Name</label>
-                                                        <input type="text" class="form-control" id="operation_name"
-                                                            name="operation_name" placeholder="Operation Name" required>
+                                        <div class="card-body">
+                                            <form action="" method="post" id="calendar_year_form">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                                                <div class="row g-2">
+                                                    <div class="col-md-6">
+                                                        <label for="calendar_name" class="form-label">Calendar Title</label>
+                                                        <input type="text" class="form-control" id="calendar_name" name="calendar_name" required>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="description">Description</label>
-                                                        <textarea class="form-control" id="description"
-                                                            name="description" placeholder="Description" rows="3"
-                                                            required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="operation_code">Operation Code</label>
-                                                        <input type="text" class="form-control" id="operation_code"
-                                                            name="operation_code" placeholder="Operation Code" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="operation_type">Operation Type</label>
-                                                        <select class="form-select" id="operation_type"
-                                                            name="operation_type" required>
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            @foreach($operation_types as $type)
-                                                            <option value="{{ $type->operation_type_id }}">{{
-                                                                $type->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="operation_category">Operation Category</label>
-                                                        <select class="form-select" id="operation_category"
-                                                            name="operation_category" required>
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            @foreach($operation_categories as $category)
-                                                            <option value="{{ $category->operation_category_id }}">{{
-                                                                $category->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="operation_unit">Operation Unit</label>
-                                                        <input type="text" class="form-control" id="operation_unit"
-                                                            name="operation_unit" placeholder="Operation Unit" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="operation_unit_price">Operation Unit Price</label>
-                                                        <input type="number" class="form-control"
-                                                            id="operation_unit_price" name="operation_unit_price"
-                                                            placeholder="Operation Unit Price" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                        <input type="number" class="form-control"
-                                                            id="operation_unit_cost" name="operation_unit_cost"
-                                                            placeholder="Operation Unit Cost" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="operation_unit_time">Operation Unit Time</label>
-                                                        <input type="text" class="form-control" id="operation_unit_time"
-                                                            name="operation_unit_time" placeholder="Operation Unit Time"
+                                                    <div class="col-md-3">
+                                                        <label for="start_date" class="form-label">Start Date</label>
+                                                        <input type="date" class="form-control" id="start_date" name="start_date"
                                                             required>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="expected_waste_per_operation">Expected Waste Per
-                                                            Operation</label>
-                                                        <input type="number" class="form-control"
-                                                            id="expected_waste_per_operation"
-                                                            name="expected_waste_per_operation"
-                                                            placeholder="Expected Waste Per Operation" required>
+
+                                                    <div class="col-md-3">
+                                                        <label for="end_date" class="form-label">End Date</label>
+                                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="expected_water_usage_per_operation">Expected Water
-                                                            Usage Per Operation</label>
-                                                        <input type="number" class="form-control"
-                                                            id="expected_water_usage_per_operation"
-                                                            name="expected_water_usage_per_operation"
-                                                            placeholder="Expected Water Usage Per Operation" required>
-                                                    </div>
+
+                                                <div class="text-end mt-3">
+                                                    <button type="submit" class="btn btn-primary">Save Calendar Year</button>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="expected_unit_produced_for_goods">Expected Unit
-                                                            Produced For Goods</label>
-                                                        <input type="number" class="form-control"
-                                                            id="expected_unit_produced_for_goods"
-                                                            name="expected_unit_produced_for_goods"
-                                                            placeholder="Expected Unit Produced For Goods" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="start_date">Start Date</label>
-                                                        <input type="date" class="form-control" id="start_date"
-                                                            name="start_date" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="end_date">End Date</label>
-                                                        <input type="date" class="form-control" id="end_date"
-                                                            name="end_date" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mt-3">
-                                                    <button type="submit" class="btn btn-primary">Save
-                                                        Operation</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div class="table-responsive mt-4">
-                                            <table class="table table-striped mb-0" id="tbl-operations-log">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 15%;">Operation Name</th>
-                                                        <th style="width: 20%;">Description</th>
-                                                        <th style="width: 10%;">Operation Code</th>
-                                                        <th style="width: 10%;">Operation Type</th>
-                                                        <th style="width: 10%;">Operation Category</th>
-                                                        <th style="width: 10%;">Operation Unit</th>
-                                                        <th style="width: 10%;">Expected Waste Per Operation</th>
-                                                        <th style="width: 10%;">Expected Water Usage Per Operation</th>
-                                                        <th style="width: 10%;">Expected Unit Produced For Goods</th>
-                                                        <th style="width: 10%;">Start Date</th>
-                                                        <th style="width: 10%;">End Date</th>
-                                                        <th style="width: 10%;">Status</th>
-                                                        <th class="text-end" style="width: 5%;">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($company_operations as $log)
-                                                    <tr>
-                                                        <td>{{ $log->operation_name }}</td>
-                                                        <td>{{ $log->description }}</td>
-                                                        <td>{{ $log->operation_code }}</td>
-                                                        <td>{{ $log->operation_type }}</td>
-                                                        <td>{{ $log->operation_category }}</td>
-                                                        <td>{{ $log->operation_unit }}</td>
-                                                        <td>{{ $log->expected_waste_per_operation }}</td>
-                                                        <td>{{ $log->expected_water_usage_per_operation }}</td>
-                                                        <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                        <td>{{ $log->start_date }}</td>
-                                                        <td>{{ $log->end_date }}</td>
-                                                        <td>
-                                                            <span
-                                                                class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
-                                                                {{ ucfirst($log->status) }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown d-inline-block">
-                                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                    data-bs-toggle="dropdown" href="#" role="button"
-                                                                    aria-haspopup="false" aria-expanded="false">
-                                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                </a>
-                                                                <div class="dropdown-menu dropdown-menu-end"
-                                                                    aria-labelledby="dLabel11">
-                                                                    <a class="dropdown-item" href="#"
-                                                                        onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
-                                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                            </form>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
-                                        aria-controls="wasteDisposalTrackingCollapse">
-                                        Waste Disposal Tracking
-                                    </button>
-                                </h2>
-                                <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="wasteDisposalTrackingHeading"
-                                    data-bs-parent="#operationsAccordion">
-                                    <div class="accordion-body bg-white">
-                                        <!-- Waste Disposal Tracking Form -->
-                                        <form action="" method="post">
-                                            @csrf
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="waste_type" class="form-label">Waste Type</label>
-                                                        <input type="text" class="form-control" id="waste_type"
-                                                            name="waste_type" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="operation_status"
-                                                            class="form-label">Operation</label>
-                                                        <select class="form-select" id="operation_status"
-                                                            name="operation_status" required>
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            @foreach($approved_operations as $operation)
-                                                            <option value="{{ $operation->operation_id }}">{{
-                                                                $operation->operation_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="quantity_disposed" class="form-label">Quantity
-                                                            Disposed</label>
-                                                        <input type="number" class="form-control" id="quantity_disposed"
-                                                            name="quantity_disposed" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="disposal_method" class="form-label">Disposal
-                                                            Method</label>
-                                                        <input type="text" class="form-control" id="disposal_method"
-                                                            name="disposal_method" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="disposal_date" class="form-label">Disposal
-                                                            Date</label>
-                                                        <input type="date" class="form-control" id="disposal_date"
-                                                            name="disposal_date" required>
-                                                    </div>
-                                                </div>
+
+                                    <div class="card fancy-card mb-4">
+                                        <div class="card-header">
+                                            <h4>Calendar Year Table</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Calendar Title</th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            <th class="text-end">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="productionTrackingHeading">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#productionTrackingCollapse" aria-expanded="false"
-                                        aria-controls="productionTrackingCollapse">
-                                        Production Tracking
-                                    </button>
-                                </h2>
-                                <div id="productionTrackingCollapse" class="accordion-collapse collapse"
-                                    aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
-                                    <div class="accordion-body bg-white">
-                                        <!-- Production Tracking Form -->
-                                        <form action="" method="post">
-                                            @csrf
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="mb-3">
-                                                <label for="product_name" class="form-label">Product Name</label>
-                                                <input type="text" class="form-control" id="product_name"
-                                                    name="product_name" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="quantity_produced" class="form-label">Quantity
-                                                    Produced</label>
-                                                <input type="number" class="form-control" id="quantity_produced"
-                                                    name="quantity_produced" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="production_date" class="form-label">Production Date</label>
-                                                <input type="date" class="form-control" id="production_date"
-                                                    name="production_date" required>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Operations Management -->
-                    <!-- General Settings -->
-                    <div class="tab-pane p-3" id="settings" role="tabpanel">
-     <!-- Company Information Section -->
-     <div class="card fancy-card mb-4">
-            <div class="card-header">
-                <h4>Company's Personal Information</h4>
-            </div>
-            <div class="card-body">
-                <form id="general-settings" action="{{route('update-company-details')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
-                    <div class="mb-3">
-                        <label for="company_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" value="{{ $company->company_name }}" placeholder="Company name">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="industry" class="form-label">Industry</label>
-                            <select name="industry" id="industry" class="form-select">
-                                <option value="" selected disabled>Choose...</option>
-                            </select>
+                    <!-- Appearance Settings Section -->
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance"
+                        aria-labelledby="AppearanceLabel">
+                        <div class="offcanvas-header border-bottom">
+                            <h5 class="offcanvas-title" id="AppearanceLabel">Appearance</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="industry_process_used" class="form-label">Industrial Process Used</label>
-                            <select id="industry_process_used" name="industry_process_used" class="form-select">
-                                <option value="" selected disabled>Choose...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ $company->email }}" placeholder="Example: company@domain.com">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="website_address" class="form-label">Website Address</label>
-                            <input type="url" class="form-control" id="website_address" name="website_address" value="{{ $company->website_url }}">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mt-2">
-                            <div class="form-group">
-                                <label for="mobile_code_primary">Primary Phone Number</label>
-                                <div class="">
-                                    <input id="mobile_code_primary" type="tel" class="form-control">
-                                    <input type="hidden" name="primary_phone_number">
-                                </div>
+                        <div class="offcanvas-body">
+                            <h6>Account Settings</h6>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="auto_updates">
+                                <label class="form-check-label" for="auto_updates">Auto Updates</label>
                             </div>
-                        </div>
-                        <div class="col-md-6 mt-2">
-                            <div class="form-group">
-                                <label for="mobile_code_secondary">Secondary Phone Number</label>
-                                <div class="">
-                                    <input id="mobile_code_secondary" type="tel" class="form-control">
-                                    <input type="hidden" name="secondary_phone_number">
-                                </div>
+
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="location_permission" checked>
+                                <label class="form-check-label" for="location_permission">Location
+                                    Permission</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="show_offline_contacts">
+                                <label class="form-check-label" for="show_offline_contacts">Show Offline
+                                    Contacts</label>
+                            </div>
+
+                            <h6 class="mt-3">General Settings</h6>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="show_online">
+                                <label class="form-check-label" for="show_online">Show Me Online</label>
+                            </div>
+
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="status_visible" checked>
+                                <label class="form-check-label" for="status_visible">Status Visible to All</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="notifications_popup">
+                                <label class="form-check-label" for="notifications_popup">Notifications
+                                    Popup</label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="number_of_employees" class="form-label">Number Of Employees</label>
-                            <input type="number" class="form-control" id="number_of_employees" name="number_of_employees" value="{{ $company->number_of_employees }}">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="date_of_establishment" class="form-label">Date of Establishment</label>
-                            <input type="date" class="form-control" id="date_of_establishment" name="date_of_establishment" value="{{ $company->date_of_establishment }}">
-                        </div>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Company Location Section -->
-        <div class="card fancy-card mb-4">
-            <div class="card-header">
-                <h4>Company's Location</h4>
-            </div>
-            <div class="card-body">
-                <form action="{{route('update-company-location')}}" method="post" id="location_settings">
-                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="countryId" class="form-label">Country</label>
-                            <select name="country" class="form-select" id="countryId">
-                                <option value="" selected disabled>Choose...</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="stateId" class="form-label">State</label>
-                            <select class="form-select" id="stateId" name="state">
-                                <option value="" selected disabled>Choose...</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="cityId" class="form-label">City</label>
-                            <select id="cityId" class="form-select" name="city">
-                                <option value="" selected disabled>Choose...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" value="{{ $company->address }}">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="zip_code" class="form-label">ZIP Code</label>
-                            <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ $company->zip_code }}">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="longitude" class="form-label">Longitude</label>
-                            <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $company->longitude }}">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="latitude" class="form-label">Latitude</label>
-                            <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $company->latitude }}">
-                        </div>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save Location</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Calendar Year Section -->
-        <div class="card fancy-card mb-4">
-            <div class="card-header">
-                <h4>Calendar Year Setup</h4>
-            </div>
-            <div class="card-body">
-                <form action="" method="post" id="calendar_year_form">
-                    @csrf
-                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="start_date" class="form-label">Start Date</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="end_date" class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" required>
-                        </div>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save Calendar Year</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Other Settings Section -->
-        <div class="card fancy-card mb-4">
-            <div class="card-header">
-                <h4>Other Settings</h4>
-            </div>
-            <div class="card-body">
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="share_info" name="is_sharable" value="active">
-                    <label class="form-check-label" for="share_info">Share information with other companies?</label>
                 </div>
-
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" id="activate_company" data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="activate_company">Activate or Deactivate Company</label>
-                </div>
-
-                <!-- Add this button wherever you want the Appearance settings to be triggered -->
-                <div class="text-end mb-4">
-                    <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#Appearance" aria-controls="Appearance">
-                        Appearance Settings
-                    </button>
-                </div>
-
-                <div class="text-end">
-                    <button type="button" class="btn btn-danger">Delete Company</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Appearance Settings Section -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
-            <div class="offcanvas-header border-bottom">
-                <h5 class="offcanvas-title" id="AppearanceLabel">Appearance</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <h6>Account Settings</h6>
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="auto_updates">
-                    <label class="form-check-label" for="auto_updates">Auto Updates</label>
-                </div>
-
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="location_permission" checked>
-                    <label class="form-check-label" for="location_permission">Location Permission</label>
-                </div>
-
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="show_offline_contacts">
-                    <label class="form-check-label" for="show_offline_contacts">Show Offline Contacts</label>
-                </div>
-
-                <h6 class="mt-3">General Settings</h6>
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="show_online">
-                    <label class="form-check-label" for="show_online">Show Me Online</label>
-                </div>
-
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="status_visible" checked>
-                    <label class="form-check-label" for="status_visible">Status Visible to All</label>
-                </div>
-
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="notifications_popup">
-                    <label class="form-check-label" for="notifications_popup">Notifications Popup</label>
-                </div>
-            </div>
-        </div>                    </div>
-                    <!-- General Settings -->
-                    <!-- contact personel details  -->
-                    <!-- Contact Details -->
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h4 class="card-title mb-0">Contact Details</h4>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control"
-                                                placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                                name="enviromental_operations_manager"
-                                                value="{{ $company->operations_manager }}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <input type="text" class="form-control"
-                                                placeholder="Full Name Of Contact Person" name="contact_person_name"
-                                                value="{{$company->contact_person_full_name}}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <input type="text" class="form-control"
-                                                placeholder="Office Position of Contact Person"
-                                                name="contact_person_position"
-                                                value="{{$company->contact_person_position}}">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-                                                <label for="">Contact Personnel Phone Number</label>
-                                                <div class="">
-                                                    <input id="mobile_code_contact" type="tel" class="form-control"
-                                                        placeholder="">
-                                                    <input type="hidden" name="contact_person_phone_number">
-                                                </div>
+                <!-- General Settings -->
+                <!-- contact personel details  -->
+                <!-- Contact Details -->
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="card-title mb-0">Contact Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
+                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control"
+                                            placeholder="Full Name Of Enviromental Operations Specialist or Manager"
+                                            name="enviromental_operations_manager"
+                                            value="{{ $company->operations_manager }}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <input type="text" class="form-control"
+                                            placeholder="Full Name Of Contact Person" name="contact_person_name"
+                                            value="{{$company->contact_person_full_name}}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <input type="text" class="form-control"
+                                            placeholder="Office Position of Contact Person"
+                                            name="contact_person_position"
+                                            value="{{$company->contact_person_position}}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <div class="form-group">
+                                            <label for="">Contact Personnel Phone Number</label>
+                                            <div class="">
+                                                <input id="mobile_code_contact" type="tel" class="form-control"
+                                                    placeholder="">
+                                                <input type="hidden" name="contact_person_phone_number">
                                             </div>
                                         </div>
-                                        <div class="col-md-12 mt-2">
-                                            <button type="button" class="btn btn-primary" id="btn_contact_settings">Save
-                                                Contact</button>
-                                            <span class="loader" id="loader"></span>
-                                        </div>
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="col-md-12 mt-2">
+                                        <button type="button" class="btn btn-primary" id="btn_contact_settings">Save
+                                            Contact</button>
+                                        <span class="loader" id="loader"></span>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!-- end contact personel details  -->
                 </div>
+                <!-- end contact personel details  -->
             </div>
         </div>
     </div>
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"> Setup Price </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="material_price_id">
@@ -3029,8 +3181,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Price of Disposal in Naira(₦).</label>
-                                <input type="number" min="0" class="form-control" placeholder="Price"
-                                    name="price">
+                                <input type="number" min="0" class="form-control" placeholder="Price" name="price">
                             </div>
                         </div>
                         <!-- end Price -->
@@ -3045,8 +3196,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-material-price">Save
                         changes</button>
                     <span class="loader" id="loader"></span>
@@ -3057,14 +3207,13 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"> Check In Item </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkIn_material_id">
@@ -3075,8 +3224,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly
-                                    name="checkIn_material_name">
+                                <input type="text" class="form-control" readonly name="checkIn_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -3095,8 +3243,8 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity"
-                                        value="0" style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -3114,8 +3262,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-in">Save
                         changes</button>
                     <span class="loader" id="loader"></span>
@@ -3126,14 +3273,12 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check Out Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkOut_material_id">
@@ -3144,8 +3289,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly
-                                    name="checkOut_material_name">
+                                <input type="text" class="form-control" readonly name="checkOut_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -3164,8 +3308,8 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity"
-                                        value="0" style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -3183,8 +3327,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
                         changes</button>
                     <span class="loader" id="loader"></span>
@@ -3195,14 +3338,12 @@
     <!-- end modal -->
 
     <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Make Adjustment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="adjustment_material_id">
@@ -3213,8 +3354,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Material</label>
-                                <input type="text" class="form-control" readonly
-                                    name="checkOut_material_name">
+                                <input type="text" class="form-control" readonly name="checkOut_material_name">
                             </div>
                         </div>
                         <!-- Material name -->
@@ -3252,8 +3392,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
                         changes</button>
                     <span class="loader" id="loader"></span>
@@ -3263,14 +3402,13 @@
     </div>
     <!-- end modal -->
     <!-- checkout chemical modal -->
-    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check In Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="text" name="checkIn_chemical_id">
@@ -3282,8 +3420,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly
-                                    name="checkIn_chemical_name">
+                                <input type="text" class="form-control" readonly name="checkIn_chemical_name">
                             </div>
                         </div>
                         <!-- Chemical name -->
@@ -3302,8 +3439,7 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity"
-                                        value="0">
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -3321,11 +3457,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"
-                            id="loader"></span>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" id="loader"></span>
                         Save changes
                     </button>
                 </div>
@@ -3340,8 +3474,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Check Out Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="checkOut_chemical_id">
@@ -3352,8 +3485,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly
-                                    name="checkOut_chemical_name">
+                                <input type="text" class="form-control" readonly name="checkOut_chemical_name">
                             </div>
                         </div>
                         <!-- Chemical name -->
@@ -3372,8 +3504,8 @@
                                 <div class="input-group qty-icons">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity"
-                                        value="0" style="pointer-events: none;">
+                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
+                                        style="pointer-events: none;">
                                     <button class="btn btn-primary"
                                         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
@@ -3391,10 +3523,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary"
-                        id="btn-submit-check-out-chemical">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-check-out-chemical">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -3408,8 +3539,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Operation Log</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="operation_id">
@@ -3468,8 +3598,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="">Operation Unit Price</label>
-                                <input type="number" step="0.01" class="form-control"
-                                    name="operation_unit_price">
+                                <input type="number" step="0.01" class="form-control" name="operation_unit_price">
                             </div>
                         </div>
                         <!-- end Operation Unit Price -->
@@ -3477,8 +3606,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="">Operation Unit Cost</label>
-                                <input type="number" step="0.01" class="form-control"
-                                    name="operation_unit_cost">
+                                <input type="number" step="0.01" class="form-control" name="operation_unit_cost">
                             </div>
                         </div>
                         <!-- end Operation Unit Cost -->
@@ -3533,8 +3661,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="start_date">Start Date</label>
-                                <input type="date" class="form-control" id="start_date"
-                                    name="start_date" required>
+                                <input type="date" class="form-control" id="start_date" name="start_date" required>
                             </div>
                         </div>
                         <!-- End Start Date -->
@@ -3542,18 +3669,16 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="end_date">End Date</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date"
-                                    required>
+                                <input type="date" class="form-control" id="end_date" name="end_date" required>
                             </div>
                         </div>
                         <!-- End End Date -->
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary"
-                        id="btn-submit-update-operation-log">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-submit-update-operation-log">Save
+                        changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
             </div>
@@ -3562,8 +3687,7 @@
     <!-- end update operation log modal -->
     @section('styles')
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
         /* Loader style */
         .loader {
@@ -5476,8 +5600,7 @@
     </script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script>
         // -----Country Code Selection
