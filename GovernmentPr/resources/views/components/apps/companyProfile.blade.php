@@ -2990,7 +2990,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#calendarYearCollapse" aria-expanded="false"
                                     aria-controls="calendarYearCollapse">
-                                    Calendar Year Setup
+                                    Company Calendar Setup
                                 </button>
                             </h2>
                             <div id="calendarYearCollapse" class="accordion-collapse collapse"
@@ -3008,7 +3008,7 @@
 
                                                 <div class="row g-2">
                                                     <div class="col-md-6">
-                                                        <label for="calendar_name" class="form-label">Calendar Title</label>
+                                                        <label for="calendar_name" class="form-label">Calendar Name</label>
                                                         <input type="text" class="form-control" id="calendar_name" name="calendar_name" required>
                                                     </div>
                                                     <div class="col-md-3">
@@ -3032,10 +3032,10 @@
 
                                     <div class="card fancy-card mb-4">
                                         <div class="card-header">
-                                            <h4>Calendar Year Table</h4>
+                                            <h4>Company Calendar</h4>
                                         </div>
                                         <div class="card-body">
-                                            <div class="table-responsive">
+                                            <div class="table-responsive" id="calendar_year_table">
                                                 <table class="table table-striped mb-0">
                                                     <thead class="table-light">
                                                         <tr>
@@ -3046,7 +3046,17 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
+                                                    @foreach($calendar_years as $calendar)
+                                                    <tr>
+                                                        <td>{{ $calendar->name }}</td>
+                                                        <td>{{ $calendar->start_date }}</td>
+                                                        <td>{{ $calendar->end_date }}</td>
+                                                        <td class="text-end">
+                                                            <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->id }}')">Edit</button>
+                                                            <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->id }}')">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -6921,5 +6931,35 @@
     </script>
     <!-- operations -->
 
+    <!-- Calendar Year Management Script -->
+     <script>
+        // Calendar Year Management Script
+        document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-calendar-year') }}";
+
+            fetch_cycle('--Store Calendar Year', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the calendar year table or UI as needed
+                    let tableBody = document.querySelector('#calendar_year_table tbody');
+                    tableBody.innerHTML = "";
+                    result.calendar_years.forEach(year => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${year.name}</td>
+                            <td>${year.start_date ?? ''}</td>
+                            <td>${year.end_date ?? ''}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->id }}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->id }}')">Delete</button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+     </script>
+    <!-- Calendar Year Management Script -->
     @endsection
 </x-layouts.admin-app>

@@ -40,7 +40,9 @@ class OperationCategoryController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:operation_categories,name'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('operation_categories')->where(function ($query) use ($request) {
+                return $query->where('company_id', $request->company_id);
+            })],
             'description' => ['nullable', 'string'],
             'company_id' => ['required', 'numeric'],
         ]);

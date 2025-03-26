@@ -33,4 +33,14 @@ class CompanyMaterial extends Model
     {
         return self::where('status', 'active')->count();
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    
 }

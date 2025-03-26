@@ -33,4 +33,35 @@ class CompanyOperation extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+
+    public function scopeOperationType($query, $operationType)
+    {
+        return $query->where('operation_type', $operationType);
+    }
+
+    public function scopeOperationCategory($query, $operationCategory)
+    {
+        return $query->where('operation_category', $operationCategory);
+    }
+
+    public function scopeOperationUnit($query, $operationUnit)
+    {
+        return $query->where('operation_unit', $operationUnit);
+    }
+
+    public function scopeOperationUnitPrice($query, $operationUnitPrice)
+    {
+        return $query->where('operation_unit_price', $operationUnitPrice);
+    }
+
+    public function scopeOperationUnitCost($query, $operationUnitCost)
+    {
+        return $query->where('operation_unit_cost', $operationUnitCost);
+    }
+    
 }
