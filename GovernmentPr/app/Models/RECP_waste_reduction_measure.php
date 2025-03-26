@@ -15,4 +15,15 @@ class RECP_waste_reduction_measure extends Model
         'waste_reduction_title',
         'status'
     ];
+
+    public $timestamps = true;
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 }

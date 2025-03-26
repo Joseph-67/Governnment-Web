@@ -18,4 +18,16 @@ class OperationCategory extends Model
         'company_id',
         'is_delete',
     ];
+
+    public $timestamps = true;
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_delete', false);
+    }
 }

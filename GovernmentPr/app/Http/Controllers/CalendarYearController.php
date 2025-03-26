@@ -76,10 +76,11 @@ class CalendarYearController extends Controller
             ], 500);
         }
 
+        $calendar_years = CalendarYear::where('is_delete', false)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
         return response()->json([
             'status' => 'success',
             'message' => 'Calendar Year created successfully.',
-            'data' => $calendarYear
+            'calendar_years' => $calendar_years
         ], 201);
     }
 

@@ -19,8 +19,15 @@ class OperationType extends Model
         'is_delete',
     ];
 
+    public $timestamps = true;
+
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_delete', false);
     }
 }

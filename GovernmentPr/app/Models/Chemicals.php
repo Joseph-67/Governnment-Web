@@ -39,4 +39,24 @@ class Chemicals extends Model
     {
         return $this->hasMany(CompanyChemical::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+
+    public function scopeDeleted($query)
+    {
+        return $query->where('is_deleted', true);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('approve_rejected_status', 'approved');
+    }
 }

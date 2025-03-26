@@ -15,4 +15,15 @@ class RECP_house_keep_practice extends Model
         'practice_title',
         'status'
     ];
+    public $timestamps = true;
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 }
