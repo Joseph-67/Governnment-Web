@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProductCategoryController extends Controller
 {
@@ -36,6 +39,35 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('product_categories')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
+                }),
+            ],
+            'description' => 'nullable|string',
+            'company_id' => 'required|integer|exists:companies,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => 'Validation failed.', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $productCategory = new ProductCategory();
+            $productCategory->name = $request->name;
+            $productCategory->description = $request->description;
+            $productCategory->company_id = $request->company_id;
+            $productCategory->save();
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'error' => 'Failed to create product category.', 'message' => $e->getMessage()], 500);
+        }
+
+        $productCategories = ProductCategory::where('company_id', $request->company_id)->where('is_delete', false)->get();
+        return response()->json(['status' => 'success', 'message' => 'Product category created successfully!', 'data' => $productCategories], 201);
     }
 
     /**

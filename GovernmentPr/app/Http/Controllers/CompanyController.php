@@ -79,22 +79,22 @@ class CompanyController extends Controller
         $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
         // chemical inventory
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
-        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
+        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
         // operation categories
-        $data['operation_categories'] = OperationCategory::where('is_delete', false)->get(['operation_category_id', 'name']);
+        $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
         // operation types
-        $data['operation_types'] = OperationType::where('is_delete', false)->get(['operation_type_id', 'name']);
+        $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->get(['operation_type_id', 'name']);
         // company operations
-        $data['company_operations'] = CompanyOperation::get();
-        $data['approved_operations'] = CompanyOperation::where('status', '<>', 'inactive')->get();
+        $data['company_operations'] = CompanyOperation::where('company_id', $companyID)->get();
+        $data['approved_operations'] = CompanyOperation::where('status', '<>', 'inactive')->where('company_id', $companyID)->get();
 
         // Fetch company calendar year
-        $data['calendar_years'] = CalendarYear::where('is_delete', false)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
-        $data['active_calendar_years'] = CalendarYear::where('is_delete', false)->active()->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        $data['calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        $data['active_calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->active()->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
 
         // Fetch waste
-        $data['waste_items'] = CompanyWaste::where('is_delete', false)->get();
+        $data['waste_items'] = CompanyWaste::where('is_delete', false)->where('company_id', $companyID)->get();
         return view('components.apps.companyProfile', $data);
     }   
     /**

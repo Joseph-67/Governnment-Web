@@ -76,7 +76,9 @@ class CompanyWasteController extends Controller
             ], 500);
         }
 
-        $activeWastes = CompanyWaste::where('is_delete', false)->get();
+        $activeWastes = CompanyWaste::where('is_delete', false)
+            ->where('company_id', $request->input('company_id'))
+            ->get();
         return response()->json([
             'status' => 'success',
             'message' => 'Company waste created successfully.',
