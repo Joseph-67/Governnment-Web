@@ -83,7 +83,7 @@ class CompanyController extends Controller
         // chemical inventory
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
         $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
-        $data['approved_company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
+        $data['approved_company_chemicals'] = CompanyChemical::active()->where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
         // operation categories
         $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
