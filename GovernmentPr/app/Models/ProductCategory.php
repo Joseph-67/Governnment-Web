@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ProductCategory extends Model
 {
     use HasFactory;
-    protected $table = 'products';
-    protected $primaryKey = 'product_id';
+    protected $table = 'product_categories';
+    protected $primaryKey = 'product_category_id';
     protected $fillable = [
         'name',
-        'unit',
-        'category_id',
         'description',
-        'price',
         'is_active',
         'is_delete',
         'company_id',
@@ -24,16 +21,22 @@ class Product extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_delete' => 'boolean',
-        'price' => 'decimal:2',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
-    }
+    protected $dates = [
+        'deleted_at',
+        'created_at',
+        'updated_at',
+    ];
 
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'product_category_id');
+    }
+
 }
