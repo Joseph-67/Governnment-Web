@@ -2433,7 +2433,7 @@
                                                     <select class="form-select" id="chemical_name" name="chemical[]" required>
                                                         <option value="" selected disabled>Select Chemical</option>
                                                         @foreach($approved_company_chemicals as $chemical)
-                                                            <option value="{{ $chemical->chemical_id }}">{{ $chemical->chemical_name }}</option>
+                                                            <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -7119,20 +7119,20 @@
                     tableBody.innerHTML = "";
                     result.operation_types.forEach(type => {
                         tableBody.innerHTML += `<tr>
-            <td>${type.name}</td>
-            <td>${type.description}</td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`;
+                            <td>${type.name}</td>
+                            <td>${type.description}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
                     });
                 }
             });
@@ -7230,6 +7230,36 @@
             // Add event listener to the remove button
             container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
             container.remove();
+
+        function addProductField() {
+            const container = document.createElement('div');
+            let products = @json($products);
+            container.classList.add('row', 'g-2', 'mt-2', 'product-field-container');
+            container.innerHTML = `
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="product_name">Product Name</label>
+                    <select class="form-control" name="product_name[]" required>
+                        <option value="" disabled selected>Select Product</option>
+                        ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="expected_quantity">Expected Quantity</label>
+                    <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger btn-sm remove-product-btn">Remove</button>
+            </div>
+            `;
+            document.querySelector('#annual-operations-form .row.g-2 .product-quantity-expected').appendChild(container);
+
+            // Add event listener to the remove button
+            container.querySelector('.remove-product-btn').addEventListener('click', function () {
+                container.remove();
             });
         }
                                         
