@@ -7211,7 +7211,7 @@
             <label for="chemical_name">Chemical Name</label>
             <select class="form-control" name="chemical_name[]" required>
             <option value="" disabled selected>Select Chemical</option>
-            ${chemicals.map(chemical => `<option value="${chemical.companyChemicalId}">${chemical.chemical_name}</option>`).join('')}
+            ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
             </select>
             </div>
             </div>
@@ -7230,7 +7230,8 @@
             // Add event listener to the remove button
             container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
             container.remove();
-
+            });
+        }
         function addProductField() {
             const container = document.createElement('div');
             let products = @json($products);
