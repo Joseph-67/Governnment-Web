@@ -27,7 +27,7 @@ class CompanyChemical extends Model
 
     public function chemical()
     {
-        return $this->belongsTo(Chemicals::class, 'chemical_id');
+        return $this->belongsTo(Chemicals::class, 'chemical_id', 'chemical_id');
     }
 
     public function stockMovements()
