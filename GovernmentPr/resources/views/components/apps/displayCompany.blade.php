@@ -65,6 +65,12 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
                                                 <a class="dropdown-item" href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open Company</a>
+                                                <a class="dropdown-item" href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Assign Users to Company</a>
+                                                <form action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this company?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item text-danger">Delete Company</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>

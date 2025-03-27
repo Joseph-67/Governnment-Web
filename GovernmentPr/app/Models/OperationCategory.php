@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RECP_areas_of_improvement extends Model
+class OperationCategory extends Model
 {
     use HasFactory;
-    protected $table = "recp_areas_of_improvements";
-    protected $primaryKey = "improvementAreaID";
+    protected $table = 'operation_categories';
+
+    protected $primaryKey = 'operation_category_id';
+
     protected $fillable = [
-        'companyID',
-        'area_title',
-        'status'
+        'name',
+        'description',
+        'company_id',
+        'is_delete',
     ];
+
     public $timestamps = true;
 
     public function company()
@@ -24,6 +28,6 @@ class RECP_areas_of_improvement extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('status', true);
+        return $query->where('is_delete', false);
     }
 }

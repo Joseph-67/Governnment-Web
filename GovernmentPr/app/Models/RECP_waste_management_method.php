@@ -15,4 +15,16 @@ class RECP_waste_management_method extends Model
         'management_method_title',
         'status'
     ];
+
+    public $timestamps = true;
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 }

@@ -30,12 +30,19 @@ use App\Models\ChemicalUsage;
 use App\Models\CompanyChemical;
 use App\Models\Admins;
 use App\Models\company_water_usage;
+use App\Models\OperationCategory;
+use App\Models\OperationType;
+use App\Models\CompanyOperation;
+use App\Models\CalendarYear;
+use App\Models\CompanyWaste;
+use App\Models\ProductCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+
 
 class CompanyController extends Controller
 {
@@ -64,9 +71,6 @@ class CompanyController extends Controller
         ->where('company_materials.status', 'active')
         ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
         ->get();
-
-        
-
         // water things
         $data['waterQuestions']                 =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
         $data['CompanyWaterQuestions']          =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
@@ -75,11 +79,32 @@ class CompanyController extends Controller
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
         $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id']);
         $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
-        // dd($data['company_water_usage']);
         // chemical inventory
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
-        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
+        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+        // operation categories
+        $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
+        // operation types
+        $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->get(['operation_type_id', 'name']);
+        // company operations
+        $data['company_operations'] = CompanyOperation::where('company_id', $companyID)->get();
+        $data['approved_operations'] = CompanyOperation::where('status', '<>', 'inactive')->where('company_id', $companyID)->get();
+
+        // Fetch company calendar year
+        $data['calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        $data['active_calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->active()->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+
+        // Fetch waste
+        $data['waste_items'] = CompanyWaste::where('is_delete', false)->where('company_id', $companyID)->get();
+        // fetch product category
+        $data['product_categories'] = ProductCategory::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get(['product_category_id', 'name']);
+        $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get(['product_category_id', 'name']);
+
         return view('components.apps.companyProfile', $data);
     }   
     /**
