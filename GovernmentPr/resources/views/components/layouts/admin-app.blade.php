@@ -405,7 +405,7 @@
                                     </li><!--end nav-item-->
                                     @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">Company</a>
+                                        <a class="nav-link" href="{{ route('show-company', ['company'=>'1']) }}">Company</a>
                                     </li><!--end nav-item-->
                                     @else
                                     <li class="nav-item">
