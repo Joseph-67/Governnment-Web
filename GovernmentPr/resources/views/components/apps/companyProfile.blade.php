@@ -7201,6 +7201,37 @@
             container.remove();
             });
         }
+        function addChemicalField() {
+            const container = document.createElement('div');
+            let chemicals = @json($approved_company_chemicals);
+            container.classList.add('row', 'g-2', 'mt-2', 'chemical-field-container');
+            container.innerHTML = `
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="chemical_name">Chemical Name</label>
+            <select class="form-control" name="chemical_name[]" required>
+            <option value="" disabled selected>Select Chemical</option>
+            ${chemicals.map(chemical => `<option value="${chemical.companyChemicalId}">${chemical.chemical_name}</option>`).join('')}
+            </select>
+            </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="expected_quantity">Expected Quantity</label>
+            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+            </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm remove-chemical-btn">Remove</button>
+            </div>
+            `;
+            document.querySelector('#annual-operations-form .row.g-2 .chemical-quantity-expected').appendChild(container);
+
+            // Add event listener to the remove button
+            container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
+            container.remove();
+            });
+        }
                                         
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
