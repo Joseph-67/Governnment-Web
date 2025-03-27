@@ -36,6 +36,7 @@ use App\Models\CompanyOperation;
 use App\Models\CalendarYear;
 use App\Models\CompanyWaste;
 use App\Models\ProductCategory;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -104,6 +105,15 @@ class CompanyController extends Controller
         $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)
             ->where('is_delete', false)
             ->get(['product_category_id', 'name']);
+        
+        // fetch products
+        $data['products'] = Product::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get();
+        $data['active_products'] = Product::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->active()
+            ->get();
 
         return view('components.apps.companyProfile', $data);
     }   

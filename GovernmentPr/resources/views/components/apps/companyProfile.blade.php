@@ -2354,17 +2354,9 @@
                                                     <td>{{ $category->name }}</td>
                                                     <td>{{ $category->description }}</td>
                                                     <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#">Update</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -2489,7 +2481,12 @@
                                             <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="expected_product">Expected Product to be Manufactured</label>
-                                                    <input type="text" class="form-control" id="expected_product" name="expected_product[]" placeholder="Enter product name" required>
+                                                    <select class="form-select" id="expected_product" name="expected_product[]" required>
+                                                        <option value="" selected disabled>Select Product</option>
+                                                        @foreach($active_products as $product)
+                                                            <option value="{{ $product->product_id }}">{{ $product->product_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
