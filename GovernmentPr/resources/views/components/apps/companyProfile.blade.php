@@ -2756,6 +2756,141 @@
                             </div>
                         </div>
                         <div class="accordion-item">
+                            <h2 class="accordion-header" id="equipmentTypeHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#equipmentTypeCollapse" aria-expanded="false" aria-controls="equipmentTypeCollapse">
+                                    Equipment Types
+                                </button>
+                            </h2>
+                            <div id="equipmentTypeCollapse" class="accordion-collapse collapse" aria-labelledby="equipmentTypeHeading"
+                                data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Equipment Type Form -->
+                                    <form action="" method="post" id="equipment-type-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="equipment_type_name" class="form-label">Equipment Type Name</label>
+                                                    <input type="text" class="form-control" id="equipment_type_name" name="equipment_type_name"
+                                                        placeholder="Enter equipment type name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="equipment_type_description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="equipment_type_description" name="equipment_type_description"
+                                                        placeholder="Enter description" rows="3" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Add Equipment Type</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Equipment Type Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-equipment-types">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Equipment Type Name</th>
+                                                    <th>Description</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="industrialEquipmentLogHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#industrialEquipmentLogCollapse" aria-expanded="false"
+                                    aria-controls="industrialEquipmentLogCollapse">
+                                    Industrial Equipment Log
+                                </button>
+                            </h2>
+                            <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="industrialEquipmentLogHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Industrial Equipment Log Form -->
+                                    <form action="" method="post" id="industrial-equipment-log-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="equipment_name" class="form-label">Equipment Name</label>
+                                                    <input type="text" class="form-control" id="equipment_name" name="equipment_name"
+                                                        placeholder="Enter equipment name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="equipment_type" class="form-label">Equipment Type</label>
+                                                    <input type="text" class="form-control" id="equipment_type" name="equipment_type"
+                                                        placeholder="Enter equipment type" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_capacity" class="form-label">Capacity</label>
+                                                    <input type="text" class="form-control" id="equipment_capacity" name="equipment_capacity"
+                                                        placeholder="Enter equipment capacity" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_status" class="form-label">Status</label>
+                                                    <select class="form-select" id="equipment_status" name="equipment_status" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Operational">Operational</option>
+                                                        <option value="Under Maintenance">Under Maintenance</option>
+                                                        <option value="Out of Service">Out of Service</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="purchase_date" class="form-label">Purchase Date</label>
+                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Add Equipment</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Industrial Equipment Log Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-industrial-equipment-log">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Equipment Name</th>
+                                                    <th>Type</th>
+                                                    <th>Capacity</th>
+                                                    <th>Status</th>
+                                                    <th>Purchase Date</th>
+                                                    <th>Last Maintenance Date</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
                             <h2 class="accordion-header" id="wasteItemHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteItemCollapse" aria-expanded="false" aria-controls="wasteItemCollapse">
@@ -2930,26 +3065,81 @@
                                 aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Production Tracking Form -->
-                                    <form action="" method="post">
+                                    <form action="" method="post" id="production-tracking-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="mb-3">
-                                            <label for="product_name" class="form-label">Product Name</label>
-                                            <input type="text" class="form-control" id="product_name"
-                                                name="product_name" required>
+                                        <div class="row g-3">
+                                            <div class="col-md-5">
+                                                <label for="production_title" class="form-label">Production Title</label>
+                                                <input type="text" class="form-control" id="production_title" name="production_title" placeholder="Enter production title" required>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="operation_name_select" class="form-label">Operation Name</label>
+                                                <select class="form-select" id="operation_name_select" name="operation_name" required>
+                                                    <option value="" selected disabled>Choose...</option>
+                                                    @foreach($approved_operations as $operation)
+                                                        <option value="{{ $operation->operation_id }}">{{ $operation->operation_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="material_used" class="form-label">Material Used</label>
+                                                <select class="form-select" id="material_used" name="material_used[]" required>
+                                                    <option value="" selected disabled>Select Material</option>
+                                                    @foreach($companyMaterials as $material)
+                                                        <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="quantity_used" class="form-label">Quantity Used</label>
+                                                <input type="number" class="form-control" id="quantity_used" name="quantity_used[]" placeholder="Enter quantity used" required>
+                                            </div>
+                                            <div class="material-quantity-used col-md-12"></div>
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_materials_used" onclick="addMaterialUsedField()">Add More</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="amount_of_water_used" class="form-label">Amount of Water Used (Liters)</label>
+                                                <input type="number" class="form-control" id="amount_of_water_used" name="amount_of_water_used" placeholder="Enter amount of water used" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <option value="" selected disabled>Select Calendar Year</option>
+                                                    @foreach($calendar_years as $calendar)
+                                                        <option value="{{ $calendar->id }}">{{ $calendar->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="production_date" class="form-label">Production Date</label>
+                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
+                                            </div>
+                                            <div class="product-quantity-container col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-5">
+                                                        <label for="product_name" class="form-label">Product Name</label>
+                                                        <select class="form-select" id="product_name" name="product_name[]" required>
+                                                            <option value="" selected disabled>Select Product</option>
+                                                            @foreach($active_products as $product)
+                                                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="quantity_produced" class="form-label">Quantity Produced</label>
+                                                        <input type="number" class="form-control" id="quantity_produced" name="quantity_produced[]" placeholder="Enter quantity produced" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity">Add More</button>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="quantity_produced" class="form-label">Quantity
-                                                Produced</label>
-                                            <input type="number" class="form-control" id="quantity_produced"
-                                                name="quantity_produced" required>
+                                        <div class="col-md-12 mt-3">
+                                            <button type="submit" class="btn btn-primary">Submit Production Log</button>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="production_date" class="form-label">Production Date</label>
-                                            <input type="date" class="form-control" id="production_date"
-                                                name="production_date" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </form>
                                 </div>
                             </div>
@@ -7170,6 +7360,38 @@
             });
         }
 
+        function addMaterialUsedField() {
+            const container = document.createElement('div');
+            let materials = @json($companyMaterials);
+            container.classList.add('row', 'g-2', 'mt-2', 'material-used-field-container');
+            container.innerHTML = `
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="material_used_name">Material Name</label>
+                        <select class="form-control" name="material_used_name[]" required>
+                            <option value="" disabled selected>Select Material</option>
+                            ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="quantity_used">Quantity Used</label>
+                        <input type="number" class="form-control" name="quantity_used[]" placeholder="Enter quantity used" required>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-material-used-btn">Remove</button>
+                </div>
+            `;
+            document.querySelector('#production-tracking-form .row.g-3 .material-quantity-used').appendChild(container);
+
+            // Add event listener to the remove button
+            container.querySelector('.remove-material-used-btn').addEventListener('click', function () {
+                container.remove();
+            });
+        }
+
         function addWasteField() {
             const container = document.createElement('div');
             let wastes = @json($waste_items);
@@ -7263,6 +7485,36 @@
                 container.remove();
             });
         }
+
+        document.querySelector('.add-more-product-quantity').addEventListener('click', function () {
+            const container = document.querySelector('.product-quantity-container');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+            <div class="col-md-5">
+                <label for="product_name" class="form-label">Product Name</label>
+                <select class="form-select" id="product_name" name="product_name[]" required>
+                <option value="" selected disabled>Select Product</option>
+                @foreach($active_products as $product)
+                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                @endforeach
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label for="quantity_produced" class="form-label">Quantity Produced</label>
+                <input type="number" class="form-control" id="quantity_produced" name="quantity_produced[]" placeholder="Enter quantity produced" required>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger btn-sm remove-product-quantity">Remove</button>
+            </div>
+            `;
+            container.appendChild(newRow);
+
+            // Add event listener to the remove button
+            newRow.querySelector('.remove-product-quantity').addEventListener('click', function () {
+            newRow.remove();
+            });
+        });
                                         
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {

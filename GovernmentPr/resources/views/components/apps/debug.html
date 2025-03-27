@@ -1,12 +1,30 @@
-@foreach($products as $product)
+@foreach($industrial_equipment_logs as $equipment)
 <tr>
-    <td>{{ $product->name }}</td>
-    <td>{{ $product->category->name }}</td>
-    <td>{{ $product->price }}</td>
-    <td>{{ $product->quantity }}</td>
+    <td>{{ $equipment->equipment_name }}</td>
+    <td>{{ $equipment->equipment_type }}</td>
+    <td>{{ $equipment->equipment_capacity }}</td>
+    <td>{{ $equipment->equipment_status }}</td>
+    <td>{{ $equipment->purchase_date }}</td>
+    <td>{{ $equipment->last_maintenance_date }}</td>
     <td class="text-end">
-        <button class="btn btn-sm btn-primary me-2">Edit</button>
-        <button class="btn btn-sm btn-danger">Delete</button>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-primary me-2">Edit</button>
+            <button class="btn btn-sm btn-danger">Delete</button>
+        </div>
+    </td>
+</tr>
+@endforeach
+
+
+@foreach($equipment_types as $type)
+<tr>
+    <td>{{ $type->name }}</td>
+    <td>{{ $type->description }}</td>
+    <td class="text-end">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-primary me-2">Edit</button>
+            <button class="btn btn-sm btn-danger">Delete</button>
+        </div>
     </td>
 </tr>
 @endforeach
