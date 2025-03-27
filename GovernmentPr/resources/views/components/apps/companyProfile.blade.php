@@ -2432,7 +2432,7 @@
                                                     <label for="chemical_name">Chemical</label>
                                                     <select class="form-select" id="chemical_name" name="chemical[]" required>
                                                         <option value="" selected disabled>Select Chemical</option>
-                                                        @foreach($companyChemicals as $chemical)
+                                                        @foreach($approved_company_chemicals as $chemical)
                                                             <option value="{{ $chemical->chemical_id }}">{{ $chemical->chemical_name }}</option>
                                                         @endforeach
                                                     </select>
