@@ -2766,7 +2766,7 @@
                                 data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Equipment Type Form -->
-                                    <form action="" method="post" id="equipment-type-form">
+                                    <form action="" method="post" id="equipment_type_form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-2">
@@ -2781,7 +2781,7 @@
                                                 <div class="form-group">
                                                     <label for="equipment_type_description" class="form-label">Description</label>
                                                     <textarea class="form-control" id="equipment_type_description" name="equipment_type_description"
-                                                        placeholder="Enter description" rows="3" required></textarea>
+                                                        placeholder="Enter description" rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -2801,7 +2801,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                @foreach($active_equipment_types as $type)
+                                                    <tr>
+                                                        <td>{{ $type->name }}</td>
+                                                        <td>{{ $type->description }}</td>
+                                                        <td class="text-end">
+                                                            <div class="d-flex justify-content-end">
+                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -2834,8 +2845,12 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="equipment_type" class="form-label">Equipment Type</label>
-                                                    <input type="text" class="form-control" id="equipment_type" name="equipment_type"
-                                                        placeholder="Enter equipment type" required>
+                                                    <select class="form-select" id="equipment_type" name="equipment_type" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($active_equipment_types as $type)
+                                                            <option value="{{ $type->equipment_type_id }}">{{ $type->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -2843,6 +2858,123 @@
                                                     <label for="equipment_capacity" class="form-label">Capacity</label>
                                                     <input type="text" class="form-control" id="equipment_capacity" name="equipment_capacity"
                                                         placeholder="Enter equipment capacity" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_color" class="form-label">Color</label>
+                                                    <input type="text" class="form-control" id="equipment_color" name="equipment_color"
+                                                        placeholder="Enter equipment color">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_size" class="form-label">Size</label>
+                                                    <input type="text" class="form-control" id="equipment_size" name="equipment_size"
+                                                        placeholder="Enter equipment size">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_weight" class="form-label">Weight</label>
+                                                    <input type="text" class="form-control" id="equipment_weight" name="equipment_weight"
+                                                        placeholder="Enter equipment weight">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_condition" class="form-label">Condition</label>
+                                                    <select class="form-select" id="equipment_condition" name="equipment_condition">
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="New">New</option>
+                                                        <option value="Good">Good</option>
+                                                        <option value="Fair">Fair</option>
+                                                        <option value="Poor">Poor</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_warranty" class="form-label">Warranty</label>
+                                                    <input type="text" class="form-control" id="equipment_warranty" name="equipment_warranty"
+                                                        placeholder="Enter warranty details">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_schedule" class="form-label">Maintenance Schedule</label>
+                                                    <input type="date" class="form-control" id="equipment_maintenance_schedule"
+                                                        name="equipment_maintenance_schedule" placeholder="Enter maintenance schedule">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_status" class="form-label">Maintenance Status</label>
+                                                    <select class="form-select" id="equipment_maintenance_status" name="equipment_maintenance_status">
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Scheduled">Scheduled</option>
+                                                        <option value="In Progress">In Progress</option>
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="Pending">Pending</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_notes" class="form-label">Maintenance Notes</label>
+                                                    <textarea class="form-control" id="equipment_maintenance_notes" name="equipment_maintenance_notes"
+                                                        placeholder="Enter maintenance notes"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_date" class="form-label">Maintenance Date</label>
+                                                    <input type="date" class="form-control" id="equipment_maintenance_date"
+                                                        name="equipment_maintenance_date">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_cost" class="form-label">Maintenance Cost</label>
+                                                    <input type="number" class="form-control" id="equipment_maintenance_cost"
+                                                        name="equipment_maintenance_cost" placeholder="Enter maintenance cost">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_provider" class="form-label">Maintenance Provider</label>
+                                                    <input type="text" class="form-control" id="equipment_maintenance_provider"
+                                                        name="equipment_maintenance_provider" placeholder="Enter maintenance provider">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_contact" class="form-label">Maintenance Contact</label>
+                                                    <input type="text" class="form-control" id="equipment_maintenance_contact"
+                                                        name="equipment_maintenance_contact" placeholder="Enter maintenance contact">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_phone" class="form-label">Maintenance Phone</label>
+                                                    <input type="text" class="form-control" id="equipment_maintenance_phone"
+                                                        name="equipment_maintenance_phone" placeholder="Enter maintenance phone">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_maintenance_email" class="form-label">Maintenance Email</label>
+                                                    <input type="email" class="form-control" id="equipment_maintenance_email"
+                                                        name="equipment_maintenance_email" placeholder="Enter maintenance email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="description" name="description"
+                                                        placeholder="Enter equipment description"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -2867,7 +2999,6 @@
                                             </div>
                                         </div>
                                     </form>
-
                                     <!-- Industrial Equipment Log Table -->
                                     <div class="table-responsive mt-4">
                                         <table class="table table-striped mb-0" id="tbl-industrial-equipment-log">
@@ -7320,6 +7451,34 @@
                                         <a class="dropdown-item" href="#">Update</a>
                                         <a class="dropdown-item" href="#">Delete</a>
                                     </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Store Equipment Type
+        document.querySelector('#equipment_type_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-equipment-type') }}";
+
+            fetch_cycle('--Store Equipment Type', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the equipment types table or UI as needed
+                    let tableBody = document.querySelector('#tbl-equipment-types tbody');
+                    tableBody.innerHTML = "";
+                    result.equipment_types.forEach(type => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${type.name}</td>
+                            <td>${type.description??""}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
                                 </div>
                             </td>
                         </tr>`;

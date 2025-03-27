@@ -37,6 +37,7 @@ use App\Models\CalendarYear;
 use App\Models\CompanyWaste;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\EquipmentType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -115,6 +116,11 @@ class CompanyController extends Controller
             ->where('is_delete', false)
             ->active()
             ->get();
+
+        // fetch active equipment types
+        $data['active_equipment_types'] = EquipmentType::where('company_id', $companyID)
+            ->active()
+            ->get(['equipment_type_id', 'name']);
 
         return view('components.apps.companyProfile', $data);
     }   
