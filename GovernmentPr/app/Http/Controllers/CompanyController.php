@@ -34,6 +34,7 @@ use App\Models\OperationCategory;
 use App\Models\OperationType;
 use App\Models\CompanyOperation;
 use App\Models\CalendarYear;
+use App\Models\CompanyWaste;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -91,6 +92,9 @@ class CompanyController extends Controller
         // Fetch company calendar year
         $data['calendar_years'] = CalendarYear::where('is_delete', false)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
         $data['active_calendar_years'] = CalendarYear::where('is_delete', false)->active()->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+
+        // Fetch waste
+        $data['waste_items'] = CompanyWaste::where('is_delete', false)->get();
         return view('components.apps.companyProfile', $data);
     }   
     /**

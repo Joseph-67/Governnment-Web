@@ -12,6 +12,7 @@ use App\Http\Controllers\CompanyChemicalController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CompanyOperationController;
+use App\Http\Controllers\CompanyWasteController;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EventController;
@@ -38,6 +39,7 @@ use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\WaterUsageLogsController;
 use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
+
 
 
 
@@ -178,6 +180,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/company/{id}',  'display')->name('company.display');
         // fetch admin details
     });
+
+    // Company Waste
+    Route::controller(CompanyWasteController::class)->group(function() {
+        Route::get('/waste', 'index')->name('admin.view-waste');
+        Route::post('/waste/store', 'store')->name('admin.store-waste');
+        Route::get('/waste/{id}', 'show')->name('admin.show-waste');
+        Route::put('/waste/{id}', 'update')->name('admin.update-waste');
+        Route::delete('/waste/{id}', 'destroy')->name('admin.delete-waste');
+    });
+    
     // Water Sources Details Route
     Route::controller(WaterSourceDetailsController::class)->group(function() {
         Route::post('/store-water-source-details', 'store')->name('admin.store-water-source-details');
@@ -483,4 +495,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // View Email
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
     Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
+
+
 });

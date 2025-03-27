@@ -34,6 +34,11 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#product-management" role="tab"
+                            aria-selected="false"><i class="la la-box-open d-block"></i>Products</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
                             aria-selected="false"><i class="la la-cog d-block"></i>General Settings</a>
                     </li>
@@ -1317,7 +1322,7 @@
                     <div class="accordion my-3" id="inventoryAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="waterHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#waterCollapse" aria-expanded="false" aria-controls="waterCollapse">
                                     Water Inventory
                                 </button>
@@ -2249,13 +2254,13 @@
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="operationTypeHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationTypeCollapse" aria-expanded="true"
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationTypeCollapse" aria-expanded="false"
                                     aria-controls="operationTypeCollapse">
                                     Operation Type
                                 </button>
                             </h2>
-                            <div id="operationTypeCollapse" class="accordion-collapse collapse show"
+                            <div id="operationTypeCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <form action="" method="post" id="company_operation_type_form">
@@ -2386,7 +2391,13 @@
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-2">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_name">Operation Title</label>
+                                                    <input type="text" class="form-control" id="operation_title" name="operation_name" placeholder="Enter operation name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="operation_status" class="">Operation</label>
                                                     <select class="form-select" id="operation_status"
@@ -2399,7 +2410,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
                                                     <select class="form-select" id="calendar_year" name="calendar_year" required>
@@ -2410,7 +2421,30 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="material_name">Material</label>
+                                                    <select class="form-select" id="material" name="material[]" required>
+                                                        <option value="" selected disabled>Select Material</option>
+                                                        @foreach($companyMaterials as $material)
+                                                            <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="expected_quantity">Expected Quantity to be Used for the Year.</label>
+                                                    <input type="number" class="form-control" id="expected_quantity" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+                                                </div>
+                                            </div>
+                                            <div class="material-quantity-expected col-md-12"></div>
+                                            <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_materials" onclick="addMaterialField()">Add More</button>
+                                            </div>
+
+
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="total_operations">Expected Number Of Operations Per Year</label>
                                                     <input type="number" class="form-control" id="operations_per_year" name="operations_per_year"
@@ -2419,24 +2453,54 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_waste_generated">Expected Number of Waste to be Generated Per Year</label>
-                                                    <input type="number" class="form-control" id="waste_generated_per_year"
-                                                        name="waste_generated_per_year" placeholder="Expected Number of Waste to be Generated Per Year" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="total_water_used">Expected Number of Water to be Used Per Year</label>
+                                                    <label for="total_water_used">Expected Volume of Water to be Used for the Year</label>
                                                     <input type="number" class="form-control" id="water_used_per_year" name="water_used_per_year"
                                                         placeholder="Expected Number of Water to be Used Per Year" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="total_units_produced">Expected Number of Units to be Produced per Year</label>
+                                                    <label for="total_units_produced">Expected Units to be Produced per Year</label>
                                                     <input type="number" class="form-control" id="units_produced_per_year"
                                                         name="units_produced_per_year" placeholder="Expected Number of Units to be Produced per Year" required>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="expected_waste">Expected Waste to be Generated for the Year</label>
+                                                    <select class="form-select" id="expected_waste" name="expected_waste[]" required>
+                                                        <option value="" selected disabled>Select Waste Item</option>
+                                                        @foreach($waste_items as $item)
+                                                            <option value="{{ $item->waste_name }}">{{ $item->waste_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="quantity_of_waste">Quantity of Waste to be Generated for the Year</label>
+                                                    <input type="number" class="form-control" id="quantity_of_waste" name="quantity_of_waste[]" placeholder="Enter quantity of waste" required>
+                                                </div>
+                                            </div>
+                                            <div class="waste-quantity-expected col-md-12"></div>
+                                            <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_waste_fields" onclick="addWasteField()">Add More</button>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="expected_product">Expected Product to be Manufactured</label>
+                                                    <input type="text" class="form-control" id="expected_product" name="expected_product[]" placeholder="Enter product name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="expected_quantity">Expected Quantity to be Manufactured</label>
+                                                    <input type="number" class="form-control" id="expected_quantity" name="expected_quantity[]" placeholder="Enter quantity" required>
+                                                </div>
+                                            </div>
+                                            <div class="product-quantity-expected col-md-12"></div>
+                                            <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <button type="submit" class="btn btn-primary">Save Annual Log</button>
@@ -2682,6 +2746,87 @@
                             </div>
                         </div>
                         <div class="accordion-item">
+                            <h2 class="accordion-header" id="wasteItemHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#wasteItemCollapse" aria-expanded="false" aria-controls="wasteItemCollapse">
+                                    Waste Items
+                                </button>
+                            </h2>
+                            <div id="wasteItemCollapse" class="accordion-collapse collapse" aria-labelledby="wasteItemHeading"
+                                data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Waste Item Form -->
+                                    <form action="" method="post" id="waste-item-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="waste_item_name" class="form-label">Waste Item Name</label>
+                                                    <input type="text" class="form-control" id="waste_item_name" name="waste_item_name"
+                                                        placeholder="Enter waste item name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="waste_item_type" class="form-label">Waste Item Type</label>
+                                                    <select class="form-select" id="waste_item_type" name="waste_item_type" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Hazardous">Hazardous</option>
+                                                        <option value="Non-Hazardous">Non-Hazardous</option>
+                                                        <option value="Recyclable">Recyclable</option>
+                                                        <option value="Organic">Organic</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="waste_item_unit" class="form-label">Unit</label>
+                                                    <input type="text" class="form-control" id="waste_item_unit" name="waste_item_unit"
+                                                        placeholder="Enter unit (e.g., kg, liters)" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="button" class="btn btn-primary" id="submit-waste-item">
+                                                    Add Waste Item
+                                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Waste Item Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-waste-items">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Waste Item Name</th>
+                                                    <th>Type</th>
+                                                    <th>Unit</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($waste_items as $item)
+                                                <tr>
+                                                    <td>{{ $item->waste_name }}</td>
+                                                    <td>{{ $item->waste_type }}</td>
+                                                    <td>{{ $item->unit }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
                             <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
@@ -2700,8 +2845,13 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="waste_type" class="form-label">Waste Type</label>
-                                                    <input type="text" class="form-control" id="waste_type"
-                                                        name="waste_type" required>
+                                                    <select class="form-select" id="waste_type" name="waste_type" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Hazardous">Hazardous</option>
+                                                        <option value="Non-Hazardous">Non-Hazardous</option>
+                                                        <option value="Recyclable">Recyclable</option>
+                                                        <option value="Organic">Organic</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -2731,6 +2881,17 @@
                                                         Method</label>
                                                     <input type="text" class="form-control" id="disposal_method"
                                                         name="disposal_method" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($active_calendar_years as $calendar)
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -2786,6 +2947,131 @@
                     </div>
                 </div>
                 <!-- Operations Management -->
+                <!-- Product Management -->
+                <div class="tab-pane fade" id="product-management" role="tabpanel">
+                    <h3>Product Management</h3>
+                    <div class="accordion my-3" id="productManagementAccordion">
+                        <!-- Add New Product -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="productCategoryHeading">
+                                <button class="accordion-button  collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#productCategoryCollapse" aria-expanded="false" aria-controls="productCategoryCollapse">
+                                    Product Categories
+                                </button>
+                            </h2>
+                            <div id="productCategoryCollapse" class="accordion-collapse collapse" aria-labelledby="productCategoryHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="add-product-category-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="category_name">Category Name</label>
+                                                    <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="category_description">Description</label>
+                                                    <textarea class="form-control" id="category_description" name="category_description" placeholder="Enter category description" rows="3" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Add Category</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-product-categories">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Category Name</th>
+                                                    <th>Description</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="addProductHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#addProductCollapse" aria-expanded="true" aria-controls="addProductCollapse">
+                                    Add New Product
+                                </button>
+                            </h2>
+                            <div id="addProductCollapse" class="accordion-collapse collapse show" aria-labelledby="addProductHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="add-product-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="product_name">Product Name</label>
+                                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="product_category">Category</label>
+                                                    <select class="form-select" id="product_category" name="product_category" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="product_price">Price</label>
+                                                    <input type="number" class="form-control" id="product_price" name="product_price" placeholder="Enter product price" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Add Product</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product List -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="productListHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#productListCollapse" aria-expanded="false" aria-controls="productListCollapse">
+                                    Product List
+                                </button>
+                            </h2>
+                            <div id="productListCollapse" class="accordion-collapse collapse" aria-labelledby="productListHeading">
+                                <div class="accordion-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" id="tbl-products">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- General Settings -->
                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                     <!-- Company Profile Setup Accordion -->
@@ -3562,6 +3848,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
+                <form method="post" id="operations-form-update">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Operation Log</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -3706,6 +3993,7 @@
                         changes</button>
                     <span class="loader" id="loader"></span>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -6819,6 +7107,70 @@
             });
         });
 
+        function addMaterialField() {
+            const container = document.createElement('div');
+            let materials = @json($companyMaterials);
+            container.classList.add('row', 'g-2', 'mt-2', 'material-field-container');
+            container.innerHTML = `
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="material_name">Material Name</label>
+            <select class="form-control" name="material_name[]" required>
+                <option value="" disabled selected>Select Material</option>
+                ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+            </select>
+            </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="expected_quantity">Expected Quantity</label>
+            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+            </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm remove-material-btn">Remove</button>
+            </div>
+            `;
+            document.querySelector('#annual-operations-form .row.g-2 .material-quantity-expected').appendChild(container);
+
+            // Add event listener to the remove button
+            container.querySelector('.remove-material-btn').addEventListener('click', function () {
+            container.remove();
+            });
+        }
+
+        function addWasteField() {
+            const container = document.createElement('div');
+            let wastes = @json($waste_items);
+            container.classList.add('row', 'g-2', 'mt-2', 'waste-field-container');
+            container.innerHTML = `
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="waste_name">Waste Name</label>
+            <select class="form-control" name="waste_name[]" required>
+            <option value="" disabled selected>Select Waste</option>
+            ${wastes.map(waste => `<option value="${waste.companyWasteId}">${waste.waste_name}</option>`).join('')}
+            </select>
+            </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+            <label for="expected_quantity">Expected Quantity</label>
+            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+            </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm remove-waste-btn">Remove</button>
+            </div>
+            `;
+            document.querySelector('#annual-operations-form .row.g-2 .waste-quantity-expected').appendChild(container);
+
+            // Add event listener to the remove button
+            container.querySelector('.remove-waste-btn').addEventListener('click', function () {
+            container.remove();
+            });
+        }
+                                        
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -6907,44 +7259,74 @@
         }
 
         // Update Operation Log
-        document.querySelector('#operations-form-update').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
+        document.querySelector('#btn-submit-update-operation-log').addEventListener('click', function () {
+            let form = document.querySelector('#operations-form-update');
+            let formData = new FormData(form);
             let url = "{{ route('admin.update-operation') }}";
             fetch_cycle('--Update Operation Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operations-log tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_logs.forEach(log => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${log.operation_name}</td>
-                            <td>${log.operation_code??""}</td>
-                            <td>${log.operation_type??""}</td>
-                            <td>${log.operation_category??""}</td>
-                            <td>${log.operation_unit??""}</td>
-                            <td>${log.expected_waste_per_operation??""}</td>
-                            <td>${log.expected_water_usage_per_operation??""}</td>
-                            <td>${log.expected_unit_produced_for_goods??""}</td>
-                            <td>${log.calendar_year_name??""}</td>
-                            <td>${log.start_date??""}</td>
-                            <td>${log.end_date??""}</td>
-                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
+            console.log(result);
+            if (result.status === 'success') {
+                // Update the operation logs table or UI as needed
+                let tableBody = document.querySelector('#tbl-operations-log tbody');
+                tableBody.innerHTML = "";
+                result.operation_logs.forEach(log => {
+                tableBody.innerHTML += `<tr>
+                    <td>${log.operation_name}</td>
+                    <td>${log.operation_code??""}</td>
+                    <td>${log.operation_type??""}</td>
+                    <td>${log.operation_category??""}</td>
+                    <td>${log.operation_unit??""}</td>
+                    <td>${log.expected_waste_per_operation??""}</td>
+                    <td>${log.expected_water_usage_per_operation??""}</td>
+                    <td>${log.expected_unit_produced_for_goods??""}</td>
+                    <td>${log.calendar_year_name??""}</td>
+                    <td>${log.start_date??""}</td>
+                    <td>${log.end_date??""}</td>
+                    <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
+                    <td class="text-end">
+                    <div class="dropdown d-inline-block">
+                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                    </td>
+                </tr>`;
+                });
+            }
+            });
+        });
+
+        // waste
+        // Store Waste Item
+        document.querySelector('#submit-waste-item').addEventListener('click', function () {
+            let form = document.querySelector('#waste-item-form');
+            let formData = new FormData(form);
+            let url = "{{ route('admin.store-waste') }}";
+
+            fetch_cycle('--Store Waste Item', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status === 'success') {
+                // Update the waste items table or UI as needed
+                let tableBody = document.querySelector('#tbl-waste-items tbody');
+                tableBody.innerHTML = "";
+                result.waste_items.forEach(item => {
+                tableBody.innerHTML += `<tr>
+                    <td>${item.waste_name}</td>
+                    <td>${item.waste_type}</td>
+                    <td>${item.unit}</td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+                });
+            }
             });
         });
     </script>
