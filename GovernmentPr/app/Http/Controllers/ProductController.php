@@ -72,6 +72,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'Failed to create product', 'details' => $e->getMessage(), 'status' => 'error'], 500);
         }
 
+        $product->where('company_id', $request->company_id)->where('is_deleted', false)->get();
         return response()->json(['message' => 'Product created successfully', 'product' => $product, 'status' => 'success'], 201);
     }
 

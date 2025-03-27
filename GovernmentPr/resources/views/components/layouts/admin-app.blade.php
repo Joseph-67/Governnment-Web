@@ -34,7 +34,15 @@
                         </button>
                     </li> 
                     <li class="mx-3 welcome-text">
-                        <h3 class="mb-0 fw-bold text-truncate"><span id="greeting"></span>, <span class="text-capitalize">{{Auth::guard('admin')->user()->first_name}}</span>!</h3>
+                        <h3 class="mb-0 fw-bold text-truncate"><span id="greeting"></span>, <span class="text-capitalize">
+                            @if (Auth::guard('admin')->check())
+                            {{ Auth::guard('admin')->user()->first_name }}
+                            @elseif (Auth::guard('web')->check())
+                            {{ Auth::guard('web')->user()->first_name }}
+                            @else
+                            {{ Auth::user()->first_name }}
+                            @endif</span>
+                            !</h3>
                         <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
                     </li>                   
                 </ul>
@@ -249,8 +257,16 @@
                                 <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                             @else
                                 <span class="inline-flex text-uppercase justify-content-center d-flex align-items-center fw-bold text-dark rounded-circle">
-                                {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
+                                @if (Auth::guard('admin')->check())
+                                    {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
                                     {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
+                                @elseif (Auth::guard('web')->check())
+                                    {{ substr(Auth::guard('web')->user()->last_name, 0, 1) }}
+                                    {{ substr(Auth::guard('web')->user()->first_name, 0, 1) }}
+                                @else
+                                    {{ substr(Auth::user()->last_name, 0, 1) }}
+                                    {{ substr(Auth::user()->first_name, 0, 1) }}
+                                @endif
                                 </span>
                             @endif
                         </a>
@@ -261,8 +277,16 @@
                                     <img src="{{asset('adminAssets/images/users/avatar-1.jpg')}}" alt="" class="thumb-lg rounded-circle">
                                 @else
                                 <span class="thumb-md justify-content-center d-flex align-items-center bg-dark-subtle text-dark text-uppercase rounded-circle me-2">
-                                {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
-                                {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
+                                    @if (Auth::guard('admin')->check())
+                                        {{ substr(Auth::guard('admin')->user()->last_name, 0, 1) }}
+                                        {{ substr(Auth::guard('admin')->user()->first_name, 0, 1) }}
+                                    @elseif (Auth::guard('web')->check())
+                                        {{ substr(Auth::guard('web')->user()->last_name, 0, 1) }}
+                                        {{ substr(Auth::guard('web')->user()->first_name, 0, 1) }}
+                                    @else
+                                        {{ substr(Auth::user()->last_name, 0, 1) }}
+                                        {{ substr(Auth::user()->first_name, 0, 1) }}
+                                    @endif
                                 </span>
                                 @endif
                                 </div>
@@ -281,13 +305,30 @@
                             <a class="dropdown-item" href="pages-faq.html"><i class="las la-question-circle fs-18 me-1 align-text-bottom"></i> Help Center</a>                       
                             <div class="dropdown-divider mb-0"></div>
 
-                            <form method="POST" action="{{ route('admin.logout') }}" x-data>
-                                @csrf
-                                <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
-                                    @click.prevent="$root.submit();">
-                                    <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
+                            @if (Auth::guard('admin')->check())
+                                <form method="POST" action="{{ route('admin.logout') }}" x-data>
+                                    @csrf
+                                    <x-dropdown-link class="dropdown-item text-danger" href="{{ route('admin.logout') }}"
+                                        @click.prevent="$root.submit();">
+                                        <i class="las la-power-off fs-18 me-1 align-text-bottom"></i> {{ __('Log Out') }}
+                                    </x-dropdown-link>
+                                </form>
+                            @elseif (Auth::guard('web')->check())
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                        <i class="las la-sign-out-alt fs-18 me-1 align-text-bottom"></i> Logout
+                                    </a>
+                                </form>
+                            @else
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                        <i class="las la-sign-out-alt fs-18 me-1 align-text-bottom"></i> Logout
+                                    </a>
+                                </form>
+                            @endif
+
                         </div>
                     </li>
                 </ul><!--end topbar-nav-->
@@ -327,12 +368,29 @@
                             </small>
                             <span>Main Menu</span>
                         </li>
+                        @if(Auth::guard('admin')->check())
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.dashboard')}}">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                 <i class="iconoir-home-simple menu-icon"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li><!--end nav-item-->
+                        @elseif(Auth::guard('web')->check())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard') }}">
+                                <i class="iconoir-home-simple menu-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard') }}">
+                                <i class="iconoir-dashboard menu-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        @endif
+
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarApplications">
@@ -341,9 +399,19 @@
                             </a>
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
+                                    @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('show-company', ['company'=>'1']) }}">Company</a>
+                                    </li><!--end nav-item-->
+                                    @else
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Company</a>
+                                    </li><!--end nav-item-->
+                                    @endif
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->

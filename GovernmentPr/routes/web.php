@@ -6,6 +6,8 @@ use App\Http\Controllers\organisationController;
 use App\Http\Controllers\mandateController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\UsersManagementController;
+use App\Http\Controllers\CompanyController;
+
 
 
 /*
@@ -37,9 +39,18 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
+    // dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    
+    // Company routes
+    Route::controller(CompanyController::class)->group(function () {
+        Route::get('/show-company/{company}', 'show')->name('show-company');
+        Route::get('/{id}/edit', 'edit')->name('company.edit');
+        Route::put('/{id}', 'update')->name('company.update');
+        Route::delete('/{id}', 'destroy')->name('company.destroy');
+    });
 });
 
 

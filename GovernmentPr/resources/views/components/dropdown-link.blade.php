@@ -1,1 +1,1 @@
-<a {{ $attributes->merge(['class' => '']) }}>{{ $slot }}</a>
+<a {{ $attributes->merge(['class' => 'dropdown-item']) }}>{{ $slot }}</a>

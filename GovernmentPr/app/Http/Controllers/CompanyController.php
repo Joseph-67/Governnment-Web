@@ -36,6 +36,7 @@ use App\Models\CompanyOperation;
 use App\Models\CalendarYear;
 use App\Models\CompanyWaste;
 use App\Models\ProductCategory;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -105,6 +106,15 @@ class CompanyController extends Controller
         $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)
             ->where('is_delete', false)
             ->get(['product_category_id', 'name']);
+        
+        // fetch products
+        $data['products'] = Product::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get();
+        $data['active_products'] = Product::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->active()
+            ->get();
 
         return view('components.apps.companyProfile', $data);
     }   
@@ -341,7 +351,7 @@ class CompanyController extends Controller
     public function create()
     {
         //
-        $data['usersList'] = User::where('status','active')->select('first_name','last_name')->get();
+        $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
         return view('components.apps.create-company', $data);
     }
 
@@ -388,7 +398,7 @@ class CompanyController extends Controller
             'contact_person_name' => ['required', 'string', 'min:3', 'max:225'],
             'contact_person_position' => ['required', 'string', 'min:3', 'max:225'],
             'contact_person_phone_number' => ['required', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
-            'is_sherable' => ['nulable', 'string']
+            'is_sherable' => ['nullable', 'string']
         ]);
 
         // company eloquent save

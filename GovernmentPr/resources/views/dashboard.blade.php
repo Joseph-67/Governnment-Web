@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.admin-app>
    <!-- Page Content-->
     <div class="page-content">
         <div class="container-xxl">
@@ -257,4 +257,4 @@
         <!--end footer-->
     </div>
     <!-- end page content -->
-</x-app-layout>
+    </x-layouts.admin-app>
