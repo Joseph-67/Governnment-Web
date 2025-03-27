@@ -35,12 +35,14 @@ use App\Models\OperationType;
 use App\Models\CompanyOperation;
 use App\Models\CalendarYear;
 use App\Models\CompanyWaste;
+use App\Models\ProductCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+
 
 class CompanyController extends Controller
 {
@@ -95,6 +97,14 @@ class CompanyController extends Controller
 
         // Fetch waste
         $data['waste_items'] = CompanyWaste::where('is_delete', false)->where('company_id', $companyID)->get();
+        // fetch product category
+        $data['product_categories'] = ProductCategory::where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get(['product_category_id', 'name']);
+        $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)
+            ->where('is_delete', false)
+            ->get(['product_category_id', 'name']);
+
         return view('components.apps.companyProfile', $data);
     }   
     /**

@@ -26,6 +26,8 @@ use App\Http\Controllers\OperationCategoryController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\ReportingAnalyticsController;
@@ -39,8 +41,6 @@ use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\WaterUsageLogsController;
 use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
-
-
 
 
 // Guest Admin Routes
@@ -249,8 +249,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         
     });
 
-
-
     // Category
     Route::controller(CategoryController::class)->group(function(){
         Route::get ('/create-category', 'create')->name('admin.create-category');
@@ -402,6 +400,24 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
     });
+
+    // Product
+    Route::controller(ProductController::class)->group(function() {
+        Route::get('/products', 'index')->name('admin.products');
+        Route::get('/products/{id}', 'show')->name('admin.show-product');
+        Route::post('/products', 'store')->name('admin.store-product');
+        Route::put('/products/{id}', 'update')->name('admin.update-product');
+        Route::delete('/products/{id}', 'destroy')->name('admin.delete-product');
+    });
+
+    // Product Category
+    Route::controller(ProductCategoryController::class)->group(function() {
+        Route::get('/product-categories', 'index')->name('admin.product-categories');
+        Route::get('/product-categories/{id}', 'show')->name('admin.show-product-category');
+        Route::post('/product-categories', 'store')->name('admin.store-product-category');
+        Route::put('/product-categories/{id}', 'update')->name('admin.update-product-category');
+        Route::delete('/product-categories/{id}', 'destroy')->name('admin.delete-product-category');
+    });
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });
@@ -480,6 +496,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
     });
+
     // Team Member
     Route::controller(TeamMemberController::class)->group(function(){
         Route::get ('/team-member', 'index')->name('admin.team-member');
@@ -495,6 +512,5 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // View Email
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
     Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
-
 
 });

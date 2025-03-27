@@ -2993,6 +2993,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($product_categories as $category)
+                                                <tr>
+                                                    <td>{{ $category->name }}</td>
+                                                    <td>{{ $category->description }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3023,7 +3035,16 @@
                                                     <label for="product_category">Category</label>
                                                     <select class="form-select" id="product_category" name="product_category" required>
                                                         <option value="" selected disabled>Choose...</option>
+                                                        @foreach($active_product_categories as $category)
+                                                            <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                        @endforeach
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="product_unit">Unit</label>
+                                                    <input type="text" class="form-control" id="product_unit" name="product_unit" placeholder="Enter product unit" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -3353,8 +3374,8 @@
                                                         <td>{{ $calendar->start_date }}</td>
                                                         <td>{{ $calendar->end_date }}</td>
                                                         <td class="text-end">
-                                                            <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->id }}')">Edit</button>
-                                                            <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->id }}')">Delete</button>
+                                                            <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->calendar_year_id }}')">Edit</button>
+                                                            <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->calendar_year_id }}')">Delete</button>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -7352,8 +7373,8 @@
                             <td>${year.start_date ?? ''}</td>
                             <td>${year.end_date ?? ''}</td>
                             <td class="text-end">
-                                <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->id }}')">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->id }}')">Delete</button>
+                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${ year->calendar_year_id}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year->calendar_year_id}')">Delete</button>
                             </td>
                         </tr>`;
                     });
@@ -7362,5 +7383,76 @@
         });
      </script>
     <!-- Calendar Year Management Script -->
+     <!-- Product Management Script -->
+      <script>
+        // Store Product Category
+        document.querySelector('#add-product-category-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-product-category') }}";
+
+            fetch_cycle('--Store Product Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the product categories table or UI as needed
+                    let tableBody = document.querySelector('#tbl-product-categories tbody');
+                    tableBody.innerHTML = "";
+                    result.product_categories.forEach(category => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${category.name}</td>
+                            <td>${category.description}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Store Product
+        document.querySelector('#add-product-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-product') }}";
+
+            fetch_cycle('--Store Product', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the product list table or UI as needed
+                    let tableBody = document.querySelector('#tbl-products tbody');
+                    tableBody.innerHTML = "";
+                    result.products.forEach(product => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${product.name}</td>
+                            <td>${product.category}</td>
+                            <td>${product.price}</td>
+                            <td>${product.quantity}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+      </script>
+     <!-- Product Management Script -->
     @endsection
 </x-layouts.admin-app>

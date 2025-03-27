@@ -40,19 +40,19 @@ class ProductController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => [
+            'product_name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products')->where(function ($query) use ($request) {
+                Rule::unique('products', 'name')->where(function ($query) use ($request) {
                     return $query->where('company_id', $request->company_id);
                 }),
             ],
-            'unit' => 'nullable|string|max:50',
-            'category_id' => 'required|integer|exists:product_categories,product_category_id',
+            'product_unit' => 'nullable|string|max:50',
+            'product_category' => 'required|integer|exists:product_categories,product_category_id',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric|min:0',
-            'company_id' => 'required|integer|exists:companies,id',
+            'product_price' => 'nullable|numeric|min:0',
+            'company_id' => 'required|integer|exists:companies,company_id',
         ]);
 
         if ($validator->fails()) {
@@ -61,11 +61,11 @@ class ProductController extends Controller
 
         try {
             $product = new Product();
-            $product->name = $request->name;
-            $product->unit = $request->unit;
-            $product->category_id = $request->category_id;
+            $product->name = $request->product_name;
+            $product->unit = $request->product_unit;
+            $product->category_id = $request->product_category;
             $product->description = $request->description;
-            $product->price = $request->price;
+            $product->price = $request->product_price;
             $product->company_id = $request->company_id;
             $product->save();
         } catch (\Exception $e) {

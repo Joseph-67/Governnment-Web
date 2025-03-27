@@ -40,16 +40,16 @@ class ProductCategoryController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => [
+            'category_name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('product_categories')->where(function ($query) use ($request) {
+                Rule::unique('product_categories', 'name')->where(function ($query) use ($request) {
                     return $query->where('company_id', $request->company_id);
                 }),
             ],
-            'description' => 'nullable|string',
-            'company_id' => 'required|integer|exists:companies,id',
+            'category_description' => 'nullable|string',
+            'company_id' => 'required|integer|exists:companies,company_id',
         ]);
 
         if ($validator->fails()) {
@@ -58,8 +58,8 @@ class ProductCategoryController extends Controller
 
         try {
             $productCategory = new ProductCategory();
-            $productCategory->name = $request->name;
-            $productCategory->description = $request->description;
+            $productCategory->name = $request->category_name;
+            $productCategory->description = $request->category_description;
             $productCategory->company_id = $request->company_id;
             $productCategory->save();
         } catch (\Exception $e) {

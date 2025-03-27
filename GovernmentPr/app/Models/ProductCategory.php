@@ -39,4 +39,14 @@ class ProductCategory extends Model
         return $this->hasMany(Product::class, 'category_id', 'product_category_id');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeDelete($query)
+    {
+        return $query->where('is_delete', true);
+    }
+
 }
