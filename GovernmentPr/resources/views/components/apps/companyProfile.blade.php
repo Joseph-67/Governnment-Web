@@ -2293,17 +2293,9 @@
                                                     <td>{{ $type->name }}</td>
                                                     <td>{{ $type->description }}</td>
                                                     <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#">Update</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -2443,6 +2435,27 @@
                                                 <button type="button" class="btn btn-outline-primary btn-sm add_more_materials" onclick="addMaterialField()">Add More</button>
                                             </div>
 
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="chemical_name">Chemical</label>
+                                                    <select class="form-select" id="chemical_name" name="chemical[]" required>
+                                                        <option value="" selected disabled>Select Chemical</option>
+                                                        @foreach($companyChemicals as $chemical)
+                                                            <option value="{{ $chemical->chemical_id }}">{{ $chemical->chemical_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="expected_quantity_chemical">Expected Quantity to be Used for the Year</label>
+                                                    <input type="number" class="form-control" id="expected_quantity_chemical" name="expected_quantity_chemical[]" placeholder="Enter expected quantity" required>
+                                                </div>
+                                            </div>
+                                            <div class="chemical-quantity-expected col-md-12"></div>
+                                            <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_chemicals" onclick="addChemicalField()">Add More</button>
+                                            </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
