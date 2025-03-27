@@ -39,6 +39,40 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('products')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
+                }),
+            ],
+            'unit' => 'nullable|string|max:50',
+            'category_id' => 'required|integer|exists:product_categories,product_category_id',
+            'description' => 'nullable|string',
+            'price' => 'nullable|numeric|min:0',
+            'company_id' => 'required|integer|exists:companies,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 'error'], 422);
+        }
+
+        try {
+            $product = new Product();
+            $product->name = $request->name;
+            $product->unit = $request->unit;
+            $product->category_id = $request->category_id;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->company_id = $request->company_id;
+            $product->save();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create product', 'details' => $e->getMessage(), 'status' => 'error'], 500);
+        }
+
+        return response()->json(['message' => 'Product created successfully', 'product' => $product, 'status' => 'success'], 201);
     }
 
     /**
