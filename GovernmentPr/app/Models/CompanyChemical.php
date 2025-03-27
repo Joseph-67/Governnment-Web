@@ -34,6 +34,11 @@ class CompanyChemical extends Model
     {
         return $this->hasMany(ChemicalStockMovement::class, 'company_chemical_id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     
     public function scopeByCompany($query, $company_id)
     {

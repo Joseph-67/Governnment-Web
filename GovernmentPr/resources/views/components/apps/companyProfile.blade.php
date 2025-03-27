@@ -2484,7 +2484,7 @@
                                                     <select class="form-select" id="expected_product" name="expected_product[]" required>
                                                         <option value="" selected disabled>Select Product</option>
                                                         @foreach($active_products as $product)
-                                                            <option value="{{ $product->product_id }}">{{ $product->product_name }}</option>
+                                                            <option value="{{ $product->product_id }}">{{ $product->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
