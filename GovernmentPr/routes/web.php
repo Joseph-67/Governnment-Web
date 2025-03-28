@@ -7,6 +7,13 @@ use App\Http\Controllers\mandateController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmailApp;
+use App\Http\Controllers\StockTradingController;
+use App\Http\Controllers\RealTimeUpdateController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EmailIntegration;
 
 
 
@@ -51,6 +58,42 @@ Route::middleware([
         Route::put('/{id}', 'update')->name('company.update');
         Route::delete('/{id}', 'destroy')->name('company.destroy');
     });
+
+     // email application
+     Route::controller(EmailApp::class)->group(function() {
+        Route::get ('/email-app', 'index')->name('view-email-app');        
+    });
+      // Stock Trading
+      Route::controller(StockTradingController::class)->group(function() {
+        Route::get('/stock-trading', 'index')->name('view-stock-trading');
+    });
+     // Real-Time Updates
+     Route::controller(RealTimeUpdateController::class)->group(function() {
+        Route::get('/real-time-updates', 'index')->name('view-real-time-updates');
+    });
+        //Pages
+        Route::controller(PagesController::class)->group(function() {
+            Route::get ('/CMS', 'index')->name('CMS.pages');
+        }); 
+    
+          //Posts
+          Route::controller(PostsController::class)->group(function() {
+            Route::get ('/cms-posts', 'index')->name('CMS.posts');
+          
+        }); 
+       
+    
+        //Events
+        Route::controller(EventController::class)->group(function() {
+            Route::get ('/cms-events', 'index')->name('CMS.events');
+        }); 
+        Route::controller(AddEventController::class)->group(function() {
+            Route::get ('/create-events', 'index')->name('CMS.add-event');
+        }); 
+        // Email integration
+        Route::controller(EmailIntegration::class)->group(function() {
+            Route::get ('/email', 'index')->name('email-integration');
+        });
 });
 
 

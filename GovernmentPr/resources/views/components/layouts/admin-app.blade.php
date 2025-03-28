@@ -412,26 +412,62 @@
                                         <a class="nav-link" href="">Company</a>
                                     </li><!--end nav-item-->
                                     @endif
-                                    <li class="nav-item">
+                                  @if(Auth::guard('admin')->check())
+                                  <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('view-email-app') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
+                                    @endif
+                                    
+                                    @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.stock-trading') }}">Transfer Logs</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
+                                        <a class="nav-link" href="#">Transfer Logs</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                  @if(Auth::guard('admin')->check())
+                                  <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.real-time-updates') }}">Real-Time Update</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('view-real-time-updates') }}">Real-Time Update</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+
+                                  @if(Auth::guard('admin')->check())
+                                  <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Reporting Analytics</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Reporting Analytics</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                    @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.inventory-forecasting') }}">Forecasting & Speculative Management</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Forecasting & Speculative Management</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                    @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.show-all-companies') }}">Map</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Map</a>
+                                    </li><!--end nav-item-->
+                                    @endif
     
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
@@ -443,30 +479,66 @@
                             </small>
                             <span>Management Systems</span>
                         </li>
+                        @if(Auth::guard('admin')->check())
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.users-management')}}">
                                 <i class="iconoir-community menu-icon"></i>
                                 <span>User & Admin Management</span>
                             </a>
                         </li><!--end nav-item-->
+                        @elseif(Auth::guard('web')->check())
                         <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="iconoir-community menu-icon"></i>
+                                <span>User & Admin Management</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        @endif
+                       @if(Auth::guard('admin')->check())
+                       <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.create-category') }}">
                                 <i class="iconoir-folder menu-icon"></i>
                                 <span>Category Management</span>    
                             </a>
                         </li><!--end nav-item-->
+                        @elseif(Auth::guard('web')->check())
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="iconoir-folder menu-icon"></i>
+                                <span>Category Management</span>    
+                            </a>
+                        </li><!--end nav-item-->
+                        @endif
+                        @if(Auth::guard('admin')->check())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('materials.material') }}">
                             <i class="iconoir-box menu-icon"></i>
                             <span>Material Management</span>
                             </a>
                         </li><!--end nav-item-->
+                        @elseif(Auth::guard('web')->check())
                         <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <i class="iconoir-box menu-icon"></i>
+                            <span>Material Management</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        @endif
+                       @if(Auth::guard('admin')->check())
+                       <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.create-chemical') }}">
                             <i class="iconoir-flask menu-icon"></i>
                             <span>Chemicals Management</span>
                             </a>
                         </li><!--end nav-item-->
+                        @elseif(Auth::guard('web')->check())
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <i class="iconoir-flask menu-icon"></i>
+                            <span>Chemicals Management</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarAdvancedUI">
@@ -475,18 +547,42 @@
                             </a>
                             <div class="collapse " id="sidebarAdvancedUI">
                                 <ul class="nav flex-column">
-                                    <li class="nav-item">
+                                 @if(Auth::guard('admin')->check())
+                                 <li class="nav-item">
                                         <a class="nav-link" href="{{route('CMS.CMS')}}">Pages</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{route('CMS.pages')}}">Pages</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                  @if(Auth::guard('admin')->check())
+                                  <li class="nav-item">
+                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
+                                    </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
                                     </li><!--end nav-item-->
+                                    @endif
+                                    @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
+                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                   @if(Auth::guard('admin')->check())
+                                   <li class="nav-item">
                                         <a class="nav-link" href="{{route('CMS.event')}}">Events & News </a>
                                     </li><!--end nav-item-->
+                                    @elseif(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{route('CMS.events')}}">Events & News </a>
+                                    </li><!--end nav-item-->
+                                    @endif
                                     <li class="nav-item">
                                         <a class="nav-link" href="advanced-dragula.html">Media</a>
                                     </li><!--end nav-item-->
@@ -520,30 +616,66 @@
                             </small>
                             <span>Settings</span>
                         </li>
-                        <li class="nav-item">
+                     @if(Auth::guard('admin')->check())
+                     <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.general-setting')}}">
                                 <i class="iconoir-settings menu-icon"></i>
                                 <span> General Settings</span>
                             </a>
                         </li>
+                        @elseif(Auth::guard('web')->check())
                         <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="iconoir-settings menu-icon"></i>
+                                <span> General Settings</span>
+                            </a>
+                        </li>
+                        @endif
+                       @if(Auth::guard('admin')->check())
+                       <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.team-member')}}">
                                 <i class="iconoir-user menu-icon"></i>
                                 <span> Team Member Settings</span>
                             </a>
                         </li>
+                        @elseif(Auth::guard('web')->check())
                         <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="iconoir-user menu-icon"></i>
+                                <span> Team Member Settings</span>
+                            </a>
+                        </li>
+                        @endif
+                       @if(Auth::guard('admin')->check())
+                       <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.display-roles')}}">
                                 <i class="iconoir-shield-check menu-icon"></i>
                                 <span>Security & Permissions</span>
                             </a>
                         </li>
+                        @elseif(Auth::guard('web')->check())
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="iconoir-shield-check menu-icon"></i>
+                                <span>Security & Permissions</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if(Auth::guard('admin')->check())
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('email-configuration')}}">
                                 <i class="iconoir-mail menu-icon"></i>
                                 <span>Email Integration</span>
                             </a>
                         </li>
+                        @elseif(Auth::guard('web')->check())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('email-integration')}}">
+                                <i class="iconoir-mail menu-icon"></i>
+                                <span>Email Integration</span>
+                            </a>
+                        </li>
+                        @endif
 
                         <!--end nav-item-->
                     </ul><!--end navbar-nav--->
