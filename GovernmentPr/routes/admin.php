@@ -73,9 +73,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     //users
     Route::controller(UsersManagementController::class)->group(function(){
-        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+        Route::get('/users-management', 'index')->name('admin.users-management');
         Route::get('/users-details',  'getAllUsers')->name('users.details');
-        Route::post('/view-users',  'store')->name('view.details');
+        Route::post('/view-users',  'store')->name('store-users-details');
 
     });
     // roles
@@ -514,11 +514,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
     // Users Management
-    Route::controller(UsersManagementController::class)->group(function(){
-        Route::post('/view-users',  'store')->name('view.details');
-        Route::get('/users-details',  'getAllUsers')->name('users.details');
-        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
-    });
+    // Route::controller(UsersManagementController::class)->group(function(){
+    //     Route::post('/view-users',  'store')->name('view.details');
+    //     Route::get('/users-details',  'getAllUsers')->name('users.details');
+    //     Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    // });
 
     // View Email
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
