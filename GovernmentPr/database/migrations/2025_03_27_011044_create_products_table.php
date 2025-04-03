@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0.00);
+            $table->enum('status', ['available', 'unavailable', 'discontinued'])->default('available');
             $table->boolean('is_active')->default(true);
             $table->boolean('is_delete')->default(false);
             $table->unsignedBigInteger('company_id');

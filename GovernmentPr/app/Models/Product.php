@@ -16,6 +16,7 @@ class Product extends Model
         'category_id',
         'description',
         'price',
+        'status',
         'is_active',
         'is_delete',
         'company_id',

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->integer('sequence_order')->default(0);
             $table->boolean('is_delete')->default(false);
             $table->timestamps();
             

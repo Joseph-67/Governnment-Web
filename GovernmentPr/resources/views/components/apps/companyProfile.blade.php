@@ -2675,36 +2675,50 @@
                                                         required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="expected_waste_per_operation">Expected Waste Per
-                                                        Operation</label>
-                                                    <input type="number" class="form-control"
-                                                        id="expected_waste_per_operation"
-                                                        name="expected_waste_per_operation"
-                                                        placeholder="Expected Waste Per Operation" required>
+                                            <div class="col-md-6">
+                                            <div class="product-quantity-container col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="expected_product">Expected Product</label>
+                                                            <select class="form-select" id="expected_product" name="expected_product[]" required>
+                                                                <option value="" selected disabled>Select Product</option>
+                                                                @foreach($active_products as $product)
+                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="expected_unit_produced_for_goods">Expected Quantity</label>
+                                                            <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity-operation">Add More</button>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="expected_water_usage_per_operation">Expected Water
-                                                        Usage Per Operation</label>
-                                                    <input type="number" class="form-control"
-                                                        id="expected_water_usage_per_operation"
-                                                        name="expected_water_usage_per_operation"
-                                                        placeholder="Expected Water Usage Per Operation" required>
+                                                    <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
+                                                    <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="expected_unit_produced_for_goods">Expected Unit
-                                                        Produced For Goods</label>
-                                                    <input type="number" class="form-control"
-                                                        id="expected_unit_produced_for_goods"
-                                                        name="expected_unit_produced_for_goods"
-                                                        placeholder="Expected Unit Produced For Goods" required>
+                                                    <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
+                                                    <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
                                                 </div>
                                             </div>
+                                            <!-- <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
+                                            </div> -->
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
@@ -2730,6 +2744,17 @@
                                                     <label for="end_date">End Date</label>
                                                     <input type="date" class="form-control" id="end_date"
                                                         name="end_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_status">Operation Status</label>
+                                                    <select class="form-select" id="operation_status" name="operation_status" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                        <option value="completed">Completed</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -7735,6 +7760,7 @@
                 container.remove();
             });
         }
+
         function addProductField() {
             const container = document.createElement('div');
             let products = @json($products);
@@ -7766,6 +7792,47 @@
                 container.remove();
             });
         }
+
+
+        // Add event listener to the add more product button
+        document.addEventListener('DOMContentLoaded', function () {
+        const productContainer = document.querySelector('.product-quantity-container');
+        const addMoreButton = document.querySelector('.add-more-product-quantity-operation');
+
+        addMoreButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="expected_product">Expected Product</label>
+                        <select class="form-select" name="expected_product[]" required>
+                            <option value="" selected disabled>Select Product</option>
+                            @foreach($active_products as $product)
+                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="expected_unit_produced_for_goods">Expected Quantity</label>
+                        <input type="number" class="form-control" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                </div>
+            `;
+            productContainer.appendChild(newRow);
+        });
+
+        productContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-product-quantity')) {
+                e.target.closest('.row').remove();
+            }
+        });
+    });
 
         document.querySelector('.add-more-product-quantity').addEventListener('click', function () {
             const container = document.querySelector('.product-quantity-container');
