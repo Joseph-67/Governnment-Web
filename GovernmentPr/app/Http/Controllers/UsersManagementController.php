@@ -16,11 +16,13 @@ class UsersManagementController extends Controller
     public function index()
     {
         //
+        return view('components.admin.users-management');
     }
 
     public function getAllUsers()
     {
         $usersDetails = usersManagement::all();
+        
     }
     /**
      * Show the form for creating a new resource.
@@ -49,14 +51,14 @@ class UsersManagementController extends Controller
             'mobileNumber'  => ['required', 'regex:/^[\+]?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{1,4}$/']
 
         ]);
-       usersManagement::create([
+       $user=usersManagement::create([
             'firstname'=>$request->firstname,
             'lastname'=>$request->lastname,
             'othername'=>$request->othername,
             'email'=>$request->email,
             'mobileNumber'=>$request->mobileNumber
         ]);
-        AdminManagement::create([
+        $admin=AdminManagement::create([
             'firstname'=>$request->firstname,
             'lastname'=>$request->lastname,
             'othername'=>$request->othername,
@@ -94,7 +96,7 @@ class UsersManagementController extends Controller
     }
 
     public function show_usersmanagement() {
-        return view('components.admin.users-management');
+        
     }
 
 

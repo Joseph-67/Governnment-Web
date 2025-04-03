@@ -34,7 +34,7 @@
                             <div id="adminCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
-                                    <form id="form-validation-2" class="form" action="{{ route('view.details') }}" method="post">
+                                    <form id="form-validation-2" class="form" action="{{ route('store-users-details') }}" method="post">
                                         @csrf
                                         <div class="row g-3">
                                             <div class="col-md-6">
@@ -112,7 +112,7 @@
                             <div id="usersCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
-                                <form id="form-validation-2" class="form" action="{{ route('view.details') }}" method="post">
+                                <form id="form-validation-2" class="form" action="{{ route('store-users-details') }}" method="post">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-md-6">
