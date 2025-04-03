@@ -2378,7 +2378,9 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="operation_name">Operation Title</label>
-                                                    <input type="text" class="form-control" id="operation_title" name="operation_name" placeholder="Enter operation name" required>
+                                                    <input type="text" class="form-control" id="operation_title"
+                                                        name="operation_name" placeholder="Enter operation name"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -2397,10 +2399,12 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                        required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{
+                                                            $calendar->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -2408,109 +2412,148 @@
                                             <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="material_name">Material</label>
-                                                    <select class="form-select" id="material" name="material[]" required>
+                                                    <select class="form-select" id="material" name="material[]"
+                                                        required>
                                                         <option value="" selected disabled>Select Material</option>
                                                         @foreach($companyMaterials as $material)
-                                                            <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                        <option value="{{ $material->companyMaterialId }}">{{
+                                                            $material->material }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="expected_quantity">Expected Quantity to be Used for the Year.</label>
-                                                    <input type="number" class="form-control" id="expected_quantity" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+                                                    <label for="expected_quantity">Expected Quantity to be Used for the
+                                                        Year.</label>
+                                                    <input type="number" class="form-control" id="expected_quantity"
+                                                        name="expected_quantity[]" placeholder="Enter expected quantity"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="material-quantity-expected col-md-12"></div>
                                             <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_materials" onclick="addMaterialField()">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add_more_materials"
+                                                    onclick="addMaterialField()">Add More</button>
                                             </div>
 
                                             <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="chemical_name">Chemical</label>
-                                                    <select class="form-select" id="chemical_name" name="chemical[]" required>
+                                                    <select class="form-select" id="chemical_name" name="chemical[]"
+                                                        required>
                                                         <option value="" selected disabled>Select Chemical</option>
                                                         @foreach($approved_company_chemicals as $chemical)
-                                                            <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
+                                                        <option value="{{ $chemical->company_chemical_id }}">{{
+                                                            $chemical->chemical->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="expected_quantity_chemical">Expected Quantity to be Used for the Year</label>
-                                                    <input type="number" class="form-control" id="expected_quantity_chemical" name="expected_quantity_chemical[]" placeholder="Enter expected quantity" required>
+                                                    <label for="expected_quantity_chemical">Expected Quantity to be Used
+                                                        for the Year</label>
+                                                    <input type="number" class="form-control"
+                                                        id="expected_quantity_chemical"
+                                                        name="expected_quantity_chemical[]"
+                                                        placeholder="Enter expected quantity" required>
                                                 </div>
                                             </div>
                                             <div class="chemical-quantity-expected col-md-12"></div>
                                             <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_chemicals" onclick="addChemicalField()">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add_more_chemicals"
+                                                    onclick="addChemicalField()">Add More</button>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="total_operations">Expected Number Of Operations Per Year</label>
-                                                    <input type="number" class="form-control" id="operations_per_year" name="operations_per_year"
+                                                    <label for="total_operations">Expected Number Of Operations Per
+                                                        Year</label>
+                                                    <input type="number" class="form-control" id="operations_per_year"
+                                                        name="operations_per_year"
                                                         placeholder="Expected Number Of Operations Per Year" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="total_water_used">Expected Volume of Water to be Used for the Year</label>
-                                                    <input type="number" class="form-control" id="water_used_per_year" name="water_used_per_year"
-                                                        placeholder="Expected Number of Water to be Used Per Year" required>
+                                                    <label for="total_water_used">Expected Volume of Water to be Used
+                                                        for the Year</label>
+                                                    <input type="number" class="form-control" id="water_used_per_year"
+                                                        name="water_used_per_year"
+                                                        placeholder="Expected Number of Water to be Used Per Year"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="total_units_produced">Expected Units to be Produced per Year</label>
-                                                    <input type="number" class="form-control" id="units_produced_per_year"
-                                                        name="units_produced_per_year" placeholder="Expected Number of Units to be Produced per Year" required>
+                                                    <label for="total_units_produced">Expected Units to be Produced per
+                                                        Year</label>
+                                                    <input type="number" class="form-control"
+                                                        id="units_produced_per_year" name="units_produced_per_year"
+                                                        placeholder="Expected Number of Units to be Produced per Year"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="expected_waste">Expected Waste to be Generated for the Year</label>
-                                                    <select class="form-select" id="expected_waste" name="expected_waste[]" required>
+                                                    <label for="expected_waste">Expected Waste to be Generated for the
+                                                        Year</label>
+                                                    <select class="form-select" id="expected_waste"
+                                                        name="expected_waste[]" required>
                                                         <option value="" selected disabled>Select Waste Item</option>
                                                         @foreach($waste_items as $item)
-                                                            <option value="{{ $item->waste_name }}">{{ $item->waste_name }}</option>
+                                                        <option value="{{ $item->waste_name }}">{{ $item->waste_name }}
+                                                        </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="quantity_of_waste">Quantity of Waste to be Generated for the Year</label>
-                                                    <input type="number" class="form-control" id="quantity_of_waste" name="quantity_of_waste[]" placeholder="Enter quantity of waste" required>
+                                                    <label for="quantity_of_waste">Quantity of Waste to be Generated for
+                                                        the Year</label>
+                                                    <input type="number" class="form-control" id="quantity_of_waste"
+                                                        name="quantity_of_waste[]" placeholder="Enter quantity of waste"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="waste-quantity-expected col-md-12"></div>
                                             <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_waste_fields" onclick="addWasteField()">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add_more_waste_fields"
+                                                    onclick="addWasteField()">Add More</button>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="expected_product">Expected Product to be Manufactured</label>
-                                                    <select class="form-select" id="expected_product" name="expected_product[]" required>
+                                                    <label for="expected_product">Expected Product to be
+                                                        Manufactured</label>
+                                                    <select class="form-select" id="expected_product"
+                                                        name="expected_product[]" required>
                                                         <option value="" selected disabled>Select Product</option>
                                                         @foreach($active_products as $product)
-                                                            <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                        <option value="{{ $product->product_id }}">{{ $product->name }}
+                                                        </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label for="expected_quantity">Expected Quantity to be Manufactured</label>
-                                                    <input type="number" class="form-control" id="expected_quantity" name="expected_quantity[]" placeholder="Enter quantity" required>
+                                                    <label for="expected_quantity">Expected Quantity to be
+                                                        Manufactured</label>
+                                                    <input type="number" class="form-control" id="expected_quantity"
+                                                        name="expected_quantity[]" placeholder="Enter quantity"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="product-quantity-expected col-md-12"></div>
                                             <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add_more_products"
+                                                    onclick="addProductField()">Add More</button>
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <button type="submit" class="btn btn-primary">Save Annual Log</button>
@@ -2665,10 +2708,12 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                        required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{
+                                                            $calendar->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -2758,12 +2803,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="equipmentTypeHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#equipmentTypeCollapse" aria-expanded="false" aria-controls="equipmentTypeCollapse">
+                                    data-bs-target="#equipmentTypeCollapse" aria-expanded="false"
+                                    aria-controls="equipmentTypeCollapse">
                                     Equipment Types
                                 </button>
                             </h2>
-                            <div id="equipmentTypeCollapse" class="accordion-collapse collapse" aria-labelledby="equipmentTypeHeading"
-                                data-bs-parent="#operationsAccordion">
+                            <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="equipmentTypeHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Equipment Type Form -->
                                     <form action="" method="post" id="equipment_type_form">
@@ -2772,20 +2818,25 @@
                                         <div class="row g-2">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="equipment_type_name" class="form-label">Equipment Type Name</label>
-                                                    <input type="text" class="form-control" id="equipment_type_name" name="equipment_type_name"
+                                                    <label for="equipment_type_name" class="form-label">Equipment Type
+                                                        Name</label>
+                                                    <input type="text" class="form-control" id="equipment_type_name"
+                                                        name="equipment_type_name"
                                                         placeholder="Enter equipment type name" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="equipment_type_description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="equipment_type_description" name="equipment_type_description"
+                                                    <label for="equipment_type_description"
+                                                        class="form-label">Description</label>
+                                                    <textarea class="form-control" id="equipment_type_description"
+                                                        name="equipment_type_description"
                                                         placeholder="Enter description" rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Equipment Type</button>
+                                                <button type="submit" class="btn btn-primary">Add Equipment
+                                                    Type</button>
                                             </div>
                                         </div>
                                     </form>
@@ -2802,16 +2853,16 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($active_equipment_types as $type)
-                                                    <tr>
-                                                        <td>{{ $type->name }}</td>
-                                                        <td>{{ $type->description }}</td>
-                                                        <td class="text-end">
-                                                            <div class="d-flex justify-content-end">
-                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                <tr>
+                                                    <td>{{ $type->name }}</td>
+                                                    <td>{{ $type->description }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -2837,56 +2888,67 @@
                                         <div class="row g-2">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="equipment_name" class="form-label">Equipment Name</label>
-                                                    <input type="text" class="form-control" id="equipment_name" name="equipment_name"
-                                                        placeholder="Enter equipment name" required>
+                                                    <label for="equipment_name" class="form-label">Equipment Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="equipment_name"
+                                                        name="equipment_name" placeholder="Enter equipment name"
+                                                        required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="equipment_type" class="form-label">Equipment Type</label>
-                                                    <select class="form-select" id="equipment_type" name="equipment_type" required>
+                                                    <label for="equipment_code" class="form-label">Equipment Code <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="equipment_code" name="equipment_code" placeholder="Enter equipment code" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="equipment_type" class="form-label">Equipment Type <span class="text-danger">*</span></label>
+                                                    <select class="form-select" id="equipment_type"
+                                                        name="equipment_type" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($active_equipment_types as $type)
-                                                            <option value="{{ $type->equipment_type_id }}">{{ $type->name }}</option>
+                                                        <option value="{{ $type->equipment_type_id }}">{{ $type->name }}
+                                                        </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
+                                                    <label for="equipment_model" class="form-label">Model</label>
+                                                    <input type="text" class="form-control" id="equipment_model" name="equipment_model" placeholder="Enter equipment model">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_serial_number" class="form-label">Serial Number</label>
+                                                    <input type="text" class="form-control" id="equipment_serial_number" name="equipment_serial_number" placeholder="Enter serial number">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="equipment_brand" class="form-label">Equipment Brand</label>
+                                                    <input type="text" class="form-control" id="equipment_brand" name="equipment_brand" placeholder="Enter brand">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
                                                     <label for="equipment_capacity" class="form-label">Capacity</label>
-                                                    <input type="text" class="form-control" id="equipment_capacity" name="equipment_capacity"
-                                                        placeholder="Enter equipment capacity" required>
+                                                    <input type="text" class="form-control" id="equipment_capacity"
+                                                        name="equipment_capacity" placeholder="Enter equipment capacity">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="equipment_color" class="form-label">Color</label>
-                                                    <input type="text" class="form-control" id="equipment_color" name="equipment_color"
-                                                        placeholder="Enter equipment color">
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_size" class="form-label">Size</label>
-                                                    <input type="text" class="form-control" id="equipment_size" name="equipment_size"
-                                                        placeholder="Enter equipment size">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_weight" class="form-label">Weight</label>
-                                                    <input type="text" class="form-control" id="equipment_weight" name="equipment_weight"
-                                                        placeholder="Enter equipment weight">
+                                                    <label for="equipment_location" class="form-label">Location <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="equipment_location" name="equipment_location" placeholder="Enter equipment location" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="equipment_condition" class="form-label">Condition</label>
-                                                    <select class="form-select" id="equipment_condition" name="equipment_condition">
+                                                    <select class="form-select" id="equipment_condition"
+                                                        name="equipment_condition">
                                                         <option value="" selected disabled>Choose...</option>
                                                         <option value="New">New</option>
                                                         <option value="Good">Good</option>
@@ -2897,90 +2959,9 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="equipment_warranty" class="form-label">Warranty</label>
-                                                    <input type="text" class="form-control" id="equipment_warranty" name="equipment_warranty"
-                                                        placeholder="Enter warranty details">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_schedule" class="form-label">Maintenance Schedule</label>
-                                                    <input type="date" class="form-control" id="equipment_maintenance_schedule"
-                                                        name="equipment_maintenance_schedule" placeholder="Enter maintenance schedule">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_status" class="form-label">Maintenance Status</label>
-                                                    <select class="form-select" id="equipment_maintenance_status" name="equipment_maintenance_status">
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Scheduled">Scheduled</option>
-                                                        <option value="In Progress">In Progress</option>
-                                                        <option value="Completed">Completed</option>
-                                                        <option value="Pending">Pending</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_notes" class="form-label">Maintenance Notes</label>
-                                                    <textarea class="form-control" id="equipment_maintenance_notes" name="equipment_maintenance_notes"
-                                                        placeholder="Enter maintenance notes"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_date" class="form-label">Maintenance Date</label>
-                                                    <input type="date" class="form-control" id="equipment_maintenance_date"
-                                                        name="equipment_maintenance_date">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_cost" class="form-label">Maintenance Cost</label>
-                                                    <input type="number" class="form-control" id="equipment_maintenance_cost"
-                                                        name="equipment_maintenance_cost" placeholder="Enter maintenance cost">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_provider" class="form-label">Maintenance Provider</label>
-                                                    <input type="text" class="form-control" id="equipment_maintenance_provider"
-                                                        name="equipment_maintenance_provider" placeholder="Enter maintenance provider">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_contact" class="form-label">Maintenance Contact</label>
-                                                    <input type="text" class="form-control" id="equipment_maintenance_contact"
-                                                        name="equipment_maintenance_contact" placeholder="Enter maintenance contact">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_phone" class="form-label">Maintenance Phone</label>
-                                                    <input type="text" class="form-control" id="equipment_maintenance_phone"
-                                                        name="equipment_maintenance_phone" placeholder="Enter maintenance phone">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_maintenance_email" class="form-label">Maintenance Email</label>
-                                                    <input type="email" class="form-control" id="equipment_maintenance_email"
-                                                        name="equipment_maintenance_email" placeholder="Enter maintenance email">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="description" name="description"
-                                                        placeholder="Enter equipment description"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_status" class="form-label">Status</label>
-                                                    <select class="form-select" id="equipment_status" name="equipment_status" required>
+                                                    <label for="equipment_status" class="form-label">Equipment Status <span class="text-danger">*</span></label>
+                                                    <select class="form-select" id="equipment_status"
+                                                        name="equipment_status" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         <option value="Operational">Operational</option>
                                                         <option value="Under Maintenance">Under Maintenance</option>
@@ -2990,8 +2971,9 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="purchase_date" class="form-label">Purchase Date</label>
-                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" required>
+                                                    <label for="purchase_date" class="form-label">Purchase Date <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" id="purchase_date"
+                                                        name="purchase_date" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -3001,7 +2983,7 @@
                                     </form>
                                     <!-- Industrial Equipment Log Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-industrial-equipment-log">
+                                        <table class="table table-striped mb-0" id="tbl-equipment-logs">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Equipment Name</th>
@@ -3014,7 +2996,33 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                @foreach($industrial_equipments as $equipment)
+                                                <tr>
+                                                    <td>{{ $equipment->equipment_name }}</td>
+                                                    <td>{{ $equipment->equipmentType->name }}</td>
+                                                    <td>{{ $equipment->capacity }}</td>
+                                                    <td>
+                                                        @php
+                                                            $statusClasses = [
+                                                                'Operational' => 'bg-success',
+                                                                'Under Maintenance' => 'bg-warning',
+                                                                'Out of Service' => 'bg-danger',
+                                                            ];
+                                                        @endphp
+                                                        <span class="badge {{ $statusClasses[$equipment->equipment_status] ?? 'bg-secondary' }}">
+                                                            {{ $equipment->equipment_status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ $equipment->purchase_date }}</td>
+                                                    <td>{{ $equipment->last_maintenance_date ?? 'N/A' }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3024,12 +3032,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="wasteItemHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#wasteItemCollapse" aria-expanded="false" aria-controls="wasteItemCollapse">
+                                    data-bs-target="#wasteItemCollapse" aria-expanded="false"
+                                    aria-controls="wasteItemCollapse">
                                     Waste Items
                                 </button>
                             </h2>
-                            <div id="wasteItemCollapse" class="accordion-collapse collapse" aria-labelledby="wasteItemHeading"
-                                data-bs-parent="#operationsAccordion">
+                            <div id="wasteItemCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="wasteItemHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Waste Item Form -->
                                     <form action="" method="post" id="waste-item-form">
@@ -3038,15 +3047,19 @@
                                         <div class="row g-2">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="waste_item_name" class="form-label">Waste Item Name</label>
-                                                    <input type="text" class="form-control" id="waste_item_name" name="waste_item_name"
-                                                        placeholder="Enter waste item name" required>
+                                                    <label for="waste_item_name" class="form-label">Waste Item
+                                                        Name</label>
+                                                    <input type="text" class="form-control" id="waste_item_name"
+                                                        name="waste_item_name" placeholder="Enter waste item name"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="waste_item_type" class="form-label">Waste Item Type</label>
-                                                    <select class="form-select" id="waste_item_type" name="waste_item_type" required>
+                                                    <label for="waste_item_type" class="form-label">Waste Item
+                                                        Type</label>
+                                                    <select class="form-select" id="waste_item_type"
+                                                        name="waste_item_type" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         <option value="Hazardous">Hazardous</option>
                                                         <option value="Non-Hazardous">Non-Hazardous</option>
@@ -3058,14 +3071,16 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="waste_item_unit" class="form-label">Unit</label>
-                                                    <input type="text" class="form-control" id="waste_item_unit" name="waste_item_unit"
+                                                    <input type="text" class="form-control" id="waste_item_unit"
+                                                        name="waste_item_unit"
                                                         placeholder="Enter unit (e.g., kg, liters)" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <button type="button" class="btn btn-primary" id="submit-waste-item">
                                                     Add Waste Item
-                                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                    <span class="spinner-border spinner-border-sm d-none" role="status"
+                                                        aria-hidden="true"></span>
                                                 </button>
                                             </div>
                                         </div>
@@ -3121,7 +3136,8 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="waste_type" class="form-label">Waste Type</label>
-                                                    <select class="form-select" id="waste_type" name="waste_type" required>
+                                                    <select class="form-select" id="waste_type" name="waste_type"
+                                                        required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         <option value="Hazardous">Hazardous</option>
                                                         <option value="Non-Hazardous">Non-Hazardous</option>
@@ -3162,10 +3178,12 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                        required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{
+                                                            $calendar->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3201,71 +3219,95 @@
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-3">
                                             <div class="col-md-5">
-                                                <label for="production_title" class="form-label">Production Title</label>
-                                                <input type="text" class="form-control" id="production_title" name="production_title" placeholder="Enter production title" required>
+                                                <label for="production_title" class="form-label">Production
+                                                    Title</label>
+                                                <input type="text" class="form-control" id="production_title"
+                                                    name="production_title" placeholder="Enter production title"
+                                                    required>
                                             </div>
                                             <div class="col-md-5">
-                                                <label for="operation_name_select" class="form-label">Operation Name</label>
-                                                <select class="form-select" id="operation_name_select" name="operation_name" required>
+                                                <label for="operation_name_select" class="form-label">Operation
+                                                    Name</label>
+                                                <select class="form-select" id="operation_name_select"
+                                                    name="operation_name" required>
                                                     <option value="" selected disabled>Choose...</option>
                                                     @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->operation_id }}">{{ $operation->operation_name }}</option>
+                                                    <option value="{{ $operation->operation_id }}">{{
+                                                        $operation->operation_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-5">
                                                 <label for="material_used" class="form-label">Material Used</label>
-                                                <select class="form-select" id="material_used" name="material_used[]" required>
+                                                <select class="form-select" id="material_used" name="material_used[]"
+                                                    required>
                                                     <option value="" selected disabled>Select Material</option>
                                                     @foreach($companyMaterials as $material)
-                                                        <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                    <option value="{{ $material->companyMaterialId }}">{{
+                                                        $material->material }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-5">
                                                 <label for="quantity_used" class="form-label">Quantity Used</label>
-                                                <input type="number" class="form-control" id="quantity_used" name="quantity_used[]" placeholder="Enter quantity used" required>
+                                                <input type="number" class="form-control" id="quantity_used"
+                                                    name="quantity_used[]" placeholder="Enter quantity used" required>
                                             </div>
                                             <div class="material-quantity-used col-md-12"></div>
                                             <div class="col-md-12">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_materials_used" onclick="addMaterialUsedField()">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add_more_materials_used"
+                                                    onclick="addMaterialUsedField()">Add More</button>
                                             </div>
                                             <div class="col-md-4">
-                                                <label for="amount_of_water_used" class="form-label">Amount of Water Used (Liters)</label>
-                                                <input type="number" class="form-control" id="amount_of_water_used" name="amount_of_water_used" placeholder="Enter amount of water used" required>
+                                                <label for="amount_of_water_used" class="form-label">Amount of Water
+                                                    Used (Liters)</label>
+                                                <input type="number" class="form-control" id="amount_of_water_used"
+                                                    name="amount_of_water_used" placeholder="Enter amount of water used"
+                                                    required>
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                <select class="form-select" id="calendar_year" name="calendar_year"
+                                                    required>
                                                     <option value="" selected disabled>Select Calendar Year</option>
                                                     @foreach($calendar_years as $calendar)
-                                                        <option value="{{ $calendar->id }}">{{ $calendar->name }}</option>
+                                                    <option value="{{ $calendar->id }}">{{ $calendar->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="production_date" class="form-label">Production Date</label>
-                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
+                                                <input type="date" class="form-control" id="production_date"
+                                                    name="production_date" required>
                                             </div>
                                             <div class="product-quantity-container col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
                                                     <div class="col-md-5">
-                                                        <label for="product_name" class="form-label">Product Name</label>
-                                                        <select class="form-select" id="product_name" name="product_name[]" required>
+                                                        <label for="product_name" class="form-label">Product
+                                                            Name</label>
+                                                        <select class="form-select" id="product_name"
+                                                            name="product_name[]" required>
                                                             <option value="" selected disabled>Select Product</option>
                                                             @foreach($active_products as $product)
-                                                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                            <option value="{{ $product->product_id }}">{{ $product->name
+                                                                }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <label for="quantity_produced" class="form-label">Quantity Produced</label>
-                                                        <input type="number" class="form-control" id="quantity_produced" name="quantity_produced[]" placeholder="Enter quantity produced" required>
+                                                        <label for="quantity_produced" class="form-label">Quantity
+                                                            Produced</label>
+                                                        <input type="number" class="form-control" id="quantity_produced"
+                                                            name="quantity_produced[]"
+                                                            placeholder="Enter quantity produced" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity">Add More</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm add-more-product-quantity">Add
+                                                    More</button>
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-3">
@@ -3286,11 +3328,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productCategoryHeading">
                                 <button class="accordion-button  collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productCategoryCollapse" aria-expanded="false" aria-controls="productCategoryCollapse">
+                                    data-bs-target="#productCategoryCollapse" aria-expanded="false"
+                                    aria-controls="productCategoryCollapse">
                                     Product Categories
                                 </button>
                             </h2>
-                            <div id="productCategoryCollapse" class="accordion-collapse collapse" aria-labelledby="productCategoryHeading">
+                            <div id="productCategoryCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="productCategoryHeading">
                                 <div class="accordion-body">
                                     <form action="" method="post" id="add-product-category-form">
                                         @csrf
@@ -3299,13 +3343,17 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="category_name">Category Name</label>
-                                                    <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name" required>
+                                                    <input type="text" class="form-control" id="category_name"
+                                                        name="category_name" placeholder="Enter category name" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="category_description">Description</label>
-                                                    <textarea class="form-control" id="category_description" name="category_description" placeholder="Enter category description" rows="3" required></textarea>
+                                                    <textarea class="form-control" id="category_description"
+                                                        name="category_description"
+                                                        placeholder="Enter category description" rows="3"
+                                                        required></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -3345,11 +3393,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="addProductHeading">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#addProductCollapse" aria-expanded="true" aria-controls="addProductCollapse">
+                                    data-bs-target="#addProductCollapse" aria-expanded="true"
+                                    aria-controls="addProductCollapse">
                                     Add New Product
                                 </button>
                             </h2>
-                            <div id="addProductCollapse" class="accordion-collapse collapse show" aria-labelledby="addProductHeading">
+                            <div id="addProductCollapse" class="accordion-collapse collapse show"
+                                aria-labelledby="addProductHeading">
                                 <div class="accordion-body">
                                     <form action="" method="post" id="add-product-form">
                                         @csrf
@@ -3358,16 +3408,19 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="product_name">Product Name</label>
-                                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" required>
+                                                    <input type="text" class="form-control" id="product_name"
+                                                        name="product_name" placeholder="Enter product name" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="product_category">Category</label>
-                                                    <select class="form-select" id="product_category" name="product_category" required>
+                                                    <select class="form-select" id="product_category"
+                                                        name="product_category" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($active_product_categories as $category)
-                                                            <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                        <option value="{{ $category->product_category_id }}">{{
+                                                            $category->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3375,13 +3428,15 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="product_unit">Unit</label>
-                                                    <input type="text" class="form-control" id="product_unit" name="product_unit" placeholder="Enter product unit" required>
+                                                    <input type="text" class="form-control" id="product_unit"
+                                                        name="product_unit" placeholder="Enter product unit" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="product_price">Price</label>
-                                                    <input type="number" class="form-control" id="product_price" name="product_price" placeholder="Enter product price" required>
+                                                    <input type="number" class="form-control" id="product_price"
+                                                        name="product_price" placeholder="Enter product price" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3">
@@ -3397,11 +3452,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productListHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productListCollapse" aria-expanded="false" aria-controls="productListCollapse">
+                                    data-bs-target="#productListCollapse" aria-expanded="false"
+                                    aria-controls="productListCollapse">
                                     Product List
                                 </button>
                             </h2>
-                            <div id="productListCollapse" class="accordion-collapse collapse" aria-labelledby="productListHeading">
+                            <div id="productListCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="productListHeading">
                                 <div class="accordion-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped mb-0" id="tbl-products">
@@ -3445,14 +3502,17 @@
                                             <h4>Company's Personal Information</h4>
                                         </div>
                                         <div class="card-body">
-                                            <form id="general-settings" action="{{route('update-company-details')}}" method="post">
+                                            <form id="general-settings" action="{{route('update-company-details')}}"
+                                                method="post">
                                                 @csrf
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
 
                                                 <div class="mb-3">
                                                     <label for="company_name" class="form-label">Company Name</label>
-                                                    <input type="text" class="form-control" id="company_name" name="company_name"
-                                                        value="{{ $company->company_name }}" placeholder="Company name">
+                                                    <input type="text" class="form-control" id="company_name"
+                                                        name="company_name" value="{{ $company->company_name }}"
+                                                        placeholder="Company name">
                                                 </div>
 
                                                 <div class="row">
@@ -3464,7 +3524,8 @@
                                                     </div>
 
                                                     <div class="col-md-6 mb-3">
-                                                        <label for="industry_process_used" class="form-label">Industrial Process
+                                                        <label for="industry_process_used" class="form-label">Industrial
+                                                            Process
                                                             Used</label>
                                                         <select id="industry_process_used" name="industry_process_used"
                                                             class="form-select">
@@ -3477,11 +3538,13 @@
                                                     <div class="col-md-6 mb-3">
                                                         <label for="email" class="form-label">Email</label>
                                                         <input type="email" class="form-control" id="email" name="email"
-                                                            value="{{ $company->email }}" placeholder="Example: company@domain.com">
+                                                            value="{{ $company->email }}"
+                                                            placeholder="Example: company@domain.com">
                                                     </div>
 
                                                     <div class="col-md-6 mb-3">
-                                                        <label for="website_address" class="form-label">Website Address</label>
+                                                        <label for="website_address" class="form-label">Website
+                                                            Address</label>
                                                         <input type="url" class="form-control" id="website_address"
                                                             name="website_address" value="{{ $company->website_url }}">
                                                     </div>
@@ -3490,18 +3553,22 @@
                                                 <div class="row">
                                                     <div class="col-md-6 mt-2">
                                                         <div class="form-group">
-                                                            <label for="mobile_code_primary">Primary Phone Number</label>
+                                                            <label for="mobile_code_primary">Primary Phone
+                                                                Number</label>
                                                             <div class="">
-                                                                <input id="mobile_code_primary" type="tel" class="form-control">
+                                                                <input id="mobile_code_primary" type="tel"
+                                                                    class="form-control">
                                                                 <input type="hidden" name="primary_phone_number">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-2">
                                                         <div class="form-group">
-                                                            <label for="mobile_code_secondary">Secondary Phone Number</label>
+                                                            <label for="mobile_code_secondary">Secondary Phone
+                                                                Number</label>
                                                             <div class="">
-                                                                <input id="mobile_code_secondary" type="tel" class="form-control">
+                                                                <input id="mobile_code_secondary" type="tel"
+                                                                    class="form-control">
                                                                 <input type="hidden" name="secondary_phone_number">
                                                             </div>
                                                         </div>
@@ -3512,15 +3579,17 @@
                                                     <div class="col-md-4 mb-3">
                                                         <label for="number_of_employees" class="form-label">Number Of
                                                             Employees</label>
-                                                        <input type="number" class="form-control" id="number_of_employees"
-                                                            name="number_of_employees" value="{{ $company->number_of_employees }}">
+                                                        <input type="number" class="form-control"
+                                                            id="number_of_employees" name="number_of_employees"
+                                                            value="{{ $company->number_of_employees }}">
                                                     </div>
 
                                                     <div class="col-md-4 mb-3">
                                                         <label for="date_of_establishment" class="form-label">Date of
                                                             Establishment</label>
-                                                        <input type="date" class="form-control" id="date_of_establishment"
-                                                            name="date_of_establishment" value="{{ $company->date_of_establishment }}">
+                                                        <input type="date" class="form-control"
+                                                            id="date_of_establishment" name="date_of_establishment"
+                                                            value="{{ $company->date_of_establishment }}">
                                                     </div>
                                                 </div>
 
@@ -3537,14 +3606,17 @@
                                             <h4>Company's Location</h4>
                                         </div>
                                         <div class="card-body">
-                                            <form action="{{route('update-company-location')}}" method="post" id="location_settings">
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <form action="{{route('update-company-location')}}" method="post"
+                                                id="location_settings">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
 
                                                 <div class="row mb-3">
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-group">
                                                             <label for="">Country</label>
-                                                            <select name="country" id="" class="form-select countries" id="countryId">
+                                                            <select name="country" id="" class="form-select countries"
+                                                                id="countryId">
                                                                 <option value="" selected disabled> Choose... </option>
                                                             </select>
                                                         </div>
@@ -3553,7 +3625,8 @@
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-group">
                                                             <label for="">State</label>
-                                                            <select id="" class="form-select states" onchange="toggleLGA(this);" id="stateId" name="state">
+                                                            <select id="" class="form-select states"
+                                                                onchange="toggleLGA(this);" id="stateId" name="state">
                                                                 <option value="" selected disabled> Choose... </option>
                                                             </select>
                                                         </div>
@@ -3562,7 +3635,8 @@
                                                     <div class="col-md-4 mt-2">
                                                         <div class="form-group">
                                                             <label for="">City</label>
-                                                            <select id="lga" class="form-select select-lga cities" id="cityId" name="city">
+                                                            <select id="lga" class="form-select select-lga cities"
+                                                                id="cityId" name="city">
                                                                 <option value="" selected disabled> Choose... </option>
                                                             </select>
                                                         </div>
@@ -3578,20 +3652,20 @@
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
                                                         <label for="zip_code" class="form-label">ZIP Code</label>
-                                                        <input type="text" class="form-control" id="zip_code" name="zip_code"
-                                                            value="{{ $company->zip_code }}">
+                                                        <input type="text" class="form-control" id="zip_code"
+                                                            name="zip_code" value="{{ $company->zip_code }}">
                                                     </div>
 
                                                     <div class="col-md-4 mb-3">
                                                         <label for="longitude" class="form-label">Longitude</label>
-                                                        <input type="text" class="form-control" id="longitude" name="longitude"
-                                                            value="{{ $company->longitude }}">
+                                                        <input type="text" class="form-control" id="longitude"
+                                                            name="longitude" value="{{ $company->longitude }}">
                                                     </div>
 
                                                     <div class="col-md-4 mb-3">
                                                         <label for="latitude" class="form-label">Latitude</label>
-                                                        <input type="text" class="form-control" id="latitude" name="latitude"
-                                                            value="{{ $company->latitude }}">
+                                                        <input type="text" class="form-control" id="latitude"
+                                                            name="latitude" value="{{ $company->latitude }}">
                                                     </div>
                                                 </div>
 
@@ -3609,25 +3683,29 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="share_info" name="is_sharable"
-                                                    value="active">
-                                                <label class="form-check-label" for="share_info">Share information with other
+                                                <input class="form-check-input" type="checkbox" id="share_info"
+                                                    name="is_sharable" value="active">
+                                                <label class="form-check-label" for="share_info">Share information with
+                                                    other
                                                     companies?</label>
                                             </div>
 
                                             <div class="form-check form-switch mb-3">
                                                 <input class="form-check-input" type="checkbox" id="activate_company"
-                                                    data-company-id="{{ $company->company_id }}" {{ $company->status === 'active' ?
+                                                    data-company-id="{{ $company->company_id }}" {{ $company->status ===
+                                                'active' ?
                                                 'checked' : '' }}>
-                                                <label class="form-check-label" for="activate_company">Activate or Deactivate
+                                                <label class="form-check-label" for="activate_company">Activate or
+                                                    Deactivate
                                                     Company</label>
                                             </div>
 
                                             <!-- Add this button wherever you want the Appearance settings to be triggered -->
                                             <div class="text-start">
                                                 <button type="button" class="btn btn-danger">Delete Company</button>
-                                                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#Appearance" aria-controls="Appearance">
+                                                <button class="btn btn-secondary" type="button"
+                                                    data-bs-toggle="offcanvas" data-bs-target="#Appearance"
+                                                    aria-controls="Appearance">
                                                     Appearance Settings
                                                 </button>
                                             </div>
@@ -3657,27 +3735,32 @@
                                         <div class="card-body">
                                             <form action="" method="post" id="calendar_year_form">
                                                 @csrf
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <input type="hidden" name="company_id"
+                                                    value="{{ $company->company_id }}">
 
                                                 <div class="row g-2">
                                                     <div class="col-md-6">
-                                                        <label for="calendar_name" class="form-label">Calendar Name</label>
-                                                        <input type="text" class="form-control" id="calendar_name" name="calendar_name" required>
+                                                        <label for="calendar_name" class="form-label">Calendar
+                                                            Name</label>
+                                                        <input type="text" class="form-control" id="calendar_name"
+                                                            name="calendar_name" required>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="start_date" class="form-label">Start Date</label>
-                                                        <input type="date" class="form-control" id="start_date" name="start_date"
-                                                            required>
+                                                        <input type="date" class="form-control" id="start_date"
+                                                            name="start_date" required>
                                                     </div>
 
                                                     <div class="col-md-3">
                                                         <label for="end_date" class="form-label">End Date</label>
-                                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                                        <input type="date" class="form-control" id="end_date"
+                                                            name="end_date" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="text-end mt-3">
-                                                    <button type="submit" class="btn btn-primary">Save Calendar Year</button>
+                                                    <button type="submit" class="btn btn-primary">Save Calendar
+                                                        Year</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -3699,17 +3782,19 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @foreach($calendar_years as $calendar)
-                                                    <tr>
-                                                        <td>{{ $calendar->name }}</td>
-                                                        <td>{{ $calendar->start_date }}</td>
-                                                        <td>{{ $calendar->end_date }}</td>
-                                                        <td class="text-end">
-                                                            <button class="btn btn-sm btn-primary" onclick="editCalendar('{{ $calendar->calendar_year_id }}')">Edit</button>
-                                                            <button class="btn btn-sm btn-danger" onclick="deleteCalendar('{{ $calendar->calendar_year_id }}')">Delete</button>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
+                                                        @foreach($calendar_years as $calendar)
+                                                        <tr>
+                                                            <td>{{ $calendar->name }}</td>
+                                                            <td>{{ $calendar->start_date }}</td>
+                                                            <td>{{ $calendar->end_date }}</td>
+                                                            <td class="text-end">
+                                                                <button class="btn btn-sm btn-primary"
+                                                                    onclick="editCalendar('{{ $calendar->calendar_year_id }}')">Edit</button>
+                                                                <button class="btn btn-sm btn-danger"
+                                                                    onclick="deleteCalendar('{{ $calendar->calendar_year_id }}')">Delete</button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -4201,150 +4286,150 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <form method="post" id="operations-form-update">
-                <div class="modal-header">
-                    <h5 class="modal-title">Update Operation Log</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="operation_id">
-                    <input type="hidden" name="company_id">
-                    <div class="row g-2">
-                        <!-- Operation Name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Operation Name</label>
-                                <input type="text" class="form-control" name="operation_name">
-                            </div>
-                        </div>
-                        <!-- end Operation Name -->
-                        <!-- Operation Code -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Operation Code</label>
-                                <input type="text" class="form-control" name="operation_code">
-                            </div>
-                        </div>
-                        <!-- end Operation Code -->
-                        <!-- Description -->
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="">Description</label>
-                                <textarea class="form-control" name="description" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <!-- end Description -->
-
-                        <!-- Operation Type -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Operation Type</label>
-                                <input type="text" class="form-control" name="operation_type">
-                            </div>
-                        </div>
-                        <!-- end Operation Type -->
-                        <!-- Operation Category -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Operation Category</label>
-                                <input type="text" class="form-control" name="operation_category">
-                            </div>
-                        </div>
-                        <!-- end Operation Category -->
-                        <!-- Operation Unit -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Operation Unit</label>
-                                <input type="text" class="form-control" name="operation_unit">
-                            </div>
-                        </div>
-                        <!-- end Operation Unit -->
-                        <!-- Operation Unit Price -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Operation Unit Price</label>
-                                <input type="number" step="0.01" class="form-control" name="operation_unit_price">
-                            </div>
-                        </div>
-                        <!-- end Operation Unit Price -->
-                        <!-- Operation Unit Cost -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Operation Unit Cost</label>
-                                <input type="number" step="0.01" class="form-control" name="operation_unit_cost">
-                            </div>
-                        </div>
-                        <!-- end Operation Unit Cost -->
-                        <!-- Operation Unit Time -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Operation Unit Time</label>
-                                <input type="text" class="form-control" name="operation_unit_time">
-                            </div>
-                        </div>
-                        <!-- end Operation Unit Time -->
-                        <!-- Expected Waste Per Operation -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Expected Waste Per Operation</label>
-                                <input type="number" step="0.01" class="form-control"
-                                    name="expected_waste_per_operation">
-                            </div>
-                        </div>
-                        <!-- end Expected Waste Per Operation -->
-                        <!-- Expected Water Usage Per Operation -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Expected Water Usage Per Operation</label>
-                                <input type="number" step="0.01" class="form-control"
-                                    name="expected_water_usage_per_operation">
-                            </div>
-                        </div>
-                        <!-- end Expected Water Usage Per Operation -->
-                        <!-- Expected Unit Produced For Goods -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Expected Unit Produced For Goods</label>
-                                <input type="number" step="0.01" class="form-control"
-                                    name="expected_unit_produced_for_goods">
-                            </div>
-                        </div>
-                        <!-- end Expected Unit Produced For Goods -->
-                        <!-- Status -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Status</label>
-                                <select class="form-select" name="status">
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- end Status -->
-                        <!-- Start Date -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="start_date">Start Date</label>
-                                <input type="date" class="form-control" id="start_date" name="start_date" required>
-                            </div>
-                        </div>
-                        <!-- End Start Date -->
-                        <!-- End Date -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="end_date">End Date</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date" required>
-                            </div>
-                        </div>
-                        <!-- End End Date -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Operation Log</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-update-operation-log">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="operation_id">
+                        <input type="hidden" name="company_id">
+                        <div class="row g-2">
+                            <!-- Operation Name -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Operation Name</label>
+                                    <input type="text" class="form-control" name="operation_name">
+                                </div>
+                            </div>
+                            <!-- end Operation Name -->
+                            <!-- Operation Code -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Operation Code</label>
+                                    <input type="text" class="form-control" name="operation_code">
+                                </div>
+                            </div>
+                            <!-- end Operation Code -->
+                            <!-- Description -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Description</label>
+                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <!-- end Description -->
+
+                            <!-- Operation Type -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Operation Type</label>
+                                    <input type="text" class="form-control" name="operation_type">
+                                </div>
+                            </div>
+                            <!-- end Operation Type -->
+                            <!-- Operation Category -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Operation Category</label>
+                                    <input type="text" class="form-control" name="operation_category">
+                                </div>
+                            </div>
+                            <!-- end Operation Category -->
+                            <!-- Operation Unit -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Operation Unit</label>
+                                    <input type="text" class="form-control" name="operation_unit">
+                                </div>
+                            </div>
+                            <!-- end Operation Unit -->
+                            <!-- Operation Unit Price -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Operation Unit Price</label>
+                                    <input type="number" step="0.01" class="form-control" name="operation_unit_price">
+                                </div>
+                            </div>
+                            <!-- end Operation Unit Price -->
+                            <!-- Operation Unit Cost -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Operation Unit Cost</label>
+                                    <input type="number" step="0.01" class="form-control" name="operation_unit_cost">
+                                </div>
+                            </div>
+                            <!-- end Operation Unit Cost -->
+                            <!-- Operation Unit Time -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Operation Unit Time</label>
+                                    <input type="text" class="form-control" name="operation_unit_time">
+                                </div>
+                            </div>
+                            <!-- end Operation Unit Time -->
+                            <!-- Expected Waste Per Operation -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Expected Waste Per Operation</label>
+                                    <input type="number" step="0.01" class="form-control"
+                                        name="expected_waste_per_operation">
+                                </div>
+                            </div>
+                            <!-- end Expected Waste Per Operation -->
+                            <!-- Expected Water Usage Per Operation -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Expected Water Usage Per Operation</label>
+                                    <input type="number" step="0.01" class="form-control"
+                                        name="expected_water_usage_per_operation">
+                                </div>
+                            </div>
+                            <!-- end Expected Water Usage Per Operation -->
+                            <!-- Expected Unit Produced For Goods -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Expected Unit Produced For Goods</label>
+                                    <input type="number" step="0.01" class="form-control"
+                                        name="expected_unit_produced_for_goods">
+                                </div>
+                            </div>
+                            <!-- end Expected Unit Produced For Goods -->
+                            <!-- Status -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="pending">Pending</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- end Status -->
+                            <!-- Start Date -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="start_date">Start Date</label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                </div>
+                            </div>
+                            <!-- End Start Date -->
+                            <!-- End Date -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="end_date">End Date</label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                </div>
+                            </div>
+                            <!-- End End Date -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btn-submit-update-operation-log">Save
+                            changes</button>
+                        <span class="loader" id="loader"></span>
+                    </div>
                 </form>
             </div>
         </div>
@@ -7474,11 +7559,48 @@
                     result.equipment_types.forEach(type => {
                         tableBody.innerHTML += `<tr>
                             <td>${type.name}</td>
-                            <td>${type.description??""}</td>
+                            <td>${type.description ?? ""}</td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-sm btn-primary me-2">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+
+        // Industrial equipment log
+        // Store Equipment Log
+        document.querySelector('#industrial-equipment-log-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-equipment-log') }}";
+
+            fetch_cycle('--Store Equipment Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the equipment logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-equipment-logs tbody');
+                    tableBody.innerHTML = "";
+                    result.equipment_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${log.equipment_name}</td>
+                            <td>${log.equipment_type}</td>
+                            <td>${log.serial_number ?? ''}</td>
+                            <td>${log.status}</td>
+                            <td>${log.date_added}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>`;
@@ -7515,7 +7637,7 @@
 
             // Add event listener to the remove button
             container.querySelector('.remove-material-btn').addEventListener('click', function () {
-            container.remove();
+                container.remove();
             });
         }
 
@@ -7579,7 +7701,7 @@
 
             // Add event listener to the remove button
             container.querySelector('.remove-waste-btn').addEventListener('click', function () {
-            container.remove();
+                container.remove();
             });
         }
         function addChemicalField() {
@@ -7610,7 +7732,7 @@
 
             // Add event listener to the remove button
             container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
-            container.remove();
+                container.remove();
             });
         }
         function addProductField() {
@@ -7671,10 +7793,10 @@
 
             // Add event listener to the remove button
             newRow.querySelector('.remove-product-quantity').addEventListener('click', function () {
-            newRow.remove();
+                newRow.remove();
             });
         });
-                                        
+
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -7768,24 +7890,24 @@
             let formData = new FormData(form);
             let url = "{{ route('admin.update-operation') }}";
             fetch_cycle('--Update Operation Log', url, 'POST', formData).then(result => {
-            console.log(result);
-            if (result.status === 'success') {
-                // Update the operation logs table or UI as needed
-                let tableBody = document.querySelector('#tbl-operations-log tbody');
-                tableBody.innerHTML = "";
-                result.operation_logs.forEach(log => {
-                tableBody.innerHTML += `<tr>
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-operations-log tbody');
+                    tableBody.innerHTML = "";
+                    result.operation_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
                     <td>${log.operation_name}</td>
-                    <td>${log.operation_code??""}</td>
-                    <td>${log.operation_type??""}</td>
-                    <td>${log.operation_category??""}</td>
-                    <td>${log.operation_unit??""}</td>
-                    <td>${log.expected_waste_per_operation??""}</td>
-                    <td>${log.expected_water_usage_per_operation??""}</td>
-                    <td>${log.expected_unit_produced_for_goods??""}</td>
-                    <td>${log.calendar_year_name??""}</td>
-                    <td>${log.start_date??""}</td>
-                    <td>${log.end_date??""}</td>
+                    <td>${log.operation_code ?? ""}</td>
+                    <td>${log.operation_type ?? ""}</td>
+                    <td>${log.operation_category ?? ""}</td>
+                    <td>${log.operation_unit ?? ""}</td>
+                    <td>${log.expected_waste_per_operation ?? ""}</td>
+                    <td>${log.expected_water_usage_per_operation ?? ""}</td>
+                    <td>${log.expected_unit_produced_for_goods ?? ""}</td>
+                    <td>${log.calendar_year_name ?? ""}</td>
+                    <td>${log.start_date ?? ""}</td>
+                    <td>${log.end_date ?? ""}</td>
                     <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
                     <td class="text-end">
                     <div class="dropdown d-inline-block">
@@ -7799,8 +7921,8 @@
                     </div>
                     </td>
                 </tr>`;
-                });
-            }
+                    });
+                }
             });
         });
 
@@ -7812,13 +7934,13 @@
             let url = "{{ route('admin.store-waste') }}";
 
             fetch_cycle('--Store Waste Item', url, 'POST', formData).then(result => {
-            console.log(result);
-            if (result.status === 'success') {
-                // Update the waste items table or UI as needed
-                let tableBody = document.querySelector('#tbl-waste-items tbody');
-                tableBody.innerHTML = "";
-                result.waste_items.forEach(item => {
-                tableBody.innerHTML += `<tr>
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the waste items table or UI as needed
+                    let tableBody = document.querySelector('#tbl-waste-items tbody');
+                    tableBody.innerHTML = "";
+                    result.waste_items.forEach(item => {
+                        tableBody.innerHTML += `<tr>
                     <td>${item.waste_name}</td>
                     <td>${item.waste_type}</td>
                     <td>${item.unit}</td>
@@ -7829,15 +7951,15 @@
                         </div>
                     </td>
                 </tr>`;
-                });
-            }
+                    });
+                }
             });
         });
     </script>
     <!-- operations -->
 
     <!-- Calendar Year Management Script -->
-     <script>
+    <script>
         // Calendar Year Management Script
         document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -7856,18 +7978,18 @@
                             <td>${year.start_date ?? ''}</td>
                             <td>${year.end_date ?? ''}</td>
                             <td class="text-end">
-                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${ year->calendar_year_id}')">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year->calendar_year_id}')">Delete</button>
+                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${year -> calendar_year_id}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year -> calendar_year_id}')">Delete</button>
                             </td>
                         </tr>`;
                     });
                 }
             });
         });
-     </script>
+    </script>
     <!-- Calendar Year Management Script -->
-     <!-- Product Management Script -->
-      <script>
+    <!-- Product Management Script -->
+    <script>
         // Store Product Category
         document.querySelector('#add-product-category-form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -7935,7 +8057,7 @@
                 }
             });
         });
-      </script>
-     <!-- Product Management Script -->
+    </script>
+    <!-- Product Management Script -->
     @endsection
 </x-layouts.admin-app>

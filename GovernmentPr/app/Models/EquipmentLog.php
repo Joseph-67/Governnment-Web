@@ -13,8 +13,10 @@ class EquipmentLog extends Model
     protected $primaryKey = 'equipment_log_id';
 
     protected $fillable = [
+        'company_id',
         'equipment_name',
         'equipment_code',
+        'equipment_capacity',
         'equipment_type_id',
         'equipment_model',
         'equipment_serial_number',
@@ -51,9 +53,7 @@ class EquipmentLog extends Model
         'created_at',
         'updated_at',
     ];
-    protected $appends = [
-        'is_deleted',
-    ];
+
     protected $dates = [
         'logged_at',
         'purchase_date',

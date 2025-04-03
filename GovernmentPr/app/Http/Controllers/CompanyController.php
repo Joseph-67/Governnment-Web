@@ -38,6 +38,7 @@ use App\Models\CompanyWaste;
 use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\EquipmentType;
+use App\Models\EquipmentLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -121,6 +122,11 @@ class CompanyController extends Controller
         $data['active_equipment_types'] = EquipmentType::where('company_id', $companyID)
             ->active()
             ->get(['equipment_type_id', 'name']);
+        
+        // Fetch all equipment logs where company_id matches the request and equipment is active
+        $data['industrial_equipments'] = EquipmentLog::where('company_id', $companyID)
+            ->where('is_deleted', false)
+            ->get();
 
         return view('components.apps.companyProfile', $data);
     }   
