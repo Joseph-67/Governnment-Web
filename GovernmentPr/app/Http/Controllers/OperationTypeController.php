@@ -50,6 +50,7 @@ class OperationTypeController extends Controller
                     return $query->where('company_id', $request->company_id);
                 }),
             ],
+            'sequence_order'    => ['required', 'numeric'],
             'description' => ['nullable', 'string'],
             'company_id' => ['required', 'numeric'],
         ]);
@@ -59,7 +60,7 @@ class OperationTypeController extends Controller
         }
 
         try {
-            $operationType = OperationType::create($request->only(['name', 'description', 'company_id']));
+            $operationType = OperationType::create($request->only(['name', 'description', 'company_id','sequence_order']));
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create Operation Type', 'message' => $e->getMessage()], 500);
         }
