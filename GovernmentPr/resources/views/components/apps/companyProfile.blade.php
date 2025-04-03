@@ -7904,47 +7904,6 @@
         });
     });
 
-    // Add event listener to the add more product button for production log
-    document.addEventListener('DOMContentLoaded', function () {
-        const productContainer = document.querySelector('.product-quantity-container-production-log');
-        const addMoreButton = document.querySelector('.add-more-product-production-log');
-
-        addMoreButton.addEventListener('click', function () {
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="produced_product">Produced Product</label>
-                        <select class="form-select" name="produced_product[]" required>
-                            <option value="" selected disabled>Select Product</option>
-                            @foreach($active_products as $product)
-                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="produced_quantity">Produced Quantity</label>
-                        <input type="number" class="form-control" name="produced_quantity[]" placeholder="Produced Quantity" required>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                </div>
-            `;
-            productContainer.appendChild(newRow);
-        });
-
-        productContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-product-quantity')) {
-                e.target.closest('.row').remove();
-            }
-        });
-    });
-
-
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -8105,6 +8064,50 @@
         });
     </script>
     <!-- operations -->
+
+    <!-- Production Log -->
+     <script>
+        // Add event listener to the add more product button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const productContainer = document.querySelector('.product-quantity-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-product-production-log');
+
+            addMoreButton.addEventListener('click', function () {
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="produced_product">Produced Product</label>
+                            <select class="form-select" name="produced_product[]" required>
+                                <option value="" selected disabled>Select Product</option>
+                                @foreach($active_products as $product)
+                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="produced_quantity">Produced Quantity</label>
+                            <input type="number" class="form-control" name="produced_quantity[]" placeholder="Produced Quantity" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                    </div>
+                `;
+                productContainer.appendChild(newRow);
+            });
+
+            productContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-product-quantity')) {
+                    e.target.closest('.row').remove();
+                }
+            });
+        });
+     </script>
+    <!-- End Production Log -->
 
     <!-- Calendar Year Management Script -->
     <script>
