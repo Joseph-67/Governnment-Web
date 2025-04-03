@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('equipment_log_id');
             $table->string('equipment_name')->nullable();
             $table->string('equipment_code')->nullable();
+            $table->string('equipment_capacity')->nullable();
             $table->unsignedBigInteger('equipment_type_id');
             $table->string('equipment_model')->nullable();
             $table->string('equipment_serial_number')->nullable();

@@ -16,6 +16,7 @@ use App\Http\Controllers\CompanyWasteController;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EquipmentTypeController;
+use App\Http\Controllers\EquipmentLogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
@@ -193,6 +194,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::delete('/waste/{id}', 'destroy')->name('admin.delete-waste');
     });
     
+    // Equipment Log
+    Route::controller(EquipmentLogController::class)->group(function() {
+        Route::get('/equipment-logs', 'index')->name('admin.equipment-logs');
+        Route::post('/equipment-logs', 'store')->name('admin.store-equipment-log');
+        Route::get('/equipment-logs/{id}', 'show')->name('admin.show-equipment-log');
+        Route::put('/equipment-logs/{id}', 'update')->name('admin.update-equipment-log');
+        Route::delete('/equipment-logs/{id}', 'destroy')->name('admin.delete-equipment-log');
+    });
     // Equipment Type
     Route::controller(EquipmentTypeController::class)->group(function() {
         Route::get('/equipment-types', 'index')->name('admin.equipment-types');
@@ -201,6 +210,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/equipment-types/{id}', 'update')->name('admin.update-equipment-type');
         Route::delete('/equipment-types/{id}', 'destroy')->name('admin.delete-equipment-type');
     });
+
     // Water Sources Details Route
     Route::controller(WaterSourceDetailsController::class)->group(function() {
         Route::post('/store-water-source-details', 'store')->name('admin.store-water-source-details');
