@@ -3243,47 +3243,42 @@
                                 aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Production Tracking Form -->
-                                    <form action="" method="post" id="production-tracking-form">
+                                    <form action="" method="post" id="production-log-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-3">
-                                            <div class="col-md-5">
-                                                <label for="production_title" class="form-label">Production
-                                                    Title</label>
-                                                <input type="text" class="form-control" id="production_title"
-                                                    name="production_title" placeholder="Enter production title"
-                                                    required>
+                                            <!-- Production Title -->
+                                            <div class="col-md-6">
+                                                <label for="production_title" class="form-label">Production Title</label>
+                                                <input type="text" class="form-control" id="production_title" name="production_title" placeholder="Enter production title" required>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="operation_name_select" class="form-label">Operation
-                                                    Name</label>
-                                                <select class="form-select" id="operation_name_select"
-                                                    name="operation_name" required>
+
+                                            <!-- Operation Name -->
+                                            <div class="col-md-6">
+                                                <label for="operation_name_select" class="form-label">Operation</label>
+                                                <select class="form-select" id="operation_name_select" name="operation_name" required>
                                                     <option value="" selected disabled>Choose...</option>
                                                     @foreach($approved_operations as $operation)
-                                                    <option value="{{ $operation->operation_id }}">{{
-                                                        $operation->operation_name }}</option>
+                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <!-- material container -->
+
+                                            <!-- Material Used -->
                                             <div class="material-quantity-used-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-5">
-                                                        <label for="material_used" class="form-label">Material Used</label>
-                                                        <select class="form-select" id="material_used" name="material_used[]" required>
+                                                    <div class="col-md-6">
+                                                        <label for="material_used" class="form-label">Used Material</label>
+                                                        <select class="form-select" id="material_used" name="material_used[0][material_id]" required>
                                                             <option value="" selected disabled>Select Material</option>
                                                             @foreach($companyMaterials as $material)
                                                                 <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <label for="quantity_used" class="form-label">Quantity Used</label>
-                                                        <input type="number" class="form-control" id="quantity_used" name="quantity_used[]" placeholder="Enter quantity used" required>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                                                    <div class="col-md-6">
+                                                        <label for="quantity_used" class="form-label">Used Quantity</label>
+                                                        <input type="number" min="0" class="form-control" id="quantity_used" name="material_used[0][quantity]" placeholder="Enter quantity used" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3291,81 +3286,87 @@
                                                 <button type="button" class="btn btn-outline-primary btn-sm add-more-material-used-production-log">Add More</button>
                                             </div>
 
+                                            <!-- Chemical Used -->
                                             <div class="chemical-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-5">
-                                                        <label for="chemical_name" class="form-label">Chemical Name</label>
-                                                        <select class="form-select" id="chemical_name" name="chemical_name[]" required>
+                                                    <div class="col-md-6">
+                                                        <label for="chemical_name" class="form-label">Used Chemical</label>
+                                                        <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
                                                             <option value="" selected disabled>Select Chemical</option>
                                                             @foreach($approved_company_chemicals as $chemical)
                                                                 <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <label for="chemical_volume" class="form-label">Volume (Liters)</label>
-                                                        <input type="number" class="form-control" id="chemical_volume" name="chemical_volume[]" placeholder="Enter volume" required>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-chemical">Remove</button>
+                                                    <div class="col-md-6">
+                                                        <label for="chemical_volume" class="form-label">Used Volume (Liters)</label>
+                                                        <input type="number" min="0" class="form-control" id="chemical_volume" name="chemical_used[0][volume]" placeholder="Enter volume" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical">Add More</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-used-production-log">Add More</button>
                                             </div>
 
-                                            <div class="col-md-4">
-                                                <label for="amount_of_water_used" class="form-label">Volume of Water
-                                                    Used (Liters)</label>
-                                                <input type="number" class="form-control" id="amount_of_water_used"
-                                                    name="amount_of_water_used" placeholder="Enter amount of water used"
-                                                    required>
+                                            <!-- Water Usage -->
+                                            <div class="col-md-3">
+                                                <label for="amount_of_water_used" class="form-label">Volume of Water Used (Liters)</label>
+                                                <input type="number" class="form-control" id="amount_of_water_used" min="0" name="amount_of_water_used" placeholder="Enter amount of water used" required>
                                             </div>
+
+                                            <!-- Calendar Year -->
                                             <div class="col-md-3">
                                                 <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                <select class="form-select" id="calendar_year" name="calendar_year"
-                                                    required>
+                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
                                                     <option value="" selected disabled>Select Calendar Year</option>
                                                     @foreach($calendar_years as $calendar)
-                                                    <option value="{{ $calendar->id }}">{{ $calendar->name }}</option>
+                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
+
+                                            <!-- Production Date -->
                                             <div class="col-md-3">
                                                 <label for="production_date" class="form-label">Production Date</label>
-                                                <input type="date" class="form-control" id="production_date"
-                                                    name="production_date" required>
+                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
                                             </div>
+
+                                            <!-- Production Status -->
+                                            <div class="col-md-3">
+                                                <label for="production_status" class="form-label">Production Status</label>
+                                                <select class="form-select" id="production_status" name="production_status" required>
+                                                    <option value="" selected disabled>Select Status</option>
+                                                    <option value="ongoing">Ongoing</option>
+                                                    <option value="completed">Completed</option>
+                                                    <option value="halted">Halted</option>
+                                                    <option value="failed">Failed</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Product Produced -->
                                             <div class="product-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-5">
-                                                        <label for="product_name" class="form-label">Product
-                                                            Name</label>
-                                                        <select class="form-select" id="product_name"
-                                                            name="product_name[]" required>
+                                                    <div class="col-md-6">
+                                                        <label for="product_name" class="form-label">Produced Product</label>
+                                                        <select class="form-select" id="product_name" name="product_produced[0][product_id]" required>
                                                             <option value="" selected disabled>Select Product</option>
                                                             @foreach($active_products as $product)
-                                                            <option value="{{ $product->product_id }}">{{ $product->name
-                                                                }}</option>
+                                                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <label for="quantity_produced" class="form-label">Quantity
-                                                            Produced</label>
-                                                        <input type="number" class="form-control" id="quantity_produced"
-                                                            name="quantity_produced[]"
-                                                            placeholder="Enter quantity produced" required>
+                                                    <div class="col-md-6">
+                                                        <label for="quantity_produced" class="form-label">Quantity Produced</label>
+                                                        <input type="number" min="0" class="form-control" id="quantity_produced" name="product_produced[0][quantity]" placeholder="Enter quantity produced" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 text-start">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add-more-product-production-log">Add
-                                                    More</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-production-log">Add More</button>
                                             </div>
                                         </div>
+
+                                        <!-- Submit Button -->
                                         <div class="col-md-12 mt-3">
                                             <button type="submit" class="btn btn-primary">Submit Production Log</button>
                                         </div>
@@ -8102,6 +8103,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             const productContainer = document.querySelector('.product-quantity-container-production-log');
             const addMoreButton = document.querySelector('.add-more-product-production-log');
+            let products = @json($products);
+            let productIndex = 1; // Start from 1 since the first row is index 0
 
             addMoreButton.addEventListener('click', function () {
                 const newRow = document.createElement('div');
@@ -8110,18 +8113,16 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="produced_product">Produced Product</label>
-                            <select class="form-select" name="produced_product[]" required>
+                            <select class="form-select" name="product_produced[${productIndex}][product_id]" required>
                                 <option value="" selected disabled>Select Product</option>
-                                @foreach($active_products as $product)
-                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                @endforeach
+                                ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
                             </select>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="produced_quantity">Produced Quantity</label>
-                            <input type="number" class="form-control" name="produced_quantity[]" placeholder="Produced Quantity" required>
+                            <input type="number" class="form-control" name="product_produced[${productIndex}][quantity]" placeholder="Produced Quantity" required>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -8129,6 +8130,8 @@
                     </div>
                 `;
                 productContainer.appendChild(newRow);
+                productIndex++;
+                // Populate the product select options
             });
 
             productContainer.addEventListener('click', function (e) {
@@ -8143,45 +8146,50 @@
             const materialContainer = document.querySelector('.material-quantity-used-container-production-log');
             const addMoreButton = document.querySelector('.add-more-material-used-production-log');
             let materials = @json($companyMaterials);
+            let materialIndex = 1; // Start from 1 since the first row is index 0
 
             addMoreButton.addEventListener('click', function () {
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-                <div class="col-md-5">
-                <div class="form-group">
-                    <label for="used_material">Used Material</label>
-                    <select class="form-select" name="used_material[]" required>
-                    <option value="" selected disabled>Select Material</option>
-                    ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
-                    </select>
-                </div>
-                </div>
-                <div class="col-md-5">
-                <div class="form-group">
-                    <label for="used_quantity">Used Quantity</label>
-                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
-                </div>
-                </div>
-                <div class="col-md-2">
-                <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
-                </div>
-            `;
-            materialContainer.appendChild(newRow);
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Used Material</label>
+                            <select class="form-select" name="material_used[${materialIndex}][material_id]" required>
+                                <option value="" selected disabled>Select Material</option>
+                                ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Used Quantity</label>
+                            <input type="number" class="form-control" name="materials_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                    </div>
+                `;
+                materialContainer.appendChild(newRow);
+                materialIndex++;
             });
 
             materialContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-material-quantity')) {
-                e.target.closest('.row').remove();
-            }
+                if (e.target.classList.contains('remove-material-quantity')) {
+                    e.target.closest('.row').remove();
+                    // Optional: reindex after removal if strict indexing is needed
+                }
             });
         });
 
+
         // Add event listener to the add more chemical button for production log
         document.addEventListener('DOMContentLoaded', function () {
-            const chemicalContainer = document.querySelector('.chemical-quantity-used-container-production-log');
+            const chemicalContainer = document.querySelector('.chemical-quantity-container-production-log');
             const addMoreButton = document.querySelector('.add-more-chemical-used-production-log');
             let chemicals = @json($approved_company_chemicals);
+            let chemicalIndex = 1; // Start from 1 since the first row is index 0
 
             addMoreButton.addEventListener('click', function () {
             const newRow = document.createElement('div');
@@ -8190,16 +8198,16 @@
                 <div class="col-md-5">
                 <div class="form-group">
                     <label for="used_chemical">Used Chemical</label>
-                    <select class="form-select" name="used_chemical[]" required>
-                    <option value="" selected disabled>Select Chemical</option>
-                    ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
+                    <select class="form-select" name="chemical_used[${chemicalIndex}][chemical_id]" required>
+                        <option value="" selected disabled>Select Chemical</option>
+                        ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
                     </select>
                 </div>
                 </div>
                 <div class="col-md-5">
                 <div class="form-group">
                     <label for="used_quantity">Used Quantity</label>
-                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
+                    <input type="number" class="form-control" name="chemical_used[${chemicalIndex}][quantity]" placeholder="Used Quantity" required>
                 </div>
                 </div>
                 <div class="col-md-2">
@@ -8207,6 +8215,7 @@
                 </div>
             `;
             chemicalContainer.appendChild(newRow);
+            chemicalIndex++;
             });
 
             chemicalContainer.addEventListener('click', function (e) {

@@ -54,6 +54,10 @@ class CompanyOperation extends Model
         return $this->belongsTo(CalendarYear::class, 'calendar_year_id', 'calendar_year_id');
     }
 
+    public function productionLogs()
+    {
+        return $this->hasMany(ProductionLog::class, 'company_operation_id', 'company_operation_id');
+    }
 
     public function scopeActive($query)
     {

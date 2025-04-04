@@ -31,8 +31,18 @@ class CalendarYear extends Model
         return $this->hasMany(CompanyOperation::class);
     }
 
+    public function productionLogs()
+    {
+        return $this->hasMany(ProductionLog::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeDelete($query)
+    {
+        return $query->where('is_delete', true);
     }
 }
