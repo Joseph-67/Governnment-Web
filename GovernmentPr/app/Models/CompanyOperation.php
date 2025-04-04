@@ -24,12 +24,15 @@ class CompanyOperation extends Model
         'operation_unit_time',
         'company_id',
         'status',
+        'expected_products',
         'expected_waste_per_operation',
         'expected_water_usage_per_operation',
-        'expected_unit_produced_for_goods',
         'calendar_year_id',
         'start_date',
         'end_date'
+    ];
+    protected $casts = [
+        'expected_products' => 'array',
     ];
 
     public $timestamps = true;
