@@ -3262,28 +3262,55 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="material_used" class="form-label">Material Used</label>
-                                                <select class="form-select" id="material_used" name="material_used[]"
-                                                    required>
-                                                    <option value="" selected disabled>Select Material</option>
-                                                    @foreach($companyMaterials as $material)
-                                                    <option value="{{ $material->companyMaterialId }}">{{
-                                                        $material->material }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <!-- material container -->
+                                            <div class="material-quantity-used-container-production-log col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-5">
+                                                        <label for="material_used" class="form-label">Material Used</label>
+                                                        <select class="form-select" id="material_used" name="material_used[]" required>
+                                                            <option value="" selected disabled>Select Material</option>
+                                                            @foreach($companyMaterials as $material)
+                                                                <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="quantity_used" class="form-label">Quantity Used</label>
+                                                        <input type="number" class="form-control" id="quantity_used" name="quantity_used[]" placeholder="Enter quantity used" required>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="quantity_used" class="form-label">Quantity Used</label>
-                                                <input type="number" class="form-control" id="quantity_used"
-                                                    name="quantity_used[]" placeholder="Enter quantity used" required>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-material-used-production-log">Add More</button>
                                             </div>
-                                            <div class="material-quantity-used col-md-12"></div>
-                                            <div class="col-md-12">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_materials_used"
-                                                    onclick="addMaterialUsedField()">Add More</button>
+
+                                            <div class="chemical-quantity-container-production-log col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-5">
+                                                        <label for="chemical_name" class="form-label">Chemical Name</label>
+                                                        <select class="form-select" id="chemical_name" name="chemical_name[]" required>
+                                                            <option value="" selected disabled>Select Chemical</option>
+                                                            @foreach($approved_company_chemicals as $chemical)
+                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="chemical_volume" class="form-label">Volume (Liters)</label>
+                                                        <input type="number" class="form-control" id="chemical_volume" name="chemical_volume[]" placeholder="Enter volume" required>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-chemical">Remove</button>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical">Add More</button>
+                                            </div>
+
                                             <div class="col-md-4">
                                                 <label for="amount_of_water_used" class="form-label">Volume of Water
                                                     Used (Liters)</label>
@@ -8076,7 +8103,7 @@
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="produced_product">Produced Product</label>
                             <select class="form-select" name="produced_product[]" required>
@@ -8087,7 +8114,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="produced_quantity">Produced Quantity</label>
                             <input type="number" class="form-control" name="produced_quantity[]" placeholder="Produced Quantity" required>
@@ -8103,6 +8130,119 @@
             productContainer.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-product-quantity')) {
                     e.target.closest('.row').remove();
+                }
+            });
+        });
+
+        // Add event listener to the add more material button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const materialContainer = document.querySelector('.material-quantity-used-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-material-used-production-log');
+            let materials = @json($companyMaterials);
+
+            addMoreButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_material">Used Material</label>
+                    <select class="form-select" name="used_material[]" required>
+                    <option value="" selected disabled>Select Material</option>
+                    ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_quantity">Used Quantity</label>
+                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
+                </div>
+                </div>
+                <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                </div>
+            `;
+            materialContainer.appendChild(newRow);
+            });
+
+            materialContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-material-quantity')) {
+                e.target.closest('.row').remove();
+            }
+            });
+        });
+
+        // Add event listener to the add more chemical button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const chemicalContainer = document.querySelector('.chemical-quantity-used-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-chemical-used-production-log');
+            let chemicals = @json($approved_company_chemicals);
+
+            addMoreButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_chemical">Used Chemical</label>
+                    <select class="form-select" name="used_chemical[]" required>
+                    <option value="" selected disabled>Select Chemical</option>
+                    ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_quantity">Used Quantity</label>
+                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
+                </div>
+                </div>
+                <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">Remove</button>
+                </div>
+            `;
+            chemicalContainer.appendChild(newRow);
+            });
+
+            chemicalContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-chemical-quantity')) {
+                e.target.closest('.row').remove();
+            }
+            });
+        });
+
+        // Store Production Log
+        document.querySelector('#production-log-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-production-log') }}";
+
+            fetch_cycle('--Store Production Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the production logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-production-logs tbody');
+                    tableBody.innerHTML = "";
+                    result.production_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${log.product_name}</td>
+                            <td>${log.quantity_produced}</td>
+                            <td>${log.production_date}</td>
+                            <td>${log.remark ?? ''}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
                 }
             });
         });
