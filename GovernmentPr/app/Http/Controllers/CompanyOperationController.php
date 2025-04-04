@@ -36,9 +36,11 @@ class CompanyOperationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         //
+        
         $validator = Validator::make($request->all(), [
             'operation_name' => [
             'required', 
@@ -63,7 +65,6 @@ class CompanyOperationController extends Controller
             'company_id' => ['required', 'numeric'],
             'expected_waste_per_operation' => ['required', 'numeric'],
             'expected_water_usage_per_operation' => ['required', 'numeric'],
-            'expected_unit_produced_for_goods' => ['required', 'numeric'],
             'calendar_year' => ['required', 'numeric'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
@@ -84,14 +85,15 @@ class CompanyOperationController extends Controller
             'operation_unit_price' => $request->input('operation_unit_price'),
             'operation_unit_cost' => $request->input('operation_unit_cost'),
             'operation_unit_time' => $request->input('operation_unit_time'),
-            'expected_products' => json_encode([
-                'expected_products' => $request->input('expected_products'),
-                'expected_quantity_produced_for_goods' => $request->input('expected_quantity_produced_for_goods'),
-            ]),
+            
+                'expected_products' => json_encode([
+                    'products' => $request->input('expected_products'),
+                    'quantities' => $request->input('expected_quantity_produced_for_goods'),
+                ]),
+        
             'company_id' => $request->input('company_id'),
             'expected_waste_per_operation' => $request->input('expected_waste_per_operation'),
             'expected_water_usage_per_operation' => $request->input('expected_water_usage_per_operation'),
-            'expected_unit_produced_for_goods' => $request->input('expected_unit_produced_for_goods'),
             'calendar_year_id' => $request->input('calendar_year'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
