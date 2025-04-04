@@ -2271,6 +2271,10 @@
                                             <input type="text" class="form-control" id="name" name="name" required>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="sequence" class="form-label">Sequence</label>
+                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence" required>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="description" class="form-label">Description</label>
                                             <textarea class="form-control" id="description" name="description" rows="3"
                                                 required></textarea>
@@ -2681,7 +2685,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="expected_product">Expected Product</label>
-                                                            <select class="form-select" id="expected_product" name="expected_product[]" required>
+                                                            <select class="form-select" id="expected_product" name="expected_products[]" required>
                                                                 <option value="" selected disabled>Select Product</option>
                                                                 @foreach($active_products as $product)
                                                                     <option value="{{ $product->product_id }}">{{ $product->name }}</option>

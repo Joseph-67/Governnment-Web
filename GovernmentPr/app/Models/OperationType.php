@@ -16,6 +16,7 @@ class OperationType extends Model
         'name',
         'description',
         'company_id',
+        'sequence_order',
         'is_delete',
     ];
 
