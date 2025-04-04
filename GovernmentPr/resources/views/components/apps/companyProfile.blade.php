@@ -8164,7 +8164,7 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>Used Quantity</label>
-                            <input type="number" class="form-control" name="materials_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
+                            <input type="number" class="form-control" name="material_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
                         </div>
                     </div>
                     <div class="col-md-2">

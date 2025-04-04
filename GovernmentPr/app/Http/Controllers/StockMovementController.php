@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\stock_movement;
+use App\Http\Controllers\ChemicalStockMovementController;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -11,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 use Carbon\Carbon;
 
-class StockMovementController extends Controller
+class StockMovementController extends ChemicalStockMovementController
 {
     /**
      * Display a listing of the resource.
@@ -263,7 +264,7 @@ class StockMovementController extends Controller
      * @param  \App\Models\stock_movement  $stock_movement
      * @return \Illuminate\Http\Response
      */
-    public function show(stock_movement $stock_movement)
+    protected function show(stock_movement $stock_movement)
     {
         //
     }
@@ -328,7 +329,7 @@ class StockMovementController extends Controller
      * @param  \App\Models\stock_movement  $stock_movement
      * @return \Illuminate\Http\Response
      */
-    public function edit(stock_movement $stock_movement)
+    protected function edit(stock_movement $stock_movement)
     {
         //
     }
@@ -340,7 +341,7 @@ class StockMovementController extends Controller
      * @param  \App\Models\stock_movement  $stock_movement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, stock_movement $stock_movement)
+    protected function update(Request $request, stock_movement $stock_movement)
     {
         //
     }
@@ -351,7 +352,7 @@ class StockMovementController extends Controller
      * @param  \App\Models\stock_movement  $stock_movement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(stock_movement $stock_movement)
+    protected function destroy(stock_movement $stock_movement)
     {
         //
     }

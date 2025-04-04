@@ -50,7 +50,7 @@ class ChemicalStockMovementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    protected function index()
     {
         //
     }
@@ -60,7 +60,7 @@ class ChemicalStockMovementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    protected function create()
     {
         //
     }
@@ -71,7 +71,7 @@ class ChemicalStockMovementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    protected function store(Request $request)
     {
         //
     }
@@ -255,7 +255,7 @@ class ChemicalStockMovementController extends Controller
         return response()->json($movements->get());
     }
 
-    public function show(ChemicalStockMovement $chemicalStockMovement)
+    protected function show(ChemicalStockMovement $chemicalStockMovement)
     {
         //
     }
@@ -266,7 +266,7 @@ class ChemicalStockMovementController extends Controller
      * @param  \App\Models\ChemicalStockMovement  $chemicalStockMovement
      * @return \Illuminate\Http\Response
      */
-    public function edit(ChemicalStockMovement $chemicalStockMovement)
+    protected function edit(ChemicalStockMovement $chemicalStockMovement)
     {
         //
     }
@@ -278,7 +278,7 @@ class ChemicalStockMovementController extends Controller
      * @param  \App\Models\ChemicalStockMovement  $chemicalStockMovement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ChemicalStockMovement $chemicalStockMovement)
+    protected function update(Request $request, ChemicalStockMovement $chemicalStockMovement)
     {
         //
     }
@@ -289,8 +289,9 @@ class ChemicalStockMovementController extends Controller
      * @param  \App\Models\ChemicalStockMovement  $chemicalStockMovement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ChemicalStockMovement $chemicalStockMovement)
+    protected function destroy(ChemicalStockMovement $chemicalStockMovement)
     {
         //
+        
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductionLog;
+use App\Models\stock_movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Http\Controllers\StockMovementController;
 
-class ProductionLogController extends Controller
+class ProductionLogController extends StockMovementController
 {
     /**
      * Display a listing of the resource.
@@ -39,8 +41,7 @@ class ProductionLogController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
-
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|exists:companies,company_id',
             'production_title' => 'required|string|max:255',
@@ -55,9 +56,9 @@ class ProductionLogController extends Controller
             'calendar_year' => 'required|exists:calendar_years,calendar_year_id',
             'production_date' => 'required|date',
             'production_status' => 'required|in:halted,ongoing,completed,failed',
-            'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|exists:products,product_id',
-            'products.*.quantity' => 'required|numeric|min:0',
+            'product_produced' => 'required|array|min:1',
+            'product_produced.*.product_id' => 'required|exists:products,product_id',
+            'product_produced.*.quantity' => 'required|numeric|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -66,16 +67,16 @@ class ProductionLogController extends Controller
 
         try {
             $productionLog = ProductionLog::create([
-                'production_title' => $validated['production_title'],
-                'company_operation_id' => $validated['operation_name'],
-                'company_id' => $validated['company_id'],
-                'material_log_data' => json_encode($validated['materials_used']),
-                'chemical_log_data' => isset($validated['chemical_used']) ? json_encode($validated['chemical_used']) : null,
-                'water_volume' => $validated['amount_of_water_used'],
-                'product_log_data' => json_encode($validated['products']),
-                'calendar_year_id' => $validated['calendar_year'],
-                'production_date' => $validated['production_date'],
-                'production_status' => $validated['production_status'],
+                'production_title' => $request->input('production_title'),
+                'company_operation_id' => $request->input('operation_name'),
+                'company_id' => $request->input('company_id'),
+                'material_log_data' => json_encode($request->input('materials_used')),
+                'chemical_log_data' => $request->has('chemical_used') ? json_encode($request->input('chemical_used')) : null,
+                'water_volume' => $request->input('amount_of_water_used'),
+                'product_log_data' => json_encode($request->input('product_produced')),
+                'calendar_year_id' => $request->input('calendar_year'),
+                'production_date' => $request->input('production_date'),
+                'production_status' => $request->input('production_status'),
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create production log', 'message' => $e->getMessage()], 500);
