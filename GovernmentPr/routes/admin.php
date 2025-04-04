@@ -30,6 +30,7 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductionLogController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\ReportingAnalyticsController;
@@ -439,6 +440,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/product-categories/{id}', 'update')->name('admin.update-product-category');
         Route::delete('/product-categories/{id}', 'destroy')->name('admin.delete-product-category');
     });
+
+    // Production Log
+    Route::controller(ProductionLogController::class)->group(function() {
+        Route::get('/production-logs', 'index')->name('admin.production-logs');
+        Route::post('/production-logs', 'store')->name('admin.store-production-log');
+        Route::get('/production-logs/{id}', 'show')->name('admin.show-production-log');
+        Route::put('/production-logs/{id}', 'update')->name('admin.update-production-log');
+        Route::delete('/production-logs/{id}', 'destroy')->name('admin.delete-production-log');
+    });
+    
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });

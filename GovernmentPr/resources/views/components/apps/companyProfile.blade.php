@@ -3236,7 +3236,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#productionTrackingCollapse" aria-expanded="false"
                                     aria-controls="productionTrackingCollapse">
-                                    Production Tracking
+                                    Production Log
                                 </button>
                             </h2>
                             <div id="productionTrackingCollapse" class="accordion-collapse collapse"
@@ -3266,30 +3266,57 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="material_used" class="form-label">Material Used</label>
-                                                <select class="form-select" id="material_used" name="material_used[]"
-                                                    required>
-                                                    <option value="" selected disabled>Select Material</option>
-                                                    @foreach($companyMaterials as $material)
-                                                    <option value="{{ $material->companyMaterialId }}">{{
-                                                        $material->material }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <!-- material container -->
+                                            <div class="material-quantity-used-container-production-log col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-5">
+                                                        <label for="material_used" class="form-label">Material Used</label>
+                                                        <select class="form-select" id="material_used" name="material_used[]" required>
+                                                            <option value="" selected disabled>Select Material</option>
+                                                            @foreach($companyMaterials as $material)
+                                                                <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="quantity_used" class="form-label">Quantity Used</label>
+                                                        <input type="number" class="form-control" id="quantity_used" name="quantity_used[]" placeholder="Enter quantity used" required>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="quantity_used" class="form-label">Quantity Used</label>
-                                                <input type="number" class="form-control" id="quantity_used"
-                                                    name="quantity_used[]" placeholder="Enter quantity used" required>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-material-used-production-log">Add More</button>
                                             </div>
-                                            <div class="material-quantity-used col-md-12"></div>
-                                            <div class="col-md-12">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_materials_used"
-                                                    onclick="addMaterialUsedField()">Add More</button>
+
+                                            <div class="chemical-quantity-container-production-log col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-5">
+                                                        <label for="chemical_name" class="form-label">Chemical Name</label>
+                                                        <select class="form-select" id="chemical_name" name="chemical_name[]" required>
+                                                            <option value="" selected disabled>Select Chemical</option>
+                                                            @foreach($approved_company_chemicals as $chemical)
+                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label for="chemical_volume" class="form-label">Volume (Liters)</label>
+                                                        <input type="number" class="form-control" id="chemical_volume" name="chemical_volume[]" placeholder="Enter volume" required>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-chemical">Remove</button>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical">Add More</button>
+                                            </div>
+
                                             <div class="col-md-4">
-                                                <label for="amount_of_water_used" class="form-label">Amount of Water
+                                                <label for="amount_of_water_used" class="form-label">Volume of Water
                                                     Used (Liters)</label>
                                                 <input type="number" class="form-control" id="amount_of_water_used"
                                                     name="amount_of_water_used" placeholder="Enter amount of water used"
@@ -3310,7 +3337,7 @@
                                                 <input type="date" class="form-control" id="production_date"
                                                     name="production_date" required>
                                             </div>
-                                            <div class="product-quantity-container col-md-12">
+                                            <div class="product-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
                                                     <div class="col-md-5">
                                                         <label for="product_name" class="form-label">Product
@@ -3335,7 +3362,7 @@
                                             </div>
                                             <div class="col-md-12 text-start">
                                                 <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add-more-product-quantity">Add
+                                                    class="btn btn-outline-primary btn-sm add-more-product-production-log">Add
                                                     More</button>
                                             </div>
                                         </div>
@@ -3343,6 +3370,76 @@
                                             <button type="submit" class="btn btn-primary">Submit Production Log</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="qualityControlHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#qualityControlCollapse" aria-expanded="false" aria-controls="qualityControlCollapse">
+                                    Quality Control
+                                </button>
+                            </h2>
+                            <div id="qualityControlCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="qualityControlHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body bg-white">
+                                    <!-- Quality Control Form -->
+                                    <form action="" method="post" id="quality-control-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="quality_metric" class="form-label">Quality Metric</label>
+                                                    <input type="text" class="form-control" id="quality_metric" name="quality_metric"
+                                                        placeholder="Enter quality metric" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="acceptable_range" class="form-label">Acceptable Range</label>
+                                                    <input type="text" class="form-control" id="acceptable_range" name="acceptable_range"
+                                                        placeholder="Enter acceptable range" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="measurement_frequency" class="form-label">Measurement Frequency</label>
+                                                    <input type="text" class="form-control" id="measurement_frequency"
+                                                        name="measurement_frequency" placeholder="Enter measurement frequency" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="responsible_person" class="form-label">Responsible Person</label>
+                                                    <input type="text" class="form-control" id="responsible_person" name="responsible_person"
+                                                        placeholder="Enter responsible person" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Add Quality Control Metric</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Quality Control Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-quality-control">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Quality Metric</th>
+                                                    <th>Acceptable Range</th>
+                                                    <th>Measurement Frequency</th>
+                                                    <th>Responsible Person</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -7839,36 +7936,6 @@
         });
     });
 
-        document.querySelector('.add-more-product-quantity').addEventListener('click', function () {
-            const container = document.querySelector('.product-quantity-container');
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-            <div class="col-md-5">
-                <label for="product_name" class="form-label">Product Name</label>
-                <select class="form-select" id="product_name" name="product_name[]" required>
-                <option value="" selected disabled>Select Product</option>
-                @foreach($active_products as $product)
-                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                @endforeach
-                </select>
-            </div>
-            <div class="col-md-5">
-                <label for="quantity_produced" class="form-label">Quantity Produced</label>
-                <input type="number" class="form-control" id="quantity_produced" name="quantity_produced[]" placeholder="Enter quantity produced" required>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger btn-sm remove-product-quantity">Remove</button>
-            </div>
-            `;
-            container.appendChild(newRow);
-
-            // Add event listener to the remove button
-            newRow.querySelector('.remove-product-quantity').addEventListener('click', function () {
-                newRow.remove();
-            });
-        });
-
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -8029,6 +8096,163 @@
         });
     </script>
     <!-- operations -->
+
+    <!-- Production Log -->
+     <script>
+        // Add event listener to the add more product button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const productContainer = document.querySelector('.product-quantity-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-product-production-log');
+
+            addMoreButton.addEventListener('click', function () {
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="produced_product">Produced Product</label>
+                            <select class="form-select" name="produced_product[]" required>
+                                <option value="" selected disabled>Select Product</option>
+                                @foreach($active_products as $product)
+                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="produced_quantity">Produced Quantity</label>
+                            <input type="number" class="form-control" name="produced_quantity[]" placeholder="Produced Quantity" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                    </div>
+                `;
+                productContainer.appendChild(newRow);
+            });
+
+            productContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-product-quantity')) {
+                    e.target.closest('.row').remove();
+                }
+            });
+        });
+
+        // Add event listener to the add more material button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const materialContainer = document.querySelector('.material-quantity-used-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-material-used-production-log');
+            let materials = @json($companyMaterials);
+
+            addMoreButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_material">Used Material</label>
+                    <select class="form-select" name="used_material[]" required>
+                    <option value="" selected disabled>Select Material</option>
+                    ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_quantity">Used Quantity</label>
+                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
+                </div>
+                </div>
+                <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                </div>
+            `;
+            materialContainer.appendChild(newRow);
+            });
+
+            materialContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-material-quantity')) {
+                e.target.closest('.row').remove();
+            }
+            });
+        });
+
+        // Add event listener to the add more chemical button for production log
+        document.addEventListener('DOMContentLoaded', function () {
+            const chemicalContainer = document.querySelector('.chemical-quantity-used-container-production-log');
+            const addMoreButton = document.querySelector('.add-more-chemical-used-production-log');
+            let chemicals = @json($approved_company_chemicals);
+
+            addMoreButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_chemical">Used Chemical</label>
+                    <select class="form-select" name="used_chemical[]" required>
+                    <option value="" selected disabled>Select Chemical</option>
+                    ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-5">
+                <div class="form-group">
+                    <label for="used_quantity">Used Quantity</label>
+                    <input type="number" class="form-control" name="used_quantity[]" placeholder="Used Quantity" required>
+                </div>
+                </div>
+                <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">Remove</button>
+                </div>
+            `;
+            chemicalContainer.appendChild(newRow);
+            });
+
+            chemicalContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-chemical-quantity')) {
+                e.target.closest('.row').remove();
+            }
+            });
+        });
+
+        // Store Production Log
+        document.querySelector('#production-log-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-production-log') }}";
+
+            fetch_cycle('--Store Production Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the production logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-production-logs tbody');
+                    tableBody.innerHTML = "";
+                    result.production_logs.forEach(log => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${log.product_name}</td>
+                            <td>${log.quantity_produced}</td>
+                            <td>${log.production_date}</td>
+                            <td>${log.remark ?? ''}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
+     </script>
+    <!-- End Production Log -->
 
     <!-- Calendar Year Management Script -->
     <script>
