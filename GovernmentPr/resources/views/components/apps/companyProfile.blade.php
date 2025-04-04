@@ -2696,7 +2696,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-                                                            <input type="number" class="form-control" id="expected_unit_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
+                                                            <input type="number" class="form-control" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
@@ -4416,7 +4416,8 @@
                             <!-- end Expected Water Usage Per Operation -->
                             <!-- Expected Unit Produced For Goods -->
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group
+                                ">
                                     <label for="">Expected Unit Produced For Goods</label>
                                     <input type="number" step="0.01" class="form-control"
                                         name="expected_unit_produced_for_goods">
@@ -8049,8 +8050,8 @@
                             <td>${year.start_date ?? ''}</td>
                             <td>${year.end_date ?? ''}</td>
                             <td class="text-end">
-                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${year -> calendar_year_id}')">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year -> calendar_year_id}')">Delete</button>
+                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${year.calendar_year_id}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year.calendar_year_id}')">Delete</button>
                             </td>
                         </tr>`;
                     });
