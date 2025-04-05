@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
-use App\Http\Controllers\StockMovementController;
+// use App\Http\Controllers\StockMovementController;
 
 class ProductionLogController extends StockMovementController
 {
@@ -41,7 +41,7 @@ class ProductionLogController extends StockMovementController
     public function store(Request $request)
     {
         //
-        dd($request->all());
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|exists:companies,company_id',
             'production_title' => 'required|string|max:255',
@@ -54,7 +54,15 @@ class ProductionLogController extends StockMovementController
             'chemical_used.*.volume' => 'required|numeric|min:0',
             'amount_of_water_used' => 'required|numeric|min:0',
             'calendar_year' => 'required|exists:calendar_years,calendar_year_id',
-            'production_date' => 'required|date',
+            'production_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    if (Carbon::parse($value)->isFuture()) {
+                        $fail('The production date cannot be in the future.');
+                    }
+                },
+            ],
             'production_status' => 'required|in:halted,ongoing,completed,failed',
             'product_produced' => 'required|array|min:1',
             'product_produced.*.product_id' => 'required|exists:products,product_id',
@@ -63,6 +71,85 @@ class ProductionLogController extends StockMovementController
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Get the balance of each material used
+        foreach ($request->input('materials_used') as $material) {
+            $materialId = $material['material_id'];
+            $quantityUsed = $material['quantity'];
+
+            // get the balance of each material used
+            $availableMaterialBalance = $this->getMaterialBalance($materialId);
+
+            if ($availableMaterialBalance <= 0) {
+            $validator->errors()->add('balance_error', 'No material stock is available. The balance is 0.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+                'available_balance' => $availableMaterialBalance
+            ], 400);
+            } elseif ($quantityUsed > $availableMaterialBalance) {
+            $validator->errors()->add('balance_error', "Insufficient stock for material ID: $materialId");
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+                'available_balance' => $availableMaterialBalance
+            ], 400);
+            }
+        }
+
+        // Get the balance of each chemical used
+        foreach ($request->input('chemical_used', []) as $chemical) {
+            $chemicalId = $chemical['chemical_id'];
+            $volumeUsed = $chemical['volume'];
+
+            // get the balance of each chemical used
+            $availableChemicalBalance = $this->getChemicalBalance($chemicalId);
+
+            if ($availableChemicalBalance <= 0) {
+            $validator->errors()->add('balance_error', 'No chemical stock is available. The balance is 0.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+                'available_balance' => $availableChemicalBalance
+            ], 400);
+            } elseif ($volumeUsed > $availableChemicalBalance) {
+            $validator->errors()->add('balance_error', "Insufficient stock for chemical ID: $chemicalId");
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+                'available_balance' => $availableChemicalBalance
+            ], 400);
+            }
+        }
+
+        if (!empty($request['production_date'])) {
+            # code...
+            // Extract the year using Carbon
+            $year = Carbon::parse($request->input('dateInput'))->year;
+        }
+
+        // If both material and chemical balances are approved, proceed to checkout
+        foreach ($request->input('materials_used') as $material) {
+            $this->checkoutMaterial($material['material_id'], $material['quantity']);
+            $result = stock_movement::create([
+                'companyMaterialId'  => $request['checkOut_material_id'],
+                'materialID'  => $request['material_id'],
+                'companyID'  => $request['company_id'],
+                'quantity'  => $material['quantity'],
+                'movement_type' => 'out',
+                'calendar_year' => $year,
+                'movement_date' => $request['production_date'],
+                'remark' => "Material checked out for production log on {$request['production_date']} with title {$request['production_title']}",
+            ]);
+        }
+
+        foreach ($request->input('chemical_used', []) as $chemical) {
+            $this->checkoutChemical($chemical['chemical_id'], $chemical['volume']);
         }
 
         try {
