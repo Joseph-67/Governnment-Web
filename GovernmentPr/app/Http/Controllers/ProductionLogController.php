@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductionLog;
 use App\Models\stock_movement;
-
+use App\Models\ChemicalStockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -80,7 +80,7 @@ class ProductionLogController extends StockMovementController
         foreach ($request->input('material_used') as $material) {
             $materialId = $material['material_id'];
             $quantityUsed = $material['quantity'];
-
+            $companyMaterial = CompanyMaterial::find($materialId)->first('materialID');
             // get the balance of each material used
             $availableMaterialBalance = $this->getMaterialBalance($materialId);
 
@@ -93,7 +93,7 @@ class ProductionLogController extends StockMovementController
                 'available_balance' => $availableMaterialBalance
             ], 400);
             } elseif ($quantityUsed > $availableMaterialBalance) {
-            $validator->errors()->add('balance_error', "Insufficient stock for material ID: $materialId");
+            $validator->errors()->add('balance_error', "Insufficient stock for material: ".$companyMaterial->material->material);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation failed.',
@@ -107,7 +107,7 @@ class ProductionLogController extends StockMovementController
         foreach ($request->input('chemical_used', []) as $chemical) {
             $chemicalId = $chemical['chemical_id'];
             $volumeUsed = $chemical['volume'];
-
+            $companyChemical = CompanyChemical::find($chemical['chemical_id'])->first('chemical_id');
             // get the balance of each chemical used
             $availableChemicalBalance = $this->getChemicalBalance($chemicalId);
 
@@ -120,7 +120,7 @@ class ProductionLogController extends StockMovementController
                 'available_balance' => $availableChemicalBalance
             ], 400);
             } elseif ($volumeUsed > $availableChemicalBalance) {
-            $validator->errors()->add('balance_error', "Insufficient stock for chemical ID: $chemicalId");
+            $validator->errors()->add('balance_error', "Insufficient stock for chemical: ".$companyChemical->chemical->name);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation failed.',
@@ -136,8 +136,9 @@ class ProductionLogController extends StockMovementController
             $year = Carbon::parse($request->input('dateInput'))->year;
         }
 
-        // If both material and chemical balances are approved, proceed to checkout
-        foreach ($request->input('material_used') as $material) {
+        try {
+            // If both material and chemical balances are approved, proceed to checkout
+            foreach ($request->input('material_used') as $material) {
             $companyMaterial = CompanyMaterial::where('companyMaterialId', $materialId)->first('materialID');
             $result = stock_movement::create([
                 'companyMaterialId'  => $material['material_id'],
@@ -149,20 +150,27 @@ class ProductionLogController extends StockMovementController
                 'movement_date' => $request['production_date'],
                 'remark' => "Material checked out for production log on {$request['production_date']} with title {$request['production_title']}",
             ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to process material checkout', 'error' => $e->getMessage()], 500);
         }
 
-        foreach ($request->input('chemical_used', []) as $chemical) {
+        try {
+            foreach ($request->input('chemical_used', []) as $chemical) {
             $companyChemical = CompanyChemical::where('company_chemical_id', $chemical['chemical_id'])->first('chemical_id');
             $result = ChemicalStockMovement::create([
-                'companyMaterialId'  => $chemical['chemical_id'],
+                'company_chemical_id'  => $chemical['chemical_id'],
                 'chemical_id'  => $companyChemical->chemical_id,
-                'companyID'  => $request['company_id'],
+                'company_id'  => $request['company_id'],
                 'quantity'  => $chemical['volume'],
                 'movement_type' => 'out',
                 'calendar_year' => $year,
                 'movement_date' => $request['production_date'],
                 'remark' => "Chemical checked out for production log on {$request['production_date']} with title {$request['production_title']}",
             ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to process chemical checkout', 'error' => $e->getMessage()], 500);
         }
 
         try {
@@ -179,10 +187,10 @@ class ProductionLogController extends StockMovementController
                 'production_status' => $request->input('production_status'),
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create production log', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'error', 'message' => 'Failed to create production log', 'error' => $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => 'Production log created successfully', 'data' => $productionLog], 201);
+        return response()->json(['status' => 'success', 'message' => 'Production log created successfully', 'data' => $productionLog], 201);
 
     }
 

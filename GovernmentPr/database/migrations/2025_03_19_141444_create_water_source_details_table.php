@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('water_source_details', function (Blueprint $table) {
             $table->id('water_source_detail_ID');
             $table->unsignedBigInteger('companyID');
-            $table->unsignedBigInteger('WaterSources_id');
+            $table->unsignedBigInteger('company_water_source_id');
             $table->string('location');
             $table->string('capacity')->nullable();
-            $table->string('status');
+            $table->boolean('is_deleted')->default(false);
             $table->foreign('companyID')->references('company_id')->on('companies');
-            $table->foreign('WaterSources_id')->references('WaterSourcesId')->on('water_sources');
+            $table->foreign('company_water_source_id')->references('CompanyWaterSourcesID')->on('company_water_sources');
             $table->timestamps();
         });
     }

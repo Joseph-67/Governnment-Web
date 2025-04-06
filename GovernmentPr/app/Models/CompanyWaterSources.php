@@ -12,6 +12,18 @@ class CompanyWaterSources extends Model
     protected $fillable = [
         'companyID',
         'WaterSources_id',
-       
     ];
+    public $timestamps = true;
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'companyID', 'company_id');
+    }
+    public function waterSource()
+    {
+        return $this->belongsTo(WaterSources::class, 'WaterSources_id', 'WaterSourcesId');
+    }
+    public function waterSourceDetails()
+    {
+        return $this->hasMany(WaterSourceDetails::class, 'company_water_source_id', 'CompanyWaterSourcesID');
+    }
 }

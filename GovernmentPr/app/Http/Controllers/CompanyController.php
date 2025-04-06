@@ -23,6 +23,7 @@ use App\Models\CompanyWaterQuestion;
 use App\Models\WaterConservationMethod;
 use App\Models\CompanyWaterConservationOpportunity;
 use App\Models\WaterSources;
+use App\Models\WaterSourceDetails;
 use App\Models\CompanyWaterSources;
 use App\Models\CompanyMaterial;
 use App\Models\Chemicals;
@@ -127,6 +128,11 @@ class CompanyController extends Controller
         $data['industrial_equipments'] = EquipmentLog::where('company_id', $companyID)
             ->where('is_deleted', false)
             ->get();
+        
+        // Fetch water source details
+        // $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
+        //     ->where('is_deleted', false)
+        //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
 
         return view('components.apps.companyProfile', $data);
     }   

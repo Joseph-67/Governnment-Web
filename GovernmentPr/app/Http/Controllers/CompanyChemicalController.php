@@ -126,7 +126,7 @@ class CompanyChemicalController extends ChemicalStockMovementController
     {
         //
         $chemicalStockMovementController = new ChemicalStockMovementController();
-        $data['balance'] = $chemicalStockMovementController->getBalance($chemical);
+        $data['balance'] = $chemicalStockMovementController->getChemicalBalance($chemical);
         $data['CompanyChemical'] = CompanyChemical::where('company_chemical_id', $chemical)->first();
         $data['transactions'] = CompanyChemical::where('company_chemical_id', $chemical)->get();
         return view('components.chemical.view-chemical', $data);
