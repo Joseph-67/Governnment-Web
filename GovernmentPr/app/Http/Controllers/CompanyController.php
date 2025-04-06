@@ -351,6 +351,7 @@ class CompanyController extends Controller
     public function index()
     {
         //
+        
         $data['companies'] = Company::where('status', '=', 'active')->get();
         return view('components.apps.displayCompany', $data);
     }
