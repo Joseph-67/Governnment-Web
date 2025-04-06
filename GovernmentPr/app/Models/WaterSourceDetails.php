@@ -11,18 +11,23 @@ class WaterSourceDetails extends Model
     protected $primaryKey = 'water_source_detail_ID';
     protected $fillable = [
         'companyID',
-        'WaterSources_id',
+        'company_water_source_id',
         'location',
         'capacity',
-        'status'
+        'is_deleted'
     ];
     public $timestamps = true;
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'companyID', 'company_id');
     }
-    public function scopeActive($query)
+
+    public function companyWaterSources()
     {
-        return $query->where('status', true);
+        return $this->belongsTo(CompanyWaterSources::class, 'company_water_source_id', 'CompanyWaterSourcesID');
+    }
+    public function scopeIsDeleted($query, $isDeleted = true)
+    {
+        return $query->where('is_deleted', $isDeleted);
     }
 }

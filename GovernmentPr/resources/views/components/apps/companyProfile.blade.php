@@ -1438,31 +1438,25 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- Water Sources -->
+                                    <!-- Water Sources Details -->
                                     <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <h4 class="card-title mb-0">Water Sources Details</h4>
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Water Sources Information</h4>
+                                            <button type="button" class="btn-close" aria-label="Close"></button>
                                         </div> <!-- end card-header -->
 
-                                        <div class="card-body pt-0" id="waterSourceForm">
+                                        <div class="card-body pt-3" id="waterSourceForm">
                                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
                                             <div class="row g-3">
                                                 <!-- Water Source -->
-                                                <div class="col-md-5">
+                                                <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="water_source" class="form-label">Water
-                                                            Source</label>
+                                                        <label for="water_source" class="form-label">Select Water Source</label>
                                                         <select name="water_source" id="source" class="form-select">
                                                             <option value="" selected disabled>Choose...</option>
-                                                            @foreach($waterSources as $source)
-                                                            @if(in_array($source->WaterSourcesId,
-                                                            array_column($companyWaterSources->toArray(),
-                                                            'WaterSources_id')))
-                                                            <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                {{ $source->sources }}
-                                                            </option>
-                                                            @endif
+                                                            @foreach($companyWaterSources as $source)
+                                                                <option value="{{ $source->waterSource->WaterSourcesId }}" selected>{{ $source->waterSource->sources }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -1471,333 +1465,370 @@
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
                                                         <label for="location" class="form-label">Location</label>
-                                                        <input type="text" id="location" class="form-control"
-                                                            name="location">
+                                                        <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
                                                     </div>
                                                 </div>
                                                 <!-- Capacity of Water -->
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="capacity" class="col col-form-label">Capacity of
-                                                            Water (LTR)</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="capacity" value="0">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                        <label for="capacity" class="form-label">Water Capacity (Liters)</label>
+                                                        <div class="input-group">
+                                                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                            <input type="number" class="form-control" min="0" name="capacity" value="0">
+                                                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- Save Button -->
-                                                <div class="col-12 mt-3">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-source">Save</button>
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
                                                 </div>
                                             </div>
                                         </div> <!-- end card-body -->
                                     </div>
-                                    <!-- End Water Sources -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <h4 class="card-title">Water Usage</h4>
-                                                </div><!--end col-->
-                                            </div> <!--end row-->
-                                        </div><!--end card-header-->
-                                        <div class="card-body pt-0" id="water-usage-form">
-                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                            <div class="row g-2">
-                                                <!-- Unit of measurement -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Volume of
-                                                            Water</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="volume" value="0">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Unit of measurement -->
-                                                <!-- date type -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <label class="col my-1 control-label">Date Type</label>
-                                                    <div class="col-md-9">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio1" value="daily" checked
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio1">Daily</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio2" value="weekly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio2">Weekly</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio3" value="monthly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio3">Monthly</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio4" value="yearly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio3">Yearly</label>
-                                                        </div>
-                                                    </div>
-                                                </div> <!--end row-->
-                                                <!-- date type -->
-                                                <!-- Date -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group" id="date">
-                                                        <label for="" class="col col-form-label">Date</label>
-                                                        <input type="date" class="form-control" name="date">
-                                                    </div>
-                                                </div>
-                                                <!-- end Date -->
-                                                <!-- Material name -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Remark</label>
-                                                        <input type="text" class="form-control" name="remark">
-                                                    </div>
-                                                </div>
-                                                <!-- Material name -->
-                                                <div class="col-12">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-usage">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- water usage card -->
-                                    <!-- water usage logs card -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <h4 class="card-title mb-0">Water Usage Logs</h4>
+                                    <!-- End Water Sources Details -->
+
+                                    <!-- Water Sources Management Table -->
+                                    <div class="card shadow-sm mt-4">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Water Sources Management</h4>
+                                            <a href="#" class="btn btn-primary btn-sm" id="add-water-source-trigger">Add Water Source</a>
                                         </div> <!-- end card-header -->
 
-                                        <div class="card-body pt-0" id="waterUsageLogsForm">
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="card-body pt-3">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0" id="tbl-water-sources-management">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Water Source</th>
+                                                            <th>Location</th>
+                                                            <th>Capacity (Liters)</th>
+                                                            <th class="text-end">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($companyWaterSources as $waterSource)
+                                                        <tr>
+                                                            <td>{{ $waterSource->waterSource->sources ?? 'N/A' }}</td>
+                                                            <td>{{ $waterSource->waterSourceDetails->first()->location ?? 'N/A' }}</td>
+                                                            <td>{{ $waterSource->waterSourceDetails->first()->capacity ?? 'N/A' }}</td>
+                                                            <td class="text-end">
+                                                                <button class="btn btn-outline-primary btn-sm me-2" type="button">Edit</button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table><!--end /table-->
+                                            </div><!--end /tableresponsive-->
+                                        </div> <!-- end card-body -->
+                                    </div>
+                                    <!-- End Water Sources Management Table -->
+
+                                    <!-- Water Check-In Card -->
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #e0f7fa;" id="water-checkin-card"> <!-- Light cyan background for water check-in -->
+                                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"> <!-- Info color for water check-in header -->
+                                            <h4 class="card-title mb-0">Water Check-In</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                        </div>
+                                        <div class="card-body pt-3" id="water-checkin-form">
+                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
                                             <div class="row g-3">
-                                                <div class="col-md-5">
+                                                <!-- Water Source -->
+                                                <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="water_source" class="form-label">Water
-                                                            Source</label>
-                                                        <select name="water_source_selected" id="water_source_selected"
-                                                            class="form-select">
+                                                        <label for="water_source" class="form-label">Water Source</label>
+                                                        <select name="water_source" id="water_source" class="form-select">
                                                             <option value="" selected disabled>Choose...</option>
                                                             @foreach($WaterSources as $source)
-                                                            @if(in_array($source->WaterSourcesId,
-                                                            array_column($companyWaterSources->toArray(),
-                                                            'WaterSources_id')))
-                                                            <option value="{{ $source->WaterSourcesId }}" selected>
-                                                                {{ $source->sources }}
-                                                            </option>
-                                                            @endif
+                                                                <option value="{{ $source->WaterSourcesId }}">{{ $source->sources }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <!-- Volume -->
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="" class="col col-form-label">Quantity
-                                                            Used</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="quantity_used" value="">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                        </div>
+                                                        <label for="volume" class="form-label">Volume of Water</label>
+                                                        <input type="number" class="form-control" min="0" name="volume" value="0" placeholder="Enter volume">
                                                     </div>
                                                 </div>
+                                                <!-- Unit of Measurement -->
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="" class="col col-form-label">Unit of
-                                                            Measurement</label>
-                                                        <select name="unit_of_water_measured" id="source"
-                                                            class="form-select">
+                                                        <label for="unit" class="form-label">Unit of Measurement</label>
+                                                        <select name="unit" id="unit" class="form-select">
                                                             <option value="" selected disabled>Choose...</option>
-                                                            <option value="kg">Kilogram (kg)</option>
-                                                            <option value="g">Gram (g)</option>
-                                                            <option value="lb">Pound (lb)</option>
-                                                            <option value="oz">Ounce (oz)</option>
-                                                            <option value="cm">Centimeter (cm)</option>
-                                                            <option value="m">Meter (m)</option>
-                                                            <option value="in">Inch (in)</option>
-                                                            <option value="ft">Foot (ft)</option>
                                                             <option value="l">Liter (L)</option>
                                                             <option value="ml">Milliliter (mL)</option>
+                                                            <option value="gallon">Gallon</option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <!-- Date -->
                                                 <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group" id="date">
-                                                        <label for="" class="col col-form-label">Date</label>
+                                                    <div class="form-group">
+                                                        <label for="date" class="form-label">Date</label>
                                                         <input type="date" class="form-control" name="date">
                                                     </div>
                                                 </div>
+                                                <!-- Remark -->
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="" class="col col-form-label">Purpose</label>
-                                                        <input type="text" class="form-control" name="purpose">
+                                                        <label for="remark" class="form-label">Remark</label>
+                                                        <input type="text" class="form-control" name="remark" placeholder="Enter remark">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 mt-3">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-usage-logs">Save</button>
+                                                <!-- Save Button -->
+                                                <div class="col-12 text-end mt-3">
+                                                    <button type="button" class="btn btn-info" id="btn-submit-water-checkin">Check-In</button>
                                                 </div>
                                             </div>
-                                        </div> <!-- end card-body -->
+                                        </div>
                                     </div>
-                                    <!-- End Water Usage Logs -->
-                                    <!-- water recycling logs -->
-                                    <!-- water usage logs card -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                                        </div> <!-- end card-header -->
-                                        <div class="card-body pt-0" id="waterRecyclingLogsForm">
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="row g-3">
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Quantity
-                                                            Recycled</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="quantity_recycled" value="">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                    <!-- End Water Check-In Card -->
+                                    <div class="row">
+                                        <!-- Water Usage Logs Card -->
+                                        <div class="col-md-6 d-none" id="water-usage-logs-card">
+                                            <div class="card shadow-sm border-0" style="background-color: #f0f8ff;"> <!-- Light blue background for water usage -->
+                                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                    <h4 class="card-title mb-0">Water Usage Logs</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                                </div> <!-- end card-header -->
+
+                                                <div class="card-body pt-3" id="waterUsageLogsForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <!-- Water Source Selection -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="water_source_selected" class="form-label">Water Source</label>
+                                                                <select name="water_source_selected" id="water_source_selected" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    @foreach($WaterSources as $source)
+                                                                        @if(in_array($source->WaterSourcesId, array_column($companyWaterSources->toArray(), 'WaterSources_id')))
+                                                                            <option value="{{ $source->WaterSourcesId }}">{{ $source->sources }}</option>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Quantity Used -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="quantity_used" class="form-label">Quantity Used</label>
+                                                                <input type="number" class="form-control" min="0" name="quantity_used" id="quantity_used" placeholder="Enter quantity used">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Unit of Measurement -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="unit_of_water_measured" class="form-label">Unit of Measurement</label>
+                                                                <select name="unit_of_water_measured" id="unit_of_water_measured" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    <option value="l">Liter (L)</option>
+                                                                    <option value="ml">Milliliter (mL)</option>
+                                                                    <option value="gallon">Gallon</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Date -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="date" class="form-label">Date</label>
+                                                                <input type="date" class="form-control" name="date" id="date">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Purpose -->
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="purpose" class="form-label">Purpose</label>
+                                                                <input type="text" class="form-control" name="purpose" id="purpose" placeholder="Enter purpose of water usage">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Save Button -->
+                                                        <div class="col-12 text-end mt-3">
+                                                            <button type="button" class="btn btn-primary" id="btn-submit-water-usage-logs">Save</button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Unit</label>
-                                                        <select name="unit_of_water_recycled"
-                                                            id="unit_of_water_recycled" class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            <option value="kg">Kilogram (kg)</option>
-                                                            <option value="g">Gram (g)</option>
-                                                            <option value="lb">Pound (lb)</option>
-                                                            <option value="oz">Ounce (oz)</option>
-                                                            <option value="cm">Centimeter (cm)</option>
-                                                            <option value="m">Meter (m)</option>
-                                                            <option value="in">Inch (in)</option>
-                                                            <option value="ft">Foot (ft)</option>
-                                                            <option value="l">Liter (L)</option>
-                                                            <option value="ml">Milliliter (mL)</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group" id="date">
-                                                        <label for="" class="col col-form-label">Reycling
-                                                            Date</label>
-                                                        <input type="date" class="form-control" name="recycling_date">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Method</label>
-                                                        <input type="text" class="form-control" name="method">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 mt-3">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-recycling-logs">Save</button>
-                                                </div>
+                                                </div> <!-- end card-body -->
                                             </div>
-                                        </div> <!-- end card-body -->
-                                    </div>
-                                    <!-- end water recycling logs -->
-                                    <!-- water quality log -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <h4 class="card-title mb-0">Water Quality Logs</h4>
-                                        </div> <!-- end card-header -->
-                                        <div class="card-body pt-0" id="waterQualityLogForm">
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="row g-3">
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group" id="date">
-                                                        <label for="" class="col col-form-label">Test Date</label>
-                                                        <input type="date" class="form-control" name="test_date">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">PH Level</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="ph_level" value="0">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                        </div>
+                                        <!-- End Water Usage Logs Card -->
+
+                                        <!-- Water Recycling Logs Card -->
+                                        <div class="col-md-6 d-none" id="water-recycling-logs-card">
+                                            <div class="card shadow-sm border-0" style="background-color: #e6ffe6;"> <!-- Light green background for water recycling -->
+                                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                                    <h4 class="card-title mb-0">Water Recycling Logs</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                                </div> <!-- end card-header -->
+                                                <div class="card-body pt-3" id="waterRecyclingLogsForm">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <!-- Quantity Recycled -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="quantity_recycled" class="form-label">Quantity Recycled</label>
+                                                                <input type="number" class="form-control" min="0" name="quantity_recycled" id="quantity_recycled" placeholder="Enter quantity">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Unit -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="unit_of_water_recycled" class="form-label">Unit</label>
+                                                                <select name="unit_of_water_recycled" id="unit_of_water_recycled" class="form-select">
+                                                                    <option value="" selected disabled>Choose...</option>
+                                                                    <option value="l">Liter (L)</option>
+                                                                    <option value="ml">Milliliter (mL)</option>
+                                                                    <option value="gallon">Gallon</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Recycling Date -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="recycling_date" class="form-label">Recycling Date</label>
+                                                                <input type="date" class="form-control" name="recycling_date" id="recycling_date">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Method -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="method" class="form-label">Recycling Method</label>
+                                                                <input type="text" class="form-control" name="method" id="method" placeholder="Enter recycling method">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Remark -->
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="remark" class="form-label">Remark</label>
+                                                                <input type="text" class="form-control" name="remark" id="remark" placeholder="Enter your remark here">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Save Button -->
+                                                        <div class="col-12 text-end mt-3">
+                                                            <button type="button" class="btn btn-success" id="btn-submit-water-recycling-logs">Save Recycling Log</button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Turbidity
-                                                            Level</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="turbidity_level" value="0">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-group">
-                                                        <label for="contaminants_detected"
-                                                            class="form-label">Contaminants Detected</label>
-                                                        <textarea class="form-control" id="contaminants_detected"
-                                                            name="contaminants_detected" rows="3"
-                                                            placeholder="Enter contaminants detected"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-group">
-                                                        <label for="test_results" class="form-label">Test
-                                                            Results</label>
-                                                        <textarea class="form-control" id="test_results"
-                                                            name="test_results" rows="3"
-                                                            placeholder="Enter test results"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 mt-3">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-quality-logs">Save</button>
-                                                </div>
+                                                </div> <!-- end card-body -->
                                             </div>
-                                        </div> <!-- end card-body -->
+                                        </div>
+                                        <!-- End Water Recycling Logs Card -->
                                     </div>
+
+                                    <!-- Water Management Table -->
+                                    <div class="card shadow-sm mt-4">
+                                        <div class="card-header ">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h4 class="card-title mb-0">Water Management Records</h4>
+                                                <div class="">
+                                                    <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm">Check In</a>
+                                                    <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm">Usage Log</a>
+                                                    <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm">Recycling Log</a>
+                                                </div>
+                                            </div><!--end row-->
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Water Source</th>
+                                                            <th>Volume</th>
+                                                            <th>Unit</th>
+                                                            <th>Date</th>
+                                                            <th>Remark</th>
+                                                            <th class="text-end">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quality Control Log Form -->
+                                    <div class="card shadow-sm border-0" style="background-color: #fff3cd;"> <!-- Light yellow background for quality control -->
+                                        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Quality Control Logs</h4>
+                                            <button type="button" class="btn-close" aria-label="Close"></button>
+                                        </div>
+                                        <div class="card-body pt-0" id="qualityControlLogForm">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="test_date" class="col-form-label">Test Date</label>
+                                                            <input type="date" class="form-control" name="test_date" id="test_date" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="parameter_tested" class="col-form-label">Parameter Tested</label>
+                                                            <input type="text" class="form-control" name="parameter_tested" id="parameter_tested" placeholder="Enter parameter tested" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="result" class="col-form-label">Result</label>
+                                                            <input type="text" class="form-control" name="result" id="result" placeholder="Enter result" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="deviation_detected" class="form-label">Deviation Detected</label>
+                                                            <textarea class="form-control" id="deviation_detected" name="deviation_detected" rows="3" placeholder="Enter deviation detected"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <div class="form-group">
+                                                            <label for="corrective_action" class="form-label">Corrective Action</label>
+                                                            <textarea class="form-control" id="corrective_action" name="corrective_action" rows="3" placeholder="Enter corrective action"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3">
+                                                        <button type="submit" class="btn btn-warning text-dark">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End Quality Control Log Form -->
+
+                                    <!-- Quality Control Management Table -->
+                                    <div class="card shadow-sm mt-4">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Quality Control Management Records</h4>
+                                            <button type="button" class="btn btn-warning btn-sm" id="add-quality-control-record">Add Record</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-bordered mb-0" id="tbl-quality-control-management">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Test Date</th>
+                                                            <th>Parameter Tested</th>
+                                                            <th>Result</th>
+                                                            <th>Deviation Detected</th>
+                                                            <th>Corrective Action</th>
+                                                            <th class="text-center">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Dynamic rows will be appended here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Quality Control Management Table -->
+                                    
+                                    <!-- Water Usage Re-adjustment -->
                                     <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
+                                        <div class="card-header">
                                             <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
                                         </div> <!-- end card-header -->
                                         <div class="card-body pt-0" id="water-usage-form">
@@ -3190,18 +3221,35 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="mb-3">
+                                                    <label for="waste_item" class="form-label">Waste Item</label>
+                                                    <select class="form-select" id="waste_item" name="waste_item" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($waste_items as $item)
+                                                            <option value="{{ $item->waste_name }}">{{ $item->waste_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
                                                     <label for="quantity_disposed" class="form-label">Quantity
                                                         Disposed</label>
                                                     <input type="number" class="form-control" id="quantity_disposed"
                                                         name="quantity_disposed" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label for="disposal_method" class="form-label">Disposal
                                                         Method</label>
-                                                    <input type="text" class="form-control" id="disposal_method"
-                                                        name="disposal_method" required>
+                                                    <select class="form-select" id="disposal_method" name="disposal_method" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Landfill">Landfill</option>
+                                                        <option value="Recycling">Recycling</option>
+                                                        <option value="Incineration">Incineration</option>
+                                                        <option value="Composting">Composting</option>
+                                                        <option value="Waste Symbiosis">Waste Symbiosis</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -3371,6 +3419,27 @@
                                             <button type="submit" class="btn btn-primary">Submit Production Log</button>
                                         </div>
                                     </form>
+                                    <!-- Production Log Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-production-log">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Production Title</th>
+                                                    <th>Operation Name</th>
+                                                    <th>Materials Used</th>
+                                                    <th>Chemicals Used</th>
+                                                    <th>Water Used (Liters)</th>
+                                                    <th>Products Produced</th>
+                                                    <th>Production Date</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -4276,7 +4345,7 @@
         </div>
     </div>
     <!-- end modal -->
-    <!-- checkout chemical modal -->
+    <!-- checkin chemical modal -->
     <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -4286,9 +4355,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="checkIn_chemical_id">
-                    <input type="text" name="chemical_id">
-                    <input type="text" name="company_id">
+                    <input type="hidden" name="checkIn_chemical_id">
+                    <input type="hidden" name="chemical_id">
+                    <input type="hidden" name="company_id">
 
                     <div class="row g-2">
                         <!-- Chemical name -->
@@ -6714,6 +6783,28 @@
             }
         }
 
+        document.querySelector('#water-checkin-trigger').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const waterCheckinCard = document.querySelector('#water-checkin-card');
+            waterCheckinCard.classList.remove('d-none');
+            waterCheckinCard.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.querySelector('#water-usage-log-trigger').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const waterUsageLogsCard = document.querySelector('#water-usage-logs-card');
+            waterUsageLogsCard.classList.remove('d-none');
+            waterUsageLogsCard.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.querySelector('#water-recycling-log-trigger').addEventListener('click', function (e) {
+            e.preventDefault();
+            const waterRecyclingLogsCard = document.querySelector('#water-recycling-logs-card');
+            waterRecyclingLogsCard.classList.remove('d-none');
+            waterRecyclingLogsCard.scrollIntoView({ behavior: 'smooth' });
+        });
     </script>
     <!-- end activate and deactivate -->
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>

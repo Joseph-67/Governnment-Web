@@ -19,6 +19,14 @@ class WaterSources extends Model
     {
         return $this->belongsTo(Company::class);
     }
+    public function waterSourceDetails()
+    {
+        return $this->hasMany(WaterSourceDetails::class, 'WaterSources_id', 'WaterSourcesId');
+    }
+    public function companyWaterSources()
+    {
+        return $this->hasMany(CompanyWaterSources::class, 'WaterSources_id', 'WaterSourcesId');
+    }
     public function scopeActive($query)
     {
         return $query->where('status', true);
