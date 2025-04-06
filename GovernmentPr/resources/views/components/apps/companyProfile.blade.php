@@ -2822,7 +2822,7 @@
                                                 <tr>
                                                     <td>{{ $log->operation_name }}</td>
                                                     <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operationType->name }}</td>
+                                                    <td>{{ $log->operationType?->name }}</td>
                                                     <td>{{ $log->operationCategory->name }}</td>
                                                     <td>{{ $log->operation_unit }}</td>
                                                     <td>{{ $log->expected_waste_per_operation }}</td>
@@ -3212,9 +3212,9 @@
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{
-                                                            $operation->operation_name }}</option>
+                                                        @foreach($operation_types as $type)
+                                                        <option value="{{ $type->operation_type_id }}">{{
+                                                            $type->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3279,7 +3279,7 @@
                                     <!-- water disposal table -->
                         
                                 <div class="table-responsive mt-4">
-                                    <table class="table table-striped mb-0" id="tbl-waste-disposal-records">
+                                    <table class="table table-striped mb-0" id="tbl-waste-disposal">
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Waste Type</th>
@@ -3293,27 +3293,23 @@
                                         </thead>
                                         <tbody>
                                             
-                                            <tr>
-                                                @foreach($wasteDisposals as $record)
-                                                    <tr>
-                                                      
-                                                        
-                                                        <td>{{ $record->waste_type }}</td>
-                                                        <td>{{ $record->quantity_disposed }}</td>
-                                                        <td>{{ $record->disposal_method }}</td>
-                                                        <td>{{ $record->disposal_date }}</td>
-                                                        
-                                                        
-                                                        <td class="text-end">
-                                                            <div class="d-flex justify-content-end">
-                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tr>
-                                          
+                                        @foreach($waste_disposals as $disposal)
+                                        <tr>
+                                            <td>{{ $disposal->waste_type }}</td>
+                                            <td>{{ $disposal->quantity }}</td>
+                                            <td>{{ $disposal->disposal_method }}</td>
+                                            <td>{{ $disposal->disposal_date }}</td>
+                                            <td>{{ $disposal->operation->name ?? 'N/A' }}</td>
+                                            <td>{{ $disposal->calendarYear->name ?? 'N/A' }}</td>
+                                            <td class="text-end">
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                             
                                         </tbody>
                                     </table>
                                 </div>
@@ -7505,20 +7501,21 @@
                             tableBody.innerHTML += `<tr>
                                 <td>${disposal.waste_type}</td>
                                 <td>${disposal.disposal_method}</td>
-                                <td>${disposal.quantity_disposed}</td>
+                                <td>${disposal.quantity}</td>
                                 <td>${disposal.disposal_date}</td>
+                                <td>${disposal.operation?.name || 'N/A'}</td>
+                                <td>${disposal.calendarYear?.name || 'N/A'}</td>
+                               
+
+
+
 
                                 <td class="text-end">
-                                    <div class="dropdown d-inline-block">
-                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                            <a class="dropdown-item" href="#">Update</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                </div>
+                                            </td>
                             </tr>`;
                         });
                     }

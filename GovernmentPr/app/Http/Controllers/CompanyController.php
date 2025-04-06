@@ -135,7 +135,7 @@ class CompanyController extends Controller
         //     ->where('is_deleted', false)
         //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
         // waste disposal
-       
+$data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->get();
         return view('components.apps.companyProfile', $data);
     }   
     /**
