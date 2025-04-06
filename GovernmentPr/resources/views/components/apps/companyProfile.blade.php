@@ -3189,7 +3189,7 @@
                                 aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Waste Disposal Tracking Form -->
-                                    <form action="" method="post">
+                                    <form action="" method="post" id="waste-disposal-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row">
@@ -3210,10 +3210,10 @@
                                                 <div class="mb-3">
                                                     <label for="operation_status" class="form-label">Operation</label>
                                                     <select class="form-select" id="operation_status"
-                                                        name="operation_status" required>
+                                                        name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->operation_id }}">{{
+                                                        <option value="{{ $operation->company_operation_id }}">{{
                                                             $operation->operation_name }}</option>
                                                         @endforeach
                                                     </select>
@@ -7442,6 +7442,45 @@
         });
     </script>
     <!-- water quality Logs -->
+     <!-- start water disposal -->
+        <script>
+            // Store Waste Disposal
+            document.querySelector('#waste-disposal-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let url = "{{ route('admin.store-waste-disposal') }}";
+
+                fetch_cycle('--Store Waste Disposal', url, 'POST', formData).then(result => {
+                    console.log(result);
+                    if (result.status === 'success') {
+                        // Update the waste disposal table or UI as needed
+                        let tableBody = document.querySelector('#tbl-waste-disposal tbody');
+                        tableBody.innerHTML = "";
+                        result.waste_disposals.forEach(disposal => {
+                            tableBody.innerHTML += `<tr>
+                                <td>${disposal.waste_name}</td>
+                                <td>${disposal.disposal_method}</td>
+                                <td>${disposal.quantity}</td>
+                                <td>${disposal.date}</td>
+                                <td>${disposal.remark ?? ''}</td>
+                                <td class="text-end">
+                                    <div class="dropdown d-inline-block">
+                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                            <a class="dropdown-item" href="#">Update</a>
+                                            <a class="dropdown-item" href="#">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        });
+                    }
+                });
+            });
+        </script>
+     <!-- end water disposal -->
     <!-- water usage logs -->
 
 

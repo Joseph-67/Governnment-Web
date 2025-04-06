@@ -44,6 +44,7 @@ use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\WaterUsageLogsController;
 use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
+use App\Http\Controllers\WasteDisposalController;
 
 
 
@@ -227,6 +228,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Water Quality Logs Route
     Route::controller(WaterQualityLogsController::class)->group(function() {
         Route::post('/store-water-quality-logs', 'store')->name('admin.store-water-quality-logs');
+    });
+    // Waste Disposal Route
+    Route::controller(WasteDisposalController::class)->group(function() {
+        Route::post('/store-waste-disposal', 'store')->name('admin.store-waste-disposal');
     });
     Route::controller(RECPController::class)->group(function(){
         // add
