@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\stock_movement;
+// use App\Http\Controllers\ChemicalStockMovementController;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\MessageBag;
@@ -11,14 +12,14 @@ use Illuminate\Validation\Rule;
 
 use Carbon\Carbon;
 
-class StockMovementController extends Controller
+class StockMovementController extends ChemicalStockMovementController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTotalCheckIn($companyMaterialId)
+    public function getMaterialTotalCheckIn($companyMaterialId)
     {
         //
         $totalCheckIn = stock_movement::where('companyMaterialId', $companyMaterialId)
@@ -26,7 +27,7 @@ class StockMovementController extends Controller
         return $totalCheckIn;
     }
 
-    public function getTotalTransfer($companyMaterialId)
+    public function getMaterialTotalTransfer($companyMaterialId)
     {
         //
         $totalTransfer = stock_movement::where('companyMaterialId', $companyMaterialId)
@@ -34,7 +35,7 @@ class StockMovementController extends Controller
         return $totalTransfer;
     }
 
-    public function getTotalAdjustment($companyMaterialId)
+    public function getMaterialTotalAdjustment($companyMaterialId)
     {
         //
         $totalAdjustment = stock_movement::where('companyMaterialId', $companyMaterialId)
@@ -42,7 +43,7 @@ class StockMovementController extends Controller
         return $totalAdjustment;
     }
 
-    public function getTotalCheckOut($companyMaterialId)
+    public function getMaterialTotalCheckOut($companyMaterialId)
     {
         //
         $totalCheckOut = stock_movement::where('companyMaterialId', $companyMaterialId)
@@ -50,21 +51,10 @@ class StockMovementController extends Controller
         return $totalCheckOut;
     }
 
-    public function getBalance($companyMaterialId) {
-        $balance = $this->getTotalCheckIn($companyMaterialId) - $this->getTotalTransfer($companyMaterialId) + $this->getTotalAdjustment($companyMaterialId) - $this->getTotalCheckOut($companyMaterialId);
+    public function getMaterialBalance($companyMaterialId) {
+        $balance = $this->getMaterialTotalCheckIn($companyMaterialId) - $this->getMaterialTotalTransfer($companyMaterialId) + $this->getMaterialTotalAdjustment($companyMaterialId) - $this->getMaterialTotalCheckOut($companyMaterialId);
         return $balance; 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -126,60 +116,7 @@ class StockMovementController extends Controller
         }
     }
 
-    public function store_chemical_checkin(Request $request)
-    {
-        //
-        // dd($request);
-        $validator = Validator::make($request->all(), [
-            'checkIn_chemical_id'   =>  ['required', 'numeric'],
-            'chemical_id'           =>  ['required', 'numeric'],
-            'company_id'            =>  ['required', 'numeric'],
-            'quantity'              =>  ['required', 'numeric', 'min:1'],
-            'date'                  =>  ['required', 'date'],
-            'remark'                =>  ['nullable', 'string', 'min:4'],
-        ]);
 
-        if ($validator->fails()) {
-            # code...
-            return response()->json([
-                'status'    => 'error',
-                'message'   => 'Validation failed.',
-                'errors'    => $validator->errors()
-            ]);
-        }
-
-        if (!empty($request['date'])) {
-            # code...
-            // Extract the year using Carbon
-            $year = Carbon::parse($request->input('dateInput'))->year;
-        }
-        $result = stock_movement::create([
-            'companyChemicalId'  => $request['checkIn_chemical_id'],
-            'chemicalID'        => $request['chemical_id'],
-            'companyID'         => $request['company_id'],
-            'quantity'           => $request['quantity'],
-            'movement_type'      => 'in',
-            'calendar_year'      => $year,
-            'movement_date'      => $request['date'],
-            'remark'             => $request['remark'],
-        ]);
-
-        if ($result) {
-            # code...
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Chemical checked in successfully.',
-                // 'company_material_price' => $companyMaterial,
-            ]);
-        }else{
-            $validator->errors()->add('creation_error', 'Chemical failed to check in.');
-            return response()->json([
-                'status' => 'error',
-                'message'   => 'Validation failed.',
-                'errors'    => $validator->errors(),
-            ], 400);
-        }
-    }
     public function store_checkout(Request $request)
     {
         //
@@ -202,7 +139,7 @@ class StockMovementController extends Controller
             ]);
         }
 
-        $availableBalance = $this->getBalance($request['checkOut_material_id']);
+        $availableBalance = $this->getMaterialBalance($request['checkOut_material_id']);
         if ($availableBalance <= 0) {
             # code...
             $validator->errors()->add('balance_error', 'No stock is available. The balance is 0.');
@@ -257,17 +194,6 @@ class StockMovementController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\stock_movement  $stock_movement
-     * @return \Illuminate\Http\Response
-     */
-    public function show(stock_movement $stock_movement)
-    {
-        //
-    }
-
     public function MaterialStockAnalysis(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -320,39 +246,5 @@ class StockMovementController extends Controller
         }
         // dd($movements->get());
         return response()->json($movements->get());
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\stock_movement  $stock_movement
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(stock_movement $stock_movement)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\stock_movement  $stock_movement
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, stock_movement $stock_movement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\stock_movement  $stock_movement
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(stock_movement $stock_movement)
-    {
-        //
     }
 }
