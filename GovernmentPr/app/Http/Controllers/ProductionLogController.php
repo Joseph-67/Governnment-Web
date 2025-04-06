@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductionLog;
 use App\Models\stock_movement;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Models\CompanyMaterial;
+use App\Models\CompanyChemical;
 // use App\Http\Controllers\StockMovementController;
 
 class ProductionLogController extends StockMovementController
@@ -46,8 +49,8 @@ class ProductionLogController extends StockMovementController
             'company_id' => 'required|exists:companies,company_id',
             'production_title' => 'required|string|max:255',
             'operation_name' => 'required|exists:company_operations,company_operation_id',
-            'materials_used' => 'required|array|min:1',
-            'materials_used.*.material_id' => 'required|exists:company_materials,companyMaterialId',
+            'material_used' => 'required|array|min:1',
+            'material_used.*.material_id' => 'required|exists:company_materials,companyMaterialId',
             'materials_used.*.quantity' => 'required|numeric|min:0',
             'chemical_used' => 'nullable|array',
             'chemical_used.*.chemical_id' => 'required|exists:company_chemicals,company_chemical_id',
@@ -74,7 +77,7 @@ class ProductionLogController extends StockMovementController
         }
 
         // Get the balance of each material used
-        foreach ($request->input('materials_used') as $material) {
+        foreach ($request->input('material_used') as $material) {
             $materialId = $material['material_id'];
             $quantityUsed = $material['quantity'];
 
@@ -134,11 +137,11 @@ class ProductionLogController extends StockMovementController
         }
 
         // If both material and chemical balances are approved, proceed to checkout
-        foreach ($request->input('materials_used') as $material) {
-            $this->checkoutMaterial($material['material_id'], $material['quantity']);
+        foreach ($request->input('material_used') as $material) {
+            $companyMaterial = CompanyMaterial::where('companyMaterialId', $materialId)->first('materialID');
             $result = stock_movement::create([
-                'companyMaterialId'  => $request['checkOut_material_id'],
-                'materialID'  => $request['material_id'],
+                'companyMaterialId'  => $material['material_id'],
+                'materialID'  => $companyMaterial->materialID,
                 'companyID'  => $request['company_id'],
                 'quantity'  => $material['quantity'],
                 'movement_type' => 'out',
@@ -149,7 +152,17 @@ class ProductionLogController extends StockMovementController
         }
 
         foreach ($request->input('chemical_used', []) as $chemical) {
-            $this->checkoutChemical($chemical['chemical_id'], $chemical['volume']);
+            $companyChemical = CompanyChemical::where('company_chemical_id', $chemical['chemical_id'])->first('chemical_id');
+            $result = ChemicalStockMovement::create([
+                'companyMaterialId'  => $chemical['chemical_id'],
+                'chemical_id'  => $companyChemical->chemical_id,
+                'companyID'  => $request['company_id'],
+                'quantity'  => $chemical['volume'],
+                'movement_type' => 'out',
+                'calendar_year' => $year,
+                'movement_date' => $request['production_date'],
+                'remark' => "Chemical checked out for production log on {$request['production_date']} with title {$request['production_title']}",
+            ]);
         }
 
         try {

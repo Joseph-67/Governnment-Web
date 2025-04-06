@@ -40,7 +40,7 @@ class ChemicalStockMovementController extends Controller
         return $totalCheckOut;
     }
 
-    public function getBalance($companyChemicalId) {
+    public function getChemicalBalance($companyChemicalId) {
         $balance = $this->getTotalCheckIn($companyChemicalId) - $this->getTotalTransfer($companyChemicalId) + $this->getTotalAdjustment($companyChemicalId) - $this->getTotalCheckOut($companyChemicalId);
         return $balance; 
     }
@@ -123,7 +123,7 @@ class ChemicalStockMovementController extends Controller
             ]);
         }
 
-        $availableBalance = $this->getBalance($request['checkout_chemical_id']);
+        $availableBalance = $this->getChemicalBalance($request['checkout_chemical_id']);
 
         if ($availableBalance <= 0) {
             $validator->errors()->add('balance_error', 'No chemical stock is available. The balance is 0.');
