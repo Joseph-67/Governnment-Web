@@ -3225,7 +3225,7 @@
                                                     <select class="form-select" id="waste_item" name="waste_item" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($waste_items as $item)
-                                                            <option value="{{ $item->waste_name }}">{{ $item->waste_name }}</option>
+                                                            <option value="{{ $item->company_waste_id }}">{{ $item->waste_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3276,9 +3276,54 @@
                                         </div>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </form>
+                                    <!-- water disposal table -->
+                        
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-striped mb-0" id="tbl-waste-disposal-records">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Waste Type</th>
+                                                <th>Quantity Disposed</th>
+                                                <th>Disposal Method</th>
+                                                <th>Disposal Date</th>
+                                                <th>Operation</th>
+                                                <th>Calendar Year</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            <tr>
+                                                @foreach($wasteDisposals as $record)
+                                                    <tr>
+                                                      
+                                                        
+                                                        <td>{{ $record->waste_type }}</td>
+                                                        <td>{{ $record->quantity_disposed }}</td>
+                                                        <td>{{ $record->disposal_method }}</td>
+                                                        <td>{{ $record->disposal_date }}</td>
+                                                        
+                                                        
+                                                        <td class="text-end">
+                                                            <div class="d-flex justify-content-end">
+                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tr>
+                                          
+                                        </tbody>
+                                    </table>
                                 </div>
+                            
+                        <!-- end water disposal table -->
+                                </div>
+                                
                             </div>
                         </div>
+                        
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -7458,11 +7503,11 @@
                         tableBody.innerHTML = "";
                         result.waste_disposals.forEach(disposal => {
                             tableBody.innerHTML += `<tr>
-                                <td>${disposal.waste_name}</td>
+                                <td>${disposal.waste_type}</td>
                                 <td>${disposal.disposal_method}</td>
-                                <td>${disposal.quantity}</td>
-                                <td>${disposal.date}</td>
-                                <td>${disposal.remark ?? ''}</td>
+                                <td>${disposal.quantity_disposed}</td>
+                                <td>${disposal.disposal_date}</td>
+
                                 <td class="text-end">
                                     <div class="dropdown d-inline-block">
                                         <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">

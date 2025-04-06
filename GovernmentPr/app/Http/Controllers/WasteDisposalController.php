@@ -15,6 +15,10 @@ class WasteDisposalController extends Controller
     public function index()
     {
         //
+  
+            return view('company.companyProfile', $data);
+
+      
     }
 
     /**
@@ -40,7 +44,7 @@ class WasteDisposalController extends Controller
         $validator = Validator::make($request->all(), [
             'waste_type' => 'required|string|max:255',
             'operation' => 'required|integer',
-            'waste_item' => 'required|string|max:255',
+            'waste_item' => 'required|integer',
             'quantity_disposed' => 'required|numeric|min:0',
             'disposal_method' => 'required|string|max:255',
             'calendar_year' => 'required|integer',
@@ -57,8 +61,9 @@ class WasteDisposalController extends Controller
         // If validation passes, create a new WasteDisposal record
         $wasteDisposal = WasteDisposal::create([
             'waste_type' => $request -> waste_type,
+            'company_id' => $request->company_id,
             'operation_type_id' => $request ->operation,
-            'waste_item' => $request->waste_item,
+            'company_waste_id' => $request->waste_item,
             'quantity' => $request->quantity_disposed,
             'disposal_method' => $request->disposal_method,
             'calendar_year_id' => $request->calendar_year,

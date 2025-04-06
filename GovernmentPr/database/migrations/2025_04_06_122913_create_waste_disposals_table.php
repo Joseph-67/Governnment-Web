@@ -16,14 +16,18 @@ return new class extends Migration
         Schema::create('waste_disposals', function (Blueprint $table) {
             $table->id('waste_disposal_id');
             $table->string('waste_type');
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('company_waste_id');
             $table->unsignedBigInteger('operation_type_id');
+            $table->unsignedBigInteger('calendar_year_id');
             $table->integer('quantity');
             $table->string('disposal_method');
-            $table->unsignedBigInteger('calendar_year_id');
             $table->date('disposal_date');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreign('operation_type_id')->references('operation_type_id')->on('operation_types');
             $table->foreign('calendar_year_id')->references('calendar_year_id')->on('calendar_years');
+            $table->foreign('company_waste_id')->references('company_waste_id')->on('company_wastes');
+            $table->foreign('company_id')->references('company_id')->on('companies');
             $table->timestamps();
         });
     }

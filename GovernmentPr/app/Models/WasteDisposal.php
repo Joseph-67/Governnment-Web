@@ -14,10 +14,12 @@ class WasteDisposal extends Model
     protected $fillable = [
        'waste_type',
         'operation_type_id',
+        'company_id',
         'quantity',
         'disposal_method',
         'calendar_year_id',
         'disposal_date',
+        'company_waste_id',
         'status'
         
     ];

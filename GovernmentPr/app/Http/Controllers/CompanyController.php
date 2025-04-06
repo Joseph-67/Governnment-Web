@@ -41,6 +41,7 @@ use App\Models\Product;
 use App\Models\EquipmentType;
 use App\Models\EquipmentLog;
 use App\Models\User;
+use App\Models\WasteDisposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -133,7 +134,8 @@ class CompanyController extends Controller
         // $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
         //     ->where('is_deleted', false)
         //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
-
+        // waste disposal
+       
         return view('components.apps.companyProfile', $data);
     }   
     /**
