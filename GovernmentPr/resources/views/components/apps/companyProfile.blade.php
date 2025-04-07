@@ -1528,9 +1528,10 @@
                                     <div class="card shadow-sm border-0 d-none" style="background-color: #e0f7fa;" id="water-checkin-card"> <!-- Light cyan background for water check-in -->
                                         <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"> <!-- Info color for water check-in header -->
                                             <h4 class="card-title mb-0">Water Check-In</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
-                                        <div class="card-body pt-3" id="water-checkin-form">
+                                        <div class="card-body pt-3" id="waterCheckinForm">
+                                            <form action="" method="post" id="water-checkin-form">
                                             <input type="hidden" value="{{ $company->company_id }}" name="company_id">
                                             <div class="row g-3">
                                                 <!-- Water Source -->
@@ -1548,21 +1549,19 @@
                                                 <!-- Volume -->
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <label for="volume" class="form-label">Volume of Water</label>
+                                                        <label for="volume" class="form-label">Volume of Water in Litres</label>
                                                         <input type="number" class="form-control" min="0" name="volume" value="0" placeholder="Enter volume">
                                                     </div>
                                                 </div>
-                                                <!-- Unit of Measurement -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="unit" class="form-label">Unit of Measurement</label>
-                                                        <select name="unit" id="unit" class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            <option value="l">Liter (L)</option>
-                                                            <option value="ml">Milliliter (mL)</option>
-                                                            <option value="gallon">Gallon</option>
-                                                        </select>
-                                                    </div>
+                                                <!-- Calendar Year -->
+                                                <div class="col-md-4">
+                                                    <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                        <option value="" selected disabled>Select Calendar Year</option>
+                                                        @foreach($calendar_years as $calendar)
+                                                            <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <!-- Date -->
                                                 <div class="col-md-4 col-sm-6">
@@ -1580,9 +1579,10 @@
                                                 </div>
                                                 <!-- Save Button -->
                                                 <div class="col-12 text-end mt-3">
-                                                    <button type="button" class="btn btn-info" id="btn-submit-water-checkin">Check-In</button>
+                                                    <button type="submit" class="btn btn-info" id="btn-submit-water-checkin">Check-In</button>
                                                 </div>
                                             </div>
+                                            </form>
                                         </div>
                                     </div>
                                     <!-- End Water Check-In Card -->
@@ -1592,7 +1592,7 @@
                                             <div class="card shadow-sm border-0" style="background-color: #f0f8ff;"> <!-- Light blue background for water usage -->
                                                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                                     <h4 class="card-title mb-0">Water Usage Logs</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                                 </div> <!-- end card-header -->
 
                                                 <div class="card-body pt-3" id="waterUsageLogsForm">
@@ -1660,7 +1660,7 @@
                                             <div class="card shadow-sm border-0" style="background-color: #e6ffe6;"> <!-- Light green background for water recycling -->
                                                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                                                     <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                                 </div> <!-- end card-header -->
                                                 <div class="card-body pt-3" id="waterRecyclingLogsForm">
                                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
@@ -1722,9 +1722,17 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <h4 class="card-title mb-0">Water Management Records</h4>
                                                 <div class="">
-                                                    <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm">Check In</a>
-                                                    <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm">Usage Log</a>
-                                                    <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm">Recycling Log</a>
+                                                    <div class="btn-group" role="group" aria-label="Water Management Actions">
+                                                        <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm">
+                                                            <i class="iconoir-plus"></i> Check In
+                                                        </a>
+                                                        <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm">
+                                                            <i class="iconoir-plus"></i> Usage Log
+                                                        </a>
+                                                        <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm">
+                                                            <i class="iconoir-plus"></i> Recycling Log
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div><!--end row-->
                                         </div>
@@ -1750,10 +1758,10 @@
                                     </div>
 
                                     <!-- Quality Control Log Form -->
-                                    <div class="card shadow-sm border-0" style="background-color: #fff3cd;"> <!-- Light yellow background for quality control -->
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #fff3cd;" id="quality-control-log-card"> <!-- Light yellow background for quality control -->
                                         <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                                             <h4 class="card-title mb-0">Quality Control Logs</h4>
-                                            <button type="button" class="btn-close" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body pt-0" id="qualityControlLogForm">
                                             <form action="" method="post">
@@ -1802,7 +1810,9 @@
                                     <div class="card shadow-sm mt-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h4 class="card-title mb-0">Quality Control Management Records</h4>
-                                            <button type="button" class="btn btn-warning btn-sm" id="add-quality-control-record">Add Record</button>
+                                            <button type="button" class="btn btn-warning btn-sm" id="add-quality-control-record">
+                                                <i class="iconoir-plus"></i> Add Record
+                                            </button>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -1826,152 +1836,6 @@
                                     </div>
                                     <!-- End Quality Control Management Table -->
                                     
-                                    <!-- Water Usage Re-adjustment -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header">
-                                            <h4 class="card-title mb-0">Water Usage Re-adjustment</h4>
-                                        </div> <!-- end card-header -->
-                                        <div class="card-body pt-0" id="water-usage-form">
-                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                            <div class="row g-2">
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Volume of
-                                                            Water</label>
-                                                        <div class="input-group qty-icons">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0"
-                                                                name="volume" value="0">
-                                                            <button class="btn btn-primary"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <label class="col my-1 control-label">Date Type</label>
-                                                    <div class="col-md-9">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio1" value="daily" checked
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio1">Daily</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio2" value="weekly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio2">Weekly</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio3" value="monthly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio3">Monthly</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="date_type" id="inlineRadio4" value="yearly"
-                                                                onchange="addDate(this)">
-                                                            <label class="form-check-label"
-                                                                for="inlineRadio4">Yearly</label>
-                                                        </div>
-                                                    </div>
-                                                </div> <!--end row-->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group" id="date">
-                                                        <label for="" class="col col-form-label">Date</label>
-                                                        <input type="date" class="form-control" name="date">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="" class="col col-form-label">Remark</label>
-                                                        <input type="text" class="form-control" name="remark">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="btn-submit-water-usage">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <h4 class="card-title">Water Usage</h4>
-                                                </div><!--end col-->
-                                            </div> <!--end row-->
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table mb-0" id="tbl-company-material">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Volume</th>
-                                                            <!-- <th>Date type</th> -->
-                                                            <th>Date</th>
-                                                            <th>Remark</th>
-                                                            <th class="text-end">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="water-usage-table">
-                                                        @foreach($company_water_usage as $key=>$water_usage)
-                                                        <tr>
-                                                            <td>{{ $water_usage->volume }}</td>
-                                                            <!-- <td>{{$water_usage->date_type}}</td> -->
-                                                            @if($water_usage->date_type === 'monthly')
-                                                            <td>{{
-                                                                \Carbon\Carbon::parse($water_usage->date)->format('M
-                                                                Y') }}</td>
-                                                            @elseif($water_usage->date_type === 'yearly')
-                                                            <td>{{
-                                                                \Carbon\Carbon::parse($water_usage->date)->format('Y')
-                                                                }}</td>
-                                                            @elseif($water_usage->date_type === 'weekly')
-                                                            <td>{{
-                                                                \Carbon\Carbon::parse($water_usage->date)->startOfWeek()->format('d
-                                                                M Y') }} - {{
-                                                                \Carbon\Carbon::parse($water_usage->date)->endOfWeek()->format('d
-                                                                M Y') }}</td>
-                                                            @else
-                                                            <td>{{
-                                                                \Carbon\Carbon::parse($water_usage->date)->format('d
-                                                                M Y') }}</td>
-                                                            @endif
-                                                            <td>{{$water_usage->remark}}</td>
-                                                            <td class="text-end">
-                                                                <div class="dropdown d-inline-block">
-                                                                    <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                        data-bs-toggle="dropdown" href="#" role="button"
-                                                                        aria-haspopup="false" aria-expanded="false">
-                                                                        <i
-                                                                            class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end"
-                                                                        aria-labelledby="dLabel11">
-                                                                        <a class="dropdown-item" href="#">Update
-                                                                            Material</a>
-                                                                        <a class="dropdown-item" href="#">Delete
-                                                                            Material</a>
-                                                                        <hr class="dropdown-divider">
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table><!--end /table-->
-                                            </div><!--end /tableresponsive-->
-                                        </div>
-                                    </div>
-                                    <!-- end water usage card -->
-
                                     <!-- Water inventory -->
                                 </div>
                             </div>
@@ -6805,71 +6669,43 @@
             waterRecyclingLogsCard.classList.remove('d-none');
             waterRecyclingLogsCard.scrollIntoView({ behavior: 'smooth' });
         });
+
+        document.querySelector('#add-quality-control-record').addEventListener('click', function (e) {
+            e.preventDefault();
+            const qualityControlCard = document.querySelector('#quality-control-log-card');
+            qualityControlCard.classList.remove('d-none');
+            qualityControlCard.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        
+
     </script>
     <!-- end activate and deactivate -->
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
-    <!-- water usage -->
+    <!-- water inventory -->
     <script>
-        const water_usage_date = document.querySelector('#water-usage-form #date');
+    document.querySelector('#water-checkin-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let url = "{{ route('admin.water-stock-check-in') }}";
+        const formData = new FormData(this);
 
-        function addDate(ele) {
-            if (ele.checked) {
-                switch (ele.value) {
-                    case "daily":
-                        water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
-                            <input type="date" min="0" class="form-control" name="date">`);
-                        break;
-                    case "weekly":
-                        water_usage_date.innerHTML = (`<label for="example-month-input" class="col col-form-label">Date</label>
-        <input class="form-control" type="week" value="2011-W33" id="example-week-input" name="date">`);
-                        break;
-                    case "monthly":
-                        water_usage_date.innerHTML = `<label for="example-month-input" class="col col-form-label">Date</label>
-                            <input class="form-control" type="month" value="2011-08"
-                                id="example-month-input" name="date">`;
-                        break;
-                    case "yearly":
-                        const yearlyLabel = `<label for="yearly-select" class="col col-form-label">Year</label>`;
-                        const yearlySelect = document.createElement("select");
-                        yearlySelect.className = "form-control";
-                        yearlySelect.name = "date";
-                        yearlySelect.id = "yearly-select";
-
-                        const currentYear = new Date().getFullYear();
-                        for (let year = 1900; year <= currentYear; year++) {
-                            const option = document.createElement("option");
-                            option.value = year;
-                            option.textContent = year;
-                            if (year == currentYear) {
-                                option.setAttribute("selected", true);
-                            }
-                            yearlySelect.appendChild(option);
-                        }
-
-                        water_usage_date.innerHTML = yearlyLabel;
-                        water_usage_date.appendChild(yearlySelect);
-                        break;
-                    default:
-                        water_usage_date.innerHTML = (`<label for="" class="col col-form-label">Date</label>
-        <input type="date" min="0" class="form-control" name="date">`);
-                        break;
-                }
-            }
-        }
-
-        let btn_submit_water_usage = document.querySelector('#water-usage-form #btn-submit-water-usage');
-        btn_submit_water_usage.addEventListener('click', () => {
-            console.log("clicked");
-
-            let company_id = document.querySelector('#water-usage-form input[name="company_id"]').value.trim();
-            let volume = document.querySelector('#water-usage-form input[name="volume"]').value.trim();
-            let date_type = document.querySelector('#water-usage-form input[name="date_type"]:checked').value.trim();
-            let date = document.querySelector('#water-usage-form [name="date"]').value.trim();
-            let remark = document.querySelector('#water-usage-form input[name="remark"]').value.trim();
-
-            if (!company_id || !volume || !date_type || !date) {
+        fetch_cycle('--Save Water Check-In', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status === "success") {
                 Toastify({
-                    text: "All fields are required.",
+                    text: result.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+            } else {
+                Toastify({
+                    text: result.message || "An error occurred.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -6879,85 +6715,9 @@
                         background: "linear-gradient(to right, #ff0000, #ff1745)",
                     },
                 }).showToast();
-                return;
             }
-
-            let url = "{{ route('company.add-water-usage') }}";
-            let formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('volume', volume);
-            formData.append('date_type', date_type);
-            formData.append('date', date);
-            formData.append('remark', remark);
-
-            fetch_cycle('--Create Store Water Usage', url, 'POST', formData).then(result => {
-                console.log(result);
-                let water_usage_tbody = document.querySelector('#water-usage-table');
-                water_usage_tbody.innerHTML = '';
-                result.water_usage.forEach(data => {
-                    let parsedDate;
-
-                    if (data.date_type === "weekly" && /^\d{4}-W\d{2}$/.test(data.date)) {
-                        const [year, week] = data.date.split("-W");
-                        const januaryFourth = new Date(`${year}-01-04`);
-                        const dayOfWeek = januaryFourth.getDay() || 7;
-                        parsedDate = new Date(januaryFourth);
-                        parsedDate.setDate(januaryFourth.getDate() + (week - 1) * 7 - dayOfWeek + 1);
-                    } else {
-                        parsedDate = new Date(data.date);
-                    }
-
-                    if (isNaN(parsedDate)) {
-                        console.error("Invalid date:", data.date);
-                        return;
-                    }
-
-                    const options = { year: "numeric", month: "short", day: "numeric" };
-                    let usage_date = "";
-
-                    switch (data.date_type) {
-                        case "monthly":
-                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric", month: "short" });
-                            break;
-                        case "yearly":
-                            usage_date = parsedDate.toLocaleDateString(undefined, { year: "numeric" });
-                            break;
-                        case "weekly":
-                            const startOfWeek = new Date(parsedDate);
-                            const endOfWeek = new Date(startOfWeek);
-                            endOfWeek.setDate(startOfWeek.getDate() + 6);
-                            usage_date = `${startOfWeek.toLocaleDateString(undefined, options)} - ${endOfWeek.toLocaleDateString(undefined, options)}`;
-                            break;
-                        default:
-                            usage_date = parsedDate.toLocaleDateString(undefined, options);
-                            break;
-                    }
-
-                    water_usage_tbody.innerHTML += `
-    <tr>
-        <td>${data.volume ?? ""}</td>
-        <td>${usage_date ?? ""}</td>
-        <td>${data.remark ?? ""}</td>
-        <td class="text-end">
-            <div class="dropdown d-inline-block">
-                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                    data-bs-toggle="dropdown" href="#" role="button"
-                    aria-haspopup="false" aria-expanded="false">
-                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="dLabel11">
-                    <a class="dropdown-item" href="#">Update Material</a>
-                    <a class="dropdown-item" href="#">Delete Material</a>
-                    <hr class="dropdown-divider">
-                </div>
-            </div>
-        </td>
-    </tr>
-    `;
-                });
-            });
         });
+    });
     </script>
     <script>
         // company water sources

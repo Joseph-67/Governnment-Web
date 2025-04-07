@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 use Carbon\Carbon;
-class ChemicalStockMovementController extends Controller
+class ChemicalStockMovementController extends WaterStockMovementController
+// use App\Http\Controllers\WaterStockMovementController;
+// use App\Http\Controllers\ChemicalStockMovementController;
 {
 
     public function getTotalCheckIn($companyChemicalId)
