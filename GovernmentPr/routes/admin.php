@@ -45,6 +45,7 @@ use App\Http\Controllers\WaterSourceDetailsController;
 use App\Http\Controllers\WaterUsageLogsController;
 use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
+use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 
 
@@ -537,6 +538,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/stock-trading/sell', 'sellStock')->name('admin.sell-stock');
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
+    });
+
+    // Water Stock Movement
+    Route::controller(WaterStockMovementController::class)->group(function() {
+        Route::post('/water-stock/check-in', 'store_water_checkin')->name('admin.water-stock-check-in');
+        Route::post('/water-stock/check-out', 'store_checkout')->name('admin.water-stock-check-out');
+        Route::get('/water-stock-analysis', 'getWaterStockAnalysis')->name('admin.water-stock-analysis');
     });
 
     // Team Member
