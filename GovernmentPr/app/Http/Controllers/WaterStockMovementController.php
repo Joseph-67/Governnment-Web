@@ -28,7 +28,7 @@ class WaterStockMovementController extends Controller
     public function getTotalRecycle($companyId)
     {
         $totalAdjustment = WaterStockMovement::where('company_id', $companyId)
-            ->where('movement_type', 'adjustment')->sum('volume');
+            ->where('movement_type', 'recycle')->sum('volume');
         return $totalAdjustment;
     }
 
@@ -160,6 +160,53 @@ class WaterStockMovementController extends Controller
         }
 
        
+    }
+
+    public function store_water_recycling_log(Request $request)  {
+        $validator = Validator::make($request->all(), [
+            'company_id'    => ['required', 'numeric'],
+            'volume'        => ['required', 'numeric', 'min:1'],
+            'date'          => ['required', 'date'],
+            'calendar_year' => ['required', 'integer'],
+            'remark'        => ['nullable', 'string', 'min:4'],
+            'recycle_method' => ['nullable', 'string', 'min:4'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+            'status'    => 'error',
+            'message'   => 'Validation failed.',
+            'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = WaterStockMovement::create([
+            'company_id'        => $request['company_id'],
+            'movement_type'     => 'recycle', // Recycling log uses 'adjustment' as movement type
+            'volume'            => $request['volume'],
+            'calendar_year_id'  => $request['calendar_year'],
+            'movement_date'     => $request['date'],
+            'remark'            => $request['remark'],
+            'recycle_method'    => $request['recycle_method'] ?? null,
+        ]);
+
+        $water_stock_movements = WaterStockMovement::where('company_id', $request['company_id'])->with([
+            'companyWaterSources.waterSource',
+            'calendarYear'
+        ])->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
+
+        if ($result) {
+            return response()->json([
+            'status' => 'success',
+            'message' => 'Water recycling log created successfully.',
+            'water_stock_movements' => $water_stock_movements
+            ])->setStatusCode(201);
+        } else {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to create water recycling log.',
+            ], 400);
+        }
     }
 
     public function getWaterStockAnalysis(Request $request)

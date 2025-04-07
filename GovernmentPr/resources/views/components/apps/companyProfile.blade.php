@@ -1651,6 +1651,7 @@
                                                     <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                                 </div> <!-- end card-header -->
                                                 <div class="card-body pt-3" id="waterRecyclingLogsForm">
+                                                    <form action="" method="post" id="water-recycling-form">
                                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                     <div class="row g-3">
                                                         <!-- Quantity Recycled -->
@@ -1658,6 +1659,18 @@
                                                             <div class="form-group">
                                                                 <label for="quantity_recycled" class="form-label">Quantity Recycled</label>
                                                                 <input type="number" class="form-control" min="0" name="quantity_recycled" id="quantity_recycled" placeholder="Enter quantity">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Calendar Year -->
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                                    <option value="" selected disabled>Select Calendar Year</option>
+                                                                    @foreach($calendar_years as $calendar)
+                                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <!-- Recycling Date -->
@@ -1683,9 +1696,10 @@
                                                         </div>
                                                         <!-- Save Button -->
                                                         <div class="col-12 text-end mt-3">
-                                                            <button type="button" class="btn btn-success" id="btn-submit-water-recycling-logs">Save Recycling Log</button>
+                                                            <button type="submit" class="btn btn-success">Save Recycling Log</button>
                                                         </div>
                                                     </div>
+                                                    </form>
                                                 </div> <!-- end card-body -->
                                             </div>
                                         </div>
@@ -1758,6 +1772,22 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive mt-4">
+                                                <table class="table table-striped mb-0" id="tbl-water-management-records">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Water Balance</td>
+                                                            <td>Total Water Inflow: {{ $availableWaterInflowBalance }} Liters</td>
+                                                            <td>Total Water Outflow: {{ $availableWaterOutflowBalance }} Liters</td>
+                                                            <td>Total Water Recycled: {{ $availableWaterRecycleBalance }} Liters</td>
+                                                            <td>Total Balance: {{ $availableWaterBalance }} Liters</td>
+                                                            <td class="text-end">
+                                                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -6825,6 +6855,52 @@
                 }
             });
         });
+        // end water usage log form submission
+        // water recycling log form submission
+        document.querySelector('#water-recycling-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.water-stock-recycling-log') }}";
+
+            fetch_cycle('--Save Water Recycling Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the water management table or UI as needed
+                    let tableBody = document.querySelector('#tbl-water-management tbody');
+                    tableBody.innerHTML = "";
+                    result.water_stock_movements.forEach(water_stock_movement => {
+                        let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
+                        let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
+                        let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
+                            day: '2-digit', month: 'short', year: 'numeric'
+                        });
+
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="text-capitalize">
+                                ${water_stock_movement.movement_type}
+                                ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
+                            </td>
+                            <td>${sourceName}</td>
+                            <td>${water_stock_movement.volume}</td>
+                            <td>${calendarYear}</td>
+                            <td>${formattedDate}</td>
+                            <td>${water_stock_movement.remark ?? ''}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            });
+        });
     </script>
     <script>
         // company water sources
@@ -6915,6 +6991,7 @@
                 }
             });
         });
+
 
 
         // end company water sources

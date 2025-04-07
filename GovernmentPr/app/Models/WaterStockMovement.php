@@ -19,6 +19,7 @@ class WaterStockMovement extends Model
         'calendar_year_id',
         'movement_date',
         'remark',
+        'recycle_method',
         'status',
     ];
 

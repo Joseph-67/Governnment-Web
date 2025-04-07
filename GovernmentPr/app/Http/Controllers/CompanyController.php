@@ -51,7 +51,7 @@ use Carbon\Carbon;
 
 
 
-class CompanyController extends Controller
+class CompanyController extends WaterStockMovementController
 {
    
     public function show($company)
@@ -92,6 +92,10 @@ class CompanyController extends Controller
         $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['approved_company_chemicals'] = CompanyChemical::active()->where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
         $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+        $data['availableWaterBalance'] = $this->getWaterBalance($companyID);
+        $data['availableWaterInflowBalance'] = $this->getTotalCheckIn($companyID);
+        $data['availableWaterOutflowBalance'] = $this->getTotalCheckOut($companyID);
+        $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
         // operation categories
         $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
         // operation types
