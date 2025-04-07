@@ -8108,7 +8108,7 @@
             }
         });
     });
-
+    
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -8140,7 +8140,8 @@
                 }
             });
         });
-
+        // store annual operaions log
+        
         // Store Operation Log
         document.querySelector('#operations-form').addEventListener('submit', function (e) {
             e.preventDefault();
