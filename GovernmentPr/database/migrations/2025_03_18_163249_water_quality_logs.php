@@ -18,10 +18,13 @@ return new class extends Migration
             $table->id('quality_id');
             $table->unsignedBigInteger('companyID');
             $table->date('test_date');
+            $table->string('parameter_tested');
             $table->decimal('ph_level', 10, 2);
             $table->decimal('turbidity', 10, 2);
             $table->text('contaminants');
             $table->text('test_results');
+            $table->text('deviation_detected');
+            $table->text('corrective_actions');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->foreign('companyID')->references('company_id')->on('companies');

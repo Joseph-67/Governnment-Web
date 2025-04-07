@@ -13,10 +13,13 @@ class WaterQualityLogs extends Model
     protected $fillable = [
         'companyID',
         'test_date',
+        'parameter_tested',
         'ph_level',
         'turbidity',
         'contaminants',
         'test_results',
+        'deviation_detected',
+        'corrective_actions',
         'status',      
     ];
 

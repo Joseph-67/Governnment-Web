@@ -39,9 +39,12 @@ class WaterQualityLogsController extends Controller
         $validator = Validator::make($request->all(), [
             'test_date'          => ['required', 'date'],
             'ph_level'           => ['required', 'numeric'],
-            'turbidity_level'    => ['required', 'numeric'],
+            'turbidity'    => ['required', 'numeric'],
+            'parameter_tested'=> ['required', 'string', 'max:255'],
             'contaminants_detected' => ['required', 'string', 'max:255'],
-            'test_results'       => ['required', 'string', 'max:255']
+            'result'       => ['required', 'string', 'max:255'],
+            'deviation_detected' => ['required', 'string', 'max:255'],
+            'corrective_action' => ['nullable', 'string', 'max:255']
 
         ]);
         if ($validator->fails()) {
@@ -55,10 +58,14 @@ class WaterQualityLogsController extends Controller
         $data = [
             'companyID'         => $request->company_id,
             'test_date'          => $request->test_date,
+            'parameter_tested' => $request->parameter_tested,
             'ph_level'           => $request->ph_level,
-            'turbidity'    => $request->turbidity_level,
+            'turbidity'             => $request->turbidity,
+            'deviation_detected' => $request->deviation_detected,
+            'corrective_actions' => $request->corrective_action,
             'contaminants'       => $request->contaminants_detected,
-            'test_results'       => $request->test_results,
+            'test_results'       => $request->result,
+            'status'            => 'active'
         ];
 
         $result = WaterQualityLogs::create($data);
