@@ -43,6 +43,7 @@ use App\Models\EquipmentLog;
 use App\Models\User;
 use App\Models\WasteDisposal;
 use App\Models\WaterStockMovement;
+use App\Models\WaterQualityLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -145,7 +146,9 @@ class CompanyController extends WaterStockMovementController
         //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
         // waste disposal
         $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->get();
-
+        // water quality logs
+        $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)
+            ->get(['test_date', 'parameter_tested','test_results', 'deviation_detected', 'corrective_actions']);
         return view('components.apps.companyProfile', $data);
     }   
     /**

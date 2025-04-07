@@ -1800,8 +1800,8 @@
                                             <h4 class="card-title mb-0">Quality Control Logs</h4>
                                             <button type="button" class="btn-close" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
-                                        <div class="card-body pt-0" id="qualityControlLogForm">
-                                            <form action="" method="post">
+                                        <div class="card-body pt-0" >
+                                            <form action="" method="post" id="qualityControlLogForm">
                                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                 <div class="row g-3">
                                                     <div class="col-md-4 col-sm-6">
@@ -1814,6 +1814,24 @@
                                                         <div class="form-group">
                                                             <label for="parameter_tested" class="col-form-label">Parameter Tested</label>
                                                             <input type="text" class="form-control" name="parameter_tested" id="parameter_tested" placeholder="Enter parameter tested" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="ph_level" class="col-form-label">pH Level</label>
+                                                            <input type="number" class="form-control" name="ph_level" id="ph_level" step="0.01" placeholder="Enter pH level" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="turbidity" class="col-form-label">Turbidity (NTU)</label>
+                                                            <input type="number" class="form-control" name="turbidity" id="turbidity" step="0.01" placeholder="Enter turbidity level" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="contaminants" class="col-form-label">Contaminants</label>
+                                                            <input type="text" class="form-control" name="contaminants_detected" id="contaminants" placeholder="Enter contaminants" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-6">
@@ -1866,6 +1884,19 @@
                                                     </thead>
                                                     <tbody>
                                                         <!-- Dynamic rows will be appended here -->
+                                                        @foreach($water_quality_logs as $quality)
+                                                        <tr>
+                                                            <td>{{  $quality->test_date}}</td>
+                                                            <td>{{ $quality->parameter_tested }}</td>
+                                                            <td>{{ $quality->test_results }}</td>
+                                                            <td>{{ $quality->deviation_detected }}</td>
+                                                            <td>{{ $quality->corrective_actions }}</td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-outline-primary btn-sm me-2" onclick="editQualityControlLog({{ $quality->id }})">Edit</button>
+                                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteQualityControlLog({{ $quality->id }})">Delete</button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -7290,132 +7321,43 @@
         });
     </script>
     <!-- end water recycling logs -->
-    <!-- start water quality logs -->
-    <script>
-        // AJAX implementation to store water quality logs
-        document.querySelector('#btn-submit-water-quality-logs').addEventListener('click', function () {
-            const company_id = document.querySelector('#waterQualityLogForm input[name="company_id"]').value.trim();
-            const test_date = document.querySelector('#waterQualityLogForm input[name="test_date"]').value.trim();
-            const ph_level = document.querySelector('#waterQualityLogForm input[name="ph_level"]').value.trim();
-            const turbidity_level = document.querySelector('#waterQualityLogForm input[name="turbidity_level"]').value.trim();
-            const contaminants_detected = document.querySelector('#waterQualityLogForm textarea[name="contaminants_detected"]').value.trim();
-            const test_results = document.querySelector('#waterQualityLogForm textarea[name="test_results"]').value.trim();
+   <script>
+    // Store Quality Control Logs
+    document.querySelector('#qualityControlLogForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+        let url = "{{ route('admin.store-water-quality-logs') }}";
 
-            if (!test_date) {
-                Toastify({
-                    text: "Please provide a test date.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
+        fetch_cycle('--Store Quality Control Log', url, 'POST', formData).then(result => {
+            console.log(result);
+            if (result.status === 'success') {
+                // Update the quality control logs table or UI as needed
+                let tableBody = document.querySelector('#tbl-quality-control-management tbody');
+                tableBody.innerHTML = "";
+                result.quality_control_logs.forEach(quality => {
+                    tableBody.innerHTML += `<tr>
+                        <td>${quality.test_date}</td>
+                        <td>${quality.parameter_tested}</td>
+                        <td>${quality.test_results }</td>
+                        <td>${quality.deviation_detected}</td>
+                        <td>${quality.corrective_actions}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                    <a class="dropdown-item" href="#">Edit</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
             }
-
-            if (!ph_level) {
-                Toastify({
-                    text: "Please provide the pH level.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!turbidity_level) {
-                Toastify({
-                    text: "Please provide the turbidity level.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!contaminants_detected) {
-                Toastify({
-                    text: "Please provide the contaminants detected.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!test_results) {
-                Toastify({
-                    text: "Please provide the test results.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            let url = "{{ route('admin.store-water-quality-logs') }}";
-            const formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('test_date', test_date);
-            formData.append('ph_level', ph_level);
-            formData.append('turbidity_level', turbidity_level);
-            formData.append('contaminants_detected', contaminants_detected);
-            formData.append('test_results', test_results);
-
-            fetch_cycle('--Save Water Quality Logs', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === "success") {
-                    Toastify({
-                        text: result.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
-                    }).showToast();
-                } else {
-                    Toastify({
-                        text: result.message || "An error occurred.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                    }).showToast();
-                }
-            });
         });
-    </script>
-    <!-- water quality Logs -->
+    });
+   </script>
      <!-- start water disposal -->
         <script>
             // Store Waste Disposal
