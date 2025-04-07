@@ -1,186 +1,156 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Material')
     <div class="container-xxl">
-        <div class="row">
+        <div class="row justify-content-center">
+        <div class="py-2">
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                Back
+            </a>
+        </div>
+            <!-- Material Details -->
             <div class="col-md-12 col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Material Details</h4>
-                            </div>
-                        </div>
+                <div class="card shadow-sm bg-light">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="card-title mb-0">Material Details</h4>
                     </div>
-                    <div class="card-body pt-0">
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Material Name:</h5><span>{{ $company_material->material->material }}</span>
+                    <div class="card-body">
+                        @foreach([
+                            'Material Name' => $company_material->material->material,
+                            'Category Name' => DB::table('materials')
+                                ->join('categories', 'materials.categoryID', '=', 'categories.categoryID')
+                                ->where('materials.materialID', '=', $company_material->materialID)
+                                ->first(['category_name'])->category_name ?? 'N/A',
+                            'Description' => $company_material->material->description,
+                            'Latest Material Price' => isset($prices->price) ? '₦' . number_format($prices->price, 2) : 'N/A',
+                            'Unit Of Measure' => $company_material->unit_of_measure,
+                            'Serial Number' => $company_material->serial_number
+                        ] as $label => $value)
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0 text-muted">{{ $label }}:</h6>
+                                    <span class="fw-bold">{{ $value }}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Category Name:</h5><span>
-                                    @php
-                                        $category = DB::table('materials')
-                                            ->join('categories', 'materials.categoryID', '=', 'categories.categoryID')
-                                            ->where('materials.materialID', '=', $company_material->materialID)
-                                            ->first(['category_name']);
-                                    @endphp
-                                    {{ $category->category_name }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Description:</h5><span>{{ $company_material->material->description }}</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Latest Material Price:</h5><span>{{ isset($prices->price) ? '₦'.number_format($prices->price, 2) : "" }}</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Unit Of Measure:</h5><span>{{ $company_material->unit_of_measure }}</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-dashed-bottom py-2">
-                            <div class="flex-grow-1 ms-2">
-                                <h5 class="m-0">Serial Number:</h5><span>{{ $company_material->serial_number }}</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
+
+            <!-- Metrics -->
             <div class="col-md-12 col-lg-9">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Metrics</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="dropdown ms-auto my-3">
-                            <a href="#" class="btn bt btn-light dropdown-toggle float-end" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuButton">
-                                <i class="icofont-calendar fs-5 me-1"></i> This Year<i class="las la-angle-down ms-1"></i>
-                            </a>
+                <div class="card shadow-sm bg-light">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">Metrics</h4>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="icofont-calendar fs-5 me-1"></i> This Year
+                            </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" data-period="this_week">This Week</a></li>
-                                <li><a class="dropdown-item" data-period="last_week">Last Week</a></li>
-                                <li><a class="dropdown-item" data-period="this_month">This Month</a></li>
-                                <li><a class="dropdown-item" data-period="last_month">Last Month</a></li>
-                                <li><a class="dropdown-item" data-period="this_year">This Year</a></li>
-                                <li><a class="dropdown-item" data-period="last_year">Last Year</a></li>
+                                @foreach(['this_week' => 'This Week', 'last_week' => 'Last Week', 'this_month' => 'This Month', 'last_month' => 'Last Month', 'this_year' => 'This Year', 'last_year' => 'Last Year'] as $period => $label)
+                                    <li><a class="dropdown-item" data-period="{{ $period }}">{{ $label }}</a></li>
+                                @endforeach
                             </ul>
                         </div>
-                        <div class="btn-group">
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <button id="download-csv" class="btn btn-primary">Download Metrics</button>
+                            <div id="selected-period-label" class="text-muted">Selected Period: This Year</div>
                         </div>
-                        <div id="selected-period-label" class="mt-2">Selected Period: This Year</div>
-                        <div id="reports-bar" class="apex-charts pill-bar"></div>
+                        <div id="reports-bar" class="apex-charts"></div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
+            <!-- Price History -->
             <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Price History</h4>
-                            </div>
-                        </div>
+                <div class="card shadow-sm bg-light">
+                    <div class="card-header bg-warning text-white">
+                        <h4 class="card-title mb-0">Price History</h4>
                     </div>
-                    <div class="card-body pt-0">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table mb-0">
+                            <table class="table table-striped">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Price Of Disposal (₦)</th>
+                                        <th>Price (₦)</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($price_history as $priceList)
+                                    @forelse($price_history as $priceList)
                                         <tr>
                                             <td>{{ number_format($priceList->price, 2) }}</td>
-                                            <td>
-                                                @php
-                                                    $start = Carbon\Carbon::now();
-                                                    $end = Carbon\Carbon::create($priceList->date);
-                                                    echo $start->diffForHumans($end);
-                                                @endphp
-                                            </td>
+                                            <td>{{ Carbon\Carbon::create($priceList->date)->diffForHumans() }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="2" class="text-center text-muted">No price history available</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Stock Management -->
             <div class="col-lg-9">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h4 class="card-title">Stock Management</h4>
-                            </div>
-                        </div>
+                <div class="card shadow-sm bg-light">
+                    <div class="card-header bg-danger text-white">
+                        <h4 class="card-title mb-0">Stock Management</h4>
                     </div>
-                    <div class="card-body pt-0">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table mb-0">
+                            <table class="table table-striped">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="border-top-0">Quantity</th>
-                                        <th class="border-top-0">Movement Type</th>
-                                        <th class="border-top-0">Calendar Yr.</th>
-                                        <th class="border-top-0">Date</th>
-                                        <th class="border-top-0">Remark</th>
+                                        <th>Quantity</th>
+                                        <th>Movement Type</th>
+                                        <th>Calendar Yr.</th>
+                                        <th>Date</th>
+                                        <th>Remark</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($stockMovement as $stock)
+                                    @forelse($stockMovement as $stock)
                                         <tr>
                                             <td>{{ $stock->quantity }}</td>
                                             <td class="text-capitalize">
                                                 {{ $stock->movement_type }}
                                                 @if ($stock->movement_type == 'in')
-                                                    <i class="fas fa-caret-up text-success font-16"></i>
-                                                @endif
-                                                @if ($stock->movement_type == 'out')
-                                                    <i class="fas fa-caret-down text-danger font-16"></i>
+                                                    <i class="fas fa-caret-up text-success"></i>
+                                                @elseif ($stock->movement_type == 'out')
+                                                    <i class="fas fa-caret-down text-danger"></i>
                                                 @endif
                                             </td>
                                             <td>{{ $stock->calendar_year }}</td>
-                                            <td>
-                                                @php
-                                                    $date = Carbon\Carbon::create($stock->movement_date);
-                                                    echo $date->format('l, d F Y');
-                                                @endphp
-                                            </td>
+                                            <td>{{ Carbon\Carbon::create($stock->movement_date)->format('l, d F Y') }}</td>
                                             <td>{{ $stock->remark }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">No stock movement data available</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     @section('scripts')
     <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('adminAssets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
-        const stock_analysis = async (period, material_id) => {
+const stock_analysis = async (period, material_id) => {
             const url = new URL("{{ route('admin.material-stock-analysis') }}");
             url.searchParams.append("period", period);
             url.searchParams.append("company_material_id", material_id);
@@ -293,8 +263,6 @@
         });
         // Initialize with default period
         stock_analysis("this_year", "{{ $company_material->companyMaterialId }}");
-    </script>
-
     </script>
     @endsection
 </x-layouts.admin-app>

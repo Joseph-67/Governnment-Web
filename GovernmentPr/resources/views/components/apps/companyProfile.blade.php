@@ -1977,8 +1977,8 @@
                                             </button>
                                         </div>
                                         <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover table-striped mb-0" id="tbl-company-chemical">
+                                            <div class="table-responsive" id="tbl-company-chemical">
+                                                <table class="table table-hover table-striped mb-0 " id="datatable_1">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th scope="col">Chemical</th>
@@ -2057,6 +2057,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+
                                         </div>
                                     </div>
                                     <!-- chemical -->
@@ -2143,8 +2144,8 @@
                                             </div> <!--end row-->
                                         </div>
                                         <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover table-striped mb-0" id="tbl-company-material">
+                                            <div class="table-responsive" id="tbl-company-material">
+                                                <table class="table table-hover table-striped mb-0" id="datatable_2">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th scope="col">Material</th>
@@ -4625,6 +4626,7 @@
     </div>
     <!-- end update operation log modal -->
     @section('styles')
+    <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
@@ -4693,8 +4695,27 @@
 
     @section('scripts')
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
-    <script src=""></script>
-
+    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tbl-company-chemical').DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 10,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                language: {
+                    paginate: {
+                        next: 'Next',
+                        previous: 'Previous'
+                    }
+                }
+            });
+        });
+    </script>
     <script>
         async function ChangePolicy(ele, company, policy) {
             console.log(ele, company, policy);
@@ -5026,6 +5047,7 @@
                 }
             }
         }
+
         // Waste Reduction measures
         async function ChangeWasteReductionMeasures(ele, company, measure) {
             console.log(ele, company, measure);
@@ -7406,10 +7428,10 @@
             let loader = document.querySelector('#btn-submit-chemical #loader');
             loader.style.display = 'inline-block';
 
-            let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
-            let chemical = document.querySelector('#chemical-usage select[name="chemical"]').value.trim();
-            let unit_of_measurement = document.querySelector('#chemical-usage input[name="unit_of_measurement"]').value.trim();
-            let threshold = document.querySelector('#chemical-usage input[name="threshold"]').value.trim();
+            let company_id = document.querySelector('#chemical-form input[name="company_id"]').value.trim();
+            let chemical = document.querySelector('#chemical-form select[name="chemical"]').value.trim();
+            let unit_of_measurement = document.querySelector('#chemical-form input[name="unit_of_measurement"]').value.trim();
+            let threshold = document.querySelector('#chemical-form input[name="threshold"]').value.trim();
             console.log('====================================');
             console.log(chemical, unit_of_measurement);
             console.log('====================================');
