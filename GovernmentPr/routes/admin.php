@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\AnnualOperationsLogController;
 use App\Http\Controllers\CalendarYearController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChemicalStockMovementController;
@@ -233,6 +234,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Waste Disposal Route
     Route::controller(WasteDisposalController::class)->group(function() {
         Route::post('/store-waste-disposal', 'store')->name('admin.store-waste-disposal');
+    });
+    // annual operations log
+    Route::controller(AnnualOperationsLogController::class)->group(function() {
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
     });
     Route::controller(RECPController::class)->group(function(){
         // add
