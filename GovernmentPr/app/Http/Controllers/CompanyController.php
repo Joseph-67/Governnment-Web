@@ -42,11 +42,13 @@ use App\Models\EquipmentType;
 use App\Models\EquipmentLog;
 use App\Models\User;
 use App\Models\WasteDisposal;
+use App\Models\WaterStockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+
 
 
 class CompanyController extends Controller
@@ -82,8 +84,9 @@ class CompanyController extends Controller
         $data['WaterConservationMethod']        =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
         $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['conservation_id']);
         $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
-        $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id']);
+        $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id', 'CompanyWaterSourcesID']);
         $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
+        $data['water_stock_movements'] = WaterStockMovement::where('company_id', $companyID)->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
         // chemical inventory
         $data['approved_chemicals'] = Chemicals::where('status', 'active')->where('approve_rejected_status', 'approved')->get(['chemical_id', 'name']);
         $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
@@ -135,7 +138,8 @@ class CompanyController extends Controller
         //     ->where('is_deleted', false)
         //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
         // waste disposal
-$data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->get();
+        $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->get();
+
         return view('components.apps.companyProfile', $data);
     }   
     /**

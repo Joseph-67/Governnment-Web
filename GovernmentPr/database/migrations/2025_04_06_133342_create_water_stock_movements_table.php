@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('water_stock_movements', function (Blueprint $table) {
             $table->id('waterStockID');
-            $table->unsignedBigInteger('water_source_id');
+            $table->unsignedBigInteger('water_source_id')->nullable();
             $table->unsignedBigInteger('company_id');
-            $table->enum('movement_type', ['in', 'out', 'transfer', 'recycling'])->nullable();
+            $table->enum('movement_type', ['in', 'out', 'usage', 'recycling'])->nullable();
             $table->decimal('volume', 10, 2);
             $table->unsignedBigInteger('calendar_year_id');
             $table->foreign('calendar_year_id')->references('calendar_year_id')->on('calendar_years')->onDelete('cascade');
