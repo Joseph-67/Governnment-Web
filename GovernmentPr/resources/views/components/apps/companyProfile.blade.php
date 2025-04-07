@@ -2425,7 +2425,7 @@
                                                         name="operation_status" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->operation_id }}">{{
+                                                        <option value="{{ $operation->company_operation_id }}">{{
                                                             $operation->operation_name }}</option>
                                                         @endforeach
                                                     </select>
@@ -8141,6 +8141,44 @@
             });
         });
         // store annual operaions log
+        // Store Annual Operations Log
+        document.querySelector('#annual-operations-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-annual-operations-log') }}";
+
+            fetch_cycle('--Store Annual Operations Log', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the annual operations logs table or UI as needed
+                    let tableBody = document.querySelector('#tbl-annual-operations-log tbody');
+                    tableBody.innerHTML = "";
+                    result.annual_operations.forEach(operation => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${operation.operation_name}</td>
+                            <td>${operation.expected_materials.map(material => `${material.name} (${material.quantity})`).join(', ')}</td>
+                            <td>${operation.expected_wastes.map(waste => `${waste.name} (${waste.quantity})`).join(', ')}</td>
+                            <td>${operation.expected_chemicals.map(chemical => `${chemical.name} (${chemical.quantity})`).join(', ')}</td>
+                            <td>${operation.expected_products.map(product => `${product.name} (${product.quantity})`).join(', ')}</td>
+                            <td>${operation.calendar_year_name}</td>
+                            <td>${operation.start_date}</td>
+                            <td>${operation.end_date}</td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
         
         // Store Operation Log
         document.querySelector('#operations-form').addEventListener('submit', function (e) {
