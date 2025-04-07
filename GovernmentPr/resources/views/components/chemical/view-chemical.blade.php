@@ -106,7 +106,22 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <h5 class="mb-0">Current Stock Balance: {{ $balance }} {{$CompanyChemical->unit}}</h5>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-striped mb-0" id="tbl-chemical-management-records">
+                                <tbody>
+                                    <tr>
+                                        <td>Chemical Balance</td>
+                                        <td>Total Chemical Inflow: {{ $availableChemicalInflowBalance }} {{ $CompanyChemical->unit }}</td>
+                                        <td>Total Chemical Outflow: {{ $availableChemicalOutflowBalance }} {{ $CompanyChemical->unit }}</td>
+                                        <td>Total Chemical Recycled: {{ $availableChemicalAdjustmentBalance }} {{ $CompanyChemical->unit }}</td>
+                                        <td>Total Balance: {{ $availableChemicalBalance }} {{ $CompanyChemical->unit }}</td>
+                                        <td class="text-end">
+                                            <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

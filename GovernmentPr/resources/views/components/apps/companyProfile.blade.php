@@ -1872,7 +1872,6 @@
                                         </div>
                                     </div>
                                     <!-- End Quality Control Management Table -->
-                                    
                                     <!-- Water inventory -->
                                 </div>
                             </div>
@@ -1889,135 +1888,143 @@
                                 aria-labelledby="chemicalHeading">
                                 <div class="accordion-body">
                                     <!-- chemical -->
-                                    <div class="card shadow-sm border-0">
-                                        <div class="card-header bg-primary text-white">
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #e8f5e9;" id="add-chemical-form-card"> <!-- Light green background for form -->
+                                        <div class="card-header bg-success text-white"> <!-- Green header for form -->
                                             <div class="row align-items-center">
                                                 <div class="col">
                                                     <h4 class="card-title mb-0">Add New Chemical</h4>
-                                                </div><!--end col-->
-                                            </div> <!--end row-->
-                                        </div><!--end card-header-->
-                                        <div class="card-body pt-0">
-                                            <form action="" method="post" id="chemical-form">
-                                                <input type="hidden" class="form-control" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <div class="row g-2 align-items-end">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body pt-3">
+                                            <form action="" method="post" id="chemical-form" class="">
+                                                <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3 align-items-end">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="chemical">Chemical</label>
-                                                            <select name="chemical" id="chemical" class="form-select">
-                                                                <option value="" selected disabled>Choose...
-                                                                </option>
+                                                            <label for="chemical" class="form-label fw-bold">Chemical</label>
+                                                            <select name="chemical" id="chemical" class="form-select border-primary">
+                                                                <option value="" selected disabled>Choose...</option>
                                                                 @foreach($approved_chemicals as $chemical)
-                                                                <option value="{{ $chemical->chemical_id }}">{{
-                                                                    $chemical->name }}</option>
+                                                                <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="unit_of_measurement">Unit of
-                                                                Measurement</label>
-                                                            <input type="text" class="form-control"
-                                                                name="unit_of_measurement"
-                                                                placeholder="Unit of Measurement">
+                                                            <label for="unit_of_measurement" class="form-label fw-bold">Unit of Measurement</label>
+                                                            <input type="text" class="form-control border-primary" name="unit_of_measurement" placeholder="Unit of Measurement">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="threshold">Threshold</label>
-                                                            <input type="number" class="form-control" name="threshold"
-                                                                placeholder="Minimum Stock Threshold" min="0">
+                                                            <label for="threshold" class="form-label fw-bold">Threshold</label>
+                                                            <input type="number" class="form-control border-primary" name="threshold" placeholder="Minimum Stock Threshold" min="0">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="d-flex align-items-center">
-                                                            <button type="button" class="btn btn-primary"
-                                                                id="btn-submit-chemical">
-                                                                Save
-                                                                <span class="loader" id="loader"></span>
-                                                            </button>
-                                                        </div>
+                                                    <div class="col-md-12 text-end">
+                                                        <button type="button" class="btn btn-success px-4 py-2" id="btn-submit-chemical">
+                                                            <i class="las la-save"></i> Save
+                                                            <span class="loader" id="loader"></span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                     <div class="card shadow-sm border-0 mt-4">
-                                        <div class="card-header bg-primary text-white" id="headingChemicals">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
                                             <h4 class="card-title mb-0">
-                                                <a class="accordion-toggle text-white" data-bs-toggle="collapse"
-                                                    href="#collapseChemicals" aria-expanded="true"
-                                                    aria-controls="collapseChemicals">
-                                                    Company Chemicals
-                                                </a>
+                                                Chemical Inventory Management
                                             </h4>
+                                            <button type="button" class="btn btn-primary btn-sm" id="add-chemical-button">
+                                                <i class="iconoir-plus"></i> Add Chemical
+                                            </button>
                                         </div>
-                                        <div id="collapseChemicals" class="collapse show"
-                                            aria-labelledby="headingChemicals" data-bs-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped mb-0" id="tbl-company-chemical">
-                                                        <thead class="table-light">
-                                                            <tr>
-                                                                <th>Chemical</th>
-                                                                <th>Unit of Measurement</th>
-                                                                <th>Chemical Status</th>
-                                                                <th class="text-end">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($company_chemicals as $chemical)
-                                                            <tr>
-                                                                <td>{{ $chemical->chemical->name }} ({!!
-                                                                    $chemical->chemical->formula !!})</td>
-                                                                <td>{{ $chemical->unit }}</td>
-                                                                <td>
-                                                                    <span
-                                                                        class="badge bg-{{ ($chemical->status == 'active') ? 'success' : 'danger' }}">
-                                                                        {{ $chemical->status }}
-                                                                    </span>
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    <div class="dropdown d-inline-block"
-                                                                        style="position: relative !important; z-index: 99999999999999;">
-                                                                        <a class="dropdown-toggle arrow-none"
-                                                                            id="dLabel11" data-bs-toggle="dropdown"
-                                                                            href="#" role="button" aria-haspopup="false"
-                                                                            aria-expanded="false">
-                                                                            <i
-                                                                                class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                                        </a>
-                                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                                            aria-labelledby="dLabel11"
-                                                                            style="z-index: 99999999999999;">
-                                                                            <a class="dropdown-item"
-                                                                                href="{{ route('admin.view-chemical', ['chemical'=> $chemical->company_chemical_id]) }}">Open
-                                                                                Chemical</a>
-                                                                            <a class="dropdown-item" href="#">Update
-                                                                                Chemical</a>
-                                                                            <a class="dropdown-item" href="#">Delete
-                                                                                Chemical</a>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-striped mb-0" id="tbl-company-chemical">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th scope="col">Chemical</th>
+                                                            <th scope="col">Unit of Measurement</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col" class="text-end">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse($company_chemicals as $chemical)
+                                                        <tr>
+                                                            <td class="align-middle">
+                                                                <strong>{{ $chemical->chemical->name }}</strong> 
+                                                                <small>({!! $chemical->chemical->formula !!})</small>
+                                                            </td>
+                                                            <td class="align-middle">{{ $chemical->unit }}</td>
+                                                            <td class="align-middle">
+                                                                <span class="badge rounded-pill" style="background-color: 
+                                                                    {{ $chemical->status == 'active' ? '#28a745' : ($chemical->status == 'inactive' ? '#dc3545' : '#ffc107') }}; color: white;">
+                                                                    {{ ucfirst($chemical->status) }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="align-middle text-end">
+                                                                <div class="dropdown">
+                                                                    <a class="dropdown-toggle text-muted" href="#" role="button" id="chemicalActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i class="las la-ellipsis-v fs-20"></i>
+                                                                    </a>
+                                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chemicalActionsDropdown">
+                                                                        <li>
+                                                                            <a class="dropdown-item text-primary" href="{{ route('admin.view-chemical', ['chemical' => $chemical->company_chemical_id]) }}">
+                                                                                <i class="las la-eye"></i> View Details
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-warning" href="#">
+                                                                                <i class="las la-edit"></i> Update Chemical
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-danger" href="#">
+                                                                                <i class="las la-trash"></i> Delete Chemical
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
                                                                             <hr class="dropdown-divider">
-                                                                            <a class="dropdown-item" href="#">Setup
-                                                                                Price</a>
-                                                                            <a href="#" class="dropdown-item"
-                                                                                onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
-                                                                                In Item</a>
-                                                                            <a href="#" class="dropdown-item"
-                                                                                onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>Check
-                                                                                Out Item</a>
-                                                                            <a href="#" class="dropdown-item">Make
-                                                                                Adjustment</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table><!--end /table-->
-                                                </div><!--end /tableresponsive-->
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-info" href="#">
+                                                                                <i class="las la-dollar-sign"></i> Setup Price
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                                <i class="las la-arrow-circle-down"></i> Check In
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                                <i class="las la-arrow-circle-up"></i> Check Out
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-secondary" href="#">
+                                                                                <i class="las la-tools"></i> Make Adjustment
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="4" class="text-center text-muted">No chemicals found in the inventory.</td>
+                                                        </tr>
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -2037,141 +2044,153 @@
                                 aria-labelledby="materialHeading">
                                 <div class="accordion-body">
                                     <!-- Material Inventory -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <h4 class="card-title">Add New Material</h4>
-                                                </div><!--end col-->
-                                            </div> <!--end row-->
-                                        </div><!--end card-header-->
-                                        <div class="card-body pt-0">
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #f0f8ff;" id="add-material-form-card"> <!-- Light blue background for material section -->
+                                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"> <!-- Info color for material header -->
+                                            <h4 class="card-title mb-0">Material Registration</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                        </div>
+                                        <div class="card-body">
                                             <form action="" method="post">
-                                                <input type="hidden" class="form-control" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <div class="row g-2">
+                                                <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
                                                     <!-- Material -->
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="material">Material</label>
+                                                            <label for="material" class="form-label">Material</label>
                                                             <select name="material" id="material" class="form-select">
-                                                                <option value="" selected disabled>Choose...
-                                                                </option>
+                                                                <option value="" selected disabled>Choose...</option>
                                                                 @foreach($materials as $material)
-                                                                <option value="{{ $material->materialID }}">{{
-                                                                    $material->material }}</option>
+                                                                <option value="{{ $material->materialID }}">{{ $material->material }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <!-- Serial Number -->
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="serial_number">Serial Number (If
-                                                                any)</label>
-                                                            <input type="text" class="form-control" id="serial_number"
-                                                                name="serial_number" placeholder="Serial Number">
+                                                            <label for="serial_number" class="form-label">Serial Number (If any)</label>
+                                                            <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
                                                         </div>
                                                     </div>
                                                     <!-- Unit of Measurement -->
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="unit_of_measurement">Unit of
-                                                                Measurement</label>
-                                                            <input type="text" class="form-control"
-                                                                id="unit_of_measurement" name="unit_of_measurement"
-                                                                placeholder="Unit of Measurement">
+                                                            <label for="unit_of_measurement" class="form-label">Unit of Measurement</label>
+                                                            <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement" placeholder="Unit of Measurement">
                                                         </div>
                                                     </div>
                                                     <!-- Threshold -->
-                                                    <div class="col-md-5">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="threshold">Threshold</label>
-                                                            <input type="number" class="form-control" id="threshold"
-                                                                name="threshold" placeholder="Minimum Stock Threshold"
-                                                                min="0">
+                                                            <label for="threshold" class="form-label">Threshold</label>
+                                                            <input type="number" class="form-control" id="threshold" name="threshold" placeholder="Minimum Stock Threshold" min="0">
                                                         </div>
                                                     </div>
-                                                    <!-- Save Button-->
-                                                    <div class="col-12 mt-3">
-                                                        <div class="d-flex">
-                                                            <button type="button" class="btn btn-primary"
-                                                                id="btn-submit-material">Save</button>
-                                                            <span class="loader" id="loader"></span>
-                                                        </div>
+                                                    <!-- Save Button -->
+                                                    <div class="col-12 mt-3 text-end">
+                                                        <button type="button" class="btn btn-info px-4 py-2" id="btn-submit-material">
+                                                            <i class="las la-save"></i> Save
+                                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinner"></span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
+
                                     <div class="card shadow-sm">
-                                        <div class="card-header bg-primary text-white">
+                                        <div class="card-header">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <h4 class="card-title">Company Materials</h4>
+                                                    <h4 class="card-title">Material Inventory Management</h4>
                                                 </div><!--end col-->
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="add-material-button">
+                                                        <i class="iconoir-plus"></i> Add Material
+                                                    </button>
+                                                </div><!--end col-auto-->
                                             </div> <!--end row-->
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-striped mb-0" id="tbl-company-material">
+                                                <table class="table table-hover table-striped mb-0" id="tbl-company-material">
                                                     <thead class="table-light">
                                                         <tr>
-                                                            <th>Material</th>
-                                                            <th>Serial No.</th>
-                                                            <th>Unit of Measurement</th>
-                                                            <th>Material Status</th>
-                                                            <th class="text-end">Action</th>
+                                                            <th scope="col">Material</th>
+                                                            <th scope="col">Serial No.</th>
+                                                            <th scope="col">Unit of Measurement</th>
+                                                            <th scope="col">Material Status</th>
+                                                            <th scope="col" class="text-end">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($companyMaterials as $material)
+                                                        @forelse($companyMaterials as $material)
                                                         <tr>
-                                                            <td>{{ $material->material }}</td>
-                                                            <td>{{ $material->serial_number }}</td>
-                                                            <td> {{ $material->unit_of_measure }} </td>
-                                                            <td><span
-                                                                    class="badge bg-{{ ($material->company_material_status == 'active')? 'success':'danger'}}">{{
-                                                                    $material->company_material_status }}</span>
+                                                            <td class="align-middle">{{ $material->material }}</td>
+                                                            <td class="align-middle">{{ $material->serial_number }}</td>
+                                                            <td class="align-middle">{{ $material->unit_of_measure }}</td>
+                                                            <td class="align-middle">
+                                                                <span class="badge rounded-pill" style="background-color: 
+                                                                    {{ $material->company_material_status == 'active' ? '#28a745' : '#dc3545' }}; color: white;">
+                                                                    {{ ucfirst($material->company_material_status) }}
+                                                                </span>
                                                             </td>
-                                                            <td class="text-end">
-                                                                <div class="dropdown d-inline-block">
-                                                                    <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                        data-bs-toggle="dropdown" href="#" role="button"
-                                                                        aria-haspopup="false" aria-expanded="false">
-                                                                        <i
-                                                                            class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            <td class="align-middle text-end">
+                                                                <div class="dropdown">
+                                                                    <a class="dropdown-toggle text-muted" href="#" role="button" id="materialActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i class="las la-ellipsis-v fs-20"></i>
                                                                     </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end"
-                                                                        aria-labelledby="dLabel11">
-                                                                        <a class="dropdown-item"
-                                                                            href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">Open
-                                                                            Material</a>
-                                                                        <a class="dropdown-item" href="#">Update
-                                                                            Material</a>
-                                                                        <a class="dropdown-item" href="#">Delete
-                                                                            Material</a>
-                                                                        <hr class="dropdown-divider">
-                                                                        <a class="dropdown-item" href="#"
-                                                                            onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>Setup
-                                                                            Price</a>
-                                                                        <a href="#" class="dropdown-item"
-                                                                            onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
-                                                                            In Item</a>
-                                                                        <a href="#" class="dropdown-item"
-                                                                            onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Check
-                                                                            Out Item</a>
-                                                                        <a href="#" class="dropdown-item"
-                                                                            onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>Make
-                                                                            Adjustment</a>
-                                                                    </div>
+                                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="materialActionsDropdown">
+                                                                        <li>
+                                                                            <a class="dropdown-item text-primary" href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">
+                                                                                <i class="las la-eye"></i> View Details
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-warning" href="#">
+                                                                                <i class="las la-edit"></i> Update Material
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-danger" href="#">
+                                                                                <i class="las la-trash"></i> Delete Material
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <hr class="dropdown-divider">
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-info" href="#" onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>
+                                                                                <i class="las la-dollar-sign"></i> Setup Price
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
+                                                                                <i class="las la-arrow-circle-down"></i> Check In
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
+                                                                                <i class="las la-arrow-circle-up"></i> Check Out
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item text-secondary" href="#" onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
+                                                                                <i class="las la-tools"></i> Make Adjustment
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                        @endforeach
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">No materials found in the inventory.</td>
+                                                        </tr>
+                                                        @endforelse
                                                     </tbody>
-                                                </table><!--end /table-->
-                                            </div><!--end /tableresponsive-->
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- Material Inventory -->
@@ -6755,8 +6774,19 @@
             qualityControlCard.scrollIntoView({ behavior: 'smooth' });
         });
 
-        
+        document.querySelector('#add-chemical-button').addEventListener('click', function (e) {
+            e.preventDefault();
+            const chemicalCard = document.querySelector('#add-chemical-form-card');
+            chemicalCard.classList.remove('d-none');
+            chemicalCard.scrollIntoView({ behavior: 'smooth' });
+        });
 
+        document.querySelector('#add-material-button').addEventListener('click', function (e) {
+            e.preventDefault();
+            const materialCard = document.querySelector('#add-material-form-card');
+            materialCard.classList.remove('d-none');
+            materialCard.scrollIntoView({ behavior: 'smooth' });
+        });
     </script>
     <!-- end activate and deactivate -->
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
@@ -6771,41 +6801,41 @@
             fetch_cycle('--Save Water Check-In', url, 'POST', formData).then(result => {
                 console.log(result);
                 if (result.status === 'success') {
-                            // Update the water management table or UI as needed
-                            let tableBody = document.querySelector('#tbl-water-management tbody');
-                            tableBody.innerHTML = "";
-                            result.water_stock_movements.forEach(water_stock_movement => {
-                                let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
-                                let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
-                                let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
-                                    day: '2-digit', month: 'short', year: 'numeric'
-                                });
+                    // Update the water management table or UI as needed
+                    let tableBody = document.querySelector('#tbl-water-management tbody');
+                    tableBody.innerHTML = "";
+                    result.water_stock_movements.forEach(water_stock_movement => {
+                        let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
+                        let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
+                        let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
+                            day: '2-digit', month: 'short', year: 'numeric'
+                        });
 
-                                let row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td class="text-capitalize">
-                                        ${water_stock_movement.movement_type}
-                                        ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
-                                        ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
-                                        ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
-                                        ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
-                                    </td>
-                                    <td>${sourceName}</td>
-                                    <td>${water_stock_movement.volume}</td>
-                                    <td>${calendarYear}</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${water_stock_movement.remark ?? ''}</td>
-                                    <td class="text-end">
-                                        <div class="d-flex justify-content-end">
-                                            <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
-                                            <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                        </div>
-                                    </td>
-                                `;
-                                tableBody.appendChild(row);
-                            });
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="text-capitalize">
+                                ${water_stock_movement.movement_type}
+                                ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
+                            </td>
+                            <td>${sourceName}</td>
+                            <td>${water_stock_movement.volume}</td>
+                            <td>${calendarYear}</td>
+                            <td>${formattedDate}</td>
+                            <td>${water_stock_movement.remark ?? ''}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
 
-                        }
+                }
             });
         });
         // end check-in form submission
@@ -7431,7 +7461,7 @@
         btn_submit_chemical.addEventListener('click', () => {
             console.log("clicked");
             // Show the loader
-            let loader = document.querySelector('#chemical-usage #loader');
+            let loader = document.querySelector('#btn-submit-chemical #loader');
             loader.style.display = 'inline-block';
 
             let company_id = document.querySelector('#chemical-usage input[name="company_id"]').value.trim();
