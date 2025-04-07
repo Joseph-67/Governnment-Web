@@ -1884,6 +1884,19 @@
                                                     </thead>
                                                     <tbody>
                                                         <!-- Dynamic rows will be appended here -->
+                                                        @foreach($water_quality_logs as $quality)
+                                                        <tr>
+                                                            <td>{{  $quality->test_date}}</td>
+                                                            <td>{{ $quality->parameter_tested }}</td>
+                                                            <td>{{ $quality->test_results }}</td>
+                                                            <td>{{ $quality->deviation_detected }}</td>
+                                                            <td>{{ $quality->corrective_actions }}</td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-outline-primary btn-sm me-2" onclick="editQualityControlLog({{ $quality->id }})">Edit</button>
+                                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteQualityControlLog({{ $quality->id }})">Delete</button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -7289,15 +7302,15 @@
             console.log(result);
             if (result.status === 'success') {
                 // Update the quality control logs table or UI as needed
-                let tableBody = document.querySelector('#tbl-quality-control-logs tbody');
+                let tableBody = document.querySelector('#tbl-quality-control-management tbody');
                 tableBody.innerHTML = "";
-                result.quality_control_logs.forEach(log => {
+                result.quality_control_logs.forEach(quality => {
                     tableBody.innerHTML += `<tr>
-                        <td>${log.product_name}</td>
-                        <td>${log.test_type}</td>
-                        <td>${log.result}</td>
-                        <td>${log.test_date}</td>
-                        <td>${log.remark ?? ''}</td>
+                        <td>${quality.test_date}</td>
+                        <td>${quality.parameter_tested}</td>
+                        <td>${quality.test_results }</td>
+                        <td>${quality.deviation_detected}</td>
+                        <td>${quality.corrective_actions}</td>
                         <td class="text-end">
                             <div class="dropdown d-inline-block">
                                 <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
