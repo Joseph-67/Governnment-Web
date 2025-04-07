@@ -65,7 +65,11 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
                                                 <a class="dropdown-item" href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open Company</a>
-                                                <a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Assign Users to Company</a>
+                                            
+                <a class="dropdown-item" href="#" onclick="assignUsersToCompany('{{ $company->company_id }}', '{{ $company->company_name }}')" data-bs-toggle="modal" 
+                data-bs-target="#assignUserModal"
+                data-company-id="{{ $company->company_id }}"
+                data-company-name="{{ $company->company_name }}">Assign Users to Company</a>
                                                 <form action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this company?');">
                                                     @csrf
                                                     @method('DELETE')
@@ -85,24 +89,63 @@
     </div> <!-- end row -->  
             <!-- modalmodal to assign users -->
         <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Added 'modal-lg' to increase modal width -->
+        <div class="modal fade" id="assignUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title">Assign Users to <span id="modalCompanyName"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            .....
+            <form id="assignUserForm" method="POST" action="">
+            @csrf
+            <!-- <input type="hidden" class="form-control" id="company_id" name="company_id" readonly> -->
+            <div class="mb-3">
+                <label for="company_name" class="form-label">Company Name</label>
+                <input type="text" class="form-control" id="company_name" name="company_name" readonly>
+            </div>
+          
+            </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" form="assignUserForm">Assign</button>
             </div>
+        </div>
+        </form>
+            </div>
+            
         </div>
     </div>
 </div>
+
             <!-- end modal -->
 </div><!-- container -->
+@section('scripts')
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let assignModal = document.getElementById("assignUserModal");
 
+            assignModal.addEventListener("show.bs.modal", function (event) {
+            let button = event.relatedTarget; // Button that triggered the modal
+            if (!button) return;
+
+            let companyName = button.getAttribute("data-company-name");
+            let companyId = button.getAttribute("data-company-id");
+
+            // Update the input fields dynamically
+            let companyInput = document.getElementById("company_name");
+            if (companyInput) {
+                companyInput.value = companyName;
+            }
+
+            let companyIdInput = document.getElementById("company_id");
+            if (companyIdInput) {
+                companyIdInput.value = companyId;
+            }
+            });
+        });
+    </script>
+    
+@endsection
 </x-layouts.admin-app>

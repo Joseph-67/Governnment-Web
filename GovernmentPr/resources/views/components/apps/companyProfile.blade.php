@@ -2686,7 +2686,7 @@
                                                 <tr>
                                                     <td>{{ $log->operation_name }}</td>
                                                     <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operationType->name }}</td>
+                                                    <td>{{ $log->operationType?->name }}</td>
                                                     <td>{{ $log->operationCategory->name }}</td>
                                                     <td>{{ $log->operation_unit }}</td>
                                                     <td>{{ $log->expected_waste_per_operation }}</td>
@@ -3053,7 +3053,7 @@
                                 aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body bg-white">
                                     <!-- Waste Disposal Tracking Form -->
-                                    <form action="" method="post">
+                                    <form action="" method="post" id="waste-disposal-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row">
@@ -3074,11 +3074,11 @@
                                                 <div class="mb-3">
                                                     <label for="operation_status" class="form-label">Operation</label>
                                                     <select class="form-select" id="operation_status"
-                                                        name="operation_status" required>
+                                                        name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->operation_id }}">{{
-                                                            $operation->operation_name }}</option>
+                                                        @foreach($operation_types as $type)
+                                                        <option value="{{ $type->operation_type_id }}">{{
+                                                            $type->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3089,7 +3089,7 @@
                                                     <select class="form-select" id="waste_item" name="waste_item" required>
                                                         <option value="" selected disabled>Choose...</option>
                                                         @foreach($waste_items as $item)
-                                                            <option value="{{ $item->waste_name }}">{{ $item->waste_name }}</option>
+                                                            <option value="{{ $item->company_waste_id }}">{{ $item->waste_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3140,9 +3140,50 @@
                                         </div>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </form>
+                                    <!-- water disposal table -->
+                        
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-striped mb-0" id="tbl-waste-disposal">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Waste Type</th>
+                                                <th>Quantity Disposed</th>
+                                                <th>Disposal Method</th>
+                                                <th>Disposal Date</th>
+                                                <th>Operation</th>
+                                                <th>Calendar Year</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        @foreach($waste_disposals as $disposal)
+                                        <tr>
+                                            <td>{{ $disposal->waste_type }}</td>
+                                            <td>{{ $disposal->quantity }}</td>
+                                            <td>{{ $disposal->disposal_method }}</td>
+                                            <td>{{ $disposal->disposal_date }}</td>
+                                            <td>{{ $disposal->operation->name ?? 'N/A' }}</td>
+                                            <td>{{ $disposal->calendarYear->name ?? 'N/A' }}</td>
+                                            <td class="text-end">
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                             
+                                        </tbody>
+                                    </table>
                                 </div>
+                            
+                        <!-- end water disposal table -->
+                                </div>
+                                
                             </div>
                         </div>
+                        
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -7202,6 +7243,46 @@
         });
     </script>
     <!-- water quality Logs -->
+     <!-- start water disposal -->
+        <script>
+            // Store Waste Disposal
+            document.querySelector('#waste-disposal-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let url = "{{ route('admin.store-waste-disposal') }}";
+
+                fetch_cycle('--Store Waste Disposal', url, 'POST', formData).then(result => {
+                    console.log(result);
+                    if (result.status === 'success') {
+                        // Update the waste disposal table or UI as needed
+                        let tableBody = document.querySelector('#tbl-waste-disposal tbody');
+                        tableBody.innerHTML = "";
+                        result.waste_disposals.forEach(disposal => {
+                            tableBody.innerHTML += `<tr>
+                                <td>${disposal.waste_type}</td>
+                                <td>${disposal.disposal_method}</td>
+                                <td>${disposal.quantity}</td>
+                                <td>${disposal.disposal_date}</td>
+                                <td>${disposal.operation?.name || 'N/A'}</td>
+                                <td>${disposal.calendarYear?.name || 'N/A'}</td>
+                               
+
+
+
+
+                                <td class="text-end">
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                            </tr>`;
+                        });
+                    }
+                });
+            });
+        </script>
+     <!-- end water disposal -->
     <!-- water usage logs -->
 
 
