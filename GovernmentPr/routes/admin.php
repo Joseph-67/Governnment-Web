@@ -543,7 +543,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Water Stock Movement
     Route::controller(WaterStockMovementController::class)->group(function() {
         Route::post('/water-stock/check-in', 'store_water_checkin')->name('admin.water-stock-check-in');
-        Route::post('/water-stock/check-out', 'store_checkout')->name('admin.water-stock-check-out');
+        Route::post('/water-stock/check-out', 'store_water_checkout')->name('admin.water-stock-check-out');
+        Route::post('/water-stock/recycling-log', 'store_water_recycling_log')->name('admin.water-stock-recycling-log');
         Route::get('/water-stock-analysis', 'getWaterStockAnalysis')->name('admin.water-stock-analysis');
     });
 

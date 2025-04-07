@@ -11,36 +11,36 @@ use Carbon\Carbon;
 
 class WaterStockMovementController extends Controller
 {
-    public function getTotalCheckIn($companyWaterId)
+    public function getTotalCheckIn($companyId)
     {
-        $totalCheckIn = WaterStockMovement::where('company_water_id', $companyWaterId)
-            ->where('movement_type', 'in')->sum('quantity');
+        $totalCheckIn = WaterStockMovement::where('company_id', $companyId)
+            ->where('movement_type', 'in')->sum('volume');
         return $totalCheckIn;
     }
 
-    public function getTotalTransfer($companyWaterId)
+    public function getTotalTransfer($companyId)
     {
-        $totalTransfer = WaterStockMovement::where('company_water_id', $companyWaterId)
-            ->where('movement_type', 'transfer')->sum('quantity');
+        $totalTransfer = WaterStockMovement::where('company_id', $companyId)
+            ->where('movement_type', 'transfer')->sum('volume');
         return $totalTransfer;
     }
 
-    public function getTotalAdjustment($companyWaterId)
+    public function getTotalRecycle($companyId)
     {
-        $totalAdjustment = WaterStockMovement::where('company_water_id', $companyWaterId)
-            ->where('movement_type', 'adjustment')->sum('quantity');
+        $totalAdjustment = WaterStockMovement::where('company_id', $companyId)
+            ->where('movement_type', 'recycle')->sum('volume');
         return $totalAdjustment;
     }
 
-    public function getTotalCheckOut($companyWaterId)
+    public function getTotalCheckOut($companyId)
     {
-        $totalCheckOut = WaterStockMovement::where('company_water_id', $companyWaterId)
-            ->where('movement_type', 'out')->sum('quantity');
+        $totalCheckOut = WaterStockMovement::where('company_id', $companyId)
+            ->where('movement_type', 'out')->sum('volume');
         return $totalCheckOut;
     }
 
-    public function getWaterBalance($companyWaterId) {
-        $balance = $this->getTotalCheckIn($companyWaterId) - $this->getTotalTransfer($companyWaterId) + $this->getTotalAdjustment($companyWaterId) - $this->getTotalCheckOut($companyWaterId);
+    public function getWaterBalance($companyId) {
+        $balance = $this->getTotalCheckIn($companyId) - $this->getTotalTransfer($companyId) + $this->getTotalRecycle($companyId) - $this->getTotalCheckOut($companyId);
         return $balance; 
     }
 
@@ -68,16 +68,22 @@ class WaterStockMovementController extends Controller
             'company_id'        => $request['company_id'],
             'movement_type'     => 'in',
             'volume'            => $request['volume'],
-            'calendar_year_id'     => $request['calendar_year'],
+            'calendar_year_id'  => $request['calendar_year'],
             'movement_date'     => $request['date'],
             'remark'            => $request['remark'],
         ]);
+
+        $water_stock_movements = WaterStockMovement::where('company_id', $request['company_id'])->with([
+            'companyWaterSources.waterSource',
+            'calendarYear'
+        ])->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
 
         if ($result) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Water checked in successfully.',
-            ]);
+                'water_stock_movements' => $water_stock_movements
+            ])->setStatusCode(201);
         } else {
             return response()->json([
                 'status' => 'error',
@@ -89,12 +95,11 @@ class WaterStockMovementController extends Controller
     public function store_water_checkout(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'checkout_water_id' => ['required', 'numeric'],
-            'water_id'          => ['required', 'numeric'],
-            'company_id'        => ['required', 'numeric'],
-            'quantity'          => ['required', 'numeric', 'min:1'],
-            'date'              => ['required', 'date'],
-            'remark'            => ['nullable', 'string', 'min:4'],
+            'company_id'    => ['required', 'numeric'],
+            'volume_used'   => ['required', 'numeric', 'min:1'],
+            'date'          => ['required', 'date'],
+            'calendar_year' => ['required', 'integer'],
+            'purpose'        => ['nullable', 'string', 'min:4'],
         ]);
 
         if ($validator->fails()) {
@@ -105,7 +110,7 @@ class WaterStockMovementController extends Controller
             ]);
         }
 
-        $availableBalance = $this->getWaterBalance($request['checkout_water_id']);
+        $availableBalance = $this->getWaterBalance($request['company_id']);
 
         if ($availableBalance <= 0) {
             $validator->errors()->add('balance_error', 'No water stock is available. The balance is 0.');
@@ -115,8 +120,8 @@ class WaterStockMovementController extends Controller
                 'errors' => $validator->errors(),
                 'available_balance' => $availableBalance
             ], 400);
-        } elseif ($request['quantity'] > $availableBalance) {
-            $validator->errors()->add('balance_error', 'The quantity demanded exceeds the available water stock balance.');
+        } elseif ($request['volume_used'] > $availableBalance) {
+            $validator->errors()->add('balance_error', 'The volume demanded exceeds the available water stock balance.');
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation failed.',
@@ -125,32 +130,81 @@ class WaterStockMovementController extends Controller
             ], 400);
         }
 
-        if (!empty($request['date'])) {
-            $year = Carbon::parse($request->input('date'))->year;
-        }
-
         $result = WaterStockMovement::create([
-            'company_water_id'  => $request['checkout_water_id'],
-            'water_id'          => $request['water_id'],
+            'water_source_id'   => $request['water_source'], // Assuming water_source maps to water_id
             'company_id'        => $request['company_id'],
             'movement_type'     => 'out',
-            'quantity'          => $request['quantity'],
-            'calendar_year'     => $year,
+            'volume'            => $request['volume_used'],
+            'calendar_year_id'  => $request['calendar_year'],
             'movement_date'     => $request['date'],
-            'remark'            => $request['remark'],
+            'remark'            => $request['purpose'],
         ]);
 
+        $water_stock_movements = WaterStockMovement::where('company_id', $request['company_id'])->with([
+            'companyWaterSources.waterSource',
+            'calendarYear'
+        ])->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
         if ($result) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Water checked out successfully.',
-            ]);
+                'water_stock_movements' => $water_stock_movements
+            ])->setStatusCode(201);
         } else {
             $validator->errors()->add('creation_error', 'Water failed to check out.');
             return response()->json([
                 'status' => 'error',
                 'message'   => 'Validation failed.',
                 'errors'    => $validator->errors(),
+            ], 400);
+        }
+
+       
+    }
+
+    public function store_water_recycling_log(Request $request)  {
+        $validator = Validator::make($request->all(), [
+            'company_id'    => ['required', 'numeric'],
+            'volume'        => ['required', 'numeric', 'min:1'],
+            'date'          => ['required', 'date'],
+            'calendar_year' => ['required', 'integer'],
+            'remark'        => ['nullable', 'string', 'min:4'],
+            'recycle_method' => ['nullable', 'string', 'min:4'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+            'status'    => 'error',
+            'message'   => 'Validation failed.',
+            'errors'    => $validator->errors()
+            ]);
+        }
+
+        $result = WaterStockMovement::create([
+            'company_id'        => $request['company_id'],
+            'movement_type'     => 'recycle', // Recycling log uses 'adjustment' as movement type
+            'volume'            => $request['volume'],
+            'calendar_year_id'  => $request['calendar_year'],
+            'movement_date'     => $request['date'],
+            'remark'            => $request['remark'],
+            'recycle_method'    => $request['recycle_method'] ?? null,
+        ]);
+
+        $water_stock_movements = WaterStockMovement::where('company_id', $request['company_id'])->with([
+            'companyWaterSources.waterSource',
+            'calendarYear'
+        ])->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
+
+        if ($result) {
+            return response()->json([
+            'status' => 'success',
+            'message' => 'Water recycling log created successfully.',
+            'water_stock_movements' => $water_stock_movements
+            ])->setStatusCode(201);
+        } else {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to create water recycling log.',
             ], 400);
         }
     }

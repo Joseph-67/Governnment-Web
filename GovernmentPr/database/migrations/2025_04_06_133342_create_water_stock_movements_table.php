@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('water_stock_movements', function (Blueprint $table) {
             $table->id('waterStockID');
-            $table->unsignedBigInteger('water_source_id');
+            $table->unsignedBigInteger('water_source_id')->nullable();
             $table->unsignedBigInteger('company_id');
-            $table->enum('movement_type', ['in', 'out', 'transfer', 'recycling'])->nullable();
+            $table->enum('movement_type', ['in', 'out', 'usage', 'recycle'])->nullable();
             $table->decimal('volume', 10, 2);
             $table->unsignedBigInteger('calendar_year_id');
             $table->foreign('calendar_year_id')->references('calendar_year_id')->on('calendar_years')->onDelete('cascade');
             $table->date('movement_date');
             $table->text('remark')->nullable();
+            $table->string('recycle_method')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreign('water_source_id')->references('id')->on('water_sources')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

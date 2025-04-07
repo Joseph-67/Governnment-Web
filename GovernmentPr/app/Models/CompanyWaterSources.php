@@ -26,4 +26,8 @@ class CompanyWaterSources extends Model
     {
         return $this->hasMany(WaterSourceDetails::class, 'company_water_source_id', 'CompanyWaterSourcesID');
     }
+    public function waterStockMovements()
+    {
+        return $this->hasMany(WaterStockMovement::class, 'water_source_id', 'CompanyWaterSourcesID');
+    }
 }

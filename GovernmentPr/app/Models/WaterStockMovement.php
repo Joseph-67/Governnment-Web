@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WaterStockMovement extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'water_stock_movement_id';
+    protected $primaryKey = 'waterStockID';
     public $timestamps = true;
     protected $table = 'water_stock_movements';
     protected $fillable = [
@@ -19,17 +19,23 @@ class WaterStockMovement extends Model
         'calendar_year_id',
         'movement_date',
         'remark',
+        'recycle_method',
         'status',
     ];
-
-    public function scopeCompanyWaterSource($query, $companyId, $waterSourceId)
-    {
-        return $query->where('company_id', $companyId)
-                     ->where('water_source_id', $waterSourceId);
-    }
 
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+
+    public function companyWaterSources()
+    {
+        return $this->belongsTo(CompanyWaterSources::class, 'water_source_id', 'CompanyWaterSourcesID');
+    }
+
+    public function calendarYear()
+    {
+        return $this->belongsTo(CalendarYear::class, 'calendar_year_id');
     }
 }
