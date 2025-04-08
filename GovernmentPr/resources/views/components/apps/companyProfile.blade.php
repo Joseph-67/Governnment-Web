@@ -3344,7 +3344,7 @@
                                             <!-- Material Used -->
                                             <div class="material-quantity-used-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="material_used" class="form-label">Used Material</label>
                                                         <select class="form-select" id="material_used" name="material_used[0][material_id]" required>
                                                             <option value="" selected disabled>Select Material</option>
@@ -3353,7 +3353,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="quantity_used" class="form-label">Used Quantity</label>
                                                         <input type="number" min="0" class="form-control" id="quantity_used" name="material_used[0][quantity]" placeholder="Enter quantity used" required>
                                                     </div>
@@ -3366,7 +3366,7 @@
                                             <!-- Chemical Used -->
                                             <div class="chemical-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="chemical_name" class="form-label">Used Chemical</label>
                                                         <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
                                                             <option value="" selected disabled>Select Chemical</option>
@@ -3375,7 +3375,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="chemical_volume" class="form-label">Used Volume (Liters)</label>
                                                         <input type="number" min="0" class="form-control" id="chemical_volume" name="chemical_used[0][volume]" placeholder="Enter volume" required>
                                                     </div>
@@ -3423,7 +3423,7 @@
                                             <!-- Product Produced -->
                                             <div class="product-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="product_name" class="form-label">Produced Product</label>
                                                         <select class="form-select" id="product_name" name="product_produced[0][product_id]" required>
                                                             <option value="" selected disabled>Select Product</option>
@@ -8311,7 +8311,7 @@
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="produced_product">Produced Product</label>
                             <select class="form-select" name="product_produced[${productIndex}][product_id]" required>
@@ -8320,11 +8320,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="produced_quantity">Produced Quantity</label>
+                            <label for="produced_quantity">Quantity Produced</label>
                             <input type="number" class="form-control" name="product_produced[${productIndex}][quantity]" placeholder="Produced Quantity" required>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
+                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
@@ -8353,7 +8357,7 @@
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Used Material</label>
                             <select class="form-select" name="material_used[${materialIndex}][material_id]" required>
@@ -8362,7 +8366,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Used Quantity</label>
                             <input type="number" class="form-control" name="material_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
@@ -8396,7 +8400,7 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
             newRow.innerHTML = `
-                <div class="col-md-5">
+                <div class="col-md-3">
                 <div class="form-group">
                     <label for="used_chemical">Used Chemical</label>
                     <select class="form-select" name="chemical_used[${chemicalIndex}][chemical_id]" required>
@@ -8405,7 +8409,7 @@
                     </select>
                 </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                 <div class="form-group">
                     <label for="used_quantity">Used Quantity</label>
                     <input type="number" class="form-control" name="chemical_used[${chemicalIndex}][quantity]" placeholder="Used Quantity" required>
