@@ -32,6 +32,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionLogController;
+use App\Http\Controllers\QualityControlController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
 use App\Http\Controllers\ReportingAnalyticsController;
@@ -238,6 +239,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // annual operations log
     Route::controller(AnnualOperationsLogController::class)->group(function() {
         Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
+    });
+    // Quality Control
+    Route::controller(QualityControlController::class)->group(function() {
+        Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
     Route::controller(RECPController::class)->group(function(){
         // add
@@ -564,5 +569,5 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // View Email
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');
     Route::get('/show-email/{email}', [ViewEmailController::class, 'index'])->name('admin.show-email');
-
+    
 });

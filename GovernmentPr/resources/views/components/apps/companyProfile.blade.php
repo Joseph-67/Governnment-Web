@@ -3555,7 +3555,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                        @foreach($quality_controls_record as $control)
+                                                        <tr>
+                                                            <td>{{ $control->quality_metric }}</td>
+                                                            <td>{{ $control->acceptable_range }}</td>
+                                                            <td>{{ $control->measurement_frequency }}</td>
+                                                            <td>{{ $control->responsible_person }}</td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -8224,7 +8237,36 @@
             });
         });
 
-        // waste
+        // store quality control
+        // Store Quality Control
+        document.querySelector('#quality-control-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-quality-control') }}";
+
+            fetch_cycle('--Store Quality Control', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the quality control table or UI as needed
+                    let tableBody = document.querySelector('#tbl-quality-control tbody');
+                    tableBody.innerHTML = "";
+                    result.quality_controls_record.forEach(control => {
+                        tableBody.innerHTML += `<tr>
+                        <td>${control.quality_metric }</td>
+                        <td>${control.acceptable_range }</td>
+                        <td>${control.measurement_frequency }</td>
+                        <td>${control.responsible_person }</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
         // Store Waste Item
         document.querySelector('#submit-waste-item').addEventListener('click', function () {
             let form = document.querySelector('#waste-item-form');
