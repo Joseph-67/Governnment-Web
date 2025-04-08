@@ -100,8 +100,21 @@ class MaterialController extends Controller
      * @param  \App\Models\Material  $material
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Material $material)
+    public function destroy($id)
     {
         //
+         // dd($id);
+         $material = material::find($id);
+         if ($material) {
+             $material->forceDelete(); // Permanently delete the category
+ 
+             $material = material::get();
+             return response()->json([
+                 'status' => 'success',
+                 'materials' => $material,
+                 'message' => 'Material deleted successfully']);
+         } else {
+             return back()->with(['error' => 'Material not found']);
+         }
     }
 }

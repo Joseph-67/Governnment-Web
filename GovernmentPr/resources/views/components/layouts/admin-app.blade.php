@@ -441,15 +441,47 @@
                                     </li><!--end nav-item-->
                                     @endif
 
-                                  @if(Auth::guard('admin')->check())
-                                  <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Reporting Analytics</a>
+                                    @if(Auth::guard('admin')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#sidebarReportingAnalytics" data-bs-toggle="collapse" role="button"
+                                            aria-expanded="false" aria-controls="sidebarReportingAnalytics">
+                                            Reporting Analytics
+                                        </a>
+                                        <div class="collapse" id="sidebarReportingAnalytics">
+                                            <ul class="nav flex-column">
+                                                <!-- Production Reporting Pages -->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{{ route('admin.production-report') }}">Production Overview</a>
+                                                </li><!--end nav-item-->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#">Detailed Production Reports</a>
+                                                </li><!--end nav-item-->
+
+                                                <!-- KPIs and Metrics -->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#">KPIs (Company-wide)</a>
+                                                </li><!--end nav-item-->
+                                                
+                                                <!-- Custom Analytics -->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#">Custom Analytics</a>
+                                                </li><!--end nav-item-->
+                                                
+                                                <!-- Inventory Analytics (Dynamic) -->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Inventory Reporting Analytics</a>
+                                                </li><!--end nav-item-->
+                                            </ul><!--end nav-->
+                                        </div><!--end sidebarReportingAnalytics-->
                                     </li><!--end nav-item-->
                                     @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Reporting Analytics</a>
+                                        <a class="nav-link" href="">Business Operations & Production Reporting</a>
                                     </li><!--end nav-item-->
                                     @endif
+
+
+
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.inventory-forecasting') }}">Forecasting & Speculative Management</a>

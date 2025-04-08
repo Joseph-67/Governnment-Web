@@ -48,6 +48,7 @@ use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
+use App\Http\Controllers\ProductionReport;
 
 
 
@@ -142,6 +143,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
+        Route::delete('/delete-material/{id}', 'destroy');
     }); 
 
     // Calendar Year
@@ -151,6 +153,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/calendar-year/{id}', 'show')->name('admin.show-calendar-year');
         Route::put('/calendar-year/{id}', 'update')->name('admin.update-calendar-year');
         Route::delete('/calendar-year/{id}', 'destroy')->name('admin.delete-calendar-year');
+        Route::get('/get-calendar-years/{value}', 'get_years');
     });
 
     //Chemicals
@@ -244,6 +247,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(QualityControlController::class)->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
+
     Route::controller(RECPController::class)->group(function(){
         // add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
@@ -513,12 +517,21 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-waste-reduction-measure', 'remove_waste_reduction_measure')->name('admin.remove-waste-reduction-measure');
     });
 
-    // Reporting and Analytics
+    // Inventory Reporting and Analytics
     Route::controller(ReportingAnalyticsController::class)->group(function() {
         Route::get('/reporting-analytics', 'index')->name('admin.reporting-analytics');
         Route::get('/reporting-analytics/stock-performance', 'getStockPerformance')->name('admin.stock-performance');
         Route::get('/reporting-analytics/trading-summary', 'getTradingSummary')->name('admin.trading-summary');
         Route::get('/reporting-analytics/user-activity', 'getUserActivity')->name('admin.user-activity');
+    });
+
+    // Production Report
+    Route::controller(ProductionReport::class)->group(function() {
+        Route::get('/production-report', 'index')->name('admin.production-report');
+        Route::post('/production-report/store', 'store')->name('admin.store-production-report');
+        Route::get('/production-report/{id}', 'show')->name('admin.show-production-report');
+        Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
+        Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
     });
 
     // Roles

@@ -1,0 +1,250 @@
+<x-layouts.admin-app>
+    @section('PageTitle', $page_title)
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-title">
+                    <h3>Advanced Production Overview</h3>
+                    <p>This page provides detailed insights into production performance, waste tracking, and key efficiency indicators.</p>
+                </div>
+    
+                <!-- Production Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Units Produced</h5>
+                                <p class="card-text display-4">50,000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Units Left to Produce</h5>
+                                <p class="card-text display-4">10,000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Production Rate</h5>
+                                <p class="card-text display-4">1,000/day</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Efficiency Rate</h5>
+                                <p class="card-text display-4">95%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Waste Breakdown and Product Overview -->
+                <div class="row mb-4">
+                    <div class="col-md-6 chart-container">
+                        <h5>Waste Distribution by Product</h5>
+                        <canvas id="productWasteDistributionChart"></canvas>
+                    </div>
+                    <div class="col-md-6 chart-container">
+                        <h5>Waste Breakdown (Material, Defective, Packaging)</h5>
+                        <canvas id="productWasteBreakdownChart"></canvas>
+                    </div>
+                </div>
+    
+                <!-- Production Trend Over Time -->
+                <div class="row">
+                    <div class="col-md-12 chart-container">
+                        <h5>Production and Waste Trends Over Time</h5>
+                        <canvas id="wasteDefectsTrendChart"></canvas>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    
+    @section('styles')
+    <style>
+    
+            .card {
+                border-radius: 10px;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            .header-title {
+                font-size: 24px;
+                color: #333;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+            .chart-container {
+                margin-bottom: 30px;
+            }
+            .btn-floating {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                background-color: #007bff;
+                border-radius: 50%;
+                color: white;
+                padding: 15px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                font-size: 24px;
+                transition: transform 0.3s ease;
+            }
+            .btn-floating:hover {
+                transform: scale(1.1);
+            }
+    @endsection
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Product Waste Distribution Chart (Pie Chart)
+        var ctx1 = document.getElementById('productWasteDistributionChart').getContext('2d');
+        var productWasteDistributionChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Product A', 'Product B', 'Product C'],
+                datasets: [{
+                    label: 'Waste Distribution by Product',
+                    data: [2300, 1100, 700],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' units';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    
+        // Product Waste Breakdown (Stacked Bar Chart)
+        var ctx2 = document.getElementById('productWasteBreakdownChart').getContext('2d');
+        var productWasteBreakdownChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Product A', 'Product B', 'Product C'],
+                datasets: [{
+                    label: 'Material Loss',
+                    data: [1500, 800, 500],
+                    backgroundColor: '#FF6384',
+                    stack: 'stack1',
+                }, {
+                    label: 'Defective Products',
+                    data: [500, 200, 150],
+                    backgroundColor: '#36A2EB',
+                    stack: 'stack1',
+                }, {
+                    label: 'Packaging Waste',
+                    data: [300, 100, 50],
+                    backgroundColor: '#FFCE56',
+                    stack: 'stack1',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.dataset.label + ': ' + tooltipItem.raw + ' units';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    
+        // Waste and Defects Trend by Product Over Time (Line Chart)
+        var ctx3 = document.getElementById('wasteDefectsTrendChart').getContext('2d');
+        var wasteDefectsTrendChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [
+                    {
+                        label: 'Product A Waste',
+                        data: [200, 300, 250, 400],
+                        fill: false,
+                        borderColor: '#FF6384',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product B Waste',
+                        data: [150, 200, 100, 250],
+                        fill: false,
+                        borderColor: '#36A2EB',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product C Waste',
+                        data: [50, 75, 100, 150],
+                        fill: false,
+                        borderColor: '#FFCE56',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product A Defects',
+                        data: [20, 30, 25, 40],
+                        fill: false,
+                        borderColor: '#FF5733',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product B Defects',
+                        data: [10, 20, 15, 30],
+                        fill: false,
+                        borderColor: '#9C27B0',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Product C Defects',
+                        data: [5, 10, 8, 20],
+                        fill: false,
+                        borderColor: '#607D8B',
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.dataset.label + ': ' + tooltipItem.raw + ' units';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    </x-layouts.admin-app>

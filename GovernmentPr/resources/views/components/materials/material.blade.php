@@ -19,7 +19,113 @@
     <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
     @endsection
-    @section('scripts')
+
+    <div class="tab-pane p-3" id="materials" role="tabpanel">
+    <x-validation-errors class="alert" alert />
+    @include('shared.feedback')
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="card-title">Create Material</h4>
+                </div><!--end col-->
+            </div> <!--end row-->
+        </div><!--end card-header-->
+        <div class="card-body pt-0">
+            <form method="post" action="{{ route('admin.store-material')}}" >
+                @csrf
+                <div class="row g-2 align-items-end"> 
+                    <!-- Material Name -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Material name</label>
+                            <input type="text" class="form-control" placeholder="Material Name"
+                                name="material_name">
+                        </div>
+                    </div>
+                        <!-- Material Name -->
+
+                    <!-- Category  -->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="">Category</label>
+                            <select name="category" id="category" class="form-select">
+                                <option value="" selected disabled> Choose... </option>
+                                @foreach($categories as $category)
+                                <option value="{{$category->categoryID}}">{{$category->category_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Category ends -->
+
+                    <!-- Description -->
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Description</label>
+                            <input type="text" class="form-control" placeholder="Description"
+                                name="description">
+                        </div>
+                    </div>
+                        <!-- Description -->
+                        <div class="col">
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
+                        </div>
+                        </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="card-title">Materials</h4>
+                </div><!--end col-->
+            </div> <!--end row-->
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
+                    <thead>
+                    <tr>
+                        <th>Material Name</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Material Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($Material as $material_detail)
+                        <tr>
+                            <td>{{ $material_detail -> material }}</td>
+                            <td>{{ $material_detail -> description }}</td>
+                            <td>{{$material_detail -> category_name  }}</td>
+                            <td><span class="badge bg-{{ ($material_detail -> status == 'active')? 'success':'danger'}}">{{  $material_detail -> status  }} </span></td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="#">Update Material</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteMaterials('{{ $material_detail->materialID }}', '{{ $material_detail->material }}')">Delete Material</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table><!--end /table-->
+            </div><!--end /tableresponsive-->
+        </div>
+    </div>
+</div>
+
+<!--end card-->
+@section('scripts')
     <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
     <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
@@ -48,109 +154,55 @@
         <script src="{{asset('adminAssets/js/moment.js')}}"></script>
         <script src="{{asset('adminAssets/libs/imask/imask.min.js')}}"></script>
         <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function deleteMaterials(id, name) {
+                    // Use a fancy popup (e.g., SweetAlert2)
+                    Swal.fire({
+                        title: `Are you sure you want to delete ${name}?`,
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Perform delete action here
+                            fetch(`/admin/delete-material/${id}`, {
+                                method: 'DELETE',
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    location.reload(); // Reload the page to reflect changes
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        'There was an issue deleting the material.',
+                                        'error'
+                                    );
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error!',
+                                    'An unexpected error occurred.',
+                                    'error'
+                                );
+                            });
+                            console.log('Materials deleted');
+                            Swal.fire(
+                                'Deleted!',
+                                'The material has been deleted.',
+                                'success'
+                            );
+                        }
+                    });
+    
+                }
+            </script>
     @endsection
 
-    <div class="tab-pane p-3" id="materials" role="tabpanel">
-    <x-validation-errors class="alert" alert />
-    @include('shared.feedback')
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Create Material</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div><!--end card-header-->
-                            <div class="card-body pt-0">
-                                <form method="post" action="{{ route('admin.store-material')}}" >
-                                    @csrf
-                                    <div class="row g-2 align-items-end"> 
-                                        <!-- Material Name -->
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Material name</label>
-                                                <input type="text" class="form-control" placeholder="Material Name"
-                                                    name="material_name">
-                                            </div>
-                                        </div>
-                                         <!-- Material Name -->
-
-                                        <!-- Category  -->
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="">Category</label>
-                                                <select name="category" id="category" class="form-select">
-                                                    <option value="" selected disabled> Choose... </option>
-                                                    @foreach($categories as $category)
-                                                    <option value="{{$category->categoryID}}">{{$category->category_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!-- Category ends -->
-
-                                        <!-- Description -->
-                                         <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Description</label>
-                                                <input type="text" class="form-control" placeholder="Description"
-                                                    name="description">
-                                            </div>
-                                        </div>
-                                         <!-- Description -->
-                                          <div class="col">
-                                            <div class="d-flex align-items-center">
-                                                <button type="submit" class="btn btn-primary" id="btn-submit-material">Save</button><span class="loader" id="loader"></span>
-                                            </div>
-                                          </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title">Materials</h4>
-                                    </div><!--end col-->
-                                </div> <!--end row-->
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
-                                        <thead>
-                                        <tr>
-                                            <th>Material Name</th>
-                                            <th>Description</th>
-                                            <th>Category</th>
-                                            <th>Material Status</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($Material as $material_detail)
-                                            <tr>
-                                                <td>{{ $material_detail -> material }}</td>
-                                                <td>{{ $material_detail -> description }}</td>
-                                                <td>{{$material_detail -> category_name  }}</td>
-                                                <td><span class="badge bg-{{ ($material_detail -> status == 'active')? 'success':'danger'}}">{{  $material_detail -> status  }} </span></td>
-                                                <td class="text-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Update Material</a>
-                                                            <a class="dropdown-item" href="#">Delete Material</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table><!--end /table-->
-                                </div><!--end /tableresponsive-->
-                            </div>
-                        </div>
-                    </div>
 </x-layouts.admin-app>
