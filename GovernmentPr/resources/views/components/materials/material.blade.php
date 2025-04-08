@@ -19,36 +19,6 @@
     <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
     @endsection
-    @section('scripts')
-    <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
-    <script>
-        // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
-        new TomSelect('#guardSelect2',{maxItems: 5});
-        new TomSelect('#guardSelect',{maxItems: 5});
-    </script>
-    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/form-editor.init.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
-    <script src="{{asset('adminAssets/js/app.js')}}"></script>
-
-    <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
-    <script src="{{asset('adminAssets/js/moment.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/imask/imask.min.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
-    @endsection
 
     <div class="tab-pane p-3" id="materials" role="tabpanel">
     <x-validation-errors class="alert" alert />
@@ -141,7 +111,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
                                         <a class="dropdown-item" href="#">Update Material</a>
-                                        <a class="dropdown-item" href="#">Delete Material</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteMaterials('{{ $material_detail->materialID }}', '{{ $material_detail->material }}')">Delete Material</a>
                                     </div>
                                 </div>
                             </td>
@@ -153,4 +123,86 @@
         </div>
     </div>
 </div>
+
+<!--end card-->
+@section('scripts')
+    <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        // new Selectr("#guardSelect",{taggable:!0,tagSeperators:[",","|"]}), new Selectr("#guardSelect2",{taggable:!0,tagSeperators:[",","|"]})
+        new TomSelect('#guardSelect2',{maxItems: 5});
+        new TomSelect('#guardSelect',{maxItems: 5});
+    </script>
+    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+    <script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
+        <script src="{{asset('adminAssets/js/pages/form-editor.init.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
+        <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
+        <script src="{{asset('adminAssets/js/app.js')}}"></script>
+
+        <script src="{{asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
+        <script src="{{asset('adminAssets/js/moment.js')}}"></script>
+        <script src="{{asset('adminAssets/libs/imask/imask.min.js')}}"></script>
+        <script src="{{asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function deleteMaterials(id, name) {
+                    // Use a fancy popup (e.g., SweetAlert2)
+                    Swal.fire({
+                        title: `Are you sure you want to delete ${name}?`,
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Perform delete action here
+                            fetch(`/admin/delete-material/${id}`, {
+                                method: 'DELETE',
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    location.reload(); // Reload the page to reflect changes
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        'There was an issue deleting the material.',
+                                        'error'
+                                    );
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error!',
+                                    'An unexpected error occurred.',
+                                    'error'
+                                );
+                            });
+                            console.log('Materials deleted');
+                            Swal.fire(
+                                'Deleted!',
+                                'The material has been deleted.',
+                                'success'
+                            );
+                        }
+                    });
+    
+                }
+            </script>
+    @endsection
+
 </x-layouts.admin-app>

@@ -57,7 +57,7 @@ class WaterSourceDetailsController extends Controller
 
         $result = WaterSourceDetails::create([
             'companyID'          => $request->company_id,
-            'WaterSources_id'    => $request->water_source_id,
+            'company_water_source_id'    => $request->water_source_id,
             'location'        => $request->location,
             'capacity'        => $request->capacity,
             'status'          => "active",

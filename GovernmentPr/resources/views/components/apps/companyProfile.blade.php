@@ -1453,7 +1453,7 @@
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
                                                         <label for="water_source" class="form-label">Select Water Source</label>
-                                                        <select name="water_source" id="source" class="form-select">
+                                                        <select name="water_source" id="" class="form-select">
                                                             <option value="" selected disabled>Choose...</option>
                                                             @foreach($companyWaterSources as $source)
                                                                 <option value="{{ $source->waterSource->WaterSourcesId }}" selected>{{ $source->waterSource->sources }}</option>
@@ -1510,8 +1510,8 @@
                                                         @foreach($companyWaterSources as $waterSource)
                                                         <tr>
                                                             <td>{{ $waterSource->waterSource->sources ?? 'N/A' }}</td>
-                                                            <td>{{ $waterSource->waterSourceDetails->first()->location ?? 'N/A' }}</td>
-                                                            <td>{{ $waterSource->waterSourceDetails->first()->capacity ?? 'N/A' }}</td>
+                                                            <td>{{ $waterSource->location }}</td>
+                                                            <td>{{ $waterSource->capacity }}</td>
                                                             <td class="text-end">
                                                                 <button class="btn btn-outline-primary btn-sm me-2" type="button">Edit</button>
                                                             </td>
@@ -7425,7 +7425,7 @@
                 // Update the quality control logs table or UI as needed
                 let tableBody = document.querySelector('#tbl-quality-control-management tbody');
                 tableBody.innerHTML = "";
-                result.quality_control_logs.forEach(quality => {
+                result.water_quality_logs.forEach(quality => {
                     tableBody.innerHTML += `<tr>
                         <td>${quality.test_date}</td>
                         <td>${quality.parameter_tested}</td>

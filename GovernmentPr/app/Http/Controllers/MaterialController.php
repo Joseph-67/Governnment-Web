@@ -103,5 +103,21 @@ class MaterialController extends Controller
     public function destroy(Material $material)
     {
         //
+         // dd($id);
+         $material = material::find($id);
+         if ($material) {
+             // $material->material = 'inactive';
+             // $material->save();
+             // $material->delete(); // Soft delete the material
+             $material->forceDelete(); // Permanently delete the category
+ 
+             $material = material::get();
+             return response()->json([
+                 'status' => 'success',
+                 'materials' => $material,
+                 'message' => 'Material deleted successfully']);
+         } else {
+             return back()->with(['error' => 'Material not found']);
+         }
     }
 }

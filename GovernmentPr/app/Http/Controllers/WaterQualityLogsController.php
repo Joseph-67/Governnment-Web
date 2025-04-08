@@ -55,7 +55,8 @@ class WaterQualityLogsController extends Controller
             ], 422);
         }
 
-        $data = [
+        try {
+            $WaterQualityLogs =WaterQualityLogs::create([
             'companyID'         => $request->company_id,
             'test_date'          => $request->test_date,
             'parameter_tested' => $request->parameter_tested,
@@ -66,22 +67,35 @@ class WaterQualityLogsController extends Controller
             'contaminants'       => $request->contaminants_detected,
             'test_results'       => $request->result,
             'status'            => 'active'
-        ];
+            ])  ;
 
-        $result = WaterQualityLogs::create($data);
-
-        if ($result) {
+            
+        } catch (\Exception $e) {
+            return response()->json([
+            'status'  => 'error',
+            'message' => 'An error occurred while adding the water quality log.',
+            'error'   => $e->getMessage(),
+            ], 500);
+        }
+        try {
+            $water_quality_logs = WaterQualityLogs::where('status', 'active')
+            ->where('companyID', $request->company_id)
+            ->get();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status'  => 'error',
+            'message' => 'An error occurred while retrieving water quality logs.',
+            'error'   => $e->getMessage(),
+            ], 500);
+        }
+        
             return response()->json([
             'status'  => 'success',
             'message' => 'Water quality log added successfully.',
-            'data'    => $result,
+            'water_quality_logs'    => $water_quality_logs,
             ], 200);
-        }
+        
 
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Failed to add water quality log.',
-        ], 500);
     }
 
     /**
