@@ -40,7 +40,7 @@ class AnnualOperationsLogController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'operation_name' => 'required|string|max:255',
-            'operation_status' => 'required|integer',
+            'operation' => 'required|integer',
             'calendar_year' => 'required|integer',
             'material' => 'required|array',
             'material.*' => 'required|integer',
@@ -68,30 +68,49 @@ class AnnualOperationsLogController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-        $operationsLog = AnnualOperationsLog:: create([
-            'operation_name' => $request -> operation_name,
-            'company_operation_id' => $request -> operation_status,
-            'calendar_year_id'=> $request -> calendar_year,
-            'companyMaterialId' => $request -> material,
-            'company_waste_id' => $request -> expected_waste,
-            'company_chemical_id' => $request -> chemical,
-            'product_id' => $request -> expected_product,
-            'company_id' => $request -> company_id,
-            'expected_quantity' => $request -> expected_quantity, 
-            'expected_quantity_chemical' => $request -> expected_quantity_chemical,
-            'operations_per_year' => $request -> operations_per_year,
-            'water_used_per_year' => $request -> water_used_per_year,
-            'units_produced_per_year' => $request -> units_produced_per_year,
-            'quantity_of_waste' => $request -> quantity_of_waste,
+        try {
+            $operationsLog = AnnualOperationsLog::create([
+            'operation_name' => $request->operation_name,
+            'operation_id' => $request->operation,
+            'calendar_year_id' => $request->calendar_year,
+            'companyMaterialId' => $request->material,
+            'company_waste_id' => $request->expected_waste,
+            'company_chemical_id' => $request->chemical,
+            'product_id' => $request->expected_product,
+            'company_id' => $request->company_id,
+            'expected_quantity' => $request->expected_quantity,
+            'expected_quantity_chemical' => $request->expected_quantity_chemical,
+            'operations_per_year' => $request->operations_per_year,
+            'water_used_per_year' => $request->water_used_per_year,
+            'units_produced_per_year' => $request->units_produced_per_year,
+            'quantity_of_waste' => $request->quantity_of_waste,
             'status' => 'active'
-
-
-        ]);
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to create Annual Operations Log.',
+            'error' => $e->getMessage(),
+            ], 500);
+        }
+        try {
+            $annual_operations_logs = AnnualOperationsLog::where('status', 'active')
+            ->with(['operation', 'calendarYear'])
+            ->where('company_id', $request->company_id)
+            ->where('status', 'active')
+            ->get();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to retrieve Annual Operations Logs.',
+            'error' => $e->getMessage(),
+            ], 500);
+        }
         return response()->json([
            
             'status'=> 'success',
             'message' => 'Annual Operations Log created successfully.',
-            'data' => $operationsLog,
+            'annual_operations_logs' => $annual_operations_logs,
         ], 201);
         
     }

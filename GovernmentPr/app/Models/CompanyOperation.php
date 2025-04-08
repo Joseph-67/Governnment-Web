@@ -66,6 +66,10 @@ class CompanyOperation extends Model
     {
         return $this->hasMany(WasteDisposal::class, 'operation_id', 'company_operation_id');
     }
+    public function annualOperationsLogs()
+    {
+        return $this->hasMany(AnnualOperationsLog::class, 'operation_id', 'company_operation_id');
+    }
 
     public function scopeActive($query)
     {
@@ -96,5 +100,6 @@ class CompanyOperation extends Model
     {
         return $query->where('operation_unit_cost', $operationUnitCost);
     }
+    
     
 }

@@ -80,6 +80,7 @@ class EquipmentLogController extends Controller
         // Fetch all equipment logs where company_id matches the request and equipment is active
         $allEquipmentLogs = EquipmentLog::where('company_id', $request->input('company_id'))
                         ->where('is_deleted', false)
+                        ->with('equipmentType')
                         ->get();
         // Return a success response
         return response()->json(['status' => 'success', 'message' => 'Equipment log created successfully.', 'equipment_logs' => $allEquipmentLogs], 201);

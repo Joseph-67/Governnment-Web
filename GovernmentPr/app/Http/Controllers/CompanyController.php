@@ -150,8 +150,7 @@ class CompanyController extends WaterStockMovementController
         // water quality logs
         $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)
             ->get(['test_date', 'parameter_tested','test_results', 'deviation_detected', 'corrective_actions']);
-            $data['annual_operations_logs'] = AnnualOperationsLog::where('company_id', $companyID)
-                ->get([ 'operation_name','calendar_year_id', 'operations_per_year', 'company_waste_id','water_used_per_year','units_produced_per_year']);
+        $data['annual_operations_logs'] = AnnualOperationsLog::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
         return view('components.apps.companyProfile', $data);
     }   
     /**

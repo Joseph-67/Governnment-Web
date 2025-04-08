@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('annual_operations_logs', function (Blueprint $table) {
             $table->id('annual_operations_log_id');
             $table->string('operation_name');
-            $table->unsignedBigInteger('company_operation_id');
+            $table->unsignedBigInteger('operation_id');
             $table->unsignedBigInteger('calendar_year_id');
             
             // These are now JSON arrays (no foreign keys)
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
             
             // Keep only scalar foreign keys
-            $table->foreign('company_operation_id')->references('company_operation_id')->on('company_operations');
+            $table->foreign('operation_id')->references('company_operation_id')->on('company_operations');
             $table->foreign('calendar_year_id')->references('calendar_year_id')->on('calendar_years');
             $table->foreign('company_id')->references('company_id')->on('companies');
             

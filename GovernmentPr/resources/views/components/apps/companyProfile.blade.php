@@ -2270,7 +2270,7 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered">
+                                    <table class="table table-hover table-bordered" id="tbl-operation-types>
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
@@ -2382,12 +2382,12 @@
                                                 <div class="form-group">
                                                     <label for="operation_status" class="">Operation</label>
                                                     <select class="form-select" id="operation_status"
-                                                        name="operation_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{
-                                                            $operation->operation_name }}</option>
+                                                        name="operation" required>
+                                                        <option value="" selected disabled>Choose...</option>                                                        
+                                                        @foreach($company_operations as $operation)
+                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
                                                         @endforeach
+                                                        
                                                     </select>
                                                 </div>
                                             </div>
@@ -2561,7 +2561,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Operation Name</th>
-                                                    
+                                                    <th>Operation</th>
                                                     <th>Year</th>
                                                     <th>Expected Number of Operations per year</th>
                                                     <th>Expected Number of Waste to be Generated per year</th>
@@ -2574,9 +2574,10 @@
                                                 @foreach($annual_operations_logs as $operations)
                                                 <tr>
                                                     <td>{{ $operations->operation_name }}</td>
-                                                    <td>{{ $operations->calendar_year_id }}</td>
+                                                    <td>{{ $operations->operation->operation_name ?? 'N/A'  }}</td>
+                                                    <td>{{ $operations->calendarYear->name ?? 'N/A' }}</td>
                                                     <td>{{ $operations->operations_per_year }}</td>
-                                                    <td>{{ implode(', ', $operations->company_waste_id) }}</td>
+                                                    <td>{{ implode(', ', $operations->quantity_of_waste) }}</td>
 
                                                     <td>{{ $operations->water_used_per_year }}</td>
                                                     <td>{{ $operations->units_produced_per_year }}</td>
@@ -3037,7 +3038,6 @@
                                                     <th>Capacity</th>
                                                     <th>Status</th>
                                                     <th>Purchase Date</th>
-                                                    <th>Last Maintenance Date</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
@@ -3046,7 +3046,7 @@
                                                     <tr>
                                                         <td>{{ $equipment->equipment_name }}</td>
                                                         <td>{{ $equipment->equipmentType->name }}</td>
-                                                        <td>{{ $equipment->capacity }}</td>
+                                                        <td>{{ $equipment->equipment_capacity }}</td>
                                                         <td>
                                                             @php
                                                                 $statusClasses = [
@@ -3060,7 +3060,6 @@
                                                             </span>
                                                         </td>
                                                         <td>{{ $equipment->purchase_date }}</td>
-                                                        <td>{{ $equipment->last_maintenance_date ?? 'N/A' }}</td>
                                                         <td class="text-end">
                                                             <div class="d-flex justify-content-end">
                                                                 <button class="btn btn-sm btn-primary me-2">Edit</button>
@@ -7814,8 +7813,8 @@
                     result.equipment_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
                             <td>${log.equipment_name}</td>
-                            <td>${log.equipment_type}</td>
-                            <td>${log.serial_number ?? ''}</td>
+                            <td>${log.equipment_type ? log.equipment_type.name : 'N/A'}</td>
+                            <td>${log.equipment_capacity}</td>
                             <td>${log.status}</td>
                             <td>${log.date_added}</td>
                             <td class="text-end">
@@ -8079,11 +8078,12 @@
                     // Update the annual operations logs table or UI as needed
                     let tableBody = document.querySelector('#tbl-annual-operations-log tbody');
                     tableBody.innerHTML = "";
-                    result.annual_operations.forEach(operation => {
+                    result.annual_operations_logs.forEach(operation => {
                         tableBody.innerHTML += `<tr>
                             <td>${operation.operation_name}</td>
-                            <td>${operation.calendar_year_id}</td>
-                            <td>${implode(', ', operation.company_waste_id)}</td>
+                            <td>${operation.operation?.operation_name || 'N/A' }</td>
+                            <td>${operation.calendarYear?.name || 'N/A'}</td>
+                            <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
                             <td>${operation.water_used_per_year}</td>
                             <td>${operation.units_produced_per_year}</td>
                             <td class="text-end">

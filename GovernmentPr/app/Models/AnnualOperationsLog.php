@@ -12,7 +12,7 @@ class AnnualOperationsLog extends Model
     protected $primaryKey = 'annual_operations_log_id';
     protected $fillable = [
         'operation_name',
-        'company_operation_id',
+        'operation_id',
         'calendar_year_id',
         'companyMaterialId',
         'company_waste_id',
@@ -36,4 +36,18 @@ class AnnualOperationsLog extends Model
         'expected_quantity_chemical' => 'array',
         'quantity_of_waste' => 'array',
     ];
+    public function operation()
+    {
+        return $this->belongsTo(CompanyOperation::class, 'operation_id', 'company_operation_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function calendarYear()
+    {
+        return $this->belongsTo(CalendarYear::class, 'calendar_year_id');
+    }
 }
