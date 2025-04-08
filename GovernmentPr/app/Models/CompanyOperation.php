@@ -62,6 +62,11 @@ class CompanyOperation extends Model
         return $this->hasMany(ProductionLog::class, 'company_operation_id', 'company_operation_id');
     }
 
+    public function wasteDisposals()
+    {
+        return $this->hasMany(WasteDisposal::class, 'operation_id', 'company_operation_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);

@@ -49,7 +49,7 @@ class ProductionLogController extends StockMovementController
             'company_id' => 'required|exists:companies,company_id',
             'production_title' => 'required|string|max:255',
             'operation_name' => 'required|exists:company_operations,company_operation_id',
-            'material_used' => 'required|array|min:1',
+            'material_used' => 'nullable|array',
             'material_used.*.material_id' => 'required|exists:company_materials,companyMaterialId',
             'materials_used.*.quantity' => 'required|numeric|min:0',
             'chemical_used' => 'nullable|array',
@@ -80,9 +80,12 @@ class ProductionLogController extends StockMovementController
         foreach ($request->input('material_used') as $material) {
             $materialId = $material['material_id'];
             $quantityUsed = $material['quantity'];
-            $companyMaterial = CompanyMaterial::find($materialId)->first('materialID');
+            $companyMaterial = CompanyMaterial::where('companyMaterialId', $materialId)->first('materialID');
+            // dd($companyMaterial->materialID);
             // get the balance of each material used
             $availableMaterialBalance = $this->getMaterialBalance($materialId);
+
+            // dd($availableMaterialBalance);
 
             if ($availableMaterialBalance <= 0) {
             $validator->errors()->add('balance_error', 'No material stock is available. The balance is 0.');
@@ -107,7 +110,7 @@ class ProductionLogController extends StockMovementController
         foreach ($request->input('chemical_used', []) as $chemical) {
             $chemicalId = $chemical['chemical_id'];
             $volumeUsed = $chemical['volume'];
-            $companyChemical = CompanyChemical::find($chemical['chemical_id'])->first('chemical_id');
+            $companyChemical = CompanyChemical::where('company_chemical_id' ,$chemical['chemical_id'])->first('chemical_id');
             // get the balance of each chemical used
             $availableChemicalBalance = $this->getChemicalBalance($chemicalId);
 
@@ -178,7 +181,7 @@ class ProductionLogController extends StockMovementController
                 'production_title' => $request->input('production_title'),
                 'company_operation_id' => $request->input('operation_name'),
                 'company_id' => $request->input('company_id'),
-                'material_log_data' => json_encode($request->input('materials_used')),
+                'material_log_data' => $request->has('material_used') ? json_encode($request->input('material_used')) : null,
                 'chemical_log_data' => $request->has('chemical_used') ? json_encode($request->input('chemical_used')) : null,
                 'water_volume' => $request->input('amount_of_water_used'),
                 'product_log_data' => json_encode($request->input('product_produced')),

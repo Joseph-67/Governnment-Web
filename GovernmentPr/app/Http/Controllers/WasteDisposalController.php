@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\WasteDisposal;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -14,11 +15,7 @@ class WasteDisposalController extends Controller
      */
     public function index()
     {
-        //
-  
-            return view('company.companyProfile', $data);
-
-      
+        return view('company.companyProfile', $data);
     }
 
     /**
@@ -28,7 +25,7 @@ class WasteDisposalController extends Controller
      */
     public function create()
     {
-        //
+        // Implementation for creating a new resource
     }
 
     /**
@@ -39,8 +36,6 @@ class WasteDisposalController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'waste_type' => 'required|string|max:255',
             'operation' => 'required|integer',
@@ -48,7 +43,7 @@ class WasteDisposalController extends Controller
             'quantity_disposed' => 'required|numeric|min:0',
             'disposal_method' => 'required|string|max:255',
             'calendar_year' => 'required|integer',
-            'disposal_date' => 'required|date'
+            'disposal_date' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -58,24 +53,44 @@ class WasteDisposalController extends Controller
             ], 422);
         }
 
-        // If validation passes, create a new WasteDisposal record
-        $wasteDisposal = WasteDisposal::create([
-            'waste_type' => $request -> waste_type,
+        try {
+            $wasteDisposal = WasteDisposal::create([
+            'waste_type' => $request->waste_type,
             'company_id' => $request->company_id,
-            'operation_type_id' => $request ->operation,
+            'operation_id' => $request->operation,
             'company_waste_id' => $request->waste_item,
             'quantity' => $request->quantity_disposed,
             'disposal_method' => $request->disposal_method,
             'calendar_year_id' => $request->calendar_year,
             'disposal_date' => $request->disposal_date,
-            'status' => 'active'
-        ]);
+            'status' => 'active',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to create waste disposal record.',
+            'error' => $e->getMessage(),
+            ], 500);
+        }
+
+        try {
+            $waste_disposals = WasteDisposal::where('status', 'active')
+            ->with(['operation', 'companyWaste', 'calendarYear'])
+            ->where('company_id', $request->company_id)
+            ->where('status', 'active')
+            ->get();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to retrieve waste disposal records.',
+            'error' => $e->getMessage(),
+            ], 500);
+        }
 
         return response()->json([
-           
-            'status'=> 'success',
+            'status' => 'success',
             'message' => 'Waste disposal record created successfully.',
-            'data' => $wasteDisposal,
+            'waste_disposals' => $waste_disposals,
         ], 201);
     }
 
@@ -87,7 +102,7 @@ class WasteDisposalController extends Controller
      */
     public function show($id)
     {
-        //
+        // Implementation for showing a specific resource
     }
 
     /**
@@ -98,7 +113,7 @@ class WasteDisposalController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Implementation for editing a specific resource
     }
 
     /**
@@ -110,7 +125,7 @@ class WasteDisposalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Implementation for updating a specific resource
     }
 
     /**
@@ -121,6 +136,6 @@ class WasteDisposalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Implementation for deleting a specific resource
     }
 }

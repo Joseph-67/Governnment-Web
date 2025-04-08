@@ -31,4 +31,6 @@ class OperationType extends Model
     {
         return $query->where('is_delete', false);
     }
+
+
 }

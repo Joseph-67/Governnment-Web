@@ -14,7 +14,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class CompanyMaterialController extends Controller
+class CompanyMaterialController extends StockMovementController
 {
     /**
      * Display a listing of the resource.
@@ -161,6 +161,11 @@ class CompanyMaterialController extends Controller
         // ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
         // ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
         // ->where('company_materials.companyMaterialId', $id)->first();
+        $data['availableMaterialBalance'] = $this->getMaterialBalance($id);
+        $data['availableMaterialInflowBalance'] = $this->getMaterialTotalCheckIn($id);
+        $data['availableMaterialOutflowBalance'] = $this->getMaterialTotalCheckOut($id);
+        $data['availableMaterialAdjustmentBalance'] = $this->getMaterialTotalAdjustment($id);
+
         $data['stockMovement'] = stock_movement::join('materials', 'materials.materialID', '=', 'stock_movements.materialID')
         ->where('companyMaterialId', $id)->get(['*', 'stock_movements.materialID as stk_move_material_id']);
         // dd($id);

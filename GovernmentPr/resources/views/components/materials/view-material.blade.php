@@ -141,6 +141,18 @@
                             </table>
                         </div>
                     </div>
+                    <div class="card-footer bg-light text-muted d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Material Balance:</strong>
+                            <span>Total Inflow: {{ $availableMaterialInflowBalance }} {{ $company_material->unit_of_measure }}</span> |
+                            <span>Total Outflow: {{ $availableMaterialOutflowBalance }} {{ $company_material->unit_of_measure }}</span> |
+                            <span>Adjustments: {{ $availableMaterialAdjustmentBalance }} {{ $company_material->unit_of_measure }}</span> |
+                            <span>Balance: {{ $availableMaterialBalance }} {{ $company_material->unit_of_measure }}</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm">View Details</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

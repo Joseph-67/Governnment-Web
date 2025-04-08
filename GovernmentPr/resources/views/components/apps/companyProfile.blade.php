@@ -1712,14 +1712,14 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <h4 class="card-title mb-0">Water Management Records</h4>
                                                 <div class="">
-                                                    <div class="btn-group" role="group" aria-label="Water Management Actions">
-                                                        <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm">
+                                                    <div class="btn-group d-flex flex-wrap" role="group" aria-label="Water Management Actions">
+                                                        <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm flex-fill mb-2">
                                                             <i class="iconoir-plus"></i> Check In
                                                         </a>
-                                                        <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm">
+                                                        <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm flex-fill mb-2">
                                                             <i class="iconoir-plus"></i> Usage Log
                                                         </a>
-                                                        <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm">
+                                                        <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm flex-fill mb-2">
                                                             <i class="iconoir-plus"></i> Recycling Log
                                                         </a>
                                                     </div>
@@ -2234,118 +2234,126 @@
                 <!-- Operations Management -->
                 <div class="tab-pane p-3" id="operations" role="tabpanel">
                     <div class="accordion" id="operationsAccordion">
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="operationTypeHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationTypeCollapse" aria-expanded="false"
-                                    aria-controls="operationTypeCollapse">
-                                    Operation Type
-                                </button>
-                            </h2>
-                            <div id="operationTypeCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
-                                    <form action="" method="post" id="company_operation_type_form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="operationTypeHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#operationTypeCollapse" aria-expanded="false"
+                                aria-controls="operationTypeCollapse">
+                                <i class="las la-cogs me-2"></i> Operation Type
+                            </button>
+                        </h2>
+                        <div id="operationTypeCollapse" class="accordion-collapse collapse"
+                            aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
+                            <div class="accordion-body">
+                                <form action="" method="post" id="company_operation_type_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
+                                    @csrf
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="sequence" class="form-label">Sequence</label>
-                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence" required>
+                                        <div class="col-md-6">
+                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
+                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order" required>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3"
-                                                required></textarea>
+                                        <div class="col-12">
+                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-operation-types">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($operation_types as $type)
-                                                <tr>
-                                                    <td>{{ $type->name }}</td>
-                                                    <td>{{ $type->description }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
                                     </div>
+                                    
+                                    <div class="mt-4 text-end">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive mt-5">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($operation_types as $type)
+                                            <tr>
+                                                <td>{{ $type->name }}</td>
+                                                <td>{{ $type->description }}</td>
+                                                <td class="text-end">
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="operationCategoryHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationCategoryCollapse" aria-expanded="false"
-                                    aria-controls="operationCategoryCollapse">
-                                    Operation Category
-                                </button>
-                            </h2>
-                            <div id="operationCategoryCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
-                                    <form action="" method="post" id="operation_category_form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="operationCategoryHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#operationCategoryCollapse" aria-expanded="false"
+                                aria-controls="operationCategoryCollapse">
+                                <i class="las la-layer-group me-2"></i> Operation Category
+                            </button>
+                        </h2>
+                        <div id="operationCategoryCollapse" class="accordion-collapse collapse"
+                            aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
+                            <div class="accordion-body bg-light">
+                                <form action="" method="post" id="operation_category_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f0f8ff;">
+                                    @csrf
+                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" required>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3"
-                                                required></textarea>
+                                        <div class="col-md-6">
+                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-operation-categories">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($operation_categories as $category)
-                                                <tr>
-                                                    <td>{{ $category->name }}</td>
-                                                    <td>{{ $category->description }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
                                     </div>
+                                    <div class="mt-4 text-end">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive mt-5">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($operation_categories as $category)
+                                            <tr>
+                                                <td>{{ $category->name }}</td>
+                                                <td>{{ $category->description }}</td>
+                                                <td class="text-end">
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="annualOperationsLogHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -3164,9 +3172,8 @@
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_types as $type)
-                                                        <option value="{{ $type->operation_type_id }}">{{
-                                                            $type->name }}</option>
+                                                        @foreach($company_operations as $operation)
+                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3251,7 +3258,7 @@
                                             <td>{{ $disposal->quantity }}</td>
                                             <td>{{ $disposal->disposal_method }}</td>
                                             <td>{{ $disposal->disposal_date }}</td>
-                                            <td>{{ $disposal->operation->name ?? 'N/A' }}</td>
+                                            <td>{{ $disposal->operation->operation_name ?? 'N/A' }}</td>
                                             <td>{{ $disposal->calendarYear->name ?? 'N/A' }}</td>
                                             <td class="text-end">
                                                 <div class="d-flex justify-content-end">
@@ -7400,7 +7407,7 @@
                                 <td>${disposal.disposal_method}</td>
                                 <td>${disposal.quantity}</td>
                                 <td>${disposal.disposal_date}</td>
-                                <td>${disposal.operation?.name || 'N/A'}</td>
+                                <td>${disposal.operation?.operation_name || 'N/A'}</td>
                                 <td>${disposal.calendarYear?.name || 'N/A'}</td>
                                 <td class="text-end">
                                                 <div class="d-flex justify-content-end">

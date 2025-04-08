@@ -12,8 +12,8 @@ class WasteDisposal extends Model
     protected $primaryKey = 'waste_disposal_id';
 
     protected $fillable = [
-       'waste_type',
-        'operation_type_id',
+        'waste_type',
+        'operation_id',
         'company_id',
         'quantity',
         'disposal_method',
@@ -21,8 +21,26 @@ class WasteDisposal extends Model
         'disposal_date',
         'company_waste_id',
         'status'
-        
     ];
 
+    public function operation()
+    {
+        return $this->belongsTo(CompanyOperation::class, 'operation_id', 'company_operation_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function calendarYear()
+    {
+        return $this->belongsTo(CalendarYear::class, 'calendar_year_id');
+    }
+
+    public function companyWaste()
+    {
+        return $this->belongsTo(CompanyWaste::class, 'company_waste_id');
+    }
   
 }

@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('waste_type');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('company_waste_id');
-            $table->unsignedBigInteger('operation_type_id');
+            $table->unsignedBigInteger('operation_id');
             $table->unsignedBigInteger('calendar_year_id');
             $table->integer('quantity');
             $table->string('disposal_method');
             $table->date('disposal_date');
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->foreign('operation_type_id')->references('operation_type_id')->on('operation_types');
+            $table->foreign('operation_id')->references('company_operation_id')->on('company_operations');
             $table->foreign('calendar_year_id')->references('calendar_year_id')->on('calendar_years');
             $table->foreign('company_waste_id')->references('company_waste_id')->on('company_wastes');
             $table->foreign('company_id')->references('company_id')->on('companies');

@@ -145,7 +145,7 @@ class CompanyController extends WaterStockMovementController
         //     ->where('is_deleted', false)
         //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
         // waste disposal
-        $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->get();
+        $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
         // water quality logs
         $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)
             ->get(['test_date', 'parameter_tested','test_results', 'deviation_detected', 'corrective_actions']);
