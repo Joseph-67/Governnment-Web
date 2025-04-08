@@ -106,7 +106,7 @@ class CompanyController extends WaterStockMovementController
         // operation categories
         $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
         // operation types
-        $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->get(['operation_type_id', 'name']);
+        $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->orderBy('sequence_order', 'ASC')->get(['operation_type_id', 'name', 'description', 'sequence_order']);
         // company operations
         $data['company_operations'] = CompanyOperation::where('company_id', $companyID)->get();
         $data['approved_operations'] = CompanyOperation::where('status', '<>', 'inactive')->where('company_id', $companyID)->get();

@@ -2257,11 +2257,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order" required>
+                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
                                         </div>
                                         <div class="col-12">
                                             <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
                                         </div>
                                     </div>
                                     
@@ -2271,11 +2271,12 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered">
+                                    <table class="table table-hover table-bordered" id="tbl-operation-types">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Description</th>
+                                                <th>Sequence Order</th>
                                                 <th class="text-end">Action</th>
                                             </tr>
                                         </thead>
@@ -2284,6 +2285,7 @@
                                             <tr>
                                                 <td>{{ $type->name }}</td>
                                                 <td>{{ $type->description }}</td>
+                                                <td>{{ $type->sequence_order }}</td>
                                                 <td class="text-end">
                                                     <div class="d-flex justify-content-end">
                                                         <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
@@ -7753,7 +7755,8 @@
                     result.operation_types.forEach(type => {
                         tableBody.innerHTML += `<tr>
                             <td>${type.name}</td>
-                            <td>${type.description}</td>
+                            <td>${type.description ?? ""}</td>
+                            <td>${type.sequence_order ?? ""}</td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
                                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
