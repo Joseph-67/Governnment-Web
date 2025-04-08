@@ -44,6 +44,7 @@ use App\Models\User;
 use App\Models\WasteDisposal;
 use App\Models\WaterStockMovement;
 use App\Models\WaterQualityLogs;
+use App\Models\AnnualOperationsLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -149,6 +150,8 @@ class CompanyController extends WaterStockMovementController
         // water quality logs
         $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)
             ->get(['test_date', 'parameter_tested','test_results', 'deviation_detected', 'corrective_actions']);
+            $data['annual_operations_logs'] = AnnualOperationsLog::where('company_id', $companyID)
+                ->get([ 'operation_name','calendar_year_id', 'operations_per_year', 'company_waste_id','water_used_per_year','units_produced_per_year']);
         return view('components.apps.companyProfile', $data);
     }   
     /**

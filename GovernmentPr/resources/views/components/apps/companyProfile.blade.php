@@ -2552,7 +2552,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Operation Name</th>
-                                                    <th>Description</th>
+                                                    
                                                     <th>Year</th>
                                                     <th>Expected Number of Operations per year</th>
                                                     <th>Expected Number of Waste to be Generated per year</th>
@@ -2562,6 +2562,32 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($annual_operations_logs as $operations)
+                                                <tr>
+                                                    <td>{{ $operations->operation_name }}</td>
+                                                    <td>{{ $operations->calendar_year_id }}</td>
+                                                    <td>{{ $operations->operations_per_year }}</td>
+                                                    <td>{{ implode(', ', $operations->company_waste_id) }}</td>
+
+                                                    <td>{{ $operations->water_used_per_year }}</td>
+                                                    <td>{{ $operations->units_produced_per_year }}</td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#"
+                                                                >Edit</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3008,32 +3034,33 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($industrial_equipments as $equipment)
-                                                <tr>
-                                                    <td>{{ $equipment->equipment_name }}</td>
-                                                    <td>{{ $equipment->equipmentType->name }}</td>
-                                                    <td>{{ $equipment->capacity }}</td>
-                                                    <td>
-                                                        @php
-                                                            $statusClasses = [
-                                                                'Operational' => 'bg-success',
-                                                                'Under Maintenance' => 'bg-warning',
-                                                                'Out of Service' => 'bg-danger',
-                                                            ];
-                                                        @endphp
-                                                        <span class="badge {{ $statusClasses[$equipment->equipment_status] ?? 'bg-secondary' }}">
-                                                            {{ $equipment->equipment_status }}
-                                                        </span>
-                                                    </td>
-                                                    <td>{{ $equipment->purchase_date }}</td>
-                                                    <td>{{ $equipment->last_maintenance_date ?? 'N/A' }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>{{ $equipment->equipment_name }}</td>
+                                                        <td>{{ $equipment->equipmentType->name }}</td>
+                                                        <td>{{ $equipment->capacity }}</td>
+                                                        <td>
+                                                            @php
+                                                                $statusClasses = [
+                                                                    'Operational' => 'bg-success',
+                                                                    'Under Maintenance' => 'bg-warning',
+                                                                    'Out of Service' => 'bg-danger',
+                                                                ];
+                                                            @endphp
+                                                            <span class="badge {{ $statusClasses[$equipment->equipment_status] ?? 'bg-secondary' }}">
+                                                                {{ $equipment->equipment_status }}
+                                                            </span>
+                                                        </td>
+                                                        <td>{{ $equipment->purchase_date }}</td>
+                                                        <td>{{ $equipment->last_maintenance_date ?? 'N/A' }}</td>
+                                                        <td class="text-end">
+                                                            <div class="d-flex justify-content-end">
+                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
+                                            </tbody>
                                             </tbody>
                                         </table>
                                     </div>
@@ -8026,20 +8053,17 @@
                     result.annual_operations.forEach(operation => {
                         tableBody.innerHTML += `<tr>
                             <td>${operation.operation_name}</td>
-                            <td>${operation.expected_materials.map(material => `${material.name} (${material.quantity})`).join(', ')}</td>
-                            <td>${operation.expected_wastes.map(waste => `${waste.name} (${waste.quantity})`).join(', ')}</td>
-                            <td>${operation.expected_chemicals.map(chemical => `${chemical.name} (${chemical.quantity})`).join(', ')}</td>
-                            <td>${operation.expected_products.map(product => `${product.name} (${product.quantity})`).join(', ')}</td>
-                            <td>${operation.calendar_year_name}</td>
-                            <td>${operation.start_date}</td>
-                            <td>${operation.end_date}</td>
+                            <td>${operation.calendar_year_id}</td>
+                            <td>${implode(', ', operation.company_waste_id)}</td>
+                            <td>${operation.water_used_per_year}</td>
+                            <td>${operation.units_produced_per_year}</td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
                                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
                                         <a class="dropdown-item" href="#">Delete</a>
                                     </div>
                                 </div>
