@@ -2032,12 +2032,12 @@
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-down"></i> Check In
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-up"></i> Check Out
                                                                             </a>
                                                                         </li>
@@ -2362,7 +2362,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#annualOperationsLogCollapse" aria-expanded="false"
                                     aria-controls="annualOperationsLogCollapse">
-                                    Annual Operations Log
+                                    <i class="las la-calendar-alt me-2"></i> Annual Operations Log
                                 </button>
                             </h2>
                             <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
@@ -2612,7 +2612,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#operationsLogCollapse" aria-expanded="false"
                                     aria-controls="operationsLogCollapse">
-                                    Operations Log
+                                    <i class="las la-book me-2"></i> Operations Log
                                 </button>
                             </h2>
                             <div id="operationsLogCollapse" class="accordion-collapse collapse"
@@ -2855,7 +2855,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#equipmentTypeCollapse" aria-expanded="false"
                                     aria-controls="equipmentTypeCollapse">
-                                    Equipment Types
+                                    <i class="las la-tools me-2"></i> Equipment Types
                                 </button>
                             </h2>
                             <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
@@ -2925,7 +2925,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#industrialEquipmentLogCollapse" aria-expanded="false"
                                     aria-controls="industrialEquipmentLogCollapse">
-                                    Industrial Equipment Log
+                                    <i class="las la-industry me-2"></i> Industrial Equipment Log
                                 </button>
                             </h2>
                             <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
@@ -3083,7 +3083,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteItemCollapse" aria-expanded="false"
                                     aria-controls="wasteItemCollapse">
-                                    Waste Items
+                                    <i class="las la-trash-alt me-2"></i> Waste Items
                                 </button>
                             </h2>
                             <div id="wasteItemCollapse" class="accordion-collapse collapse"
@@ -3171,7 +3171,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
                                     aria-controls="wasteDisposalTrackingCollapse">
-                                    Waste Disposal Tracking
+                                    <i class="las la-recycle me-2"></i> Waste Disposal Tracking
                                 </button>
                             </h2>
                             <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
@@ -3313,7 +3313,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#productionTrackingCollapse" aria-expanded="false"
                                     aria-controls="productionTrackingCollapse">
-                                    Production Log
+                                    <i class="las la-industry me-2"></i> Production Log
                                 </button>
                             </h2>
                             <div id="productionTrackingCollapse" class="accordion-collapse collapse"
@@ -3496,7 +3496,7 @@
                             <h2 class="accordion-header" id="qualityControlHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#qualityControlCollapse" aria-expanded="false" aria-controls="qualityControlCollapse">
-                                    Quality Control
+                                    <i class="las la-check-circle me-2"></i> Quality Control
                                 </button>
                             </h2>
                             <div id="qualityControlCollapse" class="accordion-collapse collapse"
