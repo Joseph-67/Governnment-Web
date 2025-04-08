@@ -142,6 +142,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(MaterialController::class)->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
+        Route::delete('/materials/{id}', 'destroy')->name('admin.delete-material');
     }); 
 
     // Calendar Year
