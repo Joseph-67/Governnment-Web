@@ -5,28 +5,54 @@
         <div class="col-md-12">
             <!-- Page Header -->
             <div class="header-title">
-                <h3>Multi-Company Advanced Production Overview</h3>
+                <h3>Advanced Production Overview</h3>
                 <p>Analyze and compare production metrics and waste data across multiple companies.</p>
             </div>
 
-            
-            <!-- Company Tabs -->
-            <ul class="nav nav-pills mb-4 company-tabs" id="companyTabs" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link active" id="company1-tab" data-bs-toggle="tab" data-bs-target="#company1" type="button" role="tab" aria-controls="company1" aria-selected="true">Company A</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" id="company2-tab" data-bs-toggle="tab" data-bs-target="#company2" type="button" role="tab" aria-controls="company2" aria-selected="false">Company B</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" id="company3-tab" data-bs-toggle="tab" data-bs-target="#company3" type="button" role="tab" aria-controls="company3" aria-selected="false">Company C</button>
-                </li>
-            </ul>
+            <!-- Company Selection -->
+            <div class="">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="companySelect">Company</label>
+                            <select id="companySelect" class="form-control" multiple>
+                                @foreach($companies as $company)
+                                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>   
+                    </div>
+                    <div class="col-md-4">
+                        <label class="mb-2">Calendar Year</label>
+                        <select name="" id="calendar-year" class="form-select">
+                            <option selected disabled> Choose... </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="searchButton" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fancy Card -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm bg-primary text-white position-relative">
+                        <div class="card-body">
+                            <h5 class="card-title">Welcome to the Production Report</h5>
+                            <p class="card-text">Select a company from the dropdown above to view detailed production metrics and analytics. Use the options to switch between companies and explore their performance data.</p>
+                        </div>
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close" onclick="closeCard(this)" style="background-color: white; border-radius: 50%;"></button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Tab Content -->
-            <div class="tab-content" id="companyTabsContent">
+            <div id="companyTabsContent" class="d-none">
                 <!-- Company A -->
-                <div class="tab-pane fade show active" id="company1" role="tabpanel" aria-labelledby="company1-tab">
+                <div class="" id="company1" role="tabpanel" aria-labelledby="company1-tab">
                     <h5>Production Overview - Company A</h5>
                     <div class="row mb-4">
                         <div class="col-md-3">
@@ -81,18 +107,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Company B -->
-                <div class="tab-pane fade" id="company2" role="tabpanel" aria-labelledby="company2-tab">
-                    <h5>Production Overview - Company B</h5>
-                    <p>Content for Company B goes here...</p>
-                </div>
-
-                <!-- Company C -->
-                <div class="tab-pane fade" id="company3" role="tabpanel" aria-labelledby="company3-tab">
-                    <h5>Production Overview - Company C</h5>
-                    <p>Content for Company C goes here...</p>
-                </div>
             </div>
         </div>
     </div>
@@ -109,7 +123,7 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(5px);
         box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
     }
     .header-title {
@@ -127,6 +141,7 @@
         margin-bottom: 30px;
     }
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -218,7 +233,50 @@
             }
         });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new Selectr('#companySelect', {
+            multiple: false,
+            placeholder: "Select companies",
+            render: {
+                option: function (data, escape) {
+                    return `<span>${escape(data.text)}</span>`; // Custom option rendering
+                },
+                item: function (data, escape) {
+                    return `<span>${escape(data.text)}</span>`; // Custom item rendering (selected items)
+                }
+            }
+        });
 
+        new Selectr('#calendar-year', {
+            multiple: false,
+        });
+    });
+
+</script>
+<script>
+    function closeCard(button) {
+        const card = button.closest('.card');
+        card.style.transition = 'opacity 0.3s';
+        card.style.opacity = 0;
+        setTimeout(() => card.remove(), 300);
+    }
+
+    document.getElementById('companySelect').addEventListener('change', function () {
+    const selectedValue = this.value; // Get the selected value
+    console.log("Selected Company ID:", selectedValue);
+
+    // Optional: Perform actions based on the selected value
+    if (selectedValue) {
+        // Example: Show a section or make an API call
+        console.log("Company ID selected: " + selectedValue);
+    }
+});
+
+
+</script>
 @endsection
 
 </x-layouts.admin-app>

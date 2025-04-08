@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Company;
 class ProductionReport extends Controller
 {
     /**
@@ -16,6 +16,7 @@ class ProductionReport extends Controller
         //
         $data = [];
         $data['page_title'] = 'Production Report';
+        $data['companies']  =   Company::where('status', 'active')->orderBy('company_name', 'ASC')->get();
         return view('components.reportinganalytics.production-report', $data);
     }
 
