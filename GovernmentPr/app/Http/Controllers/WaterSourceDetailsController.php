@@ -42,7 +42,7 @@ class WaterSourceDetailsController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'company_id'       => ['required', 'numeric'],
+            'water_source'       => ['required', 'numeric'],
             'location'         => ['required', 'string', 'max:255'],
             'capacity'         => ['nullable', 'numeric', 'min:1'],
         ]);
@@ -57,7 +57,7 @@ class WaterSourceDetailsController extends Controller
 
         $result = WaterSourceDetails::create([
             'companyID'          => $request->company_id,
-            'company_water_source_id'    => $request->water_source_id,
+            'company_water_source_id'    => $request->water_source,
             'location'        => $request->location,
             'capacity'        => $request->capacity,
             'status'          => "active",
