@@ -11,16 +11,17 @@
 
             <!-- Company Selection -->
             <div class="">
-                <div class="row g-2">
+                <div class="row g-2 align-items-end">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="companySelect">Company</label>
-                            <select id="companySelect" class="form-control" multiple>
+                            <label for="companySelect" class="form-label">Company</label>
+                            <select id="companySelect">
                                 @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                    <option value="{{ $company->company_id }}">{{ $company->company_name }}</option>
                                 @endforeach
                             </select>
-                        </div>   
+                        </div>
+ 
                     </div>
                     <div class="col-md-4">
                         <label class="mb-2">Calendar Year</label>
@@ -141,7 +142,15 @@
         margin-bottom: 30px;
     }
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+<!-- Selectize CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
 @endsection
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -233,48 +242,55 @@
             }
         });
 </script>
+<!-- jQuery (required for Selectize) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+<!-- Selectize JS -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+  integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        new Selectr('#companySelect', {
-            multiple: false,
-            placeholder: "Select companies",
-            render: {
-                option: function (data, escape) {
-                    return `<span>${escape(data.text)}</span>`; // Custom option rendering
-                },
-                item: function (data, escape) {
-                    return `<span>${escape(data.text)}</span>`; // Custom item rendering (selected items)
+    $(document).ready(function () {
+        // Initialize Selectize
+        $('#companySelect').selectize({
+            maxItems: 1,  // Allow multiple selections
+            placeholder: 'Select companies',
+            onChange: function(value) {
+                console.log('Selected values:', value); // Display selected values
+                if (value) {
+                    // Fetch calendar data based on the selected company
+                    fetch(`/api/get-calendar-years/${value}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Populate the calendar year dropdown
+                            const calendarYearSelect = document.getElementById('calendar-year');
+                            calendarYearSelect.innerHTML = '<option selected disabled>Choose...</option>';
+                            data.years.forEach(year => {
+                                const option = document.createElement('option');
+                                option.value = year;
+                                option.textContent = year;
+                                calendarYearSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching calendar years:', error);
+                        });
                 }
             }
         });
-
+    });
+    document.addEventListener("DOMContentLoaded", function () {
         new Selectr('#calendar-year', {
             multiple: false,
         });
     });
-
-</script>
-<script>
-    function closeCard(button) {
-        const card = button.closest('.card');
-        card.style.transition = 'opacity 0.3s';
-        card.style.opacity = 0;
-        setTimeout(() => card.remove(), 300);
-    }
-
-    document.getElementById('companySelect').addEventListener('change', function () {
-    const selectedValue = this.value; // Get the selected value
-    console.log("Selected Company ID:", selectedValue);
-
-    // Optional: Perform actions based on the selected value
-    if (selectedValue) {
-        // Example: Show a section or make an API call
-        console.log("Company ID selected: " + selectedValue);
-    }
-});
-
 
 </script>
 @endsection
