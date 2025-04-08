@@ -40,6 +40,10 @@ class CalendarYear extends Model
     {
         return $this->hasMany(WasteDisposal::class, 'calendar_year_id');
     }
+    public function annualOperationsLogs()
+    {
+        return $this->hasMany(AnnualOperationsLog::class, 'calendar_year_id');
+    }
 
     public function scopeActive($query)
     {

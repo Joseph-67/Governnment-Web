@@ -2385,12 +2385,12 @@
                                                 <div class="form-group">
                                                     <label for="operation_status" class="">Operation</label>
                                                     <select class="form-select" id="operation_status"
-                                                        name="operation_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{
-                                                            $operation->operation_name }}</option>
+                                                        name="operation" required>
+                                                        <option value="" selected disabled>Choose...</option>                                                        
+                                                        @foreach($company_operations as $operation)
+                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
                                                         @endforeach
+                                                        
                                                     </select>
                                                 </div>
                                             </div>
@@ -2564,7 +2564,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Operation Name</th>
-                                                    
+                                                    <th>Operation</th>
                                                     <th>Year</th>
                                                     <th>Expected Number of Operations per year</th>
                                                     <th>Expected Number of Waste to be Generated per year</th>
@@ -2577,9 +2577,10 @@
                                                 @foreach($annual_operations_logs as $operations)
                                                 <tr>
                                                     <td>{{ $operations->operation_name }}</td>
-                                                    <td>{{ $operations->calendar_year_id }}</td>
+                                                    <td>{{ $operations->operation->operation_name ?? 'N/A'  }}</td>
+                                                    <td>{{ $operations->calendarYear->name ?? 'N/A' }}</td>
                                                     <td>{{ $operations->operations_per_year }}</td>
-                                                    <td>{{ implode(', ', $operations->company_waste_id) }}</td>
+                                                    <td>{{ implode(', ', $operations->quantity_of_waste) }}</td>
 
                                                     <td>{{ $operations->water_used_per_year }}</td>
                                                     <td>{{ $operations->units_produced_per_year }}</td>
@@ -3040,7 +3041,6 @@
                                                     <th>Capacity</th>
                                                     <th>Status</th>
                                                     <th>Purchase Date</th>
-                                                    <th>Last Maintenance Date</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
@@ -3049,7 +3049,7 @@
                                                     <tr>
                                                         <td>{{ $equipment->equipment_name }}</td>
                                                         <td>{{ $equipment->equipmentType->name }}</td>
-                                                        <td>{{ $equipment->capacity }}</td>
+                                                        <td>{{ $equipment->equipment_capacity }}</td>
                                                         <td>
                                                             @php
                                                                 $statusClasses = [
@@ -3063,7 +3063,6 @@
                                                             </span>
                                                         </td>
                                                         <td>{{ $equipment->purchase_date }}</td>
-                                                        <td>{{ $equipment->last_maintenance_date ?? 'N/A' }}</td>
                                                         <td class="text-end">
                                                             <div class="d-flex justify-content-end">
                                                                 <button class="btn btn-sm btn-primary me-2">Edit</button>
@@ -3433,9 +3432,13 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="quantity_produced" class="form-label">Quantity Produced</label>
                                                         <input type="number" min="0" class="form-control" id="quantity_produced" name="product_produced[0][quantity]" placeholder="Enter quantity produced" required>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
+                                                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3466,7 +3469,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                
+                                                @foreach($production_logs as $productions)
+                                                <tr>
+                                                    <td>{{ $productions->production_title }}</td>
+                                                     <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3536,7 +3555,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                        @foreach($quality_controls_record as $control)
+                                                        <tr>
+                                                            <td>{{ $control->quality_metric }}</td>
+                                                            <td>{{ $control->acceptable_range }}</td>
+                                                            <td>{{ $control->measurement_frequency }}</td>
+                                                            <td>{{ $control->responsible_person }}</td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -7818,8 +7850,8 @@
                     result.equipment_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
                             <td>${log.equipment_name}</td>
-                            <td>${log.equipment_type}</td>
-                            <td>${log.serial_number ?? ''}</td>
+                            <td>${log.equipment_type ? log.equipment_type.name : 'N/A'}</td>
+                            <td>${log.equipment_capacity}</td>
                             <td>${log.status}</td>
                             <td>${log.date_added}</td>
                             <td class="text-end">
@@ -8083,11 +8115,12 @@
                     // Update the annual operations logs table or UI as needed
                     let tableBody = document.querySelector('#tbl-annual-operations-log tbody');
                     tableBody.innerHTML = "";
-                    result.annual_operations.forEach(operation => {
+                    result.annual_operations_logs.forEach(operation => {
                         tableBody.innerHTML += `<tr>
                             <td>${operation.operation_name}</td>
-                            <td>${operation.calendar_year_id}</td>
-                            <td>${implode(', ', operation.company_waste_id)}</td>
+                            <td>${operation.operation?.operation_name || 'N/A' }</td>
+                            <td>${operation.calendarYear?.name || 'N/A'}</td>
+                            <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
                             <td>${operation.water_used_per_year}</td>
                             <td>${operation.units_produced_per_year}</td>
                             <td class="text-end">
@@ -8204,7 +8237,36 @@
             });
         });
 
-        // waste
+        // store quality control
+        // Store Quality Control
+        document.querySelector('#quality-control-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-quality-control') }}";
+
+            fetch_cycle('--Store Quality Control', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the quality control table or UI as needed
+                    let tableBody = document.querySelector('#tbl-quality-control tbody');
+                    tableBody.innerHTML = "";
+                    result.quality_controls_record.forEach(control => {
+                        tableBody.innerHTML += `<tr>
+                        <td>${control.quality_metric }</td>
+                        <td>${control.acceptable_range }</td>
+                        <td>${control.measurement_frequency }</td>
+                        <td>${control.responsible_person }</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                        </tr>`;
+                    });
+                }
+            });
+        });
         // Store Waste Item
         document.querySelector('#submit-waste-item').addEventListener('click', function () {
             let form = document.querySelector('#waste-item-form');
@@ -8378,21 +8440,13 @@
                     tableBody.innerHTML = "";
                     result.production_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                            <td>${log.product_name}</td>
-                            <td>${log.quantity_produced}</td>
-                            <td>${log.production_date}</td>
-                            <td>${log.remark ?? ''}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td>${log.production_title}</td>
+                            <td>${log.operation_name}</td>
+                            <td>${log.calendar_year_name}</td>
+                            <td>${log.start_date}</td>
+                            <td>${log.end_date}</td>
+                            <td>${log.total_quantity_produced}</td>
+                           
                         </tr>`;
                     });
                 }
