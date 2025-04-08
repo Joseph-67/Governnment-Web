@@ -98,8 +98,24 @@ class CategoryController extends Controller
      * @param  \App\Models\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(category $category)
+    public function destroy($id)
     {
         //
+        // dd($id);
+        $category = category::find($id);
+        if ($category) {
+            // $category->category_status = 'inactive';
+            // $category->save();
+            // $category->delete(); // Soft delete the category
+            $category->forceDelete(); // Permanently delete the category
+
+            $category = category::get();
+            return response()->json([
+                'status' => 'success',
+                'categories' => $category,
+                'message' => 'Category deleted successfully']);
+        } else {
+            return back()->with(['error' => 'Category not found']);
+        }
     }
 }

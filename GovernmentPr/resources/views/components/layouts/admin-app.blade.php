@@ -728,6 +728,7 @@
     </div>
     <!-- end page-wrapper -->
 
+    @yield('modals')
     <!-- Javascript  -->
     <!-- vendor js -->
     <script src="{{ asset('adminAssets/js/jquery.js') }}"></script>

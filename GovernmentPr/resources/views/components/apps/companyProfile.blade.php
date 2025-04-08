@@ -1988,6 +1988,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        
                                                         @forelse($company_chemicals as $chemical)
                                                         <tr>
                                                             <td class="align-middle">
@@ -2031,12 +2032,12 @@
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-down"></i> Check In
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-up"></i> Check Out
                                                                             </a>
                                                                         </li>
@@ -2441,7 +2442,7 @@
                                                         <option value="" selected disabled>Select Chemical</option>
                                                         @foreach($approved_company_chemicals as $chemical)
                                                         <option value="{{ $chemical->company_chemical_id }}">{{
-                                                            $chemical->chemical->name }}</option>
+                                                            $chemical->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3369,7 +3370,7 @@
                                                         <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
                                                             <option value="" selected disabled>Select Chemical</option>
                                                             @foreach($approved_company_chemicals as $chemical)
-                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
+                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

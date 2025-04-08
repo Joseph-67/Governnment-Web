@@ -11,7 +11,7 @@ class Chemicals extends Model
     protected $primaryKey="chemical_id";
     protected $fillable=[
         'name',
-        'chemical_category',
+        'chemical_category_id',
         'chemical_image',
         'cas_number',
         'ec_number',
@@ -35,9 +35,16 @@ class Chemicals extends Model
         'status'
     ];
 
+    public $timestamps = true;
+    protected $table = 'chemicals';
+    public function chemicalCategory()
+    {
+        return $this->belongsTo(category::class, 'chemical_category_id', 'categoryID');
+    }
+
     public function companyChemicals()
     {
-        return $this->hasMany(CompanyChemical::class);
+        return $this->hasMany(CompanyChemical::class, 'chemical_id', 'chemical_id');
     }
 
     public function company()
