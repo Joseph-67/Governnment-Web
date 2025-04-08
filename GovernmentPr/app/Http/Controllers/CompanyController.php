@@ -104,7 +104,7 @@ class CompanyController extends WaterStockMovementController
         $data['availableWaterOutflowBalance'] = $this->getTotalCheckOut($companyID);
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
         // operation categories
-        $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name']);
+        $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name',  'description']);
         // operation types
         $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->orderBy('sequence_order', 'ASC')->get(['operation_type_id', 'name', 'description', 'sequence_order']);
         // company operations

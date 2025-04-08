@@ -2321,7 +2321,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" ></textarea>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-end">
@@ -2330,7 +2330,7 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered">
+                                    <table class="table table-hover table-bordered" id="tbl-operation-categories">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
@@ -8052,20 +8052,20 @@
                     tableBody.innerHTML = "";
                     result.operation_categories.forEach(category => {
                         tableBody.innerHTML += `<tr>
-            <td>${category.name}</td>
-            <td>${category.description}</td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`;
+                        <td>${category.name}</td>
+                        <td>${category.description ?? ""}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
                     });
                 }
             });
