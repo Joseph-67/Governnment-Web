@@ -152,6 +152,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/calendar-year/{id}', 'show')->name('admin.show-calendar-year');
         Route::put('/calendar-year/{id}', 'update')->name('admin.update-calendar-year');
         Route::delete('/calendar-year/{id}', 'destroy')->name('admin.delete-calendar-year');
+        Route::get('/get-calendar-years/{value}', 'get_years');
     });
 
     //Chemicals
@@ -245,6 +246,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(QualityControlController::class)->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
+
     Route::controller(RECPController::class)->group(function(){
         // add
         Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');

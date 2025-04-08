@@ -253,46 +253,50 @@
 ></script>
 <script>
     $(document).ready(function () {
-        // Initialize Selectize
+        // Initialize Selectize for Company Selection
         $('#companySelect').selectize({
-            maxItems: 1,  // Allow multiple selections
+            maxItems: 1,  // Single selection for companies (adjust if multi-select is required)
             placeholder: 'Select companies',
             onChange: function(value) {
-                console.log('Selected values:', value); // Display selected values
+                console.log('Selected company:', value); // Display selected company ID
                 if (value) {
                     // Fetch calendar data based on the selected company
-                    fetch(`/api/get-calendar-years/${value}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            // Populate the calendar year dropdown
-                            const calendarYearSelect = document.getElementById('calendar-year');
-                            calendarYearSelect.innerHTML = '<option selected disabled>Choose...</option>';
-                            data.years.forEach(year => {
-                                const option = document.createElement('option');
-                                option.value = year;
-                                option.textContent = year;
-                                calendarYearSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error fetching calendar years:', error);
+                    fetch(`/admin/get-calendar-years/${value}`, {
+                        method: 'GET',  // Change to GET method for fetching data
+                        headers: { 
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Populate the calendar year dropdown
+                        console.log(data);
+                        
+                        const calendarYearSelect = document.getElementById('calendar-year');
+                        calendarYearSelect.innerHTML = '<option selected disabled>Choose...</option>';
+                        data.calendar_years.forEach(year => {
+                            const option = document.createElement('option');
+                            option.value = year.calendar_year_id;
+                            option.textContent = year.name;
+                            calendarYearSelect.appendChild(option);
                         });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching calendar years:', error);
+                    });
                 }
             }
         });
     });
-    document.addEventListener("DOMContentLoaded", function () {
-        new Selectr('#calendar-year', {
-            multiple: false,
-        });
-    });
+
 
 </script>
+
 @endsection
 
 </x-layouts.admin-app>
