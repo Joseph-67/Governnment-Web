@@ -92,7 +92,7 @@ class WaterQualityLogsController extends Controller
             return response()->json([
             'status'  => 'success',
             'message' => 'Water quality log added successfully.',
-            'water_quality_log'    => $water_quality_log,
+            'water_quality_logs'    => $water_quality_logs,
             ], 200);
         
 
