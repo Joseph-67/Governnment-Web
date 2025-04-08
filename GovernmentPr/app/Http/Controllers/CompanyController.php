@@ -153,8 +153,7 @@ class CompanyController extends WaterStockMovementController
         // waste disposal
         $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
         // water quality logs
-        $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)
-            ->get(['test_date', 'parameter_tested','test_results', 'deviation_detected', 'corrective_actions']);
+        $data['water_quality_logs'] = WaterQualityLogs::where('status','active')->where('companyID', $companyID)->where('status', 'active')->get();
         $data['annual_operations_logs'] = AnnualOperationsLog::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
         $data['production_logs'] = ProductionLog::where('production_status', 'active')
             ->where('company_id', $companyID)
