@@ -2271,7 +2271,7 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered">
+                                    <table class="table table-hover table-bordered" id="tbl-operation-types">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
@@ -3432,9 +3432,13 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="quantity_produced" class="form-label">Quantity Produced</label>
                                                         <input type="number" min="0" class="form-control" id="quantity_produced" name="product_produced[0][quantity]" placeholder="Enter quantity produced" required>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
+                                                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3465,7 +3469,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                
+                                                @foreach($production_logs as $productions)
+                                                <tr>
+                                                    <td>{{ $productions->production_title }}</td>
+                                                     <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -8378,21 +8398,13 @@
                     tableBody.innerHTML = "";
                     result.production_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                            <td>${log.product_name}</td>
-                            <td>${log.quantity_produced}</td>
-                            <td>${log.production_date}</td>
-                            <td>${log.remark ?? ''}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td>${log.production_title}</td>
+                            <td>${log.operation_name}</td>
+                            <td>${log.calendar_year_name}</td>
+                            <td>${log.start_date}</td>
+                            <td>${log.end_date}</td>
+                            <td>${log.total_quantity_produced}</td>
+                           
                         </tr>`;
                     });
                 }
