@@ -100,15 +100,12 @@ class MaterialController extends Controller
      * @param  \App\Models\Material  $material
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Material $material)
+    public function destroy($id)
     {
         //
          // dd($id);
          $material = material::find($id);
          if ($material) {
-             // $material->material = 'inactive';
-             // $material->save();
-             // $material->delete(); // Soft delete the material
              $material->forceDelete(); // Permanently delete the category
  
              $material = material::get();
