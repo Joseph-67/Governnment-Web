@@ -1511,16 +1511,19 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($companyWaterSources as $waterSource)
-                                                        <tr>
-                                                            <td>{{ $waterSource->waterSource->sources ?? 'N/A' }}</td>
-                                                            <td>{{ $waterSource->location }}</td>
-                                                            <td>{{ $waterSource->capacity }}</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-outline-primary btn-sm me-2" type="button">Edit</button>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                                @foreach($companyWaterSources as $source)
+                                                <tr>
+                                                    <td>{{ $source->waterSource->sources }}</td>
+                                                    <td>{{ $source->location }}</td>
+                                                    <td>{{ $source->capacity }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                                                            <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                                     </tbody>
                                                 </table><!--end /table-->
                                             </div><!--end /tableresponsive-->
@@ -3474,22 +3477,35 @@
                                             </thead>
                                             <tbody>
                                                 
-                                                @foreach($production_logs as $productions)
-                                                <tr>
-                                                    <td>{{ $productions->production_title }}</td>
-                                                     <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#">Edit</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
+                                            @foreach($production_logs as $log)
+    <tr>
+        <td>{{ $log->production_title }}</td>
+        <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
+        <td>
+            {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
+        </td>
+        <td>
+            {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
+        </td>
+        <td>{{ $log->amount_of_water_used }} Liters</td>
+        <td>
+            {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced }} Produced, {{ $product->quantity_defected }} Defected)
+        </td>
+        <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
+        <td>
+            <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
+                {{ ucfirst($log->production_status) }}
+            </span>
+        </td>
+        <td class="text-end">
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
+            </div>
+        </td>
+    </tr>
+@endforeach
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -8337,13 +8353,24 @@
                     tableBody.innerHTML = "";
                     result.production_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                            <td>${log.production_title}</td>
-                            <td>${log.operation_name}</td>
-                            <td>${log.calendar_year_name}</td>
-                            <td>${log.start_date}</td>
-                            <td>${log.end_date}</td>
-                            <td>${log.total_quantity_produced}</td>
-                           
+                         <td>${log.production_title}</td>
+    <td>${log.operation?.operation_name || 'N/A'}</td>
+    <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
+    <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
+    <td>${log.amount_of_water_used} Liters</td>
+    <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
+    <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+    <td>
+        <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
+            ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
+        </span>
+    </td>
+    <td class="text-end">
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
+            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
+        </div>
+    </td>
                         </tr>`;
                     });
                 }

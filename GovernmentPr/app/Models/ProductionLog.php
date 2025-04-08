@@ -34,4 +34,8 @@ class ProductionLog extends Model
     {
         return $this->belongsTo(CalendarYear::class, 'calendar_year_id', 'calendar_year_id');
     }
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'company_id');
+    }
 }
