@@ -60,11 +60,11 @@ class OperationTypeController extends Controller
         }
 
         try {
-            $operationType = OperationType::create($request->only(['name', 'description', 'company_id','sequence_order']));
+            $operationType = OperationType::create($request->only(['name', 'sequence_order', 'description', 'company_id','sequence_order']));
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create Operation Type', 'message' => $e->getMessage()], 500);
         }
-        $operationType = OperationType::where('is_delete', false)->get();
+        $operationType = OperationType::where('is_delete', false)->where('company_id', $request->company_id)->orderBy('sequence_order', 'ASC')->get();
         return response()->json(['status' => 'success', 'message' => 'Operation Type created successfully', 'operation_types' => $operationType], 201);
     }
 

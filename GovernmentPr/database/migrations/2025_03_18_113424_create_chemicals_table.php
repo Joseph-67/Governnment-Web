@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('chemicals', function (Blueprint $table) {
             $table->id('chemical_id');
             $table->string('name');
-            $table->string('chemical_category');
+            $table->unsignedBigInteger('chemical_category_id');
+            $table->foreign('chemical_category_id')->references('categoryID')->on('categories')->onDelete('cascade');
             $table->string('chemical_image')->nullable();
             $table->string('cas_number')->nullable();
             $table->string('ec_number')->nullable();

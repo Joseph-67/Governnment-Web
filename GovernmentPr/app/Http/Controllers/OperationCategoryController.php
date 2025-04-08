@@ -56,7 +56,7 @@ class OperationCategoryController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create Operation Category', 'message' => $e->getMessage()], 500);
         }
-        $operationCategories = OperationCategory::where('is_delete', false)->get();
+        $operationCategories = OperationCategory::where('is_delete', false)->where('company_id', $request->company_id)->get();
         return response()->json(['status' => 'success', 'message' => 'Operation Category created successfully', 'operation_categories' => $operationCategories], 201);
     }
 

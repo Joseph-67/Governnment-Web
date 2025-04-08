@@ -1988,6 +1988,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        
                                                         @forelse($company_chemicals as $chemical)
                                                         <tr>
                                                             <td class="align-middle">
@@ -2031,12 +2032,12 @@
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-down"></i> Check In
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-up"></i> Check Out
                                                                             </a>
                                                                         </li>
@@ -2256,11 +2257,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order" required>
+                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
                                         </div>
                                         <div class="col-12">
                                             <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
                                         </div>
                                     </div>
                                     
@@ -2270,11 +2271,12 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered" id="tbl-operation-types>
+                                    <table class="table table-hover table-bordered">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Description</th>
+                                                <th>Sequence Order</th>
                                                 <th class="text-end">Action</th>
                                             </tr>
                                         </thead>
@@ -2283,6 +2285,7 @@
                                             <tr>
                                                 <td>{{ $type->name }}</td>
                                                 <td>{{ $type->description }}</td>
+                                                <td>{{ $type->sequence_order }}</td>
                                                 <td class="text-end">
                                                     <div class="d-flex justify-content-end">
                                                         <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
@@ -2318,7 +2321,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" required></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" ></textarea>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-end">
@@ -2327,7 +2330,7 @@
                                 </form>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered">
+                                    <table class="table table-hover table-bordered" id="tbl-operation-categories">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Name</th>
@@ -2441,7 +2444,7 @@
                                                         <option value="" selected disabled>Select Chemical</option>
                                                         @foreach($approved_company_chemicals as $chemical)
                                                         <option value="{{ $chemical->company_chemical_id }}">{{
-                                                            $chemical->chemical->name }}</option>
+                                                            $chemical->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -3368,7 +3371,7 @@
                                                         <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
                                                             <option value="" selected disabled>Select Chemical</option>
                                                             @foreach($approved_company_chemicals as $chemical)
-                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->chemical->name }}</option>
+                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -7751,7 +7754,8 @@
                     result.operation_types.forEach(type => {
                         tableBody.innerHTML += `<tr>
                             <td>${type.name}</td>
-                            <td>${type.description}</td>
+                            <td>${type.description ?? ""}</td>
+                            <td>${type.sequence_order ?? ""}</td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
                                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -8047,20 +8051,20 @@
                     tableBody.innerHTML = "";
                     result.operation_categories.forEach(category => {
                         tableBody.innerHTML += `<tr>
-            <td>${category.name}</td>
-            <td>${category.description}</td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`;
+                        <td>${category.name}</td>
+                        <td>${category.description ?? ""}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
                     });
                 }
             });

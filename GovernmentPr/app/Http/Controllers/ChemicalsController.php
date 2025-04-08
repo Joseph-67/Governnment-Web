@@ -28,7 +28,8 @@ class ChemicalsController extends Controller
     {
         //
         $data['categories'] = Category::all();
-        $data['chemical'] = Chemicals::get();
+        $data['chemical'] = Chemicals::with(['chemicalCategory'])->get();
+        // dd($data['chemical'][0]->chemicalCategory);
         return view('components.chemical.create-chemical', $data);
     }
 
@@ -61,7 +62,7 @@ class ChemicalsController extends Controller
 
         $chemical = new Chemicals();
         $chemical->name = $request->chemical_name;
-        $chemical->chemical_category = $request->chemical_category;
+        $chemical->chemical_category_id = $request->chemical_category;
 
         if ($request->hasFile('chemical_image')) {
             $imagePath = $request->file('chemical_image')->store('chemical_images', 'public');
@@ -85,6 +86,7 @@ class ChemicalsController extends Controller
 
         return back()->with('success', 'Chemical created successfully.');
     }
+
 
     /**
      * Display the specified resource.
