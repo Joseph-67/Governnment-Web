@@ -470,6 +470,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/production-logs/{id}', 'update')->name('admin.update-production-log');
         Route::delete('/production-logs/{id}', 'destroy')->name('admin.delete-production-log');
     });
+
+    // Production Report
+    Route::controller(ProductionReport::class)->group(function() {
+        Route::get('/production-report', 'index')->name('admin.production-report');
+        Route::post('/production-report/store', 'store')->name('admin.store-production-report');
+        Route::get('/production-report/{id}', 'show')->name('admin.show-production-report');
+        Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
+        Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
+        Route::get('/get-production-data/{selectedCompany}/{selectedYear}', 'create_report');
+    });
     
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
@@ -525,14 +535,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/reporting-analytics/user-activity', 'getUserActivity')->name('admin.user-activity');
     });
 
-    // Production Report
-    Route::controller(ProductionReport::class)->group(function() {
-        Route::get('/production-report', 'index')->name('admin.production-report');
-        Route::post('/production-report/store', 'store')->name('admin.store-production-report');
-        Route::get('/production-report/{id}', 'show')->name('admin.show-production-report');
-        Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
-        Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
-    });
+
 
     // Roles
     Route::controller(RolesController::class)->group(function(){

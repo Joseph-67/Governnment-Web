@@ -293,8 +293,70 @@
             }
         });
     });
+</script>
 
+<script>
+    // Event listener for the search button
+    document.getElementById('searchButton').addEventListener('click', function() {
+        const selectedCompany = document.getElementById('companySelect').value;
+        const selectedYear = document.getElementById('calendar-year').value;
 
+        if (selectedCompany && selectedYear) {
+            // Load the data for the selected company and year (if needed)
+            console.log(`Selected Company: ${selectedCompany}, Selected Year: ${selectedYear}`);
+            fetch(`/admin/get-production-data/${selectedCompany}/${selectedYear}`, {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch production data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Production Data:', data);
+                    // Update the UI with the fetched data
+                    // Show the company tabs content
+                    document.getElementById('companyTabsContent').classList.remove('d-none');
+                    // Example: Update production metrics
+                    document.querySelector('#company1 .card-title:nth-child(1) + .card-text').textContent = data.total_units_produced;
+                    // document.querySelector('#company1 .card-title:nth-child(2) + .card-text').textContent = data.units_left_to_produce;
+                    // document.querySelector('#company1 .card-title:nth-child(3) + .card-text').textContent = data.production_rate;
+                    // document.querySelector('#company1 .card-title:nth-child(4) + .card-text').textContent = data.efficiency_rate;
+
+                    // Update charts if necessary
+                    // Example: Update Waste Distribution Chart
+                    const wasteChart = Chart.getChart('companyAWasteChart');
+                    // wasteChart.data.datasets[0].data = data.waste_distribution;
+                    // wasteChart.update();
+
+                    // Example: Update Production Trends Chart
+                    const trendChart = Chart.getChart('companyATrendChart');
+                    // trendChart.data.labels = data.production_trends.labels;
+                    // trendChart.data.datasets[0].data = data.production_trends.production_output;
+                    // trendChart.data.datasets[1].data = data.production_trends.waste_generated;
+                    // trendChart.update();
+                    alert('Production data loaded successfully.');
+                } else {
+                    document.getElementById('companyTabsContent').classList.add('d-none');
+                    console.error('Error: Failed to fetch production data. Status:', data.status);
+                    alert('Failed to load production data. Please try again.');
+                }
+            })
+            .catch(error => {
+                document.getElementById('companyTabsContent').classList.add('d-none');
+                console.error('Error fetching production data:', error);
+                alert('Failed to load production data. Please try again.');
+            });
+        } else {
+            document.getElementById('companyTabsContent').classList.add('d-none');
+            alert('Please select a company and a calendar year.');
+        }
+    });
 </script>
 
 @endsection
