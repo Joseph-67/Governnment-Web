@@ -1439,54 +1439,58 @@
                                         </div>
                                     </div>
                                     <!-- Water Sources Details -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Water Sources Information</h4>
-                                            <button type="button" class="btn-close" aria-label="Close"></button>
-                                        </div> <!-- end card-header -->
+                                   <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="card-title mb-0">Water Sources Information</h4>
+        <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
 
-                                        <div class="card-body pt-3" id="waterSourceForm">
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+    <div class="card-body pt-3">
+        <form action="" method="post" id="waterSourceForm"> <!-- Moved ID here -->
+            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
-                                            <div class="row g-3">
-                                                <!-- Water Source -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="water_source" class="form-label">Select Water Source</label>
-                                                        <select name="water_source" id="" class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            @foreach($companyWaterSources as $source)
-                                                                <option value="{{ $source->waterSource->WaterSourcesId }}" selected>{{ $source->waterSource->sources }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Location -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="location" class="form-label">Location</label>
-                                                        <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
-                                                    </div>
-                                                </div>
-                                                <!-- Capacity of Water -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="capacity" class="form-label">Water Capacity (Liters)</label>
-                                                        <div class="input-group">
-                                                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                                            <input type="number" class="form-control" min="0" name="capacity" value="0">
-                                                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Save Button -->
-                                                <div class="col-12 mt-3 text-end">
-                                                    <button type="button" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
-                                                </div>
-                                            </div>
-                                        </div> <!-- end card-body -->
-                                    </div>
-                                    <!-- End Water Sources Details -->
+            <div class="row g-3">
+                <!-- Water Source -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="form-group">
+                        <label for="water_source" class="form-label">Select Water Source</label>
+                        <select name="water_source" id="water_source" class="form-select">
+                            <option value="" selected disabled>Choose...</option>
+                            @foreach($companyWaterSources as $source)
+                                <option value="{{ $source->waterSource->WaterSourcesId }}">{{ $source->waterSource->sources }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="form-group">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
+                    </div>
+                </div>
+
+                <!-- Capacity of Water -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="form-group">
+                        <label for="capacity" class="form-label">Water Capacity (Liters)</label>
+                        <div class="input-group">
+                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                            <input type="number" class="form-control" min="0" name="capacity" value="0">
+                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="col-12 mt-3 text-end">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
                                     <!-- Water Sources Management Table -->
                                     <div class="card shadow-sm mt-4">
@@ -1507,16 +1511,19 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($companyWaterSources as $waterSource)
-                                                        <tr>
-                                                            <td>{{ $waterSource->waterSource->sources ?? 'N/A' }}</td>
-                                                            <td>{{ $waterSource->location }}</td>
-                                                            <td>{{ $waterSource->capacity }}</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-outline-primary btn-sm me-2" type="button">Edit</button>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                                @foreach($companyWaterSources as $source)
+                                                <tr>
+                                                    <td>{{ $source->waterSource->sources }}</td>
+                                                    <td>{{ $source->location }}</td>
+                                                    <td>{{ $source->capacity }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                                                            <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                                     </tbody>
                                                 </table><!--end /table-->
                                             </div><!--end /tableresponsive-->
@@ -2032,12 +2039,12 @@
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
+                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-down"></i> Check In
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->name }}")'>
+                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
                                                                                 <i class="las la-arrow-circle-up"></i> Check Out
                                                                             </a>
                                                                         </li>
@@ -2362,7 +2369,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#annualOperationsLogCollapse" aria-expanded="false"
                                     aria-controls="annualOperationsLogCollapse">
-                                    Annual Operations Log
+                                    <i class="las la-calendar-alt me-2"></i> Annual Operations Log
                                 </button>
                             </h2>
                             <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
@@ -2612,7 +2619,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#operationsLogCollapse" aria-expanded="false"
                                     aria-controls="operationsLogCollapse">
-                                    Operations Log
+                                    <i class="las la-book me-2"></i> Operations Log
                                 </button>
                             </h2>
                             <div id="operationsLogCollapse" class="accordion-collapse collapse"
@@ -2855,7 +2862,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#equipmentTypeCollapse" aria-expanded="false"
                                     aria-controls="equipmentTypeCollapse">
-                                    Equipment Types
+                                    <i class="las la-tools me-2"></i> Equipment Types
                                 </button>
                             </h2>
                             <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
@@ -2925,7 +2932,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#industrialEquipmentLogCollapse" aria-expanded="false"
                                     aria-controls="industrialEquipmentLogCollapse">
-                                    Industrial Equipment Log
+                                    <i class="las la-industry me-2"></i> Industrial Equipment Log
                                 </button>
                             </h2>
                             <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
@@ -3083,7 +3090,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteItemCollapse" aria-expanded="false"
                                     aria-controls="wasteItemCollapse">
-                                    Waste Items
+                                    <i class="las la-trash-alt me-2"></i> Waste Items
                                 </button>
                             </h2>
                             <div id="wasteItemCollapse" class="accordion-collapse collapse"
@@ -3171,7 +3178,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
                                     aria-controls="wasteDisposalTrackingCollapse">
-                                    Waste Disposal Tracking
+                                    <i class="las la-recycle me-2"></i> Waste Disposal Tracking
                                 </button>
                             </h2>
                             <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
@@ -3313,7 +3320,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#productionTrackingCollapse" aria-expanded="false"
                                     aria-controls="productionTrackingCollapse">
-                                    Production Log
+                                    <i class="las la-industry me-2"></i> Production Log
                                 </button>
                             </h2>
                             <div id="productionTrackingCollapse" class="accordion-collapse collapse"
@@ -3344,7 +3351,7 @@
                                             <!-- Material Used -->
                                             <div class="material-quantity-used-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="material_used" class="form-label">Used Material</label>
                                                         <select class="form-select" id="material_used" name="material_used[0][material_id]" required>
                                                             <option value="" selected disabled>Select Material</option>
@@ -3353,7 +3360,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="quantity_used" class="form-label">Used Quantity</label>
                                                         <input type="number" min="0" class="form-control" id="quantity_used" name="material_used[0][quantity]" placeholder="Enter quantity used" required>
                                                     </div>
@@ -3366,7 +3373,7 @@
                                             <!-- Chemical Used -->
                                             <div class="chemical-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="chemical_name" class="form-label">Used Chemical</label>
                                                         <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
                                                             <option value="" selected disabled>Select Chemical</option>
@@ -3375,7 +3382,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="chemical_volume" class="form-label">Used Volume (Liters)</label>
                                                         <input type="number" min="0" class="form-control" id="chemical_volume" name="chemical_used[0][volume]" placeholder="Enter volume" required>
                                                     </div>
@@ -3423,7 +3430,7 @@
                                             <!-- Product Produced -->
                                             <div class="product-quantity-container-production-log col-md-12">
                                                 <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-3">
                                                         <label for="product_name" class="form-label">Produced Product</label>
                                                         <select class="form-select" id="product_name" name="product_produced[0][product_id]" required>
                                                             <option value="" selected disabled>Select Product</option>
@@ -3470,22 +3477,35 @@
                                             </thead>
                                             <tbody>
                                                 
-                                                @foreach($production_logs as $productions)
-                                                <tr>
-                                                    <td>{{ $productions->production_title }}</td>
-                                                     <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#">Edit</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
+                                            @foreach($production_logs as $log)
+    <tr>
+        <td>{{ $log->production_title }}</td>
+        <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
+        <td>
+            {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
+        </td>
+        <td>
+            {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
+        </td>
+        <td>{{ $log->amount_of_water_used }} Liters</td>
+        <td>
+            {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced }} Produced, {{ $product->quantity_defected }} Defected)
+        </td>
+        <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
+        <td>
+            <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
+                {{ ucfirst($log->production_status) }}
+            </span>
+        </td>
+        <td class="text-end">
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
+            </div>
+        </td>
+    </tr>
+@endforeach
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -3496,7 +3516,7 @@
                             <h2 class="accordion-header" id="qualityControlHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#qualityControlCollapse" aria-expanded="false" aria-controls="qualityControlCollapse">
-                                    Quality Control
+                                    <i class="las la-check-circle me-2"></i> Quality Control
                                 </button>
                             </h2>
                             <div id="qualityControlCollapse" class="accordion-collapse collapse"
@@ -7056,141 +7076,34 @@
     </script>
     <script>
         // company water sources
-
-        // AJAX implementation to store water sources details
-        document.querySelector('#btn-submit-water-source').addEventListener('click', function () {
-            const company_id = document.querySelector('#waterSourceForm input[name="company_id"]').value.trim();
-            const water_source = document.querySelector('#waterSourceForm select[name="water_source"]').value.trim();
-            const location = document.querySelector('#waterSourceForm input[name="location"]').value.trim();
-            const capacity = document.querySelector('#waterSourceForm input[name="capacity"]').value.trim();
-
-            if (!water_source) {
-                Toastify({
-                    text: "Please select a water source.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!location) {
-                Toastify({
-                    text: "Please provide a location.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
+        // Store Water Sources
+        document.querySelector('#waterSourceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
             let url = "{{ route('admin.store-water-source-details') }}";
-            const formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('water_source_id', water_source);
-            formData.append('location', location);
-            formData.append('capacity', capacity);
 
-            fetch_cycle('--Save Water sources', url, 'POST', formData).then(result => {
+            fetch_cycle('--Store Water Sources', url, 'POST', formData).then(result => {
                 console.log(result);
-                if (result.status === "success") {
-                    const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
-                    waterSourceSelect.innerHTML = ""; // Clear existing options
-
+                if (result.status === 'success') {
+                    // Update the water sources table or UI as needed
+                    let tableBody = document.querySelector('#tbl-water-sources tbody');
+                    tableBody.innerHTML = "";
                     result.water_sources.forEach(source => {
-                        const option = document.createElement("option");
-                        option.value = source.WaterSourcesId;
-                        option.textContent = source.sources;
-                        if (result.company_water_sources.includes(source.WaterSourcesId)) {
-                            option.selected = true; // Mark as selected if already associated with the company
-                        }
-                        waterSourceSelect.appendChild(option);
+                        tableBody.innerHTML += `<tr>
+                            <td>${source.sources}</td>
+                            <td>${source.description ?? ""}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
                     });
-
-                    Toastify({
-                        text: result.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
-                    }).showToast();
-                } else {
-                    Toastify({
-                        text: result.message || "An error occurred.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                    }).showToast();
                 }
             });
         });
 
-
-
-        // end company water sources
-        document.querySelector('#waterSourceForm select[name="water_source"]').addEventListener('click', function () {
-            console.log('====================================');
-            console.log("Hello Water source");
-            console.log('====================================');
-            let company_id = "{{$company->company_id}}"
-            if (!company_id) {
-                Toastify({
-                    text: "Company ID is missing.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            try {
-                let formData = new FormData();
-                formData.append('company_id', company_id);
-                fetch_cycle('--Fetch Water  Sources', "{{ route('admin.store-water-source-details') }}", 'POST', formData).then(async response => {
-                    console.log(response);
-                    const data = await response.json();
-
-                    if (data.status === 'success') {
-                        const waterSourceSelect = document.querySelector('#waterSourceForm select[name="water_source"]');
-                        waterSourceSelect.innerHTML = '<option value="" selected disabled>Choose...</option>';
-                        data.water_sources.forEach(source => {
-                            const option = document.createElement('option');
-                            option.value = source.WaterSourcesId;
-                            option.textContent = source.sources;
-                            waterSourceSelect.appendChild(option);
-                        });
-                    } else {
-                        console.error('Failed to fetch water sources:', data.message);
-                    }
-                });
-            } catch (error) {
-                console.error('Error fetching water sources:', error);
-            }
-        });
     </script>
 
     <!-- water usage logs -->
@@ -8311,7 +8224,7 @@
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="produced_product">Produced Product</label>
                             <select class="form-select" name="product_produced[${productIndex}][product_id]" required>
@@ -8320,11 +8233,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="produced_quantity">Produced Quantity</label>
+                            <label for="produced_quantity">Quantity Produced</label>
                             <input type="number" class="form-control" name="product_produced[${productIndex}][quantity]" placeholder="Produced Quantity" required>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
+                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
@@ -8353,7 +8270,7 @@
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Used Material</label>
                             <select class="form-select" name="material_used[${materialIndex}][material_id]" required>
@@ -8362,7 +8279,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Used Quantity</label>
                             <input type="number" class="form-control" name="material_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
@@ -8396,7 +8313,7 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
             newRow.innerHTML = `
-                <div class="col-md-5">
+                <div class="col-md-3">
                 <div class="form-group">
                     <label for="used_chemical">Used Chemical</label>
                     <select class="form-select" name="chemical_used[${chemicalIndex}][chemical_id]" required>
@@ -8405,7 +8322,7 @@
                     </select>
                 </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                 <div class="form-group">
                     <label for="used_quantity">Used Quantity</label>
                     <input type="number" class="form-control" name="chemical_used[${chemicalIndex}][quantity]" placeholder="Used Quantity" required>
@@ -8440,13 +8357,24 @@
                     tableBody.innerHTML = "";
                     result.production_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                            <td>${log.production_title}</td>
-                            <td>${log.operation_name}</td>
-                            <td>${log.calendar_year_name}</td>
-                            <td>${log.start_date}</td>
-                            <td>${log.end_date}</td>
-                            <td>${log.total_quantity_produced}</td>
-                           
+                         <td>${log.production_title}</td>
+    <td>${log.operation?.operation_name || 'N/A'}</td>
+    <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
+    <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
+    <td>${log.amount_of_water_used} Liters</td>
+    <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
+    <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+    <td>
+        <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
+            ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
+        </span>
+    </td>
+    <td class="text-end">
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
+            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
+        </div>
+    </td>
                         </tr>`;
                     });
                 }
