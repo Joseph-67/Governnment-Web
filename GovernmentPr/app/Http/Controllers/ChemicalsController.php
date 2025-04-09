@@ -128,8 +128,21 @@ class ChemicalsController extends Controller
      * @param  \App\Models\Chemicals  $chemicals
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Chemicals $chemicals)
+    public function destroy($id)
     {
         //
+                 // dd($id);
+                 $chemical = chemical::find($id);
+                 if ($chemical) {
+                    $chemical->forceDelete(); // Permanently delete the chemical
+         
+                    $chemical = chemical::get();
+                     return response()->json([
+                         'status' => 'success',
+                         'chemicals' => $chemical,
+                         'message' => 'Chemical deleted successfully']);
+                 } else {
+                     return back()->with(['error' => 'Chemical not found']);
+                 }
     }
 }

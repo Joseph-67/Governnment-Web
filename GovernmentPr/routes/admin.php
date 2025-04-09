@@ -160,6 +160,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(ChemicalUsageController::class)->group(function() {
         Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
+        Route::delete('/delete-chemical/{id}', 'destroy');
     }); 
 
     Route::controller(CompanyChemicalController::class)->group(function() {
