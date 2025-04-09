@@ -190,17 +190,30 @@ class ProductionLogController extends StockMovementController
                 'production_status' => $request->input('production_status'),
             ]);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'Failed to create production log', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create production log',
+                'error' => $e->getMessage()
+            ], 500);
         }
+        
         try {
-            // Fetch the newly created production log to include related data
             $production_logs = ProductionLog::with(['company', 'operation', 'products', 'materials', 'chemicals'])
-            ->find($production_logs->id);
+                ->find($productionLog->id); // <-- use $productionLog here
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'Failed to fetch production log data', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to fetch production log data',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        return response()->json(['status' => 'success', 'message' => 'Production log created successfully', 'production_logs' => $production_logs], 201);
-
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Production log created successfully',
+            'production_logs' => $production_logs
+        ], 201);
+        
     }
 
     /**
