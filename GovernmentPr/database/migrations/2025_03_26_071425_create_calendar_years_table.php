@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('calendar_years', function (Blueprint $table) {
             $table->id('calendar_year_id');
             $table->unsignedBigInteger('company_id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_active')->default(true);

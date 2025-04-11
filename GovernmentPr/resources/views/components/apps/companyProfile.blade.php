@@ -2310,7 +2310,7 @@
                         </h2>
                         <div id="operationCategoryCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body bg-light">
+                            <div class="accordion-body">
                                 <form action="" method="post" id="operation_category_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f0f8ff;">
                                     @csrf
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
@@ -2367,9 +2367,9 @@
                             </h2>
                             <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Annual Operations Log Form -->
-                                    <form action="" method="post" id="annual-operations-form">
+                                    <form action="" method="post" id="annual-operations-form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-2">
@@ -2465,7 +2465,6 @@
                                                     class="btn btn-outline-primary btn-sm add_more_chemicals"
                                                     onclick="addChemicalField()">Add More</button>
                                             </div>
-
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="total_operations">Expected Number Of Operations Per
@@ -2617,7 +2616,7 @@
                             </h2>
                             <div id="operationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <form action="" method="post" id="operations-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
@@ -2818,7 +2817,7 @@
                                                     <td>{{ $log->expected_waste_per_operation }}</td>
                                                     <td>{{ $log->expected_water_usage_per_operation }}</td>
                                                     <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                    <td>{{ $log->calendarYear->name }}</td>
+                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
                                                     <td>{{ $log->start_date }}</td>
                                                     <td>{{ $log->end_date }}</td>
                                                     <td>
@@ -2860,7 +2859,7 @@
                             </h2>
                             <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="equipmentTypeHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Equipment Type Form -->
                                     <form action="" method="post" id="equipment_type_form">
                                         @csrf
@@ -2930,7 +2929,7 @@
                             </h2>
                             <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="industrialEquipmentLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Industrial Equipment Log Form -->
                                     <form action="" method="post" id="industrial-equipment-log-form">
                                         @csrf
@@ -3088,7 +3087,7 @@
                             </h2>
                             <div id="wasteItemCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="wasteItemHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Waste Item Form -->
                                     <form action="" method="post" id="waste-item-form">
                                         @csrf
@@ -3176,7 +3175,7 @@
                             </h2>
                             <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Waste Disposal Tracking Form -->
                                     <form action="" method="post" id="waste-disposal-form">
                                         @csrf
@@ -3318,7 +3317,7 @@
                             </h2>
                             <div id="productionTrackingCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Production Tracking Form -->
                                     <form action="" method="post" id="production-log-form">
                                         @csrf
@@ -3501,7 +3500,7 @@
                             </h2>
                             <div id="qualityControlCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="qualityControlHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body ">
                                     <!-- Quality Control Form -->
                                     <form action="" method="post" id="quality-control-form">
                                         @csrf
@@ -8475,7 +8474,7 @@
                     tableBody.innerHTML = "";
                     result.calendar_years.forEach(year => {
                         tableBody.innerHTML += `<tr>
-                            <td>${year.name}</td>
+                            <td>${year.name ?? ''}</td>
                             <td>${year.start_date ?? ''}</td>
                             <td>${year.end_date ?? ''}</td>
                             <td class="text-end">
