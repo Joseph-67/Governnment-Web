@@ -147,18 +147,16 @@ class CompanyController extends WaterStockMovementController
             ->get();
         
         // Fetch water source details
-        // $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
-        //     ->where('is_deleted', false)
-        //     ->get(['water_source_detail_ID', 'WaterSources_id', 'location', 'capacity']);
+    $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
+        ->get();
         // waste disposal
         $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
         // water quality logs
         $data['water_quality_logs'] = WaterQualityLogs::where('status','active')->where('companyID', $companyID)->where('status', 'active')->get();
         $data['annual_operations_logs'] = AnnualOperationsLog::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
-        $data['production_logs'] = ProductionLog::where('production_status', 'active')
-            ->where('company_id', $companyID)
-            ->select('production_title', 'production_status', 'company_id')
-            ->get();
+        $data['production_logs'] = ProductionLog::where('company_id', $companyID)
+        ->select('production_title', 'production_status', 'company_id')
+        ->get();
             $data['quality_controls_record'] = QualityControl::where('status', 'active')->where('company_id', $companyID)
             ->where('status', 'active')
             ->get();
