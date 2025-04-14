@@ -3487,7 +3487,7 @@
         <td>
             {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
         </td>
-        <td>{{ $log->amount_of_water_used }} Liters</td>
+        <td>{{ $log->water_volume }} Liters</td>
         <td>
             {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced }} Produced, {{ $product->quantity_defected }} Defected)
         </td>
@@ -8361,7 +8361,7 @@
     <td>${log.operation?.operation_name || 'N/A'}</td>
     <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
     <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
-    <td>${log.amount_of_water_used} Liters</td>
+    <td>${log.water_volume} Liters</td>
     <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
     <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
     <td>
