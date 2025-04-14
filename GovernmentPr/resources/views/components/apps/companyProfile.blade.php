@@ -8384,6 +8384,58 @@
 
     <!-- Calendar Year Management Script -->
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let calendarYearData = []; // To store fetched data
+            // Fetch data function
+            const fetchCalendarYears = (value) => {
+                return fetch(`/admin/get-calendar-years/${value}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        calendarYearData = data.calendar_years; // Store the fetched data
+                        let dropdown = document.querySelectorAll('.calendar-year');
+                        dropdown.forEach(drop => {
+                            drop.innerHTML = ""; // Clear existing options
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = "";
+                            defaultOption.textContent = "Select Calendar Year";
+                            drop.appendChild(defaultOption);
+                            data.forEach(calendar => {
+                                const option = document.createElement('option');
+                                option.value = calendar.calendar_year_id;
+                                option.textContent = calendar.name;
+                                drop.appendChild(option);
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching calendar years:', error);
+                        alert('Failed to fetch calendar years. Please try again later.');
+                    });
+            };
+        });
+
+        // Fetch calendar years on page load
+        document.querySelectorAll('.calendar-year').forEach(dropdown => {
+            dropdown.addEventListener('click', function () {
+                if (this.value) {
+                    this.classList.remove('is-invalid');
+                }
+                fetchCalendarYears(@json_encode($company->company_id)).then((result) => {
+                    console.log(result);
+                    
+                        // const option = document.createElement('option');
+                        // option.value = calendar.calendar_year_id;
+                        // option.textContent = calendar.name;
+                        // dropdown.appendChild(option);
+                });
+            });
+        });
+
         // Calendar Year Management Script
         document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
             e.preventDefault();
