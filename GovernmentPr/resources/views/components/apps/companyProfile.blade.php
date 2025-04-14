@@ -2317,7 +2317,7 @@
                         </h2>
                         <div id="operationCategoryCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body bg-light">
+                            <div class="accordion-body">
                                 <form action="" method="post" id="operation_category_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f0f8ff;">
                                     @csrf
                                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
@@ -2374,9 +2374,9 @@
                             </h2>
                             <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Annual Operations Log Form -->
-                                    <form action="" method="post" id="annual-operations-form">
+                                    <form action="" method="post" id="annual-operations-form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-2">
@@ -2472,7 +2472,6 @@
                                                     class="btn btn-outline-primary btn-sm add_more_chemicals"
                                                     onclick="addChemicalField()">Add More</button>
                                             </div>
-
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="total_operations">Expected Number Of Operations Per
@@ -2624,7 +2623,7 @@
                             </h2>
                             <div id="operationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <form action="" method="post" id="operations-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
@@ -2825,7 +2824,7 @@
                                                     <td>{{ $log->expected_waste_per_operation }}</td>
                                                     <td>{{ $log->expected_water_usage_per_operation }}</td>
                                                     <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                    <td>{{ $log->calendarYear->name }}</td>
+                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
                                                     <td>{{ $log->start_date }}</td>
                                                     <td>{{ $log->end_date }}</td>
                                                     <td>
@@ -2867,7 +2866,7 @@
                             </h2>
                             <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="equipmentTypeHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Equipment Type Form -->
                                     <form action="" method="post" id="equipment_type_form">
                                         @csrf
@@ -2937,7 +2936,7 @@
                             </h2>
                             <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="industrialEquipmentLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Industrial Equipment Log Form -->
                                     <form action="" method="post" id="industrial-equipment-log-form">
                                         @csrf
@@ -3095,7 +3094,7 @@
                             </h2>
                             <div id="wasteItemCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="wasteItemHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Waste Item Form -->
                                     <form action="" method="post" id="waste-item-form">
                                         @csrf
@@ -3183,7 +3182,7 @@
                             </h2>
                             <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Waste Disposal Tracking Form -->
                                     <form action="" method="post" id="waste-disposal-form">
                                         @csrf
@@ -3325,7 +3324,7 @@
                             </h2>
                             <div id="productionTrackingCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body">
                                     <!-- Production Tracking Form -->
                                     <form action="" method="post" id="production-log-form">
                                         @csrf
@@ -3521,7 +3520,7 @@
                             </h2>
                             <div id="qualityControlCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="qualityControlHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body bg-white">
+                                <div class="accordion-body ">
                                     <!-- Quality Control Form -->
                                     <form action="" method="post" id="quality-control-form">
                                         @csrf
@@ -8385,6 +8384,58 @@
 
     <!-- Calendar Year Management Script -->
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let calendarYearData = []; // To store fetched data
+            // Fetch data function
+            const fetchCalendarYears = (value) => {
+                return fetch(`/admin/get-calendar-years/${value}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        calendarYearData = data.calendar_years; // Store the fetched data
+                        let dropdown = document.querySelectorAll('.calendar-year');
+                        dropdown.forEach(drop => {
+                            drop.innerHTML = ""; // Clear existing options
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = "";
+                            defaultOption.textContent = "Select Calendar Year";
+                            drop.appendChild(defaultOption);
+                            data.forEach(calendar => {
+                                const option = document.createElement('option');
+                                option.value = calendar.calendar_year_id;
+                                option.textContent = calendar.name;
+                                drop.appendChild(option);
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching calendar years:', error);
+                        alert('Failed to fetch calendar years. Please try again later.');
+                    });
+            };
+        });
+
+        // Fetch calendar years on page load
+        document.querySelectorAll('.calendar-year').forEach(dropdown => {
+            dropdown.addEventListener('click', function () {
+                if (this.value) {
+                    this.classList.remove('is-invalid');
+                }
+                fetchCalendarYears(@json_encode($company->company_id)).then((result) => {
+                    console.log(result);
+                    
+                        // const option = document.createElement('option');
+                        // option.value = calendar.calendar_year_id;
+                        // option.textContent = calendar.name;
+                        // dropdown.appendChild(option);
+                });
+            });
+        });
+
         // Calendar Year Management Script
         document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -8399,7 +8450,7 @@
                     tableBody.innerHTML = "";
                     result.calendar_years.forEach(year => {
                         tableBody.innerHTML += `<tr>
-                            <td>${year.name}</td>
+                            <td>${year.name ?? ''}</td>
                             <td>${year.start_date ?? ''}</td>
                             <td>${year.end_date ?? ''}</td>
                             <td class="text-end">
