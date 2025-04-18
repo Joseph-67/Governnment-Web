@@ -30,6 +30,34 @@ class ProductController extends Controller
         //
     }
 
+    function getAvailableProduct($value) {
+        $products = Product::where('is_deleted', false)
+                    ->where('status', 'available')
+                    ->where('company_id', $value)
+                    ->get(['product_id', 'name']);
+
+        return response()->json([
+            'status' => 'success',
+            'products' => $products,
+        ], 200);
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function getProduct($value) {
+        $products = Product::with('productCategory')
+                    ->where('is_deleted', false)
+                    ->where('company_id', $value)
+                    ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'products' => $products,
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -48,9 +76,11 @@ class ProductController extends Controller
                     return $query->where('company_id', $request->company_id);
                 }),
             ],
+            'product_quantity_per_unit' => 'nullable|string|max:50',
             'product_unit' => 'nullable|string|max:50',
             'product_category' => 'required|integer|exists:product_categories,product_category_id',
             'description' => 'nullable|string',
+            'currency' => 'required|string|max:3',
             'product_price' => 'nullable|numeric|min:0',
             'company_id' => 'required|integer|exists:companies,company_id',
         ]);
@@ -62,9 +92,11 @@ class ProductController extends Controller
         try {
             $product = new Product();
             $product->name = $request->product_name;
+            $product->quantity_per_unit = $request->product_quantity_per_unit;
             $product->unit = $request->product_unit;
             $product->category_id = $request->product_category;
             $product->description = $request->description;
+            $product->currency = $request->currency;
             $product->price = $request->product_price;
             $product->company_id = $request->company_id;
             $product->save();
@@ -72,8 +104,11 @@ class ProductController extends Controller
             return response()->json(['error' => 'Failed to create product', 'details' => $e->getMessage(), 'status' => 'error'], 500);
         }
 
-        $product->where('company_id', $request->company_id)->where('is_deleted', false)->get();
-        return response()->json(['message' => 'Product created successfully', 'product' => $product, 'status' => 'success'], 201);
+        $products = Product::with('productCategory')->where('company_id', $request->company_id)->where('is_deleted', false)->get();
+        return response()->json([
+            'message' => 'Product created successfully', 
+            'products' => $products,
+            'status' => 'success'], 201);
     }
 
     /**

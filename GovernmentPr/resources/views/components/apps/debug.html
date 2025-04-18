@@ -368,3 +368,97 @@ btn_submit_water_usage.addEventListener('click', () => {
         });
     });
 });
+
+
+
+<form action="" method="post" id="add-product-form">
+    @csrf
+    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+    <div class="row g-2">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_name">Product Name</label>
+                <input type="text" class="form-control" id="product_name"
+                    name="product_name" placeholder="Enter product name" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_category">Category</label>
+                <select class="form-select" id="product_category"
+                    name="product_category" required>
+                    <option value="" selected disabled>Choose...</option>
+                    @foreach($active_product_categories as $category)
+                    <option value="{{ $category->product_category_id }}">{{
+                        $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_unit">Unit</label>
+                <input type="text" class="form-control" id="product_unit"
+                    name="product_unit" placeholder="Enter product unit" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_price">Price</label>
+                <div class="input-group">
+                    <!-- Currency dropdown with a fixed width -->
+                    <select class="form-select flex-shrink-1" style="max-width: 120px;" id="currency" name="currency"
+                        aria-label="Select currency" required>
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="NGN">NGN</option>
+                    </select>
+                    <!-- Price input field taking the remaining space -->
+                    <input type="number" class="form-control" id="product_price" name="product_price"
+                        placeholder="Enter product price in USD" aria-label="Product price" min="0" step="0.01" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </div>
+    </div>
+</form>
+
+
+{{ route('admin.update-operation-type') }}
+
+let editOperationTypeForm = document.querySelector('#edit_operation_type_form');
+editOperationTypeForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    let url = "";
+
+    fetch_cycle('--Update Operation Type', url, 'POST', formData).then(result => {
+        console.log(result);
+        if (result.status === 'success') {
+            // Update the operation types table or UI as needed
+            let tableBody = document.querySelector('#tbl-operation-types tbody');
+            tableBody.innerHTML = "";
+            result.operation_types.forEach(type => {
+                tableBody.innerHTML += `<tr>
+                    <td>${type.name}</td>
+                    <td>${type.description ?? ""}</td>
+                    <td>${type.sequence_order ?? ""}</td>
+                    <td class="text-end">
+                        <div class="dropdown d-inline-block">
+                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                <a class="dropdown-item" href="#">Update</a>
+                                <a class="dropdown-item" href="#">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+        }
+    });
+});

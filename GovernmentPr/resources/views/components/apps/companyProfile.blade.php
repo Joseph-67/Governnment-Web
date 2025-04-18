@@ -2244,63 +2244,114 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#operationTypeCollapse" aria-expanded="false"
                                 aria-controls="operationTypeCollapse">
-                                <i class="las la-cogs me-2"></i> Operation Type
+                                <i class="las la-cogs me-2"></i> Operation Type Management
                             </button>
                         </h2>
                         <div id="operationTypeCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
                             <div class="accordion-body">
-                                <form action="" method="post" id="company_operation_type_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mt-4 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-
-                                <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered" id="tbl-operation-types">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Sequence Order</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($operation_types as $type)
-                                            <tr>
-                                                <td>{{ $type->name }}</td>
-                                                <td>{{ $type->description }}</td>
-                                                <td>{{ $type->sequence_order }}</td>
-                                                <td class="text-end">
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                <div class="row">
+                                    <div class="col-md-6 closeable-card d-none" id="operation-type-card">
+                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">New Operation Type Setup</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="company_operation_type_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
+                                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-type-card">
+                                        <!-- Edit Operation Type Card -->
+                                        <div class="card shadow-sm border-0"  style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Edit Operation Type</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="edit_operation_type_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="operation_type_id" id="operation_type_id">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="edit_operation_type_name" name="operation_type_name" placeholder="Enter operation type name" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="edit_sequence" class="form-label fw-bold text-primary">Sequence</label>
+                                                            <input type="number" class="form-control" id="edit_operation_type_sequence" name="operation_type_sequence_order" placeholder="Enter sequence order">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="edit_operation_type_description" name="operation_type_description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3 align-items-center">
+                                            <div class="col">
+                                                <h4 class="text-primary mb-0">Operation Types</h4>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-type">
+                                                    <i class="iconoir-plus"></i> Set Up Operation Type
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Spinner -->
+                                        <div id="loading-spinner" class="spinner-border text-primary d-none" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-types">
+                                                <thead class="table-primary text-center">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th>Sequence Order</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                        <div id="message-container" class="mt-3"></div>
+                                    </div>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -2410,13 +2461,9 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="operation_category">Operation Category</label>
-                                                    <select class="form-select" id="operation_category"
+                                                    <select class="form-select operation-category" id="operation_category"
                                                         name="operation_category" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_categories as $category)
-                                                        <option value="{{ $category->operation_category_id }}">{{
-                                                            $category->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -2457,11 +2504,8 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="expected_product">Expected Product</label>
-                                                            <select class="form-select" id="expected_product" name="expected_products[]" required>
+                                                            <select class="form-select product-select" id="expected_product" name="expected_products[]" required>
                                                                 <option value="" selected disabled>Select Product</option>
-                                                                @foreach($active_products as $product)
-                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
@@ -3455,35 +3499,36 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
                                             @foreach($production_logs as $log)
-    <tr>
-        <td>{{ $log->production_title }}</td>
-        <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
-        <td>
-            {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
-        </td>
-        <td>
-            {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
-        </td>
-        <td>{{ $log->amount_of_water_used }} Liters</td>
-        <td>
-            {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced }} Produced, {{ $product->quantity_defected }} Defected)
-        </td>
-        <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
-        <td>
-            <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
-                {{ ucfirst($log->production_status) }}
-            </span>
-        </td>
-        <td class="text-end">
-            <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
-                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
-            </div>
-        </td>
-    </tr>
-@endforeach
+                                                <tr>
+                                                    <td>{{ $log->production_title }}</td>
+                                                    <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
+                                                    <td>
+                                                        {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
+                                                    </td>
+                                                    <td>
+                                                        {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
+                                                    </td>
+                                                    <td>{{ $log->amount_of_water_used }} Liters</td>
+                                                    <td>
+                                                    @foreach($log->product_log_data as $product)
+                                                        {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced ?? "N/A" }} Produced, {{ $product->quantity_defected ?? "N/A" }} Defected)
+                                                    @endforeach
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
+                                                            {{ ucfirst($log->production_status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end gap-2">
+                                                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
+                                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
                                             </tbody>
                                         </table>
@@ -3554,20 +3599,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                        @foreach($quality_controls_record as $control)
-                                                        <tr>
-                                                            <td>{{ $control->quality_metric }}</td>
-                                                            <td>{{ $control->acceptable_range }}</td>
-                                                            <td>{{ $control->measurement_frequency }}</td>
-                                                            <td>{{ $control->responsible_person }}</td>
-                                                            <td class="text-end">
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                                @foreach($quality_controls_record as $control)
+                                                <tr>
+                                                    <td>{{ $control->quality_metric }}</td>
+                                                    <td>{{ $control->acceptable_range }}</td>
+                                                    <td>{{ $control->measurement_frequency }}</td>
+                                                    <td>{{ $control->responsible_person }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3647,95 +3692,130 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="addProductHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#addProductCollapse" aria-expanded="true"
-                                    aria-controls="addProductCollapse">
-                                    Add New Product
-                                </button>
-                            </h2>
-                            <div id="addProductCollapse" class="accordion-collapse collapse show"
-                                aria-labelledby="addProductHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="add-product-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_name">Product Name</label>
-                                                    <input type="text" class="form-control" id="product_name"
-                                                        name="product_name" placeholder="Enter product name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_category">Category</label>
-                                                    <select class="form-select" id="product_category"
-                                                        name="product_category" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_product_categories as $category)
-                                                        <option value="{{ $category->product_category_id }}">{{
-                                                            $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_unit">Unit</label>
-                                                    <input type="text" class="form-control" id="product_unit"
-                                                        name="product_unit" placeholder="Enter product unit" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_price">Price</label>
-                                                    <input type="number" class="form-control" id="product_price"
-                                                        name="product_price" placeholder="Enter product price" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Product</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Product List -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productListHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productListCollapse" aria-expanded="false"
-                                    aria-controls="productListCollapse">
-                                    Product List
+                                    data-bs-target="#productListCollapse" aria-expanded="false" aria-controls="productListCollapse">
+                                    Product Management
                                 </button>
                             </h2>
-                            <div id="productListCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="productListHeading">
+                            <div id="productListCollapse" class="accordion-collapse collapse" aria-labelledby="productListHeading">
                                 <div class="accordion-body">
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #f9fbe7;" id="new_product_setup_card"> <!-- Light greenish-yellow background for product setup -->
+                                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">New Product Setup</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                        </div>
+                                        <div class="card-body pt-3">
+                                            <form action="" method="post" id="add-product-form">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <!-- Product Name -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="product_name" class="form-label">Product Name</label>
+                                                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Category -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="product_category" class="form-label">Category</label>
+                                                            <select class="form-select" id="product_category" name="product_category" required>
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                @foreach($active_product_categories as $category)
+                                                                    <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Quantity Per Unit -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="product_quantity_per_unit" class="form-label">Quantity Per Unit</label>
+                                                            <input type="number" class="form-control" id="product_quantity_per_unit" name="product_quantity_per_unit" placeholder="Enter quantity per unit" min="1" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Unit -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="product_unit" class="form-label">Unit</label>
+                                                            <input type="text" class="form-control" id="product_unit" name="product_unit" placeholder="Enter product unit" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Price -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="product_price">Price</label>
+                                                            <div class="input-group">
+                                                                <!-- Currency dropdown with a fixed width -->
+                                                                <select class="form-select flex-shrink-1" style="max-width: 120px;" id="currency" name="currency"
+                                                                    aria-label="Select currency" required>
+                                                                    <option value="USD">USD</option>
+                                                                    <option value="EUR">EUR</option>
+                                                                    <option value="GBP">GBP</option>
+                                                                    <option value="NGN" selected>NGN</option>
+                                                                </select>
+                                                                <!-- Price input field taking the remaining space -->
+                                                                <input type="number" class="form-control" id="product_price" name="product_price"
+                                                                    placeholder="Enter product price in NGN" aria-label="Product price" min="0" step="0.01" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Save Button -->
+                                                    <div class="col-12 text-end mt-3">
+                                                        <button type="submit" class="btn btn-success">Save Product</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-4 align-items-center">
+                                        <div class="col-md-6">
+                                            <label for="product_category_filter" class="form-label fw-bold text-primary">Filter by Category</label>
+                                            <select class="form-select shadow-sm" id="product_category_filter" name="product_category_filter">
+                                                <option value="" selected>All Categories</option>
+                                                @foreach($active_product_categories as $category)
+                                                <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 text-end">
+                                            <button type="button" class="btn btn-outline-primary shadow-sm me-2" id="export-products">
+                                                <i class="las la-file-export me-1"></i> Export Products
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary shadow-sm" id="btn-setup-products">
+                                                <i class="las la-cogs me-1"></i> Setup a Product
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive">
-                                        <table class="table table-striped mb-0" id="tbl-products">
-                                            <thead class="table-light">
+                                        <table class="table table-hover table-bordered rounded shadow-sm" id="tbl-products">
+                                            <thead class="table-primary">
                                                 <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                    <th class="text-end">Action</th>
+                                                    <th class="text-center">Product Name</th>
+                                                    <th class="text-center">Category</th>
+                                                    <th class="text-center">Unit Price</th>
+                                                    <th class="text-center">Quantity per unit</th>
+                                                    <th>Unit</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                <!-- Placeholder for dynamic content -->
+                                                <tr id="no-products">
+                                                    <td colspan="5" class="text-center text-muted">No products available</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- end product list -->
                     </div>
                 </div>
                 <!-- General Settings -->
@@ -4694,6 +4774,10 @@
     </div>
     <!-- end update operation log modal -->
     @section('styles')
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -4762,9 +4846,22 @@
     @endsection
 
     @section('scripts')
+    <!-- DataTables and Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script>
+    // Confirm deletion function
+    function confirmDeletion(id) {
+        if (confirm("Are you sure you want to delete this operation type?")) {
+            // Implement deletion logic
+            console.log("Delete operation type with ID:", id);
+        }
+    }
+    </script>
     <script>
         /**
          * Populates a dropdown element with options.
@@ -4840,15 +4937,13 @@
         function populateOperationTypeDropdown(dropdown, data) {
             // Clear existing options
             dropdown.innerHTML = "";
-
             // Add a default placeholder option
             const defaultOption = document.createElement("option");
             defaultOption.value = "";
-            defaultOption.textContent = "Select a year";
+            defaultOption.textContent = "Select operation type";
             defaultOption.disabled = true;
             defaultOption.selected = true;
             dropdown.appendChild(defaultOption);
-
             // Add options from the data
             data.operation_types.forEach(item => {
                 const option = document.createElement("option");
@@ -4856,7 +4951,6 @@
                 option.textContent = item.name; // Use the label from the data
                 dropdown.appendChild(option);
             });
-
             console.log("Dropdown populated with options:", data);
         }
         // end populate dropdown
@@ -4881,12 +4975,266 @@
                     // Example:
                     populateOperationTypeDropdown(dropdown, data);
                 } catch (error) {
-                    console.error("Error fetching calendar years:", error);
+                    console.error("Error fetching operation types:", error);
                 }
             });
         });
-        // end fetch calendar years on page load
         // end fetch operation type
+
+        // fetch operation category
+        // populate the dropdown
+        function populateOperationCategoryDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select operation category";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.operation_categories.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.operation_category_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch operation category on page load
+        document.querySelectorAll('.operation-category').forEach(dropdown => {
+            dropdown.addEventListener('click', async function () {
+                console.log('Selection detected');
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+                // Construct the API URL
+                let url = `/admin/get-operation-category/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched Operation Types:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateOperationCategoryDropdown(dropdown, data);
+                } catch (error) {
+                    console.error("Error fetching operation categories:", error);
+                }
+            });
+        });
+        // end fetch operation category
+
+
+        // fetch product
+        // populate the dropdown
+        function populateProductDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select product";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.operation_categories.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.product_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch product on page load
+        document.querySelectorAll('.product-select').forEach(dropdown => {
+            dropdown.addEventListener('click', async function () {
+                console.log('Selection detected');
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+                // Construct the API URL
+                let url = `/admin/get-product/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched Product:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateProductDropdown(dropdown, data);
+                } catch (error) {
+                    console.error("Error fetching product:", error);
+                }
+            });
+        });
+        // end fetch product
+
+        // triger product setup
+        let new_product_setup_card = document.getElementById('new_product_setup_card');
+        document.querySelector('#btn-setup-products').addEventListener('click', () => {
+            new_product_setup_card.classList.remove('d-none');
+            new_product_setup_card.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Dynamically update placeholder based on currency selection
+        document.getElementById('currency').addEventListener('change', function () {
+            const currency = this.value;
+            const priceInput = document.getElementById('product_price');
+            priceInput.placeholder = `Enter product price in ${currency}`;
+        });
+        // Function to populate the table
+        function populateProductTable() {
+            const tbody = document.getElementById("tbl-products").querySelector("tbody");
+            tbody.innerHTML = ""; // Clear existing content
+            // Retrieve the company_id dynamically
+            let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+            console.log("Company ID:", company_id);
+            // Construct the API URL
+            let url = `/admin/get-product/${company_id}`;
+            console.log("Fetching data from URL:", url);
+            fetchFieldInput(url).then(data => {
+                console.log("Fetched Product:", data);
+                // Check if the data contains products
+                if (data.products && data.products.length > 0) {
+                    // Populate the table with products
+                    data.products.forEach(product => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${product.name}</td>
+                                <td>${product.product_category.name}</td>
+                                <td>${product.currency} ${product.price}</td>
+                                <td>${product.quantity_per_unit}</td>
+                                <td>${product.unit}</td>
+                                <td class="text-end">
+                                    <button class="btn btn-primary btn-sm">Edit</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    // Display "No products available" message if no products exist
+                    tbody.innerHTML = `
+                        <tr id="no-products">
+                            <td colspan="5" class="text-center">No products available</td>
+                        </tr>`;
+                }
+            }).catch(error => {
+                console.error("Error fetching product:", error);
+            });
+        }
+
+        // Attach event listener for when the accordion section is shown
+        document.getElementById('productListCollapse').addEventListener('shown.bs.collapse', populateProductTable);
+            const showElement = (element) => element.classList.remove('d-none');
+            const hideElement = (element) => element.classList.add('d-none');
+            const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
+            function displayMessage (type, message) {
+                const messageContainer = document.getElementById('message-container');
+                messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+                setTimeout(() => (messageContainer.innerHTML = ''), 3000);
+            }
+            // Initialize DataTable
+            let table = $('#tbl-operation-types').DataTable({
+                paging: true,
+                searching: true,
+                ordering: false,
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [3] } // Disable sorting on the "Action" column
+                ],
+                data: [], // Start with an empty data array
+                columns: [
+                    { data: 'name' },
+                    { data: 'description' },
+                    { data: 'sequenceOrder' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
+                                        <i class="las la-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
+                                        <i class="las la-trash-alt"></i> Delete
+                                    </button>
+                                </div>`;
+                        }
+                    }
+                ]
+            });
+
+            // Function to create an object for each operation type
+            function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
+                this.operation_type_id = operation_type_id;
+                this.name = name;
+                this.description = description;
+                this.sequenceOrder = sequenceOrder;
+            }
+
+            // Fetch data and populate table when the accordion is expanded
+            document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', () => {
+                let company_id = {{ json_encode($company->company_id) }};
+                let url = `/admin/get-operation-types/${company_id}`;
+                const spinner = document.getElementById('loading-spinner');
+                try {
+                    showElement(spinner);
+                    fetchFieldInput(url).then(data => {
+                        if (data.status === "success") {
+                            data_array = data.operation_types.map(
+                                type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                            );
+
+                            // Clear and add rows without destroying the table
+                            table.clear();
+                            table.rows.add(data_array);
+                            table.draw();
+                            hideElement(spinner)
+                        }
+                    });
+                }catch(error) {
+                    console.error("Error showing spinner:", error);
+                    displayMessage('danger', 'An error occurred while fetching data.');
+                }
+
+            });
+      
+
+    // Edit operation type
+    function editOperationType(operation_type_id, name, description, sequenceOrder){
+        const editCard = document.getElementById('edit-operation-type-card');
+        showElement(editCard);
+        scrollToElement(editCard);
+
+        const form = document.getElementById('edit_operation_type_form');
+        form.querySelector('[name="operation_type_id"]').value = operation_type_id;
+        form.querySelector('[name="operation_type_name"]').value = name;
+        form.querySelector('[name="operation_type_description"]').value = description;
+        form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
+    }
+
+    // Confirm deletion
+    function confirmDeletion(operation_type_id, name){
+        if (confirm(`Are you sure you want to delete "${name}"?`)) {
+            console.log(`Deleted operation type ID: ${operation_type_id}`);
+            displayMessage('success', 'Operation type deleted successfully.');
+            // Add your delete logic here
+        }
+    }
+
+    // Trigger operation setup card
+    const setupCard = document.getElementById('operation-type-card');
+    document.querySelector('#setup-operation-type').addEventListener('click', () => {
+        showElement(setupCard);
+        scrollToElement(setupCard);
+    });
     </script>
     <script>
         $(document).ready(function() {
@@ -8565,19 +8913,13 @@
                     result.products.forEach(product => {
                         tableBody.innerHTML += `<tr>
                             <td>${product.name}</td>
-                            <td>${product.category}</td>
-                            <td>${product.price}</td>
-                            <td>${product.quantity}</td>
+                            <td>${product.product_category.name}</td>
+                            <td>${product.currency} ${product.price}</td>
+                            <td>${product.quantity_per_unit}</td>
+                            <td>${product.unit}</td>
                             <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
+                                <button class="btn btn-primary btn-sm">Edit</button>
+                                <button class="btn btn-danger btn-sm">Delete</button>
                             </td>
                         </tr>`;
                     });

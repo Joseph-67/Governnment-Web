@@ -418,7 +418,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
         Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
         Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
-        Route::get('/get-operation-category/{value}', 'get_operation_categories');
+        Route::get('/get-operation-category/{value}', 'getOperationCategories');
     });
 
     // Operation Type
@@ -454,6 +454,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/products', 'store')->name('admin.store-product');
         Route::put('/products/{id}', 'update')->name('admin.update-product');
         Route::delete('/products/{id}', 'destroy')->name('admin.delete-product');
+        Route::get('/get-product/{value}', 'getProduct');
     });
 
     // Product Category
