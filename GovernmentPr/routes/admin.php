@@ -360,6 +360,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation/{id}', 'show')->name('admin.show-operation');
         Route::post('/operation', 'update')->name('admin.update-operation');
         Route::delete('/operation/{id}', 'destroy')->name('admin.delete-operation');
+        Route::get('/get-operations/{value}', 'get_operations');
     });
 
     // Email Application
@@ -417,6 +418,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
         Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
         Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
+        Route::get('/get-operation-category/{value}', 'get_operation_categories');
     });
 
     // Operation Type
@@ -426,6 +428,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-type/{id}', 'show')->name('admin.show-operation-type');
         Route::put('/operation-type/{id}', 'update')->name('admin.update-operation-type');
         Route::delete('/operation-type/{id}', 'destroy')->name('admin.delete-operation-type');
+        Route::get('/get-operation-types/{value}', 'get_operation_types');
     });
 
     // Pages

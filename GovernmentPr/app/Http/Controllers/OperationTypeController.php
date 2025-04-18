@@ -31,6 +31,15 @@ class OperationTypeController extends Controller
         //
     }
 
+    public function get_operation_types($value)
+    {
+        $operation_types = OperationType::where('is_delete', false)->where('company_id', $value)->get(['operation_type_id', 'name']);
+        return response()->json([
+                    'status' => 'success',
+                    'operation_types' => $operation_types
+                ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

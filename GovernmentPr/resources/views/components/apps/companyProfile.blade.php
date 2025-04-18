@@ -1563,11 +1563,8 @@
                                                 <!-- Calendar Year -->
                                                 <div class="col-md-4">
                                                     <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
                                                         <option value="" selected disabled>Select Calendar Year</option>
-                                                        @foreach($calendar_years as $calendar)
-                                                            <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <!-- Date -->
@@ -2364,6 +2361,242 @@
                             </div>
                         </div>
                     </div>
+                    <div class="accordion-item">
+                            <h2 class="accordion-header" id="operationsLogHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
+                                    aria-controls="operationsLogCollapse">
+                                    <i class="las la-book me-2"></i> Operations Log
+                                </button>
+                            </h2>
+                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="operations-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="operation_name">Operation Name</label>
+                                                    <input type="text" class="form-control" id="operation_name"
+                                                        name="operation_name" placeholder="Operation Name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="description">Description</label>
+                                                    <textarea class="form-control" id="description" name="description"
+                                                        placeholder="Description" rows="3" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_code">Operation Code</label>
+                                                    <input type="text" class="form-control" id="operation_code"
+                                                        name="operation_code" placeholder="Operation Code" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_type">Operation Type</label>
+                                                    <select class="form-select operation-type" id="operation_type"
+                                                        name="operation_type" required>
+                                                        <option value="" selected disabled>Choose...</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="operation_category">Operation Category</label>
+                                                    <select class="form-select" id="operation_category"
+                                                        name="operation_category" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        @foreach($operation_categories as $category)
+                                                        <option value="{{ $category->operation_category_id }}">{{
+                                                            $category->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit">Operation Unit</label>
+                                                    <input type="text" class="form-control" id="operation_unit"
+                                                        name="operation_unit" placeholder="Operation Unit" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_price">Operation Unit Price</label>
+                                                    <input type="number" class="form-control" id="operation_unit_price"
+                                                        name="operation_unit_price" placeholder="Operation Unit Price"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_cost">Operation Unit Cost</label>
+                                                    <input type="number" class="form-control" id="operation_unit_cost"
+                                                        name="operation_unit_cost" placeholder="Operation Unit Cost"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_unit_time">Operation Unit Time</label>
+                                                    <input type="text" class="form-control" id="operation_unit_time"
+                                                        name="operation_unit_time" placeholder="Operation Unit Time"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="product-quantity-container col-md-12">
+                                                <div class="row g-2 align-items-end mb-3">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="expected_product">Expected Product</label>
+                                                            <select class="form-select" id="expected_product" name="expected_products[]" required>
+                                                                <option value="" selected disabled>Select Product</option>
+                                                                @foreach($active_products as $product)
+                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="expected_unit_produced_for_goods">Expected Quantity</label>
+                                                            <input type="number" class="form-control" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 text-start">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity-operation">Add More</button>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
+                                                    <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
+                                                    <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-12 mt-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
+                                            </div> -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="calendar_year">Calendar Year</label>
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
+                                                        required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="start_date">Start Date</label>
+                                                    <input type="date" class="form-control" id="start_date"
+                                                        name="start_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="end_date">End Date</label>
+                                                    <input type="date" class="form-control" id="end_date"
+                                                        name="end_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="operation_status">Operation Status</label>
+                                                    <select class="form-select" id="operation_status" name="operation_status" required>
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                        <option value="completed">Completed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Save
+                                                    Operation</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-operations-log">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="width: 15%;">Operation Name</th>
+                                                    <th style="width: 5%;">Operation Code</th>
+                                                    <th style="width: 10%;">Operation Type</th>
+                                                    <th style="width: 10%;">Operation Category</th>
+                                                    <th style="width: 5%;">Operation Unit</th>
+                                                    <th style="width: 10%;">Expected Waste Per Operation</th>
+                                                    <th style="width: 10%;">Expected Water Usage Per Operation</th>
+                                                    <th style="width: 10%;">Expected Unit Produced For Goods</th>
+                                                    <th style="width: 10%;">Calendar Year</th>
+                                                    <th style="width: 10%;">Start Date</th>
+                                                    <th style="width: 10%;">End Date</th>
+                                                    <th style="width: 10%;">Status</th>
+                                                    <th class="text-end" style="width: 5%;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($company_operations as $log)
+                                                <tr>
+                                                    <td>{{ $log->operation_name }}</td>
+                                                    <td>{{ $log->operation_code }}</td>
+                                                    <td>{{ $log->operationType?->name }}</td>
+                                                    <td>{{ $log->operationCategory->name }}</td>
+                                                    <td>{{ $log->operation_unit }}</td>
+                                                    <td>{{ $log->expected_waste_per_operation }}</td>
+                                                    <td>{{ $log->expected_water_usage_per_operation }}</td>
+                                                    <td>{{ $log->expected_unit_produced_for_goods }}</td>
+                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
+                                                    <td>{{ $log->start_date }}</td>
+                                                    <td>{{ $log->end_date }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+                                                            {{ ucfirst($log->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown d-inline-block">
+                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                                                                data-bs-toggle="dropdown" href="#" role="button"
+                                                                aria-haspopup="false" aria-expanded="false">
+                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                aria-labelledby="dLabel11">
+                                                                <a class="dropdown-item" href="#"
+                                                                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="annualOperationsLogHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -2404,13 +2637,9 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
                                                         required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -2613,249 +2842,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="operationsLogHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
-                                    aria-controls="operationsLogCollapse">
-                                    <i class="las la-book me-2"></i> Operations Log
-                                </button>
-                            </h2>
-                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="operations-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="operation_name">Operation Name</label>
-                                                    <input type="text" class="form-control" id="operation_name"
-                                                        name="operation_name" placeholder="Operation Name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <textarea class="form-control" id="description" name="description"
-                                                        placeholder="Description" rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_code">Operation Code</label>
-                                                    <input type="text" class="form-control" id="operation_code"
-                                                        name="operation_code" placeholder="Operation Code" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_type">Operation Type</label>
-                                                    <select class="form-select" id="operation_type"
-                                                        name="operation_type" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_types as $type)
-                                                        <option value="{{ $type->operation_type_id }}">{{
-                                                            $type->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_category">Operation Category</label>
-                                                    <select class="form-select" id="operation_category"
-                                                        name="operation_category" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_categories as $category)
-                                                        <option value="{{ $category->operation_category_id }}">{{
-                                                            $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit">Operation Unit</label>
-                                                    <input type="text" class="form-control" id="operation_unit"
-                                                        name="operation_unit" placeholder="Operation Unit" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_price">Operation Unit Price</label>
-                                                    <input type="number" class="form-control" id="operation_unit_price"
-                                                        name="operation_unit_price" placeholder="Operation Unit Price"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                    <input type="number" class="form-control" id="operation_unit_cost"
-                                                        name="operation_unit_cost" placeholder="Operation Unit Cost"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_time">Operation Unit Time</label>
-                                                    <input type="text" class="form-control" id="operation_unit_time"
-                                                        name="operation_unit_time" placeholder="Operation Unit Time"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                            <div class="product-quantity-container col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="expected_product">Expected Product</label>
-                                                            <select class="form-select" id="expected_product" name="expected_products[]" required>
-                                                                <option value="" selected disabled>Select Product</option>
-                                                                @foreach($active_products as $product)
-                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-                                                            <input type="number" class="form-control" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity-operation">Add More</button>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
-                                            </div> -->
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="start_date">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date"
-                                                        name="start_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="end_date">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date"
-                                                        name="end_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_status">Operation Status</label>
-                                                    <select class="form-select" id="operation_status" name="operation_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="active">Active</option>
-                                                        <option value="inactive">Inactive</option>
-                                                        <option value="completed">Completed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Save
-                                                    Operation</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-operations-log">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 15%;">Operation Name</th>
-                                                    <th style="width: 5%;">Operation Code</th>
-                                                    <th style="width: 10%;">Operation Type</th>
-                                                    <th style="width: 10%;">Operation Category</th>
-                                                    <th style="width: 5%;">Operation Unit</th>
-                                                    <th style="width: 10%;">Expected Waste Per Operation</th>
-                                                    <th style="width: 10%;">Expected Water Usage Per Operation</th>
-                                                    <th style="width: 10%;">Expected Unit Produced For Goods</th>
-                                                    <th style="width: 10%;">Calendar Year</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Status</th>
-                                                    <th class="text-end" style="width: 5%;">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($company_operations as $log)
-                                                <tr>
-                                                    <td>{{ $log->operation_name }}</td>
-                                                    <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operationType?->name }}</td>
-                                                    <td>{{ $log->operationCategory->name }}</td>
-                                                    <td>{{ $log->operation_unit }}</td>
-                                                    <td>{{ $log->expected_waste_per_operation }}</td>
-                                                    <td>{{ $log->expected_water_usage_per_operation }}</td>
-                                                    <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
-                                                    <td>{{ $log->start_date }}</td>
-                                                    <td>{{ $log->end_date }}</td>
-                                                    <td>
-                                                        <span
-                                                            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
-                                                            {{ ucfirst($log->status) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#"
-                                                                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="equipmentTypeHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -3249,13 +3236,9 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
                                                         required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -3400,11 +3383,8 @@
                                             <!-- Calendar Year -->
                                             <div class="col-md-3">
                                                 <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
                                                     <option value="" selected disabled>Select Calendar Year</option>
-                                                    @foreach($calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                    @endforeach
                                                 </select>
                                             </div>
 
@@ -4785,6 +4765,129 @@
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script>
+        /**
+         * Populates a dropdown element with options.
+         * 
+         * @param {HTMLElement} dropdown - The dropdown element to populate.
+         * @param {Array} data - An array of objects representing the options. Each object should have a `value` and `label`.
+         */
+        function populateDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a year";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            // Add options from the data
+            data.calendar_years.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.calendar_year_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+
+            console.log("Dropdown populated with options:", data);
+        }
+
+        // Fetch data function
+        async function fetchFieldInput(url) {
+            // fetch data
+            let response = await fetch(url, {
+                method: "GET",
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
+                credentials: 'same-origin',
+            });
+            let data = await response.json();
+            console.log(data);
+            return data;
+        }
+
+        // Fetch calendar years on page load
+        document.querySelectorAll('.calendar-year').forEach(dropdown => {
+            dropdown.addEventListener('click', async function () {
+                console.log('Selection detected');
+                
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+
+                // Construct the API URL
+                let url = `/admin/get-calendar-years/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched calendar years:", data);
+
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateDropdown(dropdown, data);
+                } catch (error) {
+                    console.error("Error fetching calendar years:", error);
+                }
+            });
+        });
+        // end fetch calendar years on page load
+        // fetch operation type
+        // populate the dropdown
+        function populateOperationTypeDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a year";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            // Add options from the data
+            data.operation_types.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.operation_type_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch operation type on page load
+        document.querySelectorAll('.operation-type').forEach(dropdown => {
+            dropdown.addEventListener('click', async function () {
+                console.log('Selection detected');
+                
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+
+                // Construct the API URL
+                let url = `/admin/get-operation-types/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched Operation Types:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateOperationTypeDropdown(dropdown, data);
+                } catch (error) {
+                    console.error("Error fetching calendar years:", error);
+                }
+            });
+        });
+        // end fetch calendar years on page load
+        // end fetch operation type
+    </script>
     <script>
         $(document).ready(function() {
             $('#tbl-company-chemical').DataTable({
@@ -8384,58 +8487,6 @@
 
     <!-- Calendar Year Management Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let calendarYearData = []; // To store fetched data
-            // Fetch data function
-            const fetchCalendarYears = (value) => {
-                return fetch(`/admin/get-calendar-years/${value}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        calendarYearData = data.calendar_years; // Store the fetched data
-                        let dropdown = document.querySelectorAll('.calendar-year');
-                        dropdown.forEach(drop => {
-                            drop.innerHTML = ""; // Clear existing options
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = "";
-                            defaultOption.textContent = "Select Calendar Year";
-                            drop.appendChild(defaultOption);
-                            data.forEach(calendar => {
-                                const option = document.createElement('option');
-                                option.value = calendar.calendar_year_id;
-                                option.textContent = calendar.name;
-                                drop.appendChild(option);
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching calendar years:', error);
-                        alert('Failed to fetch calendar years. Please try again later.');
-                    });
-            };
-        });
-
-        // Fetch calendar years on page load
-        document.querySelectorAll('.calendar-year').forEach(dropdown => {
-            dropdown.addEventListener('click', function () {
-                if (this.value) {
-                    this.classList.remove('is-invalid');
-                }
-                fetchCalendarYears(@json_encode($company->company_id)).then((result) => {
-                    console.log(result);
-                    
-                        // const option = document.createElement('option');
-                        // option.value = calendar.calendar_year_id;
-                        // option.textContent = calendar.name;
-                        // dropdown.appendChild(option);
-                });
-            });
-        });
-
         // Calendar Year Management Script
         document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
             e.preventDefault();
