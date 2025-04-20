@@ -25,10 +25,13 @@ return new class extends Migration
             $table->string('operation_unit_cost', 255)->nullable();
             $table->string('operation_unit_time', 255)->nullable();
             $table->unsignedBigInteger('company_id');
-            $table->enum('status', ['active', 'completed', 'inactive']);
+            $table->enum('status', ['active', 'completed', 'pending', 'inactive'])->default('pending');
             $table->decimal('expected_waste_per_operation', 8, 2)->nullable();
             $table->decimal('expected_water_usage_per_operation', 8, 2)->nullable();
-            $table->json('expected_products')->nullable();
+            $table->json('expected_materials_used')->nullable();
+            $table->json('expected_chemicals_used')->nullable();
+            $table->json('expected_products_produced')->nullable();
+            $table->json('expected_waste_generated')->nullable();
             $table->unsignedBigInteger('calendar_year_id')->nullable();
             $table->date('start_date')->nullable(); // Added start date column
             $table->date('end_date')->nullable(); // Added end date column

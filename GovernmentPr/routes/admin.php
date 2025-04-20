@@ -239,10 +239,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(WasteDisposalController::class)->group(function() {
         Route::post('/store-waste-disposal', 'store')->name('admin.store-waste-disposal');
     });
-    // annual operations log
-    Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
-    });
+
     // Quality Control
     Route::controller(QualityControlController::class)->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
@@ -361,6 +358,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/operation', 'update')->name('admin.update-operation');
         Route::delete('/operation/{id}', 'destroy')->name('admin.delete-operation');
         Route::get('/get-operations/{value}', 'get_operations');
+        Route::get('/get-operations-log/{value}', 'get_all_operations');
     });
 
     // Email Application
@@ -418,7 +416,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
         Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
         Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
-        Route::get('/get-operation-category/{value}', 'getOperationCategories');
+        Route::get('/get-operation-categories/{value}', 'getOperationCategories');
     });
 
     // Operation Type
@@ -429,6 +427,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/operation-type/{id}', 'update')->name('admin.update-operation-type');
         Route::delete('/operation-type/{id}', 'destroy')->name('admin.delete-operation-type');
         Route::get('/get-operation-types/{value}', 'get_operation_types');
+    });
+
+    // annual operation log
+    Route::controller(AnnualOperationsLogController::class)->group(function() {
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
     });
 
     // Pages

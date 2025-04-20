@@ -462,3 +462,41 @@ editOperationTypeForm.addEventListener('submit', function (e) {
         }
     });
 });
+
+
+@foreach($company_operations as $log)
+<tr>
+    <td>{{ $log->operation_name }}</td>
+    <td>{{ $log->operation_code }}</td>
+    <td>{{ $log->operationType?->name }}</td>
+    <td>{{ $log->operationCategory->name }}</td>
+    <td>{{ $log->operation_unit }}</td>
+    <td>{{ $log->expected_waste_per_operation }}</td>
+    <td>{{ $log->expected_water_usage_per_operation }}</td>
+    <td>{{ $log->expected_unit_produced_for_goods }}</td>
+    <td>{{ $log->calendarYear?->name ?? "" }}</td>
+    <td>{{ $log->start_date }}</td>
+    <td>{{ $log->end_date }}</td>
+    <td>
+        <span
+            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+            {{ ucfirst($log->status) }}
+        </span>
+    </td>
+    <td class="text-end">
+        <div class="dropdown d-inline-block">
+            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                data-bs-toggle="dropdown" href="#" role="button"
+                aria-haspopup="false" aria-expanded="false">
+                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dLabel11">
+                <a class="dropdown-item" href="#"
+                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
+                <a class="dropdown-item" href="#">Delete</a>
+            </div>
+        </div>
+    </td>
+</tr>
+@endforeach

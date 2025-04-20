@@ -2244,7 +2244,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#operationTypeCollapse" aria-expanded="false"
                                 aria-controls="operationTypeCollapse">
-                                <i class="las la-cogs me-2"></i> Operation Type Management
+                                <i class="las la-cogs me-2" style="font-size: 1.5rem;"></i> Operation Type Management
                             </button>
                         </h2>
                         <div id="operationTypeCollapse" class="accordion-collapse collapse"
@@ -2350,8 +2350,6 @@
                                         <div id="message-container" class="mt-3"></div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -2360,54 +2358,102 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#operationCategoryCollapse" aria-expanded="false"
                                 aria-controls="operationCategoryCollapse">
-                                <i class="las la-layer-group me-2"></i> Operation Category
+                                <i class="las la-layer-group me-2" style="font-size: 1.5rem;"></i> Operation Category Management
                             </button>
                         </h2>
                         <div id="operationCategoryCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
                             <div class="accordion-body">
-                                <form action="" method="post" id="operation_category_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f0f8ff;">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" ></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-
-                                <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered" id="tbl-operation-categories">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($operation_categories as $category)
-                                            <tr>
-                                                <td>{{ $category->name }}</td>
-                                                <td>{{ $category->description }}</td>
-                                                <td class="text-end">
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                <div class="row">
+                                    <div class="col-md-6 closeable-card d-none" id="operation-category-card">
+                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for operation category -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Add New Operation Category</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="operation_category_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-12">
+                                                            <label for="category_name" class="form-label fw-bold text-primary">Category Name</label>
+                                                            <input type="text" class="form-control" id="category_name" name="name" placeholder="Enter category name" required>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="category_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="category_description" name="description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">
+                                                            <i class="las la-save"></i> Save
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-category-card">
+                                        <!-- Edit Operation Category Card -->
+                                        <div class="card shadow-sm border-0" style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Edit Operation Category</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="edit_operation_category_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="operation_category_id" id="operation_category_id">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-12">
+                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="edit_operation_category_name" name="operation_category_name" placeholder="Enter category name" required>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="edit_operation_category_description" name="operation_category_description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3 align-items-center">
+                                            <div class="col">
+                                                <h4 class="text-primary mb-0">Operation Categories</h4>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-category">
+                                                    <i class="iconoir-plus"></i> Add Operation Category
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Spinner -->
+                                        <div id="loading-spinner-category" class="spinner-border text-primary d-none" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-categories">
+                                                <thead class="table-primary text-center">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -2417,226 +2463,239 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#operationsLogCollapse" aria-expanded="false"
                                     aria-controls="operationsLogCollapse">
-                                    <i class="las la-book me-2"></i> Operations Log
+                                    <i class="las la-book me-2" style="font-size: 1.5rem;"></i> Operations Log Management
                                 </button>
                             </h2>
                             <div id="operationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
-                                    <form action="" method="post" id="operations-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="operation_name">Operation Name</label>
-                                                    <input type="text" class="form-control" id="operation_name"
-                                                        name="operation_name" placeholder="Operation Name" required>
+                                    <div class="row">
+                                        <div class="col-md-12 closeable-card" id="operation-log-card">
+                                            <div class="card shadow-lg border-0 rounded-3" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
+                                                <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center rounded-top">
+                                                    <h4 class="card-title mb-0">New Operation Log</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <textarea class="form-control" id="description" name="description"
-                                                        placeholder="Description" rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_code">Operation Code</label>
-                                                    <input type="text" class="form-control" id="operation_code"
-                                                        name="operation_code" placeholder="Operation Code" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_type">Operation Type</label>
-                                                    <select class="form-select operation-type" id="operation_type"
-                                                        name="operation_type" required>
-                                                        <option value="" selected disabled>Choose...</option>
+                                                <div class="card-body p-4">
+                                                    <form action="" method="post" id="operations-form">
+                                                        @csrf
+                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="operation_name" class="form-label fw-bold">Operation Name <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Operation Name" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="description" class="form-label fw-bold">Description</label>
+                                                                    <textarea class="form-control border-primary" id="description" name="description" placeholder="Description" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_code" class="form-label fw-bold">Operation Code</label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Operation Code">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_type" class="form-label fw-bold">Operation Type <span class="text-danger">*</span></label>
+                                                                    <select class="form-select border-primary operation-type" id="operation_type" name="operation_type" required>
+                                                                        <option value="" selected disabled>Choose...</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_category" class="form-label fw-bold">Operation Category <span class="text-danger">*</span></label>
+                                                                    <select class="form-select border-primary operation-category" id="operation_category" name="operation_category" required>
+                                                                        <option value="" selected disabled>Choose...</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row gy-3">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="operation_unit_cost" class="form-label fw-bold">Operation Unit Cost</label>
+                                                                        <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Operation Unit Cost" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="operation_unit_time" class="form-label fw-bold">Operation Unit Time</label>
+                                                                        <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Operation Unit Time" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-md-6">
+                                                                <div class="material-quantity-used-container-operation-log col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_material" class="form-label fw-bold">Material Needed</label>
+                                                                                <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]" required>
+                                                                                    <option value="" selected disabled>Select Material</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Expected Quantity" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- chemicals -->
+                                                             <div class="col-md-6">
+                                                                <div class="chemical-quantity-container-operation-log col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
+                                                                                <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]" required>
+                                                                                    <option value="" selected disabled>Select Chemical</option>
 
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_category">Operation Category</label>
-                                                    <select class="form-select operation-category" id="operation_category"
-                                                        name="operation_category" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit">Operation Unit</label>
-                                                    <input type="text" class="form-control" id="operation_unit"
-                                                        name="operation_unit" placeholder="Operation Unit" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_price">Operation Unit Price</label>
-                                                    <input type="number" class="form-control" id="operation_unit_price"
-                                                        name="operation_unit_price" placeholder="Operation Unit Price"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                    <input type="number" class="form-control" id="operation_unit_cost"
-                                                        name="operation_unit_cost" placeholder="Operation Unit Cost"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_time">Operation Unit Time</label>
-                                                    <input type="text" class="form-control" id="operation_unit_time"
-                                                        name="operation_unit_time" placeholder="Operation Unit Time"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                            <div class="product-quantity-container col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="expected_product">Expected Product</label>
-                                                            <select class="form-select product-select" id="expected_product" name="expected_products[]" required>
-                                                                <option value="" selected disabled>Select Product</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-                                                            <input type="number" class="form-control" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity-operation">Add More</button>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
-                                            </div> -->
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="start_date">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date"
-                                                        name="start_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="end_date">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date"
-                                                        name="end_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_status">Operation Status</label>
-                                                    <select class="form-select" id="operation_status" name="operation_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="active">Active</option>
-                                                        <option value="inactive">Inactive</option>
-                                                        <option value="completed">Completed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Save
-                                                    Operation</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-operations-log">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 15%;">Operation Name</th>
-                                                    <th style="width: 5%;">Operation Code</th>
-                                                    <th style="width: 10%;">Operation Type</th>
-                                                    <th style="width: 10%;">Operation Category</th>
-                                                    <th style="width: 5%;">Operation Unit</th>
-                                                    <th style="width: 10%;">Expected Waste Per Operation</th>
-                                                    <th style="width: 10%;">Expected Water Usage Per Operation</th>
-                                                    <th style="width: 10%;">Expected Unit Produced For Goods</th>
-                                                    <th style="width: 10%;">Calendar Year</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Status</th>
-                                                    <th class="text-end" style="width: 5%;">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($company_operations as $log)
-                                                <tr>
-                                                    <td>{{ $log->operation_name }}</td>
-                                                    <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operationType?->name }}</td>
-                                                    <td>{{ $log->operationCategory->name }}</td>
-                                                    <td>{{ $log->operation_unit }}</td>
-                                                    <td>{{ $log->expected_waste_per_operation }}</td>
-                                                    <td>{{ $log->expected_water_usage_per_operation }}</td>
-                                                    <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
-                                                    <td>{{ $log->start_date }}</td>
-                                                    <td>{{ $log->end_date }}</td>
-                                                    <td>
-                                                        <span
-                                                            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
-                                                            {{ ucfirst($log->status) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#"
-                                                                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                                                </div>
+                                                             </div>
+                                                             <!-- end chemical -->
+                                                            <!-- Water -->
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold">Expected Water Usage Per Operation</label>
+                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end water -->
+                                                             <!-- Product -->
+                                                            <div class="col-md-6">
+                                                                <div class="operation-log-product-quantity-container col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_product" class="form-label fw-bold">Expected Product</label>
+                                                                                <select class="form-select border-primary product-select" id="expected_product" name="expected_products[]" required>
+                                                                                    <option value="" selected disabled>Select Product</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_unit_produced_for_goods" class="form-label fw-bold">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-product-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Waste -->
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="expected_waste_per_operation" class="form-label fw-bold">Expected Waste Per Operation</label>
+                                                                    <input type="number" class="form-control border-primary" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="calendar_year" class="form-label fw-bold">Calendar Year</label>
+                                                                    <select class="form-select border-primary calendar-year" id="calendar_year" name="calendar_year" required>
+                                                                        <option value="" selected disabled>Choose...</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="start_date" class="form-label fw-bold">Start Date</label>
+                                                                    <input type="date" class="form-control border-primary" id="start_date" name="start_date" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="end_date" class="form-label fw-bold">End Date</label>
+                                                                    <input type="date" class="form-control border-primary" id="end_date" name="end_date" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_status" class="form-label fw-bold">Operation Status</label>
+                                                                    <select class="form-select border-primary" id="operation_status" name="operation_status" required>
+                                                                        <option value="" selected disabled>Choose...</option>
+                                                                        <option value="active">Active</option>
+                                                                        <option value="inactive">Inactive</option>
+                                                                        <option value="completed">Completed</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 mt-4 text-end">
+                                                                <button type="submit" class="btn btn-primary px-4 py-2">Save Operation</button>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row mb-3 align-items-center">
+                                                <div class="col">
+                                                    <h4 class="text-primary mb-0">Operations Log</h4>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="setup-operation-log">
+                                                        <i class="iconoir-plus"></i> Add Operation Log
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive mt-4">
+                                                <table class="table table-hover table-bordered w-100" id="tbl-operations-log">
+                                                    <thead class="table-primary text-center">
+                                                        <tr>
+                                                            <th scope="col" class="col-width-15">Operation Name</th>
+                                                            <th scope="col" class="col-width-5">Operation Code</th>
+                                                            <th scope="col" class="col-width-10">Operation Type</th>
+                                                            <th scope="col" class="col-width-10">Operation Category</th>
+                                                            <th scope="col" class="col-width-5">Operation Unit</th>
+                                                            <th scope="col" class="col-width-10">Expected Waste Per Operation</th>
+                                                            <th scope="col" class="col-width-10">Expected Water Usage Per Operation</th>
+                                                            <th scope="col" class="col-width-10">Expected Unit Produced For Goods</th>
+                                                            <th scope="col" class="col-width-10">Calendar Year</th>
+                                                            <th scope="col" class="col-width-10">Start Date</th>
+                                                            <th scope="col" class="col-width-10">End Date</th>
+                                                            <th scope="col" class="col-width-10">Status</th>
+                                                            <th scope="col" class="text-end col-width-5">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Dynamic rows will go here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -4775,8 +4834,8 @@
     <!-- end update operation log modal -->
     @section('styles')
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap.min.css') }}">
 
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
@@ -4833,6 +4892,12 @@
             border-radius: 0.5rem;
         }
 
+        .bg-gradient-primary {
+            background: linear-gradient(90deg, #007bff, #22c55e); /* Updated gradient colors for primary */
+            color: #ffffff; /* Ensures text is visible on the gradient */
+        }
+
+
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -4847,9 +4912,9 @@
 
     @section('scripts')
     <!-- DataTables and Bootstrap JavaScript -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
+
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
@@ -5132,128 +5197,335 @@
 
         // Attach event listener for when the accordion section is shown
         document.getElementById('productListCollapse').addEventListener('shown.bs.collapse', populateProductTable);
-            const showElement = (element) => element.classList.remove('d-none');
-            const hideElement = (element) => element.classList.add('d-none');
-            const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
-            function displayMessage (type, message) {
-                const messageContainer = document.getElementById('message-container');
-                messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
-                setTimeout(() => (messageContainer.innerHTML = ''), 3000);
-            }
-            // Initialize DataTable
-            let table = $('#tbl-operation-types').DataTable({
-                paging: true,
-                searching: true,
-                ordering: false,
-                responsive: true,
-                columnDefs: [
-                    { orderable: false, targets: [3] } // Disable sorting on the "Action" column
-                ],
-                data: [], // Start with an empty data array
-                columns: [
-                    { data: 'name' },
-                    { data: 'description' },
-                    { data: 'sequenceOrder' },
-                    {
-                        data: null,
-                        render: function (data, type, row) {
-                            return `
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
-                                        <i class="las la-edit"></i> Edit
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
-                                        <i class="las la-trash-alt"></i> Delete
-                                    </button>
-                                </div>`;
-                        }
-                    }
-                ]
-            });
 
-            // Function to create an object for each operation type
-            function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
-                this.operation_type_id = operation_type_id;
-                this.name = name;
-                this.description = description;
-                this.sequenceOrder = sequenceOrder;
-            }
-
-            // Fetch data and populate table when the accordion is expanded
-            document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', () => {
-                let company_id = {{ json_encode($company->company_id) }};
-                let url = `/admin/get-operation-types/${company_id}`;
-                const spinner = document.getElementById('loading-spinner');
-                try {
-                    showElement(spinner);
-                    fetchFieldInput(url).then(data => {
-                        if (data.status === "success") {
-                            data_array = data.operation_types.map(
-                                type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
-                            );
-
-                            // Clear and add rows without destroying the table
-                            table.clear();
-                            table.rows.add(data_array);
-                            table.draw();
-                            hideElement(spinner)
-                        }
-                    });
-                }catch(error) {
-                    console.error("Error showing spinner:", error);
-                    displayMessage('danger', 'An error occurred while fetching data.');
-                }
-
-            });
-      
-
-    // Edit operation type
-    function editOperationType(operation_type_id, name, description, sequenceOrder){
-        const editCard = document.getElementById('edit-operation-type-card');
-        showElement(editCard);
-        scrollToElement(editCard);
-
-        const form = document.getElementById('edit_operation_type_form');
-        form.querySelector('[name="operation_type_id"]').value = operation_type_id;
-        form.querySelector('[name="operation_type_name"]').value = name;
-        form.querySelector('[name="operation_type_description"]').value = description;
-        form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
-    }
-
-    // Confirm deletion
-    function confirmDeletion(operation_type_id, name){
-        if (confirm(`Are you sure you want to delete "${name}"?`)) {
-            console.log(`Deleted operation type ID: ${operation_type_id}`);
-            displayMessage('success', 'Operation type deleted successfully.');
-            // Add your delete logic here
+        // show, hide, scroll to element and display message functions
+        const showElement = (element) => element.classList.remove('d-none');
+        const hideElement = (element) => element.classList.add('d-none');
+        const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
+        function displayMessage (type, message) {
+            const messageContainer = document.getElementById('message-container');
+            messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+            setTimeout(() => (messageContainer.innerHTML = ''), 3000);
         }
-    }
+        // end show, hide, scroll to element and display message functions
 
-    // Trigger operation setup card
-    const setupCard = document.getElementById('operation-type-card');
-    document.querySelector('#setup-operation-type').addEventListener('click', () => {
-        showElement(setupCard);
-        scrollToElement(setupCard);
-    });
+        // operation type and operation category
+        // Initialize DataTable for operation type
+        let table = $('#tbl-operation-types').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [3] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+                { data: 'name' },
+                { data: 'description' },
+                { data: 'sequenceOrder' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>`;
+                    }
+                }
+            ]
+        });
+        // Function to create an object for each operation type
+        function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
+            this.operation_type_id = operation_type_id;
+            this.name = name;
+            this.description = description;
+            this.sequenceOrder = sequenceOrder;
+        }
+        // Fetch data and populate table when the accordion is expanded
+        document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', () => {
+            let company_id = {{ json_encode($company->company_id) }};
+            let url = `/admin/get-operation-types/${company_id}`;
+            const spinner = document.getElementById('loading-spinner');
+            try {
+                showElement(spinner);
+                fetchFieldInput(url).then(data => {
+                    if (data.status === "success") {
+                        data_array = data.operation_types.map(
+                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        table.clear();
+                        table.rows.add(data_array);
+                        table.draw();
+                        hideElement(spinner)
+                    }
+                });
+            }catch(error) {
+                console.error("Error showing spinner:", error);
+                displayMessage('danger', 'An error occurred while fetching data.');
+            }
+
+        });
+        // Edit operation type
+        function editOperationType(operation_type_id, name, description, sequenceOrder){
+            const editCard = document.getElementById('edit-operation-type-card');
+            showElement(editCard);
+            scrollToElement(editCard);
+            const form = document.getElementById('edit_operation_type_form');
+            form.querySelector('[name="operation_type_id"]').value = operation_type_id;
+            form.querySelector('[name="operation_type_name"]').value = name;
+            form.querySelector('[name="operation_type_description"]').value = description;
+            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
+        }
+        // Confirm deletion
+        function confirmDeletion(operation_type_id, name){
+            if (confirm(`Are you sure you want to delete "${name}"?`)) {
+                console.log(`Deleted operation type ID: ${operation_type_id}`);
+                displayMessage('success', 'Operation type deleted successfully.');
+                // Add your delete logic here
+            }
+        }
+        // Trigger operation setup card
+        const setupCard = document.getElementById('operation-type-card');
+        document.querySelector('#setup-operation-type').addEventListener('click', () => {
+            showElement(setupCard);
+            scrollToElement(setupCard);
+        });
+
+        // Initialize DataTable for operation categories
+        let categoriesTable = $('#tbl-operation-categories').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+                { data: 'name' },
+                { data: 'description' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${row.operation_category_id}, '${row.name}', '${row.description}')">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${row.operation_category_id}, '${row.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>`;
+                    }
+                }
+            ]
+        });
+
+        // Function to create an object for each operation category
+        function OperationCategoryObject(operation_category_id, name, description) {
+            this.operation_category_id = operation_category_id;
+            this.name = name;
+            this.description = description;
+        }
+
+        // Fetch data and populate table when the accordion is expanded
+        document.getElementById('operationCategoryCollapse').addEventListener('shown.bs.collapse', () => {
+            console.log('====================================');
+            console.log('Fetching operation categories...');
+            console.log('====================================');
+            let company_id = {{ json_encode($company->company_id) }};
+            let url = `/admin/get-operation-categories/${company_id}`;
+            let categoriesSpinner = document.getElementById('loading-spinner');
+            try {
+                showElement(categoriesSpinner);
+                fetchFieldInput(url).then(data => {
+                    if (data.status === "success") {
+                        data_array = data.operation_categories.map(
+                            category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        categoriesTable.clear();
+                        categoriesTable.rows.add(data_array);
+                        categoriesTable.draw();
+                        hideElement(categoriesSpinner);
+                    }
+                });
+            } catch (error) {
+                console.error("Error showing spinner:", error);
+                displayMessage('danger', 'An error occurred while fetching data.');
+            }
+        });
+
+        // Edit operation category
+        function editOperationCategory(operation_category_id, name, description) {
+            const editCategoryCard = document.getElementById('edit-operation-category-card');
+            showElement(editCategoryCard);
+            scrollToElement(editCategoryCard);
+
+            const form = document.getElementById('edit_operation_category_form');
+            form.querySelector('[name="operation_category_id"]').value = operation_category_id;
+            form.querySelector('[name="operation_category_name"]').value = name;
+            form.querySelector('[name="operation_category_description"]').value = description;
+        }
+
+        // Confirm deletion
+        function confirmCategoryDeletion(operation_category_id, name) {
+            if (confirm(`Are you sure you want to delete "${name}"?`)) {
+                console.log(`Deleted operation category ID: ${operation_category_id}`);
+                displayMessage('success', 'Operation category deleted successfully.');
+                // Add your delete logic here
+            }
+        }
+
+        // Trigger operation category setup card
+        let setupCategoryCard = document.getElementById('operation-category-card');
+        document.querySelector('#setup-operation-category').addEventListener('click', () => {
+            showElement(setupCategoryCard);
+            scrollToElement(setupCategoryCard);
+        });
+        // 
+        // Initialize DataTable for operations log
+        let operationsLogTable = $('#tbl-operations-log').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+            { orderable: false, targets: [12] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+            { data: 'operation_name' },
+            { data: 'operation_code' },
+            { data: 'operation_type' },
+            { data: 'operation_category' },
+            { data: 'operation_unit' },
+            { data: 'expected_waste_per_operation' },
+            { data: 'expected_water_usage_per_operation' },
+            { data: 'expected_unit_produced_for_goods' },
+            { data: 'calendar_year' },
+            { data: 'start_date' },
+            { data: 'end_date' },
+            { data: 'status' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                return `
+                    <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
+                        <i class="las la-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="confirmOperationLogDeletion(${row.operation_id}, '${row.operation_name}')">
+                        <i class="las la-trash-alt"></i> Delete
+                    </button>
+                    </div>`;
+                }
+            }
+            ]
+        });
+
+        // Function to create an object for each operation log
+        function OperationLogObject(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
+            this.operation_id = operation_id;
+            this.operation_name = operation_name;
+            this.operation_code = operation_code;
+            this.operation_type = operation_type;
+            this.operation_category = operation_category;
+            this.operation_unit = operation_unit;
+            this.expected_waste_per_operation = expected_waste_per_operation;
+            this.expected_water_usage_per_operation = expected_water_usage_per_operation;
+            this.expected_unit_produced_for_goods = expected_unit_produced_for_goods;
+            this.calendar_year = calendar_year;
+            this.start_date = start_date;
+            this.end_date = end_date;
+            this.status = status;
+        }
+
+        // Fetch data and populate table when the accordion is expanded
+        document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', () => {
+            console.log('Fetching operations log...');
+            let company_id = {{ json_encode($company->company_id) }};
+            let url = `/admin/get-operations-log/${company_id}`;
+            let operationsLogSpinner = document.getElementById('loading-spinner');
+            try {
+                showElement(operationsLogSpinner);
+                fetchFieldInput(url).then(data => {
+                    if (data.status === "success") {
+                    data_array = data.operations_log.map(
+                        log => new OperationLogObject(log.company_operation_id, log.operation_name, log.operation_code, log.operationType.name, log.operationCategory.name, log.operation_unit, log.expected_waste_per_operation, log.expected_water_usage_per_operation, log.expected_unit_produced_for_goods, log.calendar_year, log.start_date, log.end_date, log.status)
+                    );
+
+                    // Clear and add rows without destroying the table
+                    operationsLogTable.clear();
+                    operationsLogTable.rows.add(data_array);
+                    operationsLogTable.draw();
+                    hideElement(operationsLogSpinner);
+                    }
+                });
+            } catch (error) {
+            console.error("Error showing spinner:", error);
+            displayMessage('danger', 'An error occurred while fetching data.');
+            }
+        });
+
+        // Edit operation log
+        function editOperationLog(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
+            const editOperationCard = document.getElementById('operation-log-card');
+            showElement(editOperationCard);
+            scrollToElement(editOperationCard);
+
+            const form = document.getElementById('operations-form-update');
+            form.querySelector('[name="operation_id"]').value = operation_id;
+            form.querySelector('[name="operation_name"]').value = operation_name;
+            form.querySelector('[name="operation_code"]').value = operation_code;
+            form.querySelector('[name="operation_type"]').value = operation_type;
+            form.querySelector('[name="operation_category"]').value = operation_category;
+            form.querySelector('[name="operation_unit"]').value = operation_unit;
+            form.querySelector('[name="operation_unit_price"]').value = expected_waste_per_operation;
+            form.querySelector('[name="operation_unit_cost"]').value = expected_water_usage_per_operation;
+            form.querySelector('[name="operation_unit_time"]').value = expected_unit_produced_for_goods;
+            form.querySelector('[name="calendar_year"]').value = calendar_year;
+            form.querySelector('[name="start_date"]').value = start_date;
+            form.querySelector('[name="end_date"]').value = end_date;
+            form.querySelector('[name="status"]').value = status;
+        }
+
+        // Confirm deletion
+        function confirmOperationLogDeletion(operation_id, operation_name) {
+            if (confirm(`Are you sure you want to delete "${operation_name}"?`)) {
+            console.log(`Deleted operation log ID: ${operation_id}`);
+            displayMessage('success', 'Operation log deleted successfully.');
+            // Add your delete logic here
+            }
+        }
     </script>
     <script>
-        $(document).ready(function() {
-            $('#tbl-company-chemical').DataTable({
-                responsive: true,
-                autoWidth: false,
-                pageLength: 10,
-                lengthChange: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                language: {
-                    paginate: {
-                        next: 'Next',
-                        previous: 'Previous'
-                    }
-                }
-            });
-        });
+        // $(document).ready(function() {
+        //     $('#tbl-company-chemical').DataTable({
+        //         responsive: true,
+        //         autoWidth: false,
+        //         pageLength: 10,
+        //         lengthChange: true,
+        //         searching: true,
+        //         ordering: true,
+        //         info: true,
+        //         language: {
+        //             paginate: {
+        //                 next: 'Next',
+        //                 previous: 'Previous'
+        //             }
+        //         }
+        //     });
+        // });
     </script>
     <script>
         async function ChangePolicy(ele, company, policy) {
@@ -8329,37 +8601,75 @@
                 container.remove();
             });
         }
-        function addChemicalField() {
-            const container = document.createElement('div');
-            let chemicals = @json($approved_company_chemicals);
-            container.classList.add('row', 'g-2', 'mt-2', 'chemical-field-container');
-            container.innerHTML = `
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="chemical_name">Chemical Name</label>
-            <select class="form-control" name="chemical_name[]" required>
-            <option value="" disabled selected>Select Chemical</option>
-            ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
-            </select>
-            </div>
-            </div>
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="expected_quantity">Expected Quantity</label>
-            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-            </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-            <button type="button" class="btn btn-danger btn-sm remove-chemical-btn">Remove</button>
-            </div>
-            `;
-            document.querySelector('#annual-operations-form .row.g-2 .chemical-quantity-expected').appendChild(container);
 
-            // Add event listener to the remove button
-            container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
-                container.remove();
-            });
+        function addChemicalField(parentContainerSelector, chemicals) {
+            const container = document.createElement('div');
+            container.classList.add('row', 'g-2', 'mt-2', 'chemical-field-container');
+            
+            container.innerHTML = `
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="chemical_name">Chemical Name</label>
+                        <select class="form-control chemical-select" name="chemical_name[]" aria-label="Select Chemical" required>
+                            <option value="" disabled selected>Select Chemical</option>
+                            ${chemicals.map(chemical => `
+                                <option value="${chemical.company_chemical_id}">
+                                    ${chemical.chemical.name}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="expected_quantity">Expected Quantity</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            name="expected_quantity[]" 
+                            placeholder="Enter expected quantity" 
+                            min="0" 
+                            step="any" 
+                            aria-label="Enter expected quantity"
+                            required
+                        >
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-chemical-btn" aria-label="Remove chemical field">
+                        Remove
+                    </button>
+                </div>
+            `;
+
+            const containerParent = document.querySelector(parentContainerSelector);
+            if (containerParent) {
+                containerParent.appendChild(container);
+
+                // Add event listener to the remove button
+                container.querySelector('.remove-chemical-btn').addEventListener('click', () => {
+                    container.remove();
+                });
+            } else {
+                console.error(`Parent container '${parentContainerSelector}' not found.`);
+            }
         }
+
+
+        // Example data
+        const approvedChemicals = @json($approved_company_chemicals);
+
+        // Add to Section 1
+        document.querySelector('#add-chemical-btn-section-1').addEventListener('click', () => {
+            addChemicalField('#section-1-container', approvedChemicals);
+        });
+
+        // Add to Section 2
+        document.querySelector('#add-chemical-btn-section-2').addEventListener('click', () => {
+            addChemicalField('#section-2-container', approvedChemicals);
+        });
+
+
 
         function addProductField() {
             const container = document.createElement('div');
@@ -8663,134 +8973,340 @@
 
     <!-- Production Log -->
      <script>
-        // Add event listener to the add more product button for production log
-        document.addEventListener('DOMContentLoaded', function () {
-            const productContainer = document.querySelector('.product-quantity-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-product-production-log');
-            let products = @json($products);
-            let productIndex = 1; // Start from 1 since the first row is index 0
+        /**
+         * Initialize the "Add More Material" functionality for a section.
+            * @param {string} containerSelector - Selector for the parent container where rows will be added.
+            * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+            * @param {Array} materials - Array of materials to populate the dropdown.
+            */
+        function initializeMaterialSection(containerSelector, buttonSelector, materials) {
+            const container = document.querySelector(containerSelector);
+            const addButton = document.querySelector(buttonSelector);
+            let materialIndex = 1; // Start index
 
-            addMoreButton.addEventListener('click', function () {
+            // Function to create a new material row
+            function createMaterialRow(index) {
                 const newRow = document.createElement('div');
                 newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                 newRow.innerHTML = `
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="produced_product">Produced Product</label>
-                            <select class="form-select" name="product_produced[${productIndex}][product_id]" required>
-                                <option value="" selected disabled>Select Product</option>
-                                ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="produced_quantity">Quantity Produced</label>
-                            <input type="number" class="form-control" name="product_produced[${productIndex}][quantity]" placeholder="Produced Quantity" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
-                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                    </div>
-                `;
-                productContainer.appendChild(newRow);
-                productIndex++;
-                // Populate the product select options
-            });
-
-            productContainer.addEventListener('click', function (e) {
-                if (e.target.classList.contains('remove-product-quantity')) {
-                    e.target.closest('.row').remove();
-                }
-            });
-        });
-
-        // Add event listener to the add more material button for production log
-        document.addEventListener('DOMContentLoaded', function () {
-            const materialContainer = document.querySelector('.material-quantity-used-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-material-used-production-log');
-            let materials = @json($companyMaterials);
-            let materialIndex = 1; // Start from 1 since the first row is index 0
-
-            addMoreButton.addEventListener('click', function () {
-                const newRow = document.createElement('div');
-                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                newRow.innerHTML = `
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Used Material</label>
-                            <select class="form-select" name="material_used[${materialIndex}][material_id]" required>
+                            <label for="material-used-${index}">Material Needed</label>
+                            <select id="material-used-${index}" class="form-select" name="material_used[${index}][material_id]" required>
                                 <option value="" selected disabled>Select Material</option>
-                                ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
+                                ${materials.map(material => `
+                                    <option value="${material.companyMaterialId}">
+                                        ${material.material}
+                                    </option>`).join('')}
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label>Used Quantity</label>
-                            <input type="number" class="form-control" name="material_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
+                            <label for="material-quantity-${index}">Quantity</label>
+                            <input 
+                                id="material-quantity-${index}" 
+                                type="number" 
+                                class="form-control" 
+                                name="material_used[${index}][quantity]" 
+                                placeholder="Used Quantity" 
+                                min="0" 
+                                step="any" 
+                                required
+                            >
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">
+                            Remove
+                        </button>
                     </div>
                 `;
-                materialContainer.appendChild(newRow);
+                return newRow;
+            }
+
+            // Add a new material row
+            addButton.addEventListener('click', function () {
+                const newRow = createMaterialRow(materialIndex);
+                container.appendChild(newRow);
                 materialIndex++;
             });
 
-            materialContainer.addEventListener('click', function (e) {
+            // Remove a material row
+            container.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-material-quantity')) {
-                    e.target.closest('.row').remove();
-                    // Optional: reindex after removal if strict indexing is needed
+                    const row = e.target.closest('.row');
+                    if (row) {
+                        row.remove();
+                    }
                 }
             });
+        }
+
+        // Example usage: Initialize multiple sections
+        const companyMaterials = @json($companyMaterials);
+
+        initializeMaterialSection(
+            '.material-quantity-used-container-production-log', 
+            '.add-more-material-used-production-log', 
+            companyMaterials
+        );
+
+        initializeMaterialSection(
+            '.material-quantity-used-container-operation-log',
+            '.add-more-material-quantity-operation', 
+            companyMaterials
+        );
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Chemical" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} chemicals - Array of chemicals to populate the dropdown.
+             */
+            function initializeChemicalSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let chemicalIndex = 1; // Start index
+
+                // Function to create a new chemical row
+                function createChemicalRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="chemical-used-${index}">Chemical Needed</label>
+                                <select id="chemical-used-${index}" class="form-select" name="chemical_used[${index}][chemical_id]" required>
+                                    <option value="" selected disabled>Select Chemical</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="chemical-quantity-${index}">Quantity</label>
+                                <input 
+                                    id="chemical-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control"
+                                    name="chemical_used[${index}][quantity]" 
+                                    placeholder="Used Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new chemical row
+                addButton.addEventListener('click', function () {
+                    const newRow = createChemicalRow(chemicalIndex);
+                    container.appendChild(newRow);
+                    chemicalIndex++;
+                });
+
+                // Remove a chemical row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-chemical-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            initializeChemicalSection(
+                '.chemical-quantity-container-production-log', 
+                '.add-more-chemical-used-production-log'
+            );
+
+            initializeChemicalSection(
+                '.chemical-quantity-container-operation-log', 
+                '.add-more-chemical-quantity-operation'
+            );
         });
 
-
-        // Add event listener to the add more chemical button for production log
         document.addEventListener('DOMContentLoaded', function () {
-            const chemicalContainer = document.querySelector('.chemical-quantity-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-chemical-used-production-log');
-            let chemicals = @json($approved_company_chemicals);
-            let chemicalIndex = 1; // Start from 1 since the first row is index 0
+            /**
+             * Initialize the "Add More Product" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} products - Array of products to populate the dropdown.
+             */
+            function initializeProductSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let productIndex = 1; // Start index
 
-            addMoreButton.addEventListener('click', function () {
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label for="used_chemical">Used Chemical</label>
-                    <select class="form-select" name="chemical_used[${chemicalIndex}][chemical_id]" required>
-                        <option value="" selected disabled>Select Chemical</option>
-                        ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
-                    </select>
-                </div>
-                </div>
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label for="used_quantity">Used Quantity</label>
-                    <input type="number" class="form-control" name="chemical_used[${chemicalIndex}][quantity]" placeholder="Used Quantity" required>
-                </div>
-                </div>
-                <div class="col-md-2">
-                <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">Remove</button>
-                </div>
-            `;
-            chemicalContainer.appendChild(newRow);
-            chemicalIndex++;
-            });
+                // Function to create a new product row
+                function createProductRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="produced-product-${index}">Produced Product</label>
+                                <select id="produced-product-${index}" class="form-select" name="product_produced[${index}][product_id]" required>
+                                    <option value="" selected disabled>Select Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="produced-quantity-${index}">Quantity Produced</label>
+                                <input 
+                                    id="produced-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity]" 
+                                    placeholder="Produced Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="quantity-defected-${index}">Quantity Defected</label>
+                                <input 
+                                    id="quantity-defected-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity_defected]" 
+                                    placeholder="Quantity Defected" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
 
-            chemicalContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-chemical-quantity')) {
-                e.target.closest('.row').remove();
+                // Add a new product row
+                addButton.addEventListener('click', function () {
+                    const newRow = createProductRow(productIndex);
+                    container.appendChild(newRow);
+                    productIndex++;
+                });
+
+                // Remove a product row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-product-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
             }
-            });
+
+            // Example usage: Initialize multiple sections
+            const products = @json($products);
+
+            initializeProductSection(
+                '.product-quantity-container-production-log', 
+                '.add-more-product-production-log'
+            );
+
+            initializeProductSection(
+                '.product-quantity-container', 
+                '.add-more-product-quantity-operation'
+            );
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Product" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} products - Array of products to populate the dropdown.
+             */
+            function initializeProductSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let productIndex = 1; // Start index
+
+                // Function to create a new product row
+                function createProductRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="produced-product-${index}">Produced Product</label>
+                                <select id="produced-product-${index}" class="form-select" name="product_produced[${index}][product_id]" required>
+                                    <option value="" selected disabled>Select Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="produced-quantity-${index}">Quantity Produced</label>
+                                <input 
+                                    id="produced-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity]" 
+                                    placeholder="Produced Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new product row
+                addButton.addEventListener('click', function () {
+                    const newRow = createProductRow(productIndex);
+                    container.appendChild(newRow);
+                    productIndex++;
+                });
+
+                // Remove a product row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-product-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            // Example usage: Initialize multiple sections
+            const products = @json($products);
+
+            initializeProductSection(
+                '.operation-log-product-quantity-container', 
+                '.add-more-operation-log-product-quantity-operation'
+            );
         });
 
         // Store Production Log

@@ -30,6 +30,40 @@ class CompanyOperationController extends Controller
         //
     }
 
+    public function get_all_operations($value)
+    {
+        try {
+            $operations = CompanyOperation::where('is_delete', false)
+                ->where('company_id', $value)
+                ->with(['operationCategory', 'operationType', 'company', 'calendarYear'])
+                ->select([
+                    'company_operation_id',
+                    'operation_name',
+                    'description',
+                    'operation_code',
+                    'operation_type_id',
+                    'operation_category_id',
+                    'operation_unit',
+                    'operation_unit_price',
+                    'operation_unit_cost',
+                    'operation_unit_time',
+                    'status',
+                    'expected_waste_per_operation',
+                    'expected_water_usage_per_operation',
+                    'expected_products',
+                    'calendar_year_id',
+                    'start_date',
+                    'end_date',
+                    'created_at',
+                    'updated_at'
+                ])
+                ->get();
+            return response()->json(['status' => 'success', 'operations' => $operations], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to fetch operations', 'error' => $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -40,7 +74,6 @@ class CompanyOperationController extends Controller
     public function store(Request $request)
     {
         //
-        
         $validator = Validator::make($request->all(), [
             'operation_name' => [
             'required', 
