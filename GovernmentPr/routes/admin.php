@@ -200,6 +200,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste/{id}', 'show')->name('admin.show-waste');
         Route::put('/waste/{id}', 'update')->name('admin.update-waste');
         Route::delete('/waste/{id}', 'destroy')->name('admin.delete-waste');
+        Route::get('/get-waste/{value}', 'getCompanyWastes');
     });
     
     // Equipment Log
@@ -286,7 +287,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
         Route::get('/get-materials/{value}', 'getCompanyMaterials');
-        
     });
 
     // Category
@@ -316,6 +316,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
         Route::post('/company/chemical-setup/price', 'store_price')->name('admin.save-company-chemical-price');
+        Route::get('/get-chemicals/{value}', 'getCompanyChemicals');
+        Route::post('/update-chemical-details', 'updateChemicalDetails')->name('admin.update-chemical-details');
+        Route::delete('/delete-chemical/{id}', 'deleteChemical')->name('admin.delete-chemical');
     });
 
     // Company
