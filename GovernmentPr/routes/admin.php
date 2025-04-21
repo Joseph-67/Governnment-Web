@@ -285,6 +285,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
+        Route::get('/get-materials/{value}', 'getCompanyMaterials');
         
     });
 
@@ -416,7 +417,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
         Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
         Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
-        Route::get('/get-operation-categories/{value}', 'getOperationCategories');
+        Route::get('/get-operation-category/{value}', 'getOperationCategories');
     });
 
     // Operation Type
