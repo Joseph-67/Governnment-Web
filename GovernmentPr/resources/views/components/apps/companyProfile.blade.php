@@ -5052,18 +5052,33 @@
             console.log("Dropdown populated with options:", data);
         }
 
-        // Fetch data function
-        async function fetchFieldInput(url) {
-            // fetch data
-            let response = await fetch(url, {
-                method: "GET",
-                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                credentials: 'same-origin',
-            });
-            let data = await response.json();
-            console.log(data);
-            return data;
+        // Generic function to fetch data from a URL
+        async function fetchFieldInput(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    method: options.method || "GET", // Default to GET
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        ...options.headers, // Include additional headers if provided
+                    },
+                    credentials: 'same-origin', // Include credentials for same-origin requests
+                    ...options, // Merge any additional options
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Fetched data:", data);
+                return data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                throw error; // Re-throw the error to handle it in the calling function
+            }
         }
+
 
         // Fetch calendar years on page load
         document.querySelectorAll('.calendar-year').forEach(dropdown => {
@@ -5180,11 +5195,11 @@
             });
         });
         // end fetch operation category
-
         // Fetch material and populate dropdown
         function populateMaterialDropdown(dropdown, data) {
             // Clear existing options
             dropdown.innerHTML = "";
+
             // Add a default placeholder option
             const defaultOption = document.createElement("option");
             defaultOption.value = "";
@@ -5192,45 +5207,55 @@
             defaultOption.disabled = true;
             defaultOption.selected = true;
             dropdown.appendChild(defaultOption);
+
             // Add options from the data
-            console.log('====================================');
-            console.log(data);
-            console.log('====================================');
-            data.company_materials.forEach(item => {
-                console.log(item);
-                if (item.material != null) {
-                    console.log("yes...");
-                    const option = document.createElement("option");
-                    option.value = item.materialID; // Use the value from the data
-                    option.textContent = item.material.material??""; // Use the label from the data
-                    dropdown.appendChild(option);
-                }
-            });
-            console.log("Dropdown populated with materials:", data);
+            if (data.company_materials && Array.isArray(data.company_materials)) {
+                data.company_materials.forEach(item => {
+                    if (item.material != null) {
+                        const option = document.createElement("option");
+                        option.value = item.materialID || ""; // Use the value from the data
+                        option.textContent = item.material.material || ""; // Use the label from the data
+                        dropdown.appendChild(option);
+                    }
+                });
+                console.log("Dropdown populated with materials:", data);
+            } else {
+                console.warn("Invalid materials data structure:", data);
+            }
         }
 
         // Fetch material on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.material-select').forEach(dropdown => {
-                document.addEventListener('click', async function (e) {
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".material-select").forEach(dropdown => {
+                document.addEventListener("click", async (e) => {
                     if (e.target && e.target.classList.contains('material-select')) {
-                        let dropdown = e.target // the clicked dropdown
-                        console.log('Material selection detected');
-                        // Retrieve the company_id dynamically
-                        let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                        console.log("Company ID:", company_id);
-                        // Construct the API URL
-                        let url = `/admin/get-materials/${company_id}`;
+                        const clickedDropdown = e.target;
+
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+
+                        console.log("Material selection detected");
+
+                        // Dynamically retrieve the company ID
+                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                        console.log("Company ID:", companyID);
+
+                        const url = `/admin/get-materials/${companyID}`;
                         console.log("Fetching data from URL:", url);
 
-                        // Fetch data using the fetchFieldInput function
                         try {
-                            let data = await fetchFieldInput(url);
+                            const data = await fetchFieldInput(url); // Await the data fetch
                             console.log("Fetched Materials:", data);
-                            // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                            populateMaterialDropdown(dropdown, data);
+
+                            // Populate the dropdown with the fetched data
+                            populateMaterialDropdown(clickedDropdown, data);
+
+                            // Mark as populated
+                            clickedDropdown.dataset.populated = "true";
                         } catch (error) {
                             console.error("Error fetching materials:", error);
+                            alert("Failed to load materials. Please try again.");
                         }
                     }
                 });
@@ -5241,6 +5266,7 @@
         function populateChemicalDropdown(dropdown, data) {
             // Clear existing options
             dropdown.innerHTML = "";
+
             // Add a default placeholder option
             const defaultOption = document.createElement("option");
             defaultOption.value = "";
@@ -5248,50 +5274,60 @@
             defaultOption.disabled = true;
             defaultOption.selected = true;
             dropdown.appendChild(defaultOption);
+
             // Add options from the data
-            console.log('====================================');
-            console.log(data);
-            console.log('====================================');
-            data.company_chemicals.forEach(item => {
-            console.log(item);
-            if (item.chemical != null) {
-                console.log("yes...");
-                const option = document.createElement("option");
-                option.value = item.chemicalID; // Use the value from the data
-                option.textContent = item.chemical.name ?? ""; // Use the label from the data
-                dropdown.appendChild(option);
+            if (data.company_chemicals && Array.isArray(data.company_chemicals)) {
+                data.company_chemicals.forEach(item => {
+                    if (item.chemical) {
+                        const option = document.createElement("option");
+                        option.value = item.chemicalID || ""; // Use the value from the data
+                        option.textContent = item.chemical.name || ""; // Use the label from the data
+                        dropdown.appendChild(option);
+                    }
+                });
+                console.log("Dropdown populated with chemicals:", data);
+            } else {
+                console.warn("Invalid data structure for chemicals:", data);
             }
-            });
-            console.log("Dropdown populated with chemicals:", data);
         }
 
-        // Fetch chemical on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.chemical-select').forEach(dropdown => {
-                document.addEventListener('click', async function (e) {
+        // Fetch chemicals on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".chemical-select").forEach(dropdown => {
+                document.addEventListener("click", async (e) => {
+                    const clickedDropdown = e.target;
                     if (e.target && e.target.classList.contains('chemical-select')) {
-                        let dropdown = e.target // the clicked dropdown
-                        console.log('Chemical selection detected');
-                        // Retrieve the company_id dynamically
-                        let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                        console.log("Company ID:", company_id);
-                        // Construct the API URL
-                        let url = `/admin/get-chemicals/${company_id}`;
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+
+                        console.log("Chemical selection detected");
+
+                        // Dynamically retrieve the company ID
+                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                        console.log("Company ID:", companyID);
+
+                        const url = `/admin/get-chemicals/${companyID}`;
                         console.log("Fetching data from URL:", url);
 
-                        // Fetch data using the fetchFieldInput function
                         try {
-                            let data = await fetchFieldInput(url);
+                            const data = await fetchFieldInput(url); // Await the data fetch
                             console.log("Fetched Chemicals:", data);
-                            // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                            populateChemicalDropdown(dropdown, data);
+
+                            // Populate the dropdown with the fetched data
+                            populateChemicalDropdown(clickedDropdown, data);
+
+                            // Mark as populated
+                            clickedDropdown.dataset.populated = "true";
                         } catch (error) {
                             console.error("Error fetching chemicals:", error);
+                            alert("Failed to load chemicals. Please try again.");
                         }
                     }
                 });
             });
         });
+
 
         // fetch product
         // populate the dropdown
