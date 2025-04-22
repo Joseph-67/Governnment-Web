@@ -5214,7 +5214,7 @@
             document.querySelectorAll('.material-select').forEach(dropdown => {
                 document.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('material-select')) {
-                        const dropdown = e.target // the clicked dropdown
+                        let dropdown = e.target // the clicked dropdown
                         console.log('Material selection detected');
                         // Retrieve the company_id dynamically
                         let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5270,7 +5270,7 @@
             document.querySelectorAll('.chemical-select').forEach(dropdown => {
                 document.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('chemical-select')) {
-                        const dropdown = e.target // the clicked dropdown
+                        let dropdown = e.target // the clicked dropdown
                         console.log('Chemical selection detected');
                         // Retrieve the company_id dynamically
                         let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5318,9 +5318,9 @@
         // Fetch product on page load
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.product-select').forEach(dropdown => {
-                document.addEventListener('click', async function (e) {
+                dropdown.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('product-select')) {
-                        const dropdown = e.target // the clicked dropdown
+                        let dropdown = e.target // the clicked dropdown
                         console.log('Product dropdown clicked:', e.target);
                         console.log('Selection detected');
                         // Retrieve the company_id dynamically
