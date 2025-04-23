@@ -2595,34 +2595,7 @@
                                                                     <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter Fixed Cost" required>
                                                                 </div>
                                                             </div>
-                                                            <!-- Operation Metrics -->
-                                                            <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter Total Operation Cost" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter Operation Unit Cost" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time</label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter Operation Unit Time" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation</label>
-                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter Expected Water Usage Per Operation" required>
-                                                                </div>
-                                                            </div>
+
                                                             <!-- Materials and Chemicals -->
                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
@@ -2707,7 +2680,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="expected_product" class="form-label fw-bold text-primary">Expected Product</label>
-                                                                                <select class="form-select border-primary product-select" id="expected_product" name="expected_products[]" required>
+                                                                                <select class="form-select border-primary product-select" id="expected_product" name="product_produced[0][product_id]" required>
                                                                                     <option value="" selected disabled>Select Product</option>
                                                                                 </select>
                                                                             </div>
@@ -2715,7 +2688,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="expected_unit_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Enter Expected Quantity Produced For Goods" required>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="product_produced[0][quantity]" placeholder="Enter Expected Quantity Produced For Goods" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2748,7 +2721,34 @@
                                                                     <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-waste-quantity-operation">Add More</button>
                                                                 </div>
                                                             </div>
-
+                                                            <!-- Operation Metrics -->
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter Total Operation Cost" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter Operation Unit Cost" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time</label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter Operation Unit Time" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation</label>
+                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter Expected Water Usage Per Operation" required>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-12 mt-4 text-end">
                                                                 <button type="submit" class="btn btn-primary px-4 py-2">Save Operation</button>
                                                             </div>
@@ -5082,7 +5082,11 @@
 
         // Fetch calendar years on page load
         document.querySelectorAll('.calendar-year').forEach(dropdown => {
-            dropdown.addEventListener('click', async function () {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5096,7 +5100,8 @@
                     console.log("Fetched calendar years:", data);
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
-                    populateDropdown(dropdown, data);
+                    populateDropdown(clickedDropdown, data);
+                    clickedDropdown.dataset.populated = "true"; // Mark as populated
                 } catch (error) {
                     console.error("Error fetching calendar years:", error);
                 }
@@ -5127,7 +5132,11 @@
         // end populate dropdown
         // Fetch operation type on page load
         document.querySelectorAll('.operation-type').forEach(dropdown => {
-            dropdown.addEventListener('click', async function () {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5142,6 +5151,7 @@
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
                     populateOperationTypeDropdown(dropdown, data);
+                    clickedDropdown.dataset.populated  = "true"; // Mark as populated
                 } catch (error) {
                     console.error("Error fetching operation types:", error);
                 }
@@ -5173,7 +5183,11 @@
         // end populate dropdown
         // Fetch operation category on page load
         document.querySelectorAll('.operation-category').forEach(dropdown => {
-            dropdown.addEventListener('click', async function () {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5188,7 +5202,8 @@
                     console.log("Fetched Operation Types:", data);
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
-                    populateOperationCategoryDropdown(dropdown, data);
+                    populateOperationCategoryDropdown(clickedDropdown, data);
+                    clickedDropdown.dataset.populated = "true"; // Mark as populated
                 } catch (error) {
                     console.error("Error fetching operation categories:", error);
                 }
@@ -5327,8 +5342,6 @@
                 });
             });
         });
-
-
         // fetch product
         // populate the dropdown
         function populateProductDropdown(dropdown, data) {
@@ -5354,9 +5367,12 @@
         // Fetch product on page load
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.product-select').forEach(dropdown => {
-                dropdown.addEventListener('click', async function (e) {
+                document.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('product-select')) {
-                        let dropdown = e.target // the clicked dropdown
+                        const clickedDropdown = e.target;
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
                         console.log('Product dropdown clicked:', e.target);
                         console.log('Selection detected');
                         // Retrieve the company_id dynamically
@@ -5372,7 +5388,8 @@
                             console.log("Fetched Product:", data);
                             // Handle the data (e.g., populate the dropdown, display a message, etc.)
                             // Example:
-                            populateProductDropdown(dropdown, data);
+                            populateProductDropdown(clickedDropdown, data);
+                            clickedDropdown.dataset.populated  = "true"; // Mark as populated
                         } catch (error) {
                             console.error("Error fetching product:", error);
                         }
@@ -5404,13 +5421,16 @@
 
             console.log("Dropdown populated with options:", data);
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.waste-select').forEach(dropdown => {
                 let isLoading = false; // Prevent multiple concurrent requests
-
                 document.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('waste-select')) {
-                        const dropdown = e.target // the clicked dropdown
+                        const clickedDropdown = e.target;
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
                         console.log('Waste dropdown clicked:', e.target);
                         if (isLoading) return; // Debounce logic
 
@@ -5425,7 +5445,8 @@
                         try {
                             const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
                             console.log("Fetched Waste:", data);
-                            populateWasteDropdown(dropdown, data);
+                            populateWasteDropdown(clickedDropdown, data);
+                            clickedDropdown.dataset.populated = "true"; // Mark as populated
                         } catch (error) {
                             console.error("Error fetching waste:", error);
                             alert("Failed to load waste data. Please try again.");
