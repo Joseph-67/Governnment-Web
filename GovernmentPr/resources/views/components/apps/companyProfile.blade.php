@@ -2470,7 +2470,7 @@
                                 aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
                                     <div class="row">
-                                        <div class="col-md-12 closeable-card" id="operation-log-card">
+                                        <div class="col-md-12 closeable-card d-none" id="operation-log-card">
                                             <div class="card shadow-lg border-0 rounded-3" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
                                                 <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center rounded-top">
                                                     <h4 class="card-title mb-0">Operations Management Form</h4>
@@ -2480,33 +2480,33 @@
                                                     <form action="" method="post" id="operations-form">
                                                         @csrf
                                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                        <div class="row g-3">
+                                                        <div class="row g-3 d-flex align-items-end">
                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2">Operation Details</h5>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="operation_name" class="form-label fw-bold text-primary">Operation Name <span class="text-danger">*</span></label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Enter Operation Name" required>
+                                                                    <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Enter operation name" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                                                    <textarea class="form-control border-primary" id="description" name="description" placeholder="Enter Description" rows="3"></textarea>
+                                                                    <textarea class="form-control border-primary" id="description" name="description" placeholder="Provide a brief description" rows="3"></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="operation_code" class="form-label fw-bold text-primary">Operation Code</label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Enter Operation Code">
+                                                                    <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Enter operation code">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="operation_category" class="form-label fw-bold text-primary">Operation Category <span class="text-danger">*</span></label>
                                                                     <select class="form-select border-primary operation-category" id="operation_category" name="operation_category" required>
-                                                                        <option value="" selected disabled>Choose...</option>
+                                                                        <option value="" selected disabled>Select category</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -2514,7 +2514,7 @@
                                                                 <div class="form-group">
                                                                     <label for="operation_type" class="form-label fw-bold text-primary">Operation Type <span class="text-danger">*</span></label>
                                                                     <select class="form-select border-primary operation-type" id="operation_type" name="operation_type" required>
-                                                                        <option value="" selected disabled>Choose...</option>
+                                                                        <option value="" selected disabled>Select type</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -2522,7 +2522,7 @@
                                                                 <div class="form-group">
                                                                     <label for="calendar_year" class="form-label fw-bold text-primary">Calendar Year</label>
                                                                     <select class="form-select border-primary calendar-year" id="calendar_year" name="calendar_year" required>
-                                                                        <option value="" selected disabled>Choose...</option>
+                                                                        <option value="" selected disabled>Select year</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -2542,7 +2542,7 @@
                                                                 <div class="form-group">
                                                                     <label for="operation_status" class="form-label fw-bold text-primary">Operation Status</label>
                                                                     <select class="form-select border-primary" id="operation_status" name="operation_status" required>
-                                                                        <option value="" selected disabled>Choose...</option>
+                                                                        <option value="" selected disabled>Select status</option>
                                                                         <option value="active">Active</option>
                                                                         <option value="inactive">Inactive</option>
                                                                         <option value="completed">Completed</option>
@@ -2556,47 +2556,46 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="labour_cost" class="form-label fw-bold text-primary">Labour Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="labour_cost" name="labour_cost" placeholder="Enter Labour Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="labour_cost" name="labour_cost" placeholder="Enter labour cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="overhead_cost" class="form-label fw-bold text-primary">Overhead Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="overhead_cost" name="overhead_cost" placeholder="Enter Overhead Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="overhead_cost" name="overhead_cost" placeholder="Enter overhead cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="maintenance_cost" class="form-label fw-bold text-primary">Maintenance Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="maintenance_cost" name="maintenance_cost" placeholder="Enter Maintenance Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="maintenance_cost" name="maintenance_cost" placeholder="Enter maintenance cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="depreciation_cost" class="form-label fw-bold text-primary">Depreciation Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="depreciation_cost" name="depreciation_cost" placeholder="Enter Depreciation Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="depreciation_cost" name="depreciation_cost" placeholder="Enter depreciation cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="supervision_cost" class="form-label fw-bold text-primary">Supervision & Administration Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="supervision_cost" name="supervision_cost" placeholder="Enter Supervision Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="supervision_cost" name="supervision_cost" placeholder="Enter supervision cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="variable_cost" class="form-label fw-bold text-primary">Variable Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="variable_cost" name="variable_cost" placeholder="Enter Variable Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="variable_cost" name="variable_cost" placeholder="Enter variable cost" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="fixed_cost" class="form-label fw-bold text-primary">Fixed Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter Fixed Cost" required>
+                                                                    <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter fixed cost" min="0">
                                                                 </div>
                                                             </div>
-
-                                                            <!-- Materials and Chemicals -->
+                                                            <!-- Materials and Chemicals Section -->
                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
                                                             </div>
@@ -2606,7 +2605,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
-                                                                                <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]" required>
+                                                                                <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]">
                                                                                     <option value="" selected disabled>Select Material</option>
                                                                                 </select>
                                                                             </div>
@@ -2614,19 +2613,19 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" required>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity" required>
+                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
-                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" required>
+                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2641,7 +2640,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
-                                                                                <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]" required>
+                                                                                <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
                                                                                     <option value="" selected disabled>Select Chemical</option>
                                                                                 </select>
                                                                             </div>
@@ -2649,19 +2648,19 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" required>
+                                                                                <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity" required>
+                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
-                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" required>
+                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2670,7 +2669,7 @@
                                                                     <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
                                                                 </div>
                                                             </div>
-                                                            <!-- Products and waste -->
+                                                            <!-- Products and Wastes Section -->
                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2 mt-4">Products and Wastes</h5>
                                                             </div>
@@ -2687,8 +2686,8 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label for="expected_unit_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="product_produced[0][quantity]" placeholder="Enter Expected Quantity Produced For Goods" required>
+                                                                                <label for="expected_quantity_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="product_produced[0][quantity]" placeholder="Enter Expected Quantity Produced" min="0" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2697,14 +2696,13 @@
                                                                     <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-product-quantity-operation">Add More</button>
                                                                 </div>
                                                             </div>
-                                                            <!-- Waste Generated -->
                                                             <div class="col-md-6">
                                                                 <div class="operation-log-waste-quantity-container col-md-12">
                                                                     <div class="row g-2 align-items-end mb-3">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="expected_waste" class="form-label fw-bold text-primary">Expected Waste</label>
-                                                                                <select class="form-select border-primary waste-select" id="expected_waste" name="waste_generated[0][waste_id]" required>
+                                                                                <select class="form-select border-primary waste-select" id="expected_waste" name="waste_generated[0][waste_id]">
                                                                                     <option value="" selected disabled>Select Waste</option>
                                                                                 </select>
                                                                             </div>
@@ -2712,7 +2710,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="waste_generated[0][quantity]" placeholder="Enter Expected Quantity" required>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="waste_generated[0][quantity]" placeholder="Enter Expected Quantity" min="0">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2727,26 +2725,32 @@
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
-                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter Total Operation Cost" required>
+                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost (₦)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">₦</span>
+                                                                        <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter total operation cost" min="0">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
-                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter Operation Unit Cost" required>
+                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost (₦)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">₦</span>
+                                                                        <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter operation unit cost" min="0">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
-                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time</label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter Operation Unit Time" required>
+                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time (e.g., hours, minutes)</label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter operation unit time (e.g., hours, minutes)">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
-                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation</label>
-                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter Expected Water Usage Per Operation" required>
+                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation (Liters)</label>
+                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter expected water usage per operation" min="0">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12 mt-4 text-end">
@@ -2772,19 +2776,16 @@
                                                 <table class="table table-hover table-bordered w-100" id="tbl-operations-log">
                                                     <thead class="table-primary text-center">
                                                         <tr>
-                                                            <th scope="col" class="col-width-15">Operation Name</th>
-                                                            <th scope="col" class="col-width-5">Operation Code</th>
-                                                            <th scope="col" class="col-width-10">Operation Type</th>
-                                                            <th scope="col" class="col-width-10">Operation Category</th>
-                                                            <th scope="col" class="col-width-5">Operation Unit</th>
-                                                            <th scope="col" class="col-width-10">Expected Waste Per Operation</th>
-                                                            <th scope="col" class="col-width-10">Expected Water Usage Per Operation</th>
-                                                            <th scope="col" class="col-width-10">Expected Unit Produced For Goods</th>
-                                                            <th scope="col" class="col-width-10">Calendar Year</th>
-                                                            <th scope="col" class="col-width-10">Start Date</th>
-                                                            <th scope="col" class="col-width-10">End Date</th>
-                                                            <th scope="col" class="col-width-10">Status</th>
-                                                            <th scope="col" class="text-end col-width-5">Action</th>
+                                                            <th scope="col" class="col-width-20">Operation Name</th>
+                                                            <th scope="col" class="col-width-10">Operation Code</th>
+                                                            <th scope="col" class="col-width-15">Operation Type</th>
+                                                            <th scope="col" class="col-width-15">Operation Category</th>
+                                                            <th scope="col" class="col-width-10">Operation Unit Cost</th>
+                                                            <th scope="col" class="col-width-15">Calendar Year</th>
+                                                            <th scope="col" class="col-width-15">Start Date</th>
+                                                            <th scope="col" class="col-width-15">End Date</th>
+                                                            <th scope="col" class="col-width-10">Operation Status</th>
+                                                            <th scope="col" class="text-end col-width-10">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -2826,10 +2827,7 @@
                                                     <label for="operation_status" class="">Operation</label>
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
-                                                        <option value="" selected disabled>Choose...</option>                                                        
-                                                        @foreach($company_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                        @endforeach
+                                                        <option value="" selected disabled>Choose...</option>
                                                         
                                                     </select>
                                                 </div>
@@ -3394,9 +3392,6 @@
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($company_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -3524,9 +3519,7 @@
                                                 <label for="operation_name_select" class="form-label">Operation</label>
                                                 <select class="form-select" id="operation_name_select" name="operation_name" required>
                                                     <option value="" selected disabled>Choose...</option>
-                                                    @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                    @endforeach
+                                                    
                                                 </select>
                                             </div>
 
@@ -5718,7 +5711,7 @@
             ordering: false,
             responsive: true,
             columnDefs: [
-            { orderable: false, targets: [12] } // Disable sorting on the "Action" column
+            { orderable: false, targets: [9] } // Disable sorting on the "Action" column
             ],
             data: [], // Start with an empty data array
             columns: [
@@ -5726,19 +5719,19 @@
             { data: 'operation_code' },
             { data: 'operation_type' },
             { data: 'operation_category' },
-            { data: 'operation_unit' },
-            { data: 'expected_waste_per_operation' },
-            { data: 'expected_water_usage_per_operation' },
-            { data: 'expected_unit_produced_for_goods' },
+            { data: 'operation_unit_cost' },
             { data: 'calendar_year' },
             { data: 'start_date' },
             { data: 'end_date' },
-            { data: 'status' },
+            { data: 'operation_status' },
             {
                 data: null,
                 render: function (data, type, row) {
                 return `
                     <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-info btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
+                        <i class="las la-eye"></i> View
+                    </button>
                     <button class="btn btn-outline-primary btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
                         <i class="las la-edit"></i> Edit
                     </button>
@@ -5751,47 +5744,96 @@
             ]
         });
 
-        // Function to create an object for each operation log
-        function OperationLogObject(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
-            this.operation_id = operation_id;
-            this.operation_name = operation_name;
-            this.operation_code = operation_code;
-            this.operation_type = operation_type;
-            this.operation_category = operation_category;
-            this.operation_unit = operation_unit;
-            this.expected_waste_per_operation = expected_waste_per_operation;
-            this.expected_water_usage_per_operation = expected_water_usage_per_operation;
-            this.expected_unit_produced_for_goods = expected_unit_produced_for_goods;
-            this.calendar_year = calendar_year;
-            this.start_date = start_date;
-            this.end_date = end_date;
-            this.status = status;
+        // Define a class for the operation log objects
+        class OperationLog {
+            constructor(
+                operation_id,
+                operation_name,
+                operation_code,
+                operation_type,
+                operation_category,
+                operation_unit_cost,
+                calendar_year,
+                start_date,
+                end_date,
+                operation_status
+            ) {
+                this.operation_id = operation_id;
+                this.operation_name = operation_name;
+                this.operation_code = operation_code;
+                this.operation_type = operation_type;
+                this.operation_category = operation_category;
+                this.operation_unit_cost = operation_unit_cost;
+                this.calendar_year = calendar_year;
+                this.start_date = formatDate(start_date);
+                this.end_date = formatDate(end_date);
+                this.operation_status = operation_status;
+            }
         }
 
-        // Fetch data and populate table when the accordion is expanded
-        document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', () => {
+        // Utility function to fetch data
+        async function fetchOperationsLog(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        // Utility function to format waste details
+        function formatWasteDetails(wasteData) {
+            if (!Array.isArray(wasteData) || wasteData.length === 0) return "No waste generated";
+            return wasteData
+                .map(waste => `${waste.name || "Unknown"}: ${waste.quantity || 0}`)
+                .join(", ");
+        }
+
+        // Utility function to format dates in "03 April, 2025" format
+        function formatDate(dateString) {
+            if (!dateString) return "N/A";
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "long", year: "numeric" }).format(date);
+        }
+
+        // Event listener for accordion expansion
+        document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', async () => {
             console.log('Fetching operations log...');
-            let company_id = {{ json_encode($company->company_id) }};
-            let url = `/admin/get-operations-log/${company_id}`;
-            let operationsLogSpinner = document.getElementById('loading-spinner');
+            const company_id = {{ json_encode($company->company_id) }};
+            const url = `/admin/get-operations-log/${company_id}`;
+            const operationsLogSpinner = document.getElementById('loading-spinner');
+
+            showElement(operationsLogSpinner);
+
             try {
-                showElement(operationsLogSpinner);
-                fetchFieldInput(url).then(data => {
-                    if (data.status === "success") {
-                    data_array = data.operations_log.map(
-                        log => new OperationLogObject(log.company_operation_id, log.operation_name, log.operation_code, log.operationType.name, log.operationCategory.name, log.operation_unit, log.expected_waste_per_operation, log.expected_water_usage_per_operation, log.expected_unit_produced_for_goods, log.calendar_year, log.start_date, log.end_date, log.status)
+                const data = await fetchOperationsLog(url);
+                if (data.status === "success") {
+                    const dataArray = data.operations.map(log => 
+                        new OperationLog(
+                            log.company_operation_id,
+                            log.operation_name,
+                            log.operation_code,
+                            log.operation_type?.name ?? "N/A",
+                            log.operation_category?.name ?? "N/A",
+                            log.operation_unit_cost,
+                            log.calendar_year?.name ?? "N/A",
+                            log.start_date,
+                            log.end_date,
+                            log.operation_status
+                        )
                     );
 
-                    // Clear and add rows without destroying the table
+                    // Clear and repopulate table rows
                     operationsLogTable.clear();
-                    operationsLogTable.rows.add(data_array);
+                    operationsLogTable.rows.add(dataArray);
                     operationsLogTable.draw();
-                    hideElement(operationsLogSpinner);
-                    }
-                });
+                } else {
+                    displayMessage('warning', 'No operations found.');
+                }
             } catch (error) {
-            console.error("Error showing spinner:", error);
-            displayMessage('danger', 'An error occurred while fetching data.');
+                console.error("Error fetching operations log:", error);
+                displayMessage('danger', 'An error occurred while fetching operations log.');
+            } finally {
+                hideElement(operationsLogSpinner);
             }
         });
 

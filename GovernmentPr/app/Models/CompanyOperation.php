@@ -38,6 +38,7 @@ class CompanyOperation extends Model
     'calendar_year_id',
     'start_date',
     'end_date',
+    'is_deleted',
     ];
     protected $casts = [
         'expected_products' => 'array',
@@ -74,6 +75,7 @@ class CompanyOperation extends Model
     {
         return $this->hasMany(WasteDisposal::class, 'operation_id', 'company_operation_id');
     }
+
     public function annualOperationsLogs()
     {
         return $this->hasMany(AnnualOperationsLog::class, 'operation_id', 'company_operation_id');
@@ -81,7 +83,7 @@ class CompanyOperation extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('status', true);
+        return $query->where('operation_status', true);
     }
 
     public function scopeOperationType($query, $operationType)
@@ -108,6 +110,4 @@ class CompanyOperation extends Model
     {
         return $query->where('operation_unit_cost', $operationUnitCost);
     }
-    
-    
 }

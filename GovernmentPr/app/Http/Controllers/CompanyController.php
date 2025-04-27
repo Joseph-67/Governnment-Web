@@ -107,10 +107,7 @@ class CompanyController extends WaterStockMovementController
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
 
         // Fetch operations
-        $data['operation_categories'] = OperationCategory::active()->where('company_id', $companyID)->get(['operation_category_id', 'name', 'description']);
-        $data['operation_types'] = OperationType::active()->where('company_id', $companyID)->orderBy('sequence_order', 'ASC')->get(['operation_type_id', 'name', 'description', 'sequence_order']);
-        $data['company_operations'] = CompanyOperation::where('company_id', $companyID)->get();
-        $data['approved_operations'] = CompanyOperation::active()->where('company_id', $companyID)->get();
+
 
         // Fetch calendar years
         $data['calendar_years'] = CalendarYear::where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);

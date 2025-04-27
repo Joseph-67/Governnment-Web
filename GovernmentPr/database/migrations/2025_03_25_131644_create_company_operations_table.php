@@ -40,6 +40,7 @@ return new class extends Migration
             $table->unsignedBigInteger('calendar_year_id')->nullable();
             $table->date('start_date')->nullable(); // Added start date column
             $table->date('end_date')->nullable(); // Added end date column
+            $table->boolean('is_deleted')->default(false);
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
             $table->foreign('operation_type_id')->references('id')->on('operation_types')->onDelete('set null');
             $table->foreign('operation_category_id')->references('id')->on('operation_categories')->onDelete('set null');
