@@ -30,7 +30,20 @@ class CompanyChemicalController extends ChemicalStockMovementController
     {
         //
     }
-    
+
+    public function getCompanyChemicals($value)
+    {
+        $companyChemical = CompanyChemical::where('company_chemicals.status', 'active')
+            ->where('company_id', $value)
+            ->where('is_deleted', false)
+            ->with(['company', 'chemical'])
+            ->select('chemical_id')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'company_chemicals' => $companyChemical,
+        ], 200);
+    }
 
     /**
      * Store a newly created resource in storage.

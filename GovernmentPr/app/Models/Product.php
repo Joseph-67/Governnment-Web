@@ -12,9 +12,12 @@ class Product extends Model
     protected $primaryKey = 'product_id';
     protected $fillable = [
         'name',
+        'product_category_id',
+        'quantity_per_unit',
         'unit',
         'category_id',
         'description',
+        'currency',
         'price',
         'status',
         'is_active',
@@ -28,9 +31,9 @@ class Product extends Model
         'price' => 'decimal:2',
     ];
 
-    public function category()
+    public function productCategory()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(ProductCategory::class, 'category_id', 'product_category_id');
     }
 
     public function company()

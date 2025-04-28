@@ -25,17 +25,47 @@ class ProductionLog extends Model
         'production_status',
         'logged_at',
     ];
-    public $timestamps = true;
+
+    protected $casts = [
+        'material_log_data' => 'array',
+        'chemical_log_data' => 'array',
+        'product_log_data' => 'array',
+        'production_date' => 'datetime',
+        'logged_at' => 'datetime',
+    ];
+
+    /**
+     * Relationship with the CompanyOperation model.
+     */
     public function companyOperation()
     {
-        return $this->belongsTo(CompanyOperation::class, 'company_operation_id', 'company_operation_id');
+        return $this->belongsTo(CompanyOperation::class, 'company_operation_id');
     }
-    public function calendarYear()
-    {
-        return $this->belongsTo(CalendarYear::class, 'calendar_year_id', 'calendar_year_id');
-    }
+
+    /**
+     * Relationship with the Company model.
+     */
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_id', 'company_id');
+        return $this->belongsTo(Company::class, 'company_id');
     }
+
+    /**
+     * Relationship with the CalendarYear model.
+     */
+    public function calendarYear()
+    {
+        return $this->belongsTo(CalendarYear::class, 'calendar_year_id');
+    }
+
+    /**
+     * Access product details stored in product_log_data.
+     *
+     * @return object|null
+     */
+    public function getProductAttribute()
+    {
+        return $this->product_log_data ? (object) $this->product_log_data : null;
+    }
+
 }

@@ -53,113 +53,87 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
-
-
 class CompanyController extends WaterStockMovementController
 {
    
     public function show($company)
     {
         $companyID = decrypt($company);
-        $data['company']                            =   Company::where('company_id', $companyID)->first();
-        $data['company_policies']                   =   Policy::where('companyID', $companyID)->get();
-        $data['company_objectives']                 =   CompanyObjectives::where('companyID', $companyID)->get();
-        $data['company_benefits']                   =   RECP_areas_of_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_enviromental_benefits']      =   RECP_human_and_environmental_health_benefit::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_house_keeping']              =   RECP_house_keep_practice::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_waste_reduction_measures']   =   RECP_waste_reduction_measure::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_management_measures']        =   RECP_waste_management_method::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_product_recovery_measures']  =   RECP_product_recovery_method::where('companyID', $companyID)->where('status', 'active')->get();
-        $data['company_areas_of_improvement']       =   RECP_areas_of_improvement::where('companyID', $companyID)->where('status', 'active')->select('improvementAreaID', 'area_title')->get();
-        $data['company_product_innovation']         =   RECP_innovation_areas::where('companyID', $companyID)->where('status', 'active')->select('innovationAreaID', 'innovation_area_title')->get();
-        $data['company_hazarduous_material']        =   RECP_harzardous_materials::where('companyID', $companyID)->where('status', 'active')->select('hazarduousMaterialID', 'material_title')->get();
-        $data['company_unit_process']               =   RECP_unit_of_process::where('companyID', $companyID)->where('status', 'active')->select('unitProcessID', 'unit_process_title')->get();
-        $data['company_problems_and_solutions']     =   RECP_problem_and_solution::where('companyID', $companyID)->where('status', 'active')->select('problemSolutionID', 'problem_title', 'solution_title')->get();
-        // material
-        $data['materials']     =   Material::where('status', 'active')->select('materialID', 'material')->get();
-        $data['companyMaterials']  = CompanyMaterial::where('companyID', $companyID)
-        ->join('materials', 'materials.materialID', '=', 'company_materials.materialID')
-        ->where('company_materials.status', 'active')
-        ->select('*', 'materials.materialID as material_id', 'company_materials.materialID as materialID', 'company_materials.status as company_material_status', 'materials.status as material_status')
-        ->get();
-        // water things
-        $data['waterQuestions']                 =    WaterQuestionaire::where('status', 'active')->get(['questionId', 'label', 'question']);
-        $data['CompanyWaterQuestions']          =    CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
-        $data['WaterConservationMethod']        =    WaterConservationMethod::where('status', 'active')->get(['WaterConservationMethodId', 'label', 'method']);
-        $data['companyWaterConservationMethod'] =    CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['conservation_id']);
-        $data['WaterSources'] =    WaterSources::where('status', 'active')->get(['WaterSourcesId', 'label', 'sources']);
-        $data['companyWaterSources'] =    CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id', 'CompanyWaterSourcesID']);
+
+        // Fetch company details
+        $data['company'] = Company::find($companyID);
+
+        // Fetch related data
+        $data['company_policies'] = Policy::where('companyID', $companyID)->get();
+        $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
+        $data['company_benefits'] = RECP_areas_of_benefit::active()->where('companyID', $companyID)->get();
+        $data['company_enviromental_benefits'] = RECP_human_and_environmental_health_benefit::active()->where('companyID', $companyID)->get();
+        $data['company_house_keeping'] = RECP_house_keep_practice::active()->where('companyID', $companyID)->get();
+        $data['company_waste_reduction_measures'] = RECP_waste_reduction_measure::active()->where('companyID', $companyID)->get();
+        $data['company_management_measures'] = RECP_waste_management_method::active()->where('companyID', $companyID)->get();
+        $data['company_product_recovery_measures'] = RECP_product_recovery_method::active()->where('companyID', $companyID)->get();
+        $data['company_areas_of_improvement'] = RECP_areas_of_improvement::active()->where('companyID', $companyID)->select('improvementAreaID', 'area_title')->get();
+        $data['company_product_innovation'] = RECP_innovation_areas::active()->where('companyID', $companyID)->select('innovationAreaID', 'innovation_area_title')->get();
+        $data['company_hazarduous_material'] = RECP_harzardous_materials::active()->where('companyID', $companyID)->select('hazarduousMaterialID', 'material_title')->get();
+        $data['company_unit_process'] = RECP_unit_of_process::active()->where('companyID', $companyID)->select('unitProcessID', 'unit_process_title')->get();
+        $data['company_problems_and_solutions'] = RECP_problem_and_solution::active()->where('companyID', $companyID)->select('problemSolutionID', 'problem_title', 'solution_title')->get();
+
+        // Fetch materials
+        $data['materials'] = Material::active()->select('materialID', 'material')->get();
+        $data['companyMaterials'] = CompanyMaterial::where('companyID', $companyID)
+            ->join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+            ->select('materials.materialID as material_id', 'company_materials.*', 'materials.material')
+            ->get();
+
+        // Fetch water-related data
+        $data['waterQuestions'] = WaterQuestionaire::active()->get(['questionId', 'label', 'question']);
+        $data['CompanyWaterQuestions'] = CompanyWaterQuestion::where('companyID', $companyID)->get(['questionID']);
+        $data['WaterConservationMethod'] = WaterConservationMethod::active()->get(['WaterConservationMethodId', 'label', 'method']);
+        $data['companyWaterConservationMethod'] = CompanyWaterConservationOpportunity::where('companyID', $companyID)->get(['conservation_id']);
+        $data['WaterSources'] = WaterSources::active()->get(['WaterSourcesId', 'label', 'sources']);
+        $data['companyWaterSources'] = CompanyWaterSources::where('companyID', $companyID)->get(['WaterSources_id', 'CompanyWaterSourcesID']);
         $data['company_water_usage'] = company_water_usage::where('companyID', $companyID)->get(['companyWaterUsageID', 'volume', 'date_type', 'date', 'remark']);
         $data['water_stock_movements'] = WaterStockMovement::where('company_id', $companyID)->get(['waterStockID', 'water_source_id', 'movement_type', 'volume', 'calendar_year_id', 'movement_date', 'remark', 'status']);
-        // chemical inventory
-        $data['approved_chemicals'] = Chemicals::where('status', 'active')
-        // ->where('approve_rejected_status', 'approved')
-        ->get(['chemical_id', 'name']);
-        $data['company_chemicals'] = CompanyChemical::where('is_deleted', false)->where('company_id', $companyID)->get();
-        // dd($data['company_chemicals']->chemical);
-        $data['approved_company_chemicals'] = CompanyChemical::active()->where('is_deleted', false)->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id', 'company_id']);
 
-        // water inventory
-        $data['waterSources'] = WaterSources::where('status', 'active')->get(['WaterSourcesId',  'sources']);
+        // Fetch chemical inventory
+        $data['approved_chemicals'] = Chemicals::active()->get(['chemical_id', 'name']);
+        $data['company_chemicals'] = CompanyChemical::active()->where('company_id', $companyID)->get();
+        $data['approved_company_chemicals'] = CompanyChemical::active()->where('company_id', $companyID)->get(['chemical_id', 'unit', 'status', 'company_chemical_id']);
+
+        // Fetch water inventory
         $data['availableWaterBalance'] = $this->getWaterBalance($companyID);
         $data['availableWaterInflowBalance'] = $this->getTotalCheckIn($companyID);
         $data['availableWaterOutflowBalance'] = $this->getTotalCheckOut($companyID);
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
-        // operation categories
-        $data['operation_categories'] = OperationCategory::where('is_delete', false)->where('company_id', $companyID)->get(['operation_category_id', 'name',  'description']);
-        // operation types
-        $data['operation_types'] = OperationType::where('is_delete', false)->where('company_id', $companyID)->orderBy('sequence_order', 'ASC')->get(['operation_type_id', 'name', 'description', 'sequence_order']);
-        // company operations
-        $data['company_operations'] = CompanyOperation::where('company_id', $companyID)->get();
-        $data['approved_operations'] = CompanyOperation::where('status', '<>', 'inactive')->where('company_id', $companyID)->get();
 
-        // Fetch company calendar year
-        $data['calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
-        $data['active_calendar_years'] = CalendarYear::where('is_delete', false)->where('company_id', $companyID)->active()->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        // Fetch operations
 
-        // Fetch waste
-        $data['waste_items'] = CompanyWaste::where('is_delete', false)->where('company_id', $companyID)->get();
-        // fetch product category
-        $data['product_categories'] = ProductCategory::where('company_id', $companyID)
-            ->where('is_delete', false)
-            ->get(['product_category_id', 'name']);
-        $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)
-            ->where('is_delete', false)
-            ->get(['product_category_id', 'name']);
-        
-        // fetch products
-        $data['products'] = Product::where('company_id', $companyID)
-            ->where('is_delete', false)
-            ->get();
-        $data['active_products'] = Product::where('company_id', $companyID)
-            ->where('is_delete', false)
-            ->active()
-            ->get();
 
-        // fetch active equipment types
-        $data['active_equipment_types'] = EquipmentType::where('company_id', $companyID)
-            ->active()
-            ->get(['equipment_type_id', 'name']);
-        
-        // Fetch all equipment logs where company_id matches the request and equipment is active
-        $data['industrial_equipments'] = EquipmentLog::where('company_id', $companyID)
-            ->where('is_deleted', false)
-            ->get();
-        
+        // Fetch calendar years
+        $data['calendar_years'] = CalendarYear::where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        $data['active_calendar_years'] = CalendarYear::active()->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+
+        // Fetch waste and products
+        $data['waste_items'] = CompanyWaste::where('company_id', $companyID)->get();
+        $data['product_categories'] = ProductCategory::where('company_id', $companyID)->get(['product_category_id', 'name']);
+        $data['active_product_categories'] = ProductCategory::active()->where('company_id', $companyID)->get(['product_category_id', 'name']);
+        $data['products'] = Product::where('company_id', $companyID)->get();
+        $data['active_products'] = Product::active()->where('company_id', $companyID)->get();
+
+        // Fetch equipment
+        $data['active_equipment_types'] = EquipmentType::active()->where('company_id', $companyID)->get(['equipment_type_id', 'name']);
+        $data['industrial_equipments'] = EquipmentLog::where('company_id', $companyID)->get();
+
         // Fetch water source details
-    $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)
-        ->get();
-        // waste disposal
-        $data['waste_disposals'] = WasteDisposal::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
-        // water quality logs
-        $data['water_quality_logs'] = WaterQualityLogs::where('status','active')->where('companyID', $companyID)->where('status', 'active')->get();
-        $data['annual_operations_logs'] = AnnualOperationsLog::where('status', 'active')->where('company_id', $companyID)->where('status', 'active')->get();
-        $data['production_logs'] = ProductionLog::where('company_id', $companyID)
-        ->select('production_title', 'production_status', 'company_id')
-        ->get();
-            $data['quality_controls_record'] = QualityControl::where('status', 'active')->where('company_id', $companyID)
-            ->where('status', 'active')
-            ->get();
+        $data['water_source_details'] = WaterSourceDetails::where('companyID', $companyID)->get();
+
+        // Fetch waste disposal and quality logs
+        $data['waste_disposals'] = WasteDisposal::where('company_id', $companyID)->get();
+        $data['water_quality_logs'] = WaterQualityLogs::where('companyID', $companyID)->get();
+        $data['annual_operations_logs'] = AnnualOperationsLog::where('company_id', $companyID)->get();
+        $data['production_logs'] = ProductionLog::with(['company', 'companyOperation', 'calendarYear'])->where('company_id', $companyID)->get();
+        $data['quality_controls_record'] = QualityControl::where('company_id', $companyID)->get();
+
         return view('components.apps.companyProfile', $data);
     }   
     /**

@@ -13,23 +13,32 @@ class CompanyOperation extends Model
     protected $primaryKey = 'company_operation_id';
 
     protected $fillable = [
-        'operation_name',
-        'description',
-        'operation_code',
-        'operation_type_id',
-        'operation_category_id',
-        'operation_unit',
-        'operation_unit_price',
-        'operation_unit_cost',
-        'operation_unit_time',
-        'company_id',
-        'status',
-        'expected_products',
-        'expected_waste_per_operation',
-        'expected_water_usage_per_operation',
-        'calendar_year_id',
-        'start_date',
-        'end_date'
+    'operation_name',
+    'description',
+    'operation_code',
+    'operation_type_id',
+    'operation_category_id',
+    'labour_cost',
+    'overhead_cost',
+    'maintenance_cost',
+    'depreciation_cost',
+    'administration_cost',
+    'variable_cost',
+    'fixed_cost',
+    'total_operation_cost',
+    'operation_unit_cost',
+    'operation_unit_time',
+    'company_id',
+    'operation_status',
+    'expected_water_usage_per_operation',
+    'expected_materials_used',
+    'expected_chemicals_used',
+    'expected_products_produced',
+    'expected_waste_generated',
+    'calendar_year_id',
+    'start_date',
+    'end_date',
+    'is_deleted',
     ];
     protected $casts = [
         'expected_products' => 'array',
@@ -66,6 +75,7 @@ class CompanyOperation extends Model
     {
         return $this->hasMany(WasteDisposal::class, 'operation_id', 'company_operation_id');
     }
+
     public function annualOperationsLogs()
     {
         return $this->hasMany(AnnualOperationsLog::class, 'operation_id', 'company_operation_id');
@@ -73,7 +83,7 @@ class CompanyOperation extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('status', true);
+        return $query->where('operation_status', true);
     }
 
     public function scopeOperationType($query, $operationType)
@@ -100,6 +110,4 @@ class CompanyOperation extends Model
     {
         return $query->where('operation_unit_cost', $operationUnitCost);
     }
-    
-    
 }

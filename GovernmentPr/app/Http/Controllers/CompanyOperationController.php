@@ -30,6 +30,47 @@ class CompanyOperationController extends Controller
         //
     }
 
+    public function get_all_operations($value)
+    {
+        try {
+            $operations = CompanyOperation::where('is_deleted', false)
+                ->where('company_id', $value)
+                ->with(['operationCategory', 'operationType', 'company', 'calendarYear'])
+                ->select([
+                    'company_operation_id',
+                    'operation_name',
+                    'description',
+                    'operation_code',
+                    'operation_type_id',
+                    'operation_category_id',
+                    'labour_cost',
+                    'overhead_cost',
+                    'maintenance_cost',
+                    'depreciation_cost',
+                    'administration_cost',
+                    'variable_cost',
+                    'fixed_cost',
+                    'total_operation_cost',
+                    'operation_unit_cost',
+                    'operation_unit_time',
+                    'company_id',
+                    'operation_status',
+                    'expected_water_usage_per_operation',
+                    'expected_materials_used',
+                    'expected_chemicals_used',
+                    'expected_products_produced',
+                    'expected_waste_generated',
+                    'calendar_year_id',
+                    'start_date',
+                    'end_date',
+                ])
+                ->get();
+            return response()->json(['status' => 'success', 'operations' => $operations], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to fetch operations', 'error' => $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -40,7 +81,6 @@ class CompanyOperationController extends Controller
     public function store(Request $request)
     {
         //
-        
         $validator = Validator::make($request->all(), [
             'operation_name' => [
             'required', 
@@ -54,16 +94,37 @@ class CompanyOperationController extends Controller
             'operation_code' => ['nullable', 'string', 'max:255'],
             'operation_type' => ['required', 'numeric'],
             'operation_category' => ['required', 'numeric'],
-            'operation_unit' => ['required', 'string', 'max:255'],
-            'operation_unit_price' => ['nullable', 'numeric'],
+
+            'labour_cost' => ['nullable', 'numeric'],
+            'overhead_cost' => ['nullable', 'numeric'],
+            'maintenance_cost' => ['nullable', 'numeric'],
+            'depreciation_cost' => ['nullable', 'numeric'],
+            'administration_cost' => ['nullable', 'numeric'],
+            'variable_cost' => ['nullable', 'numeric'],
+            'fixed_cost' => ['nullable', 'numeric'],
+            'total_operation_cost' => ['nullable', 'numeric'],
             'operation_unit_cost' => ['nullable', 'numeric'],
-            'operation_unit_time' => ['nullable', 'numeric'],
-            'expected_products' => ['nullable', 'array'],
-            'expected_products.*' => ['nullable', 'string'],
-            'expected_quantity_produced_for_goods' => ['nullable', 'array'],
-            'expected_quantity_produced_for_goods.*' => ['nullable', 'numeric'],
+            'operation_unit_time' => ['nullable', 'string'],
+
+            'material_used' => ['nullable', 'array'],
+            'material_used.*.material_id' => ['nullable', 'numeric'],
+            'material_used.*.quantity' => ['nullable', 'numeric'],
+            'material_used.*.unit_quantity' => ['nullable', 'string'],
+            'material_used.*.unit_cost' => ['nullable', 'numeric'],
+            'chemical_used' => ['nullable', 'array'],
+            'chemical_used.*.chemical_id' => ['nullable', 'numeric'],
+            'chemical_used.*.quantity' => ['nullable', 'numeric'],
+            'chemical_used.*.unit_quantity' => ['nullable', 'string'],
+            'chemical_used.*.unit_cost' => ['nullable', 'numeric'],
+
+            'product_produced' => ['required', 'array'],
+            'product_produced.*.product_id' => ['required', 'numeric'],
+            'product_produced.*.quantity' => ['required', 'numeric'],
+            'waste_generated' => ['nullable', 'array'],
+            'waste_generated.*.waste_id' => ['nullable', 'numeric'],
+            'waste_generated.*.quantity' => ['nullable', 'numeric'],
+
             'company_id' => ['required', 'numeric'],
-            'expected_waste_per_operation' => ['required', 'numeric'],
             'expected_water_usage_per_operation' => ['required', 'numeric'],
             'calendar_year' => ['required', 'numeric'],
             'start_date' => ['required', 'date'],
@@ -76,27 +137,31 @@ class CompanyOperationController extends Controller
 
         try {
             $companyOperation = CompanyOperation::create([
-            'operation_name' => $request->input('operation_name'),
-            'description' => $request->input('description'),
-            'operation_code' => $request->input('operation_code'),
-            'operation_type_id' => $request->input('operation_type'),
-            'operation_category_id' => $request->input('operation_category'),
-            'operation_unit' => $request->input('operation_unit'),
-            'operation_unit_price' => $request->input('operation_unit_price'),
-            'operation_unit_cost' => $request->input('operation_unit_cost'),
-            'operation_unit_time' => $request->input('operation_unit_time'),
-            
-                'expected_products' => json_encode([
-                    'products' => $request->input('expected_products'),
-                    'quantities' => $request->input('expected_quantity_produced_for_goods'),
-                ]),
-        
-            'company_id' => $request->input('company_id'),
-            'expected_waste_per_operation' => $request->input('expected_waste_per_operation'),
-            'expected_water_usage_per_operation' => $request->input('expected_water_usage_per_operation'),
-            'calendar_year_id' => $request->input('calendar_year'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
+                'operation_name' => $request->input('operation_name'),
+                'description' => $request->input('description'),
+                'operation_code' => $request->input('operation_code'),
+                'operation_type_id' => $request->input('operation_type'),
+                'operation_category_id' => $request->input('operation_category'),
+                'labour_cost' => $request->input('labour_cost'),
+                'overhead_cost' => $request->input('overhead_cost'),
+                'maintenance_cost' => $request->input('maintenance_cost'),
+                'depreciation_cost' => $request->input('depreciation_cost'),
+                'administration_cost' => $request->input('administration_cost'),
+                'variable_cost' => $request->input('variable_cost'),
+                'fixed_cost' => $request->input('fixed_cost'),
+                'total_operation_cost' => $request->input('total_operation_cost'),
+                'operation_unit_cost' => $request->input('operation_unit_cost'),
+                'operation_unit_time' => $request->input('operation_unit_time'),
+                'company_id' => $request->input('company_id'),
+                'operation_status' => $request->input('operation_status'),
+                'expected_water_usage_per_operation' => $request->input('expected_water_usage_per_operation'),
+                'expected_materials_used' => json_encode($request->input('material_used')),
+                'expected_chemicals_used' => json_encode($request->input('chemical_used')),
+                'expected_products_produced' => json_encode($request->input('product_produced')),
+                'expected_waste_generated' => json_encode($request->input('waste_generated')),
+                'calendar_year_id' => $request->input('calendar_year'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create Company Operation', 'message' => $e->getMessage()], 500);
