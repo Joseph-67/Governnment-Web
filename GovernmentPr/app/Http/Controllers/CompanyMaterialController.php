@@ -37,6 +37,20 @@ class CompanyMaterialController extends StockMovementController
         //
     }
 
+    public function getCompanyMaterials($value)
+    {
+        $companyMaterial = CompanyMaterial::where('company_materials.status', 'active')
+            ->where('companyID', $value)
+            ->with(['company', 'material'])
+            ->select('materialID')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'company_materials' => $companyMaterial,
+        ], 200);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

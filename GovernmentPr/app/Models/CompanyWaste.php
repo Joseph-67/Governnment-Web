@@ -27,6 +27,11 @@ class CompanyWaste extends Model
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
 
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class, 'company_waste_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

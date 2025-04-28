@@ -25,6 +25,19 @@ class OperationCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getOperationCategories($value)
+    {
+        $operationCategories = OperationCategory::where('is_delete', false)
+            ->where('company_id', $value)
+            ->get(['operation_category_id', 'name', 'description']);
+
+        return response()->json([
+            'status' => 'success',
+            'operation_categories' => $operationCategories,
+        ], 200);
+    }
+
+    
     public function create()
     {
         //

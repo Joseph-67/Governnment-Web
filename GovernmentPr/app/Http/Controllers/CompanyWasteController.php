@@ -30,6 +30,19 @@ class CompanyWasteController extends Controller
         //
     }
 
+    public function getCompanyWastes($value)
+    {
+        $companyWaste = CompanyWaste::where('company_wastes.is_delete', false)
+            ->where('company_id', $value)
+            ->with(['company'])
+            ->select('company_waste_id', 'waste_name')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'company_wastes' => $companyWaste,
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

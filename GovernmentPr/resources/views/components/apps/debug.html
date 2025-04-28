@@ -368,3 +368,384 @@ btn_submit_water_usage.addEventListener('click', () => {
         });
     });
 });
+
+
+
+<form action="" method="post" id="add-product-form">
+    @csrf
+    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+    <div class="row g-2">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_name">Product Name</label>
+                <input type="text" class="form-control" id="product_name"
+                    name="product_name" placeholder="Enter product name" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_category">Category</label>
+                <select class="form-select" id="product_category"
+                    name="product_category" required>
+                    <option value="" selected disabled>Choose...</option>
+                    @foreach($active_product_categories as $category)
+                    <option value="{{ $category->product_category_id }}">{{
+                        $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_unit">Unit</label>
+                <input type="text" class="form-control" id="product_unit"
+                    name="product_unit" placeholder="Enter product unit" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="product_price">Price</label>
+                <div class="input-group">
+                    <!-- Currency dropdown with a fixed width -->
+                    <select class="form-select flex-shrink-1" style="max-width: 120px;" id="currency" name="currency"
+                        aria-label="Select currency" required>
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="NGN">NGN</option>
+                    </select>
+                    <!-- Price input field taking the remaining space -->
+                    <input type="number" class="form-control" id="product_price" name="product_price"
+                        placeholder="Enter product price in USD" aria-label="Product price" min="0" step="0.01" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </div>
+    </div>
+</form>
+
+
+{{ route('admin.update-operation-type') }}
+
+let editOperationTypeForm = document.querySelector('#edit_operation_type_form');
+editOperationTypeForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    let url = "";
+
+    fetch_cycle('--Update Operation Type', url, 'POST', formData).then(result => {
+        console.log(result);
+        if (result.status === 'success') {
+            // Update the operation types table or UI as needed
+            let tableBody = document.querySelector('#tbl-operation-types tbody');
+            tableBody.innerHTML = "";
+            result.operation_types.forEach(type => {
+                tableBody.innerHTML += `<tr>
+                    <td>${type.name}</td>
+                    <td>${type.description ?? ""}</td>
+                    <td>${type.sequence_order ?? ""}</td>
+                    <td class="text-end">
+                        <div class="dropdown d-inline-block">
+                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                <a class="dropdown-item" href="#">Update</a>
+                                <a class="dropdown-item" href="#">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+        }
+    });
+});
+
+
+@foreach($company_operations as $log)
+<tr>
+    <td>{{ $log->operation_name }}</td>
+    <td>{{ $log->operation_code }}</td>
+    <td>{{ $log->operationType?->name }}</td>
+    <td>{{ $log->operationCategory->name }}</td>
+    <td>{{ $log->operation_unit }}</td>
+    <td>{{ $log->expected_waste_per_operation }}</td>
+    <td>{{ $log->expected_water_usage_per_operation }}</td>
+    <td>{{ $log->expected_unit_produced_for_goods }}</td>
+    <td>{{ $log->calendarYear?->name ?? "" }}</td>
+    <td>{{ $log->start_date }}</td>
+    <td>{{ $log->end_date }}</td>
+    <td>
+        <span
+            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
+            {{ ucfirst($log->status) }}
+        </span>
+    </td>
+    <td class="text-end">
+        <div class="dropdown d-inline-block">
+            <a class="dropdown-toggle arrow-none" id="dLabel11"
+                data-bs-toggle="dropdown" href="#" role="button"
+                aria-haspopup="false" aria-expanded="false">
+                <i class="las la-ellipsis-v fs-20 text-muted"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dLabel11">
+                <a class="dropdown-item" href="#"
+                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
+                <a class="dropdown-item" href="#">Delete</a>
+            </div>
+        </div>
+    </td>
+</tr>
+@endforeach
+
+
+<form action="" method="post" id="operations-form">
+    @csrf
+    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+    <div class="row g-3">
+        <div class="col-12">
+            <h5 class="text-primary border-bottom pb-2">Operation Details</h5>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="operation_name" class="form-label fw-bold text-primary">Operation Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Enter Operation Name" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="description" class="form-label fw-bold text-primary">Description</label>
+                <textarea class="form-control border-primary" id="description" name="description" placeholder="Enter Description" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="operation_code" class="form-label fw-bold text-primary">Operation Code</label>
+                <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Enter Operation Code">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="operation_category" class="form-label fw-bold text-primary">Operation Category <span class="text-danger">*</span></label>
+                <select class="form-select border-primary operation-category" id="operation_category" name="operation_category" required>
+                    <option value="" selected disabled>Choose...</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="operation_type" class="form-label fw-bold text-primary">Operation Type <span class="text-danger">*</span></label>
+                <select class="form-select border-primary operation-type" id="operation_type" name="operation_type" required>
+                    <option value="" selected disabled>Choose...</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="calendar_year" class="form-label fw-bold text-primary">Calendar Year</label>
+                <select class="form-select border-primary calendar-year" id="calendar_year" name="calendar_year" required>
+                    <option value="" selected disabled>Choose...</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="start_date" class="form-label fw-bold text-primary">Start Date</label>
+                <input type="date" class="form-control border-primary" id="start_date" name="start_date" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="end_date" class="form-label fw-bold text-primary">End Date</label>
+                <input type="date" class="form-control border-primary" id="end_date" name="end_date" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="operation_status" class="form-label fw-bold text-primary">Operation Status</label>
+                <select class="form-select border-primary" id="operation_status" name="operation_status" required>
+                    <option value="" selected disabled>Choose...</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+        </div>
+        <!-- Cost Details -->
+        <div class="col-12">
+            <h5 class="text-primary border-bottom pb-2 mt-4">Cost Details</h5>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="labour_cost" class="form-label fw-bold text-primary">Labour Cost</label>
+                <input type="number" class="form-control border-primary" id="labour_cost" name="labour_cost" placeholder="Enter Labour Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="overhead_cost" class="form-label fw-bold text-primary">Overhead Cost</label>
+                <input type="number" class="form-control border-primary" id="overhead_cost" name="overhead_cost" placeholder="Enter Overhead Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="maintenance_cost" class="form-label fw-bold text-primary">Maintenance Cost</label>
+                <input type="number" class="form-control border-primary" id="maintenance_cost" name="maintenance_cost" placeholder="Enter Maintenance Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="depreciation_cost" class="form-label fw-bold text-primary">Depreciation Cost</label>
+                <input type="number" class="form-control border-primary" id="depreciation_cost" name="depreciation_cost" placeholder="Enter Depreciation Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="supervision_cost" class="form-label fw-bold text-primary">Supervision & Administration Cost</label>
+                <input type="number" class="form-control border-primary" id="supervision_cost" name="supervision_cost" placeholder="Enter Supervision Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="variable_cost" class="form-label fw-bold text-primary">Variable Cost</label>
+                <input type="number" class="form-control border-primary" id="variable_cost" name="variable_cost" placeholder="Enter Variable Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="fixed_cost" class="form-label fw-bold text-primary">Fixed Cost</label>
+                <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter Fixed Cost" required>
+            </div>
+        </div>
+        <!-- Operation Metrics -->
+        <div class="col-12">
+            <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost</label>
+                <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter Operation Unit Cost" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time</label>
+                <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter Operation Unit Time" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation</label>
+                <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter Expected Water Usage Per Operation" required>
+            </div>
+        </div>
+        <!-- Materials and Chemicals -->
+        <div class="col-12">
+            <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
+        </div>
+        <div class="col-md-6">
+            <div class="material-quantity-used-container-operation-log col-md-12">
+                <div class="row g-2 align-items-end mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
+                            <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]" required>
+                                <option value="" selected disabled>Select Material</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
+                            <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-start">
+                <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chemical-quantity-container-operation-log col-md-12">
+                <div class="row g-2 align-items-end mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
+                            <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]" required>
+                                <option value="" selected disabled>Select Chemical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
+                            <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-start">
+                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+            </div>
+        </div>
+        <!-- Products and waste -->
+        <div class="col-12">
+            <h5 class="text-primary border-bottom pb-2 mt-4">Products and Wastes</h5>
+        </div>
+        <div class="col-md-6">
+            <div class="operation-log-product-quantity-container col-md-12">
+                <div class="row g-2 align-items-end mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="expected_product" class="form-label fw-bold text-primary">Expected Product</label>
+                            <select class="form-select border-primary product-select" id="expected_product" name="expected_products[]" required>
+                                <option value="" selected disabled>Select Product</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="expected_unit_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
+                            <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Enter Expected Quantity Produced For Goods" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-start">
+                <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-product-quantity-operation">Add More</button>
+            </div>
+        </div>
+        <!-- Waste Generated -->
+        <div class="col-md-6">
+            <div class="operation-log-waste-quantity-container col-md-12">
+                <div class="row g-2 align-items-end mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="expected_waste" class="form-label fw-bold text-primary">Expected Waste</label>
+                            <select class="form-select border-primary waste-select" id="expected_waste" name="waste_generated[0][waste_id]" required>
+                                <option value="" selected disabled>Select Waste</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
+                            <input type="number" class="form-control border-primary" id="expected_quantity" name="waste_generated[0][quantity]" placeholder="Enter Expected Quantity" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-start">
+                <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-waste-quantity-operation">Add More</button>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-4 text-end">
+            <button type="submit" class="btn btn-primary px-4 py-2">Save Operation</button>
+        </div>
+    </div>
+</form>

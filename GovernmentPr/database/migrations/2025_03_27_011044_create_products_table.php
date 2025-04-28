@@ -16,14 +16,16 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id');
             $table->string('name')->index();
+            $table->string('quantity_per_unit')->nullable();
             $table->string('unit')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
             $table->text('description')->nullable();
+            $table->string('currency', 3)->default('NGN');
             $table->decimal('price', 10, 2)->default(0.00);
             $table->enum('status', ['available', 'unavailable', 'discontinued'])->default('available');
             $table->boolean('is_active')->default(true);
-            $table->boolean('is_delete')->default(false);
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
             $table->softDeletes();

@@ -27,6 +27,11 @@ class OperationType extends Model
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
 
+    public function operations()
+    {
+        return $this->hasMany(CompanyOperation::class, 'operation_type_id', 'operation_type_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_delete', false);

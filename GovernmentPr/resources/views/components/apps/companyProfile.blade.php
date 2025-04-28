@@ -1563,11 +1563,8 @@
                                                 <!-- Calendar Year -->
                                                 <div class="col-md-4">
                                                     <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
                                                         <option value="" selected disabled>Select Calendar Year</option>
-                                                        @foreach($calendar_years as $calendar)
-                                                            <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <!-- Date -->
@@ -2247,62 +2244,111 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#operationTypeCollapse" aria-expanded="false"
                                 aria-controls="operationTypeCollapse">
-                                <i class="las la-cogs me-2"></i> Operation Type
+                                <i class="las la-cogs me-2" style="font-size: 1.5rem;"></i> Operation Type Management
                             </button>
                         </h2>
                         <div id="operationTypeCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
                             <div class="accordion-body">
-                                <form action="" method="post" id="company_operation_type_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mt-4 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-
-                                <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered" id="tbl-operation-types">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Sequence Order</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($operation_types as $type)
-                                            <tr>
-                                                <td>{{ $type->name }}</td>
-                                                <td>{{ $type->description }}</td>
-                                                <td>{{ $type->sequence_order }}</td>
-                                                <td class="text-end">
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                <div class="row">
+                                    <div class="col-md-6 closeable-card d-none" id="operation-type-card">
+                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">New Operation Type Setup</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="company_operation_type_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
+                                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-type-card">
+                                        <!-- Edit Operation Type Card -->
+                                        <div class="card shadow-sm border-0"  style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Edit Operation Type</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="edit_operation_type_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="operation_type_id" id="operation_type_id">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="edit_operation_type_name" name="operation_type_name" placeholder="Enter operation type name" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="edit_sequence" class="form-label fw-bold text-primary">Sequence</label>
+                                                            <input type="number" class="form-control" id="edit_operation_type_sequence" name="operation_type_sequence_order" placeholder="Enter sequence order">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="edit_operation_type_description" name="operation_type_description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3 align-items-center">
+                                            <div class="col">
+                                                <h4 class="text-primary mb-0">Operation Types</h4>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-type">
+                                                    <i class="iconoir-plus"></i> Set Up Operation Type
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Spinner -->
+                                        <div id="loading-spinner" class="spinner-border text-primary d-none" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-types">
+                                                <thead class="table-primary text-center">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th>Sequence Order</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                        <div id="message-container" class="mt-3"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2312,58 +2358,446 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#operationCategoryCollapse" aria-expanded="false"
                                 aria-controls="operationCategoryCollapse">
-                                <i class="las la-layer-group me-2"></i> Operation Category
+                                <i class="las la-layer-group me-2" style="font-size: 1.5rem;"></i> Operation Category Management
                             </button>
                         </h2>
                         <div id="operationCategoryCollapse" class="accordion-collapse collapse"
                             aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
                             <div class="accordion-body">
-                                <form action="" method="post" id="operation_category_form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f0f8ff;">
-                                    @csrf
-                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description" ></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-
-                                <div class="table-responsive mt-5">
-                                    <table class="table table-hover table-bordered" id="tbl-operation-categories">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($operation_categories as $category)
-                                            <tr>
-                                                <td>{{ $category->name }}</td>
-                                                <td>{{ $category->description }}</td>
-                                                <td class="text-end">
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                <div class="row">
+                                    <div class="col-md-6 closeable-card d-none" id="operation-category-card">
+                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for operation category -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Add New Operation Category</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="operation_category_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-12">
+                                                            <label for="category_name" class="form-label fw-bold text-primary">Category Name</label>
+                                                            <input type="text" class="form-control" id="category_name" name="name" placeholder="Enter category name" required>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="category_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="category_description" name="description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">
+                                                            <i class="las la-save"></i> Save
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-category-card">
+                                        <!-- Edit Operation Category Card -->
+                                        <div class="card shadow-sm border-0" style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="card-title mb-0">Edit Operation Category</h4>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="post" id="edit_operation_category_form" class="pt-2">
+                                                    @csrf
+                                                    <input type="hidden" name="operation_category_id" id="operation_category_id">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-12">
+                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
+                                                            <input type="text" class="form-control" id="edit_operation_category_name" name="operation_category_name" placeholder="Enter category name" required>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
+                                                            <textarea class="form-control" id="edit_operation_category_description" name="operation_category_description" rows="3" placeholder="Enter description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3 align-items-center">
+                                            <div class="col">
+                                                <h4 class="text-primary mb-0">Operation Categories</h4>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-category">
+                                                    <i class="iconoir-plus"></i> Add Operation Category
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Spinner -->
+                                        <div id="loading-spinner-category" class="spinner-border text-primary d-none" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-categories">
+                                                <thead class="table-primary text-center">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="accordion-item">
+                            <h2 class="accordion-header" id="operationsLogHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
+                                    aria-controls="operationsLogCollapse">
+                                    <i class="las la-book me-2" style="font-size: 1.5rem;"></i> Operations Log Management
+                                </button>
+                            </h2>
+                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-12 closeable-card d-none" id="operation-log-card">
+                                            <div class="card shadow-lg border-0 rounded-3" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
+                                                <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center rounded-top">
+                                                    <h4 class="card-title mb-0">Operations Management Form</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
+                                                </div>
+                                                <div class="card-body p-4">
+                                                    <form action="" method="post" id="operations-form">
+                                                        @csrf
+                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                        <div class="row g-3 d-flex align-items-end">
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2">Operation Details</h5>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="operation_name" class="form-label fw-bold text-primary">Operation Name <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Enter operation name" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="description" class="form-label fw-bold text-primary">Description</label>
+                                                                    <textarea class="form-control border-primary" id="description" name="description" placeholder="Provide a brief description" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_code" class="form-label fw-bold text-primary">Operation Code</label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Enter operation code">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_category" class="form-label fw-bold text-primary">Operation Category <span class="text-danger">*</span></label>
+                                                                    <select class="form-select border-primary operation-category" id="operation_category" name="operation_category" required>
+                                                                        <option value="" selected disabled>Select category</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="operation_type" class="form-label fw-bold text-primary">Operation Type <span class="text-danger">*</span></label>
+                                                                    <select class="form-select border-primary operation-type" id="operation_type" name="operation_type" required>
+                                                                        <option value="" selected disabled>Select type</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="calendar_year" class="form-label fw-bold text-primary">Calendar Year</label>
+                                                                    <select class="form-select border-primary calendar-year" id="calendar_year" name="calendar_year" required>
+                                                                        <option value="" selected disabled>Select year</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="start_date" class="form-label fw-bold text-primary">Start Date</label>
+                                                                    <input type="date" class="form-control border-primary" id="start_date" name="start_date" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="end_date" class="form-label fw-bold text-primary">End Date</label>
+                                                                    <input type="date" class="form-control border-primary" id="end_date" name="end_date" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_status" class="form-label fw-bold text-primary">Operation Status</label>
+                                                                    <select class="form-select border-primary" id="operation_status" name="operation_status" required>
+                                                                        <option value="" selected disabled>Select status</option>
+                                                                        <option value="active">Active</option>
+                                                                        <option value="inactive">Inactive</option>
+                                                                        <option value="completed">Completed</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Cost Details -->
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Cost Details</h5>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="labour_cost" class="form-label fw-bold text-primary">Labour Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="labour_cost" name="labour_cost" placeholder="Enter labour cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="overhead_cost" class="form-label fw-bold text-primary">Overhead Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="overhead_cost" name="overhead_cost" placeholder="Enter overhead cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="maintenance_cost" class="form-label fw-bold text-primary">Maintenance Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="maintenance_cost" name="maintenance_cost" placeholder="Enter maintenance cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="depreciation_cost" class="form-label fw-bold text-primary">Depreciation Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="depreciation_cost" name="depreciation_cost" placeholder="Enter depreciation cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="supervision_cost" class="form-label fw-bold text-primary">Supervision & Administration Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="supervision_cost" name="supervision_cost" placeholder="Enter supervision cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="variable_cost" class="form-label fw-bold text-primary">Variable Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="variable_cost" name="variable_cost" placeholder="Enter variable cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="fixed_cost" class="form-label fw-bold text-primary">Fixed Cost</label>
+                                                                    <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter fixed cost" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <!-- Materials and Chemicals Section -->
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="material-quantity-used-container-operation-log col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
+                                                                                <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]">
+                                                                                    <option value="" selected disabled>Select Material</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="chemical-quantity-container-operation-log col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
+                                                                                <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                                                                    <option value="" selected disabled>Select Chemical</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Products and Wastes Section -->
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Products and Wastes</h5>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="operation-log-product-quantity-container col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_product" class="form-label fw-bold text-primary">Expected Product</label>
+                                                                                <select class="form-select border-primary product-select" id="expected_product" name="product_produced[0][product_id]" required>
+                                                                                    <option value="" selected disabled>Select Product</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_quantity_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="product_produced[0][quantity]" placeholder="Enter Expected Quantity Produced" min="0" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-product-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="operation-log-waste-quantity-container col-md-12">
+                                                                    <div class="row g-2 align-items-end mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_waste" class="form-label fw-bold text-primary">Expected Waste</label>
+                                                                                <select class="form-select border-primary waste-select" id="expected_waste" name="waste_generated[0][waste_id]">
+                                                                                    <option value="" selected disabled>Select Waste</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
+                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="waste_generated[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-start">
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-waste-quantity-operation">Add More</button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Operation Metrics -->
+                                                            <div class="col-12">
+                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost (₦)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">₦</span>
+                                                                        <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter total operation cost" min="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost (₦)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">₦</span>
+                                                                        <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter operation unit cost" min="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time (e.g., hours, minutes)</label>
+                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter operation unit time (e.g., hours, minutes)">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation (Liters)</label>
+                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter expected water usage per operation" min="0">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 mt-4 text-end">
+                                                                <button type="submit" class="btn btn-primary px-4 py-2">Save Operation</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row mb-3 align-items-center">
+                                                <div class="col">
+                                                    <h4 class="text-primary mb-0">Operations Log</h4>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="setup-operation-log">
+                                                        <i class="iconoir-plus"></i> Add Operation Log
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive mt-4">
+                                                <table class="table table-hover table-bordered w-100" id="tbl-operations-log">
+                                                    <thead class="table-primary text-center">
+                                                        <tr>
+                                                            <th scope="col" class="col-width-20">Operation Name</th>
+                                                            <th scope="col" class="col-width-10">Operation Code</th>
+                                                            <th scope="col" class="col-width-15">Operation Type</th>
+                                                            <th scope="col" class="col-width-15">Operation Category</th>
+                                                            <th scope="col" class="col-width-10">Operation Unit Cost</th>
+                                                            <th scope="col" class="col-width-15">Calendar Year</th>
+                                                            <th scope="col" class="col-width-15">Start Date</th>
+                                                            <th scope="col" class="col-width-15">End Date</th>
+                                                            <th scope="col" class="col-width-10">Operation Status</th>
+                                                            <th scope="col" class="text-end col-width-10">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Dynamic rows will go here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="annualOperationsLogHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -2393,10 +2827,7 @@
                                                     <label for="operation_status" class="">Operation</label>
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
-                                                        <option value="" selected disabled>Choose...</option>                                                        
-                                                        @foreach($company_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                        @endforeach
+                                                        <option value="" selected disabled>Choose...</option>
                                                         
                                                     </select>
                                                 </div>
@@ -2404,13 +2835,9 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
                                                         required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -2613,249 +3040,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="operationsLogHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
-                                    aria-controls="operationsLogCollapse">
-                                    <i class="las la-book me-2"></i> Operations Log
-                                </button>
-                            </h2>
-                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="operations-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="operation_name">Operation Name</label>
-                                                    <input type="text" class="form-control" id="operation_name"
-                                                        name="operation_name" placeholder="Operation Name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <textarea class="form-control" id="description" name="description"
-                                                        placeholder="Description" rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_code">Operation Code</label>
-                                                    <input type="text" class="form-control" id="operation_code"
-                                                        name="operation_code" placeholder="Operation Code" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_type">Operation Type</label>
-                                                    <select class="form-select" id="operation_type"
-                                                        name="operation_type" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_types as $type)
-                                                        <option value="{{ $type->operation_type_id }}">{{
-                                                            $type->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_category">Operation Category</label>
-                                                    <select class="form-select" id="operation_category"
-                                                        name="operation_category" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($operation_categories as $category)
-                                                        <option value="{{ $category->operation_category_id }}">{{
-                                                            $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit">Operation Unit</label>
-                                                    <input type="text" class="form-control" id="operation_unit"
-                                                        name="operation_unit" placeholder="Operation Unit" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_price">Operation Unit Price</label>
-                                                    <input type="number" class="form-control" id="operation_unit_price"
-                                                        name="operation_unit_price" placeholder="Operation Unit Price"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_cost">Operation Unit Cost</label>
-                                                    <input type="number" class="form-control" id="operation_unit_cost"
-                                                        name="operation_unit_cost" placeholder="Operation Unit Cost"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_unit_time">Operation Unit Time</label>
-                                                    <input type="text" class="form-control" id="operation_unit_time"
-                                                        name="operation_unit_time" placeholder="Operation Unit Time"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                            <div class="product-quantity-container col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="expected_product">Expected Product</label>
-                                                            <select class="form-select" id="expected_product" name="expected_products[]" required>
-                                                                <option value="" selected disabled>Select Product</option>
-                                                                @foreach($active_products as $product)
-                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-                                                            <input type="number" class="form-control" id="expected_quantity_produced_for_goods" name="expected_quantity_produced_for_goods[]" placeholder="Expected Quantity Produced For Goods" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-quantity-operation">Add More</button>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_water_usage_per_operation">Expected Water Usage Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Expected Water Usage Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="expected_waste_per_operation">Expected Waste Per Operation</label>
-                                                    <input type="number" class="form-control" id="expected_waste_per_operation" name="expected_waste_per_operation" placeholder="Expected Waste Per Operation" required>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add_more_products" onclick="addProductField()">Add More</button>
-                                            </div> -->
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="start_date">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date"
-                                                        name="start_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="end_date">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date"
-                                                        name="end_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_status">Operation Status</label>
-                                                    <select class="form-select" id="operation_status" name="operation_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="active">Active</option>
-                                                        <option value="inactive">Inactive</option>
-                                                        <option value="completed">Completed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Save
-                                                    Operation</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-operations-log">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 15%;">Operation Name</th>
-                                                    <th style="width: 5%;">Operation Code</th>
-                                                    <th style="width: 10%;">Operation Type</th>
-                                                    <th style="width: 10%;">Operation Category</th>
-                                                    <th style="width: 5%;">Operation Unit</th>
-                                                    <th style="width: 10%;">Expected Waste Per Operation</th>
-                                                    <th style="width: 10%;">Expected Water Usage Per Operation</th>
-                                                    <th style="width: 10%;">Expected Unit Produced For Goods</th>
-                                                    <th style="width: 10%;">Calendar Year</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Status</th>
-                                                    <th class="text-end" style="width: 5%;">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($company_operations as $log)
-                                                <tr>
-                                                    <td>{{ $log->operation_name }}</td>
-                                                    <td>{{ $log->operation_code }}</td>
-                                                    <td>{{ $log->operationType?->name }}</td>
-                                                    <td>{{ $log->operationCategory->name }}</td>
-                                                    <td>{{ $log->operation_unit }}</td>
-                                                    <td>{{ $log->expected_waste_per_operation }}</td>
-                                                    <td>{{ $log->expected_water_usage_per_operation }}</td>
-                                                    <td>{{ $log->expected_unit_produced_for_goods }}</td>
-                                                    <td>{{ $log->calendarYear?->name ?? "" }}</td>
-                                                    <td>{{ $log->start_date }}</td>
-                                                    <td>{{ $log->end_date }}</td>
-                                                    <td>
-                                                        <span
-                                                            class="badge bg-{{ $log->status === 'active' ? 'success' : 'danger' }}">
-                                                            {{ ucfirst($log->status) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#"
-                                                                    onclick="triggerUpdateOperation('{{ $log->company_operation_id }}')">Update</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="equipmentTypeHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -3207,9 +3392,6 @@
                                                     <select class="form-select" id="operation_status"
                                                         name="operation" required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($company_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -3249,13 +3431,9 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select" id="calendar_year" name="calendar_year"
+                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
                                                         required>
                                                         <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{
-                                                            $calendar->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -3341,9 +3519,7 @@
                                                 <label for="operation_name_select" class="form-label">Operation</label>
                                                 <select class="form-select" id="operation_name_select" name="operation_name" required>
                                                     <option value="" selected disabled>Choose...</option>
-                                                    @foreach($approved_operations as $operation)
-                                                        <option value="{{ $operation->company_operation_id }}">{{ $operation->operation_name }}</option>
-                                                    @endforeach
+                                                    
                                                 </select>
                                             </div>
 
@@ -3400,11 +3576,8 @@
                                             <!-- Calendar Year -->
                                             <div class="col-md-3">
                                                 <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
+                                                <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
                                                     <option value="" selected disabled>Select Calendar Year</option>
-                                                    @foreach($calendar_years as $calendar)
-                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                    @endforeach
                                                 </select>
                                             </div>
 
@@ -3475,35 +3648,36 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
                                             @foreach($production_logs as $log)
-    <tr>
-        <td>{{ $log->production_title }}</td>
-        <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
-        <td>
-            {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
-        </td>
-        <td>
-            {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
-        </td>
-        <td>{{ $log->water_volume }} Liters</td>
-        <td>
-            {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced }} Produced, {{ $product->quantity_defected }} Defected)
-        </td>
-        <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
-        <td>
-            <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
-                {{ ucfirst($log->production_status) }}
-            </span>
-        </td>
-        <td class="text-end">
-            <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
-                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
-            </div>
-        </td>
-    </tr>
-@endforeach
+                                                <tr>
+                                                    <td>{{ $log->production_title }}</td>
+                                                    <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
+                                                    <td>
+                                                        {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
+                                                    </td>
+                                                    <td>
+                                                        {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
+                                                    </td>
+                                                    <td>{{ $log->amount_of_water_used }} Liters</td>
+                                                    <td>
+                                                    @foreach($log->product_log_data as $product)
+                                                        {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced ?? "N/A" }} Produced, {{ $product->quantity_defected ?? "N/A" }} Defected)
+                                                    @endforeach
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
+                                                            {{ ucfirst($log->production_status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end gap-2">
+                                                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
+                                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
                                             </tbody>
                                         </table>
@@ -3574,20 +3748,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                        @foreach($quality_controls_record as $control)
-                                                        <tr>
-                                                            <td>{{ $control->quality_metric }}</td>
-                                                            <td>{{ $control->acceptable_range }}</td>
-                                                            <td>{{ $control->measurement_frequency }}</td>
-                                                            <td>{{ $control->responsible_person }}</td>
-                                                            <td class="text-end">
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
+                                                @foreach($quality_controls_record as $control)
+                                                <tr>
+                                                    <td>{{ $control->quality_metric }}</td>
+                                                    <td>{{ $control->acceptable_range }}</td>
+                                                    <td>{{ $control->measurement_frequency }}</td>
+                                                    <td>{{ $control->responsible_person }}</td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -3667,95 +3841,130 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="addProductHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#addProductCollapse" aria-expanded="true"
-                                    aria-controls="addProductCollapse">
-                                    Add New Product
-                                </button>
-                            </h2>
-                            <div id="addProductCollapse" class="accordion-collapse collapse show"
-                                aria-labelledby="addProductHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="add-product-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_name">Product Name</label>
-                                                    <input type="text" class="form-control" id="product_name"
-                                                        name="product_name" placeholder="Enter product name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_category">Category</label>
-                                                    <select class="form-select" id="product_category"
-                                                        name="product_category" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_product_categories as $category)
-                                                        <option value="{{ $category->product_category_id }}">{{
-                                                            $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_unit">Unit</label>
-                                                    <input type="text" class="form-control" id="product_unit"
-                                                        name="product_unit" placeholder="Enter product unit" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="product_price">Price</label>
-                                                    <input type="number" class="form-control" id="product_price"
-                                                        name="product_price" placeholder="Enter product price" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Product</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Product List -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productListHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productListCollapse" aria-expanded="false"
-                                    aria-controls="productListCollapse">
-                                    Product List
+                                    data-bs-target="#productListCollapse" aria-expanded="false" aria-controls="productListCollapse">
+                                    Product Management
                                 </button>
                             </h2>
-                            <div id="productListCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="productListHeading">
+                            <div id="productListCollapse" class="accordion-collapse collapse" aria-labelledby="productListHeading">
                                 <div class="accordion-body">
+                                    <div class="card shadow-sm border-0 d-none" style="background-color: #f9fbe7;" id="new_product_setup_card"> <!-- Light greenish-yellow background for product setup -->
+                                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">New Product Setup</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                        </div>
+                                        <div class="card-body pt-3">
+                                            <form action="" method="post" id="add-product-form">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <!-- Product Name -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="product_name" class="form-label">Product Name</label>
+                                                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Category -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="product_category" class="form-label">Category</label>
+                                                            <select class="form-select" id="product_category" name="product_category" required>
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                @foreach($active_product_categories as $category)
+                                                                    <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Quantity Per Unit -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="product_quantity_per_unit" class="form-label">Quantity Per Unit</label>
+                                                            <input type="number" class="form-control" id="product_quantity_per_unit" name="product_quantity_per_unit" placeholder="Enter quantity per unit" min="1" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Unit -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="product_unit" class="form-label">Unit</label>
+                                                            <input type="text" class="form-control" id="product_unit" name="product_unit" placeholder="Enter product unit" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Product Price -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="product_price">Price</label>
+                                                            <div class="input-group">
+                                                                <!-- Currency dropdown with a fixed width -->
+                                                                <select class="form-select flex-shrink-1" style="max-width: 120px;" id="currency" name="currency"
+                                                                    aria-label="Select currency" required>
+                                                                    <option value="USD">USD</option>
+                                                                    <option value="EUR">EUR</option>
+                                                                    <option value="GBP">GBP</option>
+                                                                    <option value="NGN" selected>NGN</option>
+                                                                </select>
+                                                                <!-- Price input field taking the remaining space -->
+                                                                <input type="number" class="form-control" id="product_price" name="product_price"
+                                                                    placeholder="Enter product price in NGN" aria-label="Product price" min="0" step="0.01" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Save Button -->
+                                                    <div class="col-12 text-end mt-3">
+                                                        <button type="submit" class="btn btn-success">Save Product</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-4 align-items-center">
+                                        <div class="col-md-6">
+                                            <label for="product_category_filter" class="form-label fw-bold text-primary">Filter by Category</label>
+                                            <select class="form-select shadow-sm" id="product_category_filter" name="product_category_filter">
+                                                <option value="" selected>All Categories</option>
+                                                @foreach($active_product_categories as $category)
+                                                <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 text-end">
+                                            <button type="button" class="btn btn-outline-primary shadow-sm me-2" id="export-products">
+                                                <i class="las la-file-export me-1"></i> Export Products
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary shadow-sm" id="btn-setup-products">
+                                                <i class="las la-cogs me-1"></i> Setup a Product
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive">
-                                        <table class="table table-striped mb-0" id="tbl-products">
-                                            <thead class="table-light">
+                                        <table class="table table-hover table-bordered rounded shadow-sm" id="tbl-products">
+                                            <thead class="table-primary">
                                                 <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                    <th class="text-end">Action</th>
+                                                    <th class="text-center">Product Name</th>
+                                                    <th class="text-center">Category</th>
+                                                    <th class="text-center">Unit Price</th>
+                                                    <th class="text-center">Quantity per unit</th>
+                                                    <th>Unit</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                <!-- Placeholder for dynamic content -->
+                                                <tr id="no-products">
+                                                    <td colspan="5" class="text-center text-muted">No products available</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- end product list -->
                     </div>
                 </div>
                 <!-- General Settings -->
@@ -4714,6 +4923,10 @@
     </div>
     <!-- end update operation log modal -->
     @section('styles')
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap.min.css') }}">
+
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -4769,6 +4982,12 @@
             border-radius: 0.5rem;
         }
 
+        .bg-gradient-primary {
+            background: linear-gradient(90deg, #007bff, #22c55e); /* Updated gradient colors for primary */
+            color: #ffffff; /* Ensures text is visible on the gradient */
+        }
+
+
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -4782,27 +5001,946 @@
     @endsection
 
     @section('scripts')
+    <!-- DataTables and Bootstrap JavaScript -->
+    <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
+
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script>
-        $(document).ready(function() {
-            $('#tbl-company-chemical').DataTable({
-                responsive: true,
-                autoWidth: false,
-                pageLength: 10,
-                lengthChange: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                language: {
-                    paginate: {
-                        next: 'Next',
-                        previous: 'Previous'
-                    }
+    // Confirm deletion function
+    function confirmDeletion(id) {
+        if (confirm("Are you sure you want to delete this operation type?")) {
+            // Implement deletion logic
+            console.log("Delete operation type with ID:", id);
+        }
+    }
+    </script>
+    <script>
+        /**
+         * Populates a dropdown element with options.
+         * 
+         * @param {HTMLElement} dropdown - The dropdown element to populate.
+         * @param {Array} data - An array of objects representing the options. Each object should have a `value` and `label`.
+         */
+        function populateDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a year";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.calendar_years.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.calendar_year_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+
+        // Generic function to fetch data from a URL
+        async function fetchFieldInput(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    method: options.method || "GET", // Default to GET
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        ...options.headers, // Include additional headers if provided
+                    },
+                    credentials: 'same-origin', // Include credentials for same-origin requests
+                    ...options, // Merge any additional options
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Fetched data:", data);
+                return data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                throw error; // Re-throw the error to handle it in the calling function
+            }
+        }
+
+
+        // Fetch calendar years on page load
+        document.querySelectorAll('.calendar-year').forEach(dropdown => {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
+                console.log('Selection detected');
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+                // Construct the API URL
+                let url = `/admin/get-calendar-years/${company_id}`;
+                console.log("Fetching data from URL:", url);
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched calendar years:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateDropdown(clickedDropdown, data);
+                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                } catch (error) {
+                    console.error("Error fetching calendar years:", error);
                 }
             });
         });
+        // end fetch calendar years on page load
+        // fetch operation type
+        // populate the dropdown
+        function populateOperationTypeDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select operation type";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.operation_types.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.operation_type_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch operation type on page load
+        document.querySelectorAll('.operation-type').forEach(dropdown => {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
+                console.log('Selection detected');
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+                // Construct the API URL
+                let url = `/admin/get-operation-types/${company_id}`;
+                console.log("Fetching data from URL:", url);
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched Operation Types:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateOperationTypeDropdown(dropdown, data);
+                    clickedDropdown.dataset.populated  = "true"; // Mark as populated
+                } catch (error) {
+                    console.error("Error fetching operation types:", error);
+                }
+            });
+        });
+        // end fetch operation type
+
+        // fetch operation category
+        // populate the dropdown
+        function populateOperationCategoryDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select operation category";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.operation_categories.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.operation_category_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch operation category on page load
+        document.querySelectorAll('.operation-category').forEach(dropdown => {
+            dropdown.addEventListener('click', async function (e) {
+                const clickedDropdown = e.target;
+                if (clickedDropdown.dataset.populated === "true") {
+                    return; // Avoid fetching data again if already populated
+                }
+                console.log('Selection detected');
+                // Retrieve the company_id dynamically
+                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", company_id);
+                // Construct the API URL
+                let url = `/admin/get-operation-category/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                // Fetch data using the fetchFieldInput function
+                try {
+                    let data = await fetchFieldInput(url);
+                    console.log("Fetched Operation Types:", data);
+                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                    // Example:
+                    populateOperationCategoryDropdown(clickedDropdown, data);
+                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                } catch (error) {
+                    console.error("Error fetching operation categories:", error);
+                }
+            });
+        });
+        // end fetch operation category
+        // Fetch material and populate dropdown
+        function populateMaterialDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select material";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            // Add options from the data
+            if (data.company_materials && Array.isArray(data.company_materials)) {
+                data.company_materials.forEach(item => {
+                    if (item.material != null) {
+                        const option = document.createElement("option");
+                        option.value = item.materialID || ""; // Use the value from the data
+                        option.textContent = item.material.material || ""; // Use the label from the data
+                        dropdown.appendChild(option);
+                    }
+                });
+                console.log("Dropdown populated with materials:", data);
+            } else {
+                console.warn("Invalid materials data structure:", data);
+            }
+        }
+
+        // Fetch material on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".material-select").forEach(dropdown => {
+                document.addEventListener("click", async (e) => {
+                    if (e.target && e.target.classList.contains('material-select')) {
+                        const clickedDropdown = e.target;
+
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+
+                        console.log("Material selection detected");
+
+                        // Dynamically retrieve the company ID
+                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                        console.log("Company ID:", companyID);
+
+                        const url = `/admin/get-materials/${companyID}`;
+                        console.log("Fetching data from URL:", url);
+
+                        try {
+                            const data = await fetchFieldInput(url); // Await the data fetch
+                            console.log("Fetched Materials:", data);
+
+                            // Populate the dropdown with the fetched data
+                            populateMaterialDropdown(clickedDropdown, data);
+
+                            // Mark as populated
+                            clickedDropdown.dataset.populated = "true";
+                        } catch (error) {
+                            console.error("Error fetching materials:", error);
+                            alert("Failed to load materials. Please try again.");
+                        }
+                    }
+                });
+            });
+        });
+
+        // Fetch chemical and populate dropdown
+        function populateChemicalDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select chemical";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            // Add options from the data
+            if (data.company_chemicals && Array.isArray(data.company_chemicals)) {
+                data.company_chemicals.forEach(item => {
+                    if (item.chemical) {
+                        const option = document.createElement("option");
+                        option.value = item.chemicalID || ""; // Use the value from the data
+                        option.textContent = item.chemical.name || ""; // Use the label from the data
+                        dropdown.appendChild(option);
+                    }
+                });
+                console.log("Dropdown populated with chemicals:", data);
+            } else {
+                console.warn("Invalid data structure for chemicals:", data);
+            }
+        }
+
+        // Fetch chemicals on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".chemical-select").forEach(dropdown => {
+                document.addEventListener("click", async (e) => {
+                    const clickedDropdown = e.target;
+                    if (e.target && e.target.classList.contains('chemical-select')) {
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+
+                        console.log("Chemical selection detected");
+
+                        // Dynamically retrieve the company ID
+                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                        console.log("Company ID:", companyID);
+
+                        const url = `/admin/get-chemicals/${companyID}`;
+                        console.log("Fetching data from URL:", url);
+
+                        try {
+                            const data = await fetchFieldInput(url); // Await the data fetch
+                            console.log("Fetched Chemicals:", data);
+
+                            // Populate the dropdown with the fetched data
+                            populateChemicalDropdown(clickedDropdown, data);
+
+                            // Mark as populated
+                            clickedDropdown.dataset.populated = "true";
+                        } catch (error) {
+                            console.error("Error fetching chemicals:", error);
+                            alert("Failed to load chemicals. Please try again.");
+                        }
+                    }
+                });
+            });
+        });
+        // fetch product
+        // populate the dropdown
+        function populateProductDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select product";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.products.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.product_id; // Use the value from the data
+                option.textContent = item.name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+        // end populate dropdown
+        // Fetch product on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.product-select').forEach(dropdown => {
+                document.addEventListener('click', async function (e) {
+                    if (e.target && e.target.classList.contains('product-select')) {
+                        const clickedDropdown = e.target;
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+                        console.log('Product dropdown clicked:', e.target);
+                        console.log('Selection detected');
+                        // Retrieve the company_id dynamically
+                        let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                        console.log("Company ID:", company_id);
+                        // Construct the API URL
+                        let url = `/admin/get-product/${company_id}`;
+                        console.log("Fetching data from URL:", url);
+
+                        // Fetch data using the fetchFieldInput function
+                        try {
+                            let data = await fetchFieldInput(url);
+                            console.log("Fetched Product:", data);
+                            // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                            // Example:
+                            populateProductDropdown(clickedDropdown, data);
+                            clickedDropdown.dataset.populated  = "true"; // Mark as populated
+                        } catch (error) {
+                            console.error("Error fetching product:", error);
+                        }
+                    }
+                });
+            });
+        });
+        // end fetch product
+
+        async function populateWasteDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select waste";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            // Add options from the data
+            data.company_wastes.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.company_waste_id; // Use the value from the data
+                option.textContent = item.waste_name; // Use the label from the data
+                dropdown.appendChild(option);
+            });
+
+            console.log("Dropdown populated with options:", data);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.waste-select').forEach(dropdown => {
+                let isLoading = false; // Prevent multiple concurrent requests
+                document.addEventListener('click', async function (e) {
+                    if (e.target && e.target.classList.contains('waste-select')) {
+                        const clickedDropdown = e.target;
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
+                        console.log('Waste dropdown clicked:', e.target);
+                        if (isLoading) return; // Debounce logic
+
+                        console.log('Selection detected');
+                        const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
+                        console.log("Company ID:", company_id);
+
+                        const url = `/admin/get-waste/${company_id}`;
+                        console.log("Fetching data from URL:", url);
+
+                        isLoading = true;
+                        try {
+                            const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                            console.log("Fetched Waste:", data);
+                            populateWasteDropdown(clickedDropdown, data);
+                            clickedDropdown.dataset.populated = "true"; // Mark as populated
+                        } catch (error) {
+                            console.error("Error fetching waste:", error);
+                            alert("Failed to load waste data. Please try again.");
+                        } finally {
+                            isLoading = false;
+                        }
+                    }
+                });
+            });
+        });
+        // end fetch waste
+
+        // triger product setup
+        let new_product_setup_card = document.getElementById('new_product_setup_card');
+        document.querySelector('#btn-setup-products').addEventListener('click', () => {
+            new_product_setup_card.classList.remove('d-none');
+            new_product_setup_card.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Dynamically update placeholder based on currency selection
+        document.getElementById('currency').addEventListener('change', function () {
+            const currency = this.value;
+            const priceInput = document.getElementById('product_price');
+            priceInput.placeholder = `Enter product price in ${currency}`;
+        });
+        // Function to populate the table
+        function populateProductTable() {
+            const tbody = document.getElementById("tbl-products").querySelector("tbody");
+            tbody.innerHTML = ""; // Clear existing content
+            // Retrieve the company_id dynamically
+            let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+            console.log("Company ID:", company_id);
+            // Construct the API URL
+            let url = `/admin/get-product/${company_id}`;
+            console.log("Fetching data from URL:", url);
+            fetchFieldInput(url).then(data => {
+                console.log("Fetched Product:", data);
+                // Check if the data contains products
+                if (data.products && data.products.length > 0) {
+                    // Populate the table with products
+                    data.products.forEach(product => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${product.name}</td>
+                                <td>${product.product_category.name}</td>
+                                <td>${product.currency} ${product.price}</td>
+                                <td>${product.quantity_per_unit}</td>
+                                <td>${product.unit}</td>
+                                <td class="text-end">
+                                    <button class="btn btn-primary btn-sm">Edit</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    // Display "No products available" message if no products exist
+                    tbody.innerHTML = `
+                        <tr id="no-products">
+                            <td colspan="5" class="text-center">No products available</td>
+                        </tr>`;
+                }
+            }).catch(error => {
+                console.error("Error fetching product:", error);
+            });
+        }
+
+        // Attach event listener for when the accordion section is shown
+        document.getElementById('productListCollapse').addEventListener('shown.bs.collapse', populateProductTable);
+
+        // show, hide, scroll to element and display message functions
+        const showElement = (element) => element.classList.remove('d-none');
+        const hideElement = (element) => element.classList.add('d-none');
+        const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
+        function displayMessage (type, message) {
+            const messageContainer = document.getElementById('message-container');
+            messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+            setTimeout(() => (messageContainer.innerHTML = ''), 3000);
+        }
+        // end show, hide, scroll to element and display message functions
+
+        // operation type and operation category
+        // Initialize DataTable for operation type
+        let table = $('#tbl-operation-types').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [3] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+                { data: 'name' },
+                { data: 'description' },
+                { data: 'sequenceOrder' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>`;
+                    }
+                }
+            ]
+        });
+        // Function to create an object for each operation type
+        function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
+            this.operation_type_id = operation_type_id;
+            this.name = name;
+            this.description = description;
+            this.sequenceOrder = sequenceOrder;
+        }
+        // Fetch data and populate table when the accordion is expanded
+        document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', () => {
+            let company_id = {{ json_encode($company->company_id) }};
+            let url = `/admin/get-operation-types/${company_id}`;
+            const spinner = document.getElementById('loading-spinner');
+            try {
+                showElement(spinner);
+                fetchFieldInput(url).then(data => {
+                    if (data.status === "success") {
+                        data_array = data.operation_types.map(
+                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        table.clear();
+                        table.rows.add(data_array);
+                        table.draw();
+                        hideElement(spinner)
+                    }
+                });
+            }catch(error) {
+                console.error("Error showing spinner:", error);
+                displayMessage('danger', 'An error occurred while fetching data.');
+            }
+
+        });
+        // Edit operation type
+        function editOperationType(operation_type_id, name, description, sequenceOrder){
+            const editCard = document.getElementById('edit-operation-type-card');
+            showElement(editCard);
+            scrollToElement(editCard);
+            const form = document.getElementById('edit_operation_type_form');
+            form.querySelector('[name="operation_type_id"]').value = operation_type_id;
+            form.querySelector('[name="operation_type_name"]').value = name;
+            form.querySelector('[name="operation_type_description"]').value = description;
+            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
+        }
+        // Confirm deletion
+        function confirmDeletion(operation_type_id, name){
+            if (confirm(`Are you sure you want to delete "${name}"?`)) {
+                console.log(`Deleted operation type ID: ${operation_type_id}`);
+                displayMessage('success', 'Operation type deleted successfully.');
+                // Add your delete logic here
+            }
+        }
+        // Trigger operation setup card
+        const setupCard = document.getElementById('operation-type-card');
+        document.querySelector('#setup-operation-type').addEventListener('click', () => {
+            showElement(setupCard);
+            scrollToElement(setupCard);
+        });
+
+        // Initialize DataTable for operation categories
+        let categoriesTable = $('#tbl-operation-categories').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+                { data: 'name' },
+                { data: 'description' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${row.operation_category_id}, '${row.name}', '${row.description}')">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${row.operation_category_id}, '${row.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>`;
+                    }
+                }
+            ]
+        });
+
+        // Function to create an object for each operation category
+        function OperationCategoryObject(operation_category_id, name, description) {
+            this.operation_category_id = operation_category_id;
+            this.name = name;
+            this.description = description;
+        }
+
+        // Fetch data and populate table when the accordion is expanded
+        document.getElementById('operationCategoryCollapse').addEventListener('shown.bs.collapse', () => {
+            console.log('====================================');
+            console.log('Fetching operation categories...');
+            console.log('====================================');
+            let company_id = {{ json_encode($company->company_id) }};
+            let url = `/admin/get-operation-categories/${company_id}`;
+            let categoriesSpinner = document.getElementById('loading-spinner');
+            try {
+                showElement(categoriesSpinner);
+                fetchFieldInput(url).then(data => {
+                    if (data.status === "success") {
+                        data_array = data.operation_categories.map(
+                            category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        categoriesTable.clear();
+                        categoriesTable.rows.add(data_array);
+                        categoriesTable.draw();
+                        hideElement(categoriesSpinner);
+                    }
+                });
+            } catch (error) {
+                console.error("Error showing spinner:", error);
+                displayMessage('danger', 'An error occurred while fetching data.');
+            }
+        });
+
+        // Edit operation category
+        function editOperationCategory(operation_category_id, name, description) {
+            const editCategoryCard = document.getElementById('edit-operation-category-card');
+            showElement(editCategoryCard);
+            scrollToElement(editCategoryCard);
+
+            const form = document.getElementById('edit_operation_category_form');
+            form.querySelector('[name="operation_category_id"]').value = operation_category_id;
+            form.querySelector('[name="operation_category_name"]').value = name;
+            form.querySelector('[name="operation_category_description"]').value = description;
+        }
+
+        // Confirm deletion
+        function confirmCategoryDeletion(operation_category_id, name) {
+            if (confirm(`Are you sure you want to delete "${name}"?`)) {
+                console.log(`Deleted operation category ID: ${operation_category_id}`);
+                displayMessage('success', 'Operation category deleted successfully.');
+                // Add your delete logic here
+            }
+        }
+
+        // Trigger operation category setup card
+        let setupCategoryCard = document.getElementById('operation-category-card');
+        document.querySelector('#setup-operation-category').addEventListener('click', () => {
+            showElement(setupCategoryCard);
+            scrollToElement(setupCategoryCard);
+        });
+        // 
+        // Initialize DataTable for operations log
+        let operationsLogTable = $('#tbl-operations-log').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+            { orderable: false, targets: [9] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+            { data: 'operation_name' },
+            { data: 'operation_code' },
+            { data: 'operation_type' },
+            { data: 'operation_category' },
+            { data: 'operation_unit_cost' },
+            { data: 'calendar_year' },
+            { data: 'start_date' },
+            { data: 'end_date' },
+            { data: 'operation_status' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                return `
+                    <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-info btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
+                        <i class="las la-eye"></i> View
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
+                        <i class="las la-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="confirmOperationLogDeletion(${row.operation_id}, '${row.operation_name}')">
+                        <i class="las la-trash-alt"></i> Delete
+                    </button>
+                    </div>`;
+                }
+            }
+            ]
+        });
+
+        // Define a class for the operation log objects
+        class OperationLog {
+            constructor(
+                operation_id,
+                operation_name,
+                operation_code,
+                operation_type,
+                operation_category,
+                operation_unit_cost,
+                calendar_year,
+                start_date,
+                end_date,
+                operation_status
+            ) {
+                this.operation_id = operation_id;
+                this.operation_name = operation_name;
+                this.operation_code = operation_code;
+                this.operation_type = operation_type;
+                this.operation_category = operation_category;
+                this.operation_unit_cost = operation_unit_cost;
+                this.calendar_year = calendar_year;
+                this.start_date = formatDate(start_date);
+                this.end_date = formatDate(end_date);
+                this.operation_status = operation_status;
+            }
+        }
+
+        // Utility function to fetch data
+        async function fetchOperationsLog(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        // Utility function to format waste details
+        function formatWasteDetails(wasteData) {
+            if (!Array.isArray(wasteData) || wasteData.length === 0) return "No waste generated";
+            return wasteData
+                .map(waste => `${waste.name || "Unknown"}: ${waste.quantity || 0}`)
+                .join(", ");
+        }
+
+        // Utility function to format dates in "03 April, 2025" format
+        function formatDate(dateString) {
+            if (!dateString) return "N/A";
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "long", year: "numeric" }).format(date);
+        }
+
+        // Event listener for accordion expansion
+        document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', async () => {
+            console.log('Fetching operations log...');
+            const company_id = {{ json_encode($company->company_id) }};
+            const url = `/admin/get-operations-log/${company_id}`;
+            const operationsLogSpinner = document.getElementById('loading-spinner');
+
+            showElement(operationsLogSpinner);
+
+            try {
+                const data = await fetchOperationsLog(url);
+                if (data.status === "success") {
+                    const dataArray = data.operations.map(log => 
+                        new OperationLog(
+                            log.company_operation_id,
+                            log.operation_name,
+                            log.operation_code,
+                            log.operation_type?.name ?? "N/A",
+                            log.operation_category?.name ?? "N/A",
+                            log.operation_unit_cost,
+                            log.calendar_year?.name ?? "N/A",
+                            log.start_date,
+                            log.end_date,
+                            log.operation_status
+                        )
+                    );
+
+                    // Clear and repopulate table rows
+                    operationsLogTable.clear();
+                    operationsLogTable.rows.add(dataArray);
+                    operationsLogTable.draw();
+                } else {
+                    displayMessage('warning', 'No operations found.');
+                }
+            } catch (error) {
+                console.error("Error fetching operations log:", error);
+                displayMessage('danger', 'An error occurred while fetching operations log.');
+            } finally {
+                hideElement(operationsLogSpinner);
+            }
+        });
+
+        // Edit operation log
+        function editOperationLog(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
+            const editOperationCard = document.getElementById('operation-log-card');
+            showElement(editOperationCard);
+            scrollToElement(editOperationCard);
+
+            const form = document.getElementById('operations-form-update');
+            form.querySelector('[name="operation_id"]').value = operation_id;
+            form.querySelector('[name="operation_name"]').value = operation_name;
+            form.querySelector('[name="operation_code"]').value = operation_code;
+            form.querySelector('[name="operation_type"]').value = operation_type;
+            form.querySelector('[name="operation_category"]').value = operation_category;
+            form.querySelector('[name="operation_unit"]').value = operation_unit;
+            form.querySelector('[name="operation_unit_price"]').value = expected_waste_per_operation;
+            form.querySelector('[name="operation_unit_cost"]').value = expected_water_usage_per_operation;
+            form.querySelector('[name="operation_unit_time"]').value = expected_unit_produced_for_goods;
+            form.querySelector('[name="calendar_year"]').value = calendar_year;
+            form.querySelector('[name="start_date"]').value = start_date;
+            form.querySelector('[name="end_date"]').value = end_date;
+            form.querySelector('[name="status"]').value = status;
+        }
+
+        // Confirm deletion
+        function confirmOperationLogDeletion(operation_id, operation_name) {
+            if (confirm(`Are you sure you want to delete "${operation_name}"?`)) {
+            console.log(`Deleted operation log ID: ${operation_id}`);
+            displayMessage('success', 'Operation log deleted successfully.');
+            // Add your delete logic here
+            }
+        }
+    </script>
+    <script>
+        function calculateOperationUnitCost() {
+            console.log("Calculating operation unit cost...");
+            
+            // Fetch cost fields
+            const labourCost = parseFloat(document.getElementById('labour_cost').value) || 0;
+            const overheadCost = parseFloat(document.getElementById('overhead_cost').value) || 0;
+            const maintenanceCost = parseFloat(document.getElementById('maintenance_cost').value) || 0;
+            const depreciationCost = parseFloat(document.getElementById('depreciation_cost').value) || 0;
+            const supervisionCost = parseFloat(document.getElementById('supervision_cost').value) || 0;
+            const variableCost = parseFloat(document.getElementById('variable_cost').value) || 0;
+            const fixedCost = parseFloat(document.getElementById('fixed_cost').value) || 0;
+
+            // Calculate material costs
+            let totalMaterialCost = 0;
+            document.querySelectorAll('.material-quantity-used-container-operation-log .row').forEach((row, i) => {
+                const quantity = parseFloat(row.querySelector(`[name="material_used[${i}][quantity]"]`).value) || 0;
+                const unitCost = parseFloat(row.querySelector(`[name="material_used[${i}][unit_cost]"]`).value) || 0;
+                totalMaterialCost += quantity * unitCost;
+            });
+
+
+            // Calculate chemical costs
+            let totalChemicalCost = 0;
+            document.querySelectorAll('.chemical-quantity-container-operation-log .row').forEach((row, i) => {
+                const quantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][quantity]"]`).value) || 0;
+                const unitCost = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_cost]"]`).value) || 0;
+                totalChemicalCost += quantity * unitCost;
+            });
+
+            // Calculate total cost
+            const totalCost = labourCost + overheadCost + maintenanceCost + depreciationCost +
+                            supervisionCost + variableCost + fixedCost +
+                            totalMaterialCost + totalChemicalCost;
+            // update the total cost
+            document.getElementById('total_operation_cost').value = totalCost.toFixed(2);
+            // Fetch product quantities
+            const productQuantities = document.querySelectorAll('[name="expected_quantity_produced_for_goods[]"]');
+            let totalOutputQuantity = 0;
+
+            productQuantities.forEach(input => {
+                totalOutputQuantity += parseFloat(input.value) || 0;
+            });
+
+            // Ensure output quantity is valid
+            if (totalOutputQuantity === 0) {
+                document.getElementById('operation_unit_cost').value = "N/A";
+                return;
+            }
+
+            // Calculate operation unit cost
+            const operationUnitCost = totalCost / totalOutputQuantity;
+
+            // Update the Operation Unit Cost field
+            document.getElementById('operation_unit_cost').value = operationUnitCost.toFixed(2);
+        }
+
+        // Attach listeners to all relevant input fields
+        function attachListeners() {
+            const fields = document.querySelectorAll('#labour_cost, #overhead_cost, #maintenance_cost, #depreciation_cost, #supervision_cost, #variable_cost, #fixed_cost, [name^="material_used"][name$="[quantity]"], [name^="material_used"][name$="[unit_cost]"], [name^="chemical_used"][name$="[quantity]"], [name^="chemical_used"][name$="[unit_cost]"], [name="expected_quantity_produced_for_goods[]"]');
+            console.log(fields);
+            
+            fields.forEach(field => {
+                field.addEventListener('input', calculateOperationUnitCost);
+            });
+        }
+
+        // Initialize listeners when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            attachListeners();
+            calculateOperationUnitCost(); // Run calculation on initial load in case of preset values
+        });
+
     </script>
     <script>
         async function ChangePolicy(ele, company, policy) {
@@ -5936,29 +7074,29 @@
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-            <td>${material.material}</td>
-            <td>${material.serial_number ?? ''}</td>
-            <td>${material.unit_of_measure ?? ''}</td>
-            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
-            </td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="${url}">Open Material</a>
-                        <a class="dropdown-item" href="#">Update Material</a>
-                        <a class="dropdown-item" href="#">Delete Material</a>
-                        <hr class="dropdown-divider">
-                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
-                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
-                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
-                    </div>
-                </div>
-            </td>
-        </tr>`
+                            <td>${material.material}</td>
+                            <td>${material.serial_number ?? ''}</td>
+                            <td>${material.unit_of_measure ?? ''}</td>
+                            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="${url}">Open Material</a>
+                                        <a class="dropdown-item" href="#">Update Material</a>
+                                        <a class="dropdown-item" href="#">Delete Material</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
+                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
+                                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`
                     });
                 }
             });
@@ -7362,39 +8500,39 @@
     });
    </script>
      <!-- start water disposal -->
-        <script>
-            // Store Waste Disposal
-            document.querySelector('#waste-disposal-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-                let formData = new FormData(this);
-                let url = "{{ route('admin.store-waste-disposal') }}";
+    <script>
+        // Store Waste Disposal
+        document.querySelector('#waste-disposal-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-waste-disposal') }}";
 
-                fetch_cycle('--Store Waste Disposal', url, 'POST', formData).then(result => {
-                    console.log(result);
-                    if (result.status === 'success') {
-                        // Update the waste disposal table or UI as needed
-                        let tableBody = document.querySelector('#tbl-waste-disposal tbody');
-                        tableBody.innerHTML = "";
-                        result.waste_disposals.forEach(disposal => {
-                            tableBody.innerHTML += `<tr>
-                                <td>${disposal.waste_type}</td>
-                                <td>${disposal.disposal_method}</td>
-                                <td>${disposal.quantity}</td>
-                                <td>${disposal.disposal_date}</td>
-                                <td>${disposal.operation?.operation_name || 'N/A'}</td>
-                                <td>${disposal.calendarYear?.name || 'N/A'}</td>
-                                <td class="text-end">
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                                </div>
-                                            </td>
-                            </tr>`;
-                        });
-                    }
-                });
+            fetch_cycle('--Store Waste Disposal', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the waste disposal table or UI as needed
+                    let tableBody = document.querySelector('#tbl-waste-disposal tbody');
+                    tableBody.innerHTML = "";
+                    result.waste_disposals.forEach(disposal => {
+                        tableBody.innerHTML += `<tr>
+                            <td>${disposal.waste_type}</td>
+                            <td>${disposal.disposal_method}</td>
+                            <td>${disposal.quantity}</td>
+                            <td>${disposal.disposal_date}</td>
+                            <td>${disposal.operation?.operation_name || 'N/A'}</td>
+                            <td>${disposal.calendarYear?.name || 'N/A'}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
             });
-        </script>
+        });
+    </script>
      <!-- end water disposal -->
     <!-- water usage logs -->
 
@@ -7480,28 +8618,28 @@
                         const url = baseUrl.replace('__PLACEHOLDER__', id);
 
                         tableBody.innerHTML += `<tr>
-            <td>${chemical.name}</td>
-            <td>${chemical.unit ?? ''}</td>
-            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
-            </td>
-            <td class="text-end">
-                <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="${url}">Open Chemical</a>
-                        <a class="dropdown-item" href="#">Update Chemical</a>
-                        <a class="dropdown-item" href="#">Delete Chemical</a>
-                        <hr class="dropdown-divider">
-                        <a class="dropdown-item" href="#">Setup Price</a>
-                        <a href="#" class="dropdown-item">Check In Item</a>
-                        <a href="#" class="dropdown-item">Check Out Item</a>
-                        <a href="#" class="dropdown-item">Adjustment</a>
-                    </div>
-                </div>
-            </td>
-        </tr>`
+                            <td>${chemical.name}</td>
+                            <td>${chemical.unit ?? ''}</td>
+                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown d-inline-block">
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                        <a class="dropdown-item" href="${url}">Open Chemical</a>
+                                        <a class="dropdown-item" href="#">Update Chemical</a>
+                                        <a class="dropdown-item" href="#">Delete Chemical</a>
+                                        <hr class="dropdown-divider">
+                                        <a class="dropdown-item" href="#">Setup Price</a>
+                                        <a href="#" class="dropdown-item">Check In Item</a>
+                                        <a href="#" class="dropdown-item">Check Out Item</a>
+                                        <a href="#" class="dropdown-item">Adjustment</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`
                     });
                 }
             });
@@ -7783,205 +8921,80 @@
             });
         });
 
-        function addMaterialField() {
-            const container = document.createElement('div');
-            let materials = @json($companyMaterials);
-            container.classList.add('row', 'g-2', 'mt-2', 'material-field-container');
-            container.innerHTML = `
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="material_name">Material Name</label>
-            <select class="form-control" name="material_name[]" required>
-                <option value="" disabled selected>Select Material</option>
-                ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
-            </select>
-            </div>
-            </div>
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="expected_quantity">Expected Quantity</label>
-            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-            </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-            <button type="button" class="btn btn-danger btn-sm remove-material-btn">Remove</button>
-            </div>
-            `;
-            document.querySelector('#annual-operations-form .row.g-2 .material-quantity-expected').appendChild(container);
 
-            // Add event listener to the remove button
-            container.querySelector('.remove-material-btn').addEventListener('click', function () {
-                container.remove();
-            });
-        }
 
-        function addMaterialUsedField() {
-            const container = document.createElement('div');
-            let materials = @json($companyMaterials);
-            container.classList.add('row', 'g-2', 'mt-2', 'material-used-field-container');
-            container.innerHTML = `
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="material_used_name">Material Name</label>
-                        <select class="form-control" name="material_used_name[]" required>
-                            <option value="" disabled selected>Select Material</option>
-                            ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="quantity_used">Quantity Used</label>
-                        <input type="number" class="form-control" name="quantity_used[]" placeholder="Enter quantity used" required>
-                    </div>
-                </div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-sm remove-material-used-btn">Remove</button>
-                </div>
-            `;
-            document.querySelector('#production-tracking-form .row.g-3 .material-quantity-used').appendChild(container);
+        // function addProductField() {
+        //     const container = document.createElement('div');
+        //     let products = @json($products);
+        //     container.classList.add('row', 'g-2', 'mt-2', 'product-field-container');
+        //     container.innerHTML = `
+        //     <div class="col-md-5">
+        //         <div class="form-group">
+        //             <label for="product_name">Product Name</label>
+        //             <select class="form-control" name="product_name[]" required>
+        //                 <option value="" disabled selected>Select Product</option>
+        //                 ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
+        //             </select>
+        //         </div>
+        //     </div>
+        //     <div class="col-md-5">
+        //         <div class="form-group">
+        //             <label for="expected_quantity">Expected Quantity</label>
+        //             <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
+        //         </div>
+        //     </div>
+        //     <div class="col-md-2 d-flex align-items-end">
+        //         <button type="button" class="btn btn-danger btn-sm remove-product-btn">Remove</button>
+        //     </div>
+        //     `;
+        //     document.querySelector('#annual-operations-form .row.g-2 .product-quantity-expected').appendChild(container);
 
-            // Add event listener to the remove button
-            container.querySelector('.remove-material-used-btn').addEventListener('click', function () {
-                container.remove();
-            });
-        }
-
-        function addWasteField() {
-            const container = document.createElement('div');
-            let wastes = @json($waste_items);
-            container.classList.add('row', 'g-2', 'mt-2', 'waste-field-container');
-            container.innerHTML = `
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="waste_name">Waste Name</label>
-            <select class="form-control" name="waste_name[]" required>
-            <option value="" disabled selected>Select Waste</option>
-            ${wastes.map(waste => `<option value="${waste.companyWasteId}">${waste.waste_name}</option>`).join('')}
-            </select>
-            </div>
-            </div>
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="expected_quantity">Expected Quantity</label>
-            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-            </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-            <button type="button" class="btn btn-danger btn-sm remove-waste-btn">Remove</button>
-            </div>
-            `;
-            document.querySelector('#annual-operations-form .row.g-2 .waste-quantity-expected').appendChild(container);
-
-            // Add event listener to the remove button
-            container.querySelector('.remove-waste-btn').addEventListener('click', function () {
-                container.remove();
-            });
-        }
-        function addChemicalField() {
-            const container = document.createElement('div');
-            let chemicals = @json($approved_company_chemicals);
-            container.classList.add('row', 'g-2', 'mt-2', 'chemical-field-container');
-            container.innerHTML = `
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="chemical_name">Chemical Name</label>
-            <select class="form-control" name="chemical_name[]" required>
-            <option value="" disabled selected>Select Chemical</option>
-            ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
-            </select>
-            </div>
-            </div>
-            <div class="col-md-5">
-            <div class="form-group">
-            <label for="expected_quantity">Expected Quantity</label>
-            <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-            </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-            <button type="button" class="btn btn-danger btn-sm remove-chemical-btn">Remove</button>
-            </div>
-            `;
-            document.querySelector('#annual-operations-form .row.g-2 .chemical-quantity-expected').appendChild(container);
-
-            // Add event listener to the remove button
-            container.querySelector('.remove-chemical-btn').addEventListener('click', function () {
-                container.remove();
-            });
-        }
-
-        function addProductField() {
-            const container = document.createElement('div');
-            let products = @json($products);
-            container.classList.add('row', 'g-2', 'mt-2', 'product-field-container');
-            container.innerHTML = `
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="product_name">Product Name</label>
-                    <select class="form-control" name="product_name[]" required>
-                        <option value="" disabled selected>Select Product</option>
-                        ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="expected_quantity">Expected Quantity</label>
-                    <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-                </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger btn-sm remove-product-btn">Remove</button>
-            </div>
-            `;
-            document.querySelector('#annual-operations-form .row.g-2 .product-quantity-expected').appendChild(container);
-
-            // Add event listener to the remove button
-            container.querySelector('.remove-product-btn').addEventListener('click', function () {
-                container.remove();
-            });
-        }
+        //     // Add event listener to the remove button
+        //     container.querySelector('.remove-product-btn').addEventListener('click', function () {
+        //         container.remove();
+        //     });
+        // }
 
 
         // Add event listener to the add more product button
-        document.addEventListener('DOMContentLoaded', function () {
-        const productContainer = document.querySelector('.product-quantity-container');
-        const addMoreButton = document.querySelector('.add-more-product-quantity-operation');
+    //     document.addEventListener('DOMContentLoaded', function () {
+    //     const productContainer = document.querySelector('.product-quantity-container');
+    //     const addMoreButton = document.querySelector('.add-more-product-quantity-operation');
 
-        addMoreButton.addEventListener('click', function () {
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="expected_product">Expected Product</label>
-                        <select class="form-select" name="expected_product[]" required>
-                            <option value="" selected disabled>Select Product</option>
-                            @foreach($active_products as $product)
-                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-                        <input type="number" class="form-control" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                </div>
-            `;
-            productContainer.appendChild(newRow);
-        });
+    //     addMoreButton.addEventListener('click', function () {
+    //         const newRow = document.createElement('div');
+    //         newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+    //         newRow.innerHTML = `
+    //             <div class="col-md-6">
+    //                 <div class="form-group">
+    //                     <label for="expected_product">Expected Product</label>
+    //                     <select class="form-select" name="expected_product[]" required>
+    //                         <option value="" selected disabled>Select Product</option>
+    //                         @foreach($active_products as $product)
+    //                             <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+    //                         @endforeach
+    //                     </select>
+    //                 </div>
+    //             </div>
+    //             <div class="col-md-4">
+    //                 <div class="form-group">
+    //                     <label for="expected_unit_produced_for_goods">Expected Quantity</label>
+    //                     <input type="number" class="form-control" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
+    //                 </div>
+    //             </div>
+    //             <div class="col-md-2">
+    //                 <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+    //             </div>
+    //         `;
+    //         productContainer.appendChild(newRow);
+    //     });
 
-        productContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-product-quantity')) {
-                e.target.closest('.row').remove();
-            }
-        });
-    });
+    //     productContainer.addEventListener('click', function (e) {
+    //         if (e.target.classList.contains('remove-product-quantity')) {
+    //             e.target.closest('.row').remove();
+    //         }
+    //     });
+    // });
     
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
@@ -8212,135 +9225,582 @@
 
     <!-- Production Log -->
      <script>
-        // Add event listener to the add more product button for production log
         document.addEventListener('DOMContentLoaded', function () {
-            const productContainer = document.querySelector('.product-quantity-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-product-production-log');
-            let products = @json($products);
-            let productIndex = 1; // Start from 1 since the first row is index 0
+            /**
+             * Initialize the "Add More Material" functionality for a section.
+                * @param {string} containerSelector - Selector for the parent container where rows will be added.
+                * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+                * @param {Array} materials - Array of materials to populate the dropdown.
+                */
+            function initializeMaterialSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let materialIndex = 1; // Start index
 
-            addMoreButton.addEventListener('click', function () {
-                const newRow = document.createElement('div');
-                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                newRow.innerHTML = `
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="produced_product">Produced Product</label>
-                            <select class="form-select" name="product_produced[${productIndex}][product_id]" required>
-                                <option value="" selected disabled>Select Product</option>
-                                ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
-                            </select>
+                // Function to create a new material row
+                function createMaterialRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="material-used-${index}">Material Needed</label>
+                                <select id="material-used-${index}" class="form-select material-select" name="material_used[${index}][material_id]" required>
+                                    <option value="" selected disabled>Select Material</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="produced_quantity">Quantity Produced</label>
-                            <input type="number" class="form-control" name="product_produced[${productIndex}][quantity]" placeholder="Produced Quantity" required>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="material-quantity-${index}">Quantity</label>
+                                <input 
+                                    id="material-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="material_used[${index}][quantity]" 
+                                    placeholder="Used Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
-                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-                    </div>
-                `;
-                productContainer.appendChild(newRow);
-                productIndex++;
-                // Populate the product select options
-            });
-
-            productContainer.addEventListener('click', function (e) {
-                if (e.target.classList.contains('remove-product-quantity')) {
-                    e.target.closest('.row').remove();
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
                 }
-            });
-        });
 
-        // Add event listener to the add more material button for production log
-        document.addEventListener('DOMContentLoaded', function () {
-            const materialContainer = document.querySelector('.material-quantity-used-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-material-used-production-log');
-            let materials = @json($companyMaterials);
-            let materialIndex = 1; // Start from 1 since the first row is index 0
+                // Add a new material row
+                addButton.addEventListener('click', function () {
+                    const newRow = createMaterialRow(materialIndex);
+                    container.appendChild(newRow);
+                    materialIndex++;
+                });
 
-            addMoreButton.addEventListener('click', function () {
-                const newRow = document.createElement('div');
-                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                newRow.innerHTML = `
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Used Material</label>
-                            <select class="form-select" name="material_used[${materialIndex}][material_id]" required>
-                                <option value="" selected disabled>Select Material</option>
-                                ${materials.map(material => `<option value="${material.companyMaterialId}">${material.material}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Used Quantity</label>
-                            <input type="number" class="form-control" name="material_used[${materialIndex}][quantity]" placeholder="Used Quantity" required>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
-                    </div>
-                `;
-                materialContainer.appendChild(newRow);
-                materialIndex++;
-            });
-
-            materialContainer.addEventListener('click', function (e) {
-                if (e.target.classList.contains('remove-material-quantity')) {
-                    e.target.closest('.row').remove();
-                    // Optional: reindex after removal if strict indexing is needed
-                }
-            });
-        });
-
-
-        // Add event listener to the add more chemical button for production log
-        document.addEventListener('DOMContentLoaded', function () {
-            const chemicalContainer = document.querySelector('.chemical-quantity-container-production-log');
-            const addMoreButton = document.querySelector('.add-more-chemical-used-production-log');
-            let chemicals = @json($approved_company_chemicals);
-            let chemicalIndex = 1; // Start from 1 since the first row is index 0
-
-            addMoreButton.addEventListener('click', function () {
-            const newRow = document.createElement('div');
-            newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-            newRow.innerHTML = `
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label for="used_chemical">Used Chemical</label>
-                    <select class="form-select" name="chemical_used[${chemicalIndex}][chemical_id]" required>
-                        <option value="" selected disabled>Select Chemical</option>
-                        ${chemicals.map(chemical => `<option value="${chemical.company_chemical_id}">${chemical.chemical.name}</option>`).join('')}
-                    </select>
-                </div>
-                </div>
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label for="used_quantity">Used Quantity</label>
-                    <input type="number" class="form-control" name="chemical_used[${chemicalIndex}][quantity]" placeholder="Used Quantity" required>
-                </div>
-                </div>
-                <div class="col-md-2">
-                <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">Remove</button>
-                </div>
-            `;
-            chemicalContainer.appendChild(newRow);
-            chemicalIndex++;
-            });
-
-            chemicalContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-chemical-quantity')) {
-                e.target.closest('.row').remove();
+                // Remove a material row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-material-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
             }
-            });
+
+            initializeMaterialSection(
+                '.material-quantity-used-container-production-log', 
+                '.add-more-material-used-production-log'
+            );
         });
+
+        // with unit quantity and cost price
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Material" functionality for a section.
+                * @param {string} containerSelector - Selector for the parent container where rows will be added.
+                * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+                * @param {Array} materials - Array of materials to populate the dropdown.
+                */
+            function initializeMaterialSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let materialIndex = 1; // Start index
+
+                // Function to create a new material row
+                function createMaterialRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="material-used-${index}">Material Needed</label>
+                                <select id="material-used-${index}" class="form-select material-select" name="material_used[${index}][material_id]" required>
+                                    <option value="" selected disabled>Select Material</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="material-quantity-${index}">Quantity</label>
+                                <input 
+                                    id="material-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="material_used[${index}][quantity]" 
+                                    placeholder="Used Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[${index}][unit_quantity]" placeholder="Enter Unit Quantity" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
+                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[${index}][unit_cost]" placeholder="Enter Unit Cost" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new material row
+                addButton.addEventListener('click', function () {
+                    const newRow = createMaterialRow(materialIndex);
+                    container.appendChild(newRow);
+                    materialIndex++;
+                });
+
+                // Remove a material row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-material-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            initializeMaterialSection(
+                '.material-quantity-used-container-production-log', 
+                '.add-more-material-used-production-log'
+            );
+
+            initializeMaterialSection(
+                '.material-quantity-used-container-operation-log',
+                '.add-more-material-quantity-operation'
+            );
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Chemical" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} chemicals - Array of chemicals to populate the dropdown.
+             */
+            function initializeChemicalSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let chemicalIndex = 1; // Start index
+
+                // Function to create a new chemical row
+                function createChemicalRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="chemical-used-${index}">Chemical Needed</label>
+                                <select id="chemical-used-${index}" class="form-select chemical-select" name="chemical_used[${index}][chemical_id]" required>
+                                    <option value="" selected disabled>Select Chemical</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="chemical-quantity-${index}">Quantity</label>
+                                <input 
+                                    id="chemical-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control"
+                                    name="chemical_used[${index}][quantity]" 
+                                    placeholder="Used Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new chemical row
+                addButton.addEventListener('click', function () {
+                    const newRow = createChemicalRow(chemicalIndex);
+                    container.appendChild(newRow);
+                    chemicalIndex++;
+                });
+
+                // Remove a chemical row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-chemical-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            initializeChemicalSection(
+                '.chemical-quantity-container-production-log', 
+                '.add-more-chemical-used-production-log'
+            );
+        });
+        
+        // with unit quantity and cost price
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Chemical" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} chemicals - Array of chemicals to populate the dropdown.
+             */
+            function initializeChemicalSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let chemicalIndex = 1; // Start index
+
+                // Function to create a new chemical row
+                function createChemicalRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="chemical-used-${index}">Chemical Needed</label>
+                                <select id="chemical-used-${index}" class="form-select chemical-select" name="chemical_used[${index}][chemical_id]" required>
+                                    <option value="" selected disabled>Select Chemical</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="chemical-quantity-${index}">Quantity</label>
+                                <input 
+                                    id="chemical-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control"
+                                    name="chemical_used[${index}][quantity]" 
+                                    placeholder="Used Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[${index}][unit_quantity]" placeholder="Enter Unit Quantity" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
+                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[${index}][unit_cost]" placeholder="Enter Unit Cost" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new chemical row
+                addButton.addEventListener('click', function () {
+                    const newRow = createChemicalRow(chemicalIndex);
+                    container.appendChild(newRow);
+                    chemicalIndex++;
+                });
+
+                // Remove a chemical row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-chemical-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            initializeChemicalSection(
+                '.chemical-quantity-container-production-log', 
+                '.add-more-chemical-used-production-log'
+            );
+
+            initializeChemicalSection(
+                '.chemical-quantity-container-operation-log', 
+                '.add-more-chemical-quantity-operation'
+            );
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Product" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} products - Array of products to populate the dropdown.
+             */
+            function initializeProductSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let productIndex = 1; // Start index
+
+                // Function to create a new product row
+                function createProductRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="produced-product-${index}">Produced Product</label>
+                                <select id="produced-product-${index}" class="form-select product-select" name="product_produced[${index}][product_id]" required>
+                                    <option value="" selected disabled>Select Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="produced-quantity-${index}">Quantity Produced</label>
+                                <input 
+                                    id="produced-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity]" 
+                                    placeholder="Produced Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="quantity-defected-${index}">Quantity Defected</label>
+                                <input 
+                                    id="quantity-defected-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity_defected]" 
+                                    placeholder="Quantity Defected" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new product row
+                addButton.addEventListener('click', function () {
+                    const newRow = createProductRow(productIndex);
+                    container.appendChild(newRow);
+                    productIndex++;
+                });
+
+                // Remove a product row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-product-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            initializeProductSection(
+                '.product-quantity-container-production-log', 
+                '.add-more-product-production-log'
+            );
+
+            initializeProductSection(
+                '.product-quantity-container', 
+                '.add-more-product-quantity-operation'
+            );
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Product" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             * @param {Array} products - Array of products to populate the dropdown.
+             */
+            function initializeProductSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let productIndex = 1; // Start index
+
+                // Function to create a new product row
+                function createProductRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="produced-product-${index}">Produced Product</label>
+                                <select id="produced-product-${index}" class="form-select product-select" name="product_produced[${index}][product_id]" required>
+                                    <option value="" selected disabled>Select Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="produced-quantity-${index}">Quantity Produced</label>
+                                <input 
+                                    id="produced-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="product_produced[${index}][quantity]" 
+                                    placeholder="Produced Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new product row
+                addButton.addEventListener('click', function () {
+                    const newRow = createProductRow(productIndex);
+                    container.appendChild(newRow);
+                    productIndex++;
+                });
+
+                // Remove a product row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-product-quantity')) {
+                        const row = e.target.closest('.row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            // Example usage: Initialize multiple sections
+
+            initializeProductSection(
+                '.operation-log-product-quantity-container', 
+                '.add-more-operation-log-product-quantity-operation'
+            );
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /**
+             * Initialize the "Add More Waste" functionality for a section.
+             * @param {string} containerSelector - Selector for the parent container where rows will be added.
+             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+             */
+            function initializeWasteSection(containerSelector, buttonSelector) {
+                const container = document.querySelector(containerSelector);
+                const addButton = document.querySelector(buttonSelector);
+                let wasteIndex = 1; // Start index
+
+                // Function to create a new waste row
+                function createWasteRow(index) {
+                    const newRow = document.createElement('div');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.innerHTML = `
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="waste-type-${index}">Waste</label>
+                                <select id="waste-type-${index}" 
+                                        class="form-select waste-select" 
+                                        name="waste_generated[${index}][waste_id]" 
+                                        aria-label="Select Waste Type" 
+                                        required>
+                                    <option value="" selected disabled>Select Waste</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="waste-quantity-${index}">Quantity Generated</label>
+                                <input id="waste-quantity-${index}" 
+                                    type="number" 
+                                    class="form-control" 
+                                    name="waste_generated[${index}][quantity]" 
+                                    placeholder="Generated Quantity" 
+                                    min="0" 
+                                    step="any" 
+                                    aria-label="Quantity Generated" 
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-waste-quantity" aria-label="Remove Waste Row">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    return newRow;
+                }
+
+                // Add a new waste row
+                addButton.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent default behavior
+                    const newRow = createWasteRow(wasteIndex);
+                    container.appendChild(newRow);
+                    wasteIndex++;
+                });
+
+                // Remove a waste row
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-waste-quantity')) {
+                        const row = e.target.closest('.operation-log-row');
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                });
+            }
+
+            // Initialize the waste section with appropriate selectors
+            initializeWasteSection(
+                '.operation-log-waste-quantity-container', 
+                '.add-more-operation-log-waste-quantity-operation'
+            );
+        });
+
+
+        
 
         // Store Production Log
         document.querySelector('#production-log-form').addEventListener('submit', function (e) {
@@ -8356,24 +9816,24 @@
                     tableBody.innerHTML = "";
                     result.production_logs.forEach(log => {
                         tableBody.innerHTML += `<tr>
-                         <td>${log.production_title}</td>
-    <td>${log.operation?.operation_name || 'N/A'}</td>
-    <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
-    <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
-    <td>${log.water_volume} Liters</td>
-    <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
-    <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-    <td>
-        <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
-            ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
-        </span>
-    </td>
-    <td class="text-end">
-        <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
-            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
-        </div>
-    </td>
+                            <td>${log.production_title}</td>
+                            <td>${log.operation?.operation_name || 'N/A'}</td>
+                            <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
+                            <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
+                            <td>${log.amount_of_water_used} Liters</td>
+                            <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
+                            <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                            <td>
+                                <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
+                                    ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
+                                </div>
+                            </td>
                         </tr>`;
                     });
                 }
@@ -8384,58 +9844,6 @@
 
     <!-- Calendar Year Management Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let calendarYearData = []; // To store fetched data
-            // Fetch data function
-            const fetchCalendarYears = (value) => {
-                return fetch(`/admin/get-calendar-years/${value}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        calendarYearData = data.calendar_years; // Store the fetched data
-                        let dropdown = document.querySelectorAll('.calendar-year');
-                        dropdown.forEach(drop => {
-                            drop.innerHTML = ""; // Clear existing options
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = "";
-                            defaultOption.textContent = "Select Calendar Year";
-                            drop.appendChild(defaultOption);
-                            data.forEach(calendar => {
-                                const option = document.createElement('option');
-                                option.value = calendar.calendar_year_id;
-                                option.textContent = calendar.name;
-                                drop.appendChild(option);
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching calendar years:', error);
-                        alert('Failed to fetch calendar years. Please try again later.');
-                    });
-            };
-        });
-
-        // Fetch calendar years on page load
-        document.querySelectorAll('.calendar-year').forEach(dropdown => {
-            dropdown.addEventListener('click', function () {
-                if (this.value) {
-                    this.classList.remove('is-invalid');
-                }
-                fetchCalendarYears(@json_encode($company->company_id)).then((result) => {
-                    console.log(result);
-                    
-                        // const option = document.createElement('option');
-                        // option.value = calendar.calendar_year_id;
-                        // option.textContent = calendar.name;
-                        // dropdown.appendChild(option);
-                });
-            });
-        });
-
         // Calendar Year Management Script
         document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -8514,19 +9922,13 @@
                     result.products.forEach(product => {
                         tableBody.innerHTML += `<tr>
                             <td>${product.name}</td>
-                            <td>${product.category}</td>
-                            <td>${product.price}</td>
-                            <td>${product.quantity}</td>
+                            <td>${product.product_category.name}</td>
+                            <td>${product.currency} ${product.price}</td>
+                            <td>${product.quantity_per_unit}</td>
+                            <td>${product.unit}</td>
                             <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
+                                <button class="btn btn-primary btn-sm">Edit</button>
+                                <button class="btn btn-danger btn-sm">Delete</button>
                             </td>
                         </tr>`;
                     });

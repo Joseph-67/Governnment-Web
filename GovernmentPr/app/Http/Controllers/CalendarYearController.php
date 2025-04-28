@@ -18,11 +18,11 @@ class CalendarYearController extends Controller
 
     public function get_years($value)
     {
-        $calendar_years = CalendarYear::where('is_delete', false)->where('company_id', $value)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
+        $calendar_years = CalendarYear::where('is_delete', false)->where('company_id', $value)->get(['calendar_year_id', 'name']);
         return response()->json([
-            'status' => 'success',
-            'calendar_years' => $calendar_years
-        ], 200);
+                    'status' => 'success',
+                    'calendar_years' => $calendar_years
+                ], 200);
     }
 
     public function index()

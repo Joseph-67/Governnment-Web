@@ -200,6 +200,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste/{id}', 'show')->name('admin.show-waste');
         Route::put('/waste/{id}', 'update')->name('admin.update-waste');
         Route::delete('/waste/{id}', 'destroy')->name('admin.delete-waste');
+        Route::get('/get-waste/{value}', 'getCompanyWastes');
     });
     
     // Equipment Log
@@ -239,10 +240,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(WasteDisposalController::class)->group(function() {
         Route::post('/store-waste-disposal', 'store')->name('admin.store-waste-disposal');
     });
-    // annual operations log
-    Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
-    });
+
     // Quality Control
     Route::controller(QualityControlController::class)->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
@@ -288,7 +286,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
-        
+        Route::get('/get-materials/{value}', 'getCompanyMaterials');
     });
 
     // Category
@@ -318,6 +316,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
         Route::post('/company/chemical-setup/price', 'store_price')->name('admin.save-company-chemical-price');
+        Route::get('/get-chemicals/{value}', 'getCompanyChemicals');
+        Route::post('/update-chemical-details', 'updateChemicalDetails')->name('admin.update-chemical-details');
+        Route::delete('/delete-chemical/{id}', 'deleteChemical')->name('admin.delete-chemical');
     });
 
     // Company
@@ -360,6 +361,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation/{id}', 'show')->name('admin.show-operation');
         Route::post('/operation', 'update')->name('admin.update-operation');
         Route::delete('/operation/{id}', 'destroy')->name('admin.delete-operation');
+        Route::get('/get-operations/{value}', 'get_operations');
+        Route::get('/get-operations-log/{value}', 'get_all_operations');
     });
 
     // Email Application
@@ -417,6 +420,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
         Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
         Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
+        Route::get('/get-operation-category/{value}', 'getOperationCategories');
     });
 
     // Operation Type
@@ -426,6 +430,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-type/{id}', 'show')->name('admin.show-operation-type');
         Route::put('/operation-type/{id}', 'update')->name('admin.update-operation-type');
         Route::delete('/operation-type/{id}', 'destroy')->name('admin.delete-operation-type');
+        Route::get('/get-operation-types/{value}', 'get_operation_types');
+    });
+
+    // annual operation log
+    Route::controller(AnnualOperationsLogController::class)->group(function() {
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
     });
 
     // Pages
@@ -451,6 +461,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/products', 'store')->name('admin.store-product');
         Route::put('/products/{id}', 'update')->name('admin.update-product');
         Route::delete('/products/{id}', 'destroy')->name('admin.delete-product');
+        Route::get('/get-product/{value}', 'getProduct');
     });
 
     // Product Category
