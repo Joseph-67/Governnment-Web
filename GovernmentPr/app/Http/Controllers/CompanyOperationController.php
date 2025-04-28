@@ -30,6 +30,29 @@ class CompanyOperationController extends Controller
         //
     }
 
+    /**
+     * Display all operations for a specific company.
+     *
+     * @param  int  $value
+     * @return \Illuminate\Http\Response
+     */
+    public function get_operations($value)
+    {
+        try {
+            $operations = CompanyOperation::where('is_deleted', false)
+                ->where('company_id', $value)
+                ->with(['operationCategory', 'operationType', 'company', 'calendarYear'])
+                ->select([
+                    'company_operation_id',
+                    'operation_name'
+                ])
+                ->get();
+            return response()->json(['status' => 'success', 'company_operations' => $operations], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
     public function get_all_operations($value)
     {
         try {
