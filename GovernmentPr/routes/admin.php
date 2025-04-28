@@ -428,7 +428,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-type', 'index')->name('admin.operation-type');
         Route::post('/operation-type/store', 'store')->name('admin.store-operation-type');
         Route::get('/operation-type/{id}', 'show')->name('admin.show-operation-type');
-        Route::put('/operation-type/{id}', 'update')->name('admin.update-operation-type');
+        Route::post('/operation-type', 'update')->name('admin.update-operation-type');
         Route::delete('/operation-type/{id}', 'destroy')->name('admin.delete-operation-type');
         Route::get('/get-operation-types/{value}', 'get_operation_types');
     });
