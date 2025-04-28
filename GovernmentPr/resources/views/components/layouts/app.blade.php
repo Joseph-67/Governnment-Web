@@ -94,7 +94,6 @@
                            <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
                            <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
                         </a>
-                        </a>
                      </div>
                      <div class="search__close">
                         <button type="button" class="search__close-btn search-close-btn">
