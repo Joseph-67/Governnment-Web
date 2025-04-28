@@ -78,6 +78,7 @@ class Company extends Model
         return $this->hasMany(CompanyWasteWaterOpportunity::class);
     }
 
+    
     public function companyAirPollutionOpportunities()
     {
         return $this->hasMany(CompanyAirPollutionOpportunity::class);

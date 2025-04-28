@@ -5,6 +5,7 @@ use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\AnnualOperationsLogController;
+use App\Http\Controllers\AssignUsersController;
 use App\Http\Controllers\CalendarYearController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChemicalStockMovementController;
@@ -49,6 +50,7 @@ use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
+
 
 
 
@@ -108,7 +110,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(PagesController::class)->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
     }); 
-
+     //assign users
+     Route::controller(AssignUsersController::class)->group(function(){
+        Route::post('/assign-users/store', 'store')->name('admin.store-assign-users');
+    });
       //Posts
       Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
