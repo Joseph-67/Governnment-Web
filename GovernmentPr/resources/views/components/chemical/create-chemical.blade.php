@@ -213,7 +213,7 @@
                                         @foreach($chemical as $chemical_detail)
                                             <tr>
                                                 <td>{{$chemical_detail->name}}({!! $chemical_detail->formula !!})</td>
-                                                <td>{{$chemical_detail->chemicalCategory->category_name}}</td>
+                                                <td>{{$chemical_detail->category_name}}</td>
                                                 <td>{{$chemical_detail->cas_number}}</td>
                                                 <td>{{$chemical_detail->ec_number}}</td>
                                                 <td>{{$chemical_detail->reach_registration_number}}</td>
