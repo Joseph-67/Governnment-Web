@@ -5528,7 +5528,7 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description??""}', '${row.sequenceOrder??"0"}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
@@ -5581,7 +5581,7 @@
             form.querySelector('[name="operation_type_id"]').value = operation_type_id;
             form.querySelector('[name="operation_type_name"]').value = name;
             form.querySelector('[name="operation_type_description"]').value = description;
-            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
+            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder??"0";
         }
         // Confirm deletion
         function confirmDeletion(operation_type_id, name){
@@ -8897,6 +8897,29 @@
                             </td>
                         </tr>`;
                     });
+                }
+            });
+        });
+
+        // Edit Operation Type
+        document.querySelector('#edit_operation_type_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.update-operation-type') }}";
+
+            fetch_cycle('--Update Operation Type', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation types table or UI as needed
+                    data_array = result.operation_types.map(
+                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        table.clear();
+                        table.rows.add(data_array);
+                        table.draw();
+                        hideElement(spinner)
                 }
             });
         });

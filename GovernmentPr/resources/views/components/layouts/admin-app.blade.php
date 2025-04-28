@@ -20,6 +20,7 @@
      @yield('styles')
      <style>
         .filepond--credits{display: none; }
+
      </style>
 </head>
 <body>
@@ -341,16 +342,12 @@
     <div class="startbar d-print-none">
         <!--start brand-->
         <div class="brand">
-            <a href="{{ url('/') }}" class="logo">
+            <a href="{{ url('/') }}" class="logo logo-container">
                 <span>
-                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
-                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
-                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-light">
-                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-light">
-                <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
-                <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
-                <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
-                <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo-small" class="logo-sm img-sm logo-dark">
+                    @foreach (['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
+                        <img src="{{ asset('MainAssets/img/logo/' . $logo) }}" alt="logo" class="logo-sm img-sm logo-light animated-logo">
+                        <img src="{{ asset('MainAssets/img/logo/' . $logo) }}" alt="logo" class="logo-sm img-sm logo-dark animated-logo">
+                    @endforeach
                 </span>
             </a>
         </div>
