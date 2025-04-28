@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('assign_users', function (Blueprint $table) {
-            $table->id('assign_user_id');
+        Schema::create('company_users', function (Blueprint $table) {
+            $table->id('company_user_id');
             $table->unsignedBigInteger('company_id');
-            $table->string('users');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

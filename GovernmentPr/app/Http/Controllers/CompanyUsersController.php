@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\assignUsers;
+use App\Models\CompanyUsers;
 
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class AssignUsersController extends Controller
+class CompanyUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,17 +39,38 @@ class AssignUsersController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->users);
+        $users = json_decode($request->users, true);
         $validator = Validator::make($request->all(), [
             'company_name' => 'required',
-            'users' => 'required',
+            'users' => 'required|json',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $assignUsers = new assignUsers();
-        $assignUsers->company_id = $request->company_name;
-        $assignUsers->users = $request->users;
-        $assignUsers->save();
+        foreach ($users as $user) {
+            // dd($user);
+            $userValidator = Validator::make($user, [
+                'value' => 'required|integer',
+                'name' => 'required|string|max:255',
+                'avatar' => 'nullable|url',
+                'email' => 'required|email|max:255',
+                'role' => 'required|in:user,admin', // Adjust roles as necessary
+            ]);
+    
+            if ($userValidator->fails()) {
+                return response()->json(['errors' => $userValidator->errors()], 422);
+            }
+        }
+
+        $assignUsers = new CompanyUsers();
+        foreach ($users as $user) {
+            // dd($user);
+            $assignUsers = new CompanyUsers();
+            $assignUsers->company_id = $request->company_id;
+            $assignUsers->user_id = $user['value'];
+            $assignUsers->save();
+        }
         return response()->json([
             'message' => 'Users assigned successfully',
             'data' => $assignUsers
