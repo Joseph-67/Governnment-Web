@@ -2764,14 +2764,15 @@
                                         <div class="col-md-12">
                                             <div class="row mb-3 align-items-center">
                                                 <div class="col">
-                                                    <h4 class="text-primary mb-0">Operations Log</h4>
+                                                    <h4 class="text-primary mb-0">Operations Log Overview</h4>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm" id="setup-operation-log">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="btn-setup-operation-log">
                                                         <i class="iconoir-plus"></i> Add Operation Log
                                                     </button>
                                                 </div>
                                             </div>
+                                            <div id="alert-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
                                             <div class="table-responsive mt-4">
                                                 <table class="table table-hover table-bordered w-100" id="tbl-operations-log">
                                                     <thead class="table-primary text-center">
@@ -2803,194 +2804,117 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#annualOperationsLogCollapse" aria-expanded="false"
                                     aria-controls="annualOperationsLogCollapse">
-                                    <i class="las la-calendar-alt me-2"></i> Annual Operations Log
+                                    <i class="las la-calendar-alt me-3" style="font-size: 1.5rem;"></i> Annual Operations Log Overview
                                 </button>
                             </h2>
                             <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
                                     <!-- Annual Operations Log Form -->
-                                    <form action="" method="post" id="annual-operations-form" class="p-4 border rounded shadow-sm bg-light" style="background-color: #f8f9fa;">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="operation_name">Operation Title</label>
-                                                    <input type="text" class="form-control" id="operation_title"
-                                                        name="operation_name" placeholder="Enter operation name"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="operation_status" class="">Operation</label>
-                                                    <select class="form-select" id="operation_status"
-                                                        name="operation" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="calendar_year">Calendar Year</label>
-                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="material_name">Material</label>
-                                                    <select class="form-select" id="material" name="material[]"
-                                                        required>
-                                                        <option value="" selected disabled>Select Material</option>
-                                                        @foreach($companyMaterials as $material)
-                                                        <option value="{{ $material->companyMaterialId }}">{{
-                                                            $material->material }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="expected_quantity">Expected Quantity to be Used for the
-                                                        Year.</label>
-                                                    <input type="number" class="form-control" id="expected_quantity"
-                                                        name="expected_quantity[]" placeholder="Enter expected quantity"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="material-quantity-expected col-md-12"></div>
-                                            <div class="col-md-12 mt-2">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_materials"
-                                                    onclick="addMaterialField()">Add More</button>
-                                            </div>
-
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="chemical_name">Chemical</label>
-                                                    <select class="form-select" id="chemical_name" name="chemical[]"
-                                                        required>
-                                                        <option value="" selected disabled>Select Chemical</option>
-                                                        @foreach($approved_company_chemicals as $chemical)
-                                                        <option value="{{ $chemical->company_chemical_id }}">{{
-                                                            $chemical->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="expected_quantity_chemical">Expected Quantity to be Used
-                                                        for the Year</label>
-                                                    <input type="number" class="form-control"
-                                                        id="expected_quantity_chemical"
-                                                        name="expected_quantity_chemical[]"
-                                                        placeholder="Enter expected quantity" required>
-                                                </div>
-                                            </div>
-                                            <div class="chemical-quantity-expected col-md-12"></div>
-                                            <div class="col-md-12 mt-2">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_chemicals"
-                                                    onclick="addChemicalField()">Add More</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="total_operations">Expected Number Of Operations Per
-                                                        Year</label>
-                                                    <input type="number" class="form-control" id="operations_per_year"
-                                                        name="operations_per_year"
-                                                        placeholder="Expected Number Of Operations Per Year" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="total_water_used">Expected Volume of Water to be Used
-                                                        for the Year</label>
-                                                    <input type="number" class="form-control" id="water_used_per_year"
-                                                        name="water_used_per_year"
-                                                        placeholder="Expected Number of Water to be Used Per Year"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="total_units_produced">Expected Units to be Produced per
-                                                        Year</label>
-                                                    <input type="number" class="form-control"
-                                                        id="units_produced_per_year" name="units_produced_per_year"
-                                                        placeholder="Expected Number of Units to be Produced per Year"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="expected_waste">Expected Waste to be Generated for the
-                                                        Year</label>
-                                                    <select class="form-select" id="expected_waste"
-                                                        name="expected_waste[]" required>
-                                                        <option value="" selected disabled>Select Waste Item</option>
-                                                        @foreach($waste_items as $item)
-                                                        <option value="{{ $item->waste_name }}">{{ $item->waste_name }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="quantity_of_waste">Quantity of Waste to be Generated for
-                                                        the Year</label>
-                                                    <input type="number" class="form-control" id="quantity_of_waste"
-                                                        name="quantity_of_waste[]" placeholder="Enter quantity of waste"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="waste-quantity-expected col-md-12"></div>
-                                            <div class="col-md-12 mt-2">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_waste_fields"
-                                                    onclick="addWasteField()">Add More</button>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="expected_product">Expected Product to be
-                                                        Manufactured</label>
-                                                    <select class="form-select" id="expected_product"
-                                                        name="expected_product[]" required>
-                                                        <option value="" selected disabled>Select Product</option>
-                                                        @foreach($active_products as $product)
-                                                        <option value="{{ $product->product_id }}">{{ $product->name }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="expected_quantity">Expected Quantity to be
-                                                        Manufactured</label>
-                                                    <input type="number" class="form-control" id="expected_quantity"
-                                                        name="expected_quantity[]" placeholder="Enter quantity"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="product-quantity-expected col-md-12"></div>
-                                            <div class="col-md-12 mt-2">
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm add_more_products"
-                                                    onclick="addProductField()">Add More</button>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Save Annual Log</button>
-                                            </div>
+                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card"> <!-- Light beige background for annual operations log -->
+                                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Annual Operations Log</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
-                                    </form>
+                                        <div class="card-body">
+                                            <form action="" method="post" id="annual-operations-log-form">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <!-- Operation Name -->
+                                                    <div class="col-md-6">
+                                                        <label for="operation_name" class="form-label">Operation Name</label>
+                                                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                                            <option value="" selected disabled>Choose...</option>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                    <!-- Calendar Year -->
+                                                    <div class="col-md-6">
+                                                        <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                        <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
+                                                            <option value="" selected disabled>Select Calendar Year</option>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                    <!-- Expected Operations Per Year -->
+                                                    <div class="col-md-4">
+                                                        <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
+                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
+                                                    </div>
+                                                    <!-- Materials and Chemicals Section -->
+                                                    <div class="col-12">
+                                                        <h5 class="border-bottom pb-2">Materials and Chemicals</h5>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="material-quantity-used-container-operation-log col-md-12">
+                                                            <div class="row g-2 align-items-end mb-3">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="expected_material" class="form-label fw-bold">Material Needed</label>
+                                                                        <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
+                                                                            <option value="" selected disabled>Select Material</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
+                                                                        <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 text-start">
+                                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="chemical-quantity-container-operation-log col-md-12">
+                                                            <div class="row g-2 align-items-end mb-3">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
+                                                                        <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                                                            <option value="" selected disabled>Select Chemical</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
+                                                                        <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 text-start">
+                                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Expected Waste Generated -->
+                                                    <div class="col-md-4">
+                                                        <label for="waste_generated" class="form-label">Expected Waste Generated</label>
+                                                        <input type="number" class="form-control" id="waste_generated" name="waste_generated" min="0" placeholder="Enter expected waste" required>
+                                                    </div>
+                                                    <!-- Expected Water Usage -->
+                                                    <div class="col-md-4">
+                                                        <label for="water_usage" class="form-label">Expected Water Usage (Liters)</label>
+                                                        <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
+                                                    </div>
+                                                    <!-- Expected Units Produced -->
+                                                    <div class="col-md-4">
+                                                        <label for="units_produced" class="form-label">Expected Units Produced</label>
+                                                        <input type="number" class="form-control" id="units_produced" name="units_produced" min="0" placeholder="Enter expected units" required>
+                                                    </div>
+                                                    <!-- Submit Button -->
+                                                    <div class="col-12 text-end mt-3">
+                                                        <button type="submit" class="btn btn-secondary">Save Annual Log</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                     <!-- Annual Operations Log Table -->
                                     <div class="table-responsive mt-4">
                                         <table class="table table-striped mb-0" id="tbl-annual-operations-log">
@@ -5077,9 +5001,9 @@
         document.querySelectorAll('.calendar-year').forEach(dropdown => {
             dropdown.addEventListener('click', async function (e) {
                 const clickedDropdown = e.target;
-                if (clickedDropdown.dataset.populated === "true") {
-                    return; // Avoid fetching data again if already populated
-                }
+                // if (clickedDropdown.dataset.populated === "true") {
+                //     return; // Avoid fetching data again if already populated
+                // }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5127,9 +5051,9 @@
         document.querySelectorAll('.operation-type').forEach(dropdown => {
             dropdown.addEventListener('click', async function (e) {
                 const clickedDropdown = e.target;
-                if (clickedDropdown.dataset.populated === "true") {
-                    return; // Avoid fetching data again if already populated
-                }
+                // if (clickedDropdown.dataset.populated === "true") {
+                //     return; // Avoid fetching data again if already populated
+                // }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5178,9 +5102,9 @@
         document.querySelectorAll('.operation-category').forEach(dropdown => {
             dropdown.addEventListener('click', async function (e) {
                 const clickedDropdown = e.target;
-                if (clickedDropdown.dataset.populated === "true") {
-                    return; // Avoid fetching data again if already populated
-                }
+                // if (clickedDropdown.dataset.populated === "true") {
+                //     return; // Avoid fetching data again if already populated
+                // }
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5305,9 +5229,9 @@
                 document.addEventListener("click", async (e) => {
                     const clickedDropdown = e.target;
                     if (e.target && e.target.classList.contains('chemical-select')) {
-                        if (clickedDropdown.dataset.populated === "true") {
-                            return; // Avoid fetching data again if already populated
-                        }
+                        // if (clickedDropdown.dataset.populated === "true") {
+                        //     return; // Avoid fetching data again if already populated
+                        // }
 
                         console.log("Chemical selection detected");
 
@@ -5363,9 +5287,9 @@
                 document.addEventListener('click', async function (e) {
                     if (e.target && e.target.classList.contains('product-select')) {
                         const clickedDropdown = e.target;
-                        if (clickedDropdown.dataset.populated === "true") {
-                            return; // Avoid fetching data again if already populated
-                        }
+                        // if (clickedDropdown.dataset.populated === "true") {
+                        //     return; // Avoid fetching data again if already populated
+                        // }
                         console.log('Product dropdown clicked:', e.target);
                         console.log('Selection detected');
                         // Retrieve the company_id dynamically
@@ -5392,9 +5316,9 @@
         });
         // end fetch product
 
-        async function populateWasteDropdown(dropdown, data) {
+        async function populateWasteDropdown(ele, data) {
             // Clear existing options
-            dropdown.innerHTML = "";
+            ele.innerHTML = "";
 
             // Add a default placeholder option
             const defaultOption = document.createElement("option");
@@ -5402,29 +5326,33 @@
             defaultOption.textContent = "Select waste";
             defaultOption.disabled = true;
             defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
+            ele.appendChild(defaultOption);
 
             // Add options from the data
             data.company_wastes.forEach(item => {
                 const option = document.createElement("option");
                 option.value = item.company_waste_id; // Use the value from the data
                 option.textContent = item.waste_name; // Use the label from the data
-                dropdown.appendChild(option);
+                ele.appendChild(option);
             });
 
+            return;
             console.log("Dropdown populated with options:", data);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.waste-select').forEach(dropdown => {
                 let isLoading = false; // Prevent multiple concurrent requests
-                document.addEventListener('click', async function (e) {
+                dropdown.addEventListener('click', async function (e) {
+                    console.log('Waste dropdown clicked:', dropdown);
+                    // Check if the clicked element is the dropdown
                     if (e.target && e.target.classList.contains('waste-select')) {
-                        const clickedDropdown = e.target;
-                        if (clickedDropdown.dataset.populated === "true") {
-                            return; // Avoid fetching data again if already populated
-                        }
-                        console.log('Waste dropdown clicked:', e.target);
+                        let clickedDropdown = this;
+                        clickedDropdown.innerHTML = ""; // Clear existing options
+                        // if (clickedDropdown.dataset.populated === "true") {
+                        //     return; // Avoid fetching data again if already populated
+                        // }
+                        console.log('Waste dropdown clicked:', clickedDropdown);
                         if (isLoading) return; // Debounce logic
 
                         console.log('Selection detected');
@@ -5437,9 +5365,11 @@
                         isLoading = true;
                         try {
                             const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
-                            console.log("Fetched Waste:", data);
+                            console.log("Fetched Waste:", data, clickedDropdown);
+
+                            // Add new options
                             populateWasteDropdown(clickedDropdown, data);
-                            clickedDropdown.dataset.populated = "true"; // Mark as populated
+                            // clickedDropdown.dataset.populated = "true"; // Mark as populated
                         } catch (error) {
                             console.error("Error fetching waste:", error);
                             alert("Failed to load waste data. Please try again.");
@@ -5451,6 +5381,63 @@
             });
         });
         // end fetch waste
+
+        async function populateOperationDropdown(dropdown, data) {
+            // Clear existing options
+            dropdown.innerHTML = "";
+            // Add a default placeholder option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select operation";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+            // Add options from the data
+            data.company_operations.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.operation_id; // Use the value from the data
+            option.textContent = item.operation_name; // Use the label from the data
+            dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated with options:", data);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.operation-select').forEach(dropdown => {
+            let isLoading = false; // Prevent multiple concurrent requests
+            document.addEventListener('click', async function (e) {
+                if (e.target && e.target.classList.contains('operation-select')) {
+                const clickedDropdown = e.target;
+                // if (clickedDropdown.dataset.populated === "true") {
+                //     return; // Avoid fetching data again if already populated
+                // }
+                console.log('Operation dropdown clicked:', e.target);
+                if (isLoading) return; // Debounce logic
+
+                console.log('Selection detected');
+                const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
+                console.log("Company ID:", company_id);
+
+                const url = `/admin/get-operations/${company_id}`;
+                console.log("Fetching data from URL:", url);
+
+                isLoading = true;
+                try {
+                    const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                    console.log("Fetched Operations:", data);
+                    populateOperationDropdown(clickedDropdown, data);
+                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                } catch (error) {
+                    console.error("Error fetching operations:", error);
+                    alert("Failed to load operation data. Please try again.");
+                } finally {
+                    isLoading = false;
+                }
+                }
+            });
+            });
+        });
+        // end fetch operations
 
         // triger product setup
         let new_product_setup_card = document.getElementById('new_product_setup_card');
@@ -5465,6 +5452,7 @@
             const priceInput = document.getElementById('product_price');
             priceInput.placeholder = `Enter product price in ${currency}`;
         });
+
         // Function to populate the table
         function populateProductTable() {
             const tbody = document.getElementById("tbl-products").querySelector("tbody");
@@ -5540,7 +5528,7 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description}', ${row.sequenceOrder})">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description??""}', '${row.sequenceOrder??"0"}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
@@ -5593,7 +5581,7 @@
             form.querySelector('[name="operation_type_id"]').value = operation_type_id;
             form.querySelector('[name="operation_type_name"]').value = name;
             form.querySelector('[name="operation_type_description"]').value = description;
-            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder;
+            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder??"0";
         }
         // Confirm deletion
         function confirmDeletion(operation_type_id, name){
@@ -5653,7 +5641,7 @@
             console.log('Fetching operation categories...');
             console.log('====================================');
             let company_id = {{ json_encode($company->company_id) }};
-            let url = `/admin/get-operation-categories/${company_id}`;
+            let url = `/admin/get-operation-category/${company_id}`;
             let categoriesSpinner = document.getElementById('loading-spinner');
             try {
                 showElement(categoriesSpinner);
@@ -5729,15 +5717,15 @@
                 render: function (data, type, row) {
                 return `
                     <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-outline-info btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
-                        <i class="las la-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline-primary btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
-                        <i class="las la-edit"></i> Edit
-                    </button>
-                    <button class="btn btn-outline-danger btn-sm" onclick="confirmOperationLogDeletion(${row.operation_id}, '${row.operation_name}')">
-                        <i class="las la-trash-alt"></i> Delete
-                    </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="viewOperationLog()">
+                            <i class="las la-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="editOperationLog(${row.operation_id}, '${row.operation_name}', '${row.operation_code}', '${row.operation_type}', '${row.operation_category}', '${row.operation_unit}', '${row.expected_waste_per_operation}', '${row.expected_water_usage_per_operation}', '${row.expected_unit_produced_for_goods}', '${row.calendar_year}', '${row.start_date}', '${row.end_date}', '${row.status}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="confirmOperationLogDeletion(${row.operation_id}, '${row.operation_name}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
                     </div>`;
                 }
             }
@@ -5770,6 +5758,46 @@
                 this.operation_status = operation_status;
             }
         }
+
+        // function showElement(element) {
+        //     if (element) element.classList.remove('d-none');
+        // }
+
+        // function hideElement(element) {
+        //     if (element) element.classList.add('d-none');
+        // }
+
+        function displayMessage(type, message, timeout = 5000) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertBox = document.createElement('div');
+
+            alertBox.className = `alert alert-${type} alert-dismissible fade show`;
+            alertBox.role = "alert";
+            alertBox.innerHTML = `
+                <strong>${type.charAt(0).toUpperCase() + type.slice(1)}:</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+
+            alertContainer.appendChild(alertBox);
+
+            if (timeout) {
+                setTimeout(() => {
+                    alertBox.classList.remove('show');
+                    alertBox.classList.add('d-none');
+                }, timeout);
+            }
+        }
+
+        function formatOperationStatus(status) {
+            const statusMap = {
+                active: '<span class="badge bg-success">Active</span>',
+                inactive: '<span class="badge bg-secondary">Inactive</span>',
+                pending: '<span class="badge bg-warning text-dark">Pending</span>',
+                cancelled: '<span class="badge bg-danger">Cancelled</span>',
+            };
+            return statusMap[status?.toLowerCase()] ?? '<span class="badge bg-dark">Unknown</span>';
+        }
+
 
         // Utility function to fetch data
         async function fetchOperationsLog(url) {
@@ -5809,16 +5837,16 @@
                 if (data.status === "success") {
                     const dataArray = data.operations.map(log => 
                         new OperationLog(
-                            log.company_operation_id,
-                            log.operation_name,
-                            log.operation_code,
-                            log.operation_type?.name ?? "N/A",
-                            log.operation_category?.name ?? "N/A",
-                            log.operation_unit_cost,
+                            log.company_operation_id ?? 0,
+                            log.operation_name ?? "N/A",
+                            log.operation_code ?? "N/A",
+                            log.operation_type?.name ?? "Unknown Type",
+                            log.operation_category?.name ?? "Unknown Category",
+                            log.operation_unit_cost ?? 0,
                             log.calendar_year?.name ?? "N/A",
-                            log.start_date,
-                            log.end_date,
-                            log.operation_status
+                            log.start_date ?? null,
+                            log.end_date ?? null,
+                            formatOperationStatus(log.operation_status)
                         )
                     );
 
@@ -5836,6 +5864,23 @@
                 hideElement(operationsLogSpinner);
             }
         });
+
+        // setup operation log
+        const setupOperationLogCard = document.getElementById('operation-log-card');
+        document.querySelector('#btn-setup-operation-log').addEventListener('click', () => {
+            showElement(setupOperationLogCard);
+            scrollToElement(setupOperationLogCard);
+        });
+        // Hide operation log card on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            hideElement(setupOperationLogCard);
+        });
+        // View operation log
+        function viewOperationLog() {
+            const viewOperationCard = document.getElementById('operation-log-card');
+            showElement(viewOperationCard);
+            scrollToElement(viewOperationCard);
+        }
 
         // Edit operation log
         function editOperationLog(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
@@ -8852,6 +8897,29 @@
                             </td>
                         </tr>`;
                     });
+                }
+            });
+        });
+
+        // Edit Operation Type
+        document.querySelector('#edit_operation_type_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.update-operation-type') }}";
+
+            fetch_cycle('--Update Operation Type', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation types table or UI as needed
+                    data_array = result.operation_types.map(
+                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        table.clear();
+                        table.rows.add(data_array);
+                        table.draw();
+                        hideElement(spinner)
                 }
             });
         });

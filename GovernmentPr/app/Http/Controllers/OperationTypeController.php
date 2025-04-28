@@ -106,9 +106,43 @@ class OperationTypeController extends Controller
      * @param  \App\Models\OperationType  $operationType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OperationType $operationType)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'operation_type_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('operation_types', 'name')
+                ->ignore($request->operation_type_id, 'operation_type_id') // Ignore current record
+                ->where(function ($query) use ($request) { // Pass $request using use()
+                    $query->where('company_id', $request->company_id); // Scope by company_id
+                }),
+            ],
+            'operation_type_sequence_order'    => ['required', 'numeric'],
+            'operation_type_description' => ['nullable', 'string'],
+            'company_id' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $operationType = OperationType::find($request->operation_type_id);
+            if (!$operationType) {
+                return response()->json(['status' => 'error', 'message' => 'Operation Type not found'], 404);
+            }
+            
+            $operationType->name = $request->operation_type_name;
+            $operationType->sequence_order = $request->operation_type_sequence_order;
+            $operationType->description = $request->operation_type_description;
+            $operationType->save();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update Operation Type', 'message' => $e->getMessage()], 500);
+        }
+        $operationType = OperationType::where('is_delete', false)->where('company_id', $request->company_id)->orderBy('sequence_order', 'ASC')->get();
+        return response()->json(['status' => 'success', 'message' => 'Operation Type updated successfully', 'operation_types' => $operationType], 200);
     }
 
     /**
