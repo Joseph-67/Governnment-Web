@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
+
     <style>
 
         .tagify {
@@ -77,6 +79,7 @@
             padding: .2em .3em;
             border-radius: 3px;
             user-select: none;
+users: selectedUsers,
         }
 
         .tagify__dropdown.users-list .remove-all-tags:hover {
@@ -142,6 +145,8 @@
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
+    <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
+
     <script>
         var inputElm = document.querySelector('input[name=users]');
 
@@ -241,57 +246,22 @@
 
 
     </script>
-    <!-- assign users -->
-        <script>
-            document.getElementById('assignUserForm').addEventListener('submit', function (e) {
-                e.preventDefault(); // Prevent the default form submission
+    <!-- store users -->
+    <script>
+        // Store Assigned Users
+        document.querySelector('#assignUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.store-assign-users') }}";
 
-                const formData = new FormData(this);
-
-                fetch(`{{ route('admin.store-assign-users') }}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show success toast message
-                        Toastify({
-                            text: "Users successfully assigned to the company.",
-                            duration: 3000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#28a745",
-                        }).showToast();
-                        location.reload(); // Reload the page to reflect changes
-                    } else {
-                        // Show error toast message
-                        Toastify({
-                            text: "Failed to assign users. Please try again.",
-                            duration: 3000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#dc3545",
-                        }).showToast();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Show error toast message
-                    Toastify({
-                        text: "An error occurred. Please try again later.",
-                        duration: 3000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#dc3545",
-                    }).showToast();
-                });
+            fetch_cycle('--Assign Users', url, 'POST', formData).then(result => {
+                console.log(result);
+                
             });
-        </script>
+        });
+
+        
+     </script>
     <!-- end assign users -->
     @endSection
     <div class="container-xxl">
@@ -378,37 +348,40 @@
         </div> <!-- end row -->
         <!-- modalmodal to assign users -->
         <!-- Modal -->
-        <div class="modal fade" id="assignUserModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Assign Users to <span id="modalCompanyName"></span></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="assignUserForm" method="POST" action="">
-                            <input type="hidden" class="form-control" name="company_id"
-                                value="{{ $company->company_id }}">
-                            <div class="mb-3">
-                                <label for="company_name" class="form-label">Company Name</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="user-selector" class="form-label">Users</label>
-                                <input name="users" type="text" class="form-control" id="user-selector">
-                            </div>
+       <!-- Modal -->
+<div class="modal fade" id="assignUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="assignUserForm" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Users to <span id="modalCompanyName"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-                        </form>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+
+                    <div class="mb-3">
+                        <label for="company_name" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" readonly>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" form="assignUserForm">Assign</button>
+
+                    <div class="mb-3">
+                        <label for="user-selector" class="form-label">Users</label>
+                        <input name="users" type="text" class="form-control" id="user-selector">
                     </div>
                 </div>
-                </form>
-            </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Assign</button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
+<!-- End Modal -->
+
     <!-- end modal -->
     </div><!-- container -->
 </x-layouts.admin-app>
