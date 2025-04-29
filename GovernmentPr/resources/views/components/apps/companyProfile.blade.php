@@ -5527,13 +5527,52 @@
             form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder??"0";
         }
         // Confirm deletion
-        function confirmDeletion(operation_type_id, name){
-            if (confirm(`Are you sure you want to delete "${name}"?`)) {
-                console.log(`Deleted operation type ID: ${operation_type_id}`);
-                displayMessage('success', 'Operation type deleted successfully.');
-                // Add your delete logic here
+        function confirmTypeDeletion(operation_type_id, name) {
+            Swal.fire({
+            title: `Are you sure you want to delete "${name}"?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                // Perform delete action here
+                
+                fetch(`/admin/delete-operation-type`, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Reload the page to reflect changes
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            'There was an issue deleting the operation type.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Error!',
+                        'An unexpected error occurred.',
+                        'error'
+                    );
+                });
+                console.log('Operation Type deleted');
+                Swal.fire(
+                    'Deleted!',
+                    'The operation type has been deleted.',
+                    'success'
+                );
             }
+            });
         }
+    
         // Trigger operation setup card
         const setupCard = document.getElementById('operation-type-card');
         document.querySelector('#setup-operation-type').addEventListener('click', () => {
@@ -5620,51 +5659,54 @@
         }
 
         // Confirm deletion
-        function confirmCategoryDeletion(operation_category_id) {
-            Swal.fire({
-                    title: `Are you sure you want to delete ${name}?`,
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Perform delete action here
-                        
-                        fetch(`/admin/delete-operation-category`, {
-                            method: 'DELETE',
-                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                location.reload(); // Reload the page to reflect changes
-                            } else {
-                                Swal.fire(
-                                    'Error!',
-                                    'There was an issue deleting the operation category.',
-                                    'error'
-                                );
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            Swal.fire(
-                                'Error!',
-                                'An unexpected error occurred.',
-                                'error'
-                            );
-                        });
-                        console.log('Operation Category deleted');
-                        Swal.fire(
-                            'Deleted!',
-                            'The operation category has been deleted.',
-                            'success'
-                        );
-                    }
-                });
+        function confirmCategoryDeletion(operation_category_id, name) {
+    Swal.fire({
+        title: `Are you sure you want to delete ${name}?`,
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/operation-category/${operation_category_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire(
+                        'Deleted!',
+                        'The operation category has been deleted.',
+                        'success'
+                    ).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'There was an issue deleting the operation category.',
+                        'error'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire(
+                    'Error!',
+                    'An unexpected error occurred.',
+                    'error'
+                );
+            });
         }
+    });
+}
+
 
         // Trigger operation category setup card
         let setupCategoryCard = document.getElementById('operation-category-card');
@@ -7810,6 +7852,8 @@
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         // -----Country Code Selection
         let tel_primary = document.querySelector('#mobile_code_primary')

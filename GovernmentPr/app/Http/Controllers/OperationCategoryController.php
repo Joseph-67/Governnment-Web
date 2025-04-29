@@ -152,21 +152,26 @@ class OperationCategoryController extends Controller
      * @param  \App\Models\OperationCategory  $operationCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OperationCategory $operationCategory)
+    public function destroy($id)
     {
-        //
-        // dd($operationCategory->operation_category_id);
-        $operationCategory = OperationCategory::find($operationCategory->operation_category_id);
+        $operationCategory = OperationCategory::find($id); // Use the $id directly
         if ($operationCategory) {
-            $operationCategory->forcedelete(); // Permanently delete the category
-
-            $operationCategory = OperationCategory::get();
+            $operationCategory->forceDelete(); // Permanently delete the category
+    
+            $operationCategories = OperationCategory::all(); // use plural for clarity
             return response()->json([
                 'status' => 'success',
-                'operation_categories' => $operationCategory,
-                'message' => 'Operation Category deleted successfully']);
+                'operation_categories' => $operationCategories,
+                'message' => 'Operation Category deleted successfully'
+            ]);
         } else {
-            return back()->with(['error' => 'Operation Category not found']);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Operation Category not found'
+            ], 404); // return proper JSON error
         }
     }
+       
+    
+    
 }
