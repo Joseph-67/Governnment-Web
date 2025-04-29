@@ -5006,11 +5006,7 @@
 
         // Fetch calendar years on page load
         document.querySelectorAll('.calendar-year').forEach(dropdown => {
-            dropdown.addEventListener('click', async function (e) {
-                const clickedDropdown = e.target;
-                // if (clickedDropdown.dataset.populated === "true") {
-                //     return; // Avoid fetching data again if already populated
-                // }
+            dropdown.addEventListener('focus', async function () {
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5024,8 +5020,7 @@
                     console.log("Fetched calendar years:", data);
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
-                    populateDropdown(clickedDropdown, data);
-                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                    populateDropdown(dropdown, data);
                 } catch (error) {
                     console.error("Error fetching calendar years:", error);
                 }
@@ -5056,11 +5051,7 @@
         // end populate dropdown
         // Fetch operation type on page load
         document.querySelectorAll('.operation-type').forEach(dropdown => {
-            dropdown.addEventListener('click', async function (e) {
-                const clickedDropdown = e.target;
-                // if (clickedDropdown.dataset.populated === "true") {
-                //     return; // Avoid fetching data again if already populated
-                // }
+            dropdown.addEventListener('focus', async function () {
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5075,7 +5066,6 @@
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
                     populateOperationTypeDropdown(dropdown, data);
-                    clickedDropdown.dataset.populated  = "true"; // Mark as populated
                 } catch (error) {
                     console.error("Error fetching operation types:", error);
                 }
@@ -5107,11 +5097,7 @@
         // end populate dropdown
         // Fetch operation category on page load
         document.querySelectorAll('.operation-category').forEach(dropdown => {
-            dropdown.addEventListener('click', async function (e) {
-                const clickedDropdown = e.target;
-                // if (clickedDropdown.dataset.populated === "true") {
-                //     return; // Avoid fetching data again if already populated
-                // }
+            dropdown.addEventListener('focus', async function () {
                 console.log('Selection detected');
                 // Retrieve the company_id dynamically
                 let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
@@ -5126,8 +5112,7 @@
                     console.log("Fetched Operation Types:", data);
                     // Handle the data (e.g., populate the dropdown, display a message, etc.)
                     // Example:
-                    populateOperationCategoryDropdown(clickedDropdown, data);
-                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                    populateOperationCategoryDropdown(dropdown, data);
                 } catch (error) {
                     console.error("Error fetching operation categories:", error);
                 }
@@ -5166,38 +5151,18 @@
         // Fetch material on page load
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll(".material-select").forEach(dropdown => {
-                document.addEventListener("click", async (e) => {
-                    if (e.target && e.target.classList.contains('material-select')) {
-                        const clickedDropdown = e.target;
+            dropdown.addEventListener("focus", async () => {
+                const companyID = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/get-materials/${companyID}`;
 
-                        if (clickedDropdown.dataset.populated === "true") {
-                            return; // Avoid fetching data again if already populated
-                        }
-
-                        console.log("Material selection detected");
-
-                        // Dynamically retrieve the company ID
-                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
-                        console.log("Company ID:", companyID);
-
-                        const url = `/admin/get-materials/${companyID}`;
-                        console.log("Fetching data from URL:", url);
-
-                        try {
-                            const data = await fetchFieldInput(url); // Await the data fetch
-                            console.log("Fetched Materials:", data);
-
-                            // Populate the dropdown with the fetched data
-                            populateMaterialDropdown(clickedDropdown, data);
-
-                            // Mark as populated
-                            clickedDropdown.dataset.populated = "true";
-                        } catch (error) {
-                            console.error("Error fetching materials:", error);
-                            alert("Failed to load materials. Please try again.");
-                        }
-                    }
-                });
+                try {
+                const data = await fetchFieldInput(url);
+                populateMaterialDropdown(dropdown, data);
+                } catch (error) {
+                console.error("Error fetching materials:", error);
+                alert("Failed to load materials. Please try again.");
+                }
+            });
             });
         });
 
@@ -5986,6 +5951,7 @@
             // Calculate material costs
             let totalMaterialCost = 0;
             document.querySelectorAll('.material-quantity-used-container-operation-log .row').forEach((row, i) => {
+                console.log(row);
                 const quantity = parseFloat(row.querySelector(`[name="material_used[${i}][quantity]"]`).value) || 0;
                 const unitCost = parseFloat(row.querySelector(`[name="material_used[${i}][unit_cost]"]`).value) || 0;
                 totalMaterialCost += quantity * unitCost;
@@ -9378,7 +9344,7 @@
                 let materialIndex = 1; // Start index
 
                 // Function to create a new material row
-                function createMaterialRow(index) {
+                async function createMaterialRow(index) {
                     const newRow = document.createElement('div');
                     newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                     newRow.innerHTML = `
@@ -9423,12 +9389,32 @@
                             </button>
                         </div>
                     `;
+                    const materialSelect = newRow.querySelector(`#material-used-${index}`);
+                    const companyID = "{{ json_encode($company->company_id) }}";
+                    const url = `/admin/get-materials/${companyID}`;
+                    try {
+                        const data = await fetchFieldInput(url);
+                        // Populate the dropdown with the fetched data
+                        if (materialSelect) {
+                            data.company_materials.forEach(material => {
+                                if (material.material != null) {
+                                    const option = document.createElement('option');
+                                    option.value = material.materialID;
+                                    option.textContent = material.material.material || "";
+                                    materialSelect.appendChild(option);
+                                }
+                            });
+                        }
+                    } catch (error) {
+                    console.error("Error fetching materials:", error);
+                    alert("Failed to load materials. Please try again.");
+                    }
                     return newRow;
                 }
 
                 // Add a new material row
-                addButton.addEventListener('click', function () {
-                    const newRow = createMaterialRow(materialIndex);
+                addButton.addEventListener('click', async function () {
+                    const newRow = await createMaterialRow(materialIndex);
                     container.appendChild(newRow);
                     materialIndex++;
                 });
@@ -9600,12 +9586,12 @@
                         // Populate the dropdown with the fetched data
                         if (chemicalSelect) {
                             data.company_chemicals.forEach(chemical => {
-                                const option = document.createElement('option');
                                 if (chemical.chemical) {
+                                    const option = document.createElement('option');
                                     option.value = chemical.chemicalID;
                                     option.textContent = chemical.chemical.name || "";
+                                    chemicalSelect.appendChild(option);
                                 }
-                                chemicalSelect.appendChild(option);
                             });
                         }
                         
