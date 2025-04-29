@@ -248,17 +248,45 @@ users: selectedUsers,
     </script>
     <!-- store users -->
     <script>
-        // Store Assigned Users
-        document.querySelector('#assignUserForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-assign-users') }}";
+    document.querySelector('#assignUserForm').addEventListener('submit', function (e) {
+         e.preventDefault(); // Prevent the default form submission
 
-            fetch_cycle('--Assign Users', url, 'POST', formData).then(result => {
-                console.log(result);
-                
-            });
-        });
+         const formData = new FormData(this); // Create a FormData object from the form
+
+         fetch("{{ route('admin.store-assign-users') }}", {
+          method: 'POST',
+          body: formData,
+          headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for security
+          }
+         })
+         .then(response => response.json())
+         .then(data => {
+          if (data.success) {
+              Toastify({
+               text: data.message,
+               duration: 3000,
+               close: true,
+               gravity: "top",
+               position: 'right',
+               backgroundColor: "rgb(239, 68, 68)",
+              }).showToast();
+              setTimeout(() => {
+               location.reload(); 
+              }, 2000);
+          } else {
+              Toastify({
+               text: data.message,
+               duration: 3000,
+               close: true,
+               gravity: "top",
+               position: 'right',
+               backgroundColor: "rgb(34, 197, 94)", 
+              }).showToast();
+          }
+         })
+         .catch(error => console.error('Error:', error));
+     });
 
         
      </script>
@@ -321,8 +349,8 @@ users: selectedUsers,
                                                         href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open
                                                         Company</a>
 
-                                                    <a class="dropdown-item" href="#"
-                                                        onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.getElementById('company_id').value = '{{ $company->company_id }}';"
+                                                    <a class="dropdown-item" href=""
+                                                        onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.querySelector('input[name=company_id]').value = '{{ $company->company_id }}';"
                                                         data-bs-toggle="modal" data-bs-target="#assignUserModal"
                                                         data-company-name="">Assign Users to Company</a>
                                                     <form
@@ -359,7 +387,7 @@ users: selectedUsers,
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
+                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
                     <div class="mb-3">
                         <label for="company_name" class="form-label">Company Name</label>
