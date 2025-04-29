@@ -398,11 +398,11 @@
                                 <ul class="nav flex-column">
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
+                                        <a class="nav-link" href="{{ route('admin.view-company') }}">View Managed Companies</a>
                                     </li><!--end nav-item-->
                                     @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('show-company', ['company'=>'1']) }}">Company</a>
+                                        <a class="nav-link" href="{{ route('company-users.index', ['user'=> encrypt(Auth::guard('web')->user()->id  )]) }}">View Managed Companies</a>
                                     </li><!--end nav-item-->
                                     @else
                                     <li class="nav-item">

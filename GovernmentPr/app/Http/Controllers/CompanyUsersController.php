@@ -14,9 +14,19 @@ class CompanyUsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user)
     {
-        //
+        $user = decrypt($user);
+        $data['company_user'] = CompanyUsers::where('user_id', $user)->with(['company', 'user'])->get(['*']);
+
+        if (!$data['company_user']) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Company not found.',
+            ], 404);
+        }
+
+        return view('components.apps.company.user-company', $data);
     }
 
     /**

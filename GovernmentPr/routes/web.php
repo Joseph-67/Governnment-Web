@@ -7,6 +7,7 @@ use App\Http\Controllers\mandateController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyUsersController;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\RealTimeUpdateController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EmailIntegration;
+
 
 
 
@@ -42,60 +44,51 @@ Route::middleware('guest:web')->group(function(){
 
 
 Route::middleware([
-    'auth:sanctum',
+    'auth:web',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    // dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
     
     // Company routes
     Route::controller(CompanyController::class)->group(function () {
-        Route::get('/show-company/{company}', 'show')->name('show-company');
+        Route::get('/show-company/{company}', 'show')->name('company.show-company');
         Route::get('/{id}/edit', 'edit')->name('company.edit');
         Route::put('/{id}', 'update')->name('company.update');
         Route::delete('/{id}', 'destroy')->name('company.destroy');
     });
 
-     // email application
-     Route::controller(EmailApp::class)->group(function() {
-        Route::get ('/email-app', 'index')->name('view-email-app');        
+    // Company Users routes
+    Route::controller(CompanyUsersController::class)->group(function () {
+        Route::get('/company-users/{user}', 'index')->name('company-users.index');
+        Route::get('/company-users/create', 'create')->name('company-users.create');
+        Route::post('/company-users', 'store')->name('company-users.store');
+        Route::get('/company-users/{id}/edit', 'edit')->name('company-users.edit');
+        Route::put('/company-users/{id}', 'update')->name('company-users.update');
+        Route::delete('/company-users/{id}', 'destroy')->name('company-users.destroy');
     });
-      // Stock Trading
-      Route::controller(StockTradingController::class)->group(function() {
-        Route::get('/stock-trading', 'index')->name('view-stock-trading');
-    });
-     // Real-Time Updates
-     Route::controller(RealTimeUpdateController::class)->group(function() {
-        Route::get('/real-time-updates', 'index')->name('view-real-time-updates');
-    });
-        //Pages
-        Route::controller(PagesController::class)->group(function() {
-            Route::get ('/CMS', 'index')->name('CMS.pages');
-        }); 
+
+    // Email application
+    Route::get('/email-app', [EmailApp::class, 'index'])->name('view-email-app');
     
-          //Posts
-          Route::controller(PostsController::class)->group(function() {
-            Route::get ('/cms-posts', 'index')->name('CMS.posts');
-          
-        }); 
-       
+    // Stock Trading
+    Route::get('/stock-trading', [StockTradingController::class, 'index'])->name('view-stock-trading');
     
-        //Events
-        Route::controller(EventController::class)->group(function() {
-            Route::get ('/cms-events', 'index')->name('CMS.events');
-        }); 
-        Route::controller(AddEventController::class)->group(function() {
-            Route::get ('/create-events', 'index')->name('CMS.add-event');
-        }); 
-        // Email integration
-        Route::controller(EmailIntegration::class)->group(function() {
-            Route::get ('/email', 'index')->name('email-integration');
-        });
+    // Real-Time Updates
+    Route::get('/real-time-updates', [RealTimeUpdateController::class, 'index'])->name('view-real-time-updates');
+    
+    // Pages
+    Route::get('/CMS', [PagesController::class, 'index'])->name('CMS.pages');
+    
+    // Posts
+    Route::get('/cms-posts', [PostsController::class, 'index'])->name('CMS.posts');
+    
+    // Events
+    Route::get('/cms-events', [EventController::class, 'index'])->name('CMS.events');
+    Route::get('/create-events', [AddEventController::class, 'index'])->name('CMS.add-event');
+    
+    // Email integration
+    Route::get('/email', [EmailIntegration::class, 'index'])->name('email-integration');
 });
-
-
-
 require 'admin.php';
