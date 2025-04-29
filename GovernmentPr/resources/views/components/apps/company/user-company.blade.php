@@ -71,20 +71,6 @@
                                                     <a class="dropdown-item"
                                                         href="{{ route('company.show-company', ['company'=> encrypt($company->company_id)]) }}">Open
                                                         Company</a>
-
-                                                    <a class="dropdown-item" href=""
-                                                        onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.querySelector('input[name=company_id]').value = '{{ $company->company_id }}';"
-                                                        data-bs-toggle="modal" data-bs-target="#assignUserModal"
-                                                        data-company-name="">Assign Users to Company</a>
-                                                    <form
-                                                        action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this company?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger">Delete
-                                                            Company</button>
-                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -97,42 +83,6 @@
                 </div>
             </div> <!-- end col -->
         </div> <!-- end row -->
-        <!-- modalmodal to assign users -->
-        <!-- Modal -->
-       <!-- Modal -->
-<div class="modal fade" id="assignUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="assignUserForm" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title">Assign Users to <span id="modalCompanyName"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                    <div class="mb-3">
-                        <label for="company_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" readonly>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="user-selector" class="form-label">Users</label>
-                        <input name="users" type="text" class="form-control" id="user-selector">
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Assign</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End Modal -->
-
-    <!-- end modal -->
+      
     </div><!-- container -->
 </x-layouts.admin-app>
