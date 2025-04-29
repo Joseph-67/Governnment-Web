@@ -4935,6 +4935,8 @@
     <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
     <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
     <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
     // Confirm deletion function
     function confirmDeletion(id) {
@@ -5683,12 +5685,50 @@
         }
 
         // Confirm deletion
-        function confirmCategoryDeletion(operation_category_id, name) {
-            if (confirm(`Are you sure you want to delete "${name}"?`)) {
-                console.log(`Deleted operation category ID: ${operation_category_id}`);
-                displayMessage('success', 'Operation category deleted successfully.');
-                // Add your delete logic here
-            }
+        function confirmCategoryDeletion(operation_category_id) {
+            Swal.fire({
+                    title: `Are you sure you want to delete ${name}?`,
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Perform delete action here
+                        
+                        fetch(`/admin/delete-operation-category`, {
+                            method: 'DELETE',
+                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                location.reload(); // Reload the page to reflect changes
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'There was an issue deleting the operation category.',
+                                    'error'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire(
+                                'Error!',
+                                'An unexpected error occurred.',
+                                'error'
+                            );
+                        });
+                        console.log('Operation Category deleted');
+                        Swal.fire(
+                            'Deleted!',
+                            'The operation category has been deleted.',
+                            'success'
+                        );
+                    }
+                });
         }
 
         // Trigger operation category setup card
@@ -9039,51 +9079,7 @@
                 }
             });
         });
-        // Delete Operation Category
-        function deleteOperationCategory(operation_category_id) {
-            Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                let url = "{{ route('admin.delete-operation-category') }}";
-                let formData = new FormData();
-                formData.append('operation_category_id', operation_category_id);
-
-                fetch_cycle('--Delete Operation Category', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation categories table or UI as needed
-                    data_array = result.operation_categories.map(
-                    category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
-                    );
-
-                    // Clear and add rows without destroying the table
-                    categoriesTable.clear();
-                    categoriesTable.rows.add(data_array);
-                    categoriesTable.draw();
-
-                    Swal.fire(
-                    'Deleted!',
-                    'Operation category has been deleted.',
-                    'success'
-                    );
-                } else {
-                    Swal.fire(
-                    'Error!',
-                    'Failed to delete operation category.',
-                    'error'
-                    );
-                }
-                });
-            }
-            });
-        }
+      
         // store annual operaions log
         // Store Annual Operations Log
         document.querySelector('#annual-operations-form').addEventListener('submit', function (e) {
