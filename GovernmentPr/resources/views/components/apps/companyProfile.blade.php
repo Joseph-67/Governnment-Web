@@ -2425,6 +2425,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-12">
                                         <div class="row mb-3 align-items-center">
                                             <div class="col">
@@ -9086,7 +9087,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
                                     <a class="dropdown-item" href="#">Update</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a class="dropdown-item" href="#" onclick="deleteOperationCategory(${category.operationcategoryid}, ${ category->operationcategory})">Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -9095,6 +9096,74 @@
                 }
             });
         });
+        // Edit Operation Category
+        document.querySelector('#edit_operation_category_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = "{{ route('admin.update-operation-category') }}";
+
+            fetch_cycle('--Update Operation Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation categories table or UI as needed
+                    data_array = result.operation_categories.map(
+                            category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                        );
+
+                        // Clear and add rows without destroying the table
+                        categoriesTable.clear();
+                        categoriesTable.rows.add(data_array);
+                        categoriesTable.draw();
+                        hideElement(spinner);
+                    }
+    
+            });
+        });
+        // Delete Operation Category
+        function deleteOperationCategory(operation_category_id) {
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                let url = "{{ route('admin.delete-operation-category') }}";
+                let formData = new FormData();
+                formData.append('operation_category_id', operation_category_id);
+
+                fetch_cycle('--Delete Operation Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the operation categories table or UI as needed
+                    data_array = result.operation_categories.map(
+                    category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                    );
+
+                    // Clear and add rows without destroying the table
+                    categoriesTable.clear();
+                    categoriesTable.rows.add(data_array);
+                    categoriesTable.draw();
+
+                    Swal.fire(
+                    'Deleted!',
+                    'Operation category has been deleted.',
+                    'success'
+                    );
+                } else {
+                    Swal.fire(
+                    'Error!',
+                    'Failed to delete operation category.',
+                    'error'
+                    );
+                }
+                });
+            }
+            });
+        }
         // store annual operaions log
         // Store Annual Operations Log
         document.querySelector('#annual-operations-form').addEventListener('submit', function (e) {
