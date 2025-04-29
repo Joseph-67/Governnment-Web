@@ -5,6 +5,7 @@ use App\Http\Controllers\AddEventController;
 use App\Http\Controllers\AddPostController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\AnnualOperationsLogController;
+use App\Http\Controllers\CompanyUsersController;
 use App\Http\Controllers\CalendarYearController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChemicalStockMovementController;
@@ -52,6 +53,7 @@ use App\Http\Controllers\ProductionReport;
 
 
 
+
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
@@ -72,6 +74,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/logout', 'destroy')->name('admin.logout');
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
     });
+
 
     // permissions
     Route::controller(PermissionsController::class)->group(function() {
@@ -192,6 +195,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
         // fetch admin details
+    });
+
+    // company users
+    Route::controller(CompanyUsersController::class)->group(function(){
+        Route::post('/assign-users/store', 'store')->name('admin.store-assign-users');
     });
 
     // Company Waste

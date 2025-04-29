@@ -1,5 +1,5 @@
 <x-layouts.admin-app>
-    @section('PageTitle', 'Register Company')
+    @section('PageTitle', 'Register Company Category')
 
     <div class="container-xxl">
         <x-validation-errors class="alert" alert />

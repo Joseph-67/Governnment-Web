@@ -2671,7 +2671,8 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Products and Wastes Section -->
-                                                            <div class="col-12">
+                                                             <div class="row flex-start">
+                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2 mt-4">Products and Wastes</h5>
                                                             </div>
                                                             <div class="col-md-6">
@@ -2720,6 +2721,7 @@
                                                                     <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-waste-quantity-operation">Add More</button>
                                                                 </div>
                                                             </div>
+                                                             </div>
                                                             <!-- Operation Metrics -->
                                                             <div class="col-12">
                                                                 <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
@@ -5284,38 +5286,37 @@
         // end populate dropdown
         // Fetch product on page load
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.product-select').forEach(dropdown => {
-                document.addEventListener('click', async function (e) {
-                    if (e.target && e.target.classList.contains('product-select')) {
-                        const clickedDropdown = e.target;
-                        // if (clickedDropdown.dataset.populated === "true") {
-                        //     return; // Avoid fetching data again if already populated
-                        // }
-                        console.log('Product dropdown clicked:', e.target);
-                        console.log('Selection detected');
-                        // Retrieve the company_id dynamically
-                        let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                        console.log("Company ID:", company_id);
-                        // Construct the API URL
-                        let url = `/admin/get-product/${company_id}`;
-                        console.log("Fetching data from URL:", url);
-
-                        // Fetch data using the fetchFieldInput function
-                        try {
-                            let data = await fetchFieldInput(url);
-                            console.log("Fetched Product:", data);
-                            // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                            // Example:
-                            populateProductDropdown(clickedDropdown, data);
-                            clickedDropdown.dataset.populated  = "true"; // Mark as populated
-                        } catch (error) {
-                            console.error("Error fetching product:", error);
+            document.querySelectorAll('.product-select').forEach(element => {
+                // console.log('Product dropdown clicked:', element);
+                element.addEventListener('focus', async () => {
+                    console.log('Product dropdown clicked:', element);
+                    // Retrieve the company_id dynamically
+                    let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
+                    console.log("Company ID:", company_id);
+                    // Construct the API URL
+                    let url = `/admin/get-product/${company_id}`;
+                    console.log("Fetching data from URL:", url);
+                    // Fetch data using the fetchFieldInput function
+                    try {
+                        let data = await fetchFieldInput(url);
+                        console.log("Fetched Product:", data);
+                        // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                        // Example:
+                        if (populateProductDropdown(element, data)) {
+                            console.log("Product dropdown populated successfully.");
+                            // element.dataset.populated = "true"; // Mark as populated
+                        } else {
+                            console.log("Failed to populate product dropdown.");
+                            
                         }
+                    } catch (error) {
+                        console.error("Error fetching product:", error);
                     }
-                });
+                })
             });
         });
-        // end fetch product
+
+       // end fetch product
 
         async function populateWasteDropdown(ele, data) {
             // Clear existing options
@@ -5337,7 +5338,7 @@
                 ele.appendChild(option);
             });
 
-            return;
+            return "true";
             console.log("Dropdown populated with options:", data);
         }
 
@@ -5349,10 +5350,10 @@
                     // Check if the clicked element is the dropdown
                     if (e.target && e.target.classList.contains('waste-select')) {
                         let clickedDropdown = this;
-                        clickedDropdown.innerHTML = ""; // Clear existing options
-                        // if (clickedDropdown.dataset.populated === "true") {
-                        //     return; // Avoid fetching data again if already populated
-                        // }
+                        // clickedDropdown.innerHTML = ""; // Clear existing options
+                        if (clickedDropdown.dataset.populated === "true") {
+                            return; // Avoid fetching data again if already populated
+                        }
                         console.log('Waste dropdown clicked:', clickedDropdown);
                         if (isLoading) return; // Debounce logic
 
@@ -5367,10 +5368,14 @@
                         try {
                             const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
                             console.log("Fetched Waste:", data, clickedDropdown);
-
                             // Add new options
-                            populateWasteDropdown(clickedDropdown, data);
-                            // clickedDropdown.dataset.populated = "true"; // Mark as populated
+                            if (populateWasteDropdown(clickedDropdown, data)) {
+                                console.log("Waste dropdown populated successfully.");
+                                clickedDropdown.dataset.populated = "true"; // Mark as populated
+                            } else {
+                                console.error("Failed to populate waste dropdown.");
+                            }
+                            
                         } catch (error) {
                             console.error("Error fetching waste:", error);
                             alert("Failed to load waste data. Please try again.");
@@ -9796,7 +9801,7 @@
                 let productIndex = 1; // Start index
 
                 // Function to create a new product row
-                function createProductRow(index) {
+                async function createProductRow(index) {
                     const newRow = document.createElement('div');
                     newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                     newRow.innerHTML = `
@@ -9805,6 +9810,7 @@
                                 <label for="produced-product-${index}">Produced Product</label>
                                 <select id="produced-product-${index}" class="form-select product-select" name="product_produced[${index}][product_id]" required>
                                     <option value="" selected disabled>Select Product</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -9829,12 +9835,39 @@
                             </button>
                         </div>
                     `;
+                    // Fetch products from the server and populate the dropdown
+                    // Retrieve the company_id dynamically
+                    let company_id = `{{ json_encode($company->company_id) }}`; // Ensure valid JSON encoding on the server
+                    console.log("Company ID:", company_id);
+                    // Construct the API URL
+                    let url = `/admin/get-product/${company_id}`;
+                    console.log("Fetching data from URL:", url);
+                    // Fetch data using the fetchFieldInput function
+                    try {
+                        const productSelect = newRow.querySelector(`#produced-product-${index}`);
+                        let data = await fetchFieldInput(url);
+                        console.log("Fetched Product:", data);
+                        // Handle the data (e.g., populate the dropdown, display a message, etc.)
+                        
+                        if (productSelect) {
+                            data.products.forEach(product => {
+                                const option = document.createElement('option');
+                                option.value = product.product_id;
+                                option.textContent = product.name;
+                                productSelect.appendChild(option);
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error fetching product:", error);
+                    }
                     return newRow;
                 }
 
+                
+
                 // Add a new product row
-                addButton.addEventListener('click', function () {
-                    const newRow = createProductRow(productIndex);
+                addButton.addEventListener('click', async function () {
+                    const newRow = await createProductRow(productIndex);
                     container.appendChild(newRow);
                     productIndex++;
                 });
