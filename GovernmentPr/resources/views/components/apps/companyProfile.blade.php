@@ -7834,6 +7834,8 @@
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         // -----Country Code Selection
         let tel_primary = document.querySelector('#mobile_code_primary')
