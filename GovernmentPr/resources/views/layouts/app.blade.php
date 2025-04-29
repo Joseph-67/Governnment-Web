@@ -151,7 +151,7 @@
                         <div class="collapse" id="sidebarApplications">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.view-company') }}">Company</a>
+                                    <a class="nav-link" href="{{ route('show-company') }}">Company</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.real-time-updates') }}">Real-Time Update</a>

@@ -30,7 +30,6 @@ class OperationCategory extends Model
     {
         return $this->hasMany(CompanyOperation::class, 'operation_category_id', 'operation_category_id');
     }
-
     public function scopeActive($query)
     {
         return $query->where('is_delete', false);

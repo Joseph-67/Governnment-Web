@@ -163,6 +163,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(ChemicalUsageController::class)->group(function() {
         Route::get ('/chemicals', 'index')->name('chemicals.chemicalUsage');
         Route::post ('/save-chemicals', 'store')->name('admin.store-chemical');
+        Route::delete('/delete-chemical/{id}', 'destroy');
     }); 
 
     Route::controller(CompanyChemicalController::class)->group(function() {
@@ -426,8 +427,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/operation-category', 'index')->name('admin.operation-category');
         Route::post('/operation-category/store', 'store')->name('admin.store-operation-category');
         Route::get('/operation-category/{id}', 'show')->name('admin.show-operation-category');
-        Route::put('/operation-category/{id}', 'update')->name('admin.update-operation-category');
-        Route::delete('/operation-category/{id}', 'destroy')->name('admin.delete-operation-category');
+        Route::post('/operation-category', 'update')->name('admin.update-operation-category');
+        Route::delete('/operation-category', 'destroy')->name('admin.delete-operation-category');
         Route::get('/get-operation-category/{value}', 'getOperationCategories');
     });
 

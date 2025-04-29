@@ -53,9 +53,14 @@ class OperationCategoryController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', Rule::unique('operation_categories')->where(function ($query) use ($request) {
-                return $query->where('company_id', $request->company_id);
-            })],
+            'name' => [
+                'required', 
+                'string', 
+                'max:255', 
+                Rule::unique('operation_categories')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
+                })
+            ],
             'description' => ['nullable', 'string'],
             'company_id' => ['required', 'numeric'],
         ]);
@@ -102,9 +107,43 @@ class OperationCategoryController extends Controller
      * @param  \App\Models\OperationCategory  $operationCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OperationCategory $operationCategory)
+    public function update(Request $request)
     {
         //
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'operation_category_name' => [
+                'required', 
+                'string', 
+                'max:255', 
+                Rule::unique('operation_categories', 'name')
+                ->ignore($request->operation_category_id, 'operation_category_id')
+                ->where(function ($query) use ($request) {
+                    $query->where('company_id', $request->company_id);
+                }),
+            ],
+            'operation_category_description' => ['nullable', 'string'],
+            'company_id' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+        try {
+            $operationCategory = OperationCategory::find($request->operation_category_id);
+            if (!$operationCategory) {
+                return response()->json(['status' => 'error', 'message' => 'Operation Category not found'], 404);
+            }
+
+            $operationCategory->name = $request->operation_category_name;
+            $operationCategory->description = $request->operation_category_description;
+            $operationCategory->save();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update Operation Category', 'message' => $e->getMessage()], 500);
+        }
+        $operationCategories = OperationCategory::where('is_delete', false)->where('company_id', $request->company_id)->get();
+        return response()->json(['status' => 'success', 'message' => 'Operation Category updated successfully', 'operation_categories' => $operationCategories], 200);
+
     }
 
     /**
@@ -116,5 +155,18 @@ class OperationCategoryController extends Controller
     public function destroy(OperationCategory $operationCategory)
     {
         //
+        // dd($operationCategory->operation_category_id);
+        $operationCategory = OperationCategory::find($operationCategory->operation_category_id);
+        if ($operationCategory) {
+            $operationCategory->forcedelete(); // Permanently delete the category
+
+            $operationCategory = OperationCategory::get();
+            return response()->json([
+                'status' => 'success',
+                'operation_categories' => $operationCategory,
+                'message' => 'Operation Category deleted successfully']);
+        } else {
+            return back()->with(['error' => 'Operation Category not found']);
+        }
     }
 }
