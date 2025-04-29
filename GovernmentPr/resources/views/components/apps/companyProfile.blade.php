@@ -2597,79 +2597,81 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Materials and Chemicals Section -->
-                                                            <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="material-quantity-used-container-operation-log col-md-12">
-                                                                    <div class="row g-2 align-items-end mb-3">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
-                                                                                <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]">
-                                                                                    <option value="" selected disabled>Select Material</option>
-                                                                                </select>
+                                                             <div class="row flex-start">
+                                                                <div class="col-12">
+                                                                    <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="material-quantity-used-container-operation-log col-md-12">
+                                                                        <div class="row g-2 align-items-end mb-3">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
+                                                                                    <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]">
+                                                                                        <option value="" selected disabled>Select Material</option>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
+                                                                                    <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                                                                    <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
-                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                    <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-12 text-start">
+                                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-12 text-start">
-                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="chemical-quantity-container-operation-log col-md-12">
-                                                                    <div class="row g-2 align-items-end mb-3">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
-                                                                                <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                                                    <option value="" selected disabled>Select Chemical</option>
-                                                                                </select>
+                                                                <div class="col-md-6">
+                                                                    <div class="chemical-quantity-container-operation-log col-md-12">
+                                                                        <div class="row g-2 align-items-end mb-3">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
+                                                                                    <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                                                                        <option value="" selected disabled>Select Chemical</option>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
+                                                                                    <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
+                                                                                    <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
-                                                                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
+                                                                                    <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-12 text-start">
+                                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-12 text-start">
-                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                                                                </div>
-                                                            </div>
+                                                             </div>
                                                             <!-- Products and Wastes Section -->
                                                              <div class="row flex-start">
                                                              <div class="col-12">
@@ -5230,36 +5232,21 @@
 
         // Fetch chemicals on page load
         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".chemical-select").forEach(dropdown => {
-                document.addEventListener("click", async (e) => {
-                    const clickedDropdown = e.target;
-                    if (e.target && e.target.classList.contains('chemical-select')) {
-                        // if (clickedDropdown.dataset.populated === "true") {
-                        //     return; // Avoid fetching data again if already populated
-                        // }
-
-                        console.log("Chemical selection detected");
-
-                        // Dynamically retrieve the company ID
-                        const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
-                        console.log("Company ID:", companyID);
-
-                        const url = `/admin/get-chemicals/${companyID}`;
-                        console.log("Fetching data from URL:", url);
-
-                        try {
-                            const data = await fetchFieldInput(url); // Await the data fetch
-                            console.log("Fetched Chemicals:", data);
-
-                            // Populate the dropdown with the fetched data
-                            populateChemicalDropdown(clickedDropdown, data);
-
-                            // Mark as populated
-                            clickedDropdown.dataset.populated = "true";
-                        } catch (error) {
-                            console.error("Error fetching chemicals:", error);
-                            alert("Failed to load chemicals. Please try again.");
-                        }
+            document.querySelectorAll(".chemical-select").forEach(element => {
+                element.addEventListener("focus", async () => {
+                    // Dynamically retrieve the company ID
+                    const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                    console.log("Company ID:", companyID);
+                    const url = `/admin/get-chemicals/${companyID}`;
+                    console.log("Fetching data from URL:", url);
+                    try {
+                        const data = await fetchFieldInput(url); // Await the data fetch
+                        console.log("Fetched Chemicals:", data);
+                        // Populate the dropdown with the fetched data
+                        populateChemicalDropdown(element, data);
+                    } catch (error) {
+                        console.error("Error fetching chemicals:", error);
+                        alert("Failed to load chemicals. Please try again.");
                     }
                 });
             });
@@ -5345,45 +5332,28 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.waste-select').forEach(dropdown => {
-                let isLoading = false; // Prevent multiple concurrent requests
-                dropdown.addEventListener('click', async function (e) {
-                    console.log('Waste dropdown clicked:', dropdown);
-                    // Check if the clicked element is the dropdown
-                    if (e.target && e.target.classList.contains('waste-select')) {
-                        let clickedDropdown = this;
-                        // clickedDropdown.innerHTML = ""; // Clear existing options
-                        if (clickedDropdown.dataset.populated === "true") {
-                            return; // Avoid fetching data again if already populated
+            document.querySelectorAll('.waste-select').forEach(element => {
+                element.addEventListener('focus', async function (e) {
+                    console.log('Waste dropdown clicked:', element);
+                    console.log('Selection detected');
+                    const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
+                    console.log("Company ID:", company_id);
+                    const url = `/admin/get-waste/${company_id}`;
+                    console.log("Fetching data from URL:", url);
+                    try {
+                        const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                        console.log("Fetched Waste:", data, element);
+                        // Add new options
+                        if (populateWasteDropdown(element, data)) {
+                            console.log("Waste dropdown populated successfully.");
+                            element.dataset.populated = "true"; // Mark as populated
+                        } else {
+                            console.error("Failed to populate waste dropdown.");
                         }
-                        console.log('Waste dropdown clicked:', clickedDropdown);
-                        if (isLoading) return; // Debounce logic
-
-                        console.log('Selection detected');
-                        const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
-                        console.log("Company ID:", company_id);
-
-                        const url = `/admin/get-waste/${company_id}`;
-                        console.log("Fetching data from URL:", url);
-
-                        isLoading = true;
-                        try {
-                            const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
-                            console.log("Fetched Waste:", data, clickedDropdown);
-                            // Add new options
-                            if (populateWasteDropdown(clickedDropdown, data)) {
-                                console.log("Waste dropdown populated successfully.");
-                                clickedDropdown.dataset.populated = "true"; // Mark as populated
-                            } else {
-                                console.error("Failed to populate waste dropdown.");
-                            }
-                            
-                        } catch (error) {
-                            console.error("Error fetching waste:", error);
-                            alert("Failed to load waste data. Please try again.");
-                        } finally {
-                            isLoading = false;
-                        }
+                        
+                    } catch (error) {
+                        console.error("Error fetching waste:", error);
+                        alert("Failed to load waste data. Please try again.");
                     }
                 });
             });
@@ -5724,51 +5694,54 @@
         }
 
         // Confirm deletion
-        function confirmCategoryDeletion(operation_category_id) {
-            Swal.fire({
-                    title: `Are you sure you want to delete ${name}?`,
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Perform delete action here
-                        
-                        fetch(`/admin/delete-operation-category`, {
-                            method: 'DELETE',
-                            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                location.reload(); // Reload the page to reflect changes
-                            } else {
-                                Swal.fire(
-                                    'Error!',
-                                    'There was an issue deleting the operation category.',
-                                    'error'
-                                );
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            Swal.fire(
-                                'Error!',
-                                'An unexpected error occurred.',
-                                'error'
-                            );
-                        });
-                        console.log('Operation Category deleted');
-                        Swal.fire(
-                            'Deleted!',
-                            'The operation category has been deleted.',
-                            'success'
-                        );
-                    }
-                });
+        function confirmCategoryDeletion(operation_category_id, name) {
+    Swal.fire({
+        title: `Are you sure you want to delete ${name}?`,
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/operation-category/${operation_category_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire(
+                        'Deleted!',
+                        'The operation category has been deleted.',
+                        'success'
+                    ).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'There was an issue deleting the operation category.',
+                        'error'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire(
+                    'Error!',
+                    'An unexpected error occurred.',
+                    'error'
+                );
+            });
         }
+    });
+}
+
 
         // Trigger operation category setup card
         let setupCategoryCard = document.getElementById('operation-category-card');
@@ -9570,7 +9543,7 @@
                 let chemicalIndex = 1; // Start index
 
                 // Function to create a new chemical row
-                function createChemicalRow(index) {
+                async function createChemicalRow(index) {
                     const newRow = document.createElement('div');
                     newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
                     newRow.innerHTML = `
@@ -9615,12 +9588,38 @@
                             </button>
                         </div>
                     `;
+
+                    // Dynamically retrieve the company ID
+                    const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                    console.log("Company ID:", companyID);
+                    const url = `/admin/get-chemicals/${companyID}`;
+                    console.log("Fetching data from URL:", url);
+                    try {
+                        const chemicalSelect = newRow.querySelector(`#chemical-used-${index}`);
+                        const data = await fetchFieldInput(url); // Await the data fetch
+                        console.log("Fetched Chemicals:", data);
+                        // Populate the dropdown with the fetched data
+                        if (chemicalSelect) {
+                            data.company_chemicals.forEach(chemical => {
+                                const option = document.createElement('option');
+                                if (chemical.chemical) {
+                                    option.value = chemical.chemicalID;
+                                    option.textContent = chemical.chemical.name || "";
+                                }
+                                chemicalSelect.appendChild(option);
+                            });
+                        }
+                        
+                    } catch (error) {
+                        console.error("Error fetching chemicals:", error);
+                        alert("Failed to load chemicals. Please try again.");
+                    }
                     return newRow;
                 }
 
                 // Add a new chemical row
-                addButton.addEventListener('click', function () {
-                    const newRow = createChemicalRow(chemicalIndex);
+                addButton.addEventListener('click', async function () {
+                    const newRow = await createChemicalRow(chemicalIndex);
                     container.appendChild(newRow);
                     chemicalIndex++;
                 });
@@ -9856,9 +9855,9 @@
                 let wasteIndex = 1; // Start index
 
                 // Function to create a new waste row
-                function createWasteRow(index) {
+                async function createWasteRow(index) {
                     const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3', 'operation-log-waste-row');
                     newRow.innerHTML = `
                         <div class="col-md-6">
                             <div class="form-group">
@@ -9874,15 +9873,15 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="waste-quantity-${index}">Quantity Generated</label>
+                                <label for="waste-quantity-${index}">Quantity</label>
                                 <input id="waste-quantity-${index}" 
                                     type="number" 
                                     class="form-control" 
                                     name="waste_generated[${index}][quantity]" 
-                                    placeholder="Generated Quantity" 
+                                    placeholder="Quantity" 
                                     min="0" 
                                     step="any" 
-                                    aria-label="Quantity Generated" 
+                                    aria-label="Quantity" 
                                     required>
                             </div>
                         </div>
@@ -9892,13 +9891,34 @@
                             </button>
                         </div>
                     `;
+
+                    const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
+                    console.log("Company ID:", company_id);
+                    const url = `/admin/get-waste/${company_id}`;
+                    console.log("Fetching data from URL:", url);
+                    try {
+                        const wasteSelect = newRow.querySelector(`#waste-type-${index}`);
+                        const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                        console.log("Fetched Waste:", data, wasteSelect);
+                        // Add new options
+                        if (wasteSelect) {
+                            data.company_wastes.forEach(waste => {
+                                const option = document.createElement('option');
+                                option.value = waste.company_waste_id;
+                                option.textContent = waste.waste_name;
+                                wasteSelect.appendChild(option);
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error fetching waste:", error);
+                        alert("Failed to load waste data. Please try again.");
+                    }
                     return newRow;
                 }
 
                 // Add a new waste row
-                addButton.addEventListener('click', function (e) {
-                    e.preventDefault(); // Prevent default behavior
-                    const newRow = createWasteRow(wasteIndex);
+                addButton.addEventListener('click', async function () {
+                    const newRow = await createWasteRow(wasteIndex);
                     container.appendChild(newRow);
                     wasteIndex++;
                 });
@@ -9906,7 +9926,7 @@
                 // Remove a waste row
                 container.addEventListener('click', function (e) {
                     if (e.target.classList.contains('remove-waste-quantity')) {
-                        const row = e.target.closest('.operation-log-row');
+                        const row = e.target.closest('.operation-log-waste-row');
                         if (row) {
                             row.remove();
                         }
