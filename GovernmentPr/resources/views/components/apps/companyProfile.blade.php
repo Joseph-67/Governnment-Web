@@ -4941,7 +4941,7 @@
 
     <script>
     // Confirm deletion function
-    function confirmDeletion(id) {
+    function DeleteOperationType(id) {
         if (confirm("Are you sure you want to delete this operation type?")) {
             // Implement deletion logic
             console.log("Delete operation type with ID:", id);
@@ -5509,7 +5509,7 @@
                                 <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description??""}', '${row.sequenceOrder??"0"}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${row.operation_type_id}, '${row.name}')">
                                     <i class="las la-trash-alt"></i> Delete
                                 </button>
                             </div>`;
@@ -5574,8 +5574,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 // Perform delete action here
-                
-                fetch(`/admin/delete-operation-type`, {
+                fetch(`/admin/operation-type/${operation_type_id}`, {
                     method: 'DELETE',
                     headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
                 })
