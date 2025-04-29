@@ -6602,7 +6602,6 @@
 
         function remove_key_area(ele, key_area_id) {
             console.log(ele, key_area_id);
-
             let parent = ele.parentElement.parentElement
             // parent.remove()
             if (confirm("Do you want to delete this area of perfomance improvement?")) {
@@ -6655,15 +6654,14 @@
                     result.product_innovation.forEach(element => {
                         console.log(element.product_innovation);
                         container.innerHTML += `
-        <div class="row g-2 my-1">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-        </div>
-    `
+                            <div class="row g-2 my-1">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                            </div>`
                     });
                 }
             });
@@ -6701,7 +6699,6 @@
 
         function remove_product_innovation(ele, key_product_innovation_id) {
             console.log(ele, key_product_innovation_id);
-
             let parent = ele.parentElement.parentElement
             // parent.remove()
             if (confirm("Do you want to delete this area of perfomance improvement?")) {
@@ -6754,15 +6751,14 @@
                     result.hazarduous_materials.forEach(element => {
                         console.log(element);
                         container.innerHTML += `
-        <div class="row g-2 my-1">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-        </div>
-    `
+                            <div class="row g-2 my-1">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                            </div>`
                     });
                 }
             });
@@ -6849,16 +6845,15 @@
                     container.innerHTML = "";
                     result.unit_processes.forEach(element => {
                         console.log(element);
-                        container.innerHTML += `
-        <div class="row g-2 my-1">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-        </div>
-    `
+                            container.innerHTML += `
+                                <div class="row g-2 my-1">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                                </div>`
                     });
                 }
             });
@@ -6962,22 +6957,21 @@
                     result.problems_solutions.forEach(element => {
                         console.log(element);
                         container.innerHTML += `
-        <div class="row g-2 my-1 align-items-end">
-            <div class="col-md-5">
-                <label for="">Problem Summary</label>
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <label for="">Suggested Solution</label>
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-        </div>
-    `
+                            <div class="row g-2 my-1 align-items-end">
+                                <div class="col-md-5">
+                                    <label for="">Problem Summary</label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="">Suggested Solution</label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
+                            </div>`
                     });
                 }
             });
@@ -8084,7 +8078,6 @@
 
         document.querySelector('#water-usage-log-trigger').addEventListener('click', function (e) {
             e.preventDefault();
-
             const waterUsageLogsCard = document.querySelector('#water-usage-logs-card');
             waterUsageLogsCard.classList.remove('d-none');
             waterUsageLogsCard.scrollIntoView({ behavior: 'smooth' });
@@ -8127,7 +8120,6 @@
             e.preventDefault();
             let url = "{{ route('admin.water-stock-check-in') }}";
             const formData = new FormData(this);
-
             fetch_cycle('--Save Water Check-In', url, 'POST', formData).then(result => {
                 console.log(result);
                 if (result.status === 'success') {
@@ -8379,7 +8371,6 @@
                 if (result.status === "success") {
                     const waterUsageLogsTable = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]');
                     waterUsageLogsTable.innerHTML = ""; // Clear existing options
-
                     result.water_usage_logs.forEach(log => {
                         const option = document.createElement("option");
                         option.value = log.WaterSourcesId;
@@ -8994,81 +8985,6 @@
                 }
             });
         });
-
-
-
-        // function addProductField() {
-        //     const container = document.createElement('div');
-        //     let products = @json($products);
-        //     container.classList.add('row', 'g-2', 'mt-2', 'product-field-container');
-        //     container.innerHTML = `
-        //     <div class="col-md-5">
-        //         <div class="form-group">
-        //             <label for="product_name">Product Name</label>
-        //             <select class="form-control" name="product_name[]" required>
-        //                 <option value="" disabled selected>Select Product</option>
-        //                 ${products.map(product => `<option value="${product.product_id}">${product.name}</option>`).join('')}
-        //             </select>
-        //         </div>
-        //     </div>
-        //     <div class="col-md-5">
-        //         <div class="form-group">
-        //             <label for="expected_quantity">Expected Quantity</label>
-        //             <input type="number" class="form-control" name="expected_quantity[]" placeholder="Enter expected quantity" required>
-        //         </div>
-        //     </div>
-        //     <div class="col-md-2 d-flex align-items-end">
-        //         <button type="button" class="btn btn-danger btn-sm remove-product-btn">Remove</button>
-        //     </div>
-        //     `;
-        //     document.querySelector('#annual-operations-form .row.g-2 .product-quantity-expected').appendChild(container);
-
-        //     // Add event listener to the remove button
-        //     container.querySelector('.remove-product-btn').addEventListener('click', function () {
-        //         container.remove();
-        //     });
-        // }
-
-
-        // Add event listener to the add more product button
-    //     document.addEventListener('DOMContentLoaded', function () {
-    //     const productContainer = document.querySelector('.product-quantity-container');
-    //     const addMoreButton = document.querySelector('.add-more-product-quantity-operation');
-
-    //     addMoreButton.addEventListener('click', function () {
-    //         const newRow = document.createElement('div');
-    //         newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-    //         newRow.innerHTML = `
-    //             <div class="col-md-6">
-    //                 <div class="form-group">
-    //                     <label for="expected_product">Expected Product</label>
-    //                     <select class="form-select" name="expected_product[]" required>
-    //                         <option value="" selected disabled>Select Product</option>
-    //                         @foreach($active_products as $product)
-    //                             <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-    //                         @endforeach
-    //                     </select>
-    //                 </div>
-    //             </div>
-    //             <div class="col-md-4">
-    //                 <div class="form-group">
-    //                     <label for="expected_unit_produced_for_goods">Expected Quantity</label>
-    //                     <input type="number" class="form-control" name="expected_quantity_produced_for_goods[]" placeholder="Expected Unit Produced For Goods" required>
-    //                 </div>
-    //             </div>
-    //             <div class="col-md-2">
-    //                 <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
-    //             </div>
-    //         `;
-    //         productContainer.appendChild(newRow);
-    //     });
-
-    //     productContainer.addEventListener('click', function (e) {
-    //         if (e.target.classList.contains('remove-product-quantity')) {
-    //             e.target.closest('.row').remove();
-    //         }
-    //     });
-    // });
     
         // Store Operation Category
         document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
@@ -9112,16 +9028,15 @@
                 if (result.status === 'success') {
                     // Update the operation categories table or UI as needed
                     data_array = result.operation_categories.map(
-                            category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
-                        );
+                        category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                    );
 
-                        // Clear and add rows without destroying the table
-                        categoriesTable.clear();
-                        categoriesTable.rows.add(data_array);
-                        categoriesTable.draw();
-                        hideElement(spinner);
-                    }
-    
+                    // Clear and add rows without destroying the table
+                    categoriesTable.clear();
+                    categoriesTable.rows.add(data_array);
+                    categoriesTable.draw();
+                    hideElement(spinner);
+                }
             });
         });
         // Delete Operation Category
