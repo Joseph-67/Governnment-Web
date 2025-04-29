@@ -154,21 +154,24 @@ class OperationCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $operationCategory = OperationCategory::find($id);
+        $operationCategory = OperationCategory::find($id); // Use the $id directly
+        if ($operationCategory) {
+            $operationCategory->forceDelete(); // Permanently delete the category
     
-        if (!$operationCategory) {
-            return response()->json(['status' => 'error', 'message' => 'Operation Category not found'], 404);
+            $operationCategories = OperationCategory::all(); // use plural for clarity
+            return response()->json([
+                'status' => 'success',
+                'operation_categories' => $operationCategories,
+                'message' => 'Operation Category deleted successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Operation Category not found'
+            ], 404); // return proper JSON error
         }
-    
-        $operationCategory->forceDelete(); // or delete()
-    
-        $categories = OperationCategory::all();
-    
-        return response()->json([
-            'status' => 'success',
-            'operation_categories' => $categories,
-            'message' => 'Deleted successfully'
-        ]);
     }
+       
+    
     
 }

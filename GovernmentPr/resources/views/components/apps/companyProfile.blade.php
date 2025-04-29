@@ -5666,7 +5666,7 @@
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/admin/delete-operation-category/${operation_category_id}`, {
+            fetch(`/admin/operation-category/${operation_category_id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
