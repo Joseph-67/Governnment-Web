@@ -421,7 +421,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
     });
-
     // Operation Category
     Route::controller(OperationCategoryController::class)->group(function(){
         Route::get('/operation-category', 'index')->name('admin.operation-category');
