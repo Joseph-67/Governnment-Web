@@ -10062,6 +10062,7 @@
                 }
             });
         });
+        
     </script>
     <!-- Product Management Script -->
     @endsection
