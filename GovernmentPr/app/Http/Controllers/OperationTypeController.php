@@ -155,17 +155,21 @@ class OperationTypeController extends Controller
     {
         //
         // dd($operationType->operation_type_id);
-        $operationType = OperationType::find($operationType->operation_type_id);
         if ($operationType) {
-            $operationType->forceDelete(); // Permanently delete the category
-
-            $operationType = OperationType::get();
+            $operationType->forceDelete(); // Force delete
+            $operationTypes = OperationType::all(); // Renamed for clarity
             return response()->json([
                 'status' => 'success',
                 'message' => 'Operation Type deleted successfully',
-                'operation_types' => $operationType]);
+                'operation_types' => $operationTypes
+            ]);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'Operation Type not found']);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Operation Type not found'
+            ], 404);
         }
+    
+    
     }
 }
