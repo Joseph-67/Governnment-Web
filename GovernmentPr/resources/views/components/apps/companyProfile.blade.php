@@ -4941,7 +4941,7 @@
 
     <script>
     // Confirm deletion function
-    function confirmDeletion(id) {
+    function DeleteOperationType(id) {
         if (confirm("Are you sure you want to delete this operation type?")) {
             // Implement deletion logic
             console.log("Delete operation type with ID:", id);
@@ -5474,7 +5474,7 @@
                                 <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description??""}', '${row.sequenceOrder??"0"}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDeletion(${row.operation_type_id}, '${row.name}')">
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${row.operation_type_id}, '${row.name}')">
                                     <i class="las la-trash-alt"></i> Delete
                                 </button>
                             </div>`;
@@ -5539,8 +5539,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 // Perform delete action here
-                
-                fetch(`/admin/delete-operation-type`, {
+                fetch(`/admin/operation-type/${operation_type_id}`, {
                     method: 'DELETE',
                     headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
                 })
@@ -8894,38 +8893,38 @@
 
     <!-- operations -->
     <script>
-        // Store Operation Type
-        document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-operation-type') }}";
-            fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation types table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operation-types tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_types.forEach(type => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${type.name}</td>
-                            <td>${type.description ?? ""}</td>
-                            <td>${type.sequence_order ?? ""}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
+       document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    let url = "{{ route('admin.store-operation-type') }}";
+    fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
+        console.log(result);
+        if (result.status === 'success') {
+            // Update the operation types table or UI as needed
+            let tableBody = document.querySelector('#tbl-operation-types tbody');
+            tableBody.innerHTML = "";
+            result.operation_types.forEach(type => {
+                tableBody.innerHTML += `<tr>
+                    <td>${type.name}</td>
+                    <td>${type.description ?? ""}</td>
+                    <td>${type.sequence_order ?? ""}</td>
+                    <td class="text-end">
+
+                             <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm"  onclick="editOperationType(${type.operation_type_id}, '${type.name}', '${type.description ?? ""}', ${type.sequence_order ?? 0})">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${type.operation_type_id}, '${type.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
             });
-        });
+        }
+    });
+});
 
         // Edit Operation Type
         document.querySelector('#edit_operation_type_form').addEventListener('submit', function (e) {
@@ -9031,14 +9030,13 @@
                         <td>${category.name}</td>
                         <td>${category.description ?? ""}</td>
                         <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                    <a class="dropdown-item" href="#">Update</a>
-                                    <a class="dropdown-item" href="#" onclick="deleteOperationCategory(${category.operationcategoryid}, ${ category->operationcategory})">Delete</a>
-                                </div>
+                             <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${category.operation_category_id}, '${category.name}', '${category.description}')">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${category.operation_category_id}, '${category.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
                             </div>
                         </td>
                     </tr>`;
@@ -9046,6 +9044,7 @@
                 }
             });
         });
+
         // Edit Operation Category
         document.querySelector('#edit_operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -10043,6 +10042,27 @@
                 }
             });
         });
+        // Edit Product Category
+        document.querySelector('#edit-product-category-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            fetch_cycle('--Update Product Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the product categories table or UI as needed
+                    data_array = result.product_categories.map(
+                        category => new ProductCategory(category.name, category.description)
+                    );
+
+                    //Clear and add rows without destroying the table
+                    productTable.clear();
+                    productTable.rows.add(data_array);
+                    productTable.draw();
+                    hideElement(spinner);
+                }
+            });
+        });
 
         // Store Product
         document.querySelector('#add-product-form').addEventListener('submit', function (e) {
@@ -10072,6 +10092,7 @@
                 }
             });
         });
+
     </script>
     <!-- Product Management Script -->
     @endsection
