@@ -501,142 +501,88 @@
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
-                        <li class="menu-label mt-2">
-                            <small class="label-border">
-                                <div class="border_left hidden-xs"></div>
-                                <div class="border_right"></div>
-                            </small>
-                            <span>Management Systems</span>
-                        </li>
                         @if(Auth::guard('admin')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.users-management')}}">
-                                <i class="iconoir-community menu-icon"></i>
-                                <span>User & Admin Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @elseif(Auth::guard('web')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="iconoir-community menu-icon"></i>
-                                <span>User & Admin Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @endif
-                       @if(Auth::guard('admin')->check())
-                       <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.create-category') }}">
-                                <i class="iconoir-folder menu-icon"></i>
-                                <span>Category Management</span>    
-                            </a>
-                        </li><!--end nav-item-->
-                        @elseif(Auth::guard('web')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="iconoir-folder menu-icon"></i>
-                                <span>Category Management</span>    
-                            </a>
-                        </li><!--end nav-item-->
-                        @endif
-                        @if(Auth::guard('admin')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('materials.material') }}">
-                            <i class="iconoir-box menu-icon"></i>
-                            <span>Material Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @elseif(Auth::guard('web')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="iconoir-box menu-icon"></i>
-                            <span>Material Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @endif
-                       @if(Auth::guard('admin')->check())
-                       <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.create-chemical') }}">
-                            <i class="iconoir-flask menu-icon"></i>
-                            <span>Chemicals Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @elseif(Auth::guard('web')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="iconoir-flask menu-icon"></i>
-                            <span>Chemicals Management</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        @endif
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarAdvancedUI">
-                                <i class="iconoir-apple-shortcuts menu-icon"></i>
-                                <span>Content Management System (CMS)</span>
-                            </a>
-                            <div class="collapse " id="sidebarAdvancedUI">
-                                <ul class="nav flex-column">
-                                 @if(Auth::guard('admin')->check())
-                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.CMS')}}">Pages</a>
-                                    </li><!--end nav-item-->
-                                    @elseif(Auth::guard('web')->check())
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.pages')}}">Pages</a>
-                                    </li><!--end nav-item-->
-                                    @endif
-                                  @if(Auth::guard('admin')->check())
-                                  <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
-                                    </li><!--end nav-item-->
-                                    @elseif(Auth::guard('web')->check())
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.posts')}}">Posts</a>
-                                    </li><!--end nav-item-->
-                                    @endif
-                                    @if(Auth::guard('admin')->check())
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
-                                    </li><!--end nav-item-->
-                                    @elseif(Auth::guard('web')->check())
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
-                                    </li><!--end nav-item-->
-                                    @endif
-                                   @if(Auth::guard('admin')->check())
-                                   <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.event')}}">Events & News </a>
-                                    </li><!--end nav-item-->
-                                    @elseif(Auth::guard('web')->check())
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('CMS.events')}}">Events & News </a>
-                                    </li><!--end nav-item-->
-                                    @endif
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-dragula.html">Media</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-files.html">Design & Themes</a>
-                                    </li><!--end nav-item--> 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-highlight.html">Notifications and Alerts</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-rangeslider.html">Content Organization</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-ratings.html">Settings</a>
-                                    </li><!--end nav-item-->
-                              
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-sweetalerts.html">Tools & Utilities</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="advanced-toasts.html">Help & Support</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end Content Management System-->
-                        </li><!--end nav-item-->
+    <li class="menu-label mt-2">
+        <small class="label-border">
+            <div class="border_left hidden-xs"></div>
+            <div class="border_right"></div>
+        </small>
+        <span>Management Systems</span>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.users-management') }}">
+            <i class="iconoir-community menu-icon"></i>
+            <span>User & Admin Management</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.create-category') }}">
+            <i class="iconoir-folder menu-icon"></i>
+            <span>Category Management</span>    
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('materials.material') }}">
+            <i class="iconoir-box menu-icon"></i>
+            <span>Material Management</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.create-chemical') }}">
+            <i class="iconoir-flask menu-icon"></i>
+            <span>Chemicals Management</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="#sidebarAdvancedUI" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarAdvancedUI">
+            <i class="iconoir-apple-shortcuts menu-icon"></i>
+            <span>Content Management System (CMS)</span>
+        </a>
+        <div class="collapse" id="sidebarAdvancedUI">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('CMS.CMS') }}">Pages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('CMS.posts') }}">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-dragula.html">Media</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('CMS.event') }}">Events & News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-dragula.html">Media</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-files.html">Design & Themes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-highlight.html">Notifications and Alerts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-rangeslider.html">Content Organization</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-ratings.html">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-sweetalerts.html">Tools & Utilities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="advanced-toasts.html">Help & Support</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+@endif
 
                         <li class="menu-label mt-2">
                             <small class="label-border">
