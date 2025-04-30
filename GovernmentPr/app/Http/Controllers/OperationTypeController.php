@@ -152,21 +152,20 @@ class OperationTypeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(OperationType $operationType)
-{
-    if ($operationType) {
-        $operationType->forceDelete(); // Force delete
-        $operationTypes = OperationType::all(); // Renamed for clarity
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Operation Type deleted successfully',
-            'operation_types' => $operationTypes
-        ]);
-    } else {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Operation Type not found'
-        ], 404);
-    }
-}
+    {
+        //
+        // dd($operationType->operation_type_id);
+        $operationType = OperationType::find($operationType->operation_type_id);
+        if ($operationType) {
+            $operationType->forceDelete(); // Permanently delete the category
 
+            $operationType = OperationType::get();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Operation Type deleted successfully',
+                'operation_types' => $operationType]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Operation Type not found']);
+        }
+    }
 }
