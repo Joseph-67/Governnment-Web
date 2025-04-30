@@ -99,9 +99,44 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductCategory $productCategory)
+    public function update(Request $request)
     {
         //
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'category_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('product_categories', 'name')
+                ->ignore($request->product_category_id, 'product_category_id')
+                ->where(function ($query) use ($request) {
+                    $query->where('company_id', $request->company_id);
+                }),
+            ],
+            'category_description' => ['nullable', 'string'],
+            'company_id' => ['required', 'numeric'],
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+    
+        try {
+            $productCategory = ProductCategory::find($request->product_category_id);
+            if (!$productCategory) {
+                return response()->json(['status' => 'error', 'message' => 'Product Category not found'], 404);
+            }
+
+            $productCategory->name = $request->product_category_name;
+            $productCategory->description = $request->product_category_description;
+            $productCategory->save();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update product category.', 'message' => $e->getMessage()], 500);
+        }
+        $productCategories = ProductCategory::where('is_delete', false)->where('company_id', $request->company_id)->get();
+        return response()->json(['status' => 'success', 'message' => 'Product Category updated successfully', 'product_category' => $productCategory], 200);
+
     }
 
     /**

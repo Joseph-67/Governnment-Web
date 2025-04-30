@@ -10033,6 +10033,27 @@
                 }
             });
         });
+        // Edit Product Category
+        document.querySelector('#edit-product-category-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            fetch_cycle('--Update Product Category', url, 'POST', formData).then(result => {
+                console.log(result);
+                if (result.status === 'success') {
+                    // Update the product categories table or UI as needed
+                    data_array = result.product_categories.map(
+                        category => new ProductCategory(category.name, category.description)
+                    );
+
+                    //Clear and add rows without destroying the table
+                    productTable.clear();
+                    productTable.rows.add(data_array);
+                    productTable.draw();
+                    hideElement(spinner);
+                }
+            });
+        });
 
         // Store Product
         document.querySelector('#add-product-form').addEventListener('submit', function (e) {
@@ -10062,7 +10083,7 @@
                 }
             });
         });
-        
+
     </script>
     <!-- Product Management Script -->
     @endsection
