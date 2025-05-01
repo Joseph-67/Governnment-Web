@@ -2852,7 +2852,7 @@
                                                         <h5 class="border-bottom pb-2">Materials and Chemicals</h5>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="material-quantity-used-container-operation-log col-md-12">
+                                                        <div class="material-quantity-used-container-annual-operation-log col-md-12">
                                                             <div class="row g-2 align-items-end mb-3">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -2875,7 +2875,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="chemical-quantity-container-operation-log col-md-12">
+                                                        <div class="chemical-quantity-container-annual-operation-log col-md-12">
                                                             <div class="row g-2 align-items-end mb-3">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -5951,10 +5951,13 @@
             // Calculate material costs
             let totalMaterialCost = 0;
             document.querySelectorAll('.material-quantity-used-container-operation-log .row').forEach((row, i) => {
-                console.log(row);
+                // console.log(row, i);
+                // Fetch quantity and unit cost for each material used
                 const quantity = parseFloat(row.querySelector(`[name="material_used[${i}][quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="material_used[${i}][unit_quantity]"]`).value) || 0;
                 const unitCost = parseFloat(row.querySelector(`[name="material_used[${i}][unit_cost]"]`).value) || 0;
-                totalMaterialCost += quantity * unitCost;
+                const adjustedUnitQuantity = unitQuantity || 1; // Use 1 as a fallback
+                totalMaterialCost += (quantity / adjustedUnitQuantity) * unitCost;
             });
 
 
@@ -5962,8 +5965,10 @@
             let totalChemicalCost = 0;
             document.querySelectorAll('.chemical-quantity-container-operation-log .row').forEach((row, i) => {
                 const quantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_quantity]"]`).value) || 0;
                 const unitCost = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_cost]"]`).value) || 0;
-                totalChemicalCost += quantity * unitCost;
+                const adjustedUnitQuantity = unitQuantity || 1;
+                totalChemicalCost += (quantity / adjustedUnitQuantity) * unitCost;
             });
 
             // Calculate total cost
@@ -5973,11 +5978,14 @@
             // update the total cost
             document.getElementById('total_operation_cost').value = totalCost.toFixed(2);
             // Fetch product quantities
-            const productQuantities = document.querySelectorAll('[name="expected_quantity_produced_for_goods[]"]');
+            const productQuantities = document.querySelectorAll('.operation-log-product-quantity-container .row');
             let totalOutputQuantity = 0;
-
-            productQuantities.forEach(input => {
-                totalOutputQuantity += parseFloat(input.value) || 0;
+            console.log("Product Quantities:", productQuantities);
+            
+            productQuantities.forEach((row, i) => {
+                console.log(row, i);
+                totalOutputQuantity += parseFloat(row.querySelector(`[name="product_produced[${i}][quantity]"]`).value) || 0;
+                //  parseFloat(input.value) || 0;
             });
 
             // Ensure output quantity is valid
@@ -5988,7 +5996,8 @@
 
             // Calculate operation unit cost
             const operationUnitCost = totalCost / totalOutputQuantity;
-
+            console.log("Operation Unit Cost:", operationUnitCost);
+            
             // Update the Operation Unit Cost field
             document.getElementById('operation_unit_cost').value = operationUnitCost.toFixed(2);
         }
@@ -8884,38 +8893,38 @@
 
     <!-- operations -->
     <script>
-        // Store Operation Type
-        document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-operation-type') }}";
-            fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation types table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operation-types tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_types.forEach(type => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${type.name}</td>
-                            <td>${type.description ?? ""}</td>
-                            <td>${type.sequence_order ?? ""}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
+       document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    let url = "{{ route('admin.store-operation-type') }}";
+    fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
+        console.log(result);
+        if (result.status === 'success') {
+            // Update the operation types table or UI as needed
+            let tableBody = document.querySelector('#tbl-operation-types tbody');
+            tableBody.innerHTML = "";
+            result.operation_types.forEach(type => {
+                tableBody.innerHTML += `<tr>
+                    <td>${type.name}</td>
+                    <td>${type.description ?? ""}</td>
+                    <td>${type.sequence_order ?? ""}</td>
+                    <td class="text-end">
+
+                             <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm"  onclick="editOperationType(${type.operation_type_id}, '${type.name}', '${type.description ?? ""}', ${type.sequence_order ?? 0})">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${type.operation_type_id}, '${type.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
             });
-        });
+        }
+    });
+});
 
         // Edit Operation Type
         document.querySelector('#edit_operation_type_form').addEventListener('submit', function (e) {
@@ -9021,14 +9030,13 @@
                         <td>${category.name}</td>
                         <td>${category.description ?? ""}</td>
                         <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                    <a class="dropdown-item" href="#">Update</a>
-                                    <a class="dropdown-item" href="#" onclick="deleteOperationCategory(${category.operationcategoryid}, ${ category->operationcategory})">Delete</a>
-                                </div>
+                             <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${category.operation_category_id}, '${category.name}', '${category.description}')">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${category.operation_category_id}, '${category.name}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
                             </div>
                         </td>
                     </tr>`;
@@ -9036,6 +9044,7 @@
                 }
             });
         });
+
         // Edit Operation Category
         document.querySelector('#edit_operation_category_form').addEventListener('submit', function (e) {
             e.preventDefault();
