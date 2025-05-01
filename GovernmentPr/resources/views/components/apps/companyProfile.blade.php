@@ -10046,6 +10046,7 @@
         document.querySelector('#edit-product-category-form').addEventListener('submit', function (e) {
             e.preventDefault();
             let formData = new FormData(this);
+            let url = "{{ route('admin.update-product-category') }}";
 
             fetch_cycle('--Update Product Category', url, 'POST', formData).then(result => {
                 console.log(result);

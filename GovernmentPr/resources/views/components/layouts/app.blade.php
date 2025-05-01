@@ -32,25 +32,33 @@
          margin: 2px 0;
 
       }
-      .logo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      /* gap: 20px; */
-      padding: 20px;
-      min-width: 300px;
-      /* width: 100%; */
-      /* background: red; */
-    }
+     /* Base logo styling */
+.logo-link {
+  display: inline-block;
+  /* gap: 0px;
+  align-items: center;
+  z-index: 10; 
+  position: relative;
+  flex-wrap: wrap; Allows wrapping on small screens */
+}
 
-    .logo-grid img {
-      width: 80%;
-      height: auto;
-      object-fit: contain;
-      background-color: #fff;
-      padding: 10px;
-      /* border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
-    }
+.logo-img {
+  max-width: 50px;
+  height: auto;
+  display: inline-block;
+  z-index: 9;
+}
+
+/* Responsive behavior for small screens */
+@media (max-width: 768px) {
+  .logo-img {
+    width: 25px; /* shrink logo for smaller screen */
+  }
+
+  /* .logo-link {
+    justify-content: center;
+  } */
+}
    </style>
 </head>
 
@@ -246,10 +254,10 @@
                <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
                   <div class="tp-header-logo logo-grid">
                      <a href="{{ url('/') }}">
-                        <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
+                     <img src="{{ asset('MainAssets/img/logo/logo3.png') }}" alt="logo" class="logo-img">
+                     <img src="{{ asset('MainAssets/img/logo/logo1.png') }}" alt="logo" class="logo-img">
+                     <img src="{{ asset('MainAssets/img/logo/logo4.jpeg') }}" alt="logo" class="logo-img">
+                     <img src="{{ asset('MainAssets/img/logo/logo2.png') }}" alt="logo" class="logo-img">
                      </a>
                   </div>
                </div>

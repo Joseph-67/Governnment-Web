@@ -477,7 +477,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/product-categories', 'index')->name('admin.product-categories');
         Route::get('/product-categories/{id}', 'show')->name('admin.show-product-category');
         Route::post('/product-categories', 'store')->name('admin.store-product-category'); 
-        Route::put('/product-categories/{id}', 'update')->name('admin.update-product-category');
+        Route::put('/product-categories', 'update')->name('admin.update-product-category');
         Route::delete('/product-categories/{id}', 'destroy')->name('admin.delete-product-category');
     });
 
