@@ -149,10 +149,10 @@
          </div>
          <div class="tpoffcanvas__logo">
             <a href="{{ url('/') }}">
-               <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-               <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-               <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-               <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
+            <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
             </a>
          </div>
          <div class="tpoffcanvas__title">
@@ -251,16 +251,16 @@
       <div id="header-sticky" class="tp-header-area tp-header-plr">
          <div class="container-fluid">
             <div class="row align-items-center">
-               <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
-                  <div class="tp-header-logo logo-grid">
-                     <a href="{{ url('/') }}">
-                     <img src="{{ asset('MainAssets/img/logo/logo3.png') }}" alt="logo" class="logo-img">
-                     <img src="{{ asset('MainAssets/img/logo/logo1.png') }}" alt="logo" class="logo-img">
-                     <img src="{{ asset('MainAssets/img/logo/logo4.jpeg') }}" alt="logo" class="logo-img">
-                     <img src="{{ asset('MainAssets/img/logo/logo2.png') }}" alt="logo" class="logo-img">
-                     </a>
+                  <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
+                    <div class="tp-header-logo logo-grid">
+                      <a href="{{ url('/') }}" style="display: flex; align-items: center; gap: 10px;">
+                        <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                        <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
+                        <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo" style="max-width:50px">
+                      </a>
+                    </div>
                   </div>
-               </div>
                <div class="col-xxl-6 col-xl-7 d-none d-xl-block">
                   <div class="tp-header-menu">
                      <nav class="tp-main-menu-content">
@@ -426,7 +426,11 @@
                   <div class="tp-footer-widget footer-col-1">
                      <div class="tp-footer-widget-logo">
                      <a href="">
-         <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}"  alt="logo">
+                           <!-- <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}"  alt="logo"> -->
+                           <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
+                           <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
       </a>
                      </div>
                      <div class="tp-footer-widget-content">
@@ -531,7 +535,7 @@
             <div class="row align-items-center">
                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <div class="tp-copyright-left-text text-center text-md-start">
-                     <p>© Copyright 2023 by <a href="index.html#">Mayorx.com</a></p>
+                     <p>© Copyright 2025 by <a href="index.html#">Elite Tech. Dev.</a></p>
                   </div>
                </div>
                <div class="col-xl-6 col-lg-6 col-md-6 d-none col-sm-6 d-sm-block">

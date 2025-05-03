@@ -448,7 +448,7 @@
                                             <ul class="nav flex-column">
                                                 <!-- Reporting Analytics -->
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Companies Overview</a>
+                                                    <a class="nav-link" href="{{ route('admin.companies-data') }}">Companies Overview</a>
                                                 </li><!--end nav-item-->
                                                 <!-- Production Reporting Pages -->
                                                 <li class="nav-item">

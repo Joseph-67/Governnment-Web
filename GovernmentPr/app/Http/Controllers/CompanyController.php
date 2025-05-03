@@ -352,6 +352,71 @@ class CompanyController extends WaterStockMovementController
     
         return view('displayCompany', compact('company'));
     }
+
+    public function getCompaniesData()
+    {
+        $data['pageTitle'] = 'Advance Companies Overview';
+        $data['companies'] = Company::with(['companyMaterials', 'companyChemicals', 'stock_movements'])
+            ->where('status', 'active')
+            ->get([
+            'company_id',
+            'company_name',
+            'industry',
+            'industry_process',
+            'email',
+            'primary_phone_number',
+            'secondary_phone_number',
+            'country',
+            'state',
+            'city',
+            'address',
+            'zip_code',
+            'longitude',
+            'latitude',
+            'mgrs',
+            'website_url',
+            'date_of_establishment',
+            'number_of_employees',
+            'operations_manager',
+            'contact_person_full_name',
+            'contact_person_position',
+            'contact_person_contact_number',
+            'is_sharable',
+            'status',
+            'created_at',
+            'updated_at'
+            ]);
+        // $data = $data['companies']->get();
+        $data['all_materials'] = Material::get(['materialID', 'material']);
+        $data['all_water_sources'] = WaterSources::get(['WaterSourcesId', 'sources']);
+        $data['all_chemicals'] = Chemicals::get(['chemical_id', 'name']);
+        $data['total_materials'] = Material::count();
+        $data['total_water_sources'] = WaterSources::count();
+        $data['total_chemicals'] = Chemicals::count();
+        return view('components.reportinganalytics.companies-report', $data);
+    }
+
+    public function getCompaniesByState(Request $request)
+    {
+        $country = $request->input('country');
+
+        if (!$country) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Country is required.'
+            ], 400);
+        }
+
+        $companiesByState = Company::where('country', $country)
+            ->select('state', \DB::raw('COUNT(*) as company_count'))
+            ->groupBy('state')
+            ->get();
+        // dd($companiesByState);
+        return response()->json([
+            'status' => 'success',
+            'companies' => $companiesByState
+        ]);
+    }
     
     // company 404
     public function index()

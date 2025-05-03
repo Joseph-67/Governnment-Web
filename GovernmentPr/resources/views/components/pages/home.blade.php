@@ -21,13 +21,13 @@
          <button class="slider-next"><i class="fa-regular fa-arrow-right"></i></button>
       </div>
       <div class="tp-slider-shape-5">
-         <img src="{{asset('MainAssets/img/slider/slider-new1.png')}}"  alt="">
+         <img src="{{ asset('MainAssets/img/slider/slider-new1.png') }}" alt="Slider Image">
       </div>
       <div class="swiper-container tp-slider-active">
          <div class="swiper-wrapper">
             <div class="swiper-slide">
                <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
-                  <div class="tp-slider-img" data-background="{{asset('MainAssets/img/slider/slider-1.jpg')}}"></div>
+                  <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-1.jpg') }}');"></div>
                   <div class="tp-slider-shape-1 z-index-1">
                      <img src="{{asset('MainAssets/img/slider/slider-shape-1-1.png')}}" alt="">
                   </div>
@@ -46,14 +46,16 @@
                               </div>
                               <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
-                                 <h4 class="tp-slider-title">To be a nation that develops in harmony with its environment</p>
+                                  <h4 class="tp-slider-title" style="font-size: 4rem;">To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.
+
+</h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=R6rchakWh5Q"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -84,14 +86,14 @@
                               </div>
                               <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
-                                 <h4 class="tp-slider-title">To be a nation that develops in harmony with its environment</p>
+                                  <h4 class="tp-slider-title" style="font-size: 3rem;">To achieve a circular economy with inclusive growth, efficient resource use, and minimal environmental impact by 2033.</h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=K527oNxtO7o"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -111,7 +113,7 @@
                      <img src="{{asset('MainAssets/img/slider/slider-shape-1-3.png')}}" alt="">
                   </div>
                   <div class="tp-slider-shape-3 z-index-1">
-                     <img src="assets/i{{asset('MainAssets/mg/slider/slider-shape-1-2.png')}}" alt="">
+                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-2.png')}}" alt="">
                   </div>
                   <div class="container">
                      <div class="row">
@@ -122,14 +124,14 @@
                               </div>
                              <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
-                                 <h4 class="tp-slider-title">To be a nation that develops in harmony with its environment</p>
+                                   <h4 class="tp-slider-title" style="font-size: 3rem;">Champion Nigeria's leadership in sustainability by embedding RECP principles into national policies and addressing global environmental issues.</h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=K527oNxtO7o"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -241,31 +243,28 @@
                   <h4 class="tp-about-feature-title">Ministerial focal points</h4>
                   <div class="tp-about-feature-list">
                      <ul>
-                        <li><a href="#">Quality Environment</a></li>
-                        <li><a href="#">Sustainability</a></li>
-                        <li><a href="#">Restoration</a></li>
-                        <li><a href="#">Public Awareness</a></li>
-                        <li><a href="#">Collaborations</a></li>
+                        <li><a href="#">Energy Efficiency</a></li>
+                        <li><a href="#">Promoting Sustainability</a></li>
+
                      </ul>
                   </div>
                   <div class="tp-about-feature-btn">
-                     <a class="tp-btn-purple" href="#">KNOW MORE</a>
+                     <a class="tp-btn-purple" href="{{ route('mandate') }}">KNOW MORE</a>
+                     <!-- Ensure the 'mandate' route is defined in your web.php -->
                   </div>
                </div>
             </div>
             <div class="col-xl-6 col-lg-8 col-md-12">
                <div class="tp-about-content-wrap p-relative">
                   <div class="tp-about-text">
-                     <p>We focus on protecting the environment, promoting sustainability, and addressing climate change.
-
-                     </p>
+                      <p>Resource Efficiency and Cleaner Production (RECP) is a key strategy for promoting sustainable industrial development in Nigeria. As the country seeks to reduce environmental impact while boosting economic growth, RECP offers practical solutions to minimize waste, optimize resource use, and encourage cleaner technologies across industries.</p>
                   </div>
                   <div class="tp-about-city-info d-flex align-items-center">
                      <i class="flaticon-smart-city"></i>
                      <span>How We Serve Our Fatherland</span>
                   </div>
                   <div class="tp-about-progress p-relative">
-                     <span class="progress-label">City Development</span>
+                     <span class="progress-label">Number Of States Impacted</span>
                      <span class="progress-count">92%</span>
                      <div class="progress">
                         <div class="progress-bar wow slideInLeft" data-wow-duration="1s" data-wow-delay=".3s"
@@ -306,7 +305,7 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="tp-service-title-box text-center mb-70">
-               <span class="tp-section-subtitle">OUR DEPERTMENTS</span>
+               <span class="tp-section-subtitle">OUR DEPARTMENTS</span>
                <h4 class="tp-section-title text-white">Explore our departments</h4>
             </div>
          </div>
@@ -412,7 +411,7 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/min-event1.jpg')}}" height="200px" alt="">
+                  <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" height="200px" alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
@@ -422,10 +421,10 @@
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
                      </div> -->
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">Environment Day 2024</a></h4>
+                     <h4 class="tp-event-title-sm"><a href="#">Training Or workshop</a></h4>
                   </div>
                   <div class="tp-event-link">
-                     <a href="event-details.html">Read More</a>
+                     <a href="#">Read More</a>
                   </div>
                </div>
             </div>
@@ -433,7 +432,7 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/min-event2.jpg')}}" alt="">
+                  <img src="{{asset('MainAssets/img/home/IMG-20250423-WA0102.jpg')}}" height="200px"  alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
@@ -443,10 +442,10 @@
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
                      </div> -->
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">Training or workshop</a></h4>
+                     <h4 class="tp-event-title-sm"><a href="#">Training or workshop</a></h4>
                   </div>
                   <div class="tp-event-link">
-                     <a href="event-details.html">Read More</a>
+                     <a href="#">Read More</a>
                   </div>
                </div>
             </div>
@@ -454,7 +453,7 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-event-item text-center">
                <div class="tp-event-thumb fix">
-                  <img src="{{asset('MainAssets/img/event/min-event3.jpg')}}" height="200px" alt="">
+                  <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" height="200px" alt="">
                </div>
                <div class="tp-event-content-wrap">
                   <div class="tp-event-content">
@@ -464,10 +463,10 @@
                               href="https://www.google.com/maps/@23.8202709,90.2804172,9z?entry=ttu"
                               target="_blank">Watsica 24, USA</a></span>
                      </div> -->
-                     <h4 class="tp-event-title-sm"><a href="event-details.html">Climate change dialouge</a></h4>
+                     <h4 class="tp-event-title-sm"><a href="event-details.html">Training Or Workshop</a></h4>
                   </div>
                   <div class="tp-event-link">
-                     <a href="event-details.html">Read More</a>
+                     <a href="#">Read More</a>
                   </div>
                </div>
             </div>
@@ -498,8 +497,8 @@
                   <span><i class="flaticon-running-man"></i></span>
                </div>
                <div class="tp-funfact-2-content">
-                  <h4><em data-purecounter-duration="1" data-purecounter-end="26" class="purecounter">0</em>k</h4>
-                  <span>People in the City</span>
+                  <h4><em data-purecounter-duration="1" data-purecounter-end="36" class="purecounter">0</em></h4>
+                  <span>Number Of States</span>
                </div>
             </div>
          </div>
@@ -509,8 +508,8 @@
                   <span><i class="flaticon-landscape"></i></span>
                </div>
                <div class="tp-funfact-2-content">
-                  <h4><em data-purecounter-duration="1" data-purecounter-end="46" class="purecounter">0</em>%</h4>
-                  <span>Private Gardens Lands</span>
+                  <h4><em data-purecounter-duration="1" data-purecounter-end="150" class="purecounter">0</em></h4>
+                  <span>Number of Companies</span>
                </div>
             </div>
          </div>
@@ -558,15 +557,15 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec2.jpeg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -574,15 +573,15 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec3.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.35.jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -590,15 +589,15 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-secv1.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -606,15 +605,15 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec5.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/IMG-20250423-WA0102.jpg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -622,15 +621,31 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-secv1.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/IMG-20250423-WA0101.jpg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                              <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="swiper-slide">
+                     <div class="tp-project-item p-relative">
+                        <div class="tp-project-thumb fix">
+                           <img src="{{asset('MainAssets/img/home/IMG-20250423-WA0096.jpg')}}" alt="">
+                        </div>
+                        <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
+                           <div class="tp-project-content">
+                           <span>RECP ON CARBON</span>
+                              <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
+                           </div>
+                           <div class="tp-project-icon">
+                              <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -711,10 +726,10 @@
          <div class="col-xl-12">
             <div class="tp-video-content text-center">
                <div class="tp-video-content-icon-box">
-                  <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=xaufnElEtog"><i
+                  <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i
                         class="flaticon-play"></i></a>
                </div>
-               <h6 class="tp-video-content-title">We Help You to Solve Climate Change Problems </h6>
+               <h6 class="tp-video-content-title" style="font-size: 2rem;">We Help You to Solve Your Business Problems And Maximize Profit </h6>
             </div>
          </div>
       </div>
@@ -865,12 +880,10 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/blog/blogpic2.jpg')}}" alt=""></a>
-                 
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                  
-                  <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER CALLS ON NGOS</h5>
+                  <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER CALLS ON NGOS</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
                   </div>
@@ -880,11 +893,9 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/blog/blogpic3.jpeg')}}" alt=""></a>
-                
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.35.jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                 
                   <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER ASSURES WOMEN OF GOVERNMENT SUPPORT</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
@@ -895,11 +906,9 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/blog/blogpic4.jpeg')}}" alt=""></a>
-                
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                  
                   <h5 class="tp-blog__title-sm"><a href="blog-details.html">PRESENTATION OF REPORT</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
