@@ -10,6 +10,28 @@
                 width: 100%;
             }
         </style>
+        <style>
+        table {
+            width: 100%; /* Allows table to take full width of the container */
+            border-collapse: collapse;
+            table-layout: auto; /* Ensures columns stretch based on content */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+            vertical-align: top; /* Aligns content to the top for better readability */
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        td, th {
+            word-wrap: break-word; /* Allows long words to break onto the next line */
+            overflow-wrap: break-word;
+        }
+        </style>
+
     @endsection
     @section('scripts')
     <!-- DataTables and Bootstrap JavaScript -->
@@ -145,11 +167,82 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Integrate DataTables library for advanced features
-        $('#dynamicTable').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        responsive: true,
+            let companyTable = $('#companiesTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                language: {
+                    search: "Filter records:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries"
+                }
+            });
+        // Add any additional DataTables configuration here
+        // Add event listener for row click to display company details
+        function CompanyData(company_name, industry, email, primary_phone_number, country, state, city, address, zip_code, date_of_establishment, number_of_employees, created_at) {
+            this.company_name = company_name;
+            this.industry = industry;
+            this.email = email;
+            this.primary_phone_number = primary_phone_number;
+            this.country = country;
+            this.state = state;
+            this.city = city;
+            this.address = address;
+            this.zip_code = zip_code;
+            this.date_of_establishment = date_of_establishment;
+            this.number_of_employees = number_of_employees;
+            this.created_at = created_at;
+        }
+
+        // Fetch company data from the server
+        let companies = @json($companies);
+        // Example: Display company names in the console
+        console.log(`Companies full details:`, companies);
+        
+        companies.forEach(company => {
+            console.log(`Company Name: ${company}`);
+            
+            const row = `
+                <tr>
+                    <td>${company->company_name ?? 'N/A' }}</td>
+                    <td>${company->industry ?? 'N/A' }}</td>
+                    <td>${company->email ?? 'N/A' }}</td>
+                    <td>${company->website ?? 'N/A' }}</td>
+                    <td>${company->primary_phone_number ?? 'N/A' }}</td>
+                    <td>${company->secondary_phone_number ?? 'N/A' }}</td>
+                    <td>${company->country ?? 'N/A' }}</td>
+                    <td>${company->state ?? 'N/A' }}</td>
+                    <td>${company->address ?? 'N/A' }}</td>
+                    <td>${company->longitude ?? 'N/A' }}</td>
+                    <td>${company->latitude ?? 'N/A' }}</td>
+                    <td>${company->date_of_establishment ?? 'N/A' }}</td>
+                    <td>${company->number_of_employees ?? 'N/A' }}</td>
+                    <td>${company->industrial_process ?? 'N/A' }}</td>
+                    <td>${company->environmental_manager ?? 'N/A' }}</td>
+                    <td>${company->position ?? 'N/A' }}</td>
+                    <td>${company->contact_person ?? 'N/A' }}</td>
+                    <td>${company->objectives ?? 'N/A' }</td>
+                    <td>${company->recp_foresee ?? 'N/A' }</td>
+                    <td>${company->recp_benefits ?? 'N/A' }</td>
+                    <td>${company->gains ?? 'N/A' }</td>
+                    <td>${company->policy_objectives ?? 'N/A' }</td>
+                    <td>${company->good_housekeeping ?? 'N/A' }</td>
+                    <td>${company->process_intervention ?? 'N/A' }</td>
+                    <td>${company->unit_process ?? 'N/A' }</td>
+                    <td>${company->problem_solution ?? 'N/A' }</td>
+                    <td>${company->product_recovery ?? 'N/A' }</td>
+                    <td>${company->recovery_measures ?? 'N/A' }</td>
+                    <td>${company->training_needs ?? 'N/A' }</td>
+                    <td>${company->innovative_changes ?? 'N/A' }</td>
+                    <td>${company->hazardous_materials ?? 'N/A' }</td>
+                    <td>${company->water_usage ?? 'N/A' }</td>
+                    <td>${company->air_emission ?? 'N/A' }</td>
+                    <td>${company->waste_management ?? 'N/A' }</td>
+                </tr>
+            `;
+            companyTable.clear()
+            companyTable.row.add($(row)).draw();
         });
     });
     </script>
@@ -193,157 +286,179 @@
                     </div><!--end card-header-->
                     <div class="card-body pt-0 guard-table-section">
                     <div class="container mx-auto">
-                        <div class="overflow-x-auto shadow rounded-lg">
-                            <table class="min-w-full bg-white divide-y divide-gray-200" id="dynamicTable">
-                                <thead class="bg-gray-100">
-                                <tr class="">
-                                    <th rowspan="2">Company Name</th>
-                                    <th rowspan="2">Industry Sector</th>
-                                    <th rowspan="2">Email</th>
-                                    <th rowspan="2">Website</th>
-                                    <th colspan="2">Phone No.</th>
-                                    <th rowspan="2">Country</th>
-                                    <th rowspan="2">State/Province</th>
-                                    <th rowspan="2">Address</th>
-                                    <th colspan="2">Global Positioning system(GPS)</th>
-                                    <th rowspan="2">Date Of Est.</th>
-                                    <th rowspan="2">Number of Employees</th>
-                                    <th rowspan="2">Industrial Process Used</th>
-                                    <th rowspan="2">Assigned Environmental/Operations/Energy Manager</th>
-                                    <th rowspan="2">Position within the Organization</th>
-                                    <th rowspan="2">Contact Personel</th>
-                                    <th colspan="7">Objectives for the benefit of industrial sector</th>
-                                    <th rowspan="2">Does company foresee RECP processes increasing resource use efficiency ( energy productivity, materials productivity and water productivity ) while reducing pollution ( carbon intensity, wastewater intensity and waste intensity)?</th>
-                                    <th rowspan="2">It has been proven that the application of RECP methodologies provides several economic, environmental and social benefits</th>
-                                    <th colspan="8">List the gains company foresee becasue of the willingness to apply the RECP methodologies.</th>
-                                    <th rowspan="2">For effective management and performance, the company's policy should be in line with continuous application of an integrated preventive environmental strategy applied to products, process and servises, targeted to the overall increase in efficiency and reduction of risk to human and environment.</th>
-                                    <th colspan="6">The area(s) that company's policy and objective should reflect</th>
-                                    <th rowspan="2">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
-                                    <th colspan="5">good housekeeping options that company practice</th>
-                                    <th rowspan="2">specific process intervention opportunity that best fit into company production process based on local condition.</th>
-                                    <th rowspan="2">Because you best understand your process, kindly list all the unit process in your company that needs intervention, if any. Kindly use a seperate sheet of paper and attach as annex if need be.</th>
-                                    <th rowspan="2">Summarize the problem and suggest any possible/ appropriate solution</th>
-                                    <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?</th>
-                                    <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/Yes</th>
-                                    <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/No</th>
-                                    <th rowspan="2">Select the product recovery measures that you use to intend to use?</th>
-                                    <th colspan="8">Select the product recovery measures that you use to intend to use?</th>
-                                    <th rowspan="2">Equipment/Machinery and Training can save costly reworking, product loss and money, while reducing negative environmental impact</th>
-                                    <th rowspan="2">Changing the composition of the product can reduce the amount of waste resulting from the product use.</th>
-                                    <th rowspan="2">List 3-5 training needs/areas that can enhance work performance in your sector</th>
-                                    <th rowspan="2">State any innovative change in your product that can help to improve the environmental compatibility of your product life cycle</th>
-                                    <th rowspan="2">Reducing/eliminating hazardous materials that enter the production process can help to eliminate the discharge/emission of toxic waste into the environment</th>
-                                    <th rowspan="2">List 3-5 modern technology you may likely recommend for your operation, if any.</th>
-                                    <th rowspan="2">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
-                                    <th rowspan="2">Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production</th>
-                                    <th rowspan="2">Select the water conservation opportunity that is applicable or beneficial to your process.</th>
-                                    <th colspan="8">Select the water conservation opportunity that is applicable or beneficial to your process</th>
-                                    <th colspan="{{ $total_water_sources }}">Indicate your water source(s) and quantity used in the last 3 years</th>
-                                    <th colspan="3">Water Usage</th>
-                                    <th rowspan="2">Air Emission Quality Management. Emission of greenhouse gases and other toxic chemicals are the major causes of air pollution and climate change.</th>
-                                    <th rowspan="2">It is very important for industries to put measures in a place to control air pollution and minimize climate change</th>
-                                    <th colspan="9">Please select the options that you apply or wish that you apply in you local process condition</th>
-                                    <th rowspan="2">Unit Process of Water Balance</th>
-                                    <th rowspan="2">Unit process of chemical balance</th>
-                                    <th rowspan="2">Unit process/ Solid or semi-solid</th>
-                                    <th rowspan="2">Unit process and raw materials susceptible to air pollution</th>
-                                    <th rowspan="2">Describe your Process flow/Unit operations</th>
-                                    <th rowspan="2">List any hazardous material that can be reduced, eliminated, or replaced with less hazardous material in your process system, if any.</th>
-                                    <th colspan="{{ $total_materials*2 }}">Resources Consumed in the Last Two Years</th>
-                                    <th rowspan="2">Quantity of waste generated by the company in year</th>
-                                    <th rowspan="2">Wastewater Analysis</th>
-                                    <th rowspan="2">Emission /Air Quality & Noise</th>
-                                    <th colspan="4">Method used for managing waste by company</th>
-                                    <th colspan="">RECP measures in place in company.</th>
-                                    <th rowspan="2">willingness to collaborate with the project for an in-depth assessment and study of adopting the RECP methodology</th>
-                                    <th rowspan="2">Contact Company</th>
-                                    <th rowspan="2">_validation_status</th>
-                                </tr>
-                                <tr>
-                                    <th>Primary</th>
-                                    <th>Secondary</th>
-                                    <th>Longitude(Lon)</th>
-                                    <th>Latitude(Lat)</th>
-                                    <th>To develop policy and regulation that deliver economic, human and environmental health gains to your company.</th>
-                                    <th>Retrieving data. Wait a few seconds and try to cut or copy again.</th>
-                                    <th>To impact RECP technical training (including all support resource packages, toolkits and learning materials) to various staff and employees of Nigerian's industrial and manufacturing sector</th>
-                                    <th>To strengthen internal capacity of RECP training anD related technical assistance to you enterprise on a long term and ultimately commercial sustainable basis</th>
-                                    <th>To create awareness and demonstrate pilot programs on RECP to improve productive use of manufacturing inputs (water, chemicals, & materials), waste/emission minimization in your industrial sector within the scope of regulatory compliance and increased competitiveness </th>
-                                    <th>To increase the up-take of RECP implementation and associated investment through a limited financial investment assistance package for participating RECP pilot companies</th>
-                                    <th>To transfer the cost-saving benefits of RECP to your industrial manufacturing sector through increased access to financial mechanisms (commercial & Government) needed for the financing of RECP projects</th>
-                                    <th>Reduction / energy saving by at least 20% in 1 year.</th>
-                                    <th>40% reduction of Co2 in 1.5 years</th>
-                                    <th>Increase in your water productivity by 100% in 1 year</th>
-                                    <th>Increase in your material productivity by 50% in 1 year</th>
-                                    <th>Obtain an ISO 14000 series certification</th>
-                                    <th>Increase in overall financial annual savings</th>
-                                    <th>Improved customeer satisfaction</th>
-                                    <th>Others</th>
-                                    <th>Material optimization</th>
-                                    <th>Waste minimization</th>
-                                    <th>Measurable and timely targets </th>
-                                    <th>Innovation</th>
-                                    <th> Sustainability</th>
-                                    <th>Human/environmental health</th>
-                                    <th>Attitudinal change (negligence attitude)</th>
-                                    <th>Improved workplace management</th>
-                                    <th>Good operating practices (personnel practices, waste segregation etc.)</th>
-                                    <th>Workers motivation</th>
-                                    <th>Others</th>
-                                    <th>High temperature recovery method</th>
-                                    <th>Using correct material ratio</th>
-                                    <th>Using standard measuring equipment</th>
-                                    <th>Adequate chemical/material storage facility</th>
-                                    <th>Adequate container seal to prevent spill</th>
-                                    <th>Recycling</th>
-                                    <th>Filtration</th>
-                                    <th>Others</th>
-                                    <th>Establishment of a serious recycling measure</th>
-                                    <th>Using brooms or cloths to remove as much solid or semi-solid waste as possible from the floors or machinery before rinsing them down with water</th>
-                                    <th>Dry clean-up method</th>
-                                    <th>Installation of self-closing taps and water meters to control water consumption</th>
-                                    <th>Timely identification and repair of broken pipes and leakages</th>
-                                    <th>Prevention of loose valves or hoses from being left running without attention</th>
-                                    <th>The use of automatic shutoffs/flow limits where necessary</th>
-                                    <th>Others</th>
-                                    @foreach ($all_water_sources as $source)
-                                        <th>{{ $source->sources }}</th>
+                            <div class="overflow-x-auto shadow rounded-lg" style="overflow-x:auto;">
+                                <table class="min-w-full bg-whit divide-y divide-gray-200 table table-bordered" id="companiesTabl">
+                                    <thead class="bg-gray-100">
+                                    <tr class="">
+                                        <th rowspan="2">Company Name</th>
+                                        <th rowspan="2">Industry Sector</th>
+                                        <th rowspan="2">Email</th>
+                                        <th rowspan="2">Website</th>
+                                        <th colspan="2">Phone No.</th>
+                                        <th rowspan="2">Country</th>
+                                        <th rowspan="2">State/Province</th>
+                                        <th rowspan="2">Address</th>
+                                        <th colspan="2">Global Positioning system(GPS)</th>
+                                        <th rowspan="2">Date Of Est.</th>
+                                        <th rowspan="2">Number of Employees</th>
+                                        <th rowspan="2">Industrial Process Used</th>
+                                        <th rowspan="2">Assigned Environmental/Operations/Energy Manager</th>
+                                        <th rowspan="2">Position within the Organization</th>
+                                        <th rowspan="2">Contact Personel</th>
+                                        <th colspan="7">Objectives for the benefit of industrial sector</th>
+                                        <th rowspan="2">Does company foresee RECP processes increasing resource use efficiency ( energy productivity, materials productivity and water productivity ) while reducing pollution ( carbon intensity, wastewater intensity and waste intensity)?</th>
+                                        <th rowspan="2">It has been proven that the application of RECP methodologies provides several economic, environmental and social benefits</th>
+                                        <th colspan="8">List the gains company foresee becasue of the willingness to apply the RECP methodologies.</th>
+                                        <th rowspan="2">For effective management and performance, the company's policy should be in line with continuous application of an integrated preventive environmental strategy applied to products, process and servises, targeted to the overall increase in efficiency and reduction of risk to human and environment.</th>
+                                        <th colspan="6">The area(s) that company's policy and objective should reflect</th>
+                                        <th rowspan="2">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
+                                        <th colspan="5">good housekeeping options that company practice</th>
+                                        <th rowspan="2">specific process intervention opportunity that best fit into company production process based on local condition.</th>
+                                        <th rowspan="2">Because you best understand your process, kindly list all the unit process in your company that needs intervention, if any. Kindly use a seperate sheet of paper and attach as annex if need be.</th>
+                                        <th rowspan="2">Summarize the problem and suggest any possible/ appropriate solution</th>
+                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?</th>
+                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/Yes</th>
+                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/No</th>
+                                        <th rowspan="2">Select the product recovery measures that you use to intend to use?</th>
+                                        <th colspan="8">Select the product recovery measures that you use to intend to use?</th>
+                                        <th rowspan="2">Equipment/Machinery and Training can save costly reworking, product loss and money, while reducing negative environmental impact</th>
+                                        <th rowspan="2">Changing the composition of the product can reduce the amount of waste resulting from the product use.</th>
+                                        <th rowspan="2">List 3-5 training needs/areas that can enhance work performance in your sector</th>
+                                        <th rowspan="2">State any innovative change in your product that can help to improve the environmental compatibility of your product life cycle</th>
+                                        <th rowspan="2">Reducing/eliminating hazardous materials that enter the production process can help to eliminate the discharge/emission of toxic waste into the environment</th>
+                                        <th rowspan="2">List 3-5 modern technology you may likely recommend for your operation, if any.</th>
+                                        <th rowspan="2">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
+                                        <th rowspan="2">Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production</th>
+                                        <th rowspan="2">Select the water conservation opportunity that is applicable or beneficial to your process.</th>
+                                        <th colspan="8">Select the water conservation opportunity that is applicable or beneficial to your process</th>
+                                        <th colspan="{{ $total_water_sources }}">Indicate your water source(s) and quantity used in the last 3 years</th>
+                                        <th colspan="3">Water Usage</th>
+                                        <th rowspan="2">Air Emission Quality Management. Emission of greenhouse gases and other toxic chemicals are the major causes of air pollution and climate change.</th>
+                                        <th rowspan="2">It is very important for industries to put measures in a place to control air pollution and minimize climate change</th>
+                                        <th colspan="9">Please select the options that you apply or wish that you apply in you local process condition</th>
+                                        <th rowspan="2">Unit Process of Water Balance</th>
+                                        <th rowspan="2">Unit process of chemical balance</th>
+                                        <th rowspan="2">Unit process/ Solid or semi-solid</th>
+                                        <th rowspan="2">Unit process and raw materials susceptible to air pollution</th>
+                                        <th rowspan="2">Describe your Process flow/Unit operations</th>
+                                        <th rowspan="2">List any hazardous material that can be reduced, eliminated, or replaced with less hazardous material in your process system, if any.</th>
+                                        <th colspan="{{ $total_materials*2 }}">Resources Consumed in the Last Two Years</th>
+                                        <th rowspan="2">Quantity of waste generated by the company in year</th>
+                                        <th rowspan="2">Wastewater Analysis</th>
+                                        <th rowspan="2">Emission /Air Quality & Noise</th>
+                                        <th colspan="4">Method used for managing waste by company</th>
+                                        <th colspan="">RECP measures in place in company.</th>
+                                        <th rowspan="2">willingness to collaborate with the project for an in-depth assessment and study of adopting the RECP methodology</th>
+                                        <th rowspan="2">Contact Company</th>
+                                        <th rowspan="2">_validation_status</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Primary</th>
+                                        <th>Secondary</th>
+                                        <th>Longitude(Lon)</th>
+                                        <th>Latitude(Lat)</th>
+                                        <th>To develop policy and regulation that deliver economic, human and environmental health gains to your company.</th>
+                                        <th>Retrieving data. Wait a few seconds and try to cut or copy again.</th>
+                                        <th>To impact RECP technical training (including all support resource packages, toolkits and learning materials) to various staff and employees of Nigerian's industrial and manufacturing sector</th>
+                                        <th>To strengthen internal capacity of RECP training anD related technical assistance to you enterprise on a long term and ultimately commercial sustainable basis</th>
+                                        <th>To create awareness and demonstrate pilot programs on RECP to improve productive use of manufacturing inputs (water, chemicals, & materials), waste/emission minimization in your industrial sector within the scope of regulatory compliance and increased competitiveness </th>
+                                        <th>To increase the up-take of RECP implementation and associated investment through a limited financial investment assistance package for participating RECP pilot companies</th>
+                                        <th>To transfer the cost-saving benefits of RECP to your industrial manufacturing sector through increased access to financial mechanisms (commercial & Government) needed for the financing of RECP projects</th>
+                                        <th>Reduction / energy saving by at least 20% in 1 year.</th>
+                                        <th>40% reduction of Co2 in 1.5 years</th>
+                                        <th>Increase in your water productivity by 100% in 1 year</th>
+                                        <th>Increase in your material productivity by 50% in 1 year</th>
+                                        <th>Obtain an ISO 14000 series certification</th>
+                                        <th>Increase in overall financial annual savings</th>
+                                        <th>Improved customeer satisfaction</th>
+                                        <th>Others</th>
+                                        <th>Material optimization</th>
+                                        <th>Waste minimization</th>
+                                        <th>Measurable and timely targets </th>
+                                        <th>Innovation</th>
+                                        <th> Sustainability</th>
+                                        <th>Human/environmental health</th>
+                                        <th>Attitudinal change (negligence attitude)</th>
+                                        <th>Improved workplace management</th>
+                                        <th>Good operating practices (personnel practices, waste segregation etc.)</th>
+                                        <th>Workers motivation</th>
+                                        <th>Others</th>
+                                        <th>High temperature recovery method</th>
+                                        <th>Using correct material ratio</th>
+                                        <th>Using standard measuring equipment</th>
+                                        <th>Adequate chemical/material storage facility</th>
+                                        <th>Adequate container seal to prevent spill</th>
+                                        <th>Recycling</th>
+                                        <th>Filtration</th>
+                                        <th>Others</th>
+                                        <th>Establishment of a serious recycling measure</th>
+                                        <th>Using brooms or cloths to remove as much solid or semi-solid waste as possible from the floors or machinery before rinsing them down with water</th>
+                                        <th>Dry clean-up method</th>
+                                        <th>Installation of self-closing taps and water meters to control water consumption</th>
+                                        <th>Timely identification and repair of broken pipes and leakages</th>
+                                        <th>Prevention of loose valves or hoses from being left running without attention</th>
+                                        <th>The use of automatic shutoffs/flow limits where necessary</th>
+                                        <th>Others</th>
+                                        @foreach ($all_water_sources as $source)
+                                            <th>{{ $source->sources }}</th>
+                                        @endforeach
+                                        <th>Water Consumption (Year 1)</th>
+                                        <th>Water Consumption (Year 2)</th>
+                                        <th>Water Consumption (Year 3)</th>
+                                        <th>To minimize the use of generating sets</th>
+                                        <th>Switch off electrical appliances when not in use</th>
+                                        <th>Use energy efficient devices</th>
+                                        <th>Substitute high yield pollutant raw materials with other less polluting materials</th>
+                                        <th>Fuel substituting (petrol and diesel can be replaced with compressed Natural Gas, solar and wind energy)</th>
+                                        <th>Maintain the unit process/equipment to minimize emission to pollutants</th>
+                                        <th>Diluting the air pollutants</th>
+                                        <th>Plant flowers and trees around the premises to reduce large number of pollutants in the air</th>
+                                        <th>Others</th>
+                                        @foreach ($all_materials as $material)
+                                            <th>{{ $material->material }} (Year 1)</th>
+                                            <th>{{ $material->material }} (Year 2)</th>
+                                        @endforeach
+                                        <th>Landfill</th>
+                                        <th>Recycling</th>
+                                        <th>Incineration</th>
+                                        <th>Composting</th>
+                                        <th>Water recycling flow</th>
+                                        <th>Wastewater treatment</th>
+                                        <th>Monitoring of the quality and quantity of wastewater</th>
+                                        <th>Using production equipment or technology that supports energy-efficient production</th>
+                                        <th>Use of waste for internal energy sources</th>
+                                        <th>Installation of lighting sensors</th>
+                                        <th>Utilization of sunlight for daytime lighting</th>
+                                        <th>Use of environmentally friendly/renewable energy</th>
+                                        <th>Recording of fuel usage</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-whit divide-y divide-gray-200">
+                                    @foreach($companies as $company)
+                                        <tr>
+                                            <td>{{ $company->company_name ?? 'N/A' }}</td>
+                                            <td>{{ $company->industry ?? 'N/A' }}</td>
+                                            <td>{{ $company->email ?? 'N/A' }}</td>
+                                            <td>{{ $company->website ?? 'N/A' }}</td>
+                                            <td>{{ $company->primary_phone_number ?? 'N/A' }}</td>
+                                            <td>{{ $company->secondary_phone_number ?? 'N/A' }}</td>
+                                            <td>{{ $company->country ?? 'N/A' }}</td>
+                                            <td>{{ $company->state ?? 'N/A' }}</td>
+                                            <td>{{ $company->address ?? 'N/A' }}</td>
+                                            <td>{{ $company->longitude ?? 'N/A' }}</td>
+                                            <td>{{ $company->latitude ?? 'N/A' }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($company->date_of_establishment)->format('l, d F Y') ?? 'N/A' }}</td>
+                                            <td>{{ $company->number_of_employees ?? 'N/A' }}</td>
+                                            <td>{{ $company->industry_process ?? 'N/A' }}</td>
+                                            <td>{{ $company->operations_manager ?? 'N/A' }}</td>
+                                            <td>{{ $company->position ?? 'N/A' }}</td>
+                                            <td>{{ $company->contact_person ?? 'N/A' }}</td>
+                                            <!-- Add other fields as necessary -->
+                                        </tr>
                                     @endforeach
-                                    <th>Water Consumption (Year 1)</th>
-                                    <th>Water Consumption (Year 2)</th>
-                                    <th>Water Consumption (Year 3)</th>
-                                    <th>To minimize the use of generating sets</th>
-                                    <th>Switch off electrical appliances when not in use</th>
-                                    <th>Use energy efficient devices</th>
-                                    <th>Substitute high yield pollutant raw materials with other less polluting materials</th>
-                                    <th>Fuel substituting (petrol and diesel can be replaced with compressed Natural Gas, solar and wind energy)</th>
-                                    <th>Maintain the unit process/equipment to minimize emission to pollutants</th>
-                                    <th>Diluting the air pollutants</th>
-                                    <th>Plant flowers and trees around the premises to reduce large number of pollutants in the air</th>
-                                    <th>Others</th>
-                                    @foreach ($all_materials as $material)
-                                        <th>{{ $material->material }} (Year 1)</th>
-                                        <th>{{ $material->material }} (Year 2)</th>
-                                    @endforeach
-                                    <th>Landfill</th>
-                                    <th>Recycling</th>
-                                    <th>Incineration</th>
-                                    <th>Composting</th>
-                                    <th>Water recycling flow</th>
-                                    <th>Wastewater treatment</th>
-                                    <th>Monitoring of the quality and quantity of wastewater</th>
-                                    <th>Using production equipment or technology that supports energy-efficient production</th>
-                                    <th>Use of waste for internal energy sources</th>
-                                    <th>Installation of lighting sensors</th>
-                                    <th>Utilization of sunlight for daytime lighting</th>
-                                    <th>Use of environmentally friendly/renewable energy</th>
-                                    <th>Recording of fuel usage</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                            </tbody>
-                            </table>
-                        </div>
+                                </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div><!--end card-body-->
                 </div><!--end card-->
