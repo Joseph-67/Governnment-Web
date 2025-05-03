@@ -354,6 +354,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
         Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
         Route::post('/save-company', 'store')->name('admin.store-company');
+        Route::get('/companies-data', 'getCompaniesData')->name('admin.companies-data');
     });
 
     // Company Material

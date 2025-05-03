@@ -352,6 +352,16 @@ class CompanyController extends WaterStockMovementController
     
         return view('displayCompany', compact('company'));
     }
+
+    public function getCompaniesData()
+    {
+        $data['pageTitle'] = 'Advance Companies Overview';
+        $data['companies'] = Company::with(['policies', 'objectives', 'operations', 'materials', 'waterSources', 'chemicals'])
+            ->where('status', 'active')
+            ->select('company_id', 'company_name', 'industry', 'email', 'primary_phone_number', 'country', 'state', 'city', 'address', 'zip_code', 'date_of_establishment', 'number_of_employees', 'created_at');
+        // $data = $data['companies']->get();
+        return view('components.reportinganalytics.companies-report', $data);
+    }
     
     // company 404
     public function index()
