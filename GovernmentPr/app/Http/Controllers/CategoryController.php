@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\category;
+use App\Models\CompanyWaste;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -26,6 +27,7 @@ class CategoryController extends Controller
     {
         //
         $data['categoryList']=category::get();
+        $data['wasteList'] = CompanyWaste::get();
         return view("components.apps.category", $data);
     }
 
