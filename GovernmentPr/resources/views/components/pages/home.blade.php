@@ -53,7 +53,7 @@
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=R6rchakWh5Q"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -91,7 +91,7 @@
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=K527oNxtO7o"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -129,7 +129,7 @@
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=K527oNxtO7o"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -558,11 +558,11 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec2.jpeg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
+                           <span>RECP ON CARBON</span>
                               <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
@@ -574,11 +574,11 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec3.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.35.jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
+                           <span>RECP ON CARBON</span>
                               <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
@@ -590,43 +590,11 @@
                   <div class="swiper-slide">
                      <div class="tp-project-item p-relative">
                         <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-secv1.jpg')}}" alt="">
+                           <img src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" alt="">
                         </div>
                         <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
                            <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
-                           </div>
-                           <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="swiper-slide">
-                     <div class="tp-project-item p-relative">
-                        <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-sec5.jpg')}}" alt="">
-                        </div>
-                        <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
-                           <div class="tp-project-content">
-                           <span>WORKSHOP & TRAINING</span>
-                              <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
-                           </div>
-                           <div class="tp-project-icon">
-                              <a href="portfolio-details.html"><i class="fa-regular fa-arrow-right"></i></a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="swiper-slide">
-                     <div class="tp-project-item p-relative">
-                        <div class="tp-project-thumb fix">
-                           <img src="{{asset('MainAssets/img/event/event-secv1.jpg')}}" alt="">
-                        </div>
-                        <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
-                           <div class="tp-project-content">
-                              <span>WORKSHOP & TRAINING</span>
+                           <span>RECP ON CARBON</span>
                               <h4 class="tp-project-title-sm"><a href="portfolio-details.html">ABUJA</a></h4>
                            </div>
                            <div class="tp-project-icon">
@@ -711,7 +679,7 @@
          <div class="col-xl-12">
             <div class="tp-video-content text-center">
                <div class="tp-video-content-icon-box">
-                  <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=xaufnElEtog"><i
+                  <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i
                         class="flaticon-play"></i></a>
                </div>
                <h6 class="tp-video-content-title">We Help You to Solve Climate Change Problems </h6>

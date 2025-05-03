@@ -523,7 +523,7 @@
             <div class="row align-items-center">
                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <div class="tp-copyright-left-text text-center text-md-start">
-                     <p>© Copyright 2023 by <a href="index.html#">Mayorx.com</a></p>
+                     <p>© Copyright 2025 by <a href="index.html#">Elite Tech. Dev.</a></p>
                   </div>
                </div>
                <div class="col-xl-6 col-lg-6 col-md-6 d-none col-sm-6 d-sm-block">
