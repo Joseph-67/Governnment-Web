@@ -93,7 +93,7 @@
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer"><i class="fa-sharp fa-light fa-play"></i></a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -509,7 +509,7 @@
                   <span><i class="flaticon-landscape"></i></span>
                </div>
                <div class="tp-funfact-2-content">
-                  <h4><em data-purecounter-duration="1" data-purecounter-end="150" class="purecounter">0</em></h4>
+                  <h4><em data-purecounter-duration="1" data-purecounter-end="150" class="purecounter">0</em>%</h4>
                   <span>Number of Companies</span>
                </div>
             </div>
@@ -881,12 +881,10 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" alt=""></a>
-                 
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.32.jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                  
-                  <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER CALLS ON NGOS</h5>
+                  <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER CALLS ON NGOS</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
                   </div>
@@ -896,11 +894,9 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.35.jpeg')}}" alt=""></a>
-                
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.35.jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                 
                   <h5 class="tp-blog__title-sm"><a href="blog-details.html">ENVIRONMENT MINISTER ASSURES WOMEN OF GOVERNMENT SUPPORT</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
@@ -911,11 +907,9 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
             <div class="tp-blog__item">
                <div class="tp-blog__thumb p-relative fix">
-                  <a href="#"><img class="w-100" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" alt=""></a>
-                
+                  <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg')}}" alt=""></a>
                </div>
                <div class="tp-blog__content-wrap">
-                  
                   <h5 class="tp-blog__title-sm"><a href="blog-details.html">PRESENTATION OF REPORT</a></h5>
                   <div class="tp-blog__link">
                      <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
