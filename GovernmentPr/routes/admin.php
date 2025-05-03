@@ -355,6 +355,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
         Route::post('/save-company', 'store')->name('admin.store-company');
         Route::get('/companies-data', 'getCompaniesData')->name('admin.companies-data');
+        Route::get('/companies-state', [CompanyController::class, 'getCompaniesByState'])->name('admin.companies-state');
     });
 
     // Company Material
