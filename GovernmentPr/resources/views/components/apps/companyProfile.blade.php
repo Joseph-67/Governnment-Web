@@ -2852,7 +2852,7 @@
                                                         <h5 class="border-bottom pb-2">Materials and Chemicals</h5>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="material-quantity-used-container-operation-log col-md-12">
+                                                        <div class="material-quantity-used-container-annual-operation-log col-md-12">
                                                             <div class="row g-2 align-items-end mb-3">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -2875,7 +2875,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="chemical-quantity-container-operation-log col-md-12">
+                                                        <div class="chemical-quantity-container-annual-operation-log col-md-12">
                                                             <div class="row g-2 align-items-end mb-3">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -5951,10 +5951,13 @@
             // Calculate material costs
             let totalMaterialCost = 0;
             document.querySelectorAll('.material-quantity-used-container-operation-log .row').forEach((row, i) => {
-                console.log(row);
+                // console.log(row, i);
+                // Fetch quantity and unit cost for each material used
                 const quantity = parseFloat(row.querySelector(`[name="material_used[${i}][quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="material_used[${i}][unit_quantity]"]`).value) || 0;
                 const unitCost = parseFloat(row.querySelector(`[name="material_used[${i}][unit_cost]"]`).value) || 0;
-                totalMaterialCost += quantity * unitCost;
+                const adjustedUnitQuantity = unitQuantity || 1; // Use 1 as a fallback
+                totalMaterialCost += (quantity / adjustedUnitQuantity) * unitCost;
             });
 
 
@@ -5962,8 +5965,10 @@
             let totalChemicalCost = 0;
             document.querySelectorAll('.chemical-quantity-container-operation-log .row').forEach((row, i) => {
                 const quantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_quantity]"]`).value) || 0;
                 const unitCost = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_cost]"]`).value) || 0;
-                totalChemicalCost += quantity * unitCost;
+                const adjustedUnitQuantity = unitQuantity || 1;
+                totalChemicalCost += (quantity / adjustedUnitQuantity) * unitCost;
             });
 
             // Calculate total cost
@@ -5973,11 +5978,14 @@
             // update the total cost
             document.getElementById('total_operation_cost').value = totalCost.toFixed(2);
             // Fetch product quantities
-            const productQuantities = document.querySelectorAll('[name="expected_quantity_produced_for_goods[]"]');
+            const productQuantities = document.querySelectorAll('.operation-log-product-quantity-container .row');
             let totalOutputQuantity = 0;
-
-            productQuantities.forEach(input => {
-                totalOutputQuantity += parseFloat(input.value) || 0;
+            console.log("Product Quantities:", productQuantities);
+            
+            productQuantities.forEach((row, i) => {
+                console.log(row, i);
+                totalOutputQuantity += parseFloat(row.querySelector(`[name="product_produced[${i}][quantity]"]`).value) || 0;
+                //  parseFloat(input.value) || 0;
             });
 
             // Ensure output quantity is valid
@@ -5988,7 +5996,8 @@
 
             // Calculate operation unit cost
             const operationUnitCost = totalCost / totalOutputQuantity;
-
+            console.log("Operation Unit Cost:", operationUnitCost);
+            
             // Update the Operation Unit Cost field
             document.getElementById('operation_unit_cost').value = operationUnitCost.toFixed(2);
         }
@@ -10037,6 +10046,7 @@
         document.querySelector('#edit-product-category-form').addEventListener('submit', function (e) {
             e.preventDefault();
             let formData = new FormData(this);
+            let url = "{{ route('admin.update-product-category') }}";
 
             fetch_cycle('--Update Product Category', url, 'POST', formData).then(result => {
                 console.log(result);
