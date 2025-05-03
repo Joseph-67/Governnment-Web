@@ -446,6 +446,10 @@
                                         </a>
                                         <div class="collapse" id="sidebarReportingAnalytics">
                                             <ul class="nav flex-column">
+                                                <!-- Reporting Analytics -->
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{{ route('admin.reporting-analytics') }}">Companies Overview</a>
+                                                </li><!--end nav-item-->
                                                 <!-- Production Reporting Pages -->
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="{{ route('admin.production-report') }}">Production Overview</a>
