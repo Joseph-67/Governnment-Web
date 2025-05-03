@@ -282,6 +282,11 @@
                             <div class="col">
                                 <h4 class="card-title">Managed Companies</h4>
                             </div><!--end col-->
+                            <div class="col-auto">
+                                <a href="" class="btn btn-success">
+                                    <i class="fas fa-file-excel"></i> Download Excel
+                                </a>
+                            </div>
                         </div><!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0 guard-table-section">
