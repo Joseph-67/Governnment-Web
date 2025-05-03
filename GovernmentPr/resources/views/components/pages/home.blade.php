@@ -257,8 +257,7 @@
             <div class="col-xl-6 col-lg-8 col-md-12">
                <div class="tp-about-content-wrap p-relative">
                   <div class="tp-about-text">
-                     <p>Resource Efficiency and Cleaner Production (RECP) is a key strategy for promoting sustainable industrial development in Nigeria. </p>
-                     <!-- <p>As the country seeks to reduce environmental impact while boosting economic growth, RECP offers practical solutions to minimize waste, optimize resource use, and encourage cleaner technologies across industries.</p> -->
+                      <p>Resource Efficiency and Cleaner Production (RECP) is a key strategy for promoting sustainable industrial development in Nigeria. As the country seeks to reduce environmental impact while boosting economic growth, RECP offers practical solutions to minimize waste, optimize resource use, and encourage cleaner technologies across industries.</p>
                   </div>
                   <div class="tp-about-city-info d-flex align-items-center">
                      <i class="flaticon-smart-city"></i>
@@ -509,7 +508,7 @@
                   <span><i class="flaticon-landscape"></i></span>
                </div>
                <div class="tp-funfact-2-content">
-                  <h4><em data-purecounter-duration="1" data-purecounter-end="150" class="purecounter">0</em>%</h4>
+                  <h4><em data-purecounter-duration="1" data-purecounter-end="150" class="purecounter">0</em></h4>
                   <span>Number of Companies</span>
                </div>
             </div>
@@ -730,7 +729,7 @@
                   <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i
                         class="flaticon-play"></i></a>
                </div>
-               <h6 class="tp-video-content-title">We Help You to Solve Climate Change Problems </h6>
+               <h6 class="tp-video-content-title" style="font-size: 2rem;">We Help You to Solve Your Business Problems And Maximize Profit </h6>
             </div>
          </div>
       </div>
