@@ -356,9 +356,36 @@ class CompanyController extends WaterStockMovementController
     public function getCompaniesData()
     {
         $data['pageTitle'] = 'Advance Companies Overview';
-        $data['companies'] = Company::with(['policies', 'objectives', 'operations', 'materials', 'waterSources', 'chemicals'])
+        $data['companies'] = Company::with(['companyMaterials', 'companyChemicals', 'stock_movements'])
             ->where('status', 'active')
-            ->select('company_id', 'company_name', 'industry', 'email', 'primary_phone_number', 'country', 'state', 'city', 'address', 'zip_code', 'date_of_establishment', 'number_of_employees', 'created_at');
+            ->get([
+            'company_id',
+            'company_name',
+            'industry',
+            'industry_process',
+            'email',
+            'primary_phone_number',
+            'secondary_phone_number',
+            'country',
+            'state',
+            'city',
+            'address',
+            'zip_code',
+            'longitude',
+            'latitude',
+            'mgrs',
+            'website_url',
+            'date_of_establishment',
+            'number_of_employees',
+            'operations_manager',
+            'contact_person_full_name',
+            'contact_person_position',
+            'contact_person_contact_number',
+            'is_sharable',
+            'status',
+            'created_at',
+            'updated_at'
+            ]);
         // $data = $data['companies']->get();
         $data['all_materials'] = Material::get(['materialID', 'material']);
         $data['all_water_sources'] = WaterSources::get(['WaterSourcesId', 'sources']);

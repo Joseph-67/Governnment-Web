@@ -40,12 +40,12 @@ class Company extends Model
 
     public function companyMaterials()
     {
-        return $this->hasMany(CompanyMaterial::class);
+        return $this->hasMany(CompanyMaterial::class, 'companyID', 'company_id');
     }
 
     public function companyChemicals()
     {
-        return $this->hasMany(CompanyChemical::class);
+        return $this->hasMany(CompanyChemical::class, 'company_id', 'company_id');
     }
 
     public function companyWaterConservations()
