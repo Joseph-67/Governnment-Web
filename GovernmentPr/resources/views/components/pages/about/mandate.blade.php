@@ -33,11 +33,28 @@
                <article class="postbox__item format-image mb-50 transition-3">
                  
                      <div class="postbox__text">
-                        <p>The Federal Ministry of Environment works to ensure environmental protection, natural resources conservation and sustainable development. 
-                            Since its  establishment, the Ministry has impacted on raising the issue of environmental consciousness in the minds of Nigerians as well as the interface with the Global environmental best practices. 
-                            It has focused on involving innovative strategies that emphasize the use of environmental re – engineering as a veritable tool for job creation, poverty eradication, ensuring food security, encouraging sustainable economic development and general improvement in the livelihood of Nigerian populace.
-                        
-                        </p>
+                        <p>Nigeria is a sovereign country located in West Africa Sub-region with a population estimate of 206,630,269 (September 2020 est.). Nigeria is made up of 36 States and the Federal Capital Territory, which is in Abuja. Nigeria is an industrial giant in Africa and needs all avenues to make its industrialization highly sustainable. Hence, the support for Resource Efficiency Cleaner Production (RECP) concepts in Nigeria is a high priority, for several reasons.</p>
+
+                        <ul>
+                           <li>First, most of the investment in capital endowment is rapidly taking place; this is a critical time to ensure that RECP concepts are disseminated rapidly. Any delay in the application of this concept will lead to the creation of a technology base that is highly consuming of natural resources. This will critically increase industrial impacts on the environment, due to intensified exploitation of these resources and because of an increase in the quantities of waste released into the natural environment. This will also put a deterrent on the industrial development of the country, by increasing more than is necessary the costs of purchasing the raw materials and energy necessary to feed this development.</li>
+                           <li>Second, by creating a base of cleaner technologies that will foster economic growth, to improve efficiency and economic investments, while discouraging non-friendly technologies. This will also institute effective environmental mainstreaming which, therefore, will be a broader affair than prevailing narrower approaches.</li>
+                        </ul>
+
+                        <p>Nigeria in her effort to domicile the international principles of RECP has developed a National Framework on RECP, with the goal to implement RECP at all levels of society for sustainability. This calls for the establishment of a network of institutions and individuals, who can act as catalysts and promoters of the concept. Furthermore, Resource Efficiency Cleaner Production strategies would thereby be integrated in various policies such as:</p>
+
+                        <ul>
+                           <li>Environmental policies.</li>
+                           <li>Industrial policies.</li>
+                           <li>Resource pricing policies.</li>
+                           <li>Trade policies.</li>
+                           <li>Fiscal policies.</li>
+                           <li>Educational policies.</li>
+                           <li>Technology development policies.</li>
+                        </ul>
+
+                        <p>Nigeria has been in the vanguard of economic systems that tackle global environmental challenges like climate change, biodiversity loss, waste, and pollution.</p>
+
+                        <p>With the understanding of the benefits of a circular economy, the Nigerian Circular Economy Road Map not only aligns with strategic global and continental objectives of a green and sustainable future but importantly provides the direction for a just and inclusive transition to a circular economy with a timespan until 2033. The efficient use of resources, such as water, chemicals, energy, materials, and Cleaner Production encourages secularity of economy.</p>
 
                         <div class="postbox__comment mb-80">
                            <!-- <h3 class="postbox__comment-title"></h3> -->
@@ -51,7 +68,7 @@
                                        <div class="postbox__comment-name p-relative">
                                           <h5>VISION</h5>
                                           <div class="postbox__comment-text">
-                                             <p>To be a Nation that develops in harmony with its environment.</p>
+                                             <p>To build a sustainable, industrialized Nigeria that minimizes environmental impact through the adoption of Resource Efficiency and Cleaner Production (RECP) strategies.</p>
                                           </div>
                                           <div class="postbox__comment-reply">
                                              <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +88,7 @@
                                        <div class="postbox__comment-name p-relative">
                                        <h5>MISSION</h5>
                                     <div class="postbox__comment-text">
-                                       <p>To ensure environmental protection, natural resources conservation and sustainable development.</p>
+                                       <p>To institutionalize RECP principles across all sectors by integrating them into national policies, educational frameworks, and technology development.</p>
                                     </div>
                                           <div class="postbox__comment-reply">
                                              <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +118,9 @@
                                                 </path>
                                              </svg>
                                           </span> 
-                                          Securing a quality environment conducive for good health and wellbeing of fauna and flora.
+                                          To accelerate the adoption of Industrial Energy Efficiency (IEE) practices across small, medium, and large-scale enterprises to enhance productivity and reduce energy consumption in Nigeria’s industrial sector.
+
+
                                        </li>
                                        <li>
                                           <span class="active"><svg width="14" height="14" viewBox="0 0 16 15"
@@ -111,41 +130,10 @@
                                                    fill="currentColor">
                                                 </path>
                                              </svg>
-                                          </span> Promoting sustainable use of natural resources.
+                                          </span> To improve environmental performance of industrial enterprises by promoting Resource Efficiency and Cleaner Production (RECP) best practices and innovative approaches.
                                        </li>
-                                       <li>
-                                          <span>
-                                             <svg width="14" height="14" viewBox="0 0 16 15" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                   d="M15.794 2.17595C14.426 3.42395 13.094 4.87595 11.798 6.53195C10.67 7.95995 9.656 9.42395 8.756 10.924C7.94 12.268 7.346 13.42 6.974 14.38C6.962 14.416 6.938 14.446 6.902 14.47C6.866 14.506 6.824 14.524 6.776 14.524C6.764 14.536 6.752 14.542 6.74 14.542C6.656 14.542 6.596 14.518 6.56 14.47L0.134 7.93595C0.122 7.92395 0.278 7.76795 0.602 7.46795C0.926 7.15595 1.244 6.87395 1.556 6.62195C1.904 6.33395 2.09 6.20195 2.114 6.22595L5.642 8.99795C6.674 7.78595 7.832 6.58595 9.116 5.39795C11.048 3.62195 13.04 2.10995 15.092 0.861953C15.128 0.861953 15.266 1.02995 15.506 1.36595L15.866 1.88795C15.878 1.93595 15.878 1.98995 15.866 2.04995C15.854 2.09795 15.83 2.13995 15.794 2.17595Z"
-                                                   fill="currentColor">
-                                                </path>
-                                             </svg>
-                                          </span> Restoring and maintaining the ecosystem, ecological process and preserve biodiversity.
-                                       </li>
-                                       <li>
-                                          <span>
-                                             <svg width="14" height="14" viewBox="0 0 16 15" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                   d="M15.794 2.17595C14.426 3.42395 13.094 4.87595 11.798 6.53195C10.67 7.95995 9.656 9.42395 8.756 10.924C7.94 12.268 7.346 13.42 6.974 14.38C6.962 14.416 6.938 14.446 6.902 14.47C6.866 14.506 6.824 14.524 6.776 14.524C6.764 14.536 6.752 14.542 6.74 14.542C6.656 14.542 6.596 14.518 6.56 14.47L0.134 7.93595C0.122 7.92395 0.278 7.76795 0.602 7.46795C0.926 7.15595 1.244 6.87395 1.556 6.62195C1.904 6.33395 2.09 6.20195 2.114 6.22595L5.642 8.99795C6.674 7.78595 7.832 6.58595 9.116 5.39795C11.048 3.62195 13.04 2.10995 15.092 0.861953C15.128 0.861953 15.266 1.02995 15.506 1.36595L15.866 1.88795C15.878 1.93595 15.878 1.98995 15.866 2.04995C15.854 2.09795 15.83 2.13995 15.794 2.17595Z"
-                                                   fill="currentColor">
-                                                </path>
-                                             </svg>
-                                          </span> Raising public awareness and promoting understanding of linkages of the environment.
-                                       </li>
-                                       <li>
-                                          <span>
-                                             <svg width="14" height="14" viewBox="0 0 16 15" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                   d="M15.794 2.17595C14.426 3.42395 13.094 4.87595 11.798 6.53195C10.67 7.95995 9.656 9.42395 8.756 10.924C7.94 12.268 7.346 13.42 6.974 14.38C6.962 14.416 6.938 14.446 6.902 14.47C6.866 14.506 6.824 14.524 6.776 14.524C6.764 14.536 6.752 14.542 6.74 14.542C6.656 14.542 6.596 14.518 6.56 14.47L0.134 7.93595C0.122 7.92395 0.278 7.76795 0.602 7.46795C0.926 7.15595 1.244 6.87395 1.556 6.62195C1.904 6.33395 2.09 6.20195 2.114 6.22595L5.642 8.99795C6.674 7.78595 7.832 6.58595 9.116 5.39795C11.048 3.62195 13.04 2.10995 15.092 0.861953C15.128 0.861953 15.266 1.02995 15.506 1.36595L15.866 1.88795C15.878 1.93595 15.878 1.98995 15.866 2.04995C15.854 2.09795 15.83 2.13995 15.794 2.17595Z"
-                                                   fill="currentColor">
-                                                </path>
-                                             </svg>
-                                          </span> Cooperating with relevant MDAs, the private sector, NGOs, and International organizations on environmental matters.
-                                       </li>
+
+                                      
                                     </ul>
                                  </div>
                               </div>
