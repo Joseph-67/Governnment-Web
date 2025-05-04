@@ -256,7 +256,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card card-body">
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
@@ -269,13 +269,13 @@
                             </div>
                         </div><!--end row-->
                     </div><!--end card-header-->
-                    <div class="card-body pt-0 guard-table-section">
-                    <div class="container mx-auto">
-                        <div class="overflow-x-auto shadow rounded-lg" style="overflow-x:auto;">
-                                <table class="min-w-full table table-light table-bordered table-auto" id="companiesTabl">
-                                    <thead class="">
+                    <div class="pt-0 guard-table-section">
+                    <div class="container-fluid">
+                        <div class="overflow-x-auto rounded-lg" style="overflow-x:auto;">
+                                <table class="min-w-full table table-light table-bordered table-auto" id="companiesTable">
+                                    <thead class="table-dark text-center align-middle" style="position: sticky; top: 0; z-index: 1;">
                                         <tr>
-                                            <th rowspan="2" class="w-450">Company Name</th>
+                                            <th rowspan="2" class="">Company Name</th>
                                             <th rowspan="2">Industry Sector</th>
                                             <th rowspan="2">Email</th>
                                             <th rowspan="2">Website</th>
@@ -310,8 +310,6 @@
                                             <th rowspan="2" class="w-450">Innovative changes in product that can help to improve the environmental compatibility of product life cycle</th>
                                             <th rowspan="2" class="w-450">Reducing/eliminating hazardous materials that enter the production process can help to eliminate the discharge/emission of toxic waste into the environment</th>
                                             <th rowspan="2" class="w-450">List 3-5 modern technology you may likely recommend for your operation, if any.</th>
-                                            <!-- <th rowspan="2" class="w-450">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
-                                            <th rowspan="2" class="w-450">Using water more efficientlyt guarantees less costly production and ensures against water shortages that could interrupt production</th> -->
                                             @foreach ($all_water_questions as $question)
                                                 <th rowspan="2">{{ $question->question ?? '' }}</th>
                                             @endforeach
@@ -490,7 +488,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $objectiveValue ? $objectiveValue->benefit_title : 'No' }}
+                                                        {{ $objectiveValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 <td>N/A</td>
@@ -515,7 +513,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $gainValue ? $gainValue->environmental_benefit_title : 'No' }}
+                                                        {{ $gainValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 <td>N/A</td>
@@ -550,7 +548,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $policyValue ? $policyValue->policy_title : 'No' }}
+                                                        {{ $policyValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 @foreach ($company_objectives as $objective)
@@ -562,7 +560,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $objectiveValue ? $objectiveValue->objective_title : 'No' }}
+                                                        {{ $objectiveValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 <td>N/A</td>
@@ -585,7 +583,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $changeValue ? $changeValue->practice_title : 'No' }}
+                                                        {{ $changeValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 <td>N/A</td>
@@ -646,7 +644,7 @@
                                                     @endphp
 
                                                     <td>
-                                                        {{ $measureValue ? $measureValue->recovery_method_title : 'No' }}
+                                                        {{ $measureValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
                                                 <td>N/A</td>
@@ -776,8 +774,7 @@
                                                     @php
                                                     $lastTwoYears = [date('Y'), date('Y') - 1];
                                                     foreach ($lastTwoYears as $year) {
-                                                        $materialUsage = DB::table('stock_movements')
-                                                            ->where('companyID', $company->company_id) // Filter by company ID
+                                                        $materialUsage = \App\Models\stock_movement::where('companyID', $company->company_id) // Filter by company ID
                                                             ->where('materialID', $material->materialID) // Filter by material ID
                                                             ->whereYear('movement_date', $year) // Filter by year
                                                             ->where('movement_type', 'out') // Only "out" movements
@@ -861,10 +858,10 @@
                                                     <td>
                                                         {{ $measureValue ? '✔️' : '❌' }}
                                                     </td>
-                                                    <td>N/A</td>
-                                                    <td>N/A</td>
-                                                    <td>N/A</td>
                                                 @endforeach
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
