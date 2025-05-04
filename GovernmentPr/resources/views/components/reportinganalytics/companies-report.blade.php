@@ -17,18 +17,23 @@
             table-layout: auto; /* Ensures columns stretch based on content */
         }
         th, td {
-            border: 1px solid #ddd;
+            /* border: 1px solid #ddd; */
             text-align: left;
             padding: 8px;
             vertical-align: top; /* Aligns content to the top for better readability */
+            min-width: 250px;
         }
         th {
-            background-color: #f4f4f4;
+            /* background-color: #f4f4f4; */
             font-weight: bold;
+            font-size: 14px;
         }
         td, th {
             word-wrap: break-word; /* Allows long words to break onto the next line */
             overflow-wrap: break-word;
+        }
+        .w-450{
+            min-width: 500px;
         }
         </style>
 
@@ -247,7 +252,7 @@
     });
     </script>
     @endsection
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-md-12">
                 <!-- Page Header -->
@@ -291,177 +296,337 @@
                     </div><!--end card-header-->
                     <div class="card-body pt-0 guard-table-section">
                     <div class="container mx-auto">
-                            <div class="overflow-x-auto shadow rounded-lg" style="overflow-x:auto;">
-                                <table class="min-w-full bg-whit divide-y divide-gray-200 table table-bordered" id="companiesTabl">
-                                    <thead class="bg-gray-100">
-                                    <tr class="">
-                                        <th rowspan="2">Company Name</th>
-                                        <th rowspan="2">Industry Sector</th>
-                                        <th rowspan="2">Email</th>
-                                        <th rowspan="2">Website</th>
-                                        <th colspan="2">Phone No.</th>
-                                        <th rowspan="2">Country</th>
-                                        <th rowspan="2">State/Province</th>
-                                        <th rowspan="2">Address</th>
-                                        <th colspan="2">Global Positioning system(GPS)</th>
-                                        <th rowspan="2">Date Of Est.</th>
-                                        <th rowspan="2">Number of Employees</th>
-                                        <th rowspan="2">Industrial Process Used</th>
-                                        <th rowspan="2">Assigned Environmental/Operations/Energy Manager</th>
-                                        <th rowspan="2">Position within the Organization</th>
-                                        <th rowspan="2">Contact Personel</th>
-                                        <th colspan="7">Objectives for the benefit of industrial sector</th>
-                                        <th rowspan="2">Does company foresee RECP processes increasing resource use efficiency ( energy productivity, materials productivity and water productivity ) while reducing pollution ( carbon intensity, wastewater intensity and waste intensity)?</th>
-                                        <th rowspan="2">It has been proven that the application of RECP methodologies provides several economic, environmental and social benefits</th>
-                                        <th colspan="8">List the gains company foresee becasue of the willingness to apply the RECP methodologies.</th>
-                                        <th rowspan="2">For effective management and performance, the company's policy should be in line with continuous application of an integrated preventive environmental strategy applied to products, process and servises, targeted to the overall increase in efficiency and reduction of risk to human and environment.</th>
-                                        <th colspan="6">The area(s) that company's policy and objective should reflect</th>
-                                        <th rowspan="2">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
-                                        <th colspan="5">good housekeeping options that company practice</th>
-                                        <th rowspan="2">specific process intervention opportunity that best fit into company production process based on local condition.</th>
-                                        <th rowspan="2">Because you best understand your process, kindly list all the unit process in your company that needs intervention, if any. Kindly use a seperate sheet of paper and attach as annex if need be.</th>
-                                        <th rowspan="2">Summarize the problem and suggest any possible/ appropriate solution</th>
-                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?</th>
-                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/Yes</th>
-                                        <th rowspan="2">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?/No</th>
-                                        <th rowspan="2">Select the product recovery measures that you use to intend to use?</th>
-                                        <th colspan="8">Select the product recovery measures that you use to intend to use?</th>
-                                        <th rowspan="2">Equipment/Machinery and Training can save costly reworking, product loss and money, while reducing negative environmental impact</th>
-                                        <th rowspan="2">Changing the composition of the product can reduce the amount of waste resulting from the product use.</th>
-                                        <th rowspan="2">List 3-5 training needs/areas that can enhance work performance in your sector</th>
-                                        <th rowspan="2">State any innovative change in your product that can help to improve the environmental compatibility of your product life cycle</th>
-                                        <th rowspan="2">Reducing/eliminating hazardous materials that enter the production process can help to eliminate the discharge/emission of toxic waste into the environment</th>
-                                        <th rowspan="2">List 3-5 modern technology you may likely recommend for your operation, if any.</th>
-                                        <th rowspan="2">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
-                                        <th rowspan="2">Using water more efficiently guarantees less costly production and ensures against water shortages that could interrupt production</th>
-                                        <th rowspan="2">Select the water conservation opportunity that is applicable or beneficial to your process.</th>
-                                        <th colspan="8">Select the water conservation opportunity that is applicable or beneficial to your process</th>
-                                        <th colspan="{{ $total_water_sources }}">Indicate your water source(s) and quantity used in the last 3 years</th>
-                                        <th colspan="3">Water Usage</th>
-                                        <th rowspan="2">Air Emission Quality Management. Emission of greenhouse gases and other toxic chemicals are the major causes of air pollution and climate change.</th>
-                                        <th rowspan="2">It is very important for industries to put measures in a place to control air pollution and minimize climate change</th>
-                                        <th colspan="9">Please select the options that you apply or wish that you apply in you local process condition</th>
-                                        <th rowspan="2">Unit Process of Water Balance</th>
-                                        <th rowspan="2">Unit process of chemical balance</th>
-                                        <th rowspan="2">Unit process/ Solid or semi-solid</th>
-                                        <th rowspan="2">Unit process and raw materials susceptible to air pollution</th>
-                                        <th rowspan="2">Describe your Process flow/Unit operations</th>
-                                        <th rowspan="2">List any hazardous material that can be reduced, eliminated, or replaced with less hazardous material in your process system, if any.</th>
-                                        <th colspan="{{ $total_materials*2 }}">Resources Consumed in the Last Two Years</th>
-                                        <th rowspan="2">Quantity of waste generated by the company in year</th>
-                                        <th rowspan="2">Wastewater Analysis</th>
-                                        <th rowspan="2">Emission /Air Quality & Noise</th>
-                                        <th colspan="4">Method used for managing waste by company</th>
-                                        <th colspan="">RECP measures in place in company.</th>
-                                        <th rowspan="2">willingness to collaborate with the project for an in-depth assessment and study of adopting the RECP methodology</th>
-                                        <th rowspan="2">Contact Company</th>
-                                        <th rowspan="2">_validation_status</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Primary</th>
-                                        <th>Secondary</th>
-                                        <th>Longitude(Lon)</th>
-                                        <th>Latitude(Lat)</th>
-                                        <th>To develop policy and regulation that deliver economic, human and environmental health gains to your company.</th>
-                                        <th>Retrieving data. Wait a few seconds and try to cut or copy again.</th>
-                                        <th>To impact RECP technical training (including all support resource packages, toolkits and learning materials) to various staff and employees of Nigerian's industrial and manufacturing sector</th>
-                                        <th>To strengthen internal capacity of RECP training anD related technical assistance to you enterprise on a long term and ultimately commercial sustainable basis</th>
-                                        <th>To create awareness and demonstrate pilot programs on RECP to improve productive use of manufacturing inputs (water, chemicals, & materials), waste/emission minimization in your industrial sector within the scope of regulatory compliance and increased competitiveness </th>
-                                        <th>To increase the up-take of RECP implementation and associated investment through a limited financial investment assistance package for participating RECP pilot companies</th>
-                                        <th>To transfer the cost-saving benefits of RECP to your industrial manufacturing sector through increased access to financial mechanisms (commercial & Government) needed for the financing of RECP projects</th>
-                                        <th>Reduction / energy saving by at least 20% in 1 year.</th>
-                                        <th>40% reduction of Co2 in 1.5 years</th>
-                                        <th>Increase in your water productivity by 100% in 1 year</th>
-                                        <th>Increase in your material productivity by 50% in 1 year</th>
-                                        <th>Obtain an ISO 14000 series certification</th>
-                                        <th>Increase in overall financial annual savings</th>
-                                        <th>Improved customeer satisfaction</th>
-                                        <th>Others</th>
-                                        <th>Material optimization</th>
-                                        <th>Waste minimization</th>
-                                        <th>Measurable and timely targets </th>
-                                        <th>Innovation</th>
-                                        <th> Sustainability</th>
-                                        <th>Human/environmental health</th>
-                                        <th>Attitudinal change (negligence attitude)</th>
-                                        <th>Improved workplace management</th>
-                                        <th>Good operating practices (personnel practices, waste segregation etc.)</th>
-                                        <th>Workers motivation</th>
-                                        <th>Others</th>
-                                        <th>High temperature recovery method</th>
-                                        <th>Using correct material ratio</th>
-                                        <th>Using standard measuring equipment</th>
-                                        <th>Adequate chemical/material storage facility</th>
-                                        <th>Adequate container seal to prevent spill</th>
-                                        <th>Recycling</th>
-                                        <th>Filtration</th>
-                                        <th>Others</th>
-                                        <th>Establishment of a serious recycling measure</th>
-                                        <th>Using brooms or cloths to remove as much solid or semi-solid waste as possible from the floors or machinery before rinsing them down with water</th>
-                                        <th>Dry clean-up method</th>
-                                        <th>Installation of self-closing taps and water meters to control water consumption</th>
-                                        <th>Timely identification and repair of broken pipes and leakages</th>
-                                        <th>Prevention of loose valves or hoses from being left running without attention</th>
-                                        <th>The use of automatic shutoffs/flow limits where necessary</th>
-                                        <th>Others</th>
-                                        @foreach ($all_water_sources as $source)
-                                            <th>{{ $source->sources }}</th>
-                                        @endforeach
-                                        <th>Water Consumption (Year 1)</th>
-                                        <th>Water Consumption (Year 2)</th>
-                                        <th>Water Consumption (Year 3)</th>
-                                        <th>To minimize the use of generating sets</th>
-                                        <th>Switch off electrical appliances when not in use</th>
-                                        <th>Use energy efficient devices</th>
-                                        <th>Substitute high yield pollutant raw materials with other less polluting materials</th>
-                                        <th>Fuel substituting (petrol and diesel can be replaced with compressed Natural Gas, solar and wind energy)</th>
-                                        <th>Maintain the unit process/equipment to minimize emission to pollutants</th>
-                                        <th>Diluting the air pollutants</th>
-                                        <th>Plant flowers and trees around the premises to reduce large number of pollutants in the air</th>
-                                        <th>Others</th>
-                                        @foreach ($all_materials as $material)
-                                            <th>{{ $material->material }} (Year 1)</th>
-                                            <th>{{ $material->material }} (Year 2)</th>
-                                        @endforeach
-                                        <th>Landfill</th>
-                                        <th>Recycling</th>
-                                        <th>Incineration</th>
-                                        <th>Composting</th>
-                                        <th>Water recycling flow</th>
-                                        <th>Wastewater treatment</th>
-                                        <th>Monitoring of the quality and quantity of wastewater</th>
-                                        <th>Using production equipment or technology that supports energy-efficient production</th>
-                                        <th>Use of waste for internal energy sources</th>
-                                        <th>Installation of lighting sensors</th>
-                                        <th>Utilization of sunlight for daytime lighting</th>
-                                        <th>Use of environmentally friendly/renewable energy</th>
-                                        <th>Recording of fuel usage</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-whit divide-y divide-gray-200">
-                                    @foreach($companies as $company)
+                        <div class="overflow-x-auto shadow rounded-lg" style="overflow-x:auto;">
+                                <table class="min-w-full table table-light table-bordered table-auto" id="companiesTable">
+                                    <thead class="">
                                         <tr>
-                                            <td>{{ $company->company_name ?? 'N/A' }}</td>
-                                            <td>{{ $company->industry ?? 'N/A' }}</td>
-                                            <td>{{ $company->email ?? 'N/A' }}</td>
-                                            <td>{{ $company->website ?? 'N/A' }}</td>
-                                            <td>{{ $company->primary_phone_number ?? 'N/A' }}</td>
-                                            <td>{{ $company->secondary_phone_number ?? 'N/A' }}</td>
-                                            <td>{{ $company->country ?? 'N/A' }}</td>
-                                            <td>{{ $company->state ?? 'N/A' }}</td>
-                                            <td>{{ $company->address ?? 'N/A' }}</td>
-                                            <td>{{ $company->longitude ?? 'N/A' }}</td>
-                                            <td>{{ $company->latitude ?? 'N/A' }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($company->date_of_establishment)->format('l, d F Y') ?? 'N/A' }}</td>
-                                            <td>{{ $company->number_of_employees ?? 'N/A' }}</td>
-                                            <td>{{ $company->industry_process ?? 'N/A' }}</td>
-                                            <td>{{ $company->operations_manager ?? 'N/A' }}</td>
-                                            <td>{{ $company->position ?? 'N/A' }}</td>
-                                            <td>{{ $company->contact_person ?? 'N/A' }}</td>
-                                            <!-- Add other fields as necessary -->
+                                            <th rowspan="2" class="w-450">Company Name</th>
+                                            <th rowspan="2">Industry Sector</th>
+                                            <th rowspan="2">Email</th>
+                                            <th rowspan="2">Website</th>
+                                            <th colspan="2" class="text-center">Phone No.</th>
+                                            <th rowspan="2">Country</th>
+                                            <th rowspan="2">State/Province</th>
+                                            <th rowspan="2">Address</th>
+                                            <th colspan="2" class="text-center">GPS</th>
+                                            <th rowspan="2">Date Of Est.</th>
+                                            <th rowspan="2">Number of Employees</th>
+                                            <th rowspan="2">Industrial Process Used</th>
+                                            <th rowspan="2">Assigned Environmental/Operations/Energy Manager</th>
+                                            <th rowspan="2">Position within the Organization</th>
+                                            <th rowspan="2">Contact Personnel</th>
+                                            <th colspan="7" class="text-center">Industrial Sector Objectives</th>
+                                            <th rowspan="2" class="w-450">Does the company foresee RECP processes increasing resource use efficiency?</th>
+                                            <th rowspan="2" class="w-450">It has been proven that the application of RECP methodologies provides several economic, environmental and social benefits</th>
+                                            <th colspan="8" class="w-450">Gains from RECP methodologies</th>
+                                            <th rowspan="2" class="w-450">Company's policy alignment with RECP strategy</th>
+                                            <th colspan="6" class="">Policy Areas</th>
+                                            <th colspan="9" class="">Objective Areas</th>
+                                            <th rowspan="2" class="w-450">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
+                                            <th colspan="5" class="w-450">Housekeeping Options</th>
+                                            <th rowspan="2" class="w-450">This option describes a specific process intervention opportunity that best fit into your production process based on your local condition. However, this may not necessarily be and advantager for every industry within your sector. In making this critical desition, it is important to consider the following: Cost Benefit analysis, Improvements in product quality, Increase in overall yield. Please rate how best you understand your internal production process?</th>
+                                            <th rowspan="2" class="w-450">Unit processes requiring intervention</th>
+                                            <th rowspan="2" class="w-450">Problem summary and solutions</th>
+                                            <th rowspan="2" class="w-450">Some of the most important industrial materials are the input raw materials and finished products. These products must be properly utilized with the aid of RECP, in order to save money and prevent threat to public health. Do your process support product recovery measures?</th>
+                                            <th colspan="8">Product Recovery Measures Used</th>
+                                            <th rowspan="2" class="w-450">Equipment/Machinery and Training can save costly reworking, product loss and money, while reducing negative environmental impact</th>
+                                            <th rowspan="2" class="w-450">Changing the composition of the product can reduce the amount of waste resulting from the product use.</th>
+                                            <th rowspan="2" class="w-450">Areas that can enhance work performance in your sector</th>
+                                            <th rowspan="2" class="w-450">Innovative changes in product that can help to improve the environmental compatibility of product life cycle</th>
+                                            <th rowspan="2" class="w-450">Hazardous Materials Reduction</th>
+                                            <th rowspan="2" class="w-450">Recommended Modern Technologies</th>
+                                            <th rowspan="2" class="w-450">Water Use in Manufacturing</th>
+                                            <th rowspan="2" class="w-450">Efficient Water Use</th>
+                                            <th rowspan="2" class="w-450">Water Conservation Opportunities</th>
+                                            <th colspan="8" class="w-450">Water Conservation Options</th>
+                                            <th colspan="3">Water Usage Data</th>
+                                            <th rowspan="2" class="w-450">Air Emission Quality Management</th>
+                                            <th rowspan="2" class="w-450">Measures to Control Air Pollution</th>
+                                            <th colspan="9">Air Pollution Control Options</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
+                                        <tr>
+                                            <th>Primary</th>
+                                            <th>Secondary</th>
+                                            <th>Longitude</th>
+                                            <th>Latitude</th>
+                                            <th class="">To develop policy and regulation that deliver economic, human and environmental health gains to your company.</th>
+                                            <th class="">To offer standard accreditation and certification capacity building ISO 15000 and 14000 series to your enterprise</th>
+                                            <th class="w-450">To impact RECP technical training (including all support resource packages, toolkits and learning materials) to various staff and employees of Nigerian's industrial and manufacturing sector</th>
+                                            <th class="w-450">To strengthen internal capacity of RECP training anD related technical assistance to you enterprise on a long term and ultimately commercial sustainable basis</th>
+                                            <th class="w-450">To create awareness and demonstrate pilot programs on RECP to improve productive use of manufacturing inputs (water, chemicals, & materials), waste/emission minimization in your industrial sector within the scope of regulatory compliance and increased competitiveness </th>
+                                            <th class="w-450">To increase the up-take of RECP implementation and associated investment through a limited financial investment assistance package for participating RECP pilot companies</th>
+                                            <th class="w-450">To transfer the cost-saving benefits of RECP to your industrial manufacturing sector through increased access to financial mechanisms (commercial & Government) needed for the financing of RECP projects</th>
+                                            <th class="">Reduction / energy saving by at least 20% in 1 year.</th>
+                                            <th class="">40% reduction of Co2 in 1.5 years</th>
+                                            <th class="">Increase in your water productivity by 100% in 1 year</th>
+                                            <th class="">Increase in your material productivity by 50% in 1 year</th>
+                                            <th class="">Obtain an ISO 14000 series certification</th>
+                                            <th class="">Increase in overall financial annual savings</th>
+                                            <th class="">Improved customeer satisfaction</th>
+                                            <th>Sustainability</th>
+                                            <th>Quality Policy</th>
+                                            <th>Environmental Policy</th>
+                                            <th>Health & Safety Policy</th>
+                                            <th>Human Resource Policy</th>
+                                            <th>Data Protection Policy</th>
+                                            <th>Cooperate Social Responsibility Policy</th>
+                                            <th>Business Growth</th>
+                                            <th>Customer Satisfaction</th>
+                                            <th>Material Optimization</th>
+                                            <th>Waste Minimization</th>
+                                            <th>Measurable & Timely Targets</th>
+                                            <th>Innovation</th>
+                                            <th>Sustainability</th>
+                                            <th>Employee Management</th>
+                                            <th>Market Expansion</th>
+                                            <th>Attitudinal change (negligence attitude).</th>
+                                            <th>Good operating practices(personel practices, waste segregation etc.).</th>
+                                            <th>Workers motivation.</th>
+                                            <th>Improved Workplace management.</th>
+                                            <th>Others</th>
+                                            <th>High temperature recovery method</th>
+                                            <th>Using standard measuring equipment</th>
+                                            <th>Adequate container seal to prevent spill</th>
+                                            <th>Filtration</th>
+                                            <th>Using correct material ratio</th>
+                                            <th>Adequate chemical/ material storage facility</th>
+                                            <th>Recycling</th>
+                                            <th>Extended Producer Responsibility(EPR)</th>
+                                            <th>Year 3</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="">
+                                        @foreach($companies as $company)
+                                            <tr>
+                                                <td>{{ $company->company_name ?? 'N/A' }}</td>
+                                                <td>{{ $company->industry ?? 'N/A' }}</td>
+                                                <td>{{ $company->email ?? 'N/A' }}</td>
+                                                <td>{{ $company->website ?? 'N/A' }}</td>
+                                                <td>{{ $company->primary_phone_number ?? 'N/A' }}</td>
+                                                <td>{{ $company->secondary_phone_number ?? 'N/A' }}</td>
+                                                <td>{{ $company->country ?? 'N/A' }}</td>
+                                                <td>{{ $company->state ?? 'N/A' }}</td>
+                                                <td>{{ $company->address ?? 'N/A' }}</td>
+                                                <td>{{ $company->longitude ?? 'N/A' }}</td>
+                                                <td>{{ $company->latitude ?? 'N/A' }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($company->date_of_establishment)->format('l, d F Y') ?? 'N/A' }}</td>
+                                                <td>{{ $company->number_of_employees ?? 'N/A' }}</td>
+                                                <td>{{ $company->industry_process ?? 'N/A' }}</td>
+                                                <td>{{ $company->operations_manager ?? 'N/A' }}</td>
+                                                <td>{{ $company->position ?? 'N/A' }}</td>
+                                                <td>
+                                                    <div>{{ $company->contact_person_full_name ?? 'N/A' }}</div>
+                                                    <div>{{ $company->contact_person_position ?? 'N/A' }}</div>
+                                                    <div>{{ $company->contact_person_contact_number ?? 'N/A' }}</div> 
+                                                </td>
+                                                @php
+                                                $industrial_sector_objectives = [
+                                                    'To develop policy and regulation that deliver economic, human and environmental health gains to your company.',
+                                                    'To offer standard accreditation and certification capacity building ISO 15000 and 14000 series to your enterprise',
+                                                    'To impact RECP technical training (including all support resource packages, toolkits and learning materials) to various staff and employees of Nigerian\'s industrial and manufacturing sector',
+                                                    'To strengthen internal capacity of RECP training anD related technical assistance to you enterprise on a long term and ultimately commercial sustainable basis',
+                                                    'To create awareness and demonstrate pilot programs on RECP to improve productive use of manufacturing inputs (water, chemicals, & materials), waste/emission minimization in your industrial sector within the scope of regulatory compliance and increased competitiveness ',
+                                                    'To increase the up-take of RECP implementation and associated investment through a limited financial investment assistance package for participating RECP pilot companies',
+                                                    'To transfer the cost-saving benefits of RECP to your industrial manufacturing sector through increased access to financial mechanisms (commercial & Government) needed for the financing of RECP projects'
+                                                ];
+                                                @endphp
+                                                @foreach ($industrial_sector_objectives as $objective)
+                                                    @php
+                                                        // Fetch the objective value from the database
+                                                        $objectiveValue = DB::table('recp_areas_of_benefits')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('benefit_title', $objective)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $objectiveValue ? $objectiveValue->benefit_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                @php
+                                                $gains_from_recp = [
+                                                    'Reduction / energy saving by at least 20% in 1 year.',
+                                                    '40% reduction of Co2 in 1.5 years',
+                                                    'Increase in your water productivity by 100% in 1 year',
+                                                    'Increase in your material productivity by 50% in 1 year',
+                                                    'Obtain an ISO 14000 series certification',
+                                                    'Increase in overall financial annual savings',
+                                                    'Improved customeer satisfaction'
+                                                ];
+                                                @endphp
+                                                @foreach ($gains_from_recp as $gain)
+                                                    @php
+                                                        // Fetch the gain value from the database
+                                                        $gainValue = DB::table('recp_human_and_environmental_health_benefits')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('environmental_benefit_title', $gain)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $gainValue ? $gainValue->environmental_benefit_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                @php
+                                                $company_policies = [
+                                                    'Quality Policy',
+                                                    'Environmental Policy',
+                                                    'Health & Safety Policy',
+                                                    'Human Resource Policy',
+                                                    'Data Protection Policy',
+                                                    'Cooperate Social Responsibility Policy'
+                                                    ];
+                                                $company_objectives = [
+                                                    'Business Growth',
+                                                    'Customer Satisfaction',
+                                                    'Material Optimization',
+                                                    'Waste Minimization',
+                                                    'Measurable & Timely Targets',
+                                                    'Innovation',
+                                                    'Sustainability',
+                                                    'Employee Management',
+                                                    'Market Expansion'
+                                                ];
+                                                @endphp
+                                                @foreach ($company_policies as $policy)
+                                                    @php
+                                                        // Fetch the policy value from the database
+                                                        $policyValue = DB::table('policies')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('policy_title', $policy)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $policyValue ? $policyValue->policy_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                @foreach ($company_objectives as $objective)
+                                                    @php
+                                                        // Fetch the objective value from the database
+                                                        $objectiveValue = DB::table('company_objectives')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('objective_title', $objective)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $objectiveValue ? $objectiveValue->objective_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                <td>N/A</td>
+                                                @php
+                                                $attitudinal_changes = [
+                                                    'Attitudinal change (negligence attitude).',
+                                                    'Good operating practices(personel practices, waste segregation etc.).',
+                                                    'Workers motivation.',
+                                                    'Improved Workplace management.',
+                                                    'Others'
+                                                ];
+                                                @endphp
+
+                                                @foreach ($attitudinal_changes as $change)
+                                                    @php
+                                                        // Fetch the change value from the database
+                                                        $changeValue = DB::table('recp_house_keep_practices')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('practice_title', $change)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $changeValue ? $changeValue->practice_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                <td>N/A</td>
+                                                @php
+                                                $unit_process_intervention = DB::table('recp_unit_of_processes')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->get();
+                                                @endphp
+                                                <td>
+                                                    <ol>
+                                                        @foreach ($unit_process_intervention as $process)
+                                                            <li>{{ $process->unit_process_title ?? 'N/A' }}</li>
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                                @php
+                                                $problem_solution = DB::table('recp_problem_and_solutions')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->get();
+                                                @endphp
+                                                <td>
+                                                    <ol>
+                                                        @foreach ($problem_solution as $solution)
+                                                            <li>
+                                                                <dl>
+                                                                    <dt>Problem Summary</dt>
+                                                                    <dd>
+                                                                        {{ $solution->problem_title ?? 'N/A' }}
+                                                                    </dd>
+                                                                    <dt>Solution</dt>
+                                                                    <dd>
+                                                                        {{ $solution->solution_title ?? 'N/A' }}
+                                                                    </dd>
+                                                                </dl>
+                                                            </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                                <td>N/A</td>
+                                                @php
+                                                $product_recovery_measures = [
+                                                    'High temperature recovery method',
+                                                    'Using standard measuring equipment',
+                                                    'Adequate container seal to prevent spill',
+                                                    'Filtration',
+                                                    'Using correct material ratio',
+                                                    'Adequate chemical/ material storage facility',
+                                                    'Recycling',
+                                                    'Extended Producer Responsibility(EPR)',
+                                                ];
+                                                @endphp
+                                                @foreach ($product_recovery_measures as $measure)
+                                                    @php
+                                                        // Fetch the measure value from the database
+                                                        $measureValue = DB::table('recp_product_recovery_methods')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('recovery_method_title', $measure)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $measureValue ? $measureValue->recovery_method_title : 'No' }}
+                                                    </td>
+                                                @endforeach
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                @php
+                                                $performance_improvement_areas = DB::table('recp_areas_of_improvements')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->get();
+                                                @endphp
+                                                <td>
+                                                    <ol>
+                                                        @foreach ($performance_improvement_areas as $key_area)
+                                                            <li>{{ $key_area->area_title ?? 'N/A' }}</li>
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                                @php
+                                                $innovative_change = DB::table('recp_innovation_areas')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->get();
+                                                @endphp
+                                                <td>
+                                                    <ol>
+                                                        @foreach ($innovative_change as $key_area)
+                                                            <li>{{ $key_area->innovation_area_title ?? 'N/A' }}</li>
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
