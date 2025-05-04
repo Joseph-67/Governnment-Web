@@ -44,6 +44,8 @@
     <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
     <!-- map -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- XLSX Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         let getMap = async () => {
             const url = new URL("{{ route('admin.get-all-companies') }}");
@@ -251,6 +253,40 @@
         });
     });
     </script>
+    <!-- excel table -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const downloadExcelButton = document.getElementById('downloadExcelButton');
+            downloadExcelButton.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const table = document.getElementById('companiesTabl');
+                const rows = Array.from(table.rows);
+                const data = rows.map(row => Array.from(row.cells).map(cell => cell.innerText));
+
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies Report');
+
+                const excelFile = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+                const blob = new Blob([s2ab(excelFile)], { type: 'application/octet-stream' });
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'Companies_Report.xlsx';
+                link.click();
+            });
+
+            function s2ab(s) {
+                const buf = new ArrayBuffer(s.length);
+                const view = new Uint8Array(buf);
+                for (let i = 0; i < s.length; i++) {
+                    view[i] = s.charCodeAt(i) & 0xFF;
+                }
+                return buf;
+            }
+        });
+    </script>
     @endsection
     <div class="container-fluid mt-5">
         <div class="row">
@@ -288,7 +324,7 @@
                                 <h4 class="card-title">Managed Companies</h4>
                             </div><!--end col-->
                             <div class="col-auto">
-                                <a href="" class="btn btn-success">
+                                <a href="" class="btn btn-success" id="downloadExcelButton">
                                     <i class="fas fa-file-excel"></i> Download Excel
                                 </a>
                             </div>
