@@ -186,71 +186,10 @@
                 }
             });
         // Add any additional DataTables configuration here
-        // Add event listener for row click to display company details
-        function CompanyData(company_name, industry, email, primary_phone_number, country, state, city, address, zip_code, date_of_establishment, number_of_employees, created_at) {
-            this.company_name = company_name;
-            this.industry = industry;
-            this.email = email;
-            this.primary_phone_number = primary_phone_number;
-            this.country = country;
-            this.state = state;
-            this.city = city;
-            this.address = address;
-            this.zip_code = zip_code;
-            this.date_of_establishment = date_of_establishment;
-            this.number_of_employees = number_of_employees;
-            this.created_at = created_at;
-        }
+            // For example, you can set the page length, order, etc.
+            companyTable.page.len(10).draw(); // Set default page length to 10
+            companyTable.order([0, 'asc']).draw(); // Order by the first column (index 0) in ascending order
 
-        // Fetch company data from the server
-        let companies = @json($companies);
-        // Example: Display company names in the console
-        console.log(`Companies full details:`, companies);
-        
-        companies.forEach(company => {
-            console.log(`Company Name: ${company}`);
-            
-            const row = `
-                <tr>
-                    <td>${company->company_name ?? 'N/A' }}</td>
-                    <td>${company->industry ?? 'N/A' }}</td>
-                    <td>${company->email ?? 'N/A' }}</td>
-                    <td>${company->website ?? 'N/A' }}</td>
-                    <td>${company->primary_phone_number ?? 'N/A' }}</td>
-                    <td>${company->secondary_phone_number ?? 'N/A' }}</td>
-                    <td>${company->country ?? 'N/A' }}</td>
-                    <td>${company->state ?? 'N/A' }}</td>
-                    <td>${company->address ?? 'N/A' }}</td>
-                    <td>${company->longitude ?? 'N/A' }}</td>
-                    <td>${company->latitude ?? 'N/A' }}</td>
-                    <td>${company->date_of_establishment ?? 'N/A' }}</td>
-                    <td>${company->number_of_employees ?? 'N/A' }}</td>
-                    <td>${company->industrial_process ?? 'N/A' }}</td>
-                    <td>${company->environmental_manager ?? 'N/A' }}</td>
-                    <td>${company->position ?? 'N/A' }}</td>
-                    <td>${company->contact_person ?? 'N/A' }}</td>
-                    <td>${company->objectives ?? 'N/A' }</td>
-                    <td>${company->recp_foresee ?? 'N/A' }</td>
-                    <td>${company->recp_benefits ?? 'N/A' }</td>
-                    <td>${company->gains ?? 'N/A' }</td>
-                    <td>${company->policy_objectives ?? 'N/A' }</td>
-                    <td>${company->good_housekeeping ?? 'N/A' }</td>
-                    <td>${company->process_intervention ?? 'N/A' }</td>
-                    <td>${company->unit_process ?? 'N/A' }</td>
-                    <td>${company->problem_solution ?? 'N/A' }</td>
-                    <td>${company->product_recovery ?? 'N/A' }</td>
-                    <td>${company->recovery_measures ?? 'N/A' }</td>
-                    <td>${company->training_needs ?? 'N/A' }</td>
-                    <td>${company->innovative_changes ?? 'N/A' }</td>
-                    <td>${company->hazardous_materials ?? 'N/A' }</td>
-                    <td>${company->water_usage ?? 'N/A' }</td>
-                    <td>${company->air_emission ?? 'N/A' }</td>
-                    <td>${company->waste_management ?? 'N/A' }</td>
-                </tr>
-            `;
-            companyTable.clear()
-            companyTable.row.add($(row)).draw();
-        });
     });
     </script>
     <!-- excel table -->
@@ -333,7 +272,7 @@
                     <div class="card-body pt-0 guard-table-section">
                     <div class="container mx-auto">
                         <div class="overflow-x-auto shadow rounded-lg" style="overflow-x:auto;">
-                                <table class="min-w-full table table-light table-bordered table-auto" id="companiesTable">
+                                <table class="min-w-full table table-light table-bordered table-auto" id="companiesTabl">
                                     <thead class="">
                                         <tr>
                                             <th rowspan="2" class="w-450">Company Name</th>
@@ -371,8 +310,11 @@
                                             <th rowspan="2" class="w-450">Innovative changes in product that can help to improve the environmental compatibility of product life cycle</th>
                                             <th rowspan="2" class="w-450">Reducing/eliminating hazardous materials that enter the production process can help to eliminate the discharge/emission of toxic waste into the environment</th>
                                             <th rowspan="2" class="w-450">List 3-5 modern technology you may likely recommend for your operation, if any.</th>
-                                            <th rowspan="2" class="w-450">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
-                                            <th rowspan="2" class="w-450">Using water more efficientlyt guarantees less costly production and ensures against water shortages that could interrupt production</th>
+                                            <!-- <th rowspan="2" class="w-450">Most industrial manufacturing process need water in almost every stage. Is the statement true for your sector?</th>
+                                            <th rowspan="2" class="w-450">Using water more efficientlyt guarantees less costly production and ensures against water shortages that could interrupt production</th> -->
+                                            @foreach ($all_water_questions as $question)
+                                                <th rowspan="2">{{ $question->question ?? '' }}</th>
+                                            @endforeach
                                             <th colspan="{{ $total_water_conservation_methods }}" class="w-450">Water Conservation Opportunities Beneficial to Company Process</th>
                                             <th colspan="{{ $total_water_sources }}" class="w-450">Water Sources</th>
                                             <th colspan="3">Water Usage Data</th>
@@ -385,13 +327,13 @@
                                             <th rowspan="2">Unit process and raw materials susceptible to air pollution</th>
                                             <th rowspan="2">Describe your Process flow/Unit operations</th>
                                             <th rowspan="2" class="w-450">List any hazardous material that can be reduced, eliminated, or replaced with less hazardous material in your process system, if any.</th>
-                                            <th colspan="{{ $total_materials*2 }}">Resources Consumed in the Last Two Years</th>
+                                            <th colspan="{{ ($total_materials*2) + ($total_chemicals*2) }}">Resources Consumed in the Last Two Years</th>
                                             <th rowspan="2">Quantity of waste generated by the company in year</th>
                                             <th rowspan="2">Wastewater Analysis</th>
                                             <th rowspan="2">Emission /Air Quality & Noise</th>
-                                            <th colspan="4">Method used for managing waste by company</th>
-                                            <th colspan="">RECP measures in place in company.</th>
-                                            <th rowspan="2" class="w-450">willingness to collaborate with the project for an in-depth assessment and study of adopting the RECP methodology</th>
+                                            <th colspan="6">Method used for managing waste by company</th>
+                                            <th colspan="15">RECP measures in place in company.</th>
+                                            <th rowspan="2">willingness to collaborate with the project for an in-depth assessment and study of adopting the RECP methodology</th>
                                             <th rowspan="2">Contact Company</th>
                                             <th rowspan="2">_validation_status</th>
                                         </tr>
@@ -447,7 +389,7 @@
                                                 <th>{{ $method->method ?? '' }}</th>
                                             @endforeach
                                             @foreach ($all_water_sources as $source)
-                                                <th>{{ $source->source ?? '' }}</th>
+                                                <th>{{ $source->sources ?? '' }}</th>
                                             @endforeach
                                             @if($all_water_sources->count() > 0)
                                             @php
@@ -468,22 +410,40 @@
                                             <th class="w-450">Plant flowers and trees around the premises to reduce large number of pollutants in the air</th>
                                             <th>Others</th>
                                             @foreach ($all_materials as $material)
-                                                <th class="w-450">{{ $material->material }} (Year 1)</th>
-                                                <th class="w-450">{{ $material->material }} (Year 2)</th>
+                                            @php
+                                            $lastTwoYears = [date('Y'), date('Y') - 1];
+                                            @endphp
+                                                <th>{{ $material->material }} (in Year {{ $lastTwoYears['0'] }})</th>
+                                                <th>{{ $material->material }} (in Year {{ $lastTwoYears['1'] }})</th>
+                                            @endforeach
+                                            @foreach ($all_chemicals as $chemical)
+                                            @php
+                                            $lastTwoYears = [date('Y'), date('Y') - 1];
+                                            @endphp
+                                                <th>{{ $chemical->name }} (in Year {{ $lastTwoYears['0'] }})</th>
+                                                <th>{{ $chemical->name }} (in Year {{ $lastTwoYears['1'] }})</th>
                                             @endforeach
                                             <th>Landfill</th>
                                             <th>Recycling</th>
                                             <th>Incineration</th>
                                             <th>Composting</th>
+                                            <th>Waste segregation</th>
+                                            <th>Waste Symbiosis</th>
                                             <th>Water recycling flow</th>
                                             <th>Wastewater treatment</th>
                                             <th>Monitoring of the quality and quantity of wastewater</th>
-                                            <th class="w-450">Using production equipment or technology that supports energy-efficient production</th>
+                                            <th>Using production equipment or technology that supports energy-efficient production</th>
                                             <th>Use of waste for internal energy sources</th>
                                             <th>Installation of lighting sensors</th>
                                             <th>Utilization of sunlight for daytime lighting</th>
                                             <th>Use of environmentally friendly/renewable energy</th>
                                             <th>Recording of fuel usage</th>
+                                            <th>Minimize the use of generating sets</th>
+                                            <th>Substitute high yield pollutant raw materials with other less polluting materials</th>
+                                            <th>Maintain the unit process/equipment to minimize emission of pollutants</th>
+                                            <th>Diluting the air pollutants</th>
+                                            <th>Plant flowers and trees around the premises to reduce large number of pollutants in the air</th>
+                                            <th>Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)</th>
                                         </tr>
                                     </thead>
                                     <tbody class="">
@@ -715,6 +675,196 @@
                                                         @endforeach
                                                     </ol>
                                                 </td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                @foreach($all_water_questions as $question)
+                                                    @php
+                                                        // Fetch the question value from the database
+                                                        $questionValue = DB::table('company_water_questions')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('questionID', $question->questionId)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $questionValue ? '✔️' : '❌' }}
+                                                    </td>
+                                                @endforeach
+                                                @foreach ($all_water_conservation_methods as $method)
+                                                    @php
+                                                        // Fetch the method value from the database
+                                                        $methodValue = DB::table('company_water_conservation_opportunities')
+                                                                        ->where('companyID', $company->company_id)
+                                                                        ->where('conservation_id', $method->WaterConservationMethodId)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $methodValue ? '✔️' : '❌' }}
+                                                    </td>
+                                                @endforeach
+                                                @foreach ($all_water_sources as $source)
+                                                    @php
+                                                        // Fetch the source value from the database
+                                                        $sourceValue = DB::table('company_water_sources')
+                                                                        ->where('companyID', $company->company_id)
+                                                                        ->where('WaterSources_id', $source->WaterSourcesId)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $sourceValue ? '✔️' : '❌' }}
+                                                    </td>
+                                                @endforeach
+                                                @if($all_water_sources->count() > 0)
+                                                @php
+                                                $currentYear = date('Y');
+                                                for ($i = 0; $i < 3; $i++) {
+                                                    $year = $currentYear - $i;
+                                                    $sumValue = DB::table('water_stock_movements')
+                                                                    ->where('company_id', $company->company_id)
+                                                                    ->whereYear('movement_date', $year)
+                                                                    ->where('movement_type', 'out')
+                                                                    ->sum('volume');
+                                                    echo "<td>{$sumValue}</td>";
+                                                }
+                                                @endphp
+                                                @endif
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                    @php
+                                                    $waterBalance = DB::table('water_stock_movements')
+                                                        ->where('company_id', $company->company_id) // Filter by company ID
+                                                        ->selectRaw('
+                                                            SUM(CASE WHEN movement_type = "in" THEN volume ELSE 0 END) -
+                                                            SUM(CASE WHEN movement_type = "out" THEN volume ELSE 0 END) as balance
+                                                        ')
+                                                        ->value('balance'); // Retrieve the balance directly as a scalar value
+
+                                                    // If there's no result, ensure the balance defaults to 0
+                                                    $waterBalance = $waterBalance ?? 0
+                                                    @endphp
+                                                <td>
+                                                    {{ $waterBalance }} (ltr)
+                                                </td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                                <td>
+                                                    <ol>
+                                                    @php
+                                                    $company_operation_types = DB::table('operation_types')
+                                                        ->where('company_id', $company->company_id)
+                                                        ->orderBy('sequence_order', 'ASC')
+                                                        ->get(['operation_type_id', 'name']);
+                                                    @endphp
+                                                    @foreach ($company_operation_types as $operation_type)
+                                                        <li>
+                                                            {{ $operation_type ? $operation_type->name : 'No' }}
+                                                        </li>
+                                                    @endforeach
+                                                    </ol>
+                                                </td>
+                                                <td>N/A</td>
+                                                @foreach ($all_materials as $material)
+                                                    @php
+                                                    $lastTwoYears = [date('Y'), date('Y') - 1];
+                                                    foreach ($lastTwoYears as $year) {
+                                                        $materialUsage = DB::table('stock_movements')
+                                                            ->where('companyID', $company->company_id) // Filter by company ID
+                                                            ->where('materialID', $material->materialID) // Filter by material ID
+                                                            ->whereYear('movement_date', $year) // Filter by year
+                                                            ->where('movement_type', 'out') // Only "out" movements
+                                                            ->sum('quantity'); // Sum the quantity for the given filters
+
+                                                        // Display the result
+                                                        echo "<td>{$materialUsage}</td>";
+                                                    }
+
+                                                    @endphp
+                                                @endforeach
+                                                @foreach ($all_chemicals as $chemical)
+                                                    @php
+                                                    $lastTwoYears = [date('Y'), date('Y') - 1];
+                                                    foreach ($lastTwoYears as $year) {
+                                                        $chemicalUsage = DB::table('chemical_stock_movements')
+                                                            ->where('company_id', $company->company_id) // Filter by company ID
+                                                            ->where('chemical_id', $chemical->chemical_id) // Filter by chemical ID
+                                                            ->whereYear('movement_date', $year) // Filter by year
+                                                            ->where('movement_type', 'out') // Only "out" movements
+                                                            ->sum('quantity'); // Sum the quantity for the given filters
+
+                                                        // Display the result
+                                                        echo "<td>{$chemicalUsage}</td>";
+                                                    }
+
+                                                    @endphp
+                                                @endforeach
+                                                <th>N/A</th>
+                                                <th>N/A</th>
+                                                <th>N/A</th>
+                                                @php
+                                                $waste_management_methods = [
+                                                    'Landfill',
+                                                    'Recycling',
+                                                    'Incineration',
+                                                    'Composting',
+                                                    'Waste segregation',
+                                                    'Waste Symbiosis',
+                                                    ];
+                                                @endphp
+                                                @foreach ($waste_management_methods as $method)
+                                                    @php
+                                                        // Fetch the method value from the database
+                                                        $methodValue = DB::table('recp_waste_management_methods')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('management_method_title', $method)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $methodValue ? '✔️' : '❌' }}
+                                                    </td>
+                                                @endforeach
+                                                @php
+                                                $recp_measures = [
+                                                    'Water recycling flow',
+                                                    'Waste water treatment.',
+                                                    'Monitoring of the quality and quantity of wastewater',
+                                                    'Using production equipment or technology that supports energy/resource-efficient production',
+                                                    'Use of waste for internal energy sources',
+                                                    'Installation of lighting sensor',
+                                                    'Utilization of sunlight for daytime lighting',
+                                                    'Use of enviromentally friendly/renewable energy',
+                                                    'Recording of fuel usage',
+                                                    'Minimize the use of generating sets',
+                                                    'Substitute high yield pollutant raw materials with other less polluting materials',
+                                                    'Maintain the unit process/equipment to minimize emission of pollutants',
+                                                    'Diluting the air pollutants',
+                                                    'Plant flowers and trees around the premises to reduce large number of pollutants in the air',
+                                                    'Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)'
+                                                ];
+                                                @endphp
+                                                @foreach ($recp_measures as $measure)
+                                                    @php
+                                                        // Fetch the measure value from the database
+                                                        $measureValue = DB::table('recp_waste_reduction_measures')
+                                                                            ->where('companyID', $company->company_id)
+                                                                            ->where('waste_reduction_title', $measure)->first();
+                                                    @endphp
+
+                                                    <td>
+                                                        {{ $measureValue ? '✔️' : '❌' }}
+                                                    </td>
+                                                    <td>N/A</td>
+                                                    <td>N/A</td>
+                                                    <td>N/A</td>
+                                                @endforeach
                                             </tr>
                                         @endforeach
                                     </tbody>
