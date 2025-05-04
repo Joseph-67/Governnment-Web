@@ -210,8 +210,12 @@
                 "Company Name", "Industry Sector", "Email", "Website", "Primary Phone", "Secondary Phone",
                 "Country", "State/Province", "Address", "Longitude", "Latitude", "Date Of Est.",
                 "Number of Employees", "Industrial Process Used", "Assigned Manager", "Position",
-                "Contact Personnel"
-                ]; // Add more headers as needed
+                "Contact Personnel", "Policy Alignment", "RECP Strategy", "Housekeeping Measures",
+                "Unit Process Intervention", "Problem Summary", "Solution Summary", "Product Recovery Measures",
+                "Performance Improvement Areas", "Innovative Changes", "Water Conservation Methods",
+                "Water Sources", "Waste Management Methods", "RECP Measures", "Willingness to Collaborate",
+                "Contact Company", "Validation Status"
+                ]; // Ensure headers match the fields in the data array
                 const data = [headers];
 
                 allRecords.forEach(record => {
@@ -232,7 +236,24 @@
                     record.industry_process || "N/A",
                     record.operations_manager || "N/A",
                     record.position || "N/A",
-                    `${record.contact_person_full_name || "N/A"} (${record.contact_person_position || "N/A"})`
+                    `${record.contact_person_full_name || "N/A"} (${record.contact_person_position || "N/A"})`,
+                    record.contact_person_contact_number || "N/A",
+                    record.policy_alignment || "N/A",
+                    record.recp_strategy || "N/A",
+                    record.housekeeping_measures || "N/A",
+                    record.unit_process_intervention || "N/A",
+                    record.problem_summary || "N/A",
+                    record.solution_summary || "N/A",
+                    record.product_recovery_measures || "N/A",
+                    record.performance_improvement_areas || "N/A",
+                    record.innovative_changes || "N/A",
+                    record.water_conservation_methods || "N/A",
+                    record.water_sources || "N/A",
+                    record.waste_management_methods || "N/A",
+                    record.recp_measures || "N/A",
+                    record.willingness_to_collaborate || "N/A",
+                    record.contact_company || "N/A",
+                    record.validation_status || "N/A"
                 ]);
                 });
 
