@@ -388,10 +388,14 @@ class CompanyController extends WaterStockMovementController
             ]);
         // $data = $data['companies']->get();
         $data['all_materials'] = Material::get(['materialID', 'material']);
+        $data['all_water_questions'] = WaterQuestionaire::get(['questionId', 'label', 'question']);
+        $data['all_water_conservation_methods'] = WaterConservationMethod::get(['WaterConservationMethodId', 'label', 'method']);
         $data['all_water_sources'] = WaterSources::get(['WaterSourcesId', 'sources']);
         $data['all_chemicals'] = Chemicals::get(['chemical_id', 'name']);
         $data['total_materials'] = Material::count();
         $data['total_water_sources'] = WaterSources::count();
+        $data['total_water_questions'] = WaterQuestionaire::count();
+        $data['total_water_conservation_methods'] = WaterConservationMethod::count();
         $data['total_chemicals'] = Chemicals::count();
         return view('components.reportinganalytics.companies-report', $data);
     }
