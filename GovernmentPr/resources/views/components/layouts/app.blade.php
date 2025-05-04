@@ -335,7 +335,7 @@
                               <i class="flaticon-phone-call-1"></i>
                               <div class="tp-header-right-tel-content">
                                  <span>Call Us</span>
-                                 <a href="tel:(00)122456789">(00) 122 456 789</a>
+                                 <a href="tel:(234)9160173332">09160173332</a>
                               </div>
                            </div>
                         </div>                     
