@@ -196,13 +196,47 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const downloadExcelButton = document.getElementById('downloadExcelButton');
-            downloadExcelButton.addEventListener('click', function (e) {
-                e.preventDefault();
+            downloadExcelButton.addEventListener('click', async function (e) {
+            e.preventDefault();
 
-                const table = document.getElementById('companiesTabl');
-                const rows = Array.from(table.rows);
-                const data = rows.map(row => Array.from(row.cells).map(cell => cell.innerText));
+            try {
+                // Fetch all records from the server
+                const response = await fetch("{{ route('admin.get-all-companies') }}");
+                if (!response.ok) throw new Error("Failed to fetch data");
+                const allRecords = await response.json();
 
+                // Prepare data for Excel
+                const headers = [
+                "Company Name", "Industry Sector", "Email", "Website", "Primary Phone", "Secondary Phone",
+                "Country", "State/Province", "Address", "Longitude", "Latitude", "Date Of Est.",
+                "Number of Employees", "Industrial Process Used", "Assigned Manager", "Position",
+                "Contact Personnel"
+                ]; // Add more headers as needed
+                const data = [headers];
+
+                allRecords.forEach(record => {
+                data.push([
+                    record.company_name || "N/A",
+                    record.industry || "N/A",
+                    record.email || "N/A",
+                    record.website || "N/A",
+                    record.primary_phone_number || "N/A",
+                    record.secondary_phone_number || "N/A",
+                    record.country || "N/A",
+                    record.state || "N/A",
+                    record.address || "N/A",
+                    record.longitude || "N/A",
+                    record.latitude || "N/A",
+                    record.date_of_establishment || "N/A",
+                    record.number_of_employees || "N/A",
+                    record.industry_process || "N/A",
+                    record.operations_manager || "N/A",
+                    record.position || "N/A",
+                    `${record.contact_person_full_name || "N/A"} (${record.contact_person_position || "N/A"})`
+                ]);
+                });
+
+                // Generate Excel file
                 const workbook = XLSX.utils.book_new();
                 const worksheet = XLSX.utils.aoa_to_sheet(data);
                 XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies Report');
@@ -214,15 +248,18 @@
                 link.href = URL.createObjectURL(blob);
                 link.download = 'Companies_Report.xlsx';
                 link.click();
+            } catch (error) {
+                console.error("Error downloading Excel file:", error);
+            }
             });
 
             function s2ab(s) {
-                const buf = new ArrayBuffer(s.length);
-                const view = new Uint8Array(buf);
-                for (let i = 0; i < s.length; i++) {
-                    view[i] = s.charCodeAt(i) & 0xFF;
-                }
-                return buf;
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) {
+                view[i] = s.charCodeAt(i) & 0xFF;
+            }
+            return buf;
             }
         });
     </script>
