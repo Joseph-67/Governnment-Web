@@ -36,6 +36,14 @@ class WasteCategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'waste_name' => 'required|string|max:255',
+            'waste_description' => 'nullable|string',
+        ]);
+
+        WasteCategory::create($request->all());
+
+        return redirect()->route('waste-categories.index')->with('success', 'Waste category created successfully.');
     }
 
     /**
