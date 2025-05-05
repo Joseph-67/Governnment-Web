@@ -271,6 +271,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::delete('/delete-category/{id}', 'destroy')->name('admin.delete-category');
     });
 
+    
     // Chemical Stock Movement
     Route::controller(ChemicalStockMovementController::class)->group(function(){
         Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
@@ -476,42 +477,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(RealTimeUpdateController::class)->group(function() {
         Route::get('/real-time-updates', 'index')->name('admin.real-time-updates');
     });
-
-    // Route::controller(RECPController::class)->group(function(){
-        // add
-        // Route::post('/add-area-benefit', 'add_utmost_benefit')->name('admin.add-recp-project');
-        // Route::post('/add-environmental-benefit', 'add_environmental_benefit')->name('admin.add-recp-environmental');
-        // Route::post('/add-house-keeping', 'add_house_keeping')->name('admin.add-house-keeping');
-        // Route::post('/add-waste-reduction-measure', 'add_waste_reduction_measure')->name('admin.add-waste-reduction-measure');
-        // Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
-        // Route::post('/add-product-recovery-measure', 'add_product_recovery_measure')->name('admin.add-product-recovery-measure');
-        // Route::post('/add-improvement-key-area', 'add_improvement_key_area')->name('admin.add-improvement-key-area');
-        // Route::post('/add-product-innovation', 'add_product_innovation')->name('admin.add-product-innovation');
-        // Route::post('/add-hazarduous-material', 'add_hazarduous_material')->name('admin.add-hazarduous-material');
-        // Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
-        // Route::post('/add-problem-solution', 'add_problem_solution')->name('admin.add-problem-solution');
-        
-        // update
-        // Route::post('/update-improvement-key-area', 'update_improvement_key_area')->name('admin.update-improvement-key-area');
-        // Route::post('/update-product-innovation', 'update_product_innovation')->name('admin.update-product-innovation');
-        // Route::post('/update-hazarduous-material', 'update_hazarduous_material')->name('admin.update-hazarduous-material');
-        // Route::post('/update-unit-process', 'update_unit_process')->name('admin.update-unit-process');
-        // Route::post('/update-problem-summary', 'update_problem')->name('admin.update-problem-summary');
-        // Route::post('/update-suggested-solution', 'update_solution')->name('admin.update-suggested-solution');
-        
-        // remove
-    //     Route::post('/remove-area-benefit', 'remove_utmost_benefit')->name('admin.remove-recp-project');
-    //     Route::post('/remove-environmental-benefit', 'remove_environmetal_benefit')->name('admin.remove-recp-environmental');
-    //     Route::post('/remove-house-keeping', 'remove_house_keeping')->name('admin.remove-house-keeping');
-    //     Route::post('/remove-waste-reduction-measure', 'remove_waste_reduction_measure')->name('admin.remove-waste-reduction-measure');
-    //     Route::post('/remove-waste-disposal-method', 'remove_waste_management_method')->name('admin.remove-waste-disposal-method');
-    //     Route::post('/remove-product-recovery-measure', 'remove_product_recovery_measure')->name('admin.remove-product-recovery-measure');
-    //     Route::post('/remove-improvement-key-area', 'remove_improvement_key_area')->name('admin.remove-improvement-key-area');
-    //     Route::post('/remove-product-innovation', 'remove_product_innovation')->name('admin.remove-product-innovation');
-    //     Route::post('/remove-hazaduous-material', 'remove_hazarduous_material')->name('admin.remove-hazarduous-material');
-    //     Route::post('/remove-unit-process', 'remove_unit_process')->name('admin.remove-unit-process');
-    //     Route::post('/remove-problem-solution', 'remove_problem_solution')->name('admin.remove-problem-solution');
-    // });
 
     // RECP
     Route::controller(RECPController::class)->group(function(){
