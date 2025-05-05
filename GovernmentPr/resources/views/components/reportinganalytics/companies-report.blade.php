@@ -167,7 +167,6 @@
             })
             .catch(error => {
                 console.error(`Error fetching companies data for ${country}:`, error);
-            });
         });
     </script>
     
@@ -197,90 +196,159 @@
         document.addEventListener('DOMContentLoaded', function () {
             const downloadExcelButton = document.getElementById('downloadExcelButton');
             downloadExcelButton.addEventListener('click', async function (e) {
-            e.preventDefault();
+                e.preventDefault();
 
-            try {
-                // Fetch all records from the server
-                const response = await fetch("{{ route('admin.get-all-companies') }}");
-                if (!response.ok) throw new Error("Failed to fetch data");
-                const allRecords = await response.json();
+                try {
+                    // Fetch all records from the server
+                    const response = await fetch("{{ route('admin.get-all-companies') }}");
+                    if (!response.ok) throw new Error("Failed to fetch data");
+                    const allRecords = await response.json();
 
-                // Prepare data for Excel
-                const headers = [
-                "Company Name", "Industry Sector", "Email", "Website", "Primary Phone", "Secondary Phone",
-                "Country", "State/Province", "Address", "Longitude", "Latitude", "Date Of Est.",
-                "Number of Employees", "Industrial Process Used", "Assigned Manager", "Position",
-                "Contact Personnel", "Policy Alignment", "RECP Strategy", "Housekeeping Measures",
-                "Unit Process Intervention", "Problem Summary", "Solution Summary", "Product Recovery Measures",
-                "Performance Improvement Areas", "Innovative Changes", "Water Conservation Methods",
-                "Water Sources", "Waste Management Methods", "RECP Measures", "Willingness to Collaborate",
-                "Contact Company", "Validation Status"
-                ]; // Ensure headers match the fields in the data array
-                const data = [headers];
+                    // Prepare data for Excel
+                    const headers = [
+                        "Company Name", "Industry Sector", "Email", "Website", "Primary Phone", "Secondary Phone",
+                        "Country", "State/Province", "Address", "Longitude", "Latitude", "Date Of Est.",
+                        "Number of Employees", "Industrial Process Used", "Assigned Manager", "Position",
+                        "Contact Personnel", "Industrial Sector Objectives", "RECP Efficiency", "RECP Benefits",
+                        "Gains from RECP", "Policy Alignment", "Policy Areas", "Objective Areas",
+                        "Housekeeping Measures", "Housekeeping Options", "Unit Process Intervention",
+                        "Problem Summary", "Solution Summary", "Product Recovery Measures",
+                        "Performance Improvement Areas", "Innovative Changes", "Water Conservation Methods",
+                        "Water Sources", "Water Usage Data", "Air Emission Management", "Climate Change Measures",
+                        "Process Conditions", "Water Balance", "Chemical Balance", "Solid/Semi-Solid Process",
+                        "Air Pollution Susceptibility", "Process Flow", "Hazardous Materials",
+                        "Resources Consumed", "Waste Generated", "Wastewater Analysis", "Air Quality & Noise",
+                        "Waste Management Methods", "RECP Measures", "Collaboration Willingness",
+                        "Contact Company", "Validation Status"
+                    ]; // Ensure headers match the fields in the data array
+                    const data = [headers];
 
-                allRecords.forEach(record => {
-                data.push([
-                    record.company_name || "N/A",
-                    record.industry || "N/A",
-                    record.email || "N/A",
-                    record.website || "N/A",
-                    record.primary_phone_number || "N/A",
-                    record.secondary_phone_number || "N/A",
-                    record.country || "N/A",
-                    record.state || "N/A",
-                    record.address || "N/A",
-                    record.longitude || "N/A",
-                    record.latitude || "N/A",
-                    record.date_of_establishment || "N/A",
-                    record.number_of_employees || "N/A",
-                    record.industry_process || "N/A",
-                    record.operations_manager || "N/A",
-                    record.position || "N/A",
-                    `${record.contact_person_full_name || "N/A"} (${record.contact_person_position || "N/A"})`,
-                    record.contact_person_contact_number || "N/A",
-                    record.policy_alignment || "N/A",
-                    record.recp_strategy || "N/A",
-                    record.housekeeping_measures || "N/A",
-                    record.unit_process_intervention || "N/A",
-                    record.problem_summary || "N/A",
-                    record.solution_summary || "N/A",
-                    record.product_recovery_measures || "N/A",
-                    record.performance_improvement_areas || "N/A",
-                    record.innovative_changes || "N/A",
-                    record.water_conservation_methods || "N/A",
-                    record.water_sources || "N/A",
-                    record.waste_management_methods || "N/A",
-                    record.recp_measures || "N/A",
-                    record.willingness_to_collaborate || "N/A",
-                    record.contact_company || "N/A",
-                    record.validation_status || "N/A"
-                ]);
-                });
+                    allRecords.forEach(record => {
+                        const industrialSectorObjectives = Array.isArray(record.industrial_sector_objectives) && record.industrial_sector_objectives.length > 0
+                            ? record.industrial_sector_objectives.map(obj => obj.name || "N/A").join(", ")
+                            : "N/A";
 
-                // Generate Excel file
-                const workbook = XLSX.utils.book_new();
-                const worksheet = XLSX.utils.aoa_to_sheet(data);
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies Report');
+                        const gainsFromRecp = Array.isArray(record.gains_from_recp) && record.gains_from_recp.length > 0
+                            ? record.gains_from_recp.map(gain => gain.name || "N/A").join(", ")
+                            : "N/A";
 
-                const excelFile = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
-                const blob = new Blob([s2ab(excelFile)], { type: 'application/octet-stream' });
+                        const policyAreas = Array.isArray(record.policy_areas) && record.policy_areas.length > 0
+                            ? record.policy_areas.map(area => area.name || "N/A").join(", ")
+                            : "N/A";
 
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'Companies_Report.xlsx';
-                link.click();
-            } catch (error) {
-                console.error("Error downloading Excel file:", error);
-            }
+                        const objectiveAreas = Array.isArray(record.objective_areas) && record.objective_areas.length > 0
+                            ? record.objective_areas.map(obj => obj.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const housekeepingMeasures = Array.isArray(record.housekeeping_measures) && record.housekeeping_measures.length > 0
+                            ? record.housekeeping_measures.map(measure => measure.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const housekeepingOptions = Array.isArray(record.housekeeping_options) && record.housekeeping_options.length > 0
+                            ? record.housekeeping_options.map(option => option.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const productRecoveryMeasures = Array.isArray(record.product_recovery_measures) && record.product_recovery_measures.length > 0
+                            ? record.product_recovery_measures.map(measure => measure.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const waterConservationMethods = Array.isArray(record.water_conservation_methods) && record.water_conservation_methods.length > 0
+                            ? record.water_conservation_methods.map(method => method.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const waterSources = Array.isArray(record.water_sources) && record.water_sources.length > 0
+                            ? record.water_sources.map(source => source.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const wasteManagementMethods = Array.isArray(record.waste_management_methods) && record.waste_management_methods.length > 0
+                            ? record.waste_management_methods.map(method => method.name || "N/A").join(", ")
+                            : "N/A";
+
+                        const recpMeasures = Array.isArray(record.recp_measures) && record.recp_measures.length > 0
+                            ? record.recp_measures.map(measure => measure.name || "N/A").join(", ")
+                            : "N/A";
+
+                        data.push([
+                            record.company_name || "N/A",
+                            record.industry || "N/A",
+                            record.email || "N/A",
+                            record.website || "N/A",
+                            record.primary_phone_number || "N/A",
+                            record.secondary_phone_number || "N/A",
+                            record.country || "N/A",
+                            record.state || "N/A",
+                            record.address || "N/A",
+                            record.longitude || "N/A",
+                            record.latitude || "N/A",
+                            record.date_of_establishment || "N/A",
+                            record.number_of_employees || "N/A",
+                            record.industry_process || "N/A",
+                            record.operations_manager || "N/A",
+                            record.position || "N/A",
+                            `${record.contact_person_full_name || "N/A"} (${record.contact_person_position || "N/A"})`,
+                            industrialSectorObjectives,
+                            record.recp_efficiency || "N/A",
+                            record.recp_benefits || "N/A",
+                            gainsFromRecp,
+                            record.policy_alignment || "N/A",
+                            policyAreas,
+                            objectiveAreas,
+                            housekeepingMeasures,
+                            housekeepingOptions,
+                            record.unit_process_intervention || "N/A",
+                            record.problem_summary || "N/A",
+                            record.solution_summary || "N/A",
+                            productRecoveryMeasures,
+                            record.performance_improvement_areas || "N/A",
+                            record.innovative_changes || "N/A",
+                            waterConservationMethods,
+                            waterSources,
+                            record.water_usage_data || "N/A",
+                            record.air_emission_management || "N/A",
+                            record.climate_change_measures || "N/A",
+                            record.process_conditions || "N/A",
+                            record.water_balance || "N/A",
+                            record.chemical_balance || "N/A",
+                            record.solid_semi_solid_process || "N/A",
+                            record.air_pollution_susceptibility || "N/A",
+                            record.process_flow || "N/A",
+                            record.hazardous_materials || "N/A",
+                            record.resources_consumed || "N/A",
+                            record.waste_generated || "N/A",
+                            record.wastewater_analysis || "N/A",
+                            record.air_quality_noise || "N/A",
+                            wasteManagementMethods,
+                            recpMeasures,
+                            record.collaboration_willingness || "N/A",
+                            record.contact_company || "N/A",
+                            record.validation_status || "N/A"
+                        ]);
+                    });
+
+                    // Generate Excel file
+                    const workbook = XLSX.utils.book_new();
+                    const worksheet = XLSX.utils.aoa_to_sheet(data);
+                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies Report');
+
+                    const excelFile = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+                    const blob = new Blob([s2ab(excelFile)], { type: 'application/octet-stream' });
+
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'Companies_Report.xlsx';
+                    link.click();
+                } catch (error) {
+                    console.error("Error downloading Excel file:", error);
+                }
             });
 
             function s2ab(s) {
-            const buf = new ArrayBuffer(s.length);
-            const view = new Uint8Array(buf);
-            for (let i = 0; i < s.length; i++) {
-                view[i] = s.charCodeAt(i) & 0xFF;
-            }
-            return buf;
+                const buf = new ArrayBuffer(s.length);
+                const view = new Uint8Array(buf);
+                for (let i = 0; i < s.length; i++) {
+                    view[i] = s.charCodeAt(i) & 0xFF;
+                }
+                return buf;
             }
         });
     </script>

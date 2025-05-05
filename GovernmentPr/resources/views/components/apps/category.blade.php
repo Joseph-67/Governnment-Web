@@ -91,39 +91,53 @@
             </div>
         </div>
     </div>
-    <div class="card mt-4">
-        <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-            <h4 class="card-title">Setup Waste Category</h4>
+    <div class="container-xxl">
+        <div class="card mt-4">
+            <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                <h4 class="card-title">Setup Waste Category</h4>
+                </div>
+            </div>
+            </div>
+            <div class="card-body">
+            <form action="{{ route('admin.store-waste') }}" method="post">
+                @csrf
+                <div class="row g-2 align-items-end">
+                <!-- Waste Name -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <label for="waste_name">Waste Name</label>
+                    <input type="text" class="form-control" id="waste_name" name="waste_name" placeholder="Waste name">
+                    </div>
+                </div>
+
+                <!-- Waste Description -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                    <label for="waste_description">Waste Description</label>
+                    <input type="text" class="form-control" id="waste_description" name="waste_description" placeholder="Waste description">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-waste">Save</button>
+                    <span class="loader" id="loader-waste"></span>
+                    </div>
+                </div>
+                </div>
+            </form>
             </div>
         </div>
         </div>
-        <div class="card-body">
-        <form action="{{ route('admin.store-waste') }}" method="post">
-            @csrf
-            <div class="row g-2 align-items-end">
-            <!-- Waste Name -->
-            <div class="col-md-4">
-                <div class="form-group">
-                <label for="waste_name">Waste Name</label>
-                <input type="text" class="form-control" id="waste_name" name="waste_name" placeholder="Waste name">
-                </div>
-            </div>
-
-            <!-- Waste Description -->
-            <div class="col-md-6">
-                <div class="form-group">
-                <label for="waste_description">Waste Description</label>
-                <input type="text" class="form-control" id="waste_description" name="waste_description" placeholder="Waste description">
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="col">
-                <div class="d-flex align-items-center">
-                <button type="submit" class="btn btn-primary" id="btn-submit-waste">Save</button>
-                <span class="loader" id="loader-waste"></span>
+    <div class="container-xxl">
+        <div class="card mt-4">
+            <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                <h4 class="card-title">Waste Category</h4>
                 </div>
             </div>
             </div>
