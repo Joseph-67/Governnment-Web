@@ -101,7 +101,7 @@
             </div>
             </div>
             <div class="card-body">
-            <form action="{{ route('admin.store-waste') }}" method="post">
+            <form action="{{ route('admin.store-waste-category') }}" method="post">
                 @csrf
                 <div class="row g-2 align-items-end">
                 <!-- Waste Name -->
@@ -111,7 +111,6 @@
                     <input type="text" class="form-control" id="waste_name" name="waste_name" placeholder="Waste name">
                     </div>
                 </div>
-
                 <!-- Waste Description -->
                 <div class="col-md-6">
                     <div class="form-group">
@@ -119,7 +118,6 @@
                     <input type="text" class="form-control" id="waste_description" name="waste_description" placeholder="Waste description">
                     </div>
                 </div>
-
                 <!-- Submit Button -->
                 <div class="col">
                     <div class="d-flex align-items-center">

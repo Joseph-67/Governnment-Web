@@ -50,6 +50,7 @@ use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
+use App\Http\Controllers\WasteCategoryController;
 
 
 
@@ -548,6 +549,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/stock-trading/sell', 'sellStock')->name('admin.sell-stock');
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
+    });
+
+    // waste category
+    Route::controller(WasteCategoryController::class)->group(function() {
+        Route::get('/waste-categories', 'index')->name('admin.waste-categories');
+        Route::post('/waste-categories', 'store')->name('admin.store-waste-category');
+        Route::get('/waste-categories/{id}', 'show')->name('admin.show-waste-category');
+        Route::put('/waste-categories/{id}', 'update')->name('admin.update-waste-category');
+        Route::delete('/waste-categories/{id}', 'destroy')->name('admin.delete-waste-category');
     });
 
     // Water Stock Movement
