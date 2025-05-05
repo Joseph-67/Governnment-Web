@@ -90,7 +90,8 @@
             </table>
             </div>
         </div>
-
+    </div>
+    <div class="container-xxl">
         <div class="card mt-4">
             <div class="card-header">
             <div class="row align-items-center">
@@ -131,7 +132,8 @@
             </form>
             </div>
         </div>
-
+        </div>
+    <div class="container-xxl">
         <div class="card mt-4">
             <div class="card-header">
             <div class="row align-items-center">
