@@ -103,7 +103,6 @@
             <div class="card-body">
             <form action="{{ route('admin.store-waste') }}" method="post">
                 @csrf
-                
                 <div class="row g-2 align-items-end">
                 <!-- Waste Name -->
                 <div class="col-md-4">
