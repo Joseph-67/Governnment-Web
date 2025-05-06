@@ -41,9 +41,16 @@ class WasteCategoryController extends Controller
             'waste_description' => 'nullable|string',
         ]);
 
-        WasteCategory::create($request->all());
+        try {
+            WasteCategory::create([
+            'waste_name' => $request->input('waste_name'),
+            'waste_description' => $request->input('waste_description'),
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create waste category: ' . $e->getMessage());
+        }
 
-        return redirect()->route('waste-categories.index')->with('success', 'Waste category created successfully.');
+        return back()->with('success', 'Waste category created successfully.');
     }
 
     /**
