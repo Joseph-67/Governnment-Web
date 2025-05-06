@@ -103,7 +103,6 @@
             <div class="card-body">
             <form action="{{ route('admin.store-waste') }}" method="post">
                 @csrf
-                
                 <div class="row g-2 align-items-end">
                 <!-- Waste Name -->
                 <div class="col-md-4">
@@ -142,40 +141,52 @@
                 </div>
             </div>
             </div>
-            <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered mb-0 table-centered" id="tbl-waste-category">
-                <thead>
-                    <tr>
-                    <th>Waste Name</th>
-                    <th>Waste Description</th>
-                    <th class="text-end">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($wasteList as $waste)
-                        <tr>
-                        <td>{{ $waste->waste_name }}</td>
-                        <td>{{ $waste->waste_description }}</td>
-                        <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                <a class="dropdown-item" href="#">Open Waste</a>
-                                <a class="dropdown-item" href="#">Update Waste</a>
-                                <a class="dropdown-item" href="#" onclick='deleteCategory("{{$waste->wasteID}}", "{{$waste->waste_name}}")'>Delete Waste</a>
-                            </div>
-                            </div>
-                        </td>
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
-            </div>
+        </form>
         </div>
     </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+        <div class="row align-items-center">
+            <div class="col">
+            <h4 class="card-title">Waste Category</h4>
+            </div>
+        </div>
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0 table-centered" id="tbl-waste-category">
+            <thead>
+                <tr>
+                <th>Waste Name</th>
+                <th>Waste Description</th>
+                <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($wasteList as $waste)
+                    <tr>
+                    <td>{{ $waste->waste_name }}</td>
+                    <td>{{ $waste->waste_description }}</td>
+                    <td class="text-end">
+                        <div class="dropdown d-inline-block">
+                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                            <a class="dropdown-item" href="#">Open Waste</a>
+                            <a class="dropdown-item" href="#">Update Waste</a>
+                            <a class="dropdown-item" href="#" onclick='deleteCategory("{{$waste->wasteID}}", "{{$waste->waste_name}}")'>Delete Waste</a>
+                        </div>
+                        </div>
+                    </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+        </div>
+    </div>
+    
     
     @section('modals')
         

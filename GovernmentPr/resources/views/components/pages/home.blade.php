@@ -1,6 +1,47 @@
 @extends('components.layouts.app')
 @section('PageTitle', 'Home')
 @section('pageContent')
+@section('styles')
+
+<style>
+   .tp-slider-title {
+      font-size: 2rem;
+   }
+
+   @media (min-width: 768px) {
+      .tp-slider-title {
+         font-size: 3rem;
+      }
+   }
+
+   @media (min-width: 1200px) {
+      .tp-slider-title {
+         font-size: 4rem;
+      }
+   }
+
+   .tp-slider-img {
+      background-size: cover;
+      background-position: center;
+   }
+
+   .tp-slider-content-wrap {
+      text-align: center;
+   }
+
+   @media (max-width: 767px) {
+      .tp-slider-video-box {
+         flex-direction: column;
+         align-items: center;
+      }
+
+      .tp-slider-btn {
+         margin-bottom: 15px;
+      }
+   }
+</style>
+
+@endsection
 <main>
 
 <!-- hero area start -->
@@ -39,16 +80,14 @@
                   </div>
                   <div class="container">
                      <div class="row">
-                        <div class="col-xl-9">
+                        <div class="col-xl-9 col-lg-10 col-md-12">
                            <div class="tp-slider-content-wrap p-relative z-index-2">
                               <div class="tp-slider-shape-4">
                                  <img src="{{asset('MainAssets/img/slider/slider-shape-1-4.png')}}" alt="">
                               </div>
                               <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
-                                  <h4 class="tp-slider-title" style="font-size: 4rem;">To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.
-
-</h4>
+                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.</h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
@@ -65,82 +104,7 @@
                   </div>
                </div>
             </div>
-            <div class="swiper-slide">
-               <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
-                  <div class="tp-slider-img" data-background="{{asset('MainAssets/img/slider/slider-2.jpg')}}"></div>
-                  <div class="tp-slider-shape-1 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-1.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-2 z-index-2">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-3.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-3 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-2.png')}}" alt="">
-                  </div>
-                  <div class="container">
-                     <div class="row">
-                        <div class="col-xl-9">
-                           <div class="tp-slider-content-wrap p-relative z-index-2">
-                              <div class="tp-slider-shape-4">
-                                 <img src="{{asset('MainAssets/img/slider/slider-shape-1-4.png')}}" alt="">
-                              </div>
-                              <div class="tp-slider-title-box p-relative">
-                                 <span class="tp-slider-subtitle">OUR VISION</span>
-                                  <h4 class="tp-slider-title" style="font-size: 3rem;">To achieve a circular economy with inclusive growth, efficient resource use, and minimal environmental impact by 2033.</h4>
-                              </div>
-                              <div class="tp-slider-video-box d-flex align-items-center">
-                                 <div class="tp-slider-btn">
-                                    <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
-                                 </div>
-                                 <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer"><i class="fa-sharp fa-light fa-play"></i></a>
-                                    <span>Watch Our <br> Showcase</span>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
-                  <div class="tp-slider-img" data-background="{{asset('MainAssets/img/slider/slider-3.jpg')}}"></div>
-                  <div class="tp-slider-shape-1 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-1.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-2 z-index-2">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-3.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-3 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-2.png')}}" alt="">
-                  </div>
-                  <div class="container">
-                     <div class="row">
-                        <div class="col-xl-9">
-                           <div class="tp-slider-content-wrap p-relative z-index-2">
-                              <div class="tp-slider-shape-4">
-                                 <img src="{{asset('MainAssets/img/slider/slider-shape-1-4.png')}}" alt="">
-                              </div>
-                             <div class="tp-slider-title-box p-relative">
-                                 <span class="tp-slider-subtitle">OUR VISION</span>
-                                   <h4 class="tp-slider-title" style="font-size: 3rem;">Champion Nigeria's leadership in sustainability by embedding RECP principles into national policies and addressing global environmental issues.</h4>
-                              </div>
-                              <div class="tp-slider-video-box d-flex align-items-center">
-                                 <div class="tp-slider-btn">
-                                    <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
-                                 </div>
-                                 <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="fa-sharp fa-light fa-play"></i></a>
-                                    <span>Watch Our <br> Showcase</span>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            <!-- Additional slides with similar structure -->
          </div>
       </div>
    </div>

@@ -49,16 +49,60 @@
   z-index: 9;
 }
 
-/* Responsive behavior for small screens */
-@media (max-width: 768px) {
-  .logo-img {
-    width: 25px; /* shrink logo for smaller screen */
+/* Adjust logo images in a row */
+.tp-header-logo a img {
+  max-height: 30px;
+  height: auto;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1200px) {
+  .tp-header-menu nav ul {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .tp-header-menu {
+    display: none;
   }
 
-  /* .logo-link {
-    justify-content: center;
-  } */
+  .tp-menu-bar {
+    display: inline-block;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  .tp-header-right-box {
+    justify-content: flex-end;
+  }
+
+  .tp-header-logo {
+    text-align: left;
+  }
 }
+
+@media (max-width: 575.98px) {
+  .tp-header-logo a img {
+    max-width: 25px;
+  }
+
+  .tp-header-right-tel-icon-box {
+    display: none !important;
+  }
+
+  .tp-header-right-search {
+    display: none !important;
+  }
+
+  .tp-btn.dropdown-toggle {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
    </style>
 </head>
 
