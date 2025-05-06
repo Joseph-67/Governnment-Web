@@ -529,6 +529,13 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.create-category') }}">
+            <i class="iconoir-folder menu-icon"></i>
+            <span>Waste Management</span>    
+        </a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link" href="{{ route('materials.material') }}">
             <i class="iconoir-box menu-icon"></i>
             <span>Material Management</span>
