@@ -132,18 +132,6 @@
             </div>
         </div>
         </div>
-    <div class="container-xxl">
-        <div class="card mt-4">
-            <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col">
-                <h4 class="card-title">Waste Category</h4>
-                </div>
-            </div>
-            </div>
-        </form>
-        </div>
-    </div>
 
     <div class="card mt-4">
         <div class="card-header">
