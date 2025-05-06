@@ -85,6 +85,7 @@
                     </form>
                 </div>
             </div>
+            <!-- Card 2 -->
             <div class="card mt-4">
                 <div class="card-body">
                     <form>
@@ -323,8 +324,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 @section('styles')
 <link
         rel="stylesheet"
