@@ -47,6 +47,8 @@
 <!-- hero area start -->
 <div class="tp-slider-area">
    <div class="tp-slider-wrapper p-relative">
+
+      <!-- Meta Info -->
       <div class="tp-slider-meta-box d-none d-md-block">
          <div class="tp-slider-meta d-flex align-items-center">
             <div class="tp-slider-meta-icon">
@@ -57,44 +59,51 @@
             </div>
          </div>
       </div>
+
+      <!-- Arrows -->
       <div class="tp-slider-arrow-box">
          <button class="slider-prev"><i class="fa-regular fa-arrow-left"></i></button>
          <button class="slider-next"><i class="fa-regular fa-arrow-right"></i></button>
       </div>
+
+      <!-- Decoration -->
       <div class="tp-slider-shape-5">
          <img src="{{ asset('MainAssets/img/slider/slider-new1.png') }}" alt="Slider Image">
       </div>
+
+      <!-- Swiper Container -->
       <div class="swiper-container tp-slider-active">
          <div class="swiper-wrapper">
+
+            <!-- Slide 1 -->
             <div class="swiper-slide">
                <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
                   <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-1.jpg') }}');"></div>
-                  <div class="tp-slider-shape-1 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-1.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-2 z-index-2">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-3.png')}}" alt="">
-                  </div>
-                  <div class="tp-slider-shape-3 z-index-1">
-                     <img src="{{asset('MainAssets/img/slider/slider-shape-1-2.png')}}" alt="">
-                  </div>
+
+                  <!-- Shapes -->
+                  <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
+
                   <div class="container">
                      <div class="row">
                         <div class="col-xl-9 col-lg-10 col-md-12">
                            <div class="tp-slider-content-wrap p-relative z-index-2">
-                              <div class="tp-slider-shape-4">
-                                 <img src="{{asset('MainAssets/img/slider/slider-shape-1-4.png')}}" alt="">
-                              </div>
+                              <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
                               <div class="tp-slider-title-box p-relative">
                                  <span class="tp-slider-subtitle">OUR VISION</span>
-                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.</h4>
+                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">
+                                    To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.
+                                 </h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
                                  <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer"><i class="fa-sharp fa-light fa-play"></i></a>
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
+                                       <i class="fa-sharp fa-light fa-play"></i>
+                                    </a>
                                     <span>Watch Our <br> Showcase</span>
                                  </div>
                               </div>
@@ -102,13 +111,96 @@
                         </div>
                      </div>
                   </div>
+
                </div>
             </div>
-            <!-- Additional slides with similar structure -->
+
+            <!-- Slide 2 -->
+            <div class="swiper-slide">
+               <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
+                  <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-2.jpg') }}');"></div>
+
+                  <!-- Shapes (same structure) -->
+                  <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
+
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-xl-9 col-lg-10 col-md-12">
+                           <div class="tp-slider-content-wrap p-relative z-index-2">
+                              <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
+                              <div class="tp-slider-title-box p-relative">
+                                 <span class="tp-slider-subtitle">OUR VISION</span>
+                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">
+                                    To achieve a circular economy with inclusive growth, efficient resource use, and minimal environmental impact by 2033.
+                                 </h4>
+                              </div>
+                              <div class="tp-slider-video-box d-flex align-items-center">
+                                 <div class="tp-slider-btn">
+                                    <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
+                                 </div>
+                                 <div class="tp-slider-video d-flex align-items-center">
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
+                                       <i class="fa-sharp fa-light fa-play"></i>
+                                    </a>
+                                    <span>Watch Our <br> Showcase</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="swiper-slide">
+               <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
+                  <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-3.jpg') }}');"></div>
+
+                  <!-- Shapes (same structure) -->
+                  <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
+
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-xl-9 col-lg-10 col-md-12">
+                           <div class="tp-slider-content-wrap p-relative z-index-2">
+                              <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
+                              <div class="tp-slider-title-box p-relative">
+                                 <span class="tp-slider-subtitle">OUR VISION</span>
+                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">
+                                    Champion Nigeria's leadership in sustainability by embedding RECP principles into national policies and addressing global environmental issues.
+                                 </h4>
+                              </div>
+                              <div class="tp-slider-video-box d-flex align-items-center">
+                                 <div class="tp-slider-btn">
+                                    <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
+                                 </div>
+                                 <div class="tp-slider-video d-flex align-items-center">
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
+                                       <i class="fa-sharp fa-light fa-play"></i>
+                                    </a>
+                                    <span>Watch Our <br> Showcase</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
          </div>
       </div>
    </div>
 </div>
+
+
 <!-- hero area end -->
 
 <!-- feature area start -->
