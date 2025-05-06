@@ -188,7 +188,6 @@
             // For example, you can set the page length, order, etc.
             companyTable.page.len(10).draw(); // Set default page length to 10
             companyTable.order([0, 'asc']).draw(); // Order by the first column (index 0) in ascending order
-
     });
     </script>
     <!-- excel table -->

@@ -37,17 +37,17 @@ class WasteCategoryController extends Controller
     {
         //
         $request->validate([
-            'waste_name' => 'required|string|max:255',
-            'waste_description' => 'nullable|string',
+            'waste_category_name' => 'required|string|max:255',
+            'waste_category_description' => 'nullable|string',
         ]);
 
         try {
             WasteCategory::create([
-            'waste_name' => $request->input('waste_name'),
-            'waste_description' => $request->input('waste_description'),
+            'waste_category_name' => $request->input('waste_category_name'),
+            'waste_category_description' => $request->input('waste_category_description'),
             ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create waste category: ' . $e->getMessage());
+            return back()->with('error', 'Failed to create waste category: ' . $e->getMessage());
         }
 
         return back()->with('success', 'Waste category created successfully.');
