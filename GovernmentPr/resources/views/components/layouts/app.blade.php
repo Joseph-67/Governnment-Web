@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="en_us">
 
 <head>
    <meta charset="utf-8">
@@ -8,6 +8,14 @@
    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
    <meta name="description" content="">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <!-- Open Graph Meta Tags -->
+   <meta property="og:title" content="@yield('PageTitle') – Federal Ministry of Environment">
+   <meta property="og:description" content="Nigeria promotes RECP for sustainable industrial growth and environmental protection.">
+   <meta property="og:image" content="{{asset('MainAssets/img/logo/logo3.png')}}">
+   <meta property="og:url" content="https://recp.elitetechnologydev.ng/home">
+   <meta property="og:type" content="website">
+   <meta property="og:site_name" content="Federal Ministry of Environment">
 
    <!-- Place favicon.ico in the root directory -->
    <link rel="shortcut icon" type="image/x-icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
