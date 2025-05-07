@@ -2847,74 +2847,118 @@
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
                                                         <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
                                                     </div>
-                                                    <!-- Materials and Chemicals Section -->
-                                                    <div class="col-12">
-                                                        <h5 class="border-bottom pb-2">Materials and Chemicals</h5>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="material-quantity-used-container-annual-operation-log col-md-12">
-                                                            <div class="row g-2 align-items-end mb-3">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="expected_material" class="form-label fw-bold">Material Needed</label>
-                                                                        <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
-                                                                            <option value="" selected disabled>Select Material</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
-                                                                        <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12 text-start">
-                                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="chemical-quantity-container-annual-operation-log col-md-12">
-                                                            <div class="row g-2 align-items-end mb-3">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
-                                                                        <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                                            <option value="" selected disabled>Select Chemical</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
-                                                                        <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12 text-start">
-                                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Expected Waste Generated -->
-                                                    <div class="col-md-4">
-                                                        <label for="waste_generated" class="form-label">Expected Waste Generated</label>
-                                                        <input type="number" class="form-control" id="waste_generated" name="waste_generated" min="0" placeholder="Enter expected waste" required>
-                                                    </div>
-                                                    <!-- Expected Water Usage -->
-                                                    <div class="col-md-4">
-                                                        <label for="water_usage" class="form-label">Expected Water Usage (Liters)</label>
-                                                        <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
-                                                    </div>
-                                                    <!-- Expected Units Produced -->
-                                                    <div class="col-md-4">
-                                                        <label for="units_produced" class="form-label">Expected Units Produced</label>
-                                                        <input type="number" class="form-control" id="units_produced" name="units_produced" min="0" placeholder="Enter expected units" required>
-                                                    </div>
                                                     <!-- Submit Button -->
                                                     <div class="col-12 text-end mt-3">
                                                         <button type="submit" class="btn btn-secondary">Save Annual Log</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- Materials and Chemicals Section Card -->
+                                    <div class="card shadow-sm border-0 mt-4">
+                                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Materials and Chemicals</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="material-quantity-used-container-annual-operation-log col-md-12">
+                                                        <div class="row g-2 align-items-end mb-3">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="expected_material" class="form-label fw-bold">Material Needed</label>
+                                                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
+                                                                        <option value="" selected disabled>Select Material</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
+                                                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-start">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="chemical-quantity-container-annual-operation-log col-md-12">
+                                                        <div class="row g-2 align-items-end mb-3">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
+                                                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                                                        <option value="" selected disabled>Select Chemical</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
+                                                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-start">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                                    </div>
+                                                </div>
+                                                <!-- Expected Waste Generated -->
+                                                <div class="col-md-4">
+                                                    <label for="waste_generated" class="form-label">Expected Waste Generated</label>
+                                                    <input type="number" class="form-control" id="waste_generated" name="waste_generated" min="0" placeholder="Enter expected waste" required>
+                                                </div>
+                                                <!-- Expected Water Usage -->
+                                                <div class="col-md-4">
+                                                    <label for="water_usage" class="form-label">Expected Water Usage (Liters)</label>
+                                                    <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
+                                                </div>
+                                                <!-- Expected Units Produced -->
+                                                <div class="col-md-4">
+                                                    <label for="units_produced" class="form-label">Expected Units Produced</label>
+                                                    <input type="number" class="form-control" id="units_produced" name="units_produced" min="0" placeholder="Enter expected units" required>
+                                                </div>
+                                                <!-- Submit Button -->
+                                                <div class="col-md-12 mt-3 text-end">
+                                                    <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Annual Operation Log Card -->
+                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operation-log-card"> <!-- Light beige background for annual operation log -->
+                                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Annual Operation Log</h4>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="" method="post" id="annual-operation-log-form">
+                                                @csrf
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <label for="operation_name" class="form-label">Operation Name</label>
+                                                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                                            <option value="" selected disabled>Choose...</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="calendar_year" class="form-label">Calendar Year</label>
+                                                        <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
+                                                            <option value="" selected disabled>Select Calendar Year</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
+                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
+                                                    </div>
+                                                    <div class="col-12 text-end mt-3">
+                                                        <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
                                                     </div>
                                                 </div>
                                             </form>

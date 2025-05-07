@@ -144,6 +144,7 @@
                                     <input type="text" id="job_title" class="form-control" placeholder="Enter Job Title" name="job_title">
                                 </div>
                             </div>
+                        </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="profile_picture">Profile Picture</label>
@@ -156,7 +157,6 @@
                                     <input type="file" id="certifications" name="certifications[]" multiple accept="image/*">
                                 </div>
                             </div>
-                        </div>
                         <div class="row justify-content-end">
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary w-100">Submit</button>
@@ -324,6 +324,8 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 @section('styles')
 <link
         rel="stylesheet"
