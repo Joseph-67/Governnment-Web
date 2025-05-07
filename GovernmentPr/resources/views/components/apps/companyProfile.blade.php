@@ -2829,10 +2829,9 @@
                                                     <!-- Operation Name -->
                                                     <div class="col-md-6">
                                                         <label for="operation_name" class="form-label">Operation Name</label>
-                                                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            
-                                                        </select>
+                                                        <div class="form-group">
+                                                            <input type="text" name="operation_name" id="" class="form-control" placeholder="Enter operation name" required />
+                                                        </div>
                                                     </div>
                                                     <!-- Calendar Year -->
                                                     <div class="col-md-6">
@@ -2847,6 +2846,14 @@
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
                                                         <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <label for="waste_per_year" class="form-label">Prepared By</label>
+                                                        <div class="">
+                                                            <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
+                                                        </div>
+
+                                                    </div>
+
                                                     <!-- Materials and Chemicals Section -->
                                                     <div class="col-12">
                                                         <h5 class="border-bottom pb-2">Materials and Chemicals</h5>
