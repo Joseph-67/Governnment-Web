@@ -2852,6 +2852,9 @@
                                                             <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
                                                         </div>
                                                     </div>
+                                                    <div class="col-12 text-end mt-3">
+                                                        <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -2958,6 +2961,10 @@
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
                                                         <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
                                                     </div>
+                                                        <div class="col-md-4">
+                                                        <label for="waste_per_year" class="form-label">Prepared By</label>
+                                                            <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
+                                                        </div>
                                                     <div class="col-12 text-end mt-3">
                                                         <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
                                                     </div>
