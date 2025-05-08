@@ -172,32 +172,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
     });
 
-    Route::controller(CompanyController::class)->group(function() {
-        Route::get('/company', 'index')->name('admin.view-company');
-        Route::get('/create-company', 'create')->name('admin.create-company');
-        Route::post('/save-company', 'store')->name('admin.store-company');
-        Route::get('/show-company/{company}', 'show')->name('admin.show-company');
-        Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
-        Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
-        Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
-        Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
-        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
-        Route::post('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
-        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
-        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
-        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
-        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
-        Route::post('/company/add-question', 'store_question')->name('company.add-question');
-        Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
-        Route::post('/company/add-water-sources', 'store_water_sources')->name('company.add-water-sources');
-        Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
-        Route::post('/company/remove-water-conservation-method', 'remove_water_conservation_method')->name('company.remove-water-conservation-method');
-        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
-        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
-        Route::get('/company/{id}',  'display')->name('company.display');
-        // fetch admin details
-    });
-
     // company users
     Route::controller(CompanyUsersController::class)->group(function(){
         Route::post('/assign-users/store', 'store')->name('admin.store-assign-users');
@@ -245,6 +219,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Water Quality Logs Route
     Route::controller(WaterQualityLogsController::class)->group(function() {
         Route::post('/store-water-quality-logs', 'store')->name('admin.store-water-quality-logs');
+        Route::post('/remove-water-quality-logs', 'store')->name('admin.remove-water-quality-logs');
+        Route::get('/water-quality-logs', 'index')->name('admin.water-quality-logs');
+        Route::get('/water-quality-logs/{id}', 'show')->name('admin.show-water-quality-log');
+        Route::put('/water-quality-logs/{id}', 'update')->name('admin.update-water-quality-log');
+        Route::delete('/water-quality-logs/{id}', 'destroy')->name('admin.delete-water-quality-log');
     });
     // Waste Disposal Route
     Route::controller(WasteDisposalController::class)->group(function() {
@@ -300,20 +279,30 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Company
     Route::controller(CompanyController::class)->group(function() {
-        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::get('/company', 'index')->name('admin.view-company');
+        Route::get('/create-company', 'create')->name('admin.create-company');
+        Route::post('/save-company', 'store')->name('admin.store-company');
+        Route::get('/show-company/{company}', 'show')->name('admin.show-company');
+        Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
+        Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
         Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
+        Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
+        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::post('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
+        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
+        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::post('/company/add-question', 'store_question')->name('company.add-question');
         Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
         Route::post('/company/add-water-sources', 'store_water_sources')->name('company.add-water-sources');
-        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
         Route::post('/company/remove-water-conservation-method', 'remove_water_conservation_method')->name('company.remove-water-conservation-method');
-        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
-        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
-        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
-        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
-        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-sources');
+        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
+
+        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
         Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
         Route::get('/create-company', 'create')->name('admin.create-company');
         Route::get('/show-company/{company}', 'show')->name('admin.show-company');

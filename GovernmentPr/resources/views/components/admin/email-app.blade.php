@@ -255,7 +255,6 @@
     @endsection
     @section('scripts')
     <script src="{{asset('adminAssets/libs/quill/quill.js')}}"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
     <script>
         // work in the name of Jesus

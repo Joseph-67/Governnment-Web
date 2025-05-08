@@ -3761,31 +3761,76 @@
                             <div id="productCategoryCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="productCategoryHeading">
                                 <div class="accordion-body">
-                                    <form action="" method="post" id="add-product-category-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="category_name">Category Name</label>
-                                                    <input type="text" class="form-control" id="category_name"
-                                                        name="category_name" placeholder="Enter category name" required>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card shadow-sm border-0 mt-4">
+                                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                    <h4 class="card-title mb-0">Add New Product Category</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="category_description">Description</label>
-                                                    <textarea class="form-control" id="category_description"
-                                                        name="category_description"
-                                                        placeholder="Enter category description" rows="3"
-                                                        required></textarea>
+                                                <div class="card-body">
+                                                    <p class="text-muted">Use this form to add a new product category. Provide a name and description for the category to help organize your products effectively.</p>
+                                                    <form action="" method="post" id="add-product-category-form">
+                                                        @csrf
+                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="category_name">Category Name</label>
+                                                                    <input type="text" class="form-control" id="category_name"
+                                                                        name="category_name" placeholder="Enter category name" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="category_description">Description</label>
+                                                                    <textarea class="form-control" id="category_description"
+                                                                        name="category_description"
+                                                                        placeholder="Enter category description" rows="3"
+                                                                        required></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 mt-3">
+                                                                <button type="submit" class="btn btn-primary">Add Category</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Category</button>
                                             </div>
                                         </div>
-                                    </form>
+                                        <div class="col-md-6">
+                                            <div class="card shadow-sm border-0 mt-4  d-none">
+                                                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                                    <h4 class="card-title mb-0">Edit Product Category</h4>
+                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="text-muted">Use this form to edit an existing product category. You can update the category name and description as needed.</p>
+                                                    <form action="" method="post" id="edit-product-category-form">
+                                                        @csrf
+                                                        <input type="hidden" name="category_id" id="category_id">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="edit_category_name">Category Name</label>
+                                                                    <input type="text" class="form-control" id="edit_category_name" name="category_name" placeholder="Enter category name" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="edit_category_description">Description</label>
+                                                                    <textarea class="form-control" id="edit_category_description" name="category_description" placeholder="Enter category description" rows="3" required></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 mt-3">
+                                                                <button type="submit" class="btn btn-primary">Update Category</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="table-responsive mt-4">
                                         <table class="table table-striped mb-0" id="tbl-product-categories">
@@ -4054,7 +4099,7 @@
                                                 </div>
 
                                                 <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                    <button type="submit" class="btn btn-primary" id="btn-general-settings">Save</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -4130,7 +4175,7 @@
                                                 </div>
 
                                                 <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary">Save Location</button>
+                                                    <button type="submit" class="btn btn-primary" id="btn-location-settings">Save Location</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -4904,6 +4949,7 @@
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
     <style>
         .tagify {
             width: 100%;
@@ -5102,25 +5148,43 @@
     <!-- DataTables and Bootstrap JavaScript -->
     <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
-
-    <script type="text/javascript" src="{{asset('adminAssets/js/toastify.js')}}"></script>
-    <script src="{{asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/datatable.init.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/toastify.js') }}"></script>
+    <script src="{{ asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/pages/datatable.init.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('adminAssets/js/location.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
+    <script>
+        const inputElm = document.querySelector("input[name='prepared_by']");
 
-    <!-- user tagify -->
-     <script>
-        // work in the name of Jesus
-        var inputElm = document.querySelector("input[name='prepared_by']");
+        const tagify = new Tagify(inputElm, {
+            tagTextProp: 'name',
+            skipInvalid: true,
+            dropdown: {
+                closeOnSelect: false,
+                enabled: 1,
+                classname: 'users-list',
+                searchKeys: ['name', 'email'],
+                position: "text",
+                mapValueTo: "email",
+            },
+            templates: {
+                tag: tagTemplate,
+                dropdownItem: suggestionItemTemplate,
+                dropdownHeader: dropdownHeaderTemplate
+            },
+            whitelist: [],
+            transformTag: transformTagData,
+            validate: validateTagData
+        });
 
         function tagTemplate(tagData) {
             return `
-                <tag title="${tagData.email}"
-                        contenteditable='false'
-                        spellcheck='false'
-                        tabIndex="-1"
-                        class="tagify__tag ${tagData.class ? tagData.class : ""}"
-                        ${this.getAttributes(tagData)}>
+                <tag title="${tagData.email}" contenteditable='false' spellcheck='false' tabIndex="-1" class="tagify__tag ${tagData.class || ""}" ${this.getAttributes(tagData)}>
                     <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
                     <div>
                         <div class='tagify__tag__avatar-wrap'>
@@ -5129,81 +5193,48 @@
                         <span class='tagify__tag-text'>${tagData.name}</span>
                     </div>
                 </tag>
-            `
+            `;
         }
 
         function suggestionItemTemplate(tagData) {
             return `
-                <div ${this.getAttributes(tagData)}
-                    class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
-                    tabindex="0"
-                    role="option">
-                    ${tagData.avatar ? `
-                        <div class='tagify__dropdown__item__avatar-wrap'>
-                            <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-                        </div>` : ''
-                }
+                <div ${this.getAttributes(tagData)} class='tagify__dropdown__item ${tagData.class || ""}' tabindex="0" role="option">
+                    ${tagData.avatar ? `<div class='tagify__dropdown__item__avatar-wrap'><img onerror="this.style.visibility='hidden'" src="${tagData.avatar}"></div>` : ''}
                     <strong>${tagData.name}</strong>
                     <span>${tagData.email}</span>
                 </div>
-            `
+            `;
         }
 
         function dropdownHeaderTemplate(suggestions) {
             return `
-                <header data-selector='tagify-suggestions-header' class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
-                    <strong style='grid-area: add'>${this.value.length ? `Add Remaning` : 'Add All'}</strong>
-                    <span style='grid-area: remaning'>${suggestions.length} members</span>
+                <header class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
+                    <strong>${this.value.length ? `Add Remaining` : 'Add All'}</strong>
+                    <span>${suggestions.length} members</span>
                     <a class='remove-all-tags'>Remove all</a>
                 </header>
-            `
+            `;
         }
 
-        // initialize Tagify on the above input node reference
-        var tagify = new Tagify(inputElm, {
-            tagTextProp: 'name', // very important since a custom template is used with this property as text
-            // enforceWhitelist: true,
-            skipInvalid: true, // do not remporarily add invalid tags
-            dropdown: {
-                closeOnSelect: false,
-                enabled: 1, // Show suggestions after typing one character
-                classname: 'users-list',
-                searchKeys: ['name', 'email'],  // very important to set by which keys to search for suggesttions when typing
-                position: "text", // Position suggestions relative to the cursor
-                mapValueTo: "email", // Use email for selection
-            },
-            templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate,
-                dropdownHeader: dropdownHeaderTemplate
-            },
-            whitelist: [],
+        function transformTagData(tagData) {
+            const { name, email } = parseFullValue(tagData.name);
+            tagData.name = name;
+            tagData.email = email || tagData.email;
+        }
 
-            transformTag: (tagData, originalData) => {
-                var { name, email } = parseFullValue(tagData.name)
-                tagData.name = name
-                tagData.email = email || tagData.email
-            },
-
-            validate({ name, email }) {
-                // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
-                if (!email && name) {
-                    var parsed = parseFullValue(name)
-                    name = parsed.name
-                    email = parsed.email
-                }
-
-                if (!name) return "Missing name"
-                if (!validateEmail(email)) return "Invalid email"
-
-                return true
+        function validateTagData({ name, email }) {
+            if (!email && name) {
+                const parsed = parseFullValue(name);
+                name = parsed.name;
+                email = parsed.email;
             }
-        });
+            if (!name) return "Missing name";
+            if (!validateEmail(email)) return "Invalid email";
+            return true;
+        }
 
-        // The below code is printed as escaped, so please copy this function from:
-        // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
         function escapeHTML(s) {
-            return typeof s == 'string' ? s
+            return typeof s === 'string' ? s
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
@@ -5212,598 +5243,550 @@
                 : s;
         }
 
-        // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
-        // (since each user also has a 'role' property)
-        tagify.dropdown.createListHTML = sugegstionsList => {
-            const rolesOfUsers = sugegstionsList.reduce((acc, suggestion) => {
+        tagify.dropdown.createListHTML = (suggestionsList) => {
+            const rolesOfUsers = suggestionsList.reduce((acc, suggestion) => {
                 const role = suggestion.role || 'Not Assigned';
-
-                if (!acc[role])
-                    acc[role] = [suggestion]
-                else
-                    acc[role].push(suggestion)
-
-                return acc
+                acc[role] = acc[role] || [];
+                acc[role].push(suggestion);
+                return acc;
             }, {});
 
-            const getUsersSuggestionsHTML = roleUsers => roleUsers.map((suggestion, idx) => {
-                if (typeof suggestion == 'string' || typeof suggestion == 'number')
-                    suggestion = { value: suggestion }
-
-                var value = tagify.dropdown.getMappedValue.call(tagify, suggestion)
-
-                suggestion.value = value && typeof value == 'string' ? escapeHTML(value) : value
-
-                return tagify.settings.templates.dropdownItem.apply(tagify, [suggestion]);
+            const getUsersSuggestionsHTML = (roleUsers) => roleUsers.map((suggestion) => {
+                suggestion.value = escapeHTML(tagify.dropdown.getMappedValue.call(tagify, suggestion));
+                return tagify.settings.templates.dropdownItem.call(tagify, suggestion);
             }).join("");
 
-
-            // assign the user to a group
             return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
-                return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`
+                return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`;
             }).join("");
-        }
+        };
 
-        // Event listener for input typing
-        tagify.on('input', async (e) => {
-            const searchTerm = e.detail.value.trim(); // Get the input value
-            if (searchTerm.length < 2) return; // Wait for at least 2 characters before fetching
-            tagify.settings.whitelist.length = 0
-            tagify.loading(true).dropdown.hide.call(tagify)
-            debounceTimer = setTimeout(async () => {
-                try {
-                    tagify.loading(true).dropdown.hide()
-                    // Fetch suggestions from the API
-                    const url = new URL("{{ route('admins.details') }}");
-                    url.searchParams.append("query", searchTerm);
-                    console.log(url.toString());
+        tagify.on('input', debounce(async (e) => {
+            const searchTerm = e.detail.value.trim();
+            if (searchTerm.length < 2) return;
 
-                    const response = await fetch(url.toString());
-                    const users = await response.json();
-                    console.log(users);
+            tagify.settings.whitelist.length = 0;
+            tagify.loading(true).dropdown.hide();
 
-                    if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
-                        console.error('Unexpected API response structure:', users);
-                        return;
-                    }
-                    // Format the data to match Tagify's whitelist structure
-                    let formattedAdmins = users.admin.map(user => ({
-                        value: user.id,
-                        name: `${user.first_name} ${user.last_name}`,
-                        avatar: user.profile_photo_path || 'https://via.placeholder.com/80', // Default avatar if not provided
-                        email: user.email,
-                        role: 'admin'
-                    }));
-                    // console.log(formattedAdmins);
-                    let formattedUsers = users.users.map(user => ({
-                        value: user.id,
-                        name: `${user.first_name} ${user.last_name}`,
-                        avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
-                        email: user.email,
-                        role: 'user'
-                    }));
+            try {
+                const url = new URL("{{ route('admins.details') }}");
+                url.searchParams.append("query", searchTerm);
 
-                    // Combine both admin and user lists
-                    let formattedData = formattedAdmins.concat(formattedUsers);
-                    console.log(formattedData);
+                const response = await fetch(url.toString());
+                const users = await response.json();
 
-                    // Update Tagify's whitelist and show the dropdown
-                    tagify.settings.whitelist = formattedData;
-                    tagify.loading(false).dropdown.show.call(tagify, searchTerm)
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                    tagify.settings.whitelist = [];
-                    tagify.dropdown.show.call('Error fetching data. Try again later.');
+                if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
+                    console.error('Unexpected API response structure:', users);
+                    return;
                 }
-            }, 300); // Delay of 300ms
-        });
-        // attach events listeners
-        tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
-            .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
+
+                const formattedAdmins = users.admin.map(user => formatUser(user, 'admin'));
+                const formattedUsers = users.users.map(user => formatUser(user, 'user'));
+
+                tagify.settings.whitelist = [...formattedAdmins, ...formattedUsers];
+                tagify.loading(false).dropdown.show(searchTerm);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                tagify.settings.whitelist = [];
+                tagify.dropdown.show('Error fetching data. Try again later.');
+            }
+        }, 300));
+
+        tagify.on('dropdown:select', onSelectSuggestion)
+            .on('edit:start', onEditStart);
 
         function onSelectSuggestion(e) {
             if (e.detail.event.target.matches('.remove-all-tags')) {
-                tagify.removeAllTags()
-            }
-
-            // custom class from "dropdownHeaderTemplate"
-            else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`))
+                tagify.removeAllTags();
+            } else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`)) {
                 tagify.dropdown.selectAll();
+            }
         }
 
         function onEditStart({ detail: { tag, data } }) {
-            tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
+            tagify.setTagTextNode(tag, `${data.name} <${data.email}>`);
         }
 
-        // https://stackoverflow.com/a/9204568/104380
         function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         function parseFullValue(value) {
-            // https://stackoverflow.com/a/11592042/104380
-            var parts = value.split(/<(.*?)>/g),
-                name = parts[0].trim(),
-                email = parts[1]?.replace(/<(.*?)>/g, '').trim();
-
-            return { name, email }
+            const parts = value.split(/<(.*?)>/g);
+            return {
+                name: parts[0].trim(),
+                email: parts[1]?.replace(/<(.*?)>/g, '').trim()
+            };
         }
-        // work in the name of Jesus
-     </script>
-    <!-- user tagify -->
 
-    <script>
-    // Confirm deletion function
-    function DeleteOperationType(id) {
-        if (confirm("Are you sure you want to delete this operation type?")) {
-            // Implement deletion logic
-            console.log("Delete operation type with ID:", id);
+        function formatUser(user, role) {
+            return {
+                value: user.id,
+                name: `${user.first_name} ${user.last_name}`,
+                avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
+                email: user.email,
+                role
+            };
         }
-    }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
     </script>
     <script>
-        /**
-         * Populates a dropdown element with options.
-         * 
-         * @param {HTMLElement} dropdown - The dropdown element to populate.
-         * @param {Array} data - An array of objects representing the options. Each object should have a `value` and `label`.
-         */
-        function populateDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select a year";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-            // Add options from the data
-            data.calendar_years.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.calendar_year_id; // Use the value from the data
-                option.textContent = item.name; // Use the label from the data
-                dropdown.appendChild(option);
-            });
-            console.log("Dropdown populated with options:", data);
+        // Function to handle the delete operation type action
+        function deleteOperationType(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Call the delete function with the ID
+                    deleteOperationType(id);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
         }
 
-        // Generic function to fetch data from a URL
-        async function fetchFieldInput(url, options = {}) {
+        // Placeholder for the actual deletion logic
+    </script>
+<script>
+    /**
+     * Populates a dropdown element with options.
+     * 
+     * @param {HTMLElement} dropdown - The dropdown element to populate.
+     * @param {Array} data - An array of objects representing the options. Each object should have a `value` and `label`.
+     */
+    function populateDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select a year";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+        // Add options from the data
+        data.calendar_years.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.calendar_year_id; // Use the value from the data
+            option.textContent = item.name; // Use the label from the data
+            dropdown.appendChild(option);
+        });
+        console.log("Dropdown populated with options:", data);
+    }
+
+    // Generic function to fetch data from a URL
+    async function fetchFieldInput(url, options = {}) {
+        try {
+            const response = await fetch(url, {
+                method: options.method || "GET", // Default to GET
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    ...options.headers, // Include additional headers if provided
+                },
+                credentials: 'same-origin', // Include credentials for same-origin requests
+                ...options, // Merge any additional options
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Fetched data:", data);
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            throw error; // Re-throw the error to handle it in the calling function
+        }
+    }
+
+
+    // Fetch calendar years on page load
+    document.querySelectorAll('.calendar-year').forEach(dropdown => {
+        dropdown.addEventListener('focus', async function () {
+            console.log('Selection detected');
+            const companyId = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+            console.log("Company ID:", companyId);
+
+            const url = `/admin/get-calendar-years/${companyId}`;
+            console.log("Fetching data from URL:", url);
+
             try {
-                const response = await fetch(url, {
-                    method: options.method || "GET", // Default to GET
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        ...options.headers, // Include additional headers if provided
-                    },
-                    credentials: 'same-origin', // Include credentials for same-origin requests
-                    ...options, // Merge any additional options
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("Fetched data:", data);
-                return data;
+                const data = await fetchFieldInput(url);
+                console.log("Fetched calendar years:", data);
+                populateDropdown(dropdown, data);
             } catch (error) {
-                console.error("Error fetching data:", error);
-                throw error; // Re-throw the error to handle it in the calling function
+                console.error("Error fetching calendar years:", error);
             }
-        }
-
-
-        // Fetch calendar years on page load
-        document.querySelectorAll('.calendar-year').forEach(dropdown => {
-            dropdown.addEventListener('focus', async function () {
-                console.log('Selection detected');
-                // Retrieve the company_id dynamically
-                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                console.log("Company ID:", company_id);
-                // Construct the API URL
-                let url = `/admin/get-calendar-years/${company_id}`;
-                console.log("Fetching data from URL:", url);
-                // Fetch data using the fetchFieldInput function
-                try {
-                    let data = await fetchFieldInput(url);
-                    console.log("Fetched calendar years:", data);
-                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                    // Example:
-                    populateDropdown(dropdown, data);
-                } catch (error) {
-                    console.error("Error fetching calendar years:", error);
-                }
-            });
         });
-        // end fetch calendar years on page load
-        // fetch operation type
-        // populate the dropdown
-        function populateOperationTypeDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select operation type";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-            // Add options from the data
-            data.operation_types.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.operation_type_id; // Use the value from the data
-                option.textContent = item.name; // Use the label from the data
-                dropdown.appendChild(option);
-            });
-            console.log("Dropdown populated with options:", data);
-        }
-        // end populate dropdown
-        // Fetch operation type on page load
-        document.querySelectorAll('.operation-type').forEach(dropdown => {
-            dropdown.addEventListener('focus', async function () {
-                console.log('Selection detected');
-                // Retrieve the company_id dynamically
-                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                console.log("Company ID:", company_id);
-                // Construct the API URL
-                let url = `/admin/get-operation-types/${company_id}`;
-                console.log("Fetching data from URL:", url);
-                // Fetch data using the fetchFieldInput function
-                try {
-                    let data = await fetchFieldInput(url);
-                    console.log("Fetched Operation Types:", data);
-                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                    // Example:
-                    populateOperationTypeDropdown(dropdown, data);
-                } catch (error) {
-                    console.error("Error fetching operation types:", error);
-                }
-            });
+    });
+    // end fetch calendar years on page load
+    // fetch operation type
+    // populate the dropdown
+    function populateOperationTypeDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select operation type";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+        // Add options from the data
+        data.operation_types.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.operation_type_id; // Use the value from the data
+            option.textContent = item.name; // Use the label from the data
+            dropdown.appendChild(option);
         });
-        // end fetch operation type
+        console.log("Dropdown populated with options:", data);
+    }
+    // end populate dropdown
+    // Fetch operation type on focus
+    document.querySelectorAll('.operation-type').forEach(dropdown => {
+        dropdown.addEventListener('focus', async () => {
+            const companyId = "{{ json_encode($company->company_id) }}";
+            const url = `/admin/get-operation-types/${companyId}`;
+            console.log("Fetching operation types from URL:", url);
 
-        // fetch operation category
-        // populate the dropdown
-        function populateOperationCategoryDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select operation category";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-            // Add options from the data
-            data.operation_categories.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.operation_category_id; // Use the value from the data
-                option.textContent = item.name; // Use the label from the data
-                dropdown.appendChild(option);
-            });
-            console.log("Dropdown populated with options:", data);
-        }
-        // end populate dropdown
-        // Fetch operation category on page load
-        document.querySelectorAll('.operation-category').forEach(dropdown => {
-            dropdown.addEventListener('focus', async function () {
-                console.log('Selection detected');
-                // Retrieve the company_id dynamically
-                let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                console.log("Company ID:", company_id);
-                // Construct the API URL
-                let url = `/admin/get-operation-category/${company_id}`;
-                console.log("Fetching data from URL:", url);
-
-                // Fetch data using the fetchFieldInput function
-                try {
-                    let data = await fetchFieldInput(url);
-                    console.log("Fetched Operation Types:", data);
-                    // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                    // Example:
-                    populateOperationCategoryDropdown(dropdown, data);
-                } catch (error) {
-                    console.error("Error fetching operation categories:", error);
-                }
-            });
-        });
-        // end fetch operation category
-        // Fetch material and populate dropdown
-        function populateMaterialDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select material";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-
-            // Add options from the data
-            if (data.company_materials && Array.isArray(data.company_materials)) {
-                data.company_materials.forEach(item => {
-                    if (item.material != null) {
-                        const option = document.createElement("option");
-                        option.value = item.materialID || ""; // Use the value from the data
-                        option.textContent = item.material.material || ""; // Use the label from the data
-                        dropdown.appendChild(option);
-                    }
-                });
-                console.log("Dropdown populated with materials:", data);
-            } else {
-                console.warn("Invalid materials data structure:", data);
+            try {
+                const data = await fetchFieldInput(url);
+                console.log("Fetched Operation Types:", data);
+                populateOperationTypeDropdown(dropdown, data);
+            } catch (error) {
+                console.error("Error fetching operation types:", error);
             }
-        }
+        });
+    });
+    // end fetch operation type
 
-        // Fetch material on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".material-select").forEach(dropdown => {
+    // fetch operation category
+    // populate the dropdown
+    function populateOperationCategoryDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select operation category";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+        // Add options from the data
+        data.operation_categories.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.operation_category_id; // Use the value from the data
+            option.textContent = item.name; // Use the label from the data
+            dropdown.appendChild(option);
+        });
+        console.log("Dropdown populated with options:", data);
+    }
+    // end populate dropdown
+    // Fetch operation category on focus
+    document.querySelectorAll('.operation-category').forEach(dropdown => {
+        dropdown.addEventListener('focus', async () => {
+            console.log('Operation category dropdown focused');
+            const companyId = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding
+            const url = `/admin/get-operation-category/${companyId}`;
+            console.log("Fetching data from URL:", url);
+
+            try {
+                const data = await fetchFieldInput(url);
+                console.log("Fetched Operation Categories:", data);
+                populateOperationCategoryDropdown(dropdown, data);
+            } catch (error) {
+                console.error("Error fetching operation categories:", error);
+            }
+        });
+    });
+    // Fetch material and populate dropdown
+    function populateMaterialDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select material";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+
+        // Add options from the data
+        if (data.company_materials && Array.isArray(data.company_materials)) {
+            data.company_materials.forEach(item => {
+                if (item.material != null) {
+                    const option = document.createElement("option");
+                    option.value = item.materialID || ""; // Use the value from the data
+                    option.textContent = item.material.material || ""; // Use the label from the data
+                    dropdown.appendChild(option);
+                }
+            });
+            console.log("Dropdown populated with materials:", data);
+        } else {
+            console.warn("Invalid materials data structure:", data);
+        }
+    }
+
+    // Fetch material on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".material-select").forEach(dropdown => {
             dropdown.addEventListener("focus", async () => {
                 const companyID = "{{ json_encode($company->company_id) }}";
                 const url = `/admin/get-materials/${companyID}`;
 
                 try {
-                const data = await fetchFieldInput(url);
-                populateMaterialDropdown(dropdown, data);
+                    const data = await fetchFieldInput(url);
+                    populateMaterialDropdown(dropdown, data);
                 } catch (error) {
-                console.error("Error fetching materials:", error);
-                alert("Failed to load materials. Please try again.");
+                    console.error("Error fetching materials:", error);
+                    alert("Failed to load materials. Please try again.");
                 }
             });
-            });
         });
+    });
 
-        // Fetch chemical and populate dropdown
-        function populateChemicalDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
+    // Fetch chemical and populate dropdown
+    function populateChemicalDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
 
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select chemical";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select chemical";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
 
-            // Add options from the data
-            if (data.company_chemicals && Array.isArray(data.company_chemicals)) {
-                data.company_chemicals.forEach(item => {
-                    if (item.chemical) {
-                        const option = document.createElement("option");
-                        option.value = item.chemicalID || ""; // Use the value from the data
-                        option.textContent = item.chemical.name || ""; // Use the label from the data
-                        dropdown.appendChild(option);
-                    }
-                });
-                console.log("Dropdown populated with chemicals:", data);
-            } else {
-                console.warn("Invalid data structure for chemicals:", data);
-            }
+        // Add options from the data
+        if (data.company_chemicals && Array.isArray(data.company_chemicals)) {
+            data.company_chemicals.forEach(item => {
+                if (item.chemical) {
+                    const option = document.createElement("option");
+                    option.value = item.chemicalID || ""; // Use the value from the data
+                    option.textContent = item.chemical.name || ""; // Use the label from the data
+                    dropdown.appendChild(option);
+                }
+            });
+            console.log("Dropdown populated with chemicals:", data);
+        } else {
+            console.warn("Invalid data structure for chemicals:", data);
         }
+    }
 
-        // Fetch chemicals on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".chemical-select").forEach(element => {
-                element.addEventListener("focus", async () => {
-                    // Dynamically retrieve the company ID
-                    const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
-                    console.log("Company ID:", companyID);
-                    const url = `/admin/get-chemicals/${companyID}`;
-                    console.log("Fetching data from URL:", url);
-                    try {
-                        const data = await fetchFieldInput(url); // Await the data fetch
-                        console.log("Fetched Chemicals:", data);
-                        // Populate the dropdown with the fetched data
-                        populateChemicalDropdown(element, data);
-                    } catch (error) {
-                        console.error("Error fetching chemicals:", error);
-                        alert("Failed to load chemicals. Please try again.");
-                    }
-                });
+    // Fetch chemicals on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".chemical-select").forEach(element => {
+            element.addEventListener("focus", async () => {
+                // Dynamically retrieve the company ID
+                const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
+                console.log("Company ID:", companyID);
+                const url = `/admin/get-chemicals/${companyID}`;
+                console.log("Fetching data from URL:", url);
+                try {
+                    const data = await fetchFieldInput(url); // Await the data fetch
+                    console.log("Fetched Chemicals:", data);
+                    // Populate the dropdown with the fetched data
+                    populateChemicalDropdown(element, data);
+                } catch (error) {
+                    console.error("Error fetching chemicals:", error);
+                    alert("Failed to load chemicals. Please try again.");
+                }
             });
         });
-        // fetch product
-        // populate the dropdown
-        function populateProductDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select product";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-            // Add options from the data
-            data.products.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.product_id; // Use the value from the data
-                option.textContent = item.name; // Use the label from the data
-                dropdown.appendChild(option);
-            });
-            console.log("Dropdown populated with options:", data);
-        }
-        // end populate dropdown
-        // Fetch product on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.product-select').forEach(element => {
-                // console.log('Product dropdown clicked:', element);
-                element.addEventListener('focus', async () => {
-                    console.log('Product dropdown clicked:', element);
-                    // Retrieve the company_id dynamically
-                    let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-                    console.log("Company ID:", company_id);
-                    // Construct the API URL
-                    let url = `/admin/get-product/${company_id}`;
-                    console.log("Fetching data from URL:", url);
-                    // Fetch data using the fetchFieldInput function
-                    try {
-                        let data = await fetchFieldInput(url);
-                        console.log("Fetched Product:", data);
-                        // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                        // Example:
-                        if (populateProductDropdown(element, data)) {
-                            console.log("Product dropdown populated successfully.");
-                            // element.dataset.populated = "true"; // Mark as populated
-                        } else {
-                            console.log("Failed to populate product dropdown.");
-                            
-                        }
-                    } catch (error) {
-                        console.error("Error fetching product:", error);
+    });
+    // fetch product
+    // populate the dropdown
+    function populateProductDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select product";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+        // Add options from the data
+        data.products.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.product_id; // Use the value from the data
+            option.textContent = item.name; // Use the label from the data
+            dropdown.appendChild(option);
+        });
+        console.log("Dropdown populated with options:", data);
+    }
+    // end populate dropdown
+    // Fetch product on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.product-select').forEach(element => {
+            element.addEventListener('focus', async () => {
+                const companyId = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding
+                const url = `/admin/get-product/${companyId}`;
+                console.log("Fetching data from URL:", url);
+
+                try {
+                    const data = await fetchFieldInput(url);
+                    console.log("Fetched Product:", data);
+
+                    if (populateProductDropdown(element, data)) {
+                        console.log("Product dropdown populated successfully.");
+                    } else {
+                        console.error("Failed to populate product dropdown.");
                     }
-                })
+                } catch (error) {
+                    console.error("Error fetching product:", error);
+                }
             });
         });
+    });
 
-       // end fetch product
+    async function populateWasteDropdown(ele, data) {
+        // Clear existing options
+        ele.innerHTML = "";
 
-        async function populateWasteDropdown(ele, data) {
-            // Clear existing options
-            ele.innerHTML = "";
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select waste";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        ele.appendChild(defaultOption);
 
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select waste";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            ele.appendChild(defaultOption);
+        // Add options from the data
+        data.company_wastes.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.company_waste_id; // Use the value from the data
+            option.textContent = item.waste_name; // Use the label from the data
+            ele.appendChild(option);
+        });
 
-            // Add options from the data
-            data.company_wastes.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.company_waste_id; // Use the value from the data
-                option.textContent = item.waste_name; // Use the label from the data
-                ele.appendChild(option);
-            });
+        return "true";
+        console.log("Dropdown populated with options:", data);
+    }
 
-            return "true";
-            console.log("Dropdown populated with options:", data);
-        }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.waste-select').forEach(element => {
+            element.addEventListener('focus', async function () {
+                console.log('Waste dropdown clicked:', element);
 
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.waste-select').forEach(element => {
-                element.addEventListener('focus', async function (e) {
-                    console.log('Waste dropdown clicked:', element);
-                    console.log('Selection detected');
-                    const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
-                    console.log("Company ID:", company_id);
-                    const url = `/admin/get-waste/${company_id}`;
-                    console.log("Fetching data from URL:", url);
-                    try {
-                        const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
-                        console.log("Fetched Waste:", data, element);
-                        // Add new options
-                        if (populateWasteDropdown(element, data)) {
-                            console.log("Waste dropdown populated successfully.");
-                            element.dataset.populated = "true"; // Mark as populated
-                        } else {
-                            console.error("Failed to populate waste dropdown.");
-                        }
-                        
-                    } catch (error) {
-                        console.error("Error fetching waste:", error);
-                        alert("Failed to load waste data. Please try again.");
+                const companyId = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding
+                console.log("Company ID:", companyId);
+
+                const url = `/admin/get-waste/${companyId}`;
+                console.log("Fetching data from URL:", url);
+
+                try {
+                    const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                    console.log("Fetched Waste:", data, element);
+
+                    if (await populateWasteDropdown(element, data)) {
+                        console.log("Waste dropdown populated successfully.");
+                        element.dataset.populated = "true"; // Mark as populated
+                    } else {
+                        console.error("Failed to populate waste dropdown.");
                     }
-                });
+                } catch (error) {
+                    console.error("Error fetching waste:", error);
+                    alert("Failed to load waste data. Please try again.");
+                }
             });
         });
-        // end fetch waste
+    });
 
-        async function populateOperationDropdown(dropdown, data) {
-            // Clear existing options
-            dropdown.innerHTML = "";
-            // Add a default placeholder option
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "Select operation";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            dropdown.appendChild(defaultOption);
-            // Add options from the data
-            data.company_operations.forEach(item => {
+    async function populateOperationDropdown(dropdown, data) {
+        // Clear existing options
+        dropdown.innerHTML = "";
+        // Add a default placeholder option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select operation";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+        // Add options from the data
+        data.company_operations.forEach(item => {
             const option = document.createElement("option");
             option.value = item.operation_id; // Use the value from the data
             option.textContent = item.operation_name; // Use the label from the data
             dropdown.appendChild(option);
-            });
-            console.log("Dropdown populated with options:", data);
-        }
+        });
+        console.log("Dropdown populated with options:", data);
+    }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.operation-select').forEach(dropdown => {
-            let isLoading = false; // Prevent multiple concurrent requests
-            document.addEventListener('click', async function (e) {
-                if (e.target && e.target.classList.contains('operation-select')) {
-                const clickedDropdown = e.target;
-                // if (clickedDropdown.dataset.populated === "true") {
-                //     return; // Avoid fetching data again if already populated
-                // }
-                console.log('Operation dropdown clicked:', e.target);
-                if (isLoading) return; // Debounce logic
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.operation-select').forEach(dropdown => {
+            let isLoading = false;
 
-                console.log('Selection detected');
-                const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
-                console.log("Company ID:", company_id);
+            dropdown.addEventListener('click', async function () {
+                if (isLoading || dropdown.dataset.populated === "true") return;
 
-                const url = `/admin/get-operations/${company_id}`;
+                console.log('Operation dropdown clicked:', dropdown);
+                const companyId = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/get-operations/${companyId}`;
                 console.log("Fetching data from URL:", url);
 
                 isLoading = true;
                 try {
-                    const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
+                    const data = await fetchFieldInput(url);
                     console.log("Fetched Operations:", data);
-                    populateOperationDropdown(clickedDropdown, data);
-                    clickedDropdown.dataset.populated = "true"; // Mark as populated
+                    populateOperationDropdown(dropdown, data);
+                    dropdown.dataset.populated = "true";
                 } catch (error) {
                     console.error("Error fetching operations:", error);
                     alert("Failed to load operation data. Please try again.");
                 } finally {
                     isLoading = false;
                 }
-                }
-            });
             });
         });
-        // end fetch operations
+    });
 
-        // triger product setup
-        let new_product_setup_card = document.getElementById('new_product_setup_card');
-        document.querySelector('#btn-setup-products').addEventListener('click', () => {
-            new_product_setup_card.classList.remove('d-none');
-            new_product_setup_card.scrollIntoView({ behavior: 'smooth' });
-        });
+    // triger product setup
+    let new_product_setup_card = document.getElementById('new_product_setup_card');
+    document.querySelector('#btn-setup-products').addEventListener('click', () => {
+        new_product_setup_card.classList.remove('d-none');
+        new_product_setup_card.scrollIntoView({ behavior: 'smooth' });
+    });
 
-        // Dynamically update placeholder based on currency selection
-        document.getElementById('currency').addEventListener('change', function () {
-            const currency = this.value;
-            const priceInput = document.getElementById('product_price');
-            priceInput.placeholder = `Enter product price in ${currency}`;
-        });
+    // Dynamically update placeholder based on currency selection
+    document.getElementById('currency').addEventListener('change', function () {
+        const currency = this.value;
+        const priceInput = document.getElementById('product_price');
+        priceInput.placeholder = `Enter product price in ${currency}`;
+    });
 
-        // Function to populate the table
-        function populateProductTable() {
-            const tbody = document.getElementById("tbl-products").querySelector("tbody");
-            tbody.innerHTML = ""; // Clear existing content
-            // Retrieve the company_id dynamically
-            let company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding on the server
-            console.log("Company ID:", company_id);
-            // Construct the API URL
-            let url = `/admin/get-product/${company_id}`;
-            console.log("Fetching data from URL:", url);
-            fetchFieldInput(url).then(data => {
-                console.log("Fetched Product:", data);
-                // Check if the data contains products
+    // Function to populate the product table
+    function populateProductTable() {
+        const tbody = document.querySelector("#tbl-products tbody");
+        tbody.innerHTML = ""; // Clear existing content
+
+        const companyId = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding
+        const url = `/admin/get-product/${companyId}`;
+
+        fetchFieldInput(url)
+            .then(data => {
                 if (data.products && data.products.length > 0) {
-                    // Populate the table with products
                     data.products.forEach(product => {
                         tbody.innerHTML += `
                             <tr>
@@ -5819,109 +5802,108 @@
                             </tr>`;
                     });
                 } else {
-                    // Display "No products available" message if no products exist
                     tbody.innerHTML = `
-                        <tr id="no-products">
-                            <td colspan="5" class="text-center">No products available</td>
+                        <tr>
+                            <td colspan="6" class="text-center">No products available</td>
                         </tr>`;
                 }
-            }).catch(error => {
-                console.error("Error fetching product:", error);
-            });
-        }
+            })
+            .catch(error => console.error("Error fetching products:", error));
+    }
 
-        // Attach event listener for when the accordion section is shown
-        document.getElementById('productListCollapse').addEventListener('shown.bs.collapse', populateProductTable);
+    // Attach event listener for when the accordion section is shown
+    document.getElementById('productListCollapse').addEventListener('shown.bs.collapse', populateProductTable);
 
-        // show, hide, scroll to element and display message functions
-        const showElement = (element) => element.classList.remove('d-none');
-        const hideElement = (element) => element.classList.add('d-none');
-        const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
-        function displayMessage (type, message) {
-            const messageContainer = document.getElementById('message-container');
-            messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
-            setTimeout(() => (messageContainer.innerHTML = ''), 3000);
-        }
-        // end show, hide, scroll to element and display message functions
+    // show, hide, scroll to element and display message functions
+    const showElement = (element) => element.classList.remove('d-none');
+    const hideElement = (element) => element.classList.add('d-none');
+    const scrollToElement = (element) => element.scrollIntoView({ behavior: 'smooth' });
+    function displayMessage(type, message) {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+        setTimeout(() => (messageContainer.innerHTML = ''), 3000);
+    }
+    // end show, hide, scroll to element and display message functions
 
-        // operation type and operation category
-        // Initialize DataTable for operation type
-        let table = $('#tbl-operation-types').DataTable({
-            paging: true,
-            searching: true,
-            ordering: false,
-            responsive: true,
-            columnDefs: [
-                { orderable: false, targets: [3] } // Disable sorting on the "Action" column
-            ],
-            data: [], // Start with an empty data array
-            columns: [
-                { data: 'name' },
-                { data: 'description' },
-                { data: 'sequenceOrder' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `
+    // operation type and operation category
+    // Initialize DataTable for operation type
+    let table = $('#tbl-operation-types').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [3] } // Disable sorting on the "Action" column
+        ],
+        data: [], // Start with an empty data array
+        columns: [
+            { data: 'name' },
+            { data: 'description' },
+            { data: 'sequenceOrder' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description??""}', '${row.sequenceOrder??"0"}')">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${row.operation_type_id}, '${row.name}', '${row.description ?? ""}', '${row.sequenceOrder ?? "0"}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${row.operation_type_id}, '${row.name}')">
                                     <i class="las la-trash-alt"></i> Delete
                                 </button>
                             </div>`;
-                    }
                 }
-            ]
-        });
-        // Function to create an object for each operation type
-        function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
-            this.operation_type_id = operation_type_id;
-            this.name = name;
-            this.description = description;
-            this.sequenceOrder = sequenceOrder;
-        }
-        // Fetch data and populate table when the accordion is expanded
-        document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', () => {
-            let company_id = {{ json_encode($company->company_id) }};
-            let url = `/admin/get-operation-types/${company_id}`;
-            const spinner = document.getElementById('loading-spinner');
-            try {
-                showElement(spinner);
-                fetchFieldInput(url).then(data => {
-                    if (data.status === "success") {
-                        data_array = data.operation_types.map(
-                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
-                        );
-
-                        // Clear and add rows without destroying the table
-                        table.clear();
-                        table.rows.add(data_array);
-                        table.draw();
-                        hideElement(spinner)
-                    }
-                });
-            }catch(error) {
-                console.error("Error showing spinner:", error);
-                displayMessage('danger', 'An error occurred while fetching data.');
             }
+        ]
+    });
+    // Function to create an object for each operation type
+    function OperationTypeObject(operation_type_id, name, description, sequenceOrder) {
+        this.operation_type_id = operation_type_id;
+        this.name = name;
+        this.description = description;
+        this.sequenceOrder = sequenceOrder;
+    }
+    // Fetch data and populate table when the accordion is expanded
+    document.getElementById('operationTypeCollapse').addEventListener('shown.bs.collapse', async () => {
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/get-operation-types/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
 
-        });
-        // Edit operation type
-        function editOperationType(operation_type_id, name, description, sequenceOrder){
-            const editCard = document.getElementById('edit-operation-type-card');
-            showElement(editCard);
-            scrollToElement(editCard);
-            const form = document.getElementById('edit_operation_type_form');
-            form.querySelector('[name="operation_type_id"]').value = operation_type_id;
-            form.querySelector('[name="operation_type_name"]').value = name;
-            form.querySelector('[name="operation_type_description"]').value = description;
-            form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder??"0";
+        try {
+            showElement(spinner);
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success") {
+                const operationTypes = data.operation_types.map(type => 
+                    new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                );
+
+                table.clear();
+                table.rows.add(operationTypes);
+                table.draw();
+            }
+        } catch (error) {
+            console.error("Error fetching operation types:", error);
+            displayMessage('danger', 'An error occurred while fetching data.');
+        } finally {
+            hideElement(spinner);
         }
-        // Confirm deletion
-        function confirmTypeDeletion(operation_type_id, name) {
-            Swal.fire({
+    });
+    // end fetch data and populate table when the accordion is expanded
+    // Edit operation type
+    function editOperationType(operation_type_id, name, description, sequenceOrder) {
+        const editCard = document.getElementById('edit-operation-type-card');
+        showElement(editCard);
+        scrollToElement(editCard);
+        const form = document.getElementById('edit_operation_type_form');
+        form.querySelector('[name="operation_type_id"]').value = operation_type_id;
+        form.querySelector('[name="operation_type_name"]').value = name;
+        form.querySelector('[name="operation_type_description"]').value = description;
+        form.querySelector('[name="operation_type_sequence_order"]').value = sequenceOrder ?? "0";
+    }
+    // Confirm deletion
+    async function confirmTypeDeletion(operation_type_id, name) {
+        const result = await Swal.fire({
             title: `Are you sure you want to delete "${name}"?`,
             text: "You won't be able to revert this!",
             icon: 'warning',
@@ -5929,195 +5911,179 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                // Perform delete action here
-                fetch(`/admin/operation-type/${operation_type_id}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload(); // Reload the page to reflect changes
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            'There was an issue deleting the operation type.',
-                            'error'
-                        );
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire(
-                        'Error!',
-                        'An unexpected error occurred.',
-                        'error'
-                    );
-                });
-                console.log('Operation Type deleted');
-                Swal.fire(
-                    'Deleted!',
-                    'The operation type has been deleted.',
-                    'success'
-                );
-            }
-            });
-        }
-    
-        // Trigger operation setup card
-        const setupCard = document.getElementById('operation-type-card');
-        document.querySelector('#setup-operation-type').addEventListener('click', () => {
-            showElement(setupCard);
-            scrollToElement(setupCard);
         });
 
-        // Initialize DataTable for operation categories
-        let categoriesTable = $('#tbl-operation-categories').DataTable({
-            paging: true,
-            searching: true,
-            ordering: false,
-            responsive: true,
-            columnDefs: [
-                { orderable: false, targets: [2] } // Disable sorting on the "Action" column
-            ],
-            data: [], // Start with an empty data array
-            columns: [
-                { data: 'name' },
-                { data: 'description' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${row.operation_category_id}, '${row.name}', '${row.description}')">
-                                    <i class="las la-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${row.operation_category_id}, '${row.name}')">
-                                    <i class="las la-trash-alt"></i> Delete
-                                </button>
-                            </div>`;
-                    }
-                }
-            ]
-        });
-
-        // Function to create an object for each operation category
-        function OperationCategoryObject(operation_category_id, name, description) {
-            this.operation_category_id = operation_category_id;
-            this.name = name;
-            this.description = description;
-        }
-
-        // Fetch data and populate table when the accordion is expanded
-        document.getElementById('operationCategoryCollapse').addEventListener('shown.bs.collapse', () => {
-            console.log('====================================');
-            console.log('Fetching operation categories...');
-            console.log('====================================');
-            let company_id = {{ json_encode($company->company_id) }};
-            let url = `/admin/get-operation-category/${company_id}`;
-            let categoriesSpinner = document.getElementById('loading-spinner');
-            try {
-                showElement(categoriesSpinner);
-                fetchFieldInput(url).then(data => {
-                    if (data.status === "success") {
-                        data_array = data.operation_categories.map(
-                            category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
-                        );
-
-                        // Clear and add rows without destroying the table
-                        categoriesTable.clear();
-                        categoriesTable.rows.add(data_array);
-                        categoriesTable.draw();
-                        hideElement(categoriesSpinner);
-                    }
-                });
-            } catch (error) {
-                console.error("Error showing spinner:", error);
-                displayMessage('danger', 'An error occurred while fetching data.');
-            }
-        });
-
-        // Edit operation category
-        function editOperationCategory(operation_category_id, name, description) {
-            const editCategoryCard = document.getElementById('edit-operation-category-card');
-            showElement(editCategoryCard);
-            scrollToElement(editCategoryCard);
-
-            const form = document.getElementById('edit_operation_category_form');
-            form.querySelector('[name="operation_category_id"]').value = operation_category_id;
-            form.querySelector('[name="operation_category_name"]').value = name;
-            form.querySelector('[name="operation_category_description"]').value = description;
-        }
-
-        // Confirm deletion
-        function confirmCategoryDeletion(operation_category_id, name) {
-    Swal.fire({
-        title: `Are you sure you want to delete ${name}?`,
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/admin/operation-category/${operation_category_id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
+            try {
+                const response = await fetch(`/admin/operation-type/${operation_type_id}`, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                });
+
                 if (response.ok) {
-                    Swal.fire(
-                        'Deleted!',
-                        'The operation category has been deleted.',
-                        'success'
-                    ).then(() => {
-                        location.reload();
-                    });
+                    Swal.fire('Deleted!', 'The operation type has been deleted.', 'success')
+                        .then(() => location.reload());
                 } else {
-                    Swal.fire(
-                        'Error!',
-                        'There was an issue deleting the operation category.',
-                        'error'
-                    );
+                    Swal.fire('Error!', 'There was an issue deleting the operation type.', 'error');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
-                Swal.fire(
-                    'Error!',
-                    'An unexpected error occurred.',
-                    'error'
+                Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+            }
+        }
+    }
+
+    // Trigger operation setup card
+    const setupCard = document.getElementById('operation-type-card');
+    document.querySelector('#setup-operation-type').addEventListener('click', () => {
+        showElement(setupCard);
+        scrollToElement(setupCard);
+    });
+
+    // Initialize DataTable for operation categories
+    const categoriesTable = $('#tbl-operation-categories').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [{ orderable: false, targets: [2] }],
+        data: [],
+        columns: [
+            { data: 'name' },
+            { data: 'description' },
+            {
+                data: null,
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" 
+                                onclick="editOperationCategory(${row.operation_category_id}, '${row.name}', '${row.description}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" 
+                                onclick="confirmCategoryDeletion(${row.operation_category_id}, '${row.name}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>`
+            }
+        ]
+    });
+
+    // Function to create an object for each operation category
+    function OperationCategoryObject(operation_category_id, name, description) {
+        this.operation_category_id = operation_category_id;
+        this.name = name;
+        this.description = description;
+    }
+
+    // Fetch data and populate table when the accordion is expanded
+    document.getElementById('operationCategoryCollapse').addEventListener('shown.bs.collapse', async () => {
+        console.log('Fetching operation categories...');
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/get-operation-category/${companyId}`;
+        const categoriesSpinner = document.getElementById('loading-spinner');
+
+        try {
+            showElement(categoriesSpinner);
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success") {
+                const dataArray = data.operation_categories.map(
+                    category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
                 );
-            });
+
+                // Clear and add rows without destroying the table
+                categoriesTable.clear();
+                categoriesTable.rows.add(dataArray);
+                categoriesTable.draw();
+            }
+        } catch (error) {
+            console.error("Error fetching operation categories:", error);
+            displayMessage('danger', 'An error occurred while fetching data.');
+        } finally {
+            hideElement(categoriesSpinner);
         }
     });
-}
 
+    // Edit operation category
+    function editOperationCategory(operation_category_id, name, description) {
+        const editCategoryCard = document.getElementById('edit-operation-category-card');
+        showElement(editCategoryCard);
+        scrollToElement(editCategoryCard);
 
-        // Trigger operation category setup card
-        let setupCategoryCard = document.getElementById('operation-category-card');
-        document.querySelector('#setup-operation-category').addEventListener('click', () => {
-            showElement(setupCategoryCard);
-            scrollToElement(setupCategoryCard);
+        const form = document.getElementById('edit_operation_category_form');
+        form.querySelector('[name="operation_category_id"]').value = operation_category_id;
+        form.querySelector('[name="operation_category_name"]').value = name;
+        form.querySelector('[name="operation_category_description"]').value = description;
+    }
+
+    // Confirm deletion
+    function confirmCategoryDeletion(operation_category_id, name) {
+        Swal.fire({
+            title: `Are you sure you want to delete ${name}?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/operation-category/${operation_category_id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire(
+                                'Deleted!',
+                                'The operation category has been deleted.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                'There was an issue deleting the operation category.',
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An unexpected error occurred.',
+                            'error'
+                        );
+                    });
+            }
         });
-        // 
-        // Initialize DataTable for operations log
-        let operationsLogTable = $('#tbl-operations-log').DataTable({
-            paging: true,
-            searching: true,
-            ordering: false,
-            responsive: true,
-            columnDefs: [
+    }
+
+
+    // Trigger operation category setup card
+    let setupCategoryCard = document.getElementById('operation-category-card');
+    document.querySelector('#setup-operation-category').addEventListener('click', () => {
+        showElement(setupCategoryCard);
+        scrollToElement(setupCategoryCard);
+    });
+
+    // Initialize DataTable for operations log
+    let operationsLogTable = $('#tbl-operations-log').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
             { orderable: false, targets: [9] } // Disable sorting on the "Action" column
-            ],
-            data: [], // Start with an empty data array
-            columns: [
+        ],
+        data: [], // Start with an empty data array
+        columns: [
             { data: 'operation_name' },
             { data: 'operation_code' },
             { data: 'operation_type' },
@@ -6130,7 +6096,7 @@
             {
                 data: null,
                 render: function (data, type, row) {
-                return `
+                    return `
                     <div class="d-flex justify-content-end gap-2">
                         <button class="btn btn-outline-info btn-sm" onclick="viewOperationLog()">
                             <i class="las la-eye"></i> View
@@ -6144,1444 +6110,1450 @@
                     </div>`;
                 }
             }
-            ]
-        });
+        ]
+    });
 
-        // Define a class for the operation log objects
-        class OperationLog {
-            constructor(
-                operation_id,
-                operation_name,
-                operation_code,
-                operation_type,
-                operation_category,
-                operation_unit_cost,
-                calendar_year,
-                start_date,
-                end_date,
-                operation_status
-            ) {
-                this.operation_id = operation_id;
-                this.operation_name = operation_name;
-                this.operation_code = operation_code;
-                this.operation_type = operation_type;
-                this.operation_category = operation_category;
-                this.operation_unit_cost = operation_unit_cost;
-                this.calendar_year = calendar_year;
-                this.start_date = formatDate(start_date);
-                this.end_date = formatDate(end_date);
-                this.operation_status = operation_status;
-            }
+    // Define a class for the operation log objects
+    class OperationLog {
+        constructor(
+            operation_id,
+            operation_name,
+            operation_code,
+            operation_type,
+            operation_category,
+            operation_unit_cost,
+            calendar_year,
+            start_date,
+            end_date,
+            operation_status
+        ) {
+            this.operation_id = operation_id;
+            this.operation_name = operation_name;
+            this.operation_code = operation_code;
+            this.operation_type = operation_type;
+            this.operation_category = operation_category;
+            this.operation_unit_cost = operation_unit_cost;
+            this.calendar_year = calendar_year;
+            this.start_date = formatDate(start_date);
+            this.end_date = formatDate(end_date);
+            this.operation_status = operation_status;
         }
+    }
 
-        // function showElement(element) {
-        //     if (element) element.classList.remove('d-none');
-        // }
+    function displayMessage(type, message, timeout = 5000) {
+        const alertContainer = document.getElementById('alert-container');
+        const alertBox = document.createElement('div');
 
-        // function hideElement(element) {
-        //     if (element) element.classList.add('d-none');
-        // }
-
-        function displayMessage(type, message, timeout = 5000) {
-            const alertContainer = document.getElementById('alert-container');
-            const alertBox = document.createElement('div');
-
-            alertBox.className = `alert alert-${type} alert-dismissible fade show`;
-            alertBox.role = "alert";
-            alertBox.innerHTML = `
+        alertBox.className = `alert alert-${type} alert-dismissible fade show`;
+        alertBox.role = "alert";
+        alertBox.innerHTML = `
                 <strong>${type.charAt(0).toUpperCase() + type.slice(1)}:</strong> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
 
-            alertContainer.appendChild(alertBox);
+        alertContainer.appendChild(alertBox);
 
-            if (timeout) {
-                setTimeout(() => {
-                    alertBox.classList.remove('show');
-                    alertBox.classList.add('d-none');
-                }, timeout);
+        if (timeout) {
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+                alertBox.classList.add('d-none');
+            }, timeout);
+        }
+    }
+
+    function formatOperationStatus(status) {
+        const statusMap = {
+            active: '<span class="badge bg-success">Active</span>',
+            inactive: '<span class="badge bg-secondary">Inactive</span>',
+            pending: '<span class="badge bg-warning text-dark">Pending</span>',
+            cancelled: '<span class="badge bg-danger">Cancelled</span>',
+        };
+        return statusMap[status?.toLowerCase()] ?? '<span class="badge bg-dark">Unknown</span>';
+    }
+
+
+    // Utility function to fetch data
+    async function fetchOperationsLog(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    }
+
+    // Utility function to format waste details
+    function formatWasteDetails(wasteData) {
+        if (!Array.isArray(wasteData) || wasteData.length === 0) return "No waste generated";
+        return wasteData
+            .map(waste => `${waste.name || "Unknown"}: ${waste.quantity || 0}`)
+            .join(", ");
+    }
+
+    // Utility function to format dates in "03 April, 2025" format
+    function formatDate(dateString) {
+        if (!dateString) return "N/A";
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "long", year: "numeric" }).format(date);
+    }
+
+    // Event listener for accordion expansion
+    document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', async () => {
+        console.log('Fetching operations log...');
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/get-operations-log/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+
+        showElement(spinner);
+
+        try {
+            const data = await fetchOperationsLog(url);
+            if (data.status === "success") {
+                const operations = data.operations.map(log => new OperationLog(
+                    log.company_operation_id || 0,
+                    log.operation_name || "N/A",
+                    log.operation_code || "N/A",
+                    log.operation_type?.name || "Unknown Type",
+                    log.operation_category?.name || "Unknown Category",
+                    log.operation_unit_cost || 0,
+                    log.calendar_year?.name || "N/A",
+                    log.start_date || null,
+                    log.end_date || null,
+                    formatOperationStatus(log.operation_status)
+                ));
+
+                operationsLogTable.clear();
+                operationsLogTable.rows.add(operations);
+                operationsLogTable.draw();
+            } else {
+                displayMessage('warning', 'No operations found.');
             }
+        } catch (error) {
+            console.error("Error fetching operations log:", error);
+            displayMessage('danger', 'An error occurred while fetching operations log.');
+        } finally {
+            hideElement(spinner);
         }
+    });
 
-        function formatOperationStatus(status) {
-            const statusMap = {
-                active: '<span class="badge bg-success">Active</span>',
-                inactive: '<span class="badge bg-secondary">Inactive</span>',
-                pending: '<span class="badge bg-warning text-dark">Pending</span>',
-                cancelled: '<span class="badge bg-danger">Cancelled</span>',
-            };
-            return statusMap[status?.toLowerCase()] ?? '<span class="badge bg-dark">Unknown</span>';
-        }
+    // Setup operation log
+    const operationLogCard = document.getElementById('operation-log-card');
+    document.querySelector('#btn-setup-operation-log').addEventListener('click', () => {
+        showElement(operationLogCard);
+        scrollToElement(operationLogCard);
+    });
 
+    // Hide operation log card on page load
+    document.addEventListener('DOMContentLoaded', () => hideElement(operationLogCard));
 
-        // Utility function to fetch data
-        async function fetchOperationsLog(url) {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        }
+    // View operation log
+    function viewOperationLog() {
+        showElement(operationLogCard);
+        scrollToElement(operationLogCard);
+    }
 
-        // Utility function to format waste details
-        function formatWasteDetails(wasteData) {
-            if (!Array.isArray(wasteData) || wasteData.length === 0) return "No waste generated";
-            return wasteData
-                .map(waste => `${waste.name || "Unknown"}: ${waste.quantity || 0}`)
-                .join(", ");
-        }
+    // Edit operation log
+    function editOperationLog(
+        operationId, operationName, operationCode, operationType, operationCategory,
+        operationUnit, expectedWaste, expectedWaterUsage, expectedUnitsProduced,
+        calendarYear, startDate, endDate, status
+    ) {
+        showElement(operationLogCard);
+        scrollToElement(operationLogCard);
 
-        // Utility function to format dates in "03 April, 2025" format
-        function formatDate(dateString) {
-            if (!dateString) return "N/A";
-            const date = new Date(dateString);
-            return new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "long", year: "numeric" }).format(date);
-        }
+        const form = document.getElementById('operations-form-update');
+        form.querySelector('[name="operation_id"]').value = operationId;
+        form.querySelector('[name="operation_name"]').value = operationName;
+        form.querySelector('[name="operation_code"]').value = operationCode;
+        form.querySelector('[name="operation_type"]').value = operationType;
+        form.querySelector('[name="operation_category"]').value = operationCategory;
+        form.querySelector('[name="operation_unit"]').value = operationUnit;
+        form.querySelector('[name="operation_unit_price"]').value = expectedWaste;
+        form.querySelector('[name="operation_unit_cost"]').value = expectedWaterUsage;
+        form.querySelector('[name="operation_unit_time"]').value = expectedUnitsProduced;
+        form.querySelector('[name="calendar_year"]').value = calendarYear;
+        form.querySelector('[name="start_date"]').value = startDate;
+        form.querySelector('[name="end_date"]').value = endDate;
+        form.querySelector('[name="status"]').value = status;
+    }
 
-        // Event listener for accordion expansion
-        document.getElementById('operationsLogCollapse').addEventListener('shown.bs.collapse', async () => {
-            console.log('Fetching operations log...');
-            const company_id = {{ json_encode($company->company_id) }};
-            const url = `/admin/get-operations-log/${company_id}`;
-            const operationsLogSpinner = document.getElementById('loading-spinner');
-
-            showElement(operationsLogSpinner);
-
-            try {
-                const data = await fetchOperationsLog(url);
-                if (data.status === "success") {
-                    const dataArray = data.operations.map(log => 
-                        new OperationLog(
-                            log.company_operation_id ?? 0,
-                            log.operation_name ?? "N/A",
-                            log.operation_code ?? "N/A",
-                            log.operation_type?.name ?? "Unknown Type",
-                            log.operation_category?.name ?? "Unknown Category",
-                            log.operation_unit_cost ?? 0,
-                            log.calendar_year?.name ?? "N/A",
-                            log.start_date ?? null,
-                            log.end_date ?? null,
-                            formatOperationStatus(log.operation_status)
-                        )
-                    );
-
-                    // Clear and repopulate table rows
-                    operationsLogTable.clear();
-                    operationsLogTable.rows.add(dataArray);
-                    operationsLogTable.draw();
-                } else {
-                    displayMessage('warning', 'No operations found.');
-                }
-            } catch (error) {
-                console.error("Error fetching operations log:", error);
-                displayMessage('danger', 'An error occurred while fetching operations log.');
-            } finally {
-                hideElement(operationsLogSpinner);
+    // Confirm deletion
+    function confirmOperationLogDeletion(operationId, operationName) {
+        Swal.fire({
+            title: `Are you sure you want to delete "${operationName}"?`,
+            text: "This action cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(`Deleted operation log ID: ${operationId}`);
+                displayMessage('success', 'Operation log deleted successfully.');
+                // Add your delete logic here
             }
         });
+    }
+</script>
+<script>
+    function calculateOperationUnitCost() {
+        console.log("Calculating operation unit cost...");
 
-        // setup operation log
-        const setupOperationLogCard = document.getElementById('operation-log-card');
-        document.querySelector('#btn-setup-operation-log').addEventListener('click', () => {
-            showElement(setupOperationLogCard);
-            scrollToElement(setupOperationLogCard);
-        });
-        // Hide operation log card on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            hideElement(setupOperationLogCard);
-        });
-        // View operation log
-        function viewOperationLog() {
-            const viewOperationCard = document.getElementById('operation-log-card');
-            showElement(viewOperationCard);
-            scrollToElement(viewOperationCard);
-        }
+        // Fetch cost fields
+        const costs = {
+            labour: parseFloat(document.getElementById('labour_cost').value) || 0,
+            overhead: parseFloat(document.getElementById('overhead_cost').value) || 0,
+            maintenance: parseFloat(document.getElementById('maintenance_cost').value) || 0,
+            depreciation: parseFloat(document.getElementById('depreciation_cost').value) || 0,
+            supervision: parseFloat(document.getElementById('supervision_cost').value) || 0,
+            variable: parseFloat(document.getElementById('variable_cost').value) || 0,
+            fixed: parseFloat(document.getElementById('fixed_cost').value) || 0,
+        };
 
-        // Edit operation log
-        function editOperationLog(operation_id, operation_name, operation_code, operation_type, operation_category, operation_unit, expected_waste_per_operation, expected_water_usage_per_operation, expected_unit_produced_for_goods, calendar_year, start_date, end_date, status) {
-            const editOperationCard = document.getElementById('operation-log-card');
-            showElement(editOperationCard);
-            scrollToElement(editOperationCard);
-
-            const form = document.getElementById('operations-form-update');
-            form.querySelector('[name="operation_id"]').value = operation_id;
-            form.querySelector('[name="operation_name"]').value = operation_name;
-            form.querySelector('[name="operation_code"]').value = operation_code;
-            form.querySelector('[name="operation_type"]').value = operation_type;
-            form.querySelector('[name="operation_category"]').value = operation_category;
-            form.querySelector('[name="operation_unit"]').value = operation_unit;
-            form.querySelector('[name="operation_unit_price"]').value = expected_waste_per_operation;
-            form.querySelector('[name="operation_unit_cost"]').value = expected_water_usage_per_operation;
-            form.querySelector('[name="operation_unit_time"]').value = expected_unit_produced_for_goods;
-            form.querySelector('[name="calendar_year"]').value = calendar_year;
-            form.querySelector('[name="start_date"]').value = start_date;
-            form.querySelector('[name="end_date"]').value = end_date;
-            form.querySelector('[name="status"]').value = status;
-        }
-
-        // Confirm deletion
-        function confirmOperationLogDeletion(operation_id, operation_name) {
-            if (confirm(`Are you sure you want to delete "${operation_name}"?`)) {
-            console.log(`Deleted operation log ID: ${operation_id}`);
-            displayMessage('success', 'Operation log deleted successfully.');
-            // Add your delete logic here
-            }
-        }
-    </script>
-    <script>
-        function calculateOperationUnitCost() {
-            console.log("Calculating operation unit cost...");
-            
-            // Fetch cost fields
-            const labourCost = parseFloat(document.getElementById('labour_cost').value) || 0;
-            const overheadCost = parseFloat(document.getElementById('overhead_cost').value) || 0;
-            const maintenanceCost = parseFloat(document.getElementById('maintenance_cost').value) || 0;
-            const depreciationCost = parseFloat(document.getElementById('depreciation_cost').value) || 0;
-            const supervisionCost = parseFloat(document.getElementById('supervision_cost').value) || 0;
-            const variableCost = parseFloat(document.getElementById('variable_cost').value) || 0;
-            const fixedCost = parseFloat(document.getElementById('fixed_cost').value) || 0;
-
-            // Calculate material costs
-            let totalMaterialCost = 0;
-            document.querySelectorAll('.material-quantity-used-container-operation-log .row').forEach((row, i) => {
-                // console.log(row, i);
-                // Fetch quantity and unit cost for each material used
+        // Calculate material costs
+        const totalMaterialCost = Array.from(document.querySelectorAll('.material-quantity-used-container-operation-log .row'))
+            .reduce((total, row, i) => {
                 const quantity = parseFloat(row.querySelector(`[name="material_used[${i}][quantity]"]`).value) || 0;
-                const unitQuantity = parseFloat(row.querySelector(`[name="material_used[${i}][unit_quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="material_used[${i}][unit_quantity]"]`).value) || 1;
                 const unitCost = parseFloat(row.querySelector(`[name="material_used[${i}][unit_cost]"]`).value) || 0;
-                const adjustedUnitQuantity = unitQuantity || 1; // Use 1 as a fallback
-                totalMaterialCost += (quantity / adjustedUnitQuantity) * unitCost;
-            });
+                return total + (quantity / unitQuantity) * unitCost;
+            }, 0);
 
-
-            // Calculate chemical costs
-            let totalChemicalCost = 0;
-            document.querySelectorAll('.chemical-quantity-container-operation-log .row').forEach((row, i) => {
+        // Calculate chemical costs
+        const totalChemicalCost = Array.from(document.querySelectorAll('.chemical-quantity-container-operation-log .row'))
+            .reduce((total, row, i) => {
                 const quantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][quantity]"]`).value) || 0;
-                const unitQuantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_quantity]"]`).value) || 0;
+                const unitQuantity = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_quantity]"]`).value) || 1;
                 const unitCost = parseFloat(row.querySelector(`[name="chemical_used[${i}][unit_cost]"]`).value) || 0;
-                const adjustedUnitQuantity = unitQuantity || 1;
-                totalChemicalCost += (quantity / adjustedUnitQuantity) * unitCost;
-            });
+                return total + (quantity / unitQuantity) * unitCost;
+            }, 0);
 
-            // Calculate total cost
-            const totalCost = labourCost + overheadCost + maintenanceCost + depreciationCost +
-                            supervisionCost + variableCost + fixedCost +
-                            totalMaterialCost + totalChemicalCost;
-            // update the total cost
-            document.getElementById('total_operation_cost').value = totalCost.toFixed(2);
-            // Fetch product quantities
-            const productQuantities = document.querySelectorAll('.operation-log-product-quantity-container .row');
-            let totalOutputQuantity = 0;
-            console.log("Product Quantities:", productQuantities);
-            
-            productQuantities.forEach((row, i) => {
-                console.log(row, i);
-                totalOutputQuantity += parseFloat(row.querySelector(`[name="product_produced[${i}][quantity]"]`).value) || 0;
-                //  parseFloat(input.value) || 0;
-            });
+        // Calculate total cost
+        const totalCost = Object.values(costs).reduce((sum, cost) => sum + cost, 0) + totalMaterialCost + totalChemicalCost;
+        document.getElementById('total_operation_cost').value = totalCost.toFixed(2);
 
-            // Ensure output quantity is valid
-            if (totalOutputQuantity === 0) {
-                document.getElementById('operation_unit_cost').value = "N/A";
-                return;
-            }
+        // Calculate total output quantity
+        const totalOutputQuantity = Array.from(document.querySelectorAll('.operation-log-product-quantity-container .row'))
+            .reduce((total, row, i) => {
+                return total + (parseFloat(row.querySelector(`[name="product_produced[${i}][quantity]"]`).value) || 0);
+            }, 0);
 
-            // Calculate operation unit cost
+        // Calculate and update operation unit cost
+        if (totalOutputQuantity > 0) {
             const operationUnitCost = totalCost / totalOutputQuantity;
-            console.log("Operation Unit Cost:", operationUnitCost);
-            
-            // Update the Operation Unit Cost field
             document.getElementById('operation_unit_cost').value = operationUnitCost.toFixed(2);
+        } else {
+            document.getElementById('operation_unit_cost').value = "N/A";
         }
+    }
 
-        // Attach listeners to all relevant input fields
-        function attachListeners() {
-            const fields = document.querySelectorAll('#labour_cost, #overhead_cost, #maintenance_cost, #depreciation_cost, #supervision_cost, #variable_cost, #fixed_cost, [name^="material_used"][name$="[quantity]"], [name^="material_used"][name$="[unit_cost]"], [name^="chemical_used"][name$="[quantity]"], [name^="chemical_used"][name$="[unit_cost]"], [name="expected_quantity_produced_for_goods[]"]');
-            console.log(fields);
-            
-            fields.forEach(field => {
-                field.addEventListener('input', calculateOperationUnitCost);
-            });
-        }
+    // Attach listeners to all relevant input fields
+    function attachListeners() {
+        const fields = document.querySelectorAll(
+            '#labour_cost, #overhead_cost, #maintenance_cost, #depreciation_cost, #supervision_cost, #variable_cost, #fixed_cost, ' +
+            '[name^="material_used"][name$="[quantity]"], [name^="material_used"][name$="[unit_cost]"], ' +
+            '[name^="chemical_used"][name$="[quantity]"], [name^="chemical_used"][name$="[unit_cost]"], ' +
+            '[name="expected_quantity_produced_for_goods[]"]'
+        );
 
-        // Initialize listeners when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            attachListeners();
-            calculateOperationUnitCost(); // Run calculation on initial load in case of preset values
+        fields.forEach(field => {
+            field.addEventListener('input', calculateOperationUnitCost);
         });
+    }
 
-    </script>
-    <script>
-        async function ChangePolicy(ele, company, policy) {
-            console.log(ele, company, policy);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-company-policy') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('policy', policy)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--policy", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
+    // Initialize listeners when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        attachListeners();
+        calculateOperationUnitCost(); // Run calculation on initial load in case of preset values
+    });
 
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove this policy?")) {
-                    let uri = "{{ route('admin.remove-company-policy') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('policy', policy)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--policy", data);
-                    })
-                }
-            }
-        }
+</script>
+<script>
+    // company policies
+    async function ChangePolicy(ele, company, policy) {
+        console.log(ele, company, policy);
 
-        // company objectives
-        async function ChangeObjectives(ele, company, objective) {
-            console.log(ele, company, objective);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-company-objective') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('objective', objective)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--objective", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
+        const uri = ele.checked 
+            ? "{{ route('admin.add-company-policy') }}" 
+            : "{{ route('admin.remove-company-policy') }}";
 
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove this policy?")) {
-                    let uri = "{{ route('admin.remove-company-objective') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('objective', objective)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--objective", data);
-                    })
-                }
-            }
-        }
-    </script>
+        if (!ele.checked && !confirm("Do you want to remove this policy?")) return;
 
-    <script>
-        // area of utmost benefit
-        async function ChangeUtmostBenefit(ele, company, benefit) {
-            console.log(ele, company, benefit);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-recp-project') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('areas_of_company_benefit', benefit)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--benefit", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('policy', policy);
 
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove this area of benefit?")) {
-                    let uri = "{{ route('admin.remove-recp-project') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('areas_of_company_benefit', benefit)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--benefit", data);
-                    })
-                }
-            }
-        }
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
 
-        // human  & environmental and health benefit
-        async function ChangeEnvironmentalBenefit(ele, company, benefit) {
-            console.log(ele, company, benefit);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-recp-environmental') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('enviromental_benefit_title', benefit)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--benefit", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
+            const data = await response.json();
+            console.log("--policy", data);
 
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove this benefit?")) {
-                    let uri = "{{ route('admin.remove-recp-environmental') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('enviromental_benefit_title', benefit)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--benefit", data);
-                    })
-                }
-            }
-        }
-
-        // Good House Keeping
-        async function ChangeGoodHouseKeeping(ele, company, house_keeping) {
-            console.log(ele, company, house_keeping);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-house-keeping') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('house_keeping_title', house_keeping)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--house keeping", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
-
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove House keeping?")) {
-                    let uri = "{{ route('admin.remove-house-keeping') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('house_keeping_title', house_keeping)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--house keeping", data);
-                    })
-                }
-            }
-        }
-
-        // Waste Reduction measures
-        async function ChangeWasteReductionMeasures(ele, company, measure) {
-            console.log(ele, company, measure);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-waste-reduction-measure') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('waste_reduction_measure', measure)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--Wate Reduction Measure", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
-
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove this waste reduction measure?")) {
-                    let uri = "{{ route('admin.remove-waste-reduction-measure') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('waste_reduction_measure', measure)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json();
-                        console.log("--wate_reduction_measure", data);
-                    });
-                }
-            }
-        }
-        // Waste disposal method
-        async function ChangeWasteDisposalMethod(ele, company, disposal_method) {
-            console.log(ele, company, disposal_method);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-waste-disposal-method') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('waste_management_method', disposal_method)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--Waste Disposal Method", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
-
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "right", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove waste management method?")) {
-                    let uri = "{{ route('admin.remove-waste-disposal-method') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('waste_management_method', disposal_method)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--Waste Disposal Method", data);
-                    });
-                }
-            }
-        }
-
-        // Product recovery measures
-        async function ChangeProductRecoveryMeasure(ele, company, measure) {
-            console.log(ele, company, measure);
-            if (ele.checked) {
-                let uri = "{{ route('admin.add-product-recovery-measure') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('product_recovery_measure', measure)
-                let response = await fetch(uri, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: formData
-                }).then(async (response) => {
-                    let data = await response.json()
-                    console.log("--product recovery measure", data);
-                    if (data.status == 'success') {
-                        Toastify({
-                            text: data.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                            },
-                        }).showToast();
-                    }
-
-                    if (data.status == 'error') {
-                        console.log(data.errors);
-                        for (let key in data.errors) {
-                            Toastify({
-                                text: data.errors[key],
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",     // `top` or `bottom`
-                                position: "right",  // `left`, `center` or `right`
-                                stopOnFocus: true,  // Prevents dismissing of toast on hover
-                                style: {
-                                    background: "linear-gradient(to right, #ff0000, #ff1745)",
-                                }
-                            }).showToast();
-                        }
-                    }
-                })
-            } else {
-                if (confirm("Do you want to remove product recovery measure?")) {
-                    let uri = "{{ route('admin.remove-product-recovery-measure') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('product_recovery_measure', measure)
-                    let response = await fetch(uri, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                        credentials: 'same-origin',
-                        body: formData
-                    }).then(async (response) => {
-                        let data = await response.json()
-                        console.log("--product recovery measure", data);
-                    });
-                }
-            }
-        }
-
-
-        // key areas for improvement
-        // ***** Add key area ******//
-        let add_more_key_areas = document.querySelector('.add_more_key_areas')
-        add_more_key_areas.addEventListener('click', () => {
-            let key_area_value = document.querySelector('#key_area_for_improvent').value.trim();
-            if (!key_area_value) {
+            if (data.status === 'success') {
                 Toastify({
-                    text: "Key area cannot be empty.",
+                    text: data.message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
                     position: "right",
                     stopOnFocus: true,
                     style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                     },
                 }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.add-improvement-key-area') }}`;
-            let formData = new FormData();
-            formData.append('company', '{{$company->company_id}}')
-            formData.append('key_area', key_area_value);
-
-            fetch_cycle('--Add Key Area', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-                if (result.key_areas) {
-                    let container = document.querySelector('.key-areas-container')
-                    container.innerHTML = "";
-                    result.key_areas.forEach(element => {
-                        console.log(element.area_title);
-                        container.innerHTML += `
-        <div class="row g-2 my-1">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="${element.area_title}" placeholder="Key area for improving performance in your industry" onblur='update_key_area("{{$company->company_id}}", ${element.improvementAreaID}, this)'>
-                </div>
-            </div>
-            <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_key_area(this, ${element.improvementAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-        </div>
-    `
-                    });
-                }
-            });
-        });
-        // ***** Udate key area ******//
-        function update_key_area(company, key_area_id, ele) {
-            console.log(company, key_area_id, ele.value);
-            let key_area_value = ele.value.trim();
-            if (!key_area_value) {
-                Toastify({
-                    text: "Key area cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.update-improvement-key-area') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('key_area_id', key_area_id)
-            formData.append('key_area', key_area_value);
-            fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
-        }
-
-        function remove_key_area(ele, key_area_id) {
-            console.log(ele, key_area_id);
-            let parent = ele.parentElement.parentElement
-            // parent.remove()
-            if (confirm("Do you want to delete this area of perfomance improvement?")) {
-                let url = `{{ route('admin.remove-improvement-key-area') }}`;
-                let formData = new FormData();
-                formData.append('key_area_id', key_area_id)
-                fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
-                    if (result.status == 'success') {
-                        parent.remove()
-                    }
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
                 });
-
             }
+        } catch (error) {
+            console.error("Error:", error);
         }
-        // end key area for improvement
+    }
+    // end company policies
+    // Company Objectives
+    async function changeObjectives(element, company, objective) {
+        console.log(element, company, objective);
 
-        // key Product Innovation
-        // ***** Add ******//
-        let add_more_key_innovation = document.querySelector('.add_more_key_innovation')
-        add_more_key_innovation.addEventListener('click', () => {
-            let key_product_innovation_value = document.querySelector('#key_product_innovation').value.trim();
-            if (!key_product_innovation_value) {
+        const uri = element.checked 
+            ? "{{ route('admin.add-company-objective') }}" 
+            : "{{ route('admin.remove-company-objective') }}";
+
+        if (!element.checked && !confirm("Do you want to remove this objective?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('objective', objective);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--objective", data);
+
+            if (data.status === 'success') {
                 Toastify({
-                    text: "Key Product innovation cannot be empty.",
+                    text: data.message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
                     position: "right",
                     stopOnFocus: true,
                     style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                     },
                 }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.add-product-innovation') }}`;
-            let formData = new FormData();
-            formData.append('company', '{{$company->company_id}}')
-            formData.append('key_product_innovation', key_product_innovation_value);
-
-            fetch_cycle('--Add Key Product Innovation', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-                if (result.product_innovation) {
-                    let container = document.querySelector('.product-innovation-container')
-                    container.innerHTML = "";
-                    result.product_innovation.forEach(element => {
-                        console.log(element.product_innovation);
-                        container.innerHTML += `
-                            <div class="row g-2 my-1">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="${element.innovation_area_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
-                                    </div>
-                                </div>
-                                <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                            </div>`
-                    });
-                }
-            });
-        });
-
-        // ***** Udate ******//
-        function update_product_innovation(company, product_innovation_id, ele) {
-            console.log(company, product_innovation_id, ele.value);
-            let key_product_innovation_value = ele.value.trim();
-            if (!key_product_innovation_value) {
-                Toastify({
-                    text: "Key product innovation cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.update-product-innovation') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('key_product_innovation_id', product_innovation_id)
-            formData.append('key_product_innovation', key_product_innovation_value);
-            fetch_cycle('--Update Key Product Innovation', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
-        }
-
-        function remove_product_innovation(ele, key_product_innovation_id) {
-            console.log(ele, key_product_innovation_id);
-            let parent = ele.parentElement.parentElement
-            // parent.remove()
-            if (confirm("Do you want to delete this area of perfomance improvement?")) {
-                let url = `{{ route('admin.remove-product-innovation') }}`;
-                let formData = new FormData();
-                formData.append('key_product_innovation_id', key_product_innovation_id)
-                fetch_cycle('--Update Key Area', url, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
-                    if (result.status == 'success') {
-                        parent.remove()
-                    }
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
                 });
-
             }
+        } catch (error) {
+            console.error("Error:", error);
         }
-        // end Product Innovation
+    }
+    // end company objectives
+    // Area of Utmost Benefit
+    async function ChangeUtmostBenefit(ele, company, benefit) {
+        console.log(ele, company, benefit);
 
-        // key Hazarduous Material
-        // ***** Add ******//
-        let add_more_hazardous_material = document.querySelector('.add_more_hazardous_material')
-        add_more_hazardous_material.addEventListener('click', () => {
-            let hazarduous_material_value = document.querySelector('#hazarduous_material').value.trim();
-            if (!hazarduous_material_value) {
+        const uri = ele.checked 
+            ? "{{ route('admin.add-recp-project') }}" 
+            : "{{ route('admin.remove-recp-project') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove this area of benefit?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('areas_of_company_benefit', benefit);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--benefit", data);
+
+            if (data.status === 'success') {
                 Toastify({
-                    text: "Hazarduous material field cannot be empty.",
+                    text: data.message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
                     position: "right",
                     stopOnFocus: true,
                     style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                     },
                 }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.add-hazarduous-material') }}`;
-            let formData = new FormData();
-            formData.append('company', '{{$company->company_id}}')
-            formData.append('hazarduous_material', hazarduous_material_value);
-
-            fetch_cycle('--Add Hazarduous Material', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-                if (result.hazarduous_materials) {
-                    let container = document.querySelector('.hazarduous-material-container')
-                    container.innerHTML = "";
-                    result.hazarduous_materials.forEach(element => {
-                        console.log(element);
-                        container.innerHTML += `
-                            <div class="row g-2 my-1">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="${element.material_title}" placeholder="Key innovation that enhance your product's environmental compatibility" onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
-                                    </div>
-                                </div>
-                                <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                            </div>`
-                    });
-                }
-            });
-        });
-
-        // ***** Udate ******//
-        function update_hazarduous_material(company, hazarduous_material_id, ele) {
-            console.log(company, hazarduous_material_id, ele.value);
-            let hazarduous_material_value = ele.value.trim();
-            if (!hazarduous_material_value) {
-                Toastify({
-                    text: "Key product innovation cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = `{{ route('admin.update-hazarduous-material') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('hazarduous_material_id', hazarduous_material_id)
-            formData.append('hazarduous_material', hazarduous_material_value);
-            fetch_cycle('--Update Hazarduous Material', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
-        }
-
-        function remove_harzardous_material(ele, hazarduous_material_id) {
-            console.log(ele, hazarduous_material_id);
-            let parent = ele.parentElement.parentElement
-            if (confirm("Do you want to delete this hazaruous material?")) {
-                let url = `{{ route('admin.remove-hazarduous-material') }}`;
-                let formData = new FormData();
-                formData.append('hazarduous_material_id', hazarduous_material_id)
-                fetch_cycle('--Remove Hazarduous Material', url, 'POST', formData).then(result => {
-                    console.log(result);
-                    if (result.status == 'success') {
-                        parent.remove()
-                    }
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
                 });
-
             }
+        } catch (error) {
+            console.error("Error:", error);
         }
-        // end hazarduous material
+    }
+    // end area of utmost benefit
 
-        // Unit Process
-        // ***** Add ******//
-        let add_more_unit_process = document.querySelector('.add_more_unit_process')
-        add_more_unit_process.addEventListener('click', () => {
-            let unit_process_value = document.querySelector('#unit_process').value.trim();
-            if (!unit_process_value) {
+    // Human & Environmental and Health Benefit
+    async function ChangeEnvironmentalBenefit(ele, company, benefit) {
+        console.log(ele, company, benefit);
+
+        const uri = ele.checked 
+            ? "{{ route('admin.add-recp-environmental') }}" 
+            : "{{ route('admin.remove-recp-environmental') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove this benefit?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('enviromental_benefit_title', benefit);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--benefit", data);
+
+            if (data.status === 'success') {
                 Toastify({
-                    text: "Unit process field cannot be empty.",
+                    text: data.message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
                     position: "right",
                     stopOnFocus: true,
                     style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                     },
                 }).showToast();
-                return
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                });
             }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    // end human & environmental and health benefit
 
-            let url = `{{ route('admin.add-unit-process') }}`;
-            let formData = new FormData();
-            formData.append('company', '{{$company->company_id}}')
-            formData.append('unit_process', unit_process_value);
+    // Good House Keeping
+    async function ChangeGoodHouseKeeping(ele, company, houseKeeping) {
+        console.log(ele, company, houseKeeping);
 
-            fetch_cycle('--Add Unit Process', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
+        const uri = ele.checked 
+            ? "{{ route('admin.add-house-keeping') }}" 
+            : "{{ route('admin.remove-house-keeping') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove House keeping?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('house_keeping_title', houseKeeping);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--house keeping", data);
+
+            if (data.status === 'success') {
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    // end good house keeping
+
+    // Waste Reduction Measures
+    async function ChangeWasteReductionMeasures(ele, company, measure) {
+        console.log(ele, company, measure);
+
+        const uri = ele.checked 
+            ? "{{ route('admin.add-waste-reduction-measure') }}" 
+            : "{{ route('admin.remove-waste-reduction-measure') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove this waste reduction measure?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('waste_reduction_measure', measure);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--Waste Reduction Measure", data);
+
+            if (data.status === 'success') {
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    // end waste reduction measures
+
+    // Waste disposal method
+    async function ChangeWasteDisposalMethod(ele, company, disposal_method) {
+        console.log(ele, company, disposal_method);
+
+        const uri = ele.checked 
+            ? "{{ route('admin.add-waste-disposal-method') }}" 
+            : "{{ route('admin.remove-waste-disposal-method') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove waste management method?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('waste_management_method', disposal_method);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--Waste Disposal Method", data);
+
+            if (data.status === 'success') {
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    // end waste disposal method
+
+    // Product recovery measures
+    async function ChangeProductRecoveryMeasure(ele, company, measure) {
+        console.log(ele, company, measure);
+
+        const uri = ele.checked 
+            ? "{{ route('admin.add-product-recovery-measure') }}" 
+            : "{{ route('admin.remove-product-recovery-measure') }}";
+
+        if (!ele.checked && !confirm("Do you want to remove product recovery measure?")) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('product_recovery_measure', measure);
+
+        try {
+            const response = await fetch(uri, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("--product recovery measure", data);
+
+            if (data.status === 'success') {
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                }).showToast();
+            } else if (data.status === 'error') {
+                Object.values(data.errors).forEach(error => {
+                    Toastify({
+                        text: error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, #ff0000, #ff1745)",
+                        },
+                    }).showToast();
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    // end product recovery measures
+    // Show toast message
+    function showToast(message, type) {
+        const colors = {
+            success: "linear-gradient(to right, #00b09b, #96c93d)",
+            error: "linear-gradient(to right, #ff0000, #ff1745)"
+        };
+
+        Toastify({
+            text: message,
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: colors[type] || colors.error,
+            },
+        }).showToast();
+    }
+    // end show toast message
+
+    // Key Areas for Improvement
+    document.querySelector('.add_more_key_areas').addEventListener('click', async () => {
+        const keyAreaInput = document.querySelector('#key_area_for_improvent');
+        const keyAreaValue = keyAreaInput.value.trim();
+
+        if (!keyAreaValue) {
+            Toastify({
+                text: "Key area cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+            return;
+        }
+
+        const url = `{{ route('admin.add-improvement-key-area') }}`;
+        const formData = new FormData();
+        formData.append('company', '{{$company->company_id}}');
+        formData.append('key_area', keyAreaValue);
+
+       await fetch_cycle('--Add Key Area', url, 'POST', formData).then(result => {
+            if (result.key_areas) {
+                const container = document.querySelector('.key-areas-container');
+                container.innerHTML = result.key_areas.map(element => `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.area_title}" 
+                                    placeholder="Key area for improving performance in your industry" 
+                                    onblur='update_key_area("{{$company->company_id}}", ${element.improvementAreaID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-danger" 
+                                onclick='remove_key_area(this, ${element.improvementAreaID})' type="button">
+                                <i class="iconoir-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+    });
+    // ***** End Add key area ******//
+
+    // ***** Update key area ******//
+    async function updateKeyArea(company, keyAreaId, element) {
+        const keyAreaValue = element.value.trim();
+
+        if (!keyAreaValue) {
+            showToast("Key area cannot be empty.", "error");
+            return;
+        }
+
+        const url = `{{ route('admin.update-improvement-key-area') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('key_area_id', keyAreaId);
+        formData.append('key_area', keyAreaValue);
+
+       await fetch_cycle('--Update Key Area', url, 'POST', formData)
+            .then(result => console.log(result))
+            .catch(error => console.error('Error updating key area:', error));
+    }
+    // ***** End Update key area ******//
+    function removeKeyArea(element, keyAreaId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this area of performance improvement?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const parentElement = element.closest('.row');
+                const url = `{{ route('admin.remove-improvement-key-area') }}`;
+                const formData = new FormData();
+                formData.append('key_area_id', keyAreaId);
+
+                try {
+                    const response = await fetch_cycle('--Remove Key Area', url, 'POST', formData);
+                    if (response.status === 'success') {
+                        parentElement.remove();
+                        Swal.fire(
+                            'Deleted!',
+                            'The area of performance improvement has been deleted.',
+                            'success'
+                        );
+                    } else {
+                        console.error('Failed to remove key area:', response);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        });
+    }
+    // end Key Areas for Improvement
+
+    // key Product Innovation
+    // ***** Add ******//
+    document.querySelector('.add_more_key_innovation').addEventListener('click', async () => {
+        const keyProductInnovationInput = document.querySelector('#key_product_innovation');
+        const keyProductInnovationValue = keyProductInnovationInput.value.trim();
+
+        if (!keyProductInnovationValue) {
+            Toastify({
+                text: "Key Product innovation cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+            return;
+        }
+
+        const url = `{{ route('admin.add-product-innovation') }}`;
+        const formData = new FormData();
+        formData.append('company', '{{$company->company_id}}');
+        formData.append('key_product_innovation', keyProductInnovationValue);
+
+        try {
+            const result = await fetch_cycle('--Add Key Product Innovation', url, 'POST', formData);
+            if (result.product_innovation) {
+                const container = document.querySelector('.product-innovation-container');
+                container.innerHTML = result.product_innovation.map(element => `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.innovation_area_title}" 
+                                    placeholder="Key innovation that enhance your product's environmental compatibility" 
+                                    onblur='update_product_innovation("{{$company->company_id}}", ${element.innovationAreaID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-danger" onclick='remove_product_innovation(this, ${element.innovationAreaID})' type="button">
+                                <i class="iconoir-trash"></i>
+                            </button>
+                        </div>
+                    </div>`).join('');
+            }
+        } catch (error) {
+            console.error("Error adding product innovation:", error);
+        }
+    });
+    // ***** End Add key Product Innovation ******//
+    // ***** Update Key Product Innovation ******//
+    function updateProductInnovation(company, productInnovationId, element) {
+        const innovationValue = element.value.trim();
+        if (!innovationValue) {
+            showToast("Key product innovation cannot be empty.", "error");
+            return;
+        }
+
+        const url = `{{ route('admin.update-product-innovation') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('key_product_innovation_id', productInnovationId);
+        formData.append('key_product_innovation', innovationValue);
+
+        fetchCycle('--Update Key Product Innovation', url, 'POST', formData)
+            .then(result => console.log(result))
+            .catch(error => console.error('Error updating product innovation:', error));
+    }
+
+    function removeProductInnovation(element, productInnovationId) {
+        if (!confirm("Do you want to delete this area of performance improvement?")) return;
+
+        const parent = element.closest('.row');
+        const url = `{{ route('admin.remove-product-innovation') }}`;
+        const formData = new FormData();
+        formData.append('key_product_innovation_id', productInnovationId);
+
+        fetchCycle('--Remove Product Innovation', url, 'POST', formData)
+            .then(result => {
+                if (result.status === 'success') {
+                    parent.remove();
+                }
+            })
+            .catch(error => console.error('Error removing product innovation:', error));
+    }
+    // End Product Innovation
+
+    // key Hazarduous Material
+    // ***** Add Hazardous Material ******//
+    document.querySelector('.add_more_hazardous_material').addEventListener('click', () => {
+        const hazardousMaterialInput = document.querySelector('#hazarduous_material');
+        const hazardousMaterialValue = hazardousMaterialInput.value.trim();
+
+        if (!hazardousMaterialValue) {
+            Toastify({
+                text: "Hazardous material field cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+            return;
+        }
+
+        const url = `{{ route('admin.add-hazarduous-material') }}`;
+        const formData = new FormData();
+        formData.append('company', '{{$company->company_id}}');
+        formData.append('hazarduous_material', hazardousMaterialValue);
+
+        fetch_cycle('--Add Hazardous Material', url, 'POST', formData).then(result => {
+            if (result.hazarduous_materials) {
+                const container = document.querySelector('.hazarduous-material-container');
+                container.innerHTML = result.hazarduous_materials.map(element => `
+                    <div class="row g-2 my-1">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.material_title}" 
+                                    placeholder="Key innovation that enhances your product's environmental compatibility" 
+                                    onblur='update_hazarduous_material("{{$company->company_id}}", ${element.hazarduousMaterialID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-danger" onclick='remove_harzardous_material(this, ${element.hazarduousMaterialID})' type="button">
+                                <i class="iconoir-trash"></i>
+                            </button>
+                        </div>
+                    </div>`).join('');
+            }
+        }).catch(error => {
+            console.error("Error adding hazardous material:", error);
+        });
+    });
+
+    // ***** Update Hazardous Material ******//
+    function updateHazardousMaterial(company, hazardousMaterialId, element) {
+        const hazardousMaterialValue = element.value.trim();
+        if (!hazardousMaterialValue) {
+            showToast("Hazardous material field cannot be empty.", "error");
+            return;
+        }
+
+        const url = `{{ route('admin.update-hazarduous-material') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('hazarduous_material_id', hazardousMaterialId);
+        formData.append('hazarduous_material', hazardousMaterialValue);
+
+        fetch_cycle('--Update Hazardous Material', url, 'POST', formData)
+            .then(result => console.log(result))
+            .catch(error => console.error('Error updating hazardous material:', error));
+    }
+    // ***** End Update Hazardous Material ******//
+    
+    function removeHazardousMaterial(element, hazardousMaterialId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this hazardous material?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const parent = element.closest('.row');
+                const url = `{{ route('admin.remove-hazarduous-material') }}`;
+                const formData = new FormData();
+                formData.append('hazarduous_material_id', hazardousMaterialId);
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        parent.remove();
+                        Swal.fire(
+                            'Deleted!',
+                            'Hazardous material removed successfully.',
+                            'success'
+                        );
+                    } else {
+                        console.error('Failed to remove hazardous material:', result);
+                        Swal.fire(
+                            'Error!',
+                            'Failed to remove hazardous material.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error removing hazardous material:', error);
+                    Swal.fire(
+                        'Error!',
+                        'An unexpected error occurred.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+    // End Hazardous Material
+
+    // Unit Process Management
+    document.querySelector('.add_more_unit_process').addEventListener('click', () => {
+        const unitProcessValue = document.querySelector('#unit_process').value.trim();
+        if (!unitProcessValue) {
+            showToast("Unit process field cannot be empty.", "error");
+            return;
+        }
+
+        const url = `{{ route('admin.add-unit-process') }}`;
+        const formData = new FormData();
+        formData.append('company', '{{$company->company_id}}');
+        formData.append('unit_process', unitProcessValue);
+
+        fetch_cycle('--Add Unit Process', url, 'POST', formData)
+            .then(result => {
                 if (result.unit_processes) {
-                    let container = document.querySelector('.unit-process-container')
-                    container.innerHTML = "";
-                    result.unit_processes.forEach(element => {
-                        console.log(element);
-                            container.innerHTML += `
-                                <div class="row g-2 my-1">
-                                    <div class="col-md-9">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="${element.unit_process_title}" placeholder="Unit process" onblur='update_unit_process("{{$company->company_id}}", ${element.unitProcessID}, this)'>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3"><button class="btn btn-outline-danger" onclick='remove_unit_process(this, ${element.unitProcessID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                                </div>`
-                    });
+                    updateUnitProcessContainer(result.unit_processes);
                 }
-            });
-        });
+            })
+            .catch(error => console.error('Error adding unit process:', error));
+    });
 
-        // ***** Update ******//
-        function update_unit_process(company, unit_process_id, ele) {
-            console.log(company, unit_process_id, ele.value);
-            let unit_process_value = ele.value.trim();
-            if (!unit_process_value) {
-                Toastify({
-                    text: "Unit process field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
+    function updateUnitProcessContainer(unitProcesses) {
+        const container = document.querySelector('.unit-process-container');
+        container.innerHTML = unitProcesses.map(element => `
+            <div class="row g-2 my-1">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="${element.unit_process_title}" 
+                            placeholder="Unit process" 
+                            onblur='updateUnitProcess("{{$company->company_id}}", ${element.unitProcessID}, this)'>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-danger" 
+                        onclick='removeUnitProcess(this, ${element.unitProcessID})' type="button">
+                        <i class="iconoir-trash"></i>
+                    </button>
+                </div>
+            </div>`).join('');
+    }
 
-            let url = `{{ route('admin.update-unit-process') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('unit_process_id', unit_process_id)
-            formData.append('unit_process', unit_process_value);
-            fetch_cycle('--Update Unit Process', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
+    function updateUnitProcess(company, unitProcessId, element) {
+        const unitProcessValue = element.value.trim();
+        if (!unitProcessValue) {
+            showToast("Unit process field cannot be empty.", "error");
+            return;
         }
 
-        function remove_unit_process(ele, unit_process_id) {
-            console.log(ele, unit_process_id);
-            let parent = ele.parentElement.parentElement
-            if (confirm("Do you want to delete this unit process?")) {
-                let url = `{{ route('admin.remove-unit-process') }}`;
-                let formData = new FormData();
-                formData.append('unit_process_id', unit_process_id)
-                fetch_cycle('--Remove Unit Process', url, 'POST', formData).then(result => {
-                    console.log(result);
-                    if (result.status == 'success') {
-                        parent.remove()
-                    }
-                });
+        const url = `{{ route('admin.update-unit-process') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('unit_process_id', unitProcessId);
+        formData.append('unit_process', unitProcessValue);
 
-            }
-        }
-        // end unit process
+        fetch_cycle('--Update Unit Process', url, 'POST', formData)
+            .then(result => console.log(result))
+            .catch(error => console.error('Error updating unit process:', error));
+    }
 
-        // Problem Summary & Suggeseted Solution
-        // ***** Add ******//
-        let add_more_problem_solution = document.querySelector('.add_more_problem_solution')
-        add_more_problem_solution.addEventListener('click', () => {
-            let problem_summary_value = document.querySelector('#problem_summary').value.trim();
-            let suggested_solution_value = document.querySelector('#suggested_solution').value.trim();
-            if (!problem_summary_value) {
-                Toastify({
-                    text: "Problem summary field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!suggested_solution_value) {
-                Toastify({
-                    text: "Suggested solution field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
+    function removeUnitProcess(element, unitProcessId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this unit process?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const parent = element.closest('.row');
+                const url = `{{ route('admin.remove-unit-process') }}`;
+                const formData = new FormData();
+                formData.append('unit_process_id', unitProcessId);
 
-            let url = `{{ route('admin.add-problem-solution') }}`;
-            let formData = new FormData();
-            formData.append('company', '{{$company->company_id}}')
-            formData.append('problem_summary', problem_summary_value);
-            formData.append('suggested_solution', suggested_solution_value);
-
-            fetch_cycle('--Add Problem Solution', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-                if (result.problems_solutions) {
-                    let container = document.querySelector('.problems-solutions-container')
-                    container.innerHTML = "";
-                    result.problems_solutions.forEach(element => {
-                        console.log(element);
-                        container.innerHTML += `
-                            <div class="row g-2 my-1 align-items-end">
-                                <div class="col-md-5">
-                                    <label for="">Problem Summary</label>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" onblur='update_problem_summary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="">Suggested Solution</label>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested solution" onblur='update_suggested_solution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"><button class="btn btn-outline-danger" onclick='remove_problem_solution(this, ${element.problemSolutionID} )' type="button">  <i class="iconoir-trash"></i> </button></div>
-                            </div>`
+                fetch_cycle('--Remove Unit Process', url, 'POST', formData)
+                    .then(result => {
+                        if (result.status === 'success') {
+                            parent.remove();
+                            Swal.fire(
+                                'Deleted!',
+                                'The unit process has been deleted.',
+                                'success'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error removing unit process:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An unexpected error occurred.',
+                            'error'
+                        );
                     });
-                }
-            });
+            }
         });
+    }
+    // End Unit Process Management
 
-        // ***** Update problem ******//
-        function update_problem_summary(company, problem_solution_id, ele) {
-            console.log(company, problem_solution_id, ele.value);
-            let problem_summary_value = ele.value.trim();
-            if (!problem_summary_value) {
-                Toastify({
-                    text: "Problem summary field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
+    // Problem Summary & Suggested Solution
+    document.querySelector('.add_more_problem_solution').addEventListener('click', () => {
+        const problemSummary = document.querySelector('#problem_summary').value.trim();
+        const suggestedSolution = document.querySelector('#suggested_solution').value.trim();
 
-            let url = `{{ route('admin.update-problem-summary') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('problem_solution_id', problem_solution_id)
-            formData.append('problem_summary', problem_summary_value);
-            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
+        if (!problemSummary || !suggestedSolution) {
+            Toastify({
+                text: !problemSummary ? "Problem summary field cannot be empty." : "Suggested solution field cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: { background: "linear-gradient(to right, #ff0000, #ff1745)" },
+            }).showToast();
+            return;
         }
 
-        // ***** Update solution ******//
-        function update_suggested_solution(company, problem_solution_id, ele) {
-            console.log(company, problem_solution_id, ele.value);
-            let suggested_solution_value = ele.value.trim();
-            if (!suggested_solution_value) {
-                Toastify({
-                    text: "Suggested solution field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
+        const url = `{{ route('admin.add-problem-solution') }}`;
+        const formData = new FormData();
+        formData.append('company', '{{$company->company_id}}');
+        formData.append('problem_summary', problemSummary);
+        formData.append('suggested_solution', suggestedSolution);
 
-            let url = `{{ route('admin.update-suggested-solution') }}`;
-            let formData = new FormData();
-            formData.append('company', company)
-            formData.append('problem_solution_id', problem_solution_id)
-            formData.append('suggested_solution', suggested_solution_value);
-            fetch_cycle('--Update suggested solution', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result);
-            });
+        fetch_cycle('--Add Problem Solution', url, 'POST', formData).then(result => {
+            if (result.problems_solutions) {
+                const container = document.querySelector('.problems-solutions-container');
+                container.innerHTML = result.problems_solutions.map(element => `
+                    <div class="row g-2 my-1 align-items-end">
+                        <div class="col-md-5">
+                            <label for="">Problem Summary</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.problem_title}" placeholder="Problem Summary" 
+                                    onblur='updateProblemSummary("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="">Suggested Solution</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="${element.solution_title}" placeholder="Suggested Solution" 
+                                    onblur='updateSuggestedSolution("{{$company->company_id}}", ${element.problemSolutionID}, this)'>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-danger" onclick='removeProblemSolution(this, ${element.problemSolutionID})' type="button">
+                                <i class="iconoir-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+    });
+
+    function updateProblemSummary(company, problemSolutionId, element) {
+        const problemSummary = element.value.trim();
+        if (!problemSummary) {
+            Toastify({
+                text: "Problem summary field cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: { background: "linear-gradient(to right, #ff0000, #ff1745)" },
+            }).showToast();
+            return;
         }
 
-        function remove_problem_solution(ele, problem_solution_id) {
-            console.log(ele, problem_solution_id);
-            let parent = ele.parentElement.parentElement
-            if (confirm("Do you want to delete this Problem summary with it's suggested solution?")) {
-                let url = `{{ route('admin.remove-problem-solution') }}`;
-                let formData = new FormData();
-                formData.append('problem_solution_id', problem_solution_id)
+        const url = `{{ route('admin.update-problem-summary') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('problem_solution_id', problemSolutionId);
+        formData.append('problem_summary', problemSummary);
+
+        fetch_cycle('--Update Problem Summary', url, 'POST', formData).then(result => console.log(result));
+    }
+
+    function updateSuggestedSolution(company, problemSolutionId, element) {
+        const suggestedSolution = element.value.trim();
+        if (!suggestedSolution) {
+            Toastify({
+                text: "Suggested solution field cannot be empty.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: { background: "linear-gradient(to right, #ff0000, #ff1745)" },
+            }).showToast();
+            return;
+        }
+
+        const url = `{{ route('admin.update-suggested-solution') }}`;
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('problem_solution_id', problemSolutionId);
+        formData.append('suggested_solution', suggestedSolution);
+
+        fetch_cycle('--Update Suggested Solution', url, 'POST', formData).then(result => console.log(result));
+    }
+
+    function removeProblemSolution(element, problemSolutionId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this Problem Summary with its Suggested Solution?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = `{{ route('admin.remove-problem-solution') }}`;
+                const formData = new FormData();
+                formData.append('problem_solution_id', problemSolutionId);
+
                 fetch_cycle('--Remove Problem Solution', url, 'POST', formData).then(result => {
-                    console.log(result);
-                    if (result.status == 'success') {
-                        parent.remove()
+                    if (result.status === 'success') {
+                        element.closest('.row').remove();
+                        Swal.fire(
+                            'Deleted!',
+                            'The Problem Summary and its Suggested Solution have been deleted.',
+                            'success'
+                        );
                     }
                 });
-
             }
+        });
+    }
+
+    // Material Submission
+    document.querySelector('#btn-submit-material').addEventListener('click', () => {
+        console.log("Material submission triggered");
+
+        const loader = document.getElementById('loader');
+        loader.style.display = 'inline-block';
+
+        const companyID = document.querySelector('input[name="company_id"]').value.trim();
+        const materialID = document.querySelector('select[name="material"]').value.trim();
+        const serialNo = document.querySelector('input[name="serial_number"]').value.trim();
+        const unit = document.querySelector('input[name="unit_of_measurement"]').value.trim();
+        const threshold = document.querySelector('input[name="threshold"]').value.trim();
+
+        if (!companyID || !materialID) {
+            const errorMessage = !companyID ? "Company ID field cannot be empty." : "Material field cannot be empty.";
+            Toastify({
+                text: errorMessage,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+            loader.style.display = 'none';
+            return;
         }
-        // end hazarduous material
 
-        // material
-        let btn_submit_material = document.querySelector('#btn-submit-material');
-        btn_submit_material.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.getElementById('loader');
-            loader.style.display = 'inline-block';
+        const url = "{{ route('admin.save-company-material') }}";
+        const formData = new FormData();
+        formData.append('companyID', companyID);
+        formData.append('material', materialID);
+        formData.append('serial_number', serialNo);
+        formData.append('unit_of_measurement', unit);
+        formData.append('threshold', threshold);
 
-            let companyID = document.querySelector('input[name="company_id"]').value.trim();
-            let materialID = document.querySelector('select[name="material"]').value.trim();
-            let serialNo = document.querySelector('input[name="serial_number"]').value.trim();
-            let unit = document.querySelector('input[name="unit_of_measurement"]').value.trim();
-            let threshold = document.querySelector('input[name="threshold"]').value.trim();
-            if (!companyID) {
-                Toastify({
-                    text: "Company id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!materialID) {
-                Toastify({
-                    text: "Material field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+        fetch_cycle('--Save Company Material', url, 'POST', formData).then(result => {
+            console.log(result);
+            loader.style.display = 'none';
 
-            let url = "{{ route('admin.save-company-material') }}"
-            let formData = new FormData();
-            formData.append('companyID', companyID);
-            formData.append('material', materialID);
-            formData.append('serial_number', serialNo);
-            formData.append('unit_of_measurement', unit);
-            formData.append('threshold', threshold);
-            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
-                console.log(result);
-                loader.style.display = 'none';
-                if (result.company_material) {
-                    let tableBody = document.querySelector('#tbl-company-material tbody')
-                    console.log(tableBody);
-                    tableBody.innerHTML = ""
-                    result.company_material.forEach(material => {
-                        let id = material.companyMaterialId;
-                        const baseUrl = "{{ route('admin.view-material', ['material' => '__PLACEHOLDER__']) }}";
-                        const url = baseUrl.replace('__PLACEHOLDER__', id);
+            if (result.company_material) {
+                const tableBody = document.querySelector('#tbl-company-material tbody');
+                tableBody.innerHTML = result.company_material.map(material => {
+                    const id = material.companyMaterialId;
+                    const viewUrl = "{{ route('admin.view-material', ['material' => '__PLACEHOLDER__']) }}".replace('__PLACEHOLDER__', id);
 
-                        tableBody.innerHTML += `<tr>
+                    return `
+                        <tr>
                             <td>${material.material}</td>
-                            <td>${material.serial_number ?? ''}</td>
-                            <td>${material.unit_of_measure ?? ''}</td>
-                            <td> <span class="badge bg-${(material.company_material_status == 'active') ? 'success' : 'danger'}">${material.company_material_status}</span>
+                            <td>${material.serial_number || ''}</td>
+                            <td>${material.unit_of_measure || ''}</td>
+                            <td>
+                                <span class="badge bg-${material.company_material_status === 'active' ? 'success' : 'danger'}">
+                                    ${material.company_material_status}
+                                </span>
                             </td>
                             <td class="text-end">
                                 <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                    <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
                                         <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="${url}">Open Material</a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="${viewUrl}">Open Material</a>
                                         <a class="dropdown-item" href="#">Update Material</a>
                                         <a class="dropdown-item" href="#">Delete Material</a>
                                         <hr class="dropdown-divider">
-                                        <a class="dropdown-item" href="#" onclick = 'triggerMaterialPrice("${material.companyMaterialId}")'>Setup Price</a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckIn("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}", "${material.material}")'> Check In Item </a>
-                                        <a href="#" class="dropdown-item" onclick='triggerCheckOut("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Check Out Item </a>
-                                        <a href="#" class="dropdown-item" onclick='triggerAdjustment("${material.companyMaterialId}", "${material.materialID}", "${material.companyID}",  "${material.material}")'> Make Adjusment </a>
+                                        <a class="dropdown-item" href="#" onclick='triggerMaterialPrice("${id}")'>Setup Price</a>
+                                        <a class="dropdown-item" href="#" onclick='triggerCheckIn("${id}", "${material.materialID}", "${material.companyID}", "${material.material}")'>Check In Item</a>
+                                        <a class="dropdown-item" href="#" onclick='triggerCheckOut("${id}", "${material.materialID}", "${material.companyID}", "${material.material}")'>Check Out Item</a>
+                                        <a class="dropdown-item" href="#" onclick='triggerAdjustment("${id}", "${material.materialID}", "${material.companyID}", "${material.material}")'>Make Adjustment</a>
                                     </div>
                                 </div>
                             </td>
-                        </tr>`
-                    });
-                }
-            });
+                        </tr>`;
+                }).join('');
+            }
         });
-        // end material
+    });
+    // end Material Submission
 
-        // company material price
-        let btn_submit_material_price = document.querySelector('#btn-submit-material-price');
-        btn_submit_material_price.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#materialPriceModal #loader');
-            loader.style.display = 'inline-block';
+    // Company Material Price
+    const btnSubmitMaterialPrice = document.querySelector('#btn-submit-material-price');
+    btnSubmitMaterialPrice.addEventListener('click', () => {
+        console.log("Material price submission triggered");
 
-            let material_price_id = document.querySelector('input[name="material_price_id"]').value.trim();
-            let unit = document.querySelector('input[name="unit"]').value.trim();
-            let price = document.querySelector('input[name="price"]').value.trim();
-            let date = document.querySelector('input[name="date"]').value.trim();
-            if (!material_price_id) {
+        const loader = document.querySelector('#materialPriceModal #loader');
+        loader.style.display = 'inline-block';
+
+        const materialPriceId = document.querySelector('input[name="material_price_id"]').value.trim();
+        const unit = document.querySelector('input[name="unit"]').value.trim();
+        const price = document.querySelector('input[name="price"]').value.trim();
+        const date = document.querySelector('input[name="date"]').value.trim();
+
+        if (!materialPriceId || !unit || !price) {
+            const errorMessage = !materialPriceId
+                ? "Material price ID field cannot be empty."
+                : !unit
+                ? "Unit field cannot be empty."
+                : "Price field cannot be empty.";
+
+            Toastify({
+                text: errorMessage,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff0000, #ff1745)",
+                },
+            }).showToast();
+
+            loader.style.display = 'none';
+            return;
+        }
+
+        const url = "{{ route('admin.save-company-material-price') }}";
+        const formData = new FormData();
+        formData.append('companyMaterialID', materialPriceId);
+        formData.append('unit', unit);
+        formData.append('price', price);
+        formData.append('date', date);
+
+        fetch_cycle('--Save Material Price', url, 'POST', formData).then(result => {
+            console.log(result);
+            loader.style.display = 'none';
+        });
+    });
+    // End Company Material Price
+
+    // Check-in functionality
+    document.querySelector('#btn-submit-check-in').addEventListener('click', async () => {
+        console.log("Check-in button clicked");
+
+        const loader = document.querySelector('#checkInModal #loader');
+        loader.style.display = 'inline-block';
+
+        const checkInMaterialId = document.querySelector('#checkInModal input[name="checkIn_material_id"]').value.trim();
+        const materialId = document.querySelector('#checkInModal input[name="material_id"]').value.trim();
+        const companyId = document.querySelector('#checkInModal input[name="company_id"]').value.trim();
+        const quantity = document.querySelector('#checkInModal input[name="quantity"]').value.trim();
+        const date = document.querySelector('#checkInModal input[name="date"]').value.trim();
+        const remark = document.querySelector('#checkInModal input[name="remark"]').value.trim();
+
+        // Validation
+        const validationMessages = [];
+        if (!checkInMaterialId) validationMessages.push("Material ID field cannot be empty.");
+        if (!quantity) validationMessages.push("Quantity field cannot be empty.");
+        if (!date) validationMessages.push("Date field cannot be empty.");
+
+        if (validationMessages.length > 0) {
+            validationMessages.forEach(message => {
                 Toastify({
-                    text: "Material price id field cannot be empty.",
+                    text: message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -7591,70 +7563,192 @@
                         background: "linear-gradient(to right, #ff0000, #ff1745)",
                     },
                 }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!unit) {
-                Toastify({
-                    text: "Unit field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!price) {
-                Toastify({
-                    text: "Price field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+            });
+            loader.style.display = 'none';
+            return;
+        }
 
-            let url = "{{ route('admin.save-company-material-price') }}"
-            let formData = new FormData();
-            formData.append('companyMaterialID', material_price_id);
-            formData.append('unit', unit);
-            formData.append('price', price);
-            formData.append('date', date);
-            fetch_cycle('--Update problem summary', url, 'POST', formData).then(result => {
+        // Prepare data and send request
+        const url = "{{ route('admin.save-company-material-check-in') }}";
+        const formData = new FormData();
+        formData.append('checkIn_material_id', checkInMaterialId);
+        formData.append('material_id', materialId);
+        formData.append('company_id', companyId);
+        formData.append('quantity', quantity);
+        formData.append('date', date);
+        formData.append('remark', remark);
+
+        try {
+            const result = await fetch_cycle('--Create Check In', url, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error during check-in:", error);
+        } finally {
+            loader.style.display = 'none';
+        }
+    });
+    // End check-in functionality
+
+    // Company material checkout
+    document.querySelector('#btn-submit-check-out').addEventListener('click', async () => {
+        console.log("Checkout button clicked");
+
+        const loader = document.querySelector('#checkOutModal #loader');
+        loader.style.display = 'inline-block';
+
+        const checkOutMaterialId = document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value.trim();
+        const materialId = document.querySelector('#checkOutModal input[name="material_id"]').value.trim();
+        const companyId = document.querySelector('#checkOutModal input[name="company_id"]').value.trim();
+        const quantity = document.querySelector('#checkOutModal input[name="quantity"]').value.trim();
+        const date = document.querySelector('#checkOutModal input[name="date"]').value.trim();
+        const remark = document.querySelector('#checkOutModal input[name="remark"]').value.trim();
+
+        const validationMessages = [];
+        if (!checkOutMaterialId) validationMessages.push("Material ID field cannot be empty.");
+        if (!quantity) validationMessages.push("Quantity field cannot be empty.");
+        if (!date) validationMessages.push("Date field cannot be empty.");
+
+        if (validationMessages.length > 0) {
+            validationMessages.forEach(message => {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+            });
+            loader.style.display = 'none';
+            return;
+        }
+
+        const url = "{{ route('admin.save-company-material-check-out') }}";
+        const formData = new FormData();
+        formData.append('checkOut_material_id', checkOutMaterialId);
+        formData.append('material_id', materialId);
+        formData.append('company_id', companyId);
+        formData.append('quantity', quantity);
+        formData.append('date', date);
+        formData.append('remark', remark);
+
+        try {
+            const result = await fetch_cycle('--Create Check Out', url, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error during checkout:", error);
+        } finally {
+            loader.style.display = 'none';
+        }
+    });
+    // End checkout
+
+    // General Settings Update
+    const btnGeneralSettings = document.querySelector('#btn-general-settings');
+    btnGeneralSettings.addEventListener('click', () => {
+        const loader = document.querySelector('#general-settings #loader');
+        loader.style.display = 'inline-block';
+
+        const formData = new FormData(document.querySelector('#general-settings'));
+        const requiredFields = [
+            { name: 'company_id', message: "Company ID field cannot be empty." },
+            { name: 'company_name', message: "Company name field cannot be empty." },
+            { name: 'industry', message: "Industry field cannot be empty." },
+            { name: 'email', message: "Company email field cannot be empty." },
+            { name: 'primary_phone_number', message: "Primary phone number field cannot be empty." },
+            { name: 'number_of_employees', message: "Number of employees field cannot be empty." },
+            { name: 'date_of_establishment', message: "Establishment date field cannot be empty." }
+        ];
+
+        for (const field of requiredFields) {
+            if (!formData.get(field.name)?.trim()) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: field.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+        }
+
+        const url = document.querySelector('#general-settings').action;
+
+        fetch_cycle('--Update Personal Company Details', url, 'POST', formData)
+            .then(result => {
+                console.log(result, result.companies_info);
+                loader.style.display = 'none';
+            });
+    });
+    // End General Settings Update
+
+    // Company location update
+    document.querySelector('#btn-location-settings').addEventListener('click', () => {
+        const loader = document.querySelector('#location_settings #loader');
+        loader.style.display = 'inline-block';
+
+        const formData = new FormData(document.querySelector('#location_settings'));
+        const requiredFields = [
+            { name: 'company_id', message: "Company ID field cannot be empty." },
+            { name: 'country', message: "Country field cannot be empty." },
+            { name: 'state', message: "State field cannot be empty." },
+            { name: 'city', message: "City field cannot be empty." },
+            { name: 'address', message: "Address field cannot be empty." }
+        ];
+
+        for (const field of requiredFields) {
+            if (!formData.get(field.name)?.trim()) {
+                loader.style.display = 'none';
+                Toastify({
+                    text: field.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff0000, #ff1745)",
+                    },
+                }).showToast();
+                return;
+            }
+        }
+
+        fetch_cycle('--Update Company Location', document.querySelector('#location_settings').action, 'POST', formData)
+            .then(result => {
                 console.log(result);
                 loader.style.display = 'none';
             });
-        });
-        // end company material price
+    });
 
-        // checkin
-        let btn_submit_check_in = document.querySelector('#btn-submit-check-in');
-        btn_submit_check_in.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#checkInModal #loader');
-            loader.style.display = 'inline-block';
+    // Company contact update
+    document.querySelector('#btn_contact_settings').addEventListener('click', () => {
+        const loader = document.querySelector('#contact_settings #loader');
+        loader.style.display = 'inline-block';
 
-            let checkIn_material_id = document.querySelector('#checkInModal input[name="checkIn_material_id"]').value.trim();
-            let material_id = document.querySelector('#checkInModal input[name="material_id"]').value.trim();
-            let company_id = document.querySelector('#checkInModal input[name="company_id"]').value.trim();
-            let quantity = document.querySelector('#checkInModal input[name="quantity"]').value.trim();
-            let date = document.querySelector('#checkInModal input[name="date"]').value.trim();
-            let remark = document.querySelector('#checkInModal input[name="remark"]').value.trim();
-            if (!checkIn_material_id) {
+        const formData = new FormData(document.querySelector('#contact_settings'));
+        const requiredFields = [
+            { name: 'company_id', message: "Company ID field cannot be empty." },
+            { name: 'enviromental_operations_manager', message: "Environmental operations manager field cannot be empty." },
+            { name: 'contact_person_name', message: "Contact person name field cannot be empty." },
+            { name: 'contact_person_position', message: "Contact person position field cannot be empty." },
+            { name: 'contact_person_phone_number', message: "Contact person phone number field cannot be empty." }
+        ];
+
+        for (const field of requiredFields) {
+            if (!formData.get(field.name)?.trim()) {
+                loader.style.display = 'none';
                 Toastify({
-                    text: "Material id field cannot be empty.",
+                    text: field.message,
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -7664,898 +7758,383 @@
                         background: "linear-gradient(to right, #ff0000, #ff1745)",
                     },
                 }).showToast();
-                loader.style.display = 'none';
-                return
+                return;
             }
-            if (!quantity) {
-                Toastify({
-                    text: "Quantity field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!date) {
-                Toastify({
-                    text: "Date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+        }
 
-            let url = "{{ route('admin.save-company-material-check-in') }}"
-            let formData = new FormData();
-            formData.append('checkIn_material_id', checkIn_material_id);
-            formData.append('material_id', material_id);
-            formData.append('company_id', company_id);
-            formData.append('quantity', quantity);
-            formData.append('date', date);
-            formData.append('remark', remark);
-            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
+        fetch_cycle('--Update Contact Personnel', document.querySelector('#contact_settings').action, 'POST', formData)
+            .then(result => {
                 console.log(result);
                 loader.style.display = 'none';
             });
-        });
-        // end company material price
-
-        // company material checkout
-        let btn_submit_check_out = document.querySelector('#btn-submit-check-out');
-        btn_submit_check_out.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#checkOutModal #loader');
-            loader.style.display = 'inline-block';
-
-            let checkOut_material_id = document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value.trim();
-            let material_id = document.querySelector('#checkOutModal input[name="material_id"]').value.trim();
-            let company_id = document.querySelector('#checkOutModal input[name="company_id"]').value.trim();
-            let quantity = document.querySelector('#checkOutModal input[name="quantity"]').value.trim();
-            let date = document.querySelector('#checkOutModal input[name="date"]').value.trim();
-            let remark = document.querySelector('#checkOutModal input[name="remark"]').value.trim();
-            if (!checkOut_material_id) {
-                Toastify({
-                    text: "Material id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!quantity) {
-                Toastify({
-                    text: "Quantity field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!date) {
-                Toastify({
-                    text: "Date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-
-            let url = "{{ route('admin.save-company-material-check-out') }}"
-            let formData = new FormData();
-            formData.append('checkOut_material_id', checkOut_material_id);
-            formData.append('material_id', material_id);
-            formData.append('company_id', company_id);
-            formData.append('quantity', quantity);
-            formData.append('date', date);
-            formData.append('remark', remark);
-            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
-                console.log(result);
-                loader.style.display = 'none';
-            });
-        });
-        // end check out
-
-        // general setting
-        let btn_general_settings = document.querySelector('#btn-general-settings')
-        btn_general_settings.addEventListener('click', () => {
-            // Show the loader
-            let loader = document.querySelector('#general-settings #loader');
-            loader.style.display = 'inline-block';
-            let company_id = document.querySelector('#general-settings input[name="company_id"]').value.trim();
-            let company_name = document.querySelector('#general-settings input[name="company_name"]').value.trim();
-            let industry = document.querySelector('#general-settings select[name="industry"]').value.trim();
-            let industry_process_used = document.querySelector('#general-settings select[name="industry_process_used"]').value.trim();
-            let email = document.querySelector('#general-settings input[name="email"]').value.trim();
-            let website_address = document.querySelector('#general-settings input[name="website_address"]').value.trim();
-            let primary_phone_number = document.querySelector('#general-settings input[name="primary_phone_number"]').value.trim();
-            let secondary_phone_number = document.querySelector('#general-settings input[name="secondary_phone_number"]').value.trim();
-            let number_of_employees = document.querySelector('#general-settings input[name="number_of_employees"]').value.trim();
-            let date_of_establishment = document.querySelector('#general-settings input[name="date_of_establishment"]').value.trim();
-
-            if (!company_id) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Company id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!company_name) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Company name field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!industry) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Industry field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!email) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Company email field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!primary_phone_number) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Primary phone number field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!number_of_employees) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Number of employees field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!date_of_establishment) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Establishment date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = document.querySelector('#general-settings').action;
-            let formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('company_name', company_name);
-            formData.append('industry', industry);
-            formData.append('industry_process', industry_process_used);
-            formData.append('email', email);
-            formData.append('website_address', website_address);
-            formData.append('primary_phone_number', primary_phone_number);
-            formData.append('secondary_phone_number', secondary_phone_number);
-            formData.append('number_of_employees', number_of_employees);
-            formData.append('establishment_date', date_of_establishment);
-
-            fetch_cycle('--Update Personal company details', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result, result.companies_info);
-                if (result.companies_info) {
-                    loader.style.display = 'none';
-                }
+    });
+    // activate and deactivate start
+    // end activate and deactivate start
+    async function fetch_cycle(subject, url, method, formData) {
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                credentials: 'same-origin',
+                body: formData
             });
 
-        });
-        // end general setting 
+            const data = await response.json();
 
-        // company location update
-        let btn_location_settings = document.querySelector('#btn-location-settings')
-        btn_location_settings.addEventListener('click', () => {
-            // Show the loader
-            let loader = document.querySelector('#location_settings #loader');
-            loader.style.display = 'inline-block';
-            let company_id = document.querySelector('#location_settings input[name="company_id"]').value.trim();
-            let country = document.querySelector('#location_settings select[name="country"]').value.trim();
-            let state = document.querySelector('#location_settings select[name="state"]').value.trim();
-            let city = document.querySelector('#location_settings select[name="city"]').value.trim();
-            let address = document.querySelector('#location_settings  input[name="address"]').value.trim();
-            let zip_code = document.querySelector('#location_settings  input[name="zip_code"]').value.trim();
-            let longitude = document.querySelector('#location_settings  input[name="longitude"]').value.trim();
-            let latitude = document.querySelector('#location_settings  input[name="latitude"]').value.trim();
-            let mgrs = document.querySelector('#location_settings  input[name="mgrs"]').value.trim();
+            // Handle feedback
+            const toastOptions = {
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+            };
 
-            if (!company_id) {
-                loader.style.display = 'none';
+            if (data.status === 'success') {
                 Toastify({
-                    text: "Company id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
+                    ...toastOptions,
+                    text: data.message,
+                    style: { background: "linear-gradient(to right, #00b09b, #96c93d)" },
                 }).showToast();
-                return
-            }
-            if (!country) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Country field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!state) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "State field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!city) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "City field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!address) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Address field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = document.querySelector('#location_settings').action;
-            let formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('country', country);
-            formData.append('state', state);
-            formData.append('city', city);
-            formData.append('address', address);
-            formData.append('zip_code', zip_code);
-            formData.append('longitude', longitude);
-            formData.append('latitude', latitude);
-            formData.append('mgrs', mgrs);
-
-            fetch_cycle('--Update Company Location', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result, result.companies_info);
-                if (result.companies_info) {
-                    loader.style.display = 'none';
-
-                }
-            });
-
-        });
-        // end company location update
-        // company contact update
-        let btn_contact_settings = document.querySelector('#btn_contact_settings')
-        btn_contact_settings.addEventListener('click', () => {
-            // Show the loader
-            let loader = document.querySelector('#contact_settings #loader');
-            loader.style.display = 'inline-block';
-            let company_id = document.querySelector('#contact_settings input[name="company_id"]').value.trim();
-            let enviromental_operations_manager = document.querySelector('#contact_settings input[name="enviromental_operations_manager"]').value.trim();
-            let contact_person_name = document.querySelector('#contact_settings input[name="contact_person_name"]').value.trim();
-            let contact_person_position = document.querySelector('#contact_settings input[name="contact_person_position"]').value.trim();
-            let contact_person_phone_number = document.querySelector('#contact_settings input[name="contact_person_phone_number"]').value.trim();
-            if (!company_id) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Company id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!enviromental_operations_manager) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Enviromental operations manager field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!contact_person_name) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Contact person name field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!contact_person_position) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Contact person position field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!contact_person_name) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Contact person name field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            if (!contact_person_position) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Contact person position field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-            if (!contact_person_phone_number) {
-                loader.style.display = 'none';
-                Toastify({
-                    text: "Contact person phone number field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return
-            }
-
-            let url = document.querySelector('#contact_settings').action;
-            let formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('enviromental_operations_manager', enviromental_operations_manager);
-            formData.append('contact_person_name', contact_person_name);
-            formData.append('contact_person_position', contact_person_position);
-            formData.append('contact_person_phone_number', contact_person_phone_number);
-
-            fetch_cycle('--Update Contact Personnel', url, 'POST', formData).then(result => {
-                // let data = await result.json()
-                console.log(result, result.companies_info);
-                if (result.companies_info) {
-                    loader.style.display = 'none';
-
-                }
-            });
-
-        });
-        // end company contact update
-        // activate and deactivate start
-
-        // end activate and deactivate start
-        async function fetch_cycle(subject, url, method, form_data) {
-            try {
-                let response = await fetch(url, {
-                    method: method,
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', },
-                    credentials: 'same-origin',
-                    body: form_data
-                });
-
-                let data = await response.json();
-
-                // feedback
-                if (data.status == 'success') {
+                return data;
+            } else if (data.status === 'error') {
+                console.error(data.errors);
+                Object.values(data.errors).forEach(error => {
                     Toastify({
-                        text: data.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top", // `top` or `bottom`
-                        position: "right", // `left`, `center` or `right`
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
+                        ...toastOptions,
+                        text: error,
+                        style: { background: "linear-gradient(to right, #ff0000, #ff1745)" },
                     }).showToast();
-                    return data
-                } else if (data.status == 'error') {
-                    console.log(data.errors);
-                    for (let key in data.errors) {
-                        Toastify({
-                            text: data.errors[key],
-                            duration: 3000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #ff0000, #ff1745)",
-                            },
-                        }).showToast();
-                    }
+                });
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            Toastify({
+                text: "An unexpected error occurred.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: { background: "linear-gradient(to right, #ff0000, #ff1745)" },
+            }).showToast();
+        }
+    }
+    // End fetchCycle function
+
+    // -----Country Code Selection
+    const initializeIntlTelInput = (inputElement, hiddenInputName) => {
+        const intlTelInstance = window.intlTelInput(inputElement, {
+            initialCountry: "ng",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+        });
+
+        inputElement.addEventListener("blur", () => {
+            const fullPhoneNumber = intlTelInstance.getNumber(); // Gets the full number in E.164 format
+            console.log("Full phone number:", fullPhoneNumber);
+            document.querySelector(`input[name="${hiddenInputName}"]`).value = fullPhoneNumber;
+        });
+
+        return intlTelInstance;
+    };
+
+    const telPrimary = document.querySelector('#mobile_code_primary');
+    const telSecondary = document.querySelector('#mobile_code_secondary');
+    const telContact = document.querySelector('#mobile_code_contact');
+
+    initializeIntlTelInput(telPrimary, "primary_phone_number");
+    initializeIntlTelInput(telSecondary, "secondary_phone_number");
+    initializeIntlTelInput(telContact, "contact_person_phone_number");
+    // Country Code Selection End
+
+    // Set selected options for industry and industry process
+    const setSelectedOption = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) {
+            Array.from(element.options).forEach(option => {
+                if (option.value == value) {
+                    option.selected = true;
                 }
-                // end feedback
-            } catch (error) {
-                console.log('Fetch error:', error);
-                Toastify({
-                    text: "An unexpected error occurred.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-            }
-
+            });
         }
-    </script>
-    <script src="{{ asset('adminAssets/js/location.js') }}"></script>
-    <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    };
 
-    <script>
-        // -----Country Code Selection
-        let tel_primary = document.querySelector('#mobile_code_primary')
-        let tel_secondary = document.querySelector('#mobile_code_secondary')
-        let tel_contact = document.querySelector('#mobile_code_contact')
-        let primary = window.intlTelInput(tel_primary, {
-            initialCountry: "ng",
-            separateDialCode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-        });
-        let secondary = window.intlTelInput(tel_secondary, {
-            initialCountry: "ng",
-            separateDialCode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-        });
-        let contact = window.intlTelInput(tel_contact, {
-            initialCountry: "ng",
-            separateDialCode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
-        });
+    setSelectedOption('#industry', `{{ $company->industry }}`);
+    setSelectedOption('#industry-process', `{{ $company->industry_process }}`);
 
-        tel_primary.addEventListener("blur", function () {
-            const fullPhoneNumber = primary.getNumber(); // Gets the full number in E.164 format
-            console.log("Full phone number:", fullPhoneNumber);
-            document.querySelector('input[name="primary_phone_number"]').value = fullPhoneNumber
-        });
-
-        tel_secondary.addEventListener("blur", function () {
-            const fullPhoneNumber = secondary.getNumber(); // Gets the full number in E.164 format
-            console.log("Full phone number:", fullPhoneNumber);
-            document.querySelector('input[name="secondary_phone_number"]').value = fullPhoneNumber
-        });
-
-        tel_contact.addEventListener("blur", function () {
-            const fullPhoneNumber = contact.getNumber(); // Gets the full number in E.164 format
-            console.log("Full phone number:", fullPhoneNumber);
-            document.querySelector('input[name="contact_person_phone_number"]').value = fullPhoneNumber
-        });
-    </script>
-    <script>
-        let industry_element = document.querySelector('#industry')
-        console.log(industry_element, industry_element.options);
-        for (const key in industry_element.options) {
-            let ele = industry_element.options[key]
-            console.log(ele.value, ele);
-            if (ele.value == `{{ $company->industry }}`) {
-                console.log("true", `{{ $company->true }}`);
-                ele.selected = true
-            }
+    // Log country options after a delay
+    setTimeout(() => {
+        const countriesElement = document.querySelector('.countries');
+        if (countriesElement) {
+            const countryValues = Array.from(countriesElement.options).map(option => option.value);
+            console.log(countryValues);
         }
+    }, 1000);
+    // End of country options log
 
-        let industry_process_element = document.querySelector('#industry-process')
-        console.log(industry_process_element, industry_process_element.options);
-        for (const key in industry_process_element.options) {
-            let ele = industry_process_element.options[key]
-            console.log(ele.value, ele);
-            if (ele.value == `{{ $company->industry_process }}`) {
-                console.log("true", `{{ $company->true }}`);
-                ele.selected = true
-            }
-        }
+    // Trigger Material Price Modal
+    const triggerMaterialPrice = (companyMaterialID) => {
+        const materialPriceModal = document.querySelector('#materialPriceModal');
+        document.querySelector('input[name="material_price_id"]').value = companyMaterialID;
+        const modalInstance = new bootstrap.Modal(materialPriceModal);
+        modalInstance.show();
+    };
 
-        setTimeout(() => {
-            let countriesEle = document.querySelector('.countries')
-            console.log(countriesEle.options, countriesEle);
-            for (let index = 0; index < countriesEle.options.length; index++) {
-                const element = countriesEle.options[index];
-                console.log(element);
+    // Trigger CheckIn
+    const triggerCheckIn = (companyMaterialID, materialID, companyID, materialName) => {
+        const checkInModal = document.querySelector('#checkInModal');
+        const modalInputs = {
+            checkInMaterialID: document.querySelector('#checkInModal input[name="checkIn_material_id"]'),
+            materialID: document.querySelector('#checkInModal input[name="material_id"]'),
+            companyID: document.querySelector('#checkInModal input[name="company_id"]'),
+            materialName: document.querySelector('#checkInModal input[name="checkIn_material_name"]')
+        };
 
-            }
-            let loadCountries = Array.from(countriesEle.options).map(option => option.value)
-            console.log(loadCountries);
-        }, 1000);
-    </script>
-    <script>
-        // Trigger Material Price Modal
-        let triggerMaterialPrice = (companyMaterialID) => {
-            let materialPriceModal = document.querySelector('#materialPriceModal');
-            // Initialize Bootstrap modal
-            document.querySelector('input[name="material_price_id"]').value = companyMaterialID;
-            const myModal = new bootstrap.Modal(materialPriceModal);
-            myModal.show();
-        }
+        // Set input values
+        modalInputs.checkInMaterialID.value = companyMaterialID;
+        modalInputs.materialID.value = materialID;
+        modalInputs.companyID.value = companyID;
+        modalInputs.materialName.value = materialName;
 
-        // Trigger CheckIn
-        let triggerCheckIn = (companyMaterialID, materialID, companyID, materialName) => {
-            let checkInModal = document.querySelector('#checkInModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#checkInModal input[name="checkIn_material_id"]').value = companyMaterialID;
-            document.querySelector('#checkInModal input[name="material_id"]').value = materialID;
-            document.querySelector('#checkInModal input[name="company_id"]').value = companyID;
-            document.querySelector('#checkInModal input[name="checkIn_material_name"]').value = materialName;
-            const myModal = new bootstrap.Modal(checkInModal);
-            myModal.show();
-        }
+        // Show modal
+        const modalInstance = new bootstrap.Modal(checkInModal);
+        modalInstance.show();
+    };
 
-        // Trigger CheckOut
-        let triggerCheckOut = (companyMaterialID, materialID, companyID, materialName) => {
-            let checkOutModal = document.querySelector('#checkOutModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#checkOutModal input[name="checkOut_material_id"]').value = companyMaterialID;
-            document.querySelector('#checkOutModal input[name="material_id"]').value = materialID;
-            document.querySelector('#checkOutModal input[name="company_id"]').value = companyID;
-            document.querySelector('#checkOutModal input[name="checkOut_material_name"]').value = materialName;
-            const myModal = new bootstrap.Modal(checkOutModal);
-            myModal.show();
-        }
+    // Trigger CheckOut
+    const triggerCheckOut = (companyMaterialID, materialID, companyID, materialName) => {
+        const checkOutModal = document.querySelector('#checkOutModal');
+        const modalInputs = {
+            checkOutMaterialID: document.querySelector('#checkOutModal input[name="checkOut_material_id"]'),
+            materialID: document.querySelector('#checkOutModal input[name="material_id"]'),
+            companyID: document.querySelector('#checkOutModal input[name="company_id"]'),
+            materialName: document.querySelector('#checkOutModal input[name="checkOut_material_name"]')
+        };
 
-        // Trigger adjustment
-        let triggerAdjustment = (companyMaterialID, materialID, companyID, materialName) => {
-            let adjustmentModal = document.querySelector('#adjustmentModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#adjustmentModal input[name="adjustment_material_id"]').value = companyMaterialID;
-            document.querySelector('#adjustmentModal input[name="material_id"]').value = materialID;
-            document.querySelector('#adjustmentModal input[name="company_id"]').value = companyID;
-            document.querySelector('#adjustmentModal input[name="checkOut_material_name"]').value = materialName;
-            const myModal = new bootstrap.Modal(adjustmentModal);
-            myModal.show();
-        }
-    </script>
-    <!-- activate and deactivate -->
-    <script>
-        document.querySelectorAll('.toggle-status').forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                const companyId = this.getAttribute('data-company-id');
-                const status = this.checked ? 1 : 0; // Convert to a boolean-friendly value
+        // Set input values
+        modalInputs.checkOutMaterialID.value = companyMaterialID;
+        modalInputs.materialID.value = materialID;
+        modalInputs.companyID.value = companyID;
+        modalInputs.materialName.value = materialName;
 
-                fetch("{{ route('company.toggleStatus') }}", {
+        // Show modal
+        const modalInstance = new bootstrap.Modal(checkOutModal);
+        modalInstance.show();
+    };
+
+    // Trigger adjustment
+    const triggerAdjustment = (companyMaterialID, materialID, companyID, materialName) => {
+        const adjustmentModal = document.querySelector('#adjustmentModal');
+        const modalInputs = {
+            adjustmentMaterialID: adjustmentModal.querySelector('input[name="adjustment_material_id"]'),
+            materialID: adjustmentModal.querySelector('input[name="material_id"]'),
+            companyID: adjustmentModal.querySelector('input[name="company_id"]'),
+            materialName: adjustmentModal.querySelector('input[name="checkOut_material_name"]')
+        };
+
+        // Set input values
+        modalInputs.adjustmentMaterialID.value = companyMaterialID;
+        modalInputs.materialID.value = materialID;
+        modalInputs.companyID.value = companyID;
+        modalInputs.materialName.value = materialName;
+
+        // Show modal
+        const modalInstance = new bootstrap.Modal(adjustmentModal);
+        modalInstance.show();
+    };
+    // End trigger adjustment
+    // Activate and Deactivate Company
+    document.querySelectorAll('.toggle-status').forEach(checkbox => {
+        checkbox.addEventListener('change', async function () {
+            const companyId = this.dataset.companyId;
+            const status = this.checked ? 1 : 0;
+
+            try {
+                const response = await fetch("{{ route('company.toggleStatus') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        company_id: companyId,
-                        status: status
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        const feedback = document.getElementById('feedback-message');
-                        if (data.success) {
-                            feedback.textContent = data.message;
-                            feedback.style.color = 'green';
-                        } else {
-                            feedback.textContent = 'Error updating status!';
-                            feedback.style.color = 'red';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        const feedback = document.getElementById('feedback-message');
-                        feedback.textContent = 'An error occurred!';
-                        feedback.style.color = 'red';
-                    });
-            });
-        });
-
-        // Questionaire
-        async function ChangeQuestionResult(ele, company, value) {
-            console.log(ele, company, value);
-            if (ele.checked) {
-                let uri = "{{ route('company.add-question') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('question_id', value)
-                fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
+                    body: JSON.stringify({ company_id: companyId, status })
                 });
-            } else {
-                if (confirm("Do you want to uncheck this?")) {
-                    let uri = "{{ route('company.remove-question') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('question_id', value)
-                    fetch_cycle('--Save question', uri, 'POST', formData).then(result => {
-                        // let data = await result.json()
-                        console.log(result);
-                    });
-                }
+
+                const data = await response.json();
+                const feedback = document.getElementById('feedback-message');
+                feedback.textContent = data.message || 'Error updating status!';
+                feedback.style.color = data.success ? 'green' : 'red';
+            } catch (error) {
+                console.error('Error:', error);
+                const feedback = document.getElementById('feedback-message');
+                feedback.textContent = 'An error occurred!';
+                feedback.style.color = 'red';
             }
+        });
+    });
+    // End activate and deactivate
+    // Questionnaire
+    async function toggleQuestionResult(element, companyId, questionId) {
+        console.log(element, companyId, questionId);
+
+        const isChecked = element.checked;
+        const confirmationMessage = "Do you want to uncheck this?";
+        const uri = isChecked 
+            ? "{{ route('company.add-question') }}" 
+            : "{{ route('company.remove-question') }}";
+
+        if (!isChecked && !confirm(confirmationMessage)) return;
+
+        const formData = new FormData();
+        formData.append('company', companyId);
+        formData.append('question_id', questionId);
+
+        try {
+            const result = await fetch_cycle('--Save question', uri, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error processing question result:", error);
         }
-        // WaterConservationMethod
-        async function ChangeWaterConservationOpportunity(ele, company, value) {
-            console.log(ele, company, value);
-            if (ele.checked) {
-                let uri = "{{ route('company.add-water-conservation-method') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('water_conservation_method_id', value)
-                fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
-                });
-            } else {
-                if (confirm("Do you want to uncheck this?")) {
-                    let uri = "{{ route('company.remove-water-conservation-method') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('water_conservation_method_id', value)
-                    fetch_cycle('--Save method', uri, 'POST', formData).then(result => {
-                        // let data = await result.json()
-                        console.log(result);
+    }
+    // End Questionnaire
+    // Water Conservation Method
+    async function toggleWaterConservationMethod(element, companyId, methodId) {
+        console.log(element, companyId, methodId);
+
+        const isChecked = element.checked;
+        const confirmationMessage = "Do you want to uncheck this?";
+        const uri = isChecked 
+            ? "{{ route('company.add-water-conservation-method') }}" 
+            : "{{ route('company.remove-water-conservation-method') }}";
+
+        if (!isChecked && !confirm(confirmationMessage)) return;
+
+        const formData = new FormData();
+        formData.append('company', companyId);
+        formData.append('water_conservation_method_id', methodId);
+
+        try {
+            const result = await fetch_cycle('--Save method', uri, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error processing water conservation method:", error);
+        }
+    }
+    // End Water Conservation Method
+    // Water Quality Control
+    async function toggleWaterQualityControl(element, companyId, qualityControlId) {
+        console.log(element, companyId, qualityControlId);
+
+        const isChecked = element.checked;
+        const confirmationMessage = "Do you want to uncheck this?";
+        const uri = isChecked 
+            ? "{{ route('admin.store-water-quality-logs') }}" 
+            : "{{ route('admin.remove-water-quality-logs') }}";
+
+        if (!isChecked && !confirm(confirmationMessage)) return;
+
+        const formData = new FormData();
+        formData.append('company', companyId);
+        formData.append('water_quality_control_id', qualityControlId);
+
+        try {
+            const result = await fetch_cycle('--Save quality control', uri, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error processing water quality control:", error);
+        }
+    }
+    // End Water Quality Control
+    // WaterSources
+    async function toggleWaterSource(ele, company, value) {
+        console.log(ele, company, value);
+
+        const isChecked = ele.checked;
+        const confirmationMessage = "Do you want to uncheck this?";
+        const uri = isChecked 
+            ? "{{ route('company.add-water-sources') }}" 
+            : "{{ route('company.remove-water-sources') }}";
+
+        if (!isChecked && !confirm(confirmationMessage)) return;
+
+        const formData = new FormData();
+        formData.append('company', company);
+        formData.append('water_sources_id', value);
+
+        try {
+            const result = await fetch_cycle('--Save sources', uri, 'POST', formData);
+            console.log(result);
+        } catch (error) {
+            console.error("Error processing water source:", error);
+        }
+    }
+    // End WaterSources
+    // Utility function to show and scroll to a card
+    function showAndScrollToCard(cardSelector) {
+        const card = document.querySelector(cardSelector);
+        if (card) {
+            card.classList.remove('d-none');
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Event listeners for various triggers
+    document.querySelector('#water-checkin-trigger').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#water-checkin-card');
+    });
+    // Water usage log trigger
+    document.querySelector('#water-usage-log-trigger').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#water-usage-logs-card');
+    });
+    // Water recycling log trigger
+    document.querySelector('#water-recycling-log-trigger').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#water-recycling-logs-card');
+    });
+    // Water quality control log trigger
+    document.querySelector('#add-quality-control-record').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#quality-control-log-card');
+    });
+    // chemical trigger
+    document.querySelector('#add-chemical-button').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#add-chemical-form-card');
+    });
+
+    // Water quality control log trigger
+    document.querySelector('#add-material-button').addEventListener('click', (e) => {
+        e.preventDefault();
+        showAndScrollToCard('#add-material-form-card');
+    });
+</script>
+<!-- end of script -->
+
+<!-- water inventory -->
+<script>
+    // Check-in form submission
+    document.querySelector('#water-checkin-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const url = "{{ route('admin.water-stock-check-in') }}";
+        const formData = new FormData(this);
+
+        try {
+            const result = await fetch_cycle('--Save Water Check-In', url, 'POST', formData);
+            console.log(result);
+
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-water-management tbody');
+                tableBody.innerHTML = result.water_stock_movements.map(water_stock_movement => {
+                    const sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
+                    const calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
+                    const formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
+                        day: '2-digit', month: 'short', year: 'numeric'
                     });
-                }
-            }
-        }
-        // WaterSources
-        async function ChangeWaterSources(ele, company, value) {
-            console.log(ele, company, value);
-            if (ele.checked) {
-                let uri = "{{ route('company.add-water-sources') }}";
-                let formData = new FormData();
-                formData.append('company', company)
-                formData.append('water_sources_id', value)
-                fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
-                    // let data = await result.json()
-                    console.log(result);
-                });
-            } else {
-                if (confirm("Do you want to uncheck this?")) {
-                    let uri = "{{ route('company.remove-water-Sources') }}";
-                    let formData = new FormData();
-                    formData.append('company', company)
-                    formData.append('water_sources_id', value)
-                    fetch_cycle('--Save sources', uri, 'POST', formData).then(result => {
-                        // let data = await result.json()
-                        console.log(result);
-                    });
-                }
-            }
-        }
 
-        document.querySelector('#water-checkin-trigger').addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const waterCheckinCard = document.querySelector('#water-checkin-card');
-            waterCheckinCard.classList.remove('d-none');
-            waterCheckinCard.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.querySelector('#water-usage-log-trigger').addEventListener('click', function (e) {
-            e.preventDefault();
-            const waterUsageLogsCard = document.querySelector('#water-usage-logs-card');
-            waterUsageLogsCard.classList.remove('d-none');
-            waterUsageLogsCard.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.querySelector('#water-recycling-log-trigger').addEventListener('click', function (e) {
-            e.preventDefault();
-            const waterRecyclingLogsCard = document.querySelector('#water-recycling-logs-card');
-            waterRecyclingLogsCard.classList.remove('d-none');
-            waterRecyclingLogsCard.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.querySelector('#add-quality-control-record').addEventListener('click', function (e) {
-            e.preventDefault();
-            const qualityControlCard = document.querySelector('#quality-control-log-card');
-            qualityControlCard.classList.remove('d-none');
-            qualityControlCard.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.querySelector('#add-chemical-button').addEventListener('click', function (e) {
-            e.preventDefault();
-            const chemicalCard = document.querySelector('#add-chemical-form-card');
-            chemicalCard.classList.remove('d-none');
-            chemicalCard.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.querySelector('#add-material-button').addEventListener('click', function (e) {
-            e.preventDefault();
-            const materialCard = document.querySelector('#add-material-form-card');
-            materialCard.classList.remove('d-none');
-            materialCard.scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
-    <!-- end activate and deactivate -->
-    <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
-    <!-- water inventory -->
-    <script>
-        // check-in form submission
-        document.querySelector('#water-checkin-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let url = "{{ route('admin.water-stock-check-in') }}";
-            const formData = new FormData(this);
-            fetch_cycle('--Save Water Check-In', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the water management table or UI as needed
-                    let tableBody = document.querySelector('#tbl-water-management tbody');
-                    tableBody.innerHTML = "";
-                    result.water_stock_movements.forEach(water_stock_movement => {
-                        let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
-                        let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
-                        let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
+                    return `
+                        <tr>
                             <td class="text-capitalize">
                                 ${water_stock_movement.movement_type}
                                 ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
@@ -8572,859 +8151,521 @@
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
                                     <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                </div>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-
-                }
-            });
-        });
-        // end check-in form submission
-        // water usage log form submission
-        document.querySelector('#water-usage-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.water-stock-check-out') }}";
-
-            fetch_cycle('--Save Water Usage Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the water management table or UI as needed
-                    let tableBody = document.querySelector('#tbl-water-management tbody');
-                    tableBody.innerHTML = "";
-                    result.water_stock_movements.forEach(water_stock_movement => {
-                        let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
-                        let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
-                        let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td class="text-capitalize">
-                                ${water_stock_movement.movement_type}
-                                ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
-                            </td>
-                            <td>${sourceName}</td>
-                            <td>${water_stock_movement.volume}</td>
-                            <td>${calendarYear}</td>
-                            <td>${formattedDate}</td>
-                            <td>${water_stock_movement.remark ?? ''}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
-                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                </div>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-
-                }
-            });
-        });
-        // end water usage log form submission
-        // water recycling log form submission
-        document.querySelector('#water-recycling-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.water-stock-recycling-log') }}";
-
-            fetch_cycle('--Save Water Recycling Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the water management table or UI as needed
-                    let tableBody = document.querySelector('#tbl-water-management tbody');
-                    tableBody.innerHTML = "";
-                    result.water_stock_movements.forEach(water_stock_movement => {
-                        let sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
-                        let calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
-                        let formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td class="text-capitalize">
-                                ${water_stock_movement.movement_type}
-                                ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
-                                ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
-                            </td>
-                            <td>${sourceName}</td>
-                            <td>${water_stock_movement.volume}</td>
-                            <td>${calendarYear}</td>
-                            <td>${formattedDate}</td>
-                            <td>${water_stock_movement.remark ?? ''}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
-                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                </div>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
-        // company water sources
-        // Store Water Sources
-        document.querySelector('#waterSourceForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-water-source-details') }}";
-
-            fetch_cycle('--Store Water Sources', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the water sources table or UI as needed
-                    let tableBody = document.querySelector('#tbl-water-sources tbody');
-                    tableBody.innerHTML = "";
-                    result.water_sources.forEach(source => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${source.sources}</td>
-                            <td>${source.description ?? ""}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
                                 </div>
                             </td>
                         </tr>`;
-                    });
-                }
-            });
-        });
-
-    </script>
-
-    <!-- water usage logs -->
-    <script>
-        // AJAX implementation to store water usage logs
-        document.querySelector('#btn-submit-water-usage-logs').addEventListener('click', function () {
-            const company_id = document.querySelector('#waterUsageLogsForm input[name="company_id"]').value.trim();
-            const water_source = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]').value.trim();
-            const quantity_used = document.querySelector('#waterUsageLogsForm input[name="quantity_used"]').value.trim();
-            const unit_of_water_measured = document.querySelector('#waterUsageLogsForm select[name="unit_of_water_measured"]').value.trim();
-            const date = document.querySelector('#waterUsageLogsForm input[name="date"]').value.trim();
-            const purpose = document.querySelector('#waterUsageLogsForm input[name="purpose"]').value.trim();
-
-            if (!water_source) {
-                Toastify({
-                    text: "Please select a water source.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
+                }).join('');
             }
-
-            if (!quantity_used) {
-                Toastify({
-                    text: "Please provide the quantity of water used.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!unit_of_water_measured) {
-                Toastify({
-                    text: "Please select a unit of measurement.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!date) {
-                Toastify({
-                    text: "Please provide a date.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            let url = "{{ route('admin.store-water-usage-logs') }}";
-            const formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('water_source_id', water_source);
-            formData.append('quantity_used', quantity_used);
-            formData.append('unit_of_water_measured', unit_of_water_measured);
-            formData.append('date', date);
-            formData.append('purpose', purpose);
-
-            fetch_cycle('--Save Water Usage Logs', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === "success") {
-                    const waterUsageLogsTable = document.querySelector('#waterUsageLogsForm select[name="water_source_selected"]');
-                    waterUsageLogsTable.innerHTML = ""; // Clear existing options
-                    result.water_usage_logs.forEach(log => {
-                        const option = document.createElement("option");
-                        option.value = log.WaterSourcesId;
-                        option.textContent = log.sources;
-                        if (result.company_water_sources.includes(log.WaterSourcesId)) {
-                            option.selected = true; // Mark as selected if already associated with the company
-                        }
-                        waterUsageLogsTable.appendChild(option);
-                    });
-
-                    Toastify({
-                        text: result.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
-                    }).showToast();
-                } else {
-                    Toastify({
-                        text: result.message || "An error occurred.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                    }).showToast();
-                }
-            });
-        });
-    </script>
-
-    <!-- water recycling logs -->
-    <script>
-        document.querySelector('#btn-submit-water-recycling-logs').addEventListener('click', function () {
-            const company_id = document.querySelector('#waterRecyclingLogsForm input[name="company_id"]').value.trim();
-            const quantity_recycled = document.querySelector('#waterRecyclingLogsForm input[name="quantity_recycled"]').value.trim();
-            const unit_of_water_recycled = document.querySelector('#waterRecyclingLogsForm select[name="unit_of_water_recycled"]').value.trim();
-            const recycling_date = document.querySelector('#waterRecyclingLogsForm input[name="recycling_date"]').value.trim();
-            const method = document.querySelector('#waterRecyclingLogsForm input[name="method"]').value.trim();
-
-            if (!quantity_recycled) {
-                Toastify({
-                    text: "Please provide the quantity of water recycled.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!unit_of_water_recycled) {
-                Toastify({
-                    text: "Please select a unit of measurement.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            if (!recycling_date) {
-                Toastify({
-                    text: "Please provide a recycling date.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                return;
-            }
-
-            let url = "{{ route('admin.store-water-recycling-logs') }}";
-            const formData = new FormData();
-            formData.append('company_id', company_id);
-            formData.append('quantity_recycled', quantity_recycled);
-            formData.append('unit_of_water_recycled', unit_of_water_recycled);
-            formData.append('recycling_date', recycling_date);
-            formData.append('method', method);
-
-            fetch_cycle('--Save Water Recycling Logs', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === "success" && !document.querySelector('.toastify-success')) {
-                    Toastify({
-                        text: result.message,
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        },
-                        className: "toastify-success"
-                    }).showToast();
-                } else if (!document.querySelector('.toastify-error')) {
-                    Toastify({
-                        text: result.message || "An error occurred.",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, #ff0000, #ff1745)",
-                        },
-                        className: "toastify-error"
-                    }).showToast();
-                }
-            });
-        });
-    </script>
-    <!-- end water recycling logs -->
-   <script>
-    // Store Quality Control Logs
-    document.querySelector('#qualityControlLogForm').addEventListener('submit', function (e) {
+        } catch (error) {
+            console.error('Error during water check-in:', error);
+        }
+    });
+    // End check-in form submission
+    // Water usage log form submission
+    document.querySelector('#water-usage-form').addEventListener('submit', async function (e) {
         e.preventDefault();
-        let formData = new FormData(this);
-        let url = "{{ route('admin.store-water-quality-logs') }}";
+        const formData = new FormData(this);
+        const url = "{{ route('admin.water-stock-check-out') }}";
 
-        fetch_cycle('--Store Quality Control Log', url, 'POST', formData).then(result => {
+        try {
+            const result = await fetch_cycle('--Save Water Usage Log', url, 'POST', formData);
             console.log(result);
+
             if (result.status === 'success') {
-                // Update the quality control logs table or UI as needed
-                let tableBody = document.querySelector('#tbl-quality-control-management tbody');
-                tableBody.innerHTML = "";
-                result.water_quality_logs.forEach(quality => {
-                    tableBody.innerHTML += `<tr>
+                const tableBody = document.querySelector('#tbl-water-management tbody');
+                tableBody.innerHTML = result.water_stock_movements.map(water_stock_movement => {
+                    const sourceName = water_stock_movement.company_water_sources?.water_source?.sources ?? 'N/A';
+                    const calendarYear = water_stock_movement.calendar_year?.name ?? 'N/A';
+                    const formattedDate = new Date(water_stock_movement.movement_date).toLocaleDateString('en-GB', {
+                        day: '2-digit', month: 'short', year: 'numeric'
+                    });
+
+                    return `
+                        <tr>
+                            <td class="text-capitalize">
+                                ${water_stock_movement.movement_type}
+                                ${water_stock_movement.movement_type === 'in' ? '<i class="fas fa-caret-up text-success font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'out' ? '<i class="fas fa-caret-down text-danger font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'recycling' ? '<i class="fas fa-recycle text-info font-16"></i>' : ''}
+                                ${water_stock_movement.movement_type === 'usage' ? '<i class="fas fa-tint text-primary font-16"></i>' : ''}
+                            </td>
+                            <td>${sourceName}</td>
+                            <td>${water_stock_movement.volume}</td>
+                            <td>${calendarYear}</td>
+                            <td>${formattedDate}</td>
+                            <td>${water_stock_movement.remark ?? ''}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                }).join('');
+            }
+        } catch (error) {
+            console.error('Error saving water usage log:', error);
+        }
+    });
+    // End water usage log form submission
+    // Water recycling log form submission
+    document.querySelector('#water-recycling-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.water-stock-recycling-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Save Water Recycling Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateWaterManagementTable(result.water_stock_movements);
+            }
+        } catch (error) {
+            console.error('Error saving water recycling log:', error);
+        }
+    });
+
+    // Update Water Management Table
+    function updateWaterManagementTable(waterStockMovements) {
+        const tableBody = document.querySelector('#tbl-water-management tbody');
+        tableBody.innerHTML = waterStockMovements.map(waterStockMovement => {
+            const sourceName = waterStockMovement.company_water_sources?.water_source?.sources ?? 'N/A';
+            const calendarYear = waterStockMovement.calendar_year?.name ?? 'N/A';
+            const formattedDate = new Date(waterStockMovement.movement_date).toLocaleDateString('en-GB', {
+                day: '2-digit', month: 'short', year: 'numeric'
+            });
+
+            return `
+                <tr>
+                    <td class="text-capitalize">
+                        ${waterStockMovement.movement_type}
+                        ${getMovementTypeIcon(waterStockMovement.movement_type)}
+                    </td>
+                    <td>${sourceName}</td>
+                    <td>${waterStockMovement.volume}</td>
+                    <td>${calendarYear}</td>
+                    <td>${formattedDate}</td>
+                    <td>${waterStockMovement.remark ?? ''}</td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+        }).join('');
+    }
+
+    // Get Movement Type Icon
+    function getMovementTypeIcon(movementType) {
+        const icons = {
+            in: '<i class="fas fa-caret-up text-success font-16"></i>',
+            out: '<i class="fas fa-caret-down text-danger font-16"></i>',
+            recycling: '<i class="fas fa-recycle text-info font-16"></i>',
+            usage: '<i class="fas fa-tint text-primary font-16"></i>'
+        };
+        return icons[movementType] || '';
+    }
+
+    // Store Water Sources
+    document.querySelector('#waterSourceForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-water-source-details') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Water Sources', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateWaterSourcesTable(result.water_sources);
+            }
+        } catch (error) {
+            console.error('Error storing water sources:', error);
+        }
+    });
+
+    // Update Water Sources Table
+    function updateWaterSourcesTable(waterSources) {
+        const tableBody = document.querySelector('#tbl-water-sources tbody');
+        tableBody.innerHTML = waterSources.map(source => `
+            <tr>
+                <td>${source.sources}</td>
+                <td>${source.description ?? ""}</td>
+                <td class="text-end">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-primary me-2">Edit</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </div>
+                </td>
+            </tr>`).join('');
+    }
+
+</script>
+<script>
+    // Store Quality Control Logs
+    document.querySelector('#qualityControlLogForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-water-quality-logs') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Quality Control Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-quality-control-management tbody');
+                tableBody.innerHTML = result.water_quality_logs.map(quality => `
+                    <tr>
                         <td>${quality.test_date}</td>
                         <td>${quality.parameter_tested}</td>
-                        <td>${quality.test_results }</td>
+                        <td>${quality.test_results}</td>
                         <td>${quality.deviation_detected}</td>
                         <td>${quality.corrective_actions}</td>
                         <td class="text-end">
                             <div class="dropdown d-inline-block">
-                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
                                     <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="#">Edit</a>
                                     <a class="dropdown-item" href="#">Delete</a>
                                 </div>
                             </div>
                         </td>
-                    </tr>`;
-                });
+                    </tr>
+                `).join('');
             }
-        });
+        } catch (error) {
+            console.error('Error storing quality control log:', error);
+        }
     });
-   </script>
-     <!-- start water disposal -->
-    <script>
-        // Store Waste Disposal
-        document.querySelector('#waste-disposal-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-waste-disposal') }}";
+</script>
+<!-- end water quality control logs -->
+<!-- Waste Disposal -->
+<script>
+    // Store Waste Disposal
+    document.querySelector('#waste-disposal-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-waste-disposal') }}";
 
-            fetch_cycle('--Store Waste Disposal', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the waste disposal table or UI as needed
-                    let tableBody = document.querySelector('#tbl-waste-disposal tbody');
-                    tableBody.innerHTML = "";
-                    result.waste_disposals.forEach(disposal => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${disposal.waste_type}</td>
-                            <td>${disposal.disposal_method}</td>
-                            <td>${disposal.quantity}</td>
-                            <td>${disposal.disposal_date}</td>
-                            <td>${disposal.operation?.operation_name || 'N/A'}</td>
-                            <td>${disposal.calendarYear?.name || 'N/A'}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-    </script>
-     <!-- end water disposal -->
-    <!-- water usage logs -->
-
-
-
-    <!-- Chemical  -->
-    <script>
-        let btn_submit_chemical = document.querySelector('#btn-submit-chemical');
-        btn_submit_chemical.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#btn-submit-chemical #loader');
-            loader.style.display = 'inline-block';
-
-            let company_id = document.querySelector('#chemical-form input[name="company_id"]').value.trim();
-            let chemical = document.querySelector('#chemical-form select[name="chemical"]').value.trim();
-            let unit_of_measurement = document.querySelector('#chemical-form input[name="unit_of_measurement"]').value.trim();
-            let threshold = document.querySelector('#chemical-form input[name="threshold"]').value.trim();
-            console.log('====================================');
-            console.log(chemical, unit_of_measurement);
-            console.log('====================================');
-            if (!company_id) {
-                Toastify({
-                    text: "Company ID field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return;
+        try {
+            const result = await fetch_cycle('--Store Waste Disposal', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-waste-disposal tbody');
+                tableBody.innerHTML = result.waste_disposals.map(disposal => `
+                    <tr>
+                        <td>${disposal.waste_type}</td>
+                        <td>${disposal.disposal_method}</td>
+                        <td>${disposal.quantity}</td>
+                        <td>${disposal.disposal_date}</td>
+                        <td>${disposal.operation?.operation_name || 'N/A'}</td>
+                        <td>${disposal.calendarYear?.name || 'N/A'}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
             }
-            if (!chemical) {
-                Toastify({
-                    text: "Chemical field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
+        } catch (error) {
+            console.error('Error storing waste disposal:', error);
+        }
+    });
+</script>
+<!-- end water disposal -->
+
+<!-- Chemical  -->
+<script>
+    const btnSubmitChemical = document.querySelector('#btn-submit-chemical');
+    const validateFields = (fields) => {
+        for (const { value, message } of fields) {
+            if (!value.trim()) {
+                showToast(message);
+                return false;
             }
-            if (!unit_of_measurement) {
-                Toastify({
-                    text: "Unit of measurement field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+        }
+        return true;
+    };
 
-            let url = "{{ route('admin.store-company-chemical') }}"
-            let formData = new FormData();
-            formData.append('chemical_id', chemical);
-            formData.append('unit_of_measurement', unit_of_measurement);
-            formData.append('threshold', threshold);
-            formData.append('company_id', company_id);
-            fetch_cycle('--Save Chemical', url, 'POST', formData).then(result => {
-                console.log(result);
-                loader.style.display = 'none';
-                if (result.status == "success") {
-                    let tableBody = document.querySelector('#tbl-company-chemical tbody')
-                    tableBody.innerHTML = ""
-                    result.data.forEach(chemical => {
-                        let id = chemical.company_chemical_id;
-                        const baseUrl = "{{ route('admin.view-chemical', ['chemical' => '__PLACEHOLDER__']) }}";
-                        const url = baseUrl.replace('__PLACEHOLDER__', id);
-
-                        tableBody.innerHTML += `<tr>
-                            <td>${chemical.name}</td>
-                            <td>${chemical.unit ?? ''}</td>
-                            <td> <span class="badge bg-${(chemical.chemical_status == 'active') ? 'success' : 'danger'}">${chemical.chemical_status}</span>
-                            </td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="${url}">Open Chemical</a>
-                                        <a class="dropdown-item" href="#">Update Chemical</a>
-                                        <a class="dropdown-item" href="#">Delete Chemical</a>
-                                        <hr class="dropdown-divider">
-                                        <a class="dropdown-item" href="#">Setup Price</a>
-                                        <a href="#" class="dropdown-item">Check In Item</a>
-                                        <a href="#" class="dropdown-item">Check Out Item</a>
-                                        <a href="#" class="dropdown-item">Adjustment</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`
-                    });
-                }
-            });
-        });
-
-        // Trigger CheckIn Chemical
-        let triggerCheckInChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
-            let checkInChemicalModal = document.querySelector('#checkInChemicalModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value = companyChemicalID;
-            document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value = chemicalID;
-            document.querySelector('#checkInChemicalModal input[name="company_id"]').value = companyID;
-            document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_name"]').value = chemicalName;
-            let loader = document.querySelector('#checkInChemicalModal #loader');
+    const handleSubmit = async (url, formData, loader) => {
+        loader.style.display = 'inline-block';
+        try {
+            const result = await fetch_cycle('--Save Chemical', url, 'POST', formData);
+            console.log(result);
             loader.style.display = 'none';
-            const myModal = new bootstrap.Modal(checkInChemicalModal);
-            myModal.show();
+            if (result.status === "success") {
+                
+                const tableBody = document.querySelector('#tbl-company-chemical tbody');
+                tableBody.innerHTML = data.map(chemical => `
+        <tr>
+            <td>${escapeHTML(chemical.name ?? '')}</td>
+            <td>${escapeHTML(chemical.unit ?? '')}</td>
+            <td>
+                <span 
+                    class="badge bg-${chemical.chemical_status === 'active' ? 'success' : 'danger'}" 
+                    role="status" 
+                    aria-label="Chemical status: ${escapeHTML(chemical.chemical_status)}"
+                >
+                    ${escapeHTML(chemical.chemical_status)}
+                </span>
+            </td>
+            <td class="text-end">
+                <div class="dropdown d-inline-block">
+                    <a 
+                        class="dropdown-toggle arrow-none" 
+                        data-bs-toggle="dropdown" 
+                        href="#" 
+                        role="button" 
+                        aria-expanded="false"
+                    >
+                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a 
+                            class="dropdown-item" 
+                            href="${`/admin/view-chemical/${encodeURIComponent(chemical.company_chemical_id)}`}"
+                        >
+                            Open Chemical
+                        </a>
+                        <a class="dropdown-item" href="#">Update Chemical</a>
+                        <a class="dropdown-item" href="#">Delete Chemical</a>
+                        <hr class="dropdown-divider">
+                        <a class="dropdown-item" href="#">Setup Price</a>
+                        <a class="dropdown-item" href="#">Check In Item</a>
+                        <a class="dropdown-item" href="#">Check Out Item</a>
+                        <a class="dropdown-item" href="#">Adjustment</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+            }
+        } catch (error) {
+            console.error(error);
+            loader.style.display = 'none';
+        }
+    };
+
+    btnSubmitChemical.addEventListener('click', () => {
+        const loader = document.querySelector('#btn-submit-chemical #loader');
+        const companyId = document.querySelector('#chemical-form input[name="company_id"]').value;
+        const chemical = document.querySelector('#chemical-form select[name="chemical"]').value;
+        const unitOfMeasurement = document.querySelector('#chemical-form input[name="unit_of_measurement"]').value;
+        const threshold = document.querySelector('#chemical-form input[name="threshold"]').value;
+
+        if (!validateFields([
+            { value: companyId, message: "Company ID field cannot be empty." },
+            { value: chemical, message: "Chemical field cannot be empty." },
+            { value: unitOfMeasurement, message: "Unit of measurement field cannot be empty." }
+        ])) return;
+
+        const formData = new FormData();
+        formData.append('chemical_id', chemical);
+        formData.append('unit_of_measurement', unitOfMeasurement);
+        formData.append('threshold', threshold);
+        formData.append('company_id', companyId);
+
+        handleSubmit("{{ route('admin.store-company-chemical') }}", formData, loader);
+    });
+
+    const triggerModal = (modalId, fields) => {
+        const modal = document.querySelector(modalId);
+        fields.forEach(({ name, value }) => {
+            modal.querySelector(`input[name="${name}"]`).value = value;
+        });
+        const loader = modal.querySelector('#loader');
+        loader.style.display = 'none';
+        new bootstrap.Modal(modal).show();
+    };
+
+    const handleCheckInOut = async (url, modalId, loaderSelector) => {
+        const modal = document.querySelector(modalId);
+        const loader = modal.querySelector(loaderSelector);
+        loader.style.display = 'inline-block';
+
+        const formData = new FormData(modal.querySelector('form'));
+        if (!validateFields([
+            { value: formData.get('checkIn_chemical_id') || formData.get('checkOut_chemical_id'), message: "Chemical ID field cannot be empty." },
+            { value: formData.get('quantity'), message: "Quantity field cannot be empty." },
+            { value: formData.get('date'), message: "Date field cannot be empty." }
+        ])) {
+            loader.style.display = 'none';
+            return;
         }
 
-        // Trigger CheckOut Chemical
-        let triggerCheckOutChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
-            let checkOutChemicalModal = document.querySelector('#checkOutChemicalModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value = companyChemicalID;
-            document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value = chemicalID;
-            document.querySelector('#checkOutChemicalModal input[name="company_id"]').value = companyID;
-            document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_name"]').value = chemicalName;
-            const myModal = new bootstrap.Modal(checkOutChemicalModal);
-            myModal.show();
+        try {
+            const result = await fetch_cycle('--Create Check In/Out', url, 'POST', formData);
+            console.log(result);
+            loader.style.display = 'none';
+        } catch (error) {
+            console.error(error);
+            loader.style.display = 'none';
         }
+    };
 
-        // checkin chemical
-        let btn_submit_check_in_chemical = document.querySelector('#btn-submit-check-in-chemical');
-        btn_submit_check_in_chemical.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#checkInChemicalModal #loader');
-            loader.style.display = 'inline-block';
+    document.querySelector('#btn-submit-check-in-chemical').addEventListener('click', () => {
+        handleCheckInOut("{{ route('admin.save-company-chemical-check-in') }}", '#checkInChemicalModal', '#loader');
+    });
 
-            let checkIn_chemical_id = document.querySelector('#checkInChemicalModal input[name="checkIn_chemical_id"]').value.trim();
-            let chemical_id = document.querySelector('#checkInChemicalModal input[name="chemical_id"]').value.trim();
-            let company_id = document.querySelector('#checkInChemicalModal input[name="company_id"]').value.trim();
-            let quantity = document.querySelector('#checkInChemicalModal input[name="quantity"]').value.trim();
-            let date = document.querySelector('#checkInChemicalModal input[name="date"]').value.trim();
-            let remark = document.querySelector('#checkInChemicalModal input[name="remark"]').value.trim();
-            if (!checkIn_chemical_id) {
-                Toastify({
-                    text: "Chemical id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!quantity) {
-                Toastify({
-                    text: "Quantity field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!date) {
-                Toastify({
-                    text: "Date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+    document.querySelector('#btn-submit-check-out-chemical').addEventListener('click', () => {
+        handleCheckInOut("{{ route('admin.save-company-chemical-check-out') }}", '#checkOutChemicalModal', '#loader');
+    });
 
-            let url = "{{ route('admin.save-company-chemical-check-in') }}"
-            let formData = new FormData();
-            formData.append('checkIn_chemical_id', checkIn_chemical_id);
-            formData.append('chemical_id', chemical_id);
-            formData.append('company_id', company_id);
-            formData.append('quantity', quantity);
-            formData.append('date', date);
-            formData.append('remark', remark);
-            fetch_cycle('--Create Check In', url, 'POST', formData).then(result => {
-                console.log(result);
-                loader.style.display = 'none';
-            });
-        });
-        // checkout chemical
-        let btn_submit_check_out_chemical = document.querySelector('#btn-submit-check-out-chemical');
-        btn_submit_check_out_chemical.addEventListener('click', () => {
-            console.log("clicked");
-            // Show the loader
-            let loader = document.querySelector('#checkOutChemicalModal #loader');
-            loader.style.display = 'inline-block';
+    window.triggerCheckInChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+        triggerModal('#checkInChemicalModal', [
+            { name: 'checkIn_chemical_id', value: companyChemicalID },
+            { name: 'chemical_id', value: chemicalID },
+            { name: 'company_id', value: companyID },
+            { name: 'checkIn_chemical_name', value: chemicalName }
+        ]);
+    };
 
-            let checkOut_chemical_id = document.querySelector('#checkOutChemicalModal input[name="checkOut_chemical_id"]').value.trim();
-            let chemical_id = document.querySelector('#checkOutChemicalModal input[name="chemical_id"]').value.trim();
-            let company_id = document.querySelector('#checkOutChemicalModal input[name="company_id"]').value.trim();
-            let quantity = document.querySelector('#checkOutChemicalModal input[name="quantity"]').value.trim();
-            let date = document.querySelector('#checkOutChemicalModal input[name="date"]').value.trim();
-            let remark = document.querySelector('#checkOutChemicalModal input[name="remark"]').value.trim();
-            if (!checkOut_chemical_id) {
-                Toastify({
-                    text: "Chemical id field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
-            if (!quantity) {
-                Toastify({
-                    text: "Quantity field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+    window.triggerCheckOutChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
+        triggerModal('#checkOutChemicalModal', [
+            { name: 'checkOut_chemical_id', value: companyChemicalID },
+            { name: 'chemical_id', value: chemicalID },
+            { name: 'company_id', value: companyID },
+            { name: 'checkOut_chemical_name', value: chemicalName }
+        ]);
+    };
+</script>
 
-            if (!date) {
-                Toastify({
-                    text: "Date field cannot be empty.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "linear-gradient(to right, #ff0000, #ff1745)",
-                    },
-                }).showToast();
-                loader.style.display = 'none';
-                return
-            }
+<!-- operations -->
+<script>
+    document.querySelector('#company_operation_type_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-operation-type') }}";
 
-            let url = "{{ route('admin.save-company-chemical-check-out') }}"
-            let formData = new FormData();
-            formData.append('checkout_chemical_id', checkOut_chemical_id);
-            formData.append('chemical_id', chemical_id);
-            formData.append('company_id', company_id);
-            formData.append('quantity', quantity);
-            formData.append('date', date);
-            formData.append('remark', remark);
-            fetch_cycle('--Create Check Out', url, 'POST', formData).then(result => {
-                console.log(result);
-                loader.style.display = 'none';
-            });
-        });
-    </script>
-    <!-- Chemical  -->
-
-    <!-- operations -->
-    <script>
-       document.querySelector('#company_operation_type_form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    let formData = new FormData(this);
-    let url = "{{ route('admin.store-operation-type') }}";
-    fetch_cycle('--Store Operation Type', url, 'POST', formData).then(result => {
-        console.log(result);
-        if (result.status === 'success') {
-            // Update the operation types table or UI as needed
-            let tableBody = document.querySelector('#tbl-operation-types tbody');
-            tableBody.innerHTML = "";
-            result.operation_types.forEach(type => {
-                tableBody.innerHTML += `<tr>
-                    <td>${type.name}</td>
-                    <td>${type.description ?? ""}</td>
-                    <td>${type.sequence_order ?? ""}</td>
-                    <td class="text-end">
-
-                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm"  onclick="editOperationType(${type.operation_type_id}, '${type.name}', '${type.description ?? ""}', ${type.sequence_order ?? 0})">
+        try {
+            const result = await fetch_cycle('--Store Operation Type', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-operation-types tbody');
+                tableBody.innerHTML = result.operation_types.map(type => `
+                    <tr>
+                        <td>${type.name}</td>
+                        <td>${type.description || ""}</td>
+                        <td>${type.sequence_order || ""}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationType(${type.operation_type_id}, '${type.name}', '${type.description || ""}', ${type.sequence_order || 0})">
                                     <i class="las la-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm" onclick="confirmTypeDeletion(${type.operation_type_id}, '${type.name}')">
                                     <i class="las la-trash-alt"></i> Delete
                                 </button>
                             </div>
-                        </div>
-                    </td>
-                </tr>`;
-            });
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing operation type:', error);
         }
     });
-});
 
-        // Edit Operation Type
-        document.querySelector('#edit_operation_type_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.update-operation-type') }}";
+    // Edit Operation Type
+    document.querySelector('#edit_operation_type_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.update-operation-type') }}";
 
-            fetch_cycle('--Update Operation Type', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation types table or UI as needed
-                    data_array = result.operation_types.map(
-                            type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
-                        );
+        try {
+            const result = await fetch_cycle('--Update Operation Type', url, 'POST', formData);
+            if (result.status === 'success') {
+                const updatedData = result.operation_types.map(
+                    type => new OperationTypeObject(type.operation_type_id, type.name, type.description, type.sequence_order)
+                );
 
-                        // Clear and add rows without destroying the table
-                        table.clear();
-                        table.rows.add(data_array);
-                        table.draw();
-                        hideElement(spinner)
-                }
-            });
-        });
+                table.clear();
+                table.rows.add(updatedData).draw();
+            }
+        } catch (error) {
+            console.error('Error updating operation type:', error);
+        }
+    });
 
-        // Store Equipment Type
-        document.querySelector('#equipment_type_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-equipment-type') }}";
+    // Store Equipment Type
+    document.querySelector('#equipment_type_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-equipment-type') }}";
 
-            fetch_cycle('--Store Equipment Type', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the equipment types table or UI as needed
-                    let tableBody = document.querySelector('#tbl-equipment-types tbody');
-                    tableBody.innerHTML = "";
-                    result.equipment_types.forEach(type => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${type.name}</td>
-                            <td>${type.description ?? ""}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-
-        // Industrial equipment log
-        // Store Equipment Log
-        document.querySelector('#industrial-equipment-log-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-equipment-log') }}";
-
-            fetch_cycle('--Store Equipment Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the equipment logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-equipment-logs tbody');
-                    tableBody.innerHTML = "";
-                    result.equipment_logs.forEach(log => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${log.equipment_name}</td>
-                            <td>${log.equipment_type ? log.equipment_type.name : 'N/A'}</td>
-                            <td>${log.equipment_capacity}</td>
-                            <td>${log.status}</td>
-                            <td>${log.date_added}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-    
-        // Store Operation Category
-        document.querySelector('#operation_category_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-operation-category') }}";
-            fetch_cycle('--Store Operation Category', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation categories table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operation-categories tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_categories.forEach(category => {
-                        tableBody.innerHTML += `<tr>
-                        <td>${category.name}</td>
-                        <td>${category.description ?? ""}</td>
+        try {
+            const result = await fetch_cycle('--Store Equipment Type', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-equipment-types tbody');
+                tableBody.innerHTML = result.equipment_types.map(type => `
+                    <tr>
+                        <td>${type.name}</td>
+                        <td>${type.description || ""}</td>
                         <td class="text-end">
-                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${category.operation_category_id}, '${category.name}', '${category.description}')">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing equipment type:', error);
+        }
+    });
+
+    // Industrial equipment log
+    // Store Equipment Log
+    document.querySelector('#industrial-equipment-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-equipment-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Equipment Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-equipment-logs tbody');
+                tableBody.innerHTML = result.equipment_logs.map(log => `
+                    <tr>
+                        <td>${log.equipment_name}</td>
+                        <td>${log.equipment_type?.name || 'N/A'}</td>
+                        <td>${log.equipment_capacity}</td>
+                        <td>${log.status}</td>
+                        <td>${log.date_added}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing equipment log:', error);
+        }
+    });
+
+    // Store Operation Category
+    document.querySelector('#operation_category_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-operation-category') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Operation Category', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-operation-categories tbody');
+                tableBody.innerHTML = result.operation_categories.map(category => `
+                    <tr>
+                        <td>${category.name}</td>
+                        <td>${category.description || ""}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editOperationCategory(${category.operation_category_id}, '${category.name}', '${category.description || ""}')">
                                     <i class="las la-edit"></i> Edit
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm" onclick="confirmCategoryDeletion(${category.operation_category_id}, '${category.name}')">
@@ -9432,970 +8673,568 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>`;
-                    });
-                }
-            });
-        });
-
-        // Edit Operation Category
-        document.querySelector('#edit_operation_category_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.update-operation-category') }}";
-
-            fetch_cycle('--Update Operation Category', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation categories table or UI as needed
-                    data_array = result.operation_categories.map(
-                        category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
-                    );
-
-                    // Clear and add rows without destroying the table
-                    categoriesTable.clear();
-                    categoriesTable.rows.add(data_array);
-                    categoriesTable.draw();
-                    hideElement(spinner);
-                }
-            });
-        });
-      
-        // store annual operaions log
-        // Store Annual Operations Log
-        document.querySelector('#annual-operations-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-annual-operations-log') }}";
-
-            fetch_cycle('--Store Annual Operations Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the annual operations logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-annual-operations-log tbody');
-                    tableBody.innerHTML = "";
-                    result.annual_operations_logs.forEach(operation => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${operation.operation_name}</td>
-                            <td>${operation.operation?.operation_name || 'N/A' }</td>
-                            <td>${operation.calendarYear?.name || 'N/A'}</td>
-                            <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
-                            <td>${operation.water_used_per_year}</td>
-                            <td>${operation.units_produced_per_year}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-        
-        // Store Operation Log
-        document.querySelector('#operations-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-operation') }}";
-            fetch_cycle('--Store Operation Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operations-log tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_logs.forEach(log => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${log.operation_name}</td>
-                            <td>${log.operation_code}</td>
-                            <td>${log.operation_type}</td>
-                            <td>${log.operation_category}</td>
-                            <td>${log.operation_unit}</td>
-                            <td>${log.expected_waste_per_operation}</td>
-                            <td>${log.expected_water_usage_per_operation}</td>
-                            <td>${log.expected_unit_produced_for_goods}</td>
-                            <td>${log.calendar_year_name}</td>
-                            <td>${log.start_date}</td>
-                            <td>${log.end_date}</td>
-                            <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-
-        // Trigger Update Operation Log
-        let triggerUpdateOperation = (operationID) => {
-            console.log(operationID);
-
-            let updateOperationModal = document.querySelector('#updateOperationModal');
-            // Initialize Bootstrap modal
-            document.querySelector('#updateOperationModal input[name="operation_id"]').value = operationID;
-            let loader = document.querySelector('#updateOperationModal #loader');
-            loader.style.display = 'none';
-            const myModal = new bootstrap.Modal(updateOperationModal);
-            myModal.show();
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing operation category:', error);
         }
+    });
 
-        // Update Operation Log
-        document.querySelector('#btn-submit-update-operation-log').addEventListener('click', function () {
-            let form = document.querySelector('#operations-form-update');
-            let formData = new FormData(form);
-            let url = "{{ route('admin.update-operation') }}";
-            fetch_cycle('--Update Operation Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the operation logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-operations-log tbody');
-                    tableBody.innerHTML = "";
-                    result.operation_logs.forEach(log => {
-                        tableBody.innerHTML += `<tr>
-                    <td>${log.operation_name}</td>
-                    <td>${log.operation_code ?? ""}</td>
-                    <td>${log.operation_type ?? ""}</td>
-                    <td>${log.operation_category ?? ""}</td>
-                    <td>${log.operation_unit ?? ""}</td>
-                    <td>${log.expected_waste_per_operation ?? ""}</td>
-                    <td>${log.expected_water_usage_per_operation ?? ""}</td>
-                    <td>${log.expected_unit_produced_for_goods ?? ""}</td>
-                    <td>${log.calendar_year_name ?? ""}</td>
-                    <td>${log.start_date ?? ""}</td>
-                    <td>${log.end_date ?? ""}</td>
-                    <td><span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">${log.status}</span></td>
-                    <td class="text-end">
+    // Edit Operation Category
+    document.querySelector('#edit_operation_category_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.update-operation-category') }}";
+
+        try {
+            const result = await fetch_cycle('--Update Operation Category', url, 'POST', formData);
+            if (result.status === 'success') {
+                const updatedCategories = result.operation_categories.map(
+                    category => new OperationCategoryObject(category.operation_category_id, category.name, category.description)
+                );
+
+                categoriesTable.clear();
+                categoriesTable.rows.add(updatedCategories).draw();
+            }
+        } catch (error) {
+            console.error('Error updating operation category:', error);
+        }
+    });
+    // Edit Operation Category Modal Trigger
+
+    // Store Annual Operations Log
+    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operations-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationsTable(result.annual_operations_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operations log:', error);
+        }
+    });
+
+    /**
+     * Updates the Annual Operations Logs table with new data.
+     * @param {Array} logs - Array of annual operations logs.
+     */
+    function updateAnnualOperationsTable(logs) {
+        const tableBody = document.querySelector('#tbl-annual-operations-log tbody');
+        tableBody.innerHTML = logs.map(operation => `
+            <tr>
+                <td>${operation.operation_name}</td>
+                <td>${operation.operation?.operation_name || 'N/A'}</td>
+                <td>${operation.calendarYear?.name || 'N/A'}</td>
+                <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
+                <td>${operation.water_used_per_year}</td>
+                <td>${operation.units_produced_per_year}</td>
+                <td class="text-end">
                     <div class="dropdown d-inline-block">
-                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                        <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
-                        <a class="dropdown-item" href="#">Delete</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
                         </div>
                     </div>
-                    </td>
-                </tr>`;
-                    });
-                }
-            });
-        });
+                </td>
+            </tr>
+        `).join('');
+    }
 
-        // store quality control
-        // Store Quality Control
-        document.querySelector('#quality-control-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-quality-control') }}";
+    // Store Operation Log
+    document.querySelector('#operations-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-operation') }}";
 
-            fetch_cycle('--Store Quality Control', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the quality control table or UI as needed
-                    let tableBody = document.querySelector('#tbl-quality-control tbody');
-                    tableBody.innerHTML = "";
-                    result.quality_controls_record.forEach(control => {
-                        tableBody.innerHTML += `<tr>
-                        <td>${control.quality_metric }</td>
-                        <td>${control.acceptable_range }</td>
-                        <td>${control.measurement_frequency }</td>
-                        <td>${control.responsible_person }</td>
+        try {
+            const result = await fetch_cycle('--Store Operation Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-operations-log tbody');
+                tableBody.innerHTML = result.operation_logs.map(log => `
+                    <tr>
+                        <td>${log.operation_name}</td>
+                        <td>${log.operation_code || ''}</td>
+                        <td>${log.operation_type || ''}</td>
+                        <td>${log.operation_category || ''}</td>
+                        <td>${log.operation_unit || ''}</td>
+                        <td>${log.expected_waste_per_operation || ''}</td>
+                        <td>${log.expected_water_usage_per_operation || ''}</td>
+                        <td>${log.expected_unit_produced_for_goods || ''}</td>
+                        <td>${log.calendar_year_name || ''}</td>
+                        <td>${log.start_date || ''}</td>
+                        <td>${log.end_date || ''}</td>
+                        <td>
+                            <span class="badge bg-${log.status === 'active' ? 'success' : 'danger'}">
+                                ${log.status}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#" onclick="triggerUpdateOperation('${log.company_operation_id}')">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing operation log:', error);
+        }
+    });
+
+
+    // Store Quality Control
+    document.querySelector('#quality-control-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-quality-control') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Quality Control', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-quality-control tbody');
+                tableBody.innerHTML = result.quality_controls_record.map(control => `
+                    <tr>
+                        <td>${control.quality_metric}</td>
+                        <td>${control.acceptable_range}</td>
+                        <td>${control.measurement_frequency}</td>
+                        <td>${control.responsible_person}</td>
                         <td class="text-end">
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-sm btn-primary me-2">Edit</button>
                                 <button class="btn btn-sm btn-danger">Delete</button>
                             </div>
                         </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-        // Store Waste Item
-        document.querySelector('#submit-waste-item').addEventListener('click', function () {
-            let form = document.querySelector('#waste-item-form');
-            let formData = new FormData(form);
-            let url = "{{ route('admin.store-waste') }}";
-
-            fetch_cycle('--Store Waste Item', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the waste items table or UI as needed
-                    let tableBody = document.querySelector('#tbl-waste-items tbody');
-                    tableBody.innerHTML = "";
-                    result.waste_items.forEach(item => {
-                        tableBody.innerHTML += `<tr>
-                    <td>${item.waste_name}</td>
-                    <td>${item.waste_type}</td>
-                    <td>${item.unit}</td>
-                    <td class="text-end">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </div>
-                    </td>
-                </tr>`;
-                    });
-                }
-            });
-        });
-    </script>
-    <!-- operations -->
-
-    <!-- Production Log -->
-     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Material" functionality for a section.
-                * @param {string} containerSelector - Selector for the parent container where rows will be added.
-                * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-                * @param {Array} materials - Array of materials to populate the dropdown.
-                */
-            function initializeMaterialSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let materialIndex = 1; // Start index
-
-                // Function to create a new material row
-                function createMaterialRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="material-used-${index}">Material Needed</label>
-                                <select id="material-used-${index}" class="form-select material-select" name="material_used[${index}][material_id]" required>
-                                    <option value="" selected disabled>Select Material</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="material-quantity-${index}">Quantity</label>
-                                <input 
-                                    id="material-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control" 
-                                    name="material_used[${index}][quantity]" 
-                                    placeholder="Used Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-                    return newRow;
-                }
-
-                // Add a new material row
-                addButton.addEventListener('click', function () {
-                    const newRow = createMaterialRow(materialIndex);
-                    container.appendChild(newRow);
-                    materialIndex++;
-                });
-
-                // Remove a material row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-material-quantity')) {
-                        const row = e.target.closest('.row');
-                        if (row) {
-                            row.remove();
-                        }
-                    }
-                });
+                    </tr>
+                `).join('');
             }
+        } catch (error) {
+            console.error('Error storing quality control:', error);
+        }
+    });
+    // Store Waste Item
+    document.querySelector('#submit-waste-item').addEventListener('click', async function () {
+        const form = document.querySelector('#waste-item-form');
+        const formData = new FormData(form);
+        const url = "{{ route('admin.store-waste') }}";
 
-            initializeMaterialSection(
-                '.material-quantity-used-container-production-log', 
-                '.add-more-material-used-production-log'
-            );
-        });
+        try {
+            const result = await fetch_cycle('--Store Waste Item', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-waste-items tbody');
+                tableBody.innerHTML = result.waste_items.map(item => `
+                    <tr>
+                        <td>${item.waste_name}</td>
+                        <td>${item.waste_type}</td>
+                        <td>${item.unit}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing waste item:', error);
+        }
+    });
+</script>
+<!-- operations -->
 
-        // with unit quantity and cost price
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Material" functionality for a section.
-                * @param {string} containerSelector - Selector for the parent container where rows will be added.
-                * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-                * @param {Array} materials - Array of materials to populate the dropdown.
-                */
-            function initializeMaterialSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let materialIndex = 1; // Start index
+<!-- Production Log -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        /**
+         * Initialize the "Add More Material" functionality for a section.
+         * @param {string} containerSelector - Selector for the parent container where rows will be added.
+         * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+         */
+        function initializeMaterialSection(containerSelector, buttonSelector) {
+            const container = document.querySelector(containerSelector);
+            const addButton = document.querySelector(buttonSelector);
+            let materialIndex = 1;
 
-                // Function to create a new material row
-                async function createMaterialRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="material-used-${index}">Material Needed</label>
-                                <select id="material-used-${index}" class="form-select material-select" name="material_used[${index}][material_id]" required>
-                                    <option value="" selected disabled>Select Material</option>
-                                </select>
-                            </div>
+            async function createMaterialRow(index) {
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="material-used-${index}">Material Needed</label>
+                            <select id="material-used-${index}" class="form-select material-select" name="material_used[${index}][material_id]" required>
+                                <option value="" selected disabled>Select Material</option>
+                            </select>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="material-quantity-${index}">Quantity</label>
-                                <input 
-                                    id="material-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control" 
-                                    name="material_used[${index}][quantity]" 
-                                    placeholder="Used Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    required
-                                >
-                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="material-quantity-${index}">Quantity</label>
+                            <input id="material-quantity-${index}" type="number" class="form-control" name="material_used[${index}][quantity]" placeholder="Used Quantity" min="0" step="any" required>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[${index}][unit_quantity]" placeholder="Enter Unit Quantity" required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
-                                <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[${index}][unit_cost]" placeholder="Enter Unit Cost" required>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-                    const materialSelect = newRow.querySelector(`#material-used-${index}`);
-                    const companyID = "{{ json_encode($company->company_id) }}";
-                    const url = `/admin/get-materials/${companyID}`;
-                    try {
-                        const data = await fetchFieldInput(url);
-                        // Populate the dropdown with the fetched data
-                        if (materialSelect) {
-                            data.company_materials.forEach(material => {
-                                if (material.material != null) {
-                                    const option = document.createElement('option');
-                                    option.value = material.materialID;
-                                    option.textContent = material.material.material || "";
-                                    materialSelect.appendChild(option);
-                                }
-                            });
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-material-quantity">Remove</button>
+                    </div>
+                `;
+                const materialSelect = newRow.querySelector(`#material-used-${index}`);
+                const companyID = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/get-materials/${companyID}`;
+                try {
+                    const data = await fetchFieldInput(url);
+                    data.company_materials.forEach(material => {
+                        if (material.material) {
+                            const option = document.createElement('option');
+                            option.value = material.materialID;
+                            option.textContent = material.material.material;
+                            materialSelect.appendChild(option);
                         }
-                    } catch (error) {
+                    });
+                } catch (error) {
                     console.error("Error fetching materials:", error);
                     alert("Failed to load materials. Please try again.");
-                    }
-                    return newRow;
                 }
-
-                // Add a new material row
-                addButton.addEventListener('click', async function () {
-                    const newRow = await createMaterialRow(materialIndex);
-                    container.appendChild(newRow);
-                    materialIndex++;
-                });
-
-                // Remove a material row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-material-quantity')) {
-                        const row = e.target.closest('.row');
-                        if (row) {
-                            row.remove();
-                        }
-                    }
-                });
+                return newRow;
             }
 
-            initializeMaterialSection(
-                '.material-quantity-used-container-production-log', 
-                '.add-more-material-used-production-log'
-            );
+            addButton.addEventListener('click', async function () {
+                const newRow = await createMaterialRow(materialIndex);
+                container.appendChild(newRow);
+                materialIndex++;
+            });
 
-            initializeMaterialSection(
-                '.material-quantity-used-container-operation-log',
-                '.add-more-material-quantity-operation'
-            );
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Chemical" functionality for a section.
-             * @param {string} containerSelector - Selector for the parent container where rows will be added.
-             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-             * @param {Array} chemicals - Array of chemicals to populate the dropdown.
-             */
-            function initializeChemicalSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let chemicalIndex = 1; // Start index
-
-                // Function to create a new chemical row
-                function createChemicalRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="chemical-used-${index}">Chemical Needed</label>
-                                <select id="chemical-used-${index}" class="form-select chemical-select" name="chemical_used[${index}][chemical_id]" required>
-                                    <option value="" selected disabled>Select Chemical</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="chemical-quantity-${index}">Quantity</label>
-                                <input 
-                                    id="chemical-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control"
-                                    name="chemical_used[${index}][quantity]" 
-                                    placeholder="Used Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-                    return newRow;
+            container.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-material-quantity')) {
+                    e.target.closest('.row').remove();
                 }
+            });
+        }
 
-                // Add a new chemical row
-                addButton.addEventListener('click', function () {
-                    const newRow = createChemicalRow(chemicalIndex);
-                    container.appendChild(newRow);
-                    chemicalIndex++;
-                });
+        initializeMaterialSection('.material-quantity-used-container-production-log', '.add-more-material-used-production-log');
+    });
 
-                // Remove a chemical row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-chemical-quantity')) {
-                        const row = e.target.closest('.row');
-                        if (row) {
-                            row.remove();
+    document.addEventListener('DOMContentLoaded', function () {
+        /**
+         * Initialize the "Add More Chemical" functionality for a section.
+         * @param {string} containerSelector - Selector for the parent container where rows will be added.
+         * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+         */
+        function initializeChemicalSection(containerSelector, buttonSelector) {
+            const container = document.querySelector(containerSelector);
+            const addButton = document.querySelector(buttonSelector);
+            let chemicalIndex = 1;
+
+            async function createChemicalRow(index) {
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="chemical-used-${index}">Chemical Needed</label>
+                            <select id="chemical-used-${index}" class="form-select chemical-select" name="chemical_used[${index}][chemical_id]" required>
+                                <option value="" selected disabled>Select Chemical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="chemical-quantity-${index}">Quantity</label>
+                            <input id="chemical-quantity-${index}" type="number" class="form-control" name="chemical_used[${index}][quantity]" placeholder="Used Quantity" min="0" step="any" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">Remove</button>
+                    </div>
+                `;
+                const chemicalSelect = newRow.querySelector(`#chemical-used-${index}`);
+                const companyID = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/get-chemicals/${companyID}`;
+                try {
+                    const data = await fetchFieldInput(url);
+                    data.company_chemicals.forEach(chemical => {
+                        if (chemical.chemical) {
+                            const option = document.createElement('option');
+                            option.value = chemical.chemicalID;
+                            option.textContent = chemical.chemical.name;
+                            chemicalSelect.appendChild(option);
                         }
-                    }
-                });
+                    });
+                } catch (error) {
+                    console.error("Error fetching chemicals:", error);
+                    alert("Failed to load chemicals. Please try again.");
+                }
+                return newRow;
             }
 
-            initializeChemicalSection(
-                '.chemical-quantity-container-production-log', 
-                '.add-more-chemical-used-production-log'
-            );
-        });
-        
-        // with unit quantity and cost price
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Chemical" functionality for a section.
-             * @param {string} containerSelector - Selector for the parent container where rows will be added.
-             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-             * @param {Array} chemicals - Array of chemicals to populate the dropdown.
-             */
-            function initializeChemicalSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let chemicalIndex = 1; // Start index
+            addButton.addEventListener('click', async function () {
+                const newRow = await createChemicalRow(chemicalIndex);
+                container.appendChild(newRow);
+                chemicalIndex++;
+            });
 
-                // Function to create a new chemical row
-                async function createChemicalRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="chemical-used-${index}">Chemical Needed</label>
-                                <select id="chemical-used-${index}" class="form-select chemical-select" name="chemical_used[${index}][chemical_id]" required>
-                                    <option value="" selected disabled>Select Chemical</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="chemical-quantity-${index}">Quantity</label>
-                                <input 
-                                    id="chemical-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control"
-                                    name="chemical_used[${index}][quantity]" 
-                                    placeholder="Used Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[${index}][unit_quantity]" placeholder="Enter Unit Quantity" required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost</label>
-                                <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[${index}][unit_cost]" placeholder="Enter Unit Cost" required>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-chemical-quantity">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-
-                    // Dynamically retrieve the company ID
-                    const companyID = "{{ json_encode($company->company_id) }}"; // Ensure valid JSON encoding on the server
-                    console.log("Company ID:", companyID);
-                    const url = `/admin/get-chemicals/${companyID}`;
-                    console.log("Fetching data from URL:", url);
-                    try {
-                        const chemicalSelect = newRow.querySelector(`#chemical-used-${index}`);
-                        const data = await fetchFieldInput(url); // Await the data fetch
-                        console.log("Fetched Chemicals:", data);
-                        // Populate the dropdown with the fetched data
-                        if (chemicalSelect) {
-                            data.company_chemicals.forEach(chemical => {
-                                if (chemical.chemical) {
-                                    const option = document.createElement('option');
-                                    option.value = chemical.chemicalID;
-                                    option.textContent = chemical.chemical.name || "";
-                                    chemicalSelect.appendChild(option);
-                                }
-                            });
-                        }
-                        
-                    } catch (error) {
-                        console.error("Error fetching chemicals:", error);
-                        alert("Failed to load chemicals. Please try again.");
-                    }
-                    return newRow;
+            container.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-chemical-quantity')) {
+                    e.target.closest('.row').remove();
                 }
+            });
+        }
 
-                // Add a new chemical row
-                addButton.addEventListener('click', async function () {
-                    const newRow = await createChemicalRow(chemicalIndex);
-                    container.appendChild(newRow);
-                    chemicalIndex++;
-                });
+        initializeChemicalSection('.chemical-quantity-container-production-log', '.add-more-chemical-used-production-log');
+    });
 
-                // Remove a chemical row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-chemical-quantity')) {
-                        const row = e.target.closest('.row');
-                        if (row) {
-                            row.remove();
-                        }
-                    }
-                });
+    document.addEventListener('DOMContentLoaded', function () {
+        /**
+         * Initialize the "Add More Product" functionality for a section.
+         * @param {string} containerSelector - Selector for the parent container where rows will be added.
+         * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
+         */
+        function initializeProductSection(containerSelector, buttonSelector) {
+            const container = document.querySelector(containerSelector);
+            const addButton = document.querySelector(buttonSelector);
+            let productIndex = 1;
+
+            async function createProductRow(index) {
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
+                newRow.innerHTML = `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="produced-product-${index}">Produced Product</label>
+                            <select id="produced-product-${index}" class="form-select product-select" name="product_produced[${index}][product_id]" required>
+                                <option value="" selected disabled>Select Product</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="produced-quantity-${index}">Quantity Produced</label>
+                            <input id="produced-quantity-${index}" type="number" class="form-control" name="product_produced[${index}][quantity]" placeholder="Produced Quantity" min="0" step="any" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">Remove</button>
+                    </div>
+                `;
+                const productSelect = newRow.querySelector(`#produced-product-${index}`);
+                const companyID = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/get-product/${companyID}`;
+                try {
+                    const data = await fetchFieldInput(url);
+                    data.products.forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.product_id;
+                        option.textContent = product.name;
+                        productSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+                return newRow;
             }
 
-            initializeChemicalSection(
-                '.chemical-quantity-container-production-log', 
-                '.add-more-chemical-used-production-log'
-            );
+            addButton.addEventListener('click', async function () {
+                const newRow = await createProductRow(productIndex);
+                container.appendChild(newRow);
+                productIndex++;
+            });
 
-            initializeChemicalSection(
-                '.chemical-quantity-container-operation-log', 
-                '.add-more-chemical-quantity-operation'
-            );
-        });
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Product" functionality for a section.
-             * @param {string} containerSelector - Selector for the parent container where rows will be added.
-             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-             * @param {Array} products - Array of products to populate the dropdown.
-             */
-            function initializeProductSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let productIndex = 1; // Start index
-
-                // Function to create a new product row
-                async function createProductRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="produced-product-${index}">Produced Product</label>
-                                <select id="produced-product-${index}" class="form-select product-select" name="product_produced[${index}][product_id]" required>
-                                    <option value="" selected disabled>Select Product</option>
-                                    
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="produced-quantity-${index}">Quantity Produced</label>
-                                <input 
-                                    id="produced-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control" 
-                                    name="product_produced[${index}][quantity]" 
-                                    placeholder="Produced Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-product-quantity">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-                    // Fetch products from the server and populate the dropdown
-                    // Retrieve the company_id dynamically
-                    let company_id = `{{ json_encode($company->company_id) }}`; // Ensure valid JSON encoding on the server
-                    console.log("Company ID:", company_id);
-                    // Construct the API URL
-                    let url = `/admin/get-product/${company_id}`;
-                    console.log("Fetching data from URL:", url);
-                    // Fetch data using the fetchFieldInput function
-                    try {
-                        const productSelect = newRow.querySelector(`#produced-product-${index}`);
-                        let data = await fetchFieldInput(url);
-                        console.log("Fetched Product:", data);
-                        // Handle the data (e.g., populate the dropdown, display a message, etc.)
-                        
-                        if (productSelect) {
-                            data.products.forEach(product => {
-                                const option = document.createElement('option');
-                                option.value = product.product_id;
-                                option.textContent = product.name;
-                                productSelect.appendChild(option);
-                            });
-                        }
-                    } catch (error) {
-                        console.error("Error fetching product:", error);
-                    }
-                    return newRow;
+            container.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-product-quantity')) {
+                    e.target.closest('.row').remove();
                 }
+            });
+        }
 
-                
+        initializeProductSection('.operation-log-product-quantity-container', '.add-more-operation-log-product-quantity-operation');
+    });
 
-                // Add a new product row
-                addButton.addEventListener('click', async function () {
-                    const newRow = await createProductRow(productIndex);
-                    container.appendChild(newRow);
-                    productIndex++;
-                });
+    document.querySelector('#production-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-production-log') }}";
 
-                // Remove a product row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-product-quantity')) {
-                        const row = e.target.closest('.row');
-                        if (row) {
-                            row.remove();
-                        }
-                    }
-                });
-            }
-
-            // Example usage: Initialize multiple sections
-
-            initializeProductSection(
-                '.operation-log-product-quantity-container', 
-                '.add-more-operation-log-product-quantity-operation'
-            );
-        });
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            /**
-             * Initialize the "Add More Waste" functionality for a section.
-             * @param {string} containerSelector - Selector for the parent container where rows will be added.
-             * @param {string} buttonSelector - Selector for the button to trigger adding a new row.
-             */
-            function initializeWasteSection(containerSelector, buttonSelector) {
-                const container = document.querySelector(containerSelector);
-                const addButton = document.querySelector(buttonSelector);
-                let wasteIndex = 1; // Start index
-
-                // Function to create a new waste row
-                async function createWasteRow(index) {
-                    const newRow = document.createElement('div');
-                    newRow.classList.add('row', 'g-2', 'align-items-end', 'mb-3', 'operation-log-waste-row');
-                    newRow.innerHTML = `
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="waste-type-${index}">Waste</label>
-                                <select id="waste-type-${index}" 
-                                        class="form-select waste-select" 
-                                        name="waste_generated[${index}][waste_id]" 
-                                        aria-label="Select Waste Type" 
-                                        required>
-                                    <option value="" selected disabled>Select Waste</option>
-                                </select>
+       await fetch_cycle('--Store Production Log', url, 'POST', formData).then(result => {
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-production-logs tbody');
+                tableBody.innerHTML = result.production_logs.map(log => `
+                    <tr>
+                        <td>${log.production_title}</td>
+                        <td>${log.operation?.operation_name || 'N/A'}</td>
+                        <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
+                        <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
+                        <td>${log.amount_of_water_used} Liters</td>
+                        <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
+                        <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                        <td>
+                            <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
+                                ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="waste-quantity-${index}">Quantity</label>
-                                <input id="waste-quantity-${index}" 
-                                    type="number" 
-                                    class="form-control" 
-                                    name="waste_generated[${index}][quantity]" 
-                                    placeholder="Quantity" 
-                                    min="0" 
-                                    step="any" 
-                                    aria-label="Quantity" 
-                                    required>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-waste-quantity" aria-label="Remove Waste Row">
-                                Remove
-                            </button>
-                        </div>
-                    `;
-
-                    const company_id = {{ json_encode($company->company_id) }}; // Ensure valid JSON encoding
-                    console.log("Company ID:", company_id);
-                    const url = `/admin/get-waste/${company_id}`;
-                    console.log("Fetching data from URL:", url);
-                    try {
-                        const wasteSelect = newRow.querySelector(`#waste-type-${index}`);
-                        const data = await fetchFieldInput(url); // Assuming fetchFieldInput is defined
-                        console.log("Fetched Waste:", data, wasteSelect);
-                        // Add new options
-                        if (wasteSelect) {
-                            data.company_wastes.forEach(waste => {
-                                const option = document.createElement('option');
-                                option.value = waste.company_waste_id;
-                                option.textContent = waste.waste_name;
-                                wasteSelect.appendChild(option);
-                            });
-                        }
-                    } catch (error) {
-                        console.error("Error fetching waste:", error);
-                        alert("Failed to load waste data. Please try again.");
-                    }
-                    return newRow;
-                }
-
-                // Add a new waste row
-                addButton.addEventListener('click', async function () {
-                    const newRow = await createWasteRow(wasteIndex);
-                    container.appendChild(newRow);
-                    wasteIndex++;
-                });
-
-                // Remove a waste row
-                container.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('remove-waste-quantity')) {
-                        const row = e.target.closest('.operation-log-waste-row');
-                        if (row) {
-                            row.remove();
-                        }
-                    }
-                });
+                        </td>
+                    </tr>
+                `).join('');
             }
-
-            // Initialize the waste section with appropriate selectors
-            initializeWasteSection(
-                '.operation-log-waste-quantity-container', 
-                '.add-more-operation-log-waste-quantity-operation'
-            );
         });
+    });
+</script>
+<!-- End Production Log -->
 
+<!-- Calendar Year Management Script -->
+<script>
+    document.querySelector('#calendar_year_form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-calendar-year') }}";
 
-        
+        try {
+            const result = await fetch_cycle('--Store Calendar Year', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateCalendarYearTable(result.calendar_years);
+            }
+        } catch (error) {
+            console.error('Error storing calendar year:', error);
+        }
+    });
 
-        // Store Production Log
-        document.querySelector('#production-log-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-production-log') }}";
+    /**
+     * Updates the Calendar Year table with new data.
+     * @param {Array} calendarYears - Array of calendar year objects.
+     */
+    function updateCalendarYearTable(calendarYears) {
+        const tableBody = document.querySelector('#calendar_year_table tbody');
+        tableBody.innerHTML = calendarYears.map(year => `
+            <tr>
+                <td>${year.name || ''}</td>
+                <td>${year.start_date || ''}</td>
+                <td>${year.end_date || ''}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-primary" onclick="editCalendar('${year.calendar_year_id}')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year.calendar_year_id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+</script>
+<!-- End Calendar Year Management Script -->
+<!-- Product Management Script -->
+<script>
+    // Utility function to update table content
+    function updateTableContent(tableSelector, data, rowTemplate) {
+        const tableBody = document.querySelector(tableSelector);
+        tableBody.innerHTML = data.map(rowTemplate).join('');
+    }
 
-            fetch_cycle('--Store Production Log', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the production logs table or UI as needed
-                    let tableBody = document.querySelector('#tbl-production-logs tbody');
-                    tableBody.innerHTML = "";
-                    result.production_logs.forEach(log => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${log.production_title}</td>
-                            <td>${log.operation?.operation_name || 'N/A'}</td>
-                            <td>${log.material?.material_name || 'N/A'} (${log.quantity_used})</td>
-                            <td>${log.chemical?.name || 'N/A'} (${log.chemical?.volume_used || 0} Liters)</td>
-                            <td>${log.amount_of_water_used} Liters</td>
-                            <td>${log.product?.name || 'N/A'} (${log.product?.quantity_produced || 0} Produced, ${log.product?.quantity_defected || 0} Defected)</td>
-                            <td>${new Date(log.production_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-                            <td>
-                                <span class="badge bg-${log.production_status === 'completed' ? 'success' : (log.production_status === 'ongoing' ? 'primary' : 'danger')}">
-                                    ${log.production_status.charAt(0).toUpperCase() + log.production_status.slice(1)}
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog(${log.id})">Edit</button>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog(${log.id})">Delete</button>
+    // Store Product Category
+    document.querySelector('#add-product-category-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-product-category') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Product Category', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateTableContent('#tbl-product-categories tbody', result.product_categories, category => `
+                    <tr>
+                        <td>${category.name}</td>
+                        <td>${category.description}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
                                 </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-     </script>
-    <!-- End Production Log -->
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            }
+        } catch (error) {
+            console.error('Error storing product category:', error);
+        }
+    });
 
-    <!-- Calendar Year Management Script -->
-    <script>
-        // Calendar Year Management Script
-        document.querySelector('#calendar_year_form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-calendar-year') }}";
+    // Edit Product Category
+    document.querySelector('#edit-product-category-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.update-product-category') }}";
 
-            fetch_cycle('--Store Calendar Year', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the calendar year table or UI as needed
-                    let tableBody = document.querySelector('#calendar_year_table tbody');
-                    tableBody.innerHTML = "";
-                    result.calendar_years.forEach(year => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${year.name ?? ''}</td>
-                            <td>${year.start_date ?? ''}</td>
-                            <td>${year.end_date ?? ''}</td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-primary" onclick="editCalendar('${year.calendar_year_id}')">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteCalendar('${year.calendar_year_id}')">Delete</button>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-    </script>
-    <!-- Calendar Year Management Script -->
-    <!-- Product Management Script -->
-    <script>
-        // Store Product Category
-        document.querySelector('#add-product-category-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-product-category') }}";
-
-            fetch_cycle('--Store Product Category', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the product categories table or UI as needed
-                    let tableBody = document.querySelector('#tbl-product-categories tbody');
-                    tableBody.innerHTML = "";
-                    result.product_categories.forEach(category => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${category.name}</td>
-                            <td>${category.description}</td>
-                            <td class="text-end">
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                        <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                        <a class="dropdown-item" href="#">Update</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
+        try {
+            const result = await fetch_cycle('--Update Product Category', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateTableContent('#tbl-product-categories tbody', result.product_categories, category => `
+                    <tr>
+                        <td>${category.name}</td>
+                        <td>${category.description}</td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
                                 </div>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-        // Edit Product Category
-        document.querySelector('#edit-product-category-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.update-product-category') }}";
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            }
+        } catch (error) {
+            console.error('Error updating product category:', error);
+        }
+    });
 
-            fetch_cycle('--Update Product Category', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the product categories table or UI as needed
-                    data_array = result.product_categories.map(
-                        category => new ProductCategory(category.name, category.description)
-                    );
+    // Store Product
+    document.querySelector('#add-product-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-product') }}";
 
-                    //Clear and add rows without destroying the table
-                    productTable.clear();
-                    productTable.rows.add(data_array);
-                    productTable.draw();
-                    hideElement(spinner);
-                }
-            });
-        });
-
-        // Store Product
-        document.querySelector('#add-product-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            let url = "{{ route('admin.store-product') }}";
-
-            fetch_cycle('--Store Product', url, 'POST', formData).then(result => {
-                console.log(result);
-                if (result.status === 'success') {
-                    // Update the product list table or UI as needed
-                    let tableBody = document.querySelector('#tbl-products tbody');
-                    tableBody.innerHTML = "";
-                    result.products.forEach(product => {
-                        tableBody.innerHTML += `<tr>
-                            <td>${product.name}</td>
-                            <td>${product.product_category.name}</td>
-                            <td>${product.currency} ${product.price}</td>
-                            <td>${product.quantity_per_unit}</td>
-                            <td>${product.unit}</td>
-                            <td class="text-end">
-                                <button class="btn btn-primary btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            });
-        });
-
-    </script>
-    <!-- Product Management Script -->
+        try {
+            const result = await fetch_cycle('--Store Product', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateTableContent('#tbl-products tbody', result.products, product => `
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>${product.product_category.name}</td>
+                        <td>${product.currency} ${product.price}</td>
+                        <td>${product.quantity_per_unit}</td>
+                        <td>${product.unit}</td>
+                        <td class="text-end">
+                            <button class="btn btn-primary btn-sm">Edit</button>
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                `);
+            }
+        } catch (error) {
+            console.error('Error storing product:', error);
+        }
+    });
+</script>
+<!-- Product Management Script -->
     @endsection
 </x-layouts.admin-app>
