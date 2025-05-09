@@ -51,7 +51,7 @@ use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
-use App\Http\Controllers\WasteSubCategoryController;
+use App\Http\Controllers\WasteSubCategoriesController;
 
 
 
@@ -550,7 +550,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::delete('/waste-categories/{id}', 'destroy')->name('admin.delete-waste-category');
     });
     // Waste Subcategory
-    Route::controller(WasteSubCategoryController::class)->group(function() {
+    Route::controller(WasteSubCategoriesController::class)->group(function() {
         Route::get('/waste-subcategories', 'index')->name('admin.waste-subcategories');
         Route::post('/store-waste-subcategory', 'store')->name('admin.store-waste-subcategory');
         Route::get('/waste-subcategories/{id}', 'show')->name('admin.show-waste-subcategory');

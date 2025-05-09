@@ -155,13 +155,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="subcategory_name" class="form-label">Subcategory Name</label>
-                                        <input type="text" class="form-control" id="subcategory_name" name="subcategory_name" placeholder="Subcategory name">
+                                        <input type="text" class="form-control" id="subcategory_name" name="waste_sub_category_name" placeholder="Subcategory name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="subcategory_description" class="form-label">Subcategory Description</label>
-                                        <input type="text" class="form-control" id="subcategory_description" name="subcategory_description" placeholder="Subcategory description">
+                                        <input type="text" class="form-control" id="subcategory_description" name="waste_sub_category_description" placeholder="Subcategory description">
                                     </div>
                                 </div>
                                 <div class="col">
