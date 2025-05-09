@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use App\Models\CompanyWaste;
+
 use Illuminate\Http\Request;
+use App\Models\WasteCategory;
+use App\Models\WasteSubCategories;
 
 class CategoryController extends Controller
 {
@@ -26,9 +29,16 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        $data['categoryList']=category::get();
-        $data['wasteList'] = CompanyWaste::get();
-        return view("components.apps.category", $data);
+        try {
+            $data = [
+            'categoryList' => category::all(),
+            'wasteList' => WasteCategory::all(),
+            'wasteSubCategoryList' => WasteSubCategories::all(),
+            ];
+            return view("components.apps.category", $data);
+        } catch (\Exception $e) {
+            return back()->with(['error' => 'An error occurred while loading the data: ' . $e->getMessage()]);
+        }
     }
 
     /**

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class WasteSubCategories extends Model
 {
     use HasFactory;
+    protected $table = 'waste_sub_categories';
+    protected $primaryKey = 'waste_sub_category_id';
+    
+    protected $fillable = [
+        'waste_sub_category_name',
+        'waste_sub_category_description',
+        'waste_category_id',
+        'is_delete',
+    ];
 }
