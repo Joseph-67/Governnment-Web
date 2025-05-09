@@ -25,6 +25,8 @@ class WasteCategoryController extends Controller
     public function create()
     {
         //
+        $data['wasteCategoryList'] = WasteCategory::get();
+        return view("components.apps.waste_category", $data);
     }
 
     /**
@@ -37,20 +39,20 @@ class WasteCategoryController extends Controller
     {
         //
         $request->validate([
-            'waste_category_name' => 'required|string|max:255',
-            'waste_category_description' => 'nullable|string',
+            'waste_category_name' => 'required|string|max:255|unique:waste_categories,waste_category_name',
+            'waste_category_description' => 'nullable|string|max:255',
         ]);
 
-        try {
-            WasteCategory::create([
-            'waste_category_name' => $request->input('waste_category_name'),
-            'waste_category_description' => $request->input('waste_category_description'),
-            ]);
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to create waste category: ' . $e->getMessage());
-        }
+        $result = WasteCategory::create([
+            'waste_category_name' => $request->waste_category_name,
+            'waste_category_description' => $request->waste_category_description,
+        ]);
 
-        return back()->with('success', 'Waste category created successfully.');
+        if ($result) {
+            return back()->with(['success' => 'Waste Category added successfully']);
+        } else {
+            return back()->with(['error' => 'Waste Category failed to create']);
+        }
     }
 
     /**

@@ -36,6 +36,25 @@ class WasteSubCategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'waste_sub_category_name' => 'required|string|max:255|unique:waste_sub_categories,waste_sub_category_name',
+            'waste_sub_category_description' => 'nullable|string|max:255',
+            'waste_category_id' => 'required|exists:waste_categories,waste_category_id',
+        ]);
+
+        try {
+            $result = WasteSubCategories::create([
+                'waste_sub_category_name' => $request->waste_sub_category_name,
+                'waste_sub_category_description' => $request->waste_sub_category_description,
+                'waste_category_id' => $request->waste_category_id,
+            ]);
+            return response()->json(['success' => true, 'message' => 'Waste Sub Category added successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['
+            success' => false, 
+            'message' => 'Failed to create Waste Sub Category: ' . $e->getMessage()
+        ], 500);
+        }
     }
 
     /**
