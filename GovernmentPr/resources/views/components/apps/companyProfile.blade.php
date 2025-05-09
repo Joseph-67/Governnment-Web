@@ -2818,7 +2818,7 @@
                                     <!-- Annual Operations Log Form -->
                                     <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card"> <!-- Light beige background for annual operations log -->
                                         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operations Log</h4>
+                                            <h4 class="card-title mb-0">Annual Operations Metadata</h4>
                                             <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
@@ -2862,10 +2862,40 @@
                                     <!-- Materials and Chemicals Section Card -->
                                     <div class="card shadow-sm border-0 mt-4">
                                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Materials and Chemicals</h4>
+                                            <h4 class="card-title mb-0">Annual Operations Activity</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
+                                                            <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
+                                                            <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                                                <option value="" selected disabled>Select Operation</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="activity_date" class="form-label fw-bold">Activity Date</label>
+                                                            <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Objectives -->
+                                                    <div class="col-md-6">
+                                                        <label for="objectives" class="form-label">Objectives</label>
+                                                        <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activitty"></textarea>
+                                                    </div>
+                                                    <!-- Description -->
+                                                    <div class="col-md-6">
+                                                        <label for="description" class="form-label">Description</label>
+                                                        <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                                                    </div>
                                                 <div class="col-md-6">
                                                     <div class="material-quantity-used-container-annual-operation-log col-md-12">
                                                         <div class="row g-2 align-items-end mb-3">
@@ -2877,6 +2907,7 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
