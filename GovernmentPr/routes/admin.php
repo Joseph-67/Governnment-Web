@@ -23,6 +23,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
+use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OperationTypeController;
@@ -367,6 +368,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Inventory Forecasting
     Route::controller(InventoryForecastingController::class)->group(function() {
         Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
+    });
+    // iot devices
+    Route::controller(IotDeviceController::class)->group(function() {
+        Route::get('/iot-devices', 'index')->name('admin.iot-devices');
+        Route::post('/iot-devices/store', 'store')->name('admin.store-iot-device');
+        Route::get('/iot-devices/{id}', 'show')->name('admin.show-iot-device');
+        Route::put('/iot-devices/{id}', 'update')->name('admin.update-iot-device');
+        Route::delete('/iot-devices/{id}', 'destroy')->name('admin.delete-iot-device');
     });
 
     // Map Report
