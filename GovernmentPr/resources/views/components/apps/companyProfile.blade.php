@@ -2822,7 +2822,7 @@
                                             <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
-                                            <form action="" method="post" id="annual-operations-log-form">
+                                            <form action="" method="post" id="annual-operation-log-form">
                                                 @csrf
                                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                 <div class="row g-3">
@@ -5217,7 +5217,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="annual-operation-log-form">
+                    <form action="" method="post" id="">
                         @csrf
                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         <div class="row g-3">
@@ -5267,7 +5267,7 @@
             <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
         </div>
         <div class="card-body">
-            <form action="" method="post" id="annual-operation-log-form">
+            <form action="" method="post" id="">
                 @csrf
                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                 <div class="row g-3">
