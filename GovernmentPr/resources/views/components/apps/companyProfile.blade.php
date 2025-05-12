@@ -2844,7 +2844,7 @@
                                                     <!-- Expected Operations Per Year -->
                                                     <div class="col-md-4">
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
-                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
+                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="prepared_by" class="form-label">Prepared By</label>
@@ -8917,51 +8917,6 @@
     });
     // Edit Operation Category Modal Trigger
 
-    // Store Annual Operations Log
-    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-annual-operations-log') }}";
-
-        try {
-            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
-            if (result.status === 'success') {
-                updateAnnualOperationsTable(result.annual_operations_logs);
-            }
-        } catch (error) {
-            console.error('Error storing annual operations log:', error);
-        }
-    });
-
-    /**
-     * Updates the Annual Operations Logs table with new data.
-     * @param {Array} logs - Array of annual operations logs.
-     */
-    function updateAnnualOperationsTable(logs) {
-        const tableBody = document.querySelector('#tbl-annual-operations-log tbody');
-        tableBody.innerHTML = logs.map(operation => `
-            <tr>
-                <td>${operation.operation_name}</td>
-                <td>${operation.operation?.operation_name || 'N/A'}</td>
-                <td>${operation.calendarYear?.name || 'N/A'}</td>
-                <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
-                <td>${operation.water_used_per_year}</td>
-                <td>${operation.units_produced_per_year}</td>
-                <td class="text-end">
-                    <div class="dropdown d-inline-block">
-                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
-                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Edit</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
-    }
-
     // Store Operation Log
     document.querySelector('#operations-form').addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -9450,5 +9405,52 @@
     });
 </script>
 <!-- Product Management Script -->
+ <!-- Annual Operation log -->
+  <script>
+    document.querySelector('#annual-operation-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operation-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operation Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationLogTable(result.annual_operation_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operation log:', error);
+        }
+    });
+
+    /**
+     * Updates the Annual Operation Log table with new data.
+     * @param {Array} logs - Array of annual operation logs.
+     */
+    function updateAnnualOperationLogTable(logs) {
+        const tableBody = document.querySelector('#tbl-annual-operation-log tbody');
+        tableBody.innerHTML = logs.map(log => `
+            <tr>
+                <td>${log.operation_name}</td>
+                <td>${log.operation?.operation_name || 'N/A'}</td>
+                <td>${log.calendarYear?.name || 'N/A'}</td>
+                <td>${log.quantity_of_waste}</td>
+                <td>${log.water_used_per_year}</td>
+                <td>${log.units_produced_per_year}</td>
+                <td class="text-end">
+                    <div class="dropdown d-inline-block">
+                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+  </script>
+ <!-- Annual Operation log -->
     @endsection
 </x-layouts.admin-app>

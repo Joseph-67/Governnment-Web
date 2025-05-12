@@ -118,6 +118,14 @@ class AnnualOperationsLogController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\AnnualOperationsLog  $annualOperationsLog
+     * @return \Illuminate\Http\Response
+     */
+    
+
+    /**
+     * Display the specified resource.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
