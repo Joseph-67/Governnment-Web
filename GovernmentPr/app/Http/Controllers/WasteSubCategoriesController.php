@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\WasteSubCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class WasteSubCategoriesController extends Controller
 {
@@ -36,6 +39,39 @@ class WasteSubCategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = \Validator::make($request->all(), [
+            'waste_sub_category_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('waste_sub_categories', 'waste_sub_category_id')->where(function ($query) use ($request) {
+                    return $query->where('waste_category_id', $request->waste_category_id);
+                }),
+            ],
+            'waste_sub_category_description' => 'nullable|string',
+            'waste_category_id' => 'required|integer|exists:waste_categories,waste_category_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $result = WasteSubCategories::create([
+            'waste_sub_category_name' => $request->waste_sub_category_name,
+            'waste_sub_category_description' => $request->waste_sub_category_description,
+            'waste_category_id' => $request->waste_category_id,
+            ]);
+            return response()->json(['success' => true, 'message' => 'Waste Sub Category added successfully']);
+        } catch (\Exception $e) {
+            return response()->json([
+            'success' => false, 
+            'message' => 'Failed to create Waste Sub Category: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

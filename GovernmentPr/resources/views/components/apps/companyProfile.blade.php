@@ -2818,7 +2818,7 @@
                                     <!-- Annual Operations Log Form -->
                                     <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card"> <!-- Light beige background for annual operations log -->
                                         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operations Log</h4>
+                                            <h4 class="card-title mb-0">Annual Operations Metadata</h4>
                                             <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
@@ -2847,10 +2847,20 @@
                                                         <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label for="waste_per_year" class="form-label">Prepared By</label>
+                                                        <label for="prepared_by" class="form-label">Prepared By</label>
                                                         <div class="">
                                                             <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
                                                         </div>
+                                                    </div>
+                                                    <!-- Status -->
+                                                    <div class="col-md-4">
+                                                        <label for="status" class="form-label">Status</label>
+                                                        <select class="form-select" id="status" name="status" required>
+                                                            <option value="" selected disabled>Select Status</option>
+                                                            <option value="draft">Draft</option>
+                                                            <option value="publish">Publish</option>
+                                                            <option value="archived">Archived</option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-12 text-end mt-3">
                                                         <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
@@ -2859,13 +2869,46 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- Materials and Chemicals Section Card -->
+                                    <!-- Annual Operations Activity -->
                                     <div class="card shadow-sm border-0 mt-4">
                                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Materials and Chemicals</h4>
+                                            <h4 class="card-title mb-0">Annual Operations Activity</h4>
+                                            <button type="button" class="btn btn-secondary btn-sm" id="close-annual-operations-log">
+                                                <i class="las la-times"></i>
+                                            </button>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
+                                                            <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
+                                                            <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                                                <option value="" selected disabled>Select Operation</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="activity_date" class="form-label fw-bold">Activity Date</label>
+                                                            <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Objectives -->
+                                                    <div class="col-md-6">
+                                                        <label for="objectives" class="form-label">Objectives</label>
+                                                        <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activitty"></textarea>
+                                                    </div>
+                                                    <!-- Description -->
+                                                    <div class="col-md-6">
+                                                        <label for="description" class="form-label">Description</label>
+                                                        <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                                                    </div>
                                                 <div class="col-md-6">
                                                     <div class="material-quantity-used-container-annual-operation-log col-md-12">
                                                         <div class="row g-2 align-items-end mb-3">
@@ -2877,6 +2920,7 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
@@ -2885,6 +2929,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-12 text-start">
                                                         <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
                                                     </div>
@@ -2912,20 +2957,25 @@
                                                         <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
                                                     </div>
                                                 </div>
-                                                <!-- Expected Waste Generated -->
-                                                <div class="col-md-4">
-                                                    <label for="waste_generated" class="form-label">Expected Waste Generated</label>
-                                                    <input type="number" class="form-control" id="waste_generated" name="waste_generated" min="0" placeholder="Enter expected waste" required>
-                                                </div>
                                                 <!-- Expected Water Usage -->
                                                 <div class="col-md-4">
-                                                    <label for="water_usage" class="form-label">Expected Water Usage (Liters)</label>
+                                                    <label for="water_usage" class="form-label">Expected Water Usage</label>
                                                     <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
                                                 </div>
-                                                <!-- Expected Units Produced -->
+                                                <!-- Priority -->
                                                 <div class="col-md-4">
-                                                    <label for="units_produced" class="form-label">Expected Units Produced</label>
-                                                    <input type="number" class="form-control" id="units_produced" name="units_produced" min="0" placeholder="Enter expected units" required>
+                                                    <label for="priority" class="form-label">Priority</label>
+                                                    <select class="form-select" id="priority" name="priority" required>
+                                                        <option value="" selected disabled>Select Priority</option>
+                                                        <option value="high">High</option>
+                                                        <option value="medium">Medium</option>
+                                                        <option value="low">Low</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Tags -->
+                                                <div class="col-md-4">
+                                                    <label for="tags" class="form-label">Tags</label>
+                                                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
                                                 </div>
                                                 <!-- Submit Button -->
                                                 <div class="col-md-12 mt-3 text-end">
@@ -2934,44 +2984,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Annual Operation Log Card -->
-                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operation-log-card"> <!-- Light beige background for annual operation log -->
-                                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operation Log</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="" method="post" id="annual-operation-log-form">
-                                                @csrf
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label for="operation_name" class="form-label">Operation Name</label>
-                                                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
-                                                            <option value="" selected disabled>Choose...</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                        <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
-                                                            <option value="" selected disabled>Select Calendar Year</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
-                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
-                                                    </div>
-                                                        <div class="col-md-4">
-                                                        <label for="waste_per_year" class="form-label">Prepared By</label>
-                                                            <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
-                                                        </div>
-                                                    <div class="col-12 text-end mt-3">
-                                                        <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    
                                     <!-- Annual Operations Log Table -->
                                     <div class="table-responsive mt-4">
                                         <table class="table table-striped mb-0" id="tbl-annual-operations-log">
@@ -5075,7 +5088,201 @@
             </div>
         </div>
     </div>
+
     <!-- end update operation log modal -->
+    @section('modal')
+    <!-- Add your modal content here if needed -->
+     <!-- Annual operations activity -->
+    <!-- Annual Operations Activity -->
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Annual Operations Activity</h4>
+            <button type="button" class="btn btn-secondary btn-sm" id="close-annual-operations-log">
+                <i class="las la-times"></i>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
+                        <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
+                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                            <option value="" selected disabled>Select Operation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="activity_date" class="form-label fw-bold">Activity Date</label>
+                        <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+                    </div>
+                </div>
+                <!-- Objectives -->
+                <div class="col-md-6">
+                    <label for="objectives" class="form-label">Objectives</label>
+                    <textarea name="objectives" id="objectives" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
+                </div>
+                <!-- Description -->
+                <div class="col-md-6">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <div class="material-quantity-used-container-annual-operation-log col-md-12">
+                        <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="expected_material" class="form-label fw-bold">Material Needed</label>
+                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
+                                        <option value="" selected disabled>Select Material</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
+                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-start">
+                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chemical-quantity-container-annual-operation-log col-md-12">
+                        <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
+                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                        <option value="" selected disabled>Select Chemical</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
+                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-start">
+                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                    </div>
+                </div>
+                <!-- Expected Water Usage -->
+                <div class="col-md-4">
+                    <label for="water_usage" class="form-label">Expected Water Usage</label>
+                    <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
+                </div>
+                <!-- Priority -->
+                <div class="col-md-4">
+                    <label for="priority" class="form-label">Priority</label>
+                    <select class="form-select" id="priority" name="priority" required>
+                        <option value="" selected disabled>Select Priority</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <!-- Tags -->
+                <div class="col-md-4">
+                    <label for="tags" class="form-label">Tags</label>
+                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
+                </div>
+                <!-- Submit Button -->
+                <div class="col-md-12 mt-3 text-end">
+                    <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Annual Operations Activity -->
+     <!-- Annual Operation Performance Metrics -->
+    <!-- Annual Operation Performance Metrics Modal -->
+    <div class="modal fade" id="annualOperationPerformanceMetricsModal" tabindex="-1" aria-labelledby="annualOperationPerformanceMetricsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title" id="annualOperationPerformanceMetricsModalLabel">Annual Operation Performance Metrics</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="annual-operation-log-form">
+                        @csrf
+                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                        <div class="row g-3">
+                            <!-- Total Operations -->
+                            <div class="col-md-4">
+                                <label for="total_operations" class="form-label">Total Operations</label>
+                                <input type="number" class="form-control" id="total_operations" name="total_operations" min="0" placeholder="Enter total operations" required>
+                            </div>
+                            <!-- Total Waste Generated -->
+                            <div class="col-md-4">
+                                <label for="total_waste_generated" class="form-label">Total Waste Generated (Units)</label>
+                                <input type="number" class="form-control" id="total_waste_generated" name="total_waste_generated" min="0" placeholder="Enter total waste generated" required>
+                            </div>
+                            <!-- Total Water Used -->
+                            <div class="col-md-4">
+                                <label for="total_water_used" class="form-label">Total Water Used (Liters)</label>
+                                <input type="number" class="form-control" id="total_water_used" name="total_water_used" min="0" placeholder="Enter total water used" required>
+                            </div>
+                            <!-- Total Units Produced -->
+                            <div class="col-md-4">
+                                <label for="total_units_produced" class="form-label">Total Units Produced</label>
+                                <input type="number" class="form-control" id="total_units_produced" name="total_units_produced" min="0" placeholder="Enter total units produced" required>
+                            </div>
+                            <!-- Total Cost -->
+                            <div class="col-md-4">
+                                <label for="total_cost" class="form-label">Total Cost (₦)</label>
+                                <input type="number" class="form-control" id="total_cost" name="total_cost" min="0" placeholder="Enter total cost" required>
+                            </div>
+                            <!-- Efficiency -->
+                            <div class="col-md-4">
+                                <label for="efficiency" class="form-label">Efficiency (%)</label>
+                                <input type="number" class="form-control" id="efficiency" name="efficiency" min="0" max="100" placeholder="Enter efficiency percentage" required>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="col-12 text-end mt-3">
+                                <button type="submit" class="btn btn-secondary">Save Performance Metrics</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operation-log-card"> <!-- Light beige background for annual operation log -->
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Annual Operation Log</h4>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+        </div>
+        <div class="card-body">
+            <form action="" method="post" id="annual-operation-log-form">
+                @csrf
+                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                <div class="row g-3">
+                    <!-- Total Operations -->
+                    <div class="col-md-4">
+                        <label for="total_operations" class="form-label">Total Operations</label>
+                        <input type="number" class="form-control" id="total_operations" name="total_operations" min="0" placeholder="Enter total operations" required>
+                    </div>
+                    <!-- Total Waste Generated -->
+                    <div class="col-md-4">
+                        <label for="total_waste_generated" class="form-label">Total Waste Generated (Units)</label>
+                        <input type="number" class="form-control" id="total_waste_generated" name="total_waste_generated" min="0" placeholder="Enter total waste generated"     <!-- End Annual Operation Performance Metrics -->
+     <!-- End annual operations Log -->
+    @endsection
+
     @section('styles')
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
