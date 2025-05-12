@@ -3535,9 +3535,72 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- endiot device -->
+                        <!-- end iot device -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="auditTrailHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#auditTrailCollapse" aria-expanded="false" aria-controls="auditTrailCollapse">
+                                <i class="las la-history me-2"></i> Audit Trail
+                            </button>
+                        </h2>
+                        <div id="auditTrailCollapse" class="accordion-collapse collapse" aria-labelledby="auditTrailHeading" data-bs-parent="#operationsAccordion">
+                            <div class="accordion-body">
+                                <!-- Audit Trail Filters -->
+                                <form id="audit-trail-filters" class="mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label for="filter_user" class="form-label">User</label>
+                                            <select class="form-select" id="filter_user" name="user">
+                                                <option value="" selected>All Users</option>
+                                                
+                                                    <option value=""></option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="filter_action" class="form-label">Action</label>
+                                            <select class="form-select" id="filter_action" name="action">
+                                                <option value="" selected>All Actions</option>
+                                                <option value="create">Create</option>
+                                                <option value="update">Update</option>
+                                                <option value="delete">Delete</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="filter_date" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="filter_date" name="date">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-end">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                 
+                                    </div>
+                                </form>
 
-                        
+                                <!-- Audit Trail Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped mb-0" id="tbl-audit-trail">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Action</th>
+                                                <th>Module</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th class="text-end">Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- audit trail  -->
+
+                        <!-- end audit trail -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
