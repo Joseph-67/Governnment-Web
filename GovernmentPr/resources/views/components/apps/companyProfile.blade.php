@@ -1,5 +1,9 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
+    @section('styles')
+            <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+
+    @endsection
     <div class="container-xxl">
         <!-- Header -->
         <div class="profile-header text-center py-5">
@@ -3549,71 +3553,105 @@
                             </div>
                         </div>
                         <!-- end iot device -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="auditTrailHeading">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#auditTrailCollapse" aria-expanded="false" aria-controls="auditTrailCollapse">
-                                <i class="las la-history me-2"></i> Audit Trail
-                            </button>
-                        </h2>
-                        <div id="auditTrailCollapse" class="accordion-collapse collapse" aria-labelledby="auditTrailHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body">
-                                <!-- Audit Trail Filters -->
-                                <form id="audit-trail-filters" class="mb-4">
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <label for="filter_user" class="form-label">User</label>
-                                            <select class="form-select" id="filter_user" name="user">
-                                                <option value="" selected>All Users</option>
-                                                
-                                                    <option value=""></option>
-                                                
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="filter_action" class="form-label">Action</label>
-                                            <select class="form-select" id="filter_action" name="action">
-                                                <option value="" selected>All Actions</option>
-                                                <option value="create">Create</option>
-                                                <option value="update">Update</option>
-                                                <option value="delete">Delete</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="filter_date" class="form-label">Date</label>
-                                            <input type="date" class="form-control" id="filter_date" name="date">
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 text-end">
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                 
-                                    </div>
-                                </form>
+                         <!-- production batch tracking -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="batchTrackingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
+                                    <i class="las la-box me-2"></i> Batch Tracking
+                                </button>
+                            </h2>
+                            <div id="batchTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="batchTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- Batch Tracking Form -->
+                                    <form action="" method="post" id="batch-tracking-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <!-- Batch Name -->
+                                            <div class="col-md-6">
+                                                <label for="batch_name" class="form-label">Batch Name</label>
+                                                <input type="text" class="form-control" id="batch_name" name="batch_name" placeholder="Enter batch name" required>
+                                            </div>
 
-                                <!-- Audit Trail Table -->
-                                <div class="table-responsive">
-                                    <table class="table table-striped mb-0" id="tbl-audit-trail">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>User</th>
-                                                <th>Action</th>
-                                                <th>Module</th>
-                                                <th>Description</th>
-                                                <th>Date</th>
-                                                <th class="text-end">Details</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                           
-                                        </tbody>
-                                    </table>
+                                            <!-- Production Date -->
+                                            
+<div class="col-md-6">
+    <label for="start_date" class="form-label">Production Date</label>
+    <div class="input-group" id="DateRange">
+        <input type="text" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" required>
+        <span class="input-group-text">to</span>
+        <input type="text" class="form-control" name="end_date" placeholder="End" aria-label="EndDate" required>
+    </div>
+</div>
+                                            
+
+
+                                            <!-- Product -->
+                                            <div class="col-md-6">
+                                                <label for="product_id" class="form-label">Product</label>
+                                                <select class="form-select" id="product_id" name="product_id" required>
+                                                    <option value="" selected disabled>Select Product</option>
+                                                 
+                                                </select>
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Quantity</label>
+                                                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" min="0" required>
+                                            </div>
+
+                                            <!-- Status -->
+                                            <div class="col-md-6">
+                                                <label for="batch_status" class="form-label">Batch Status</label>
+                                                <select class="form-select" id="batch_status" name="batch_status" required>
+                                                    <option value="" selected disabled>Select Status</option>
+                                                    <option value="active">Active</option>
+                                                    <option value="completed">Completed</option>
+                                                    <option value="expired">Expired</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Remarks -->
+                                            <div class="col-md-12">
+                                                <label for="remarks" class="form-label">Remarks</label>
+                                                <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter remarks"></textarea>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="col-md-12 mt-3 text-end">
+                                                <button type="submit" class="btn btn-primary">Save Batch</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Batch Tracking Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-batch-tracking">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Batch Name</th>
+                                                    <th>Batch Code</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Production Date</th>
+                                                    <th>Expiry Date</th>
+                                                    <th>Status</th>
+                                                    <th>Remarks</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                        <!-- audit trail  -->
-
-                        <!-- end audit trail -->
+                         <!-- end production batch tracking -->
+                
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -5496,10 +5534,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
+
     <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
