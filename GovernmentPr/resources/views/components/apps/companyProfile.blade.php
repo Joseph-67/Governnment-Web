@@ -3485,7 +3485,135 @@
                                 
                             </div>
                         </div>
-                        
+                        <!-- iot device -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="iotDeviceHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#iotDeviceCollapse" aria-expanded="false" aria-controls="iotDeviceCollapse">
+                                    <i class="las la-microchip me-2"></i> IoT Device Management
+                                </button>
+                            </h2>
+                            <div id="iotDeviceCollapse" class="accordion-collapse collapse" aria-labelledby="iotDeviceHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- IoT Device Form -->
+                                    <form action="" method="post" id="iot-device-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="device_name" class="form-label">Device Name</label>
+                                                    <input type="text" class="form-control" id="device_name" name="device_name" placeholder="Enter device name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="device_type" class="form-label">Device Location</label>
+                                                    <input type="text" class="form-control" id="device_location" name="device_location" placeholder="Enter device location" required>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="last_maintenance_date" class="form-label">Last Maintenance Date</label>
+                                                    <input type="date" class="form-control" id="last_maintenance_date" name="last_maintenance_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- IoT Device Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-iot-devices">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Device Name</th>
+                                                
+                                                    <th>Device Location</th>
+                                                    <th>Status</th>
+                                                    
+                                                 
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                               
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end iot device -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="auditTrailHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#auditTrailCollapse" aria-expanded="false" aria-controls="auditTrailCollapse">
+                                <i class="las la-history me-2"></i> Audit Trail
+                            </button>
+                        </h2>
+                        <div id="auditTrailCollapse" class="accordion-collapse collapse" aria-labelledby="auditTrailHeading" data-bs-parent="#operationsAccordion">
+                            <div class="accordion-body">
+                                <!-- Audit Trail Filters -->
+                                <form id="audit-trail-filters" class="mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label for="filter_user" class="form-label">User</label>
+                                            <select class="form-select" id="filter_user" name="user">
+                                                <option value="" selected>All Users</option>
+                                                
+                                                    <option value=""></option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="filter_action" class="form-label">Action</label>
+                                            <select class="form-select" id="filter_action" name="action">
+                                                <option value="" selected>All Actions</option>
+                                                <option value="create">Create</option>
+                                                <option value="update">Update</option>
+                                                <option value="delete">Delete</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="filter_date" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="filter_date" name="date">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-end">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                 
+                                    </div>
+                                </form>
+
+                                <!-- Audit Trail Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped mb-0" id="tbl-audit-trail">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Action</th>
+                                                <th>Module</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th class="text-end">Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- audit trail  -->
+
+                        <!-- end audit trail -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -8586,7 +8714,39 @@
     });
 </script>
 <!-- end water disposal -->
+<!--store IoT Device Management -->
+<script>
+    document.querySelector('#iot-device-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-iot-device') }}";
 
+        try {
+            const result = await fetch_cycle('--Store IoT Device', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-iot-devices tbody');
+                tableBody.innerHTML = result.iot_devices.map(device => `
+                    <tr>
+                        <td>${device.device_name}</td>
+                        <td>${device.device_type}</td>
+                        <td>${device.serial_number}</td>
+                        <td>${device.status}</td>
+                        <td>${device.date_added}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing IoT device:', error);
+        }
+    });
+</script>
+<!-- end iot device managment -->
 <!-- Chemical  -->
 <script>
     const btnSubmitChemical = document.querySelector('#btn-submit-chemical');
@@ -9452,5 +9612,6 @@
     }
   </script>
  <!-- Annual Operation log -->
+ 
     @endsection
 </x-layouts.admin-app>
