@@ -49,13 +49,13 @@ class ProductionBatchTrackingController extends Controller
             'company_id' => 'required',
             'product' => 'required',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'required|date',
             'total_quantity' => 'nullable|integer',
             'defective_quantity' => 'nullable|integer',
             'yield_percentage' => 'nullable|numeric|min:0|max:100',
             'created_by' => 'required',
             'geolocation' => 'nullable|string|max:255',
-            'iot_device_id' => 'nullable',
+            'iot_device' => 'nullable',
             'predicted_defect_rate' => 'nullable|numeric|min:0|max:100',
             'audit_trail_id' => 'nullable',
 
@@ -74,7 +74,7 @@ class ProductionBatchTrackingController extends Controller
         $productionBatchTracking->yield_percentage = $request->yield_percentage;
         $productionBatchTracking->created_by = $request->created_by;
         $productionBatchTracking->geolocation = $request->geolocation;
-        $productionBatchTracking->iot_device_id = $request->iot_device_id;
+        $productionBatchTracking->iot_device_id = $request->iot_device;
         $productionBatchTracking->predicted_defect_rate = $request->predicted_defect_rate;
         $productionBatchTracking->audit_trail_id = $request->audit_trail_id;
         $productionBatchTracking->status = 'Completed';

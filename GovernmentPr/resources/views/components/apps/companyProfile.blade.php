@@ -3590,7 +3590,7 @@
                                                 <select class="form-select" id="product" name="product" >
                                                     <option value="" selected disabled>Select Product</option>
                                                 @foreach($products as $product)
-                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
                                                 @endforeach
                                                 </select>
                                             </div>
@@ -3598,12 +3598,12 @@
                                             <!-- Quantity -->
                                             <div class="col-md-6">
                                                 <label for="quantity" class="form-label">Total Quantity</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" min="0">
+                                                <input type="number" class="form-control" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
                                             </div>
                                                     <!-- quantity defective -->
                                              <div class="col-md-6">
                                                 <label for="quantity" class="form-label">Total Quantity Defective</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity_defective" placeholder="Enter quantity" min="0" >
+                                                <input type="number" class="form-control" id="quantity" name="defective_quantity" placeholder="Enter quantity" min="0" >
                                             </div>
 
                                             <!-- Yield Percentage -->
@@ -5626,7 +5626,6 @@
         return `
             <header class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
                 <strong>${this.value.length ? `Add Remaining` : 'Add All'}</strong>
-         
                 <a class='remove-all-tags'>Remove all</a>
             </header>
         `;
@@ -5688,15 +5687,17 @@
             const response = await fetch(url.toString());
             const users = await response.json();
 
-            if (!users || !Array.isArray(users.admin) || !Array.isArray(users.users)) {
+            if (!users || !Array.isArray(users.users)) {
                 console.error('Unexpected API response structure:', users);
                 return;
             }
 
-            const formattedAdmins = users.admin.map(user => formatUser(user, 'admin'));
-            const formattedUsers = users.users.map(user => formatUser(user, 'user'));
+            // Only include non-admin users
+            const filteredUsers = users.users
+                .filter(user => user.role !== 'admin')
+                .map(user => formatUser(user, user.role || 'user'));
 
-            createdByTagify.settings.whitelist = [...formattedAdmins, ...formattedUsers];
+            createdByTagify.settings.whitelist = filteredUsers;
             createdByTagify.loading(false).dropdown.show(searchTerm);
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -9359,6 +9360,21 @@
         }
     });
     // Edit Operation Category Modal Trigger
+      // Store Annual Operations Log
+    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operations-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationsTable(result.annual_operations_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operations log:', error);
+        }
+    });
 
   
     /**
