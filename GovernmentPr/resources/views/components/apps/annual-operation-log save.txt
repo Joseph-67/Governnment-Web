@@ -1,0 +1,15 @@
+  // Store Annual Operations Log
+    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operations-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationsTable(result.annual_operations_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operations log:', error);
+        }
+    });
