@@ -108,25 +108,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($wasteList as $waste)
-                                <tr>
-                                    <td>{{ $waste->waste_category_name??"" }}</td>
-                                    <td>{{ $waste->waste_category_description??"" }}</td>
-                                    <td class="text-end">
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-info me-2" type="button" onclick='openSubcategoriesModal("{{$waste->waste_category_id}}", "{{$waste->waste_category_name}}")'>
-                                                <i class="las la-list me-1"></i> Subcategories
-                                            </button>
-                                            <button class="btn btn-sm btn-warning me-2" type="button">
-                                                <i class="las la-edit me-1"></i> Edit
-                                            </button>
-                                            <button class="btn btn-sm btn-danger" type="button" onclick='deleteCategory("{{$waste->wasteID}}", "{{$waste->waste_name}}")'>
-                                                <i class="las la-trash-alt me-1"></i> Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            
                         </tbody>
                     </table>
                 </div>
