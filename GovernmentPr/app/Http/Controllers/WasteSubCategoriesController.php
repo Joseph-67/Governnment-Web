@@ -28,6 +28,8 @@ class WasteSubCategoriesController extends Controller
     public function create()
     {
         //
+        $data['WasteSubCategoryList'] = WasteSubCategories::get();
+        return view("components.apps.waste_sub_category", $data);
     }
 
     /**
@@ -95,6 +97,7 @@ class WasteSubCategoriesController extends Controller
     public function show(WasteSubCategories $wasteSubCategories)
     {
         //
+
     }
 
     /**

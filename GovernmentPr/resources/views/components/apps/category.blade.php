@@ -35,7 +35,6 @@
                         </form>
                     </div>
                 </div>
-
                 <div class="table-responsive mt-4">
                     <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
                         <thead>
@@ -69,7 +68,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -180,7 +178,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach($subcategories as $subcategory)
+                                        <tr>
+                                            <td>{{ $subcategory->waste_sub_category_name }}</td>
+                                            <td>{{ $subcategory->waste_sub_category_description }}</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-warning me-2" type="button" onclick='editSubcategory({{ $subcategory->id }})'>
+                                                    <i class="las la-edit me-1"></i> Edit
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" type="button" onclick='deleteSubcategory({{ $subcategory->id }}, "{{ $subcategory->waste_sub_category_name }}")'>
+                                                    <i class="las la-trash-alt me-1"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
