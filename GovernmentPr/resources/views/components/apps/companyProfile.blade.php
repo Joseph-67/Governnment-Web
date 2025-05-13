@@ -3576,14 +3576,14 @@
 
                                             <!-- Production Date -->
                                             
-<div class="col-md-6">
-    <label for="start_date" class="form-label">Production Date</label>
-    <div class="input-group" id="DateRange">
-        <input type="text" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" required>
-        <span class="input-group-text">to</span>
-        <input type="text" class="form-control" name="end_date" placeholder="End" aria-label="EndDate" required>
-    </div>
-</div>
+                                    <div class="col-md-6">
+                                        <label for="start_date" class="form-label">Production Date</label>
+                                        <div class="input-group" id="DateRange">
+                                            <input type="date" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" required>
+                                            <span class="input-group-text">to</span>
+                                            <input type="date" class="form-control" name="end_date" placeholder="End" aria-label="EndDate" required>
+                                        </div>
+                                    </div>
                                             
 
 
@@ -3592,15 +3592,30 @@
                                                 <label for="product_id" class="form-label">Product</label>
                                                 <select class="form-select" id="product_id" name="product_id" required>
                                                     <option value="" selected disabled>Select Product</option>
-                                                 
+                                                @foreach($products as $product)
+                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                @endforeach
                                                 </select>
                                             </div>
 
                                             <!-- Quantity -->
                                             <div class="col-md-6">
-                                                <label for="quantity" class="form-label">Quantity</label>
+                                                <label for="quantity" class="form-label">Total Quantity</label>
                                                 <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" min="0" required>
                                             </div>
+
+                                             <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Total Quantity Defective</label>
+                                                <input type="number" class="form-control" id="quantity" name="quantity_defective" placeholder="Enter quantity" min="0" required>
+                                            </div>
+
+                                            <!-- Yield Percentage -->
+                                            <div class="col-md-6">
+                                                <label for="yield_percentage" class="form-label">Yield Percentage</label>
+                                                <input type="number" class="form-control" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01" required>
+                                            </div>
+                                            <!-- created by -->
+                                             
 
                                             <!-- Status -->
                                             <div class="col-md-6">
