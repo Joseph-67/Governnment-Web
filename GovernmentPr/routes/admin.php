@@ -53,7 +53,7 @@ use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
-
+use App\Http\Controllers\AnnualOperation\MetadataController;
 
 
 
@@ -237,8 +237,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
 
-
-
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
@@ -412,7 +410,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // annual operation log
     Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
+        Route::post('/annual-operations-log/store', 'store_metadata')->name('admin.store-annual-operation-log');
+    });
+
+    // Metadata
+    Route::controller(MetadataController::class)->group(function() {
+        Route::get('/metadata', 'index')->name('admin.metadata');
+        Route::post('/metadata/store', 'store')->name('admin.store-metadata');
+        Route::get('/metadata/{id}', 'show')->name('admin.show-metadata');
+        Route::put('/metadata/{id}', 'update')->name('admin.update-metadata');
+        Route::delete('/metadata/{id}', 'destroy')->name('admin.delete-metadata');
     });
 
     // Pages
