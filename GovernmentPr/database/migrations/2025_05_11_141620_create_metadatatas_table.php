@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('OperationName');
             $table->bigInteger('year')->notNullable();
             $table->integer('annual_no_of_operation')->nullable();
-            $table->bigInteger('PreparedBy')->notNullable();
+            $table->json('PreparedBy')->notNullable();
             $table->timestamp('DateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('LastUpdated')->default(DB::raw('CURRENT_TIMESTAMP'))->useCurrentOnUpdate();
             $table->boolean('is_deleted')->default(false);

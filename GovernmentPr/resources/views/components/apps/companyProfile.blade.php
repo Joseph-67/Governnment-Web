@@ -2816,50 +2816,42 @@
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
                                     <!-- Annual Operations Log Form -->
-                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card"> <!-- Light beige background for annual operations log -->
+                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card">
                                         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                             <h4 class="card-title mb-0">Annual Operations Metadata</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                                                onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
                                             <form action="" method="post" id="annual-operation-log-form">
                                                 @csrf
                                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                 <div class="row g-3">
-                                                    <!-- Operation Name -->
                                                     <div class="col-md-6">
                                                         <label for="operation_name" class="form-label">Operation Name</label>
-                                                        <div class="form-group">
-                                                            <input type="text" name="operation_name" id="" class="form-control" placeholder="Enter operation name" required />
-                                                        </div>
+                                                        <input type="text" name="operation_name" class="form-control" placeholder="Enter operation name" required>
                                                     </div>
-                                                    <!-- Calendar Year -->
                                                     <div class="col-md-6">
                                                         <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                        <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
+                                                        <select class="form-select calendar-year" name="calendar_year" required>
                                                             <option value="" selected disabled>Select Calendar Year</option>
-                                                            
                                                         </select>
                                                     </div>
-                                                    <!-- Expected Operations Per Year -->
                                                     <div class="col-md-4">
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
-                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations">
+                                                        <input type="number" class="form-control" name="operations_per_year" min="0" placeholder="Enter expected operations">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="prepared_by" class="form-label">Prepared By</label>
-                                                        <div class="">
-                                                            <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
-                                                        </div>
+                                                        <input type="text" class="form-control" name="prepared_by" placeholder="Enter prepared by" required>
                                                     </div>
-                                                    <!-- Status -->
                                                     <div class="col-md-4">
                                                         <label for="status" class="form-label">Status</label>
-                                                        <select class="form-select" id="status" name="status" required>
+                                                        <select class="form-select" name="status" required>
                                                             <option value="" selected disabled>Select Status</option>
-                                                            <option value="draft">Draft</option>
-                                                            <option value="publish">Publish</option>
-                                                            <option value="archived">Archived</option>
+                                                            <option value="Draft">Draft</option>
+                                                            <option value="Publish">Publish</option>
+                                                            <option value="Archived">Archived</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-12 text-end mt-3">
@@ -2869,166 +2861,21 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- Annual Operations Activity -->
-                                    <div class="card shadow-sm border-0 mt-4">
-                                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operations Activity</h4>
-                                            <button type="button" class="btn btn-secondary btn-sm" id="close-annual-operations-log">
-                                                <i class="las la-times"></i>
-                                            </button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row g-3">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
-                                                            <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
-                                                            <select class="form-select operation-select" id="operation_name" name="operation_name" required>
-                                                                <option value="" selected disabled>Select Operation</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="activity_date" class="form-label fw-bold">Activity Date</label>
-                                                            <input type="date" class="form-control" id="activity_date" name="activity_date" required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Objectives -->
-                                                    <div class="col-md-6">
-                                                        <label for="objectives" class="form-label">Objectives</label>
-                                                        <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activitty"></textarea>
-                                                    </div>
-                                                    <!-- Description -->
-                                                    <div class="col-md-6">
-                                                        <label for="description" class="form-label">Description</label>
-                                                        <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
-                                                    </div>
-                                                <div class="col-md-6">
-                                                    <div class="material-quantity-used-container-annual-operation-log col-md-12">
-                                                        <div class="row g-2 align-items-end mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="expected_material" class="form-label fw-bold">Material Needed</label>
-                                                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
-                                                                        <option value="" selected disabled>Select Material</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
-                                                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 text-start">
-                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="chemical-quantity-container-annual-operation-log col-md-12">
-                                                        <div class="row g-2 align-items-end mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
-                                                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                                        <option value="" selected disabled>Select Chemical</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
-                                                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-start">
-                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                                                    </div>
-                                                </div>
-                                                <!-- Expected Water Usage -->
-                                                <div class="col-md-4">
-                                                    <label for="water_usage" class="form-label">Expected Water Usage</label>
-                                                    <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
-                                                </div>
-                                                <!-- Priority -->
-                                                <div class="col-md-4">
-                                                    <label for="priority" class="form-label">Priority</label>
-                                                    <select class="form-select" id="priority" name="priority" required>
-                                                        <option value="" selected disabled>Select Priority</option>
-                                                        <option value="high">High</option>
-                                                        <option value="medium">Medium</option>
-                                                        <option value="low">Low</option>
-                                                    </select>
-                                                </div>
-                                                <!-- Tags -->
-                                                <div class="col-md-4">
-                                                    <label for="tags" class="form-label">Tags</label>
-                                                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
-                                                </div>
-                                                <!-- Submit Button -->
-                                                <div class="col-md-12 mt-3 text-end">
-                                                    <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
                                     <!-- Annual Operations Log Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-annual-operations-log">
+                                        <table class="table table-striped mb-0" id="tbl-annual-operations-metadata-log">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Operation Name</th>
-                                                    <th>Operation</th>
-                                                    <th>Year</th>
-                                                    <th>Expected Number of Operations per year</th>
-                                                    <th>Expected Number of Waste to be Generated per year</th>
-                                                    <th>Expected Number of Water to be Used per year</th>
-                                                    <th>Expected Number of Units to be Produced</th>
+                                                    <th>Calendar Year</th>
+                                                    <th>Expected Operations per Year</th>
+                                                    <th>Prepared By</th>
+                                                    <th>Status</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                @foreach($annual_operations_logs as $operations)
-                                                <tr>
-                                                    <td>{{ $operations->operation_name }}</td>
-                                                    <td>{{ $operations->operation->operation_name ?? 'N/A'  }}</td>
-                                                    <td>{{ $operations->calendarYear->name ?? 'N/A' }}</td>
-                                                    <td>{{ $operations->operations_per_year }}</td>
-                                                    <td>{{ implode(', ', $operations->quantity_of_waste) }}</td>
-
-                                                    <td>{{ $operations->water_used_per_year }}</td>
-                                                    <td>{{ $operations->units_produced_per_year }}</td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#"
-                                                                >Edit</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -5489,7 +5336,7 @@
     @section('scripts')
     <!-- DataTables and Bootstrap JavaScript -->
     <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('adminAssets/js/toastify.js') }}"></script>
     <script src="{{ asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js') }}"></script>
     <script src="{{ asset('adminAssets/js/pages/datatable.init.js') }}"></script>
@@ -9567,10 +9414,70 @@
 <!-- Product Management Script -->
  <!-- Annual Operation log -->
   <script>
+    document.querySelector('#annualOperationsLogHeading').addEventListener('shown.bs.collapse', () => {
+        // Initialize DataTable for Annual Operations Metadata Log
+        let annualOperationMetadataTable = $('#tbl-annual-operations-metadata-log').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [6] } // Disable sorting on the "Action" column
+            ],
+            data: [], // Start with an empty data array
+            columns: [
+                { data: 'operation_name', title: 'Operation Name' },
+                { data: 'calendarYear', title: 'Calendar Year' },
+                { data: 'expected_operations_per_year', title: 'Expected Operations (Per Year)' },
+                { data: 'prepare_by', title: 'Prepared By' },
+                { data: 'status', title: 'Operation Status' },
+                {
+                    data: null,
+                    title: 'Actions',
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editAnnualOperationLog(${row.id})">Edit</button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteAnnualOperationLog(${row.id})">Delete</button>
+                            </div>`;
+                    }
+                }
+            ]
+        });
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/metadata/company/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+
+        showElement(spinner);
+
+        try {
+            const data = await fetchOperationsLog(url);
+            if (data.status === "success") {
+                const logs = data.annual_operation_logs.map(log => ({
+                    operation_name: log.OperationName || "N/A",
+                    calendarYear: log.calendarYear?.name || "N/A",
+                    expected_operations_per_year: log.annual_no_of_operation || "N/A",
+                    prepare_by: log.PreparedBy || "N/A",
+                    status: log.Status || "N/A",
+                    id: log.annual_op_metadata_ID || "N/A"
+                }));
+                annualOperationMetadataTable.clear();
+                annualOperationMetadataTable.rows.add(logs).draw();
+                // Update the table body with the fetched data
+            } else {
+                displayMessage('warning', 'No annual operation logs found.');
+            }
+        } catch (error) {
+            console.error("Error fetching annual operation logs:", error);
+            displayMessage('danger', 'An error occurred while fetching annual operation logs.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
     document.querySelector('#annual-operation-log-form').addEventListener('submit', async function (e) {
         e.preventDefault();
         const formData = new FormData(this);
-        const url = "{{ route('admin.store-annual-operation-log') }}";
+        const url = "{{ route('admin.store-annual-operation-metadata') }}";
 
         try {
             const result = await fetch_cycle('--Store Annual Operation Log', url, 'POST', formData);

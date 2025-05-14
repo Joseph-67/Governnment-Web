@@ -410,16 +410,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // annual operation log
     Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store_metadata')->name('admin.store-annual-operation-log');
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operation-log');
     });
 
     // Metadata
     Route::controller(MetadataController::class)->group(function() {
         Route::get('/metadata', 'index')->name('admin.metadata');
-        Route::post('/metadata/store', 'store')->name('admin.store-metadata');
+        Route::post('/metadata/store', 'store_metadata')->name('admin.store-annual-operation-metadata');
         Route::get('/metadata/{id}', 'show')->name('admin.show-metadata');
         Route::put('/metadata/{id}', 'update')->name('admin.update-metadata');
         Route::delete('/metadata/{id}', 'destroy')->name('admin.delete-metadata');
+        Route::get('/metadata/company/{companyId}', 'getMetadataByCompany')->name('admin.metadata-by-company');
     });
 
     // Pages
