@@ -3665,13 +3665,10 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Batch Name</th>
-                                                    <th>Batch Code</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Production Date</th>
-                                                    <th>Expiry Date</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
                                                     <th>Status</th>
-                                                    <th>Remarks</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
@@ -9008,13 +9005,12 @@
                 const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
                 if (result.status === 'success') {
                     const tableBody = document.querySelector('#tbl-batch-tracking tbody');
-                    tableBody.innerHTML = result.batch_tracking.map(batch => `
+                    tableBody.innerHTML = result.productionBatchTracking.map(batch => `
                         <tr>
-                            <td>${batch.batch_code}</td>
+                            <td>${batch.batch_name}</td>
                             <td>${batch.product?.name || 'N/A'}</td>
-                            <td>${batch.quantity_produced}</td>
-                            <td>${batch.production_date}</td>
-                            <td>${batch.expiry_date || 'N/A'}</td>
+                            <td>${batch.start_date}</td>
+                            <td>${batch.end_date}</td>
                             <td>${batch.status}</td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end">

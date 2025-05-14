@@ -60,25 +60,49 @@ class ProductionBatchTrackingController extends Controller
             'audit_trail_id' => 'nullable',
 
         ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+          if ($validator->fails()) {
+            return response()->json([
+            'status'  => 'error',
+            'message' => 'Validation failed.',
+            'errors'  => $validator->errors(),
+            ], 422);
         }
-        $productionBatchTracking = new ProductionBatchTracking();
-        $productionBatchTracking->batch_name = $request->batch_name;
-        $productionBatchTracking->company_id = $request->company_id;
-        $productionBatchTracking->product_id = $request->product;
-        $productionBatchTracking->start_date = $request->start_date;
-        $productionBatchTracking->end_date = $request->end_date;
-        $productionBatchTracking->total_quantity = $request->total_quantity;
-        $productionBatchTracking->defective_quantity = $request->defective_quantity;
-        $productionBatchTracking->yield_percentage = $request->yield_percentage;
-        $productionBatchTracking->created_by = $request->created_by;
-        $productionBatchTracking->geolocation = $request->geolocation;
-        $productionBatchTracking->iot_device_id = $request->iot_device;
-        $productionBatchTracking->predicted_defect_rate = $request->predicted_defect_rate;
-        $productionBatchTracking->audit_trail_id = $request->audit_trail_id;
-        $productionBatchTracking->status = 'Completed';
-        $productionBatchTracking->save();
+        try {
+            $productionBatchTracking = new ProductionBatchTracking();
+            $productionBatchTracking->batch_name = $request->batch_name;
+            $productionBatchTracking->company_id = $request->company_id;
+            $productionBatchTracking->product_id = $request->product;
+            $productionBatchTracking->start_date = $request->start_date;
+            $productionBatchTracking->end_date = $request->end_date;
+            $productionBatchTracking->total_quantity = $request->total_quantity;
+            $productionBatchTracking->defective_quantity = $request->defective_quantity;
+            $productionBatchTracking->yield_percentage = $request->yield_percentage;
+            $productionBatchTracking->created_by = $request->created_by;
+            $productionBatchTracking->geolocation = $request->geolocation;
+            $productionBatchTracking->iot_device_id = $request->iot_device;
+            $productionBatchTracking->predicted_defect_rate = $request->predicted_defect_rate;
+            $productionBatchTracking->audit_trail_id = $request->audit_trail_id;
+            $productionBatchTracking->status = 'Completed';
+            $productionBatchTracking->save();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to create Production Batch Tracking.',
+            'error' => $e->getMessage(),
+            ], 500);
+        }
+            try {
+            $productionBatchTracking = ProductionBatchTracking::where('status', 'completed')
+            ->where('company_id', $request->company_id)
+            ->with('product') // Eager load the related product
+            ->get();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status'  => 'error',
+            'message' => 'An error occurred while retrieving production batch tracking.',
+            'error'   => $e->getMessage(),
+            ], 500);
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Production Batch Tracking created successfully',
