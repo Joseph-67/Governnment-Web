@@ -21,8 +21,9 @@ class MetadataController extends Controller
      */
     public function getMetadataByCompany($companyId)
     {
+        // dd($companyId);
         try {
-            $metadata = Metadatata::where('company_id', $companyId)->where('is_deleted', '0')->get();
+            $metadata = Metadatata::where('company_id', $companyId)->where('is_deleted', '0')->with(['calendarYear'])->get();
 
             if ($metadata->isEmpty()) {
                 return response()->json([
@@ -33,7 +34,7 @@ class MetadataController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'data' => $metadata,
+                'annual_operation_metadata' => $metadata,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
