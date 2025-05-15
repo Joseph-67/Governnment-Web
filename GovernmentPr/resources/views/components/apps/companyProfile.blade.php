@@ -5430,7 +5430,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="{{ asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/moment.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/app.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
    <!-- created by tagify -->
         <script>
     const createdByInput = document.querySelector("input[name='created_by']");
@@ -5608,15 +5617,6 @@
 </script>
 
    <!-- end created by tagify -->
-    <script src="{{ asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/js/moment.js')}}"></script>
-    <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
-    <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
-    <script src="{{ asset('adminAssets/js/app.js')}}"></script>
     <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
