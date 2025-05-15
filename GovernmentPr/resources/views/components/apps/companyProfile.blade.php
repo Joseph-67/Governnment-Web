@@ -9630,6 +9630,61 @@
             </tr>
         `).join('');
     }
+
+    // annual operation activity
+    document.querySelector('#annualOperationsActivityModal').addEventListener('shown.bs.modal', async function () {
+        const metadataId = document.querySelector('input[name="annual_op_metadata_ID"]').value;
+        const url = `/admin/metadata/activities/${metadataId}`;
+        const spinner = document.getElementById('loading-spinner');
+
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success" && Array.isArray(data.activities)) {
+                const activitiesTable = $('#tbl-annual-operations-activity').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    responsive: true,
+                    destroy: true, // Reinitialize the table
+                    columnDefs: [
+                        { orderable: false, targets: [4] } // Disable sorting on the "Action" column
+                    ],
+                    data: data.activities,
+                    columns: [
+                        { data: 'activity_name', title: 'Activity Name' },
+                        { data: 'activity_description', title: 'Description' },
+                        { data: 'activity_date', title: 'Date' },
+                        { data: 'status', title: 'Status' },
+                        {
+                            data: null,
+                            title: 'Actions',
+                            render: function (data, type, row) {
+                                return `
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteActivity(${row.id})">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </div>`;
+                            }
+                        }
+                    ]
+                });
+            } else {
+                displayMessage('warning', 'No activities found for this metadata.');
+            }
+        } catch (error) {
+            console.error("Error fetching activities:", error);
+            displayMessage('danger', 'An error occurred while fetching activities. Please try again.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
   </script>
  <!-- Annual Operation log -->
  
