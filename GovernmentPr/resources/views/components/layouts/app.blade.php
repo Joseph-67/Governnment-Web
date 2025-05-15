@@ -382,13 +382,13 @@
                            </ul>
                            
                         </div>
-                        <div class="tp-header-right-tel-icon-box d-none d-xxl-block">
+                        <div class="tp-header-right-tel-icon-box d-none d-lg-block">
                            <div class="tp-header-right-tel-icon d-flex align-items-center">
-                              <i class="flaticon-phone-call-1"></i>
-                              <div class="tp-header-right-tel-content">
-                                 <span>Call Us</span>
-                                 <a href="tel:(234)9160173332">09160173332</a>
-                              </div>
+                             <i class="flaticon-phone-call-1"></i>
+                             <div class="tp-header-right-tel-content">
+                               <span>Call Us</span>
+                               <a href="tel:(234)9160173332">09160173332</a>
+                             </div>
                            </div>
                         </div>                     
                         <div class="tp-header-bar d-xl-none text-end">
