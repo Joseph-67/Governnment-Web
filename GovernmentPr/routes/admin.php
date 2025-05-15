@@ -34,6 +34,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionLogController;
+use App\Http\Controllers\ProductionBatchTrackingController;
 use App\Http\Controllers\QualityControlController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
@@ -54,6 +55,7 @@ use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
 use App\Http\Controllers\AnnualOperation\MetadataController;
+
 
 
 
@@ -475,6 +477,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
         Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
         Route::get('/get-production-data/{selectedCompany}/{selectedYear}', 'create_report');
+    });
+
+    // production batch tracking
+    Route::controller(ProductionBatchTrackingController::class)->group(function() {
+        Route::get('/production-batch-tracking', 'index')->name('admin.production-batch-tracking');
+        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-production-batch-tracking');
+        Route::get('/production-batch-tracking/{id}', 'show')->name('admin.show-production-batch-tracking');
+        Route::put('/production-batch-tracking/{id}', 'update')->name('admin.update-production-batch-tracking');
+        Route::delete('/production-batch-tracking/{id}', 'destroy')->name('admin.delete-production-batch-tracking');
     });
     
     Route::controller(AddPostController::class)->group(function() {

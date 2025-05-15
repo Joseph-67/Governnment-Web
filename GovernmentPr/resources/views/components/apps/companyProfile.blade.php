@@ -1,5 +1,6 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
+
     <div class="container-xxl">
         <!-- Header -->
         <div class="profile-header text-center py-5">
@@ -2823,7 +2824,7 @@
                                                 onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
-                                            <form action="" method="post" id="annual-operation-log-form">
+                                            <form action="" method="post" id="annual-operations-log-form">
                                                 @csrf
                                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                 <div class="row g-3">
@@ -3396,71 +3397,138 @@
                             </div>
                         </div>
                         <!-- end iot device -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="auditTrailHeading">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#auditTrailCollapse" aria-expanded="false" aria-controls="auditTrailCollapse">
-                                <i class="las la-history me-2"></i> Audit Trail
-                            </button>
-                        </h2>
-                        <div id="auditTrailCollapse" class="accordion-collapse collapse" aria-labelledby="auditTrailHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body">
-                                <!-- Audit Trail Filters -->
-                                <form id="audit-trail-filters" class="mb-4">
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <label for="filter_user" class="form-label">User</label>
-                                            <select class="form-select" id="filter_user" name="user">
-                                                <option value="" selected>All Users</option>
-                                                
-                                                    <option value=""></option>
-                                                
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="filter_action" class="form-label">Action</label>
-                                            <select class="form-select" id="filter_action" name="action">
-                                                <option value="" selected>All Actions</option>
-                                                <option value="create">Create</option>
-                                                <option value="update">Update</option>
-                                                <option value="delete">Delete</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="filter_date" class="form-label">Date</label>
-                                            <input type="date" class="form-control" id="filter_date" name="date">
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 text-end">
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                 
-                                    </div>
-                                </form>
+                         <!-- production batch tracking -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="batchTrackingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
+                                    <i class="las la-box me-2"></i> Batch Tracking
+                                </button>
+                            </h2>
+                            <div id="batchTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="batchTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- Batch Tracking Form -->
+                                    <form action="" method="post" id="batch-tracking-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <!-- Batch Name -->
+                                            <div class="col-md-6">
+                                                <label for="batch_name" class="form-label">Batch Name</label>
+                                                <input type="text" class="form-control" id="batch_name" name="batch_name" placeholder="Enter batch name">
+                                            </div>
 
-                                <!-- Audit Trail Table -->
-                                <div class="table-responsive">
-                                    <table class="table table-striped mb-0" id="tbl-audit-trail">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>User</th>
-                                                <th>Action</th>
-                                                <th>Module</th>
-                                                <th>Description</th>
-                                                <th>Date</th>
-                                                <th class="text-end">Details</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                            <!-- Production Date -->
+                                            
+                                    <div class="col-md-6">
+                                        <label for="start_date" class="form-label">Production Date</label>
+                                        <div class="input-group" id="DateRange">
+                                            <input type="date" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" >
+                                            <span class="input-group-text">to</span>
+                                            <input type="date" class="form-control" name="end_date" placeholder="End" aria-label="EndDate">
+                                        </div>
+                                    </div>
+                                            
+
+
+                                            <!-- Product -->
+                                            <div class="col-md-6">
+                                                <label for="product" class="form-label">Product</label>
+                                                <select class="form-select" id="product" name="product" >
+                                                    <option value="" selected disabled>Select Product</option>
+                                                @foreach($products as $product)
+                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                @endforeach
+                                                </select>
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Total Quantity</label>
+                                                <input type="number" class="form-control" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
+                                            </div>
+                                                    <!-- quantity defective -->
+                                             <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Total Quantity Defective</label>
+                                                <input type="number" class="form-control" id="quantity" name="defective_quantity" placeholder="Enter quantity" min="0" >
+                                            </div>
+
+                                            <!-- Yield Percentage -->
+                                            <div class="col-md-6">
+                                                <label for="yield_percentage" class="form-label">Yield Percentage</label>
+                                                <input type="number" class="form-control" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
+                                            </div>
+                                                <!-- created by -->
+                                                <div class="col-md-6">
+                                                    <label for="prepared_by" class="form-label">Created By</label>
+                                                            <input type="text" class="form-control" id="created_by_input" name="created_by" placeholder="Enter prepared by">
+                                                </div>
+                                                
+
+                                           <!-- geolocation -->
+                                            <div class="col-md-6">
+                                                <label for="geolocation" class="form-label">Geolocation</label>
+                                                <input type="text" class="form-control" id="geolocation" name="geolocation" placeholder="Enter geolocation coordinates (e.g., latitude, longitude)" >
+                                            </div>
+                                                                <!-- IoT Device ID -->
+                                                                <div class="col-md-6">
+                                                                    <label for="iot_device_id" class="form-label">IoT Device</label>
+                                                                    <select class="form-select" id="iot_device_id" name="iot_device">
+                                                                        <option value="" selected disabled>Select IoT Device</option>
+                                                                        @php
+                                                                            $iotDevices = \App\Models\IotDevice::all();
+                                                                        @endphp
+                                                                        @foreach($iotDevices as $device)
+                                                                            <option value="{{ $device->iot_device_id }}">{{ $device->device_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                     </div>
+                                                <!-- Predicted Defect Rate -->
+                                                <div class="col-md-6">
+                                                    <label for="predicted_defect_rate" class="form-label">Predicted Defect Rate (%)</label>
+                                                    <input type="number" class="form-control" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
+                                                </div>
+                                                <!-- audit trail -->
+                                                <div class="col-md-6">
+                                                    <label for="audit_trail" class="form-label">Audit Trail</label>
+                                                    <select class="form-select" id="audit_trail" name="audit_trail">
+                                                        <option value="" selected disabled>Select Audit Trail</option>
+                                                      
+                                                    </select>
+                                                </div>
+
                                            
-                                        </tbody>
-                                    </table>
+
+                                            <!-- Submit Button -->
+                                            <div class="col-md-12 mt-3 text-end">
+                                                <button type="submit" class="btn btn-primary">Save Batch</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Batch Tracking Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-batch-tracking">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Batch Name</th>
+                                                    <th>Product</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                        <!-- audit trail  -->
-
-                        <!-- end audit trail -->
+                         <!-- end production batch tracking -->
+                
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -5094,7 +5162,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="">
+                    <form action="" method="post" id="annual-operation-log-form">
                         @csrf
                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         <div class="row g-3">
@@ -5357,6 +5425,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
@@ -5370,6 +5439,184 @@
     <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
     <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="{{ asset('adminAssets/js/app.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+   <!-- created by tagify -->
+        <script>
+    const createdByInput = document.querySelector("input[name='created_by']");
+
+    const createdByTagify = new Tagify(createdByInput, {
+        tagTextProp: 'name',
+        skipInvalid: true,
+        dropdown: {
+            closeOnSelect: false,
+            enabled: 1,
+            classname: 'users-list',
+            searchKeys: ['name', 'email'],
+            position: "text",
+            mapValueTo: "email",
+        },
+        templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate,
+            dropdownHeader: dropdownHeaderTemplate
+        },
+        whitelist: [],
+        transformTag: transformTagData,
+        validate: validateTagData
+    });
+
+    function tagTemplate(tagData) {
+        return `
+            <tag title="${tagData.email}" contenteditable='false' spellcheck='false' tabIndex="-1" class="tagify__tag ${tagData.class || ""}" ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <div class='tagify__tag__avatar-wrap'>
+                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                    </div>
+                    <span class='tagify__tag-text'>${tagData.name}</span>
+                </div>
+            </tag>
+        `;
+    }
+
+    function suggestionItemTemplate(tagData) {
+        return `
+            <div ${this.getAttributes(tagData)} class='tagify__dropdown__item ${tagData.class || ""}' tabindex="0" role="option">
+                ${tagData.avatar ? `<div class='tagify__dropdown__item__avatar-wrap'><img onerror="this.style.visibility='hidden'" src="${tagData.avatar}"></div>` : ''}
+                <strong>${tagData.name}</strong>
+                <span>${tagData.email}</span>
+            </div>
+        `;
+    }
+
+    function dropdownHeaderTemplate(suggestions) {
+        return `
+            <header class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
+                <strong>${this.value.length ? `Add Remaining` : 'Add All'}</strong>
+                <a class='remove-all-tags'>Remove all</a>
+            </header>
+        `;
+    }
+
+    function transformTagData(tagData) {
+        const { name, email } = parseFullValue(tagData.name);
+        tagData.name = name;
+        tagData.email = email || tagData.email;
+    }
+
+    function validateTagData(tagData) {
+        const name = tagData?.name || '';
+        const email = tagData?.email || '';
+        if (!name) return "Missing name";
+        if (!validateEmail(email)) return "Invalid email";
+        return true;
+    }
+
+    function escapeHTML(s) {
+        return typeof s === 'string' ? s
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/`|'/g, "&#039;")
+            : s;
+    }
+
+    createdByTagify.dropdown.createListHTML = (suggestionsList) => {
+        const rolesOfUsers = suggestionsList.reduce((acc, suggestion) => {
+            const role = suggestion.role || 'Not Assigned';
+            acc[role] = acc[role] || [];
+            acc[role].push(suggestion);
+            return acc;
+        }, {});
+
+        const getUsersSuggestionsHTML = (roleUsers) => roleUsers.map((suggestion) => {
+            suggestion.value = escapeHTML(createdByTagify.dropdown.getMappedValue.call(createdByTagify, suggestion));
+            return createdByTagify.settings.templates.dropdownItem.call(createdByTagify, suggestion);
+        }).join("");
+
+        return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
+            return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`;
+        }).join("");
+    };
+
+    createdByTagify.on('input', debounce(async (e) => {
+        const searchTerm = e.detail.value.trim();
+        if (searchTerm.length < 2) return;
+
+        createdByTagify.settings.whitelist.length = 0;
+        createdByTagify.loading(true).dropdown.hide();
+
+        try {
+            const url = new URL("{{ route('admins.details') }}");
+            url.searchParams.append("query", searchTerm);
+
+            const response = await fetch(url.toString());
+            const users = await response.json();
+
+            if (!users || !Array.isArray(users.users)) {
+                console.error('Unexpected API response structure:', users);
+                return;
+            }
+
+            // Only include non-admin users
+            const filteredUsers = users.users
+                .filter(user => user.role !== 'admin')
+                .map(user => formatUser(user, user.role || 'user'));
+
+            createdByTagify.settings.whitelist = filteredUsers;
+            createdByTagify.loading(false).dropdown.show(searchTerm);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            createdByTagify.settings.whitelist = [];
+            createdByTagify.dropdown.show('Error fetching data. Try again later.');
+        }
+    }, 300));
+
+    createdByTagify.on('dropdown:select', (e) => {
+        if (e.detail.event.target.matches('.remove-all-tags')) {
+            createdByTagify.removeAllTags();
+        } else if (e.detail.elm.classList.contains(`${createdByTagify.settings.classNames.dropdownItem}__addAll`)) {
+            createdByTagify.dropdown.selectAll();
+        }
+    });
+
+    createdByTagify.on('edit:start', ({ detail: { tag, data } }) => {
+        createdByTagify.setTagTextNode(tag, `${data.name} <${data.email}>`);
+    });
+
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function parseFullValue(value) {
+        const parts = value.split(/<(.*?)>/g);
+        return {
+            name: parts[0]?.trim() || '',
+            email: parts[1]?.replace(/<(.*?)>/g, '').trim() || ''
+        };
+    }
+
+    function formatUser(user, role) {
+        return {
+            value: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
+            email: user.email,
+            role
+        };
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+</script>
+
+   <!-- end created by tagify -->
     <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
@@ -8617,6 +8864,39 @@
     });
 </script>
 <!-- end iot device managment -->
+ <!-- store production batch tracking -->
+    <script>
+        document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const url = "{{ route('admin.store-production-batch-tracking') }}";
+
+            try {
+                const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+                if (result.status === 'success') {
+                    const tableBody = document.querySelector('#tbl-batch-tracking tbody');
+                    tableBody.innerHTML = result.productionBatchTracking.map(batch => `
+                        <tr>
+                            <td>${batch.batch_name}</td>
+                            <td>${batch.product?.name || 'N/A'}</td>
+                            <td>${batch.start_date}</td>
+                            <td>${batch.end_date}</td>
+                            <td>${batch.status}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error storing batch tracking:', error);
+            }
+        });
+    </script>
+ <!-- end production batch tracking -->
 <!-- Chemical  -->
 <script>
     const btnSubmitChemical = document.querySelector('#btn-submit-chemical');
@@ -8946,6 +9226,52 @@
         }
     });
     // Edit Operation Category Modal Trigger
+    
+      // Store Annual Operations Log
+    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operations-log') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationsTable(result.annual_operations_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operations log:', error);
+        }
+    });
+
+  
+    /**
+     * Updates the Annual Operations Logs table with new data.
+     * @param {Array} logs - Array of annual operations logs.
+     */
+    function updateAnnualOperationsTable(logs) {
+        const tableBody = document.querySelector('#tbl-annual-operations-log tbody');
+        tableBody.innerHTML = logs.map(operation => `
+            <tr>
+                <td>${operation.operation_name}</td>
+                <td>${operation.operation?.operation_name || 'N/A'}</td>
+                <td>${operation.calendarYear?.name || 'N/A'}</td>
+                <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
+                <td>${operation.water_used_per_year}</td>
+                <td>${operation.units_produced_per_year}</td>
+                <td class="text-end">
+                    <div class="dropdown d-inline-block">
+                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
 
     // Store Operation Log
     document.querySelector('#operations-form').addEventListener('submit', async function (e) {
