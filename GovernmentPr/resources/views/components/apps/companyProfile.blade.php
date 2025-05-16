@@ -9226,52 +9226,6 @@
         }
     });
     // Edit Operation Category Modal Trigger
-    
-      // Store Annual Operations Log
-    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-annual-operations-log') }}";
-
-        try {
-            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
-            if (result.status === 'success') {
-                updateAnnualOperationsTable(result.annual_operations_logs);
-            }
-        } catch (error) {
-            console.error('Error storing annual operations log:', error);
-        }
-    });
-
-  
-    /**
-     * Updates the Annual Operations Logs table with new data.
-     * @param {Array} logs - Array of annual operations logs.
-     */
-    function updateAnnualOperationsTable(logs) {
-        const tableBody = document.querySelector('#tbl-annual-operations-log tbody');
-        tableBody.innerHTML = logs.map(operation => `
-            <tr>
-                <td>${operation.operation_name}</td>
-                <td>${operation.operation?.operation_name || 'N/A'}</td>
-                <td>${operation.calendarYear?.name || 'N/A'}</td>
-                <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
-                <td>${operation.water_used_per_year}</td>
-                <td>${operation.units_produced_per_year}</td>
-                <td class="text-end">
-                    <div class="dropdown d-inline-block">
-                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
-                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Edit</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
-    }
 
     // Store Operation Log
     document.querySelector('#operations-form').addEventListener('submit', async function (e) {
@@ -9956,6 +9910,61 @@
             </tr>
         `).join('');
     }
+
+    // annual operation activity
+    document.querySelector('#annualOperationsActivityModal').addEventListener('shown.bs.modal', async function () {
+        const metadataId = document.querySelector('input[name="annual_op_metadata_ID"]').value;
+        const url = `/admin/metadata/activities/${metadataId}`;
+        const spinner = document.getElementById('loading-spinner');
+
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success" && Array.isArray(data.activities)) {
+                const activitiesTable = $('#tbl-annual-operations-activity').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    responsive: true,
+                    destroy: true, // Reinitialize the table
+                    columnDefs: [
+                        { orderable: false, targets: [4] } // Disable sorting on the "Action" column
+                    ],
+                    data: data.activities,
+                    columns: [
+                        { data: 'activity_name', title: 'Activity Name' },
+                        { data: 'activity_description', title: 'Description' },
+                        { data: 'activity_date', title: 'Date' },
+                        { data: 'status', title: 'Status' },
+                        {
+                            data: null,
+                            title: 'Actions',
+                            render: function (data, type, row) {
+                                return `
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteActivity(${row.id})">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </div>`;
+                            }
+                        }
+                    ]
+                });
+            } else {
+                displayMessage('warning', 'No activities found for this metadata.');
+            }
+        } catch (error) {
+            console.error("Error fetching activities:", error);
+            displayMessage('danger', 'An error occurred while fetching activities. Please try again.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
   </script>
  <!-- Annual Operation log -->
  
