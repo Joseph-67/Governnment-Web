@@ -48,6 +48,8 @@
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
                             aria-selected="false"><i class="la la-user d-block"></i>Contact Personnel Details</a>
                     </li>
+
+                    
                 </ul>
                 <!-- Tab panes -->
             </div>
