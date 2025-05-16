@@ -178,6 +178,7 @@
                                         <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -221,35 +222,52 @@
                 const modal = new bootstrap.Modal(document.getElementById('subcategoriesModal'));
                 document.getElementById('subcategoriesModalLabel').textContent = `Subcategories for Waste Category: ${wasteCategoryName}`;
                 document.getElementById('waste_category_id').value = wasteCategoryID;
-                fetch(`/admin/waste-subcategories/${wasteCategoryID}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const tbody = document.querySelector('#subcategoriesModal table tbody');
-                        tbody.innerHTML = '';
-                        if (Array.isArray(data) && data.length > 0) {
-                            data.forEach(subcat => {
-                                const tr = document.createElement('tr');
-                                tr.innerHTML = `
-                                    <td>${subcat.waste_sub_category_name || ''}</td>
-                                    <td>${subcat.waste_sub_category_description || ''}</td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-danger" type="button" onclick='deleteCategory("${subcat.waste_sub_category_id}", "${subcat.waste_sub_category_name}")'>
-                                            <i class="las la-trash-alt me-1"></i> Delete
-                                        </button>
-                                    </td>
-                                `;
-                                tbody.appendChild(tr);
-                            });
-                        } else {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `<td colspan="3" class="text-center">No subcategories found.</td>`;
-                            tbody.appendChild(tr);
-                        }
-                    })
-                    .catch(() => {
-                        const tbody = document.querySelector('#subcategoriesModal table tbody');
-                        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Failed to load subcategories.</td></tr>`;
+                let tbody = document.querySelector('#subcategoriesModal table tbody');
+                fetch(`/admin/get-waste-subcategories/${wasteCategoryID}`)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // or response.text() if it's plain text
+                })
+                .then(data => {
+                    console.log(data.wasteSubCategory); // The actual subcategories returned from the server
+                    
+                    if (Array.isArray(data.wasteSubCategory) && data.wasteSubCategory.length > 0) {
+                    tbody.innerHTML = ''; // Clear existing rows
+
+                    data.wasteSubCategory.forEach(subcategory => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${subcategory.waste_sub_category_name}</td>
+                            <td>${subcategory.waste_sub_category_description}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-warning me-2" type="button" onclick='editSubcategory("${subcategory.id}", "${subcategory.waste_sub_category_name}")'>
+                                    <i class="las la-edit me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" type="button" onclick='deleteSubcategory("${subcategory.id}", "${subcategory.waste_sub_category_name}")'>
+                                    <i class="las la-trash-alt me-1"></i> Delete
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
                     });
+                }else{
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="text-center">No subcategories found.</td>
+                        </tr>
+                    `;
+                }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="text-center">Failed to load subcategories.</td>
+                        </tr>
+                    `;
+                })
                 modal.show();
             }
             document.getElementById('btn-submit').addEventListener('click', function() {
