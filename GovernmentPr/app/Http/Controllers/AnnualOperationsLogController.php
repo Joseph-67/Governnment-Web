@@ -35,7 +35,7 @@ class AnnualOperationsLogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store_metadata(Request $request)
     {
         //
         $validator = Validator::make($request->all(), [
@@ -114,6 +114,14 @@ class AnnualOperationsLogController extends Controller
         ], 201);
         
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\AnnualOperationsLog  $annualOperationsLog
+     * @return \Illuminate\Http\Response
+     */
+    
 
     /**
      * Display the specified resource.

@@ -23,6 +23,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
+use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OperationTypeController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionLogController;
+use App\Http\Controllers\ProductionBatchTrackingController;
 use App\Http\Controllers\QualityControlController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
@@ -52,6 +54,7 @@ use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
+use App\Http\Controllers\AnnualOperation\MetadataController;
 
 
 
@@ -236,8 +239,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
 
-
-
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
         Route::post('/company/material-setup/price', 'store_price')->name('admin.save-company-material-price');
@@ -369,6 +370,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(InventoryForecastingController::class)->group(function() {
         Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
     });
+    // iot devices
+    Route::controller(IotDeviceController::class)->group(function() {
+        Route::get('/iot-devices', 'index')->name('admin.iot-devices');
+        Route::post('/iot-devices/store', 'store')->name('admin.store-iot-device');
+        Route::get('/iot-devices/{id}', 'show')->name('admin.show-iot-device');
+        Route::put('/iot-devices/{id}', 'update')->name('admin.update-iot-device');
+        Route::delete('/iot-devices/{id}', 'destroy')->name('admin.delete-iot-device');
+    });
 
     // Map Report
     Route::controller(MapReport::class)->group(function(){
@@ -403,7 +412,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // annual operation log
     Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operation-log');
+    });
+
+    // Metadata
+    Route::controller(MetadataController::class)->group(function() {
+        Route::get('/metadata', 'index')->name('admin.metadata');
+        Route::post('/metadata/store', 'store_metadata')->name('admin.store-annual-operation-metadata');
+        Route::get('/metadata/{id}', 'show')->name('admin.show-metadata');
+        Route::put('/metadata/{id}', 'update')->name('admin.update-metadata');
+        Route::delete('/metadata/{id}', 'destroy')->name('admin.delete-metadata');
+        Route::get('/metadata/company/{companyId}', 'getMetadataByCompany')->name('admin.metadata-by-company');
     });
 
     // Pages
@@ -458,6 +477,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
         Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
         Route::get('/get-production-data/{selectedCompany}/{selectedYear}', 'create_report');
+    });
+
+    // production batch tracking
+    Route::controller(ProductionBatchTrackingController::class)->group(function() {
+        Route::get('/production-batch-tracking', 'index')->name('admin.production-batch-tracking');
+        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-production-batch-tracking');
+        Route::get('/production-batch-tracking/{id}', 'show')->name('admin.show-production-batch-tracking');
+        Route::put('/production-batch-tracking/{id}', 'update')->name('admin.update-production-batch-tracking');
+        Route::delete('/production-batch-tracking/{id}', 'destroy')->name('admin.delete-production-batch-tracking');
     });
     
     Route::controller(AddPostController::class)->group(function() {

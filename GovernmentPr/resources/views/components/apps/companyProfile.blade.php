@@ -1,5 +1,6 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
+
     <div class="container-xxl">
         <!-- Header -->
         <div class="profile-header text-center py-5">
@@ -2816,50 +2817,42 @@
                                 aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
                                     <!-- Annual Operations Log Form -->
-                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card"> <!-- Light beige background for annual operations log -->
+                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card">
                                         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                             <h4 class="card-title mb-0">Annual Operations Metadata</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                                            <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                                                onclick="this.closest('.card').classList.add('d-none');"></button>
                                         </div>
                                         <div class="card-body">
                                             <form action="" method="post" id="annual-operations-log-form">
                                                 @csrf
                                                 <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                 <div class="row g-3">
-                                                    <!-- Operation Name -->
                                                     <div class="col-md-6">
                                                         <label for="operation_name" class="form-label">Operation Name</label>
-                                                        <div class="form-group">
-                                                            <input type="text" name="operation_name" id="" class="form-control" placeholder="Enter operation name" required />
-                                                        </div>
+                                                        <input type="text" name="operation_name" class="form-control" placeholder="Enter operation name" required>
                                                     </div>
-                                                    <!-- Calendar Year -->
                                                     <div class="col-md-6">
                                                         <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                        <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
+                                                        <select class="form-select calendar-year" name="calendar_year" required>
                                                             <option value="" selected disabled>Select Calendar Year</option>
-                                                            
                                                         </select>
                                                     </div>
-                                                    <!-- Expected Operations Per Year -->
                                                     <div class="col-md-4">
                                                         <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
-                                                        <input type="number" class="form-control" id="operations_per_year" name="operations_per_year" min="0" placeholder="Enter expected operations" required>
+                                                        <input type="number" class="form-control" name="operations_per_year" min="0" placeholder="Enter expected operations">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="prepared_by" class="form-label">Prepared By</label>
-                                                        <div class="">
-                                                            <input type="text" class="form-control" id="prepared_by" name="prepared_by" placeholder="Enter prepared by" required>
-                                                        </div>
+                                                        <input type="text" class="form-control" name="prepared_by" placeholder="Enter prepared by" required>
                                                     </div>
-                                                    <!-- Status -->
                                                     <div class="col-md-4">
                                                         <label for="status" class="form-label">Status</label>
-                                                        <select class="form-select" id="status" name="status" required>
+                                                        <select class="form-select" name="status" required>
                                                             <option value="" selected disabled>Select Status</option>
-                                                            <option value="draft">Draft</option>
-                                                            <option value="publish">Publish</option>
-                                                            <option value="archived">Archived</option>
+                                                            <option value="Draft">Draft</option>
+                                                            <option value="Publish">Publish</option>
+                                                            <option value="Archived">Archived</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-12 text-end mt-3">
@@ -2869,166 +2862,21 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- Annual Operations Activity -->
-                                    <div class="card shadow-sm border-0 mt-4">
-                                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operations Activity</h4>
-                                            <button type="button" class="btn btn-secondary btn-sm" id="close-annual-operations-log">
-                                                <i class="las la-times"></i>
-                                            </button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row g-3">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
-                                                            <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
-                                                            <select class="form-select operation-select" id="operation_name" name="operation_name" required>
-                                                                <option value="" selected disabled>Select Operation</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="activity_date" class="form-label fw-bold">Activity Date</label>
-                                                            <input type="date" class="form-control" id="activity_date" name="activity_date" required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Objectives -->
-                                                    <div class="col-md-6">
-                                                        <label for="objectives" class="form-label">Objectives</label>
-                                                        <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activitty"></textarea>
-                                                    </div>
-                                                    <!-- Description -->
-                                                    <div class="col-md-6">
-                                                        <label for="description" class="form-label">Description</label>
-                                                        <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
-                                                    </div>
-                                                <div class="col-md-6">
-                                                    <div class="material-quantity-used-container-annual-operation-log col-md-12">
-                                                        <div class="row g-2 align-items-end mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="expected_material" class="form-label fw-bold">Material Needed</label>
-                                                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
-                                                                        <option value="" selected disabled>Select Material</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
-                                                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 text-start">
-                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="chemical-quantity-container-annual-operation-log col-md-12">
-                                                        <div class="row g-2 align-items-end mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
-                                                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                                        <option value="" selected disabled>Select Chemical</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
-                                                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-start">
-                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                                                    </div>
-                                                </div>
-                                                <!-- Expected Water Usage -->
-                                                <div class="col-md-4">
-                                                    <label for="water_usage" class="form-label">Expected Water Usage</label>
-                                                    <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
-                                                </div>
-                                                <!-- Priority -->
-                                                <div class="col-md-4">
-                                                    <label for="priority" class="form-label">Priority</label>
-                                                    <select class="form-select" id="priority" name="priority" required>
-                                                        <option value="" selected disabled>Select Priority</option>
-                                                        <option value="high">High</option>
-                                                        <option value="medium">Medium</option>
-                                                        <option value="low">Low</option>
-                                                    </select>
-                                                </div>
-                                                <!-- Tags -->
-                                                <div class="col-md-4">
-                                                    <label for="tags" class="form-label">Tags</label>
-                                                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
-                                                </div>
-                                                <!-- Submit Button -->
-                                                <div class="col-md-12 mt-3 text-end">
-                                                    <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
                                     <!-- Annual Operations Log Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-annual-operations-log">
+                                        <table class="table table-striped mb-0 w-100" id="tbl-annual-operations-metadata-log">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Operation Name</th>
-                                                    <th>Operation</th>
-                                                    <th>Year</th>
-                                                    <th>Expected Number of Operations per year</th>
-                                                    <th>Expected Number of Waste to be Generated per year</th>
-                                                    <th>Expected Number of Water to be Used per year</th>
-                                                    <th>Expected Number of Units to be Produced</th>
+                                                    <th>Calendar Year</th>
+                                                    <th>Expected Operations per Year</th>
+                                                    <th>Prepared By</th>
+                                                    <th>Status</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                @foreach($annual_operations_logs as $operations)
-                                                <tr>
-                                                    <td>{{ $operations->operation_name }}</td>
-                                                    <td>{{ $operations->operation->operation_name ?? 'N/A'  }}</td>
-                                                    <td>{{ $operations->calendarYear->name ?? 'N/A' }}</td>
-                                                    <td>{{ $operations->operations_per_year }}</td>
-                                                    <td>{{ implode(', ', $operations->quantity_of_waste) }}</td>
-
-                                                    <td>{{ $operations->water_used_per_year }}</td>
-                                                    <td>{{ $operations->units_produced_per_year }}</td>
-                                                    <td class="text-end">
-                                                        <div class="dropdown d-inline-block">
-                                                            <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                                data-bs-toggle="dropdown" href="#" role="button"
-                                                                aria-haspopup="false" aria-expanded="false">
-                                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end"
-                                                                aria-labelledby="dLabel11">
-                                                                <a class="dropdown-item" href="#"
-                                                                >Edit</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -3485,7 +3333,202 @@
                                 
                             </div>
                         </div>
-                        
+                        <!-- iot device -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="iotDeviceHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#iotDeviceCollapse" aria-expanded="false" aria-controls="iotDeviceCollapse">
+                                    <i class="las la-microchip me-2"></i> IoT Device Management
+                                </button>
+                            </h2>
+                            <div id="iotDeviceCollapse" class="accordion-collapse collapse" aria-labelledby="iotDeviceHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- IoT Device Form -->
+                                    <form action="" method="post" id="iot-device-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="device_name" class="form-label">Device Name</label>
+                                                    <input type="text" class="form-control" id="device_name" name="device_name" placeholder="Enter device name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="device_type" class="form-label">Device Location</label>
+                                                    <input type="text" class="form-control" id="device_location" name="device_location" placeholder="Enter device location" required>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="last_maintenance_date" class="form-label">Last Maintenance Date</label>
+                                                    <input type="date" class="form-control" id="last_maintenance_date" name="last_maintenance_date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- IoT Device Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-iot-devices">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Device Name</th>
+                                                
+                                                    <th>Device Location</th>
+                                                    <th>Status</th>
+                                                    
+                                                 
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                               
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end iot device -->
+                         <!-- production batch tracking -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="batchTrackingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
+                                    <i class="las la-box me-2"></i> Batch Tracking
+                                </button>
+                            </h2>
+                            <div id="batchTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="batchTrackingHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- Batch Tracking Form -->
+                                    <form action="" method="post" id="batch-tracking-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <!-- Batch Name -->
+                                            <div class="col-md-6">
+                                                <label for="batch_name" class="form-label">Batch Name</label>
+                                                <input type="text" class="form-control" id="batch_name" name="batch_name" placeholder="Enter batch name">
+                                            </div>
+
+                                            <!-- Production Date -->
+                                            
+                                    <div class="col-md-6">
+                                        <label for="start_date" class="form-label">Production Date</label>
+                                        <div class="input-group" id="DateRange">
+                                            <input type="date" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" >
+                                            <span class="input-group-text">to</span>
+                                            <input type="date" class="form-control" name="end_date" placeholder="End" aria-label="EndDate">
+                                        </div>
+                                    </div>
+                                            
+
+
+                                            <!-- Product -->
+                                            <div class="col-md-6">
+                                                <label for="product" class="form-label">Product</label>
+                                                <select class="form-select" id="product" name="product" >
+                                                    <option value="" selected disabled>Select Product</option>
+                                                @foreach($products as $product)
+                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                @endforeach
+                                                </select>
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Total Quantity</label>
+                                                <input type="number" class="form-control" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
+                                            </div>
+                                                    <!-- quantity defective -->
+                                             <div class="col-md-6">
+                                                <label for="quantity" class="form-label">Total Quantity Defective</label>
+                                                <input type="number" class="form-control" id="quantity" name="defective_quantity" placeholder="Enter quantity" min="0" >
+                                            </div>
+
+                                            <!-- Yield Percentage -->
+                                            <div class="col-md-6">
+                                                <label for="yield_percentage" class="form-label">Yield Percentage</label>
+                                                <input type="number" class="form-control" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
+                                            </div>
+                                                <!-- created by -->
+                                                <div class="col-md-6">
+                                                    <label for="prepared_by" class="form-label">Created By</label>
+                                                            <input type="text" class="form-control" id="created_by_input" name="created_by" placeholder="Enter prepared by">
+                                                </div>
+                                                
+
+                                           <!-- geolocation -->
+                                            <div class="col-md-6">
+                                                <label for="geolocation" class="form-label">Geolocation</label>
+                                                <input type="text" class="form-control" id="geolocation" name="geolocation" placeholder="Enter geolocation coordinates (e.g., latitude, longitude)" >
+                                            </div>
+                                                                <!-- IoT Device ID -->
+                                                                <div class="col-md-6">
+                                                                    <label for="iot_device_id" class="form-label">IoT Device</label>
+                                                                    <select class="form-select" id="iot_device_id" name="iot_device">
+                                                                        <option value="" selected disabled>Select IoT Device</option>
+                                                                        @php
+                                                                            $iotDevices = \App\Models\IotDevice::all();
+                                                                        @endphp
+                                                                        @foreach($iotDevices as $device)
+                                                                            <option value="{{ $device->iot_device_id }}">{{ $device->device_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                     </div>
+                                                <!-- Predicted Defect Rate -->
+                                                <div class="col-md-6">
+                                                    <label for="predicted_defect_rate" class="form-label">Predicted Defect Rate (%)</label>
+                                                    <input type="number" class="form-control" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
+                                                </div>
+                                                <!-- audit trail -->
+                                                <div class="col-md-6">
+                                                    <label for="audit_trail" class="form-label">Audit Trail</label>
+                                                    <select class="form-select" id="audit_trail" name="audit_trail">
+                                                        <option value="" selected disabled>Select Audit Trail</option>
+                                                      
+                                                    </select>
+                                                </div>
+
+                                           
+
+                                            <!-- Submit Button -->
+                                            <div class="col-md-12 mt-3 text-end">
+                                                <button type="submit" class="btn btn-primary">Save Batch</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Batch Tracking Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0" id="tbl-batch-tracking">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Batch Name</th>
+                                                    <th>Product</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- end production batch tracking -->
+                
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="productionTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -4962,124 +5005,154 @@
     </div>
 
     <!-- end update operation log modal -->
-    @section('modal')
+    @section('modals')
     <!-- Add your modal content here if needed -->
      <!-- Annual operations activity -->
-    <!-- Annual Operations Activity -->
-    <div class="card shadow-sm border-0 mt-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">Annual Operations Activity</h4>
-            <button type="button" class="btn btn-secondary btn-sm" id="close-annual-operations-log">
-                <i class="las la-times"></i>
-            </button>
-        </div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
-                        <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
-                    </div>
+    <!-- Annual Operations Activity Modal -->
+    <div class="modal fade" id="annualOperationsActivityModal" tabindex="-1" aria-labelledby="annualOperationsActivityModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="annualOperationsActivityModalLabel">Annual Operations Activity</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
-                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
-                            <option value="" selected disabled>Select Operation</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="activity_date" class="form-label fw-bold">Activity Date</label>
-                        <input type="date" class="form-control" id="activity_date" name="activity_date" required>
-                    </div>
-                </div>
-                <!-- Objectives -->
-                <div class="col-md-6">
-                    <label for="objectives" class="form-label">Objectives</label>
-                    <textarea name="objectives" id="objectives" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
-                </div>
-                <!-- Description -->
-                <div class="col-md-6">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
-                </div>
-                <div class="col-md-6">
-                    <div class="material-quantity-used-container-annual-operation-log col-md-12">
-                        <div class="row g-2 align-items-end mb-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="expected_material" class="form-label fw-bold">Material Needed</label>
-                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
-                                        <option value="" selected disabled>Select Material</option>
-                                    </select>
+                <div class="modal-body">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="card-title mb-0">Annual Operations Activity Form</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="" method="post" id="annual-operations-activity-form">
+                                <input type="hidden" name="annual_op_metadata_ID">
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="annual_operation_title" class="form-label fw-bold">Annual Operation Title</label>
+                                            <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="operation_name" class="form-label fw-bold">Operation Activity</label>
+                                            <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                                <option value="" selected disabled>Select Operation</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Activity Date</label>
+                                        <div class="input-group" id="DateRange">
+                                            <input type="date" class="form-control" placeholder="Start" aria-label="StartDate">
+                                            <span class="input-group-text">to</span>
+                                            <input type="date" class="form-control rounded-end" placeholder="End" aria-label="EndDate">
+                                        </div> 
+                                    </div><!-- end col --> 
+                                    <!-- Objectives -->
+                                    <div class="col-md-6">
+                                        <label for="objectives" class="form-label">Objectives</label>
+                                        <textarea name="objectives" id="objectives" cols="30" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
+                                    </div>
+                                    <!-- Description -->
+                                    <div class="col-md-6">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="material-quantity-used-container-annual-operation-log col-md-12">
+                                            <div class="row g-2 align-items-end mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="expected_material" class="form-label fw-bold">Material Needed</label>
+                                                        <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
+                                                            <option value="" selected disabled>Select Material</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
+                                                        <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-start">
+                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="chemical-quantity-container-annual-operation-log col-md-12">
+                                            <div class="row g-2 align-items-end mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
+                                                        <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                                            <option value="" selected disabled>Select Chemical</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
+                                                        <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-start">
+                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
+                                        </div>
+                                    </div>
+                                    <!-- Expected Water Usage -->
+                                    <div class="col-md-4">
+                                        <label for="water_usage" class="form-label">Expected Water Usage</label>
+                                        <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
+                                    </div>
+                                    <!-- Priority -->
+                                    <div class="col-md-4">
+                                        <label for="priority" class="form-label">Priority</label>
+                                        <select class="form-select" id="priority" name="priority" required>
+                                            <option value="" selected disabled>Select Priority</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </div>
+                                    <!-- Tags -->
+                                    <div class="col-md-4">
+                                        <label for="tags" class="form-label">Tags</label>
+                                        <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
+                                    </div>
+                                    <!-- Submit Button -->
+                                    <div class="col-md-12 mt-3 text-end">
+                                        <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="expected_quantity" class="form-label fw-bold">Expected Quantity</label>
-                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-md-12 text-start">
-                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
+                    <hr class="my-4">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0" id="tbl-annual-operations-activity">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Activity Name</th>
+                                    <th>Operation Name</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Priority</th>
+                                    <th>Tags</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="chemical-quantity-container-annual-operation-log col-md-12">
-                        <div class="row g-2 align-items-end mb-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="chemical_used" class="form-label fw-bold">Chemical Needed</label>
-                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                        <option value="" selected disabled>Select Chemical</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="chemical_quantity" class="form-label fw-bold">Quantity</label>
-                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 text-start">
-                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                    </div>
-                </div>
-                <!-- Expected Water Usage -->
-                <div class="col-md-4">
-                    <label for="water_usage" class="form-label">Expected Water Usage</label>
-                    <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
-                </div>
-                <!-- Priority -->
-                <div class="col-md-4">
-                    <label for="priority" class="form-label">Priority</label>
-                    <select class="form-select" id="priority" name="priority" required>
-                        <option value="" selected disabled>Select Priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                    </select>
-                </div>
-                <!-- Tags -->
-                <div class="col-md-4">
-                    <label for="tags" class="form-label">Tags</label>
-                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
-                </div>
-                <!-- Submit Button -->
-                <div class="col-md-12 mt-3 text-end">
-                    <button type="submit" class="btn btn-primary">Save Material and Chemical</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Annual Operations Activity -->
-     <!-- Annual Operation Performance Metrics -->
+    <!-- End Annual Operations Activity Modal -->
     <!-- Annual Operation Performance Metrics Modal -->
     <div class="modal fade" id="annualOperationPerformanceMetricsModal" tabindex="-1" aria-labelledby="annualOperationPerformanceMetricsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -5133,37 +5206,21 @@
             </div>
         </div>
     </div>
-    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operation-log-card"> <!-- Light beige background for annual operation log -->
-        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">Annual Operation Log</h4>
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-        </div>
-        <div class="card-body">
-            <form action="" method="post" id="annual-operation-log-form">
-                @csrf
-                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                <div class="row g-3">
-                    <!-- Total Operations -->
-                    <div class="col-md-4">
-                        <label for="total_operations" class="form-label">Total Operations</label>
-                        <input type="number" class="form-control" id="total_operations" name="total_operations" min="0" placeholder="Enter total operations" required>
-                    </div>
-                    <!-- Total Waste Generated -->
-                    <div class="col-md-4">
-                        <label for="total_waste_generated" class="form-label">Total Waste Generated (Units)</label>
-                        <input type="number" class="form-control" id="total_waste_generated" name="total_waste_generated" min="0" placeholder="Enter total waste generated"     <!-- End Annual Operation Performance Metrics -->
+    
      <!-- End annual operations Log -->
     @endsection
 
     @section('styles')
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap5.min.css') }}">
 
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
+    <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
     <style>
         .tagify {
             width: 100%;
@@ -5361,17 +5418,205 @@
     @section('scripts')
     <!-- DataTables and Bootstrap JavaScript -->
     <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('adminAssets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('adminAssets/js/toastify.js') }}"></script>
     <script src="{{ asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js') }}"></script>
     <script src="{{ asset('adminAssets/js/pages/datatable.init.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('adminAssets/js/location.js') }}"></script>
     <script src="{{ asset('adminAssets/js/industry.js') }}"></script>
+    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
+    <script src="{{ asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/moment.js')}}"></script>
+    <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
+    <script src="{{ asset('adminAssets/js/app.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+   <!-- created by tagify -->
+        <script>
+    const createdByInput = document.querySelector("input[name='created_by']");
+
+    const createdByTagify = new Tagify(createdByInput, {
+        tagTextProp: 'name',
+        skipInvalid: true,
+        dropdown: {
+            closeOnSelect: false,
+            enabled: 1,
+            classname: 'users-list',
+            searchKeys: ['name', 'email'],
+            position: "text",
+            mapValueTo: "email",
+        },
+        templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate,
+            dropdownHeader: dropdownHeaderTemplate
+        },
+        whitelist: [],
+        transformTag: transformTagData,
+        validate: validateTagData
+    });
+
+    function tagTemplate(tagData) {
+        return `
+            <tag title="${tagData.email}" contenteditable='false' spellcheck='false' tabIndex="-1" class="tagify__tag ${tagData.class || ""}" ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <div class='tagify__tag__avatar-wrap'>
+                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                    </div>
+                    <span class='tagify__tag-text'>${tagData.name}</span>
+                </div>
+            </tag>
+        `;
+    }
+
+    function suggestionItemTemplate(tagData) {
+        return `
+            <div ${this.getAttributes(tagData)} class='tagify__dropdown__item ${tagData.class || ""}' tabindex="0" role="option">
+                ${tagData.avatar ? `<div class='tagify__dropdown__item__avatar-wrap'><img onerror="this.style.visibility='hidden'" src="${tagData.avatar}"></div>` : ''}
+                <strong>${tagData.name}</strong>
+                <span>${tagData.email}</span>
+            </div>
+        `;
+    }
+
+    function dropdownHeaderTemplate(suggestions) {
+        return `
+            <header class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
+                <strong>${this.value.length ? `Add Remaining` : 'Add All'}</strong>
+                <a class='remove-all-tags'>Remove all</a>
+            </header>
+        `;
+    }
+
+    function transformTagData(tagData) {
+        const { name, email } = parseFullValue(tagData.name);
+        tagData.name = name;
+        tagData.email = email || tagData.email;
+    }
+
+    function validateTagData(tagData) {
+        const name = tagData?.name || '';
+        const email = tagData?.email || '';
+        if (!name) return "Missing name";
+        if (!validateEmail(email)) return "Invalid email";
+        return true;
+    }
+
+    function escapeHTML(s) {
+        return typeof s === 'string' ? s
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/`|'/g, "&#039;")
+            : s;
+    }
+
+    createdByTagify.dropdown.createListHTML = (suggestionsList) => {
+        const rolesOfUsers = suggestionsList.reduce((acc, suggestion) => {
+            const role = suggestion.role || 'Not Assigned';
+            acc[role] = acc[role] || [];
+            acc[role].push(suggestion);
+            return acc;
+        }, {});
+
+        const getUsersSuggestionsHTML = (roleUsers) => roleUsers.map((suggestion) => {
+            suggestion.value = escapeHTML(createdByTagify.dropdown.getMappedValue.call(createdByTagify, suggestion));
+            return createdByTagify.settings.templates.dropdownItem.call(createdByTagify, suggestion);
+        }).join("");
+
+        return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
+            return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`;
+        }).join("");
+    };
+
+    createdByTagify.on('input', debounce(async (e) => {
+        const searchTerm = e.detail.value.trim();
+        if (searchTerm.length < 2) return;
+
+        createdByTagify.settings.whitelist.length = 0;
+        createdByTagify.loading(true).dropdown.hide();
+
+        try {
+            const url = new URL("{{ route('admins.details') }}");
+            url.searchParams.append("query", searchTerm);
+
+            const response = await fetch(url.toString());
+            const users = await response.json();
+
+            if (!users || !Array.isArray(users.users)) {
+                console.error('Unexpected API response structure:', users);
+                return;
+            }
+
+            // Only include non-admin users
+            const filteredUsers = users.users
+                .filter(user => user.role !== 'admin')
+                .map(user => formatUser(user, user.role || 'user'));
+
+            createdByTagify.settings.whitelist = filteredUsers;
+            createdByTagify.loading(false).dropdown.show(searchTerm);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            createdByTagify.settings.whitelist = [];
+            createdByTagify.dropdown.show('Error fetching data. Try again later.');
+        }
+    }, 300));
+
+    createdByTagify.on('dropdown:select', (e) => {
+        if (e.detail.event.target.matches('.remove-all-tags')) {
+            createdByTagify.removeAllTags();
+        } else if (e.detail.elm.classList.contains(`${createdByTagify.settings.classNames.dropdownItem}__addAll`)) {
+            createdByTagify.dropdown.selectAll();
+        }
+    });
+
+    createdByTagify.on('edit:start', ({ detail: { tag, data } }) => {
+        createdByTagify.setTagTextNode(tag, `${data.name} <${data.email}>`);
+    });
+
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function parseFullValue(value) {
+        const parts = value.split(/<(.*?)>/g);
+        return {
+            name: parts[0]?.trim() || '',
+            email: parts[1]?.replace(/<(.*?)>/g, '').trim() || ''
+        };
+    }
+
+    function formatUser(user, role) {
+        return {
+            value: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
+            email: user.email,
+            role
+        };
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+</script>
+
+   <!-- end created by tagify -->
     <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
@@ -8586,7 +8831,72 @@
     });
 </script>
 <!-- end water disposal -->
+<!--store IoT Device Management -->
+<script>
+    document.querySelector('#iot-device-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-iot-device') }}";
 
+        try {
+            const result = await fetch_cycle('--Store IoT Device', url, 'POST', formData);
+            if (result.status === 'success') {
+                const tableBody = document.querySelector('#tbl-iot-devices tbody');
+                tableBody.innerHTML = result.iot_devices.map(device => `
+                    <tr>
+                        <td>${device.device_name}</td>
+                        <td>${device.device_type}</td>
+                        <td>${device.serial_number}</td>
+                        <td>${device.status}</td>
+                        <td>${device.date_added}</td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error storing IoT device:', error);
+        }
+    });
+</script>
+<!-- end iot device managment -->
+ <!-- store production batch tracking -->
+    <script>
+        document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const url = "{{ route('admin.store-production-batch-tracking') }}";
+
+            try {
+                const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+                if (result.status === 'success') {
+                    const tableBody = document.querySelector('#tbl-batch-tracking tbody');
+                    tableBody.innerHTML = result.productionBatchTracking.map(batch => `
+                        <tr>
+                            <td>${batch.batch_name}</td>
+                            <td>${batch.product?.name || 'N/A'}</td>
+                            <td>${batch.start_date}</td>
+                            <td>${batch.end_date}</td>
+                            <td>${batch.status}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error storing batch tracking:', error);
+            }
+        });
+    </script>
+ <!-- end production batch tracking -->
 <!-- Chemical  -->
 <script>
     const btnSubmitChemical = document.querySelector('#btn-submit-chemical');
@@ -8916,8 +9226,8 @@
         }
     });
     // Edit Operation Category Modal Trigger
-
-    // Store Annual Operations Log
+    
+      // Store Annual Operations Log
     document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
         e.preventDefault();
         const formData = new FormData(this);
@@ -8933,6 +9243,7 @@
         }
     });
 
+  
     /**
      * Updates the Annual Operations Logs table with new data.
      * @param {Array} logs - Array of annual operations logs.
@@ -9450,5 +9761,203 @@
     });
 </script>
 <!-- Product Management Script -->
+ <!-- Annual Operation log -->
+  <script>
+    let annualOperationMetadataTable = $('#tbl-annual-operations-metadata-log').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [5] } // Disable sorting on the "Action" column
+        ],
+        data: [], // Start with an empty data array
+        columns: [
+            { data: 'operation_name', title: 'Operation Name' },
+            { data: 'calendarYear', title: 'Calendar Year' },
+            { data: 'expected_operations_per_year', title: 'Expected Operations (Per Year)' },
+            {
+                data: 'prepared_by',
+                title: 'Prepared By',
+                render: function(data, type, row) {
+                    if (type === 'display' && data !== 'N/A') {
+                        return data; // HTML content for rendering Prepared By column
+                    }
+                    return 'N/A'; // Fallback
+                }
+            },
+            { data: 'status', title: 'Operation Status' },
+            {
+                data: null,
+                title: 'Actions',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary btn-sm" onclick="addActivityAnnualOperationLog(${row.id})">
+                                <i class="fas fa-tasks"></i> Manage Activities
+                            </button>
+                            <button class="btn btn-success btn-sm" onclick="editAnnualOperationLog(${row.id})">
+                                <i class="fas fa-edit"></i> Edit Log
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteAnnualOperationLog(${row.id})">
+                                <i class="fas fa-trash-alt"></i> Delete Log
+                            </button>
+                        </div>`;
+                }
+            }
+        ]
+    });
+    document.querySelector('#annualOperationsLogCollapse').addEventListener('shown.bs.collapse', async () => {
+        // Initialize DataTable for Annual Operations Metadata Log
+        console.log("Annual Operations Metadata Log initialized");
+        // const annualOperationMetadataTable = $('#tbl-annual-operations-metadata-log').DataTable();
+        
+        const companyId = "{{ json_encode($company->company_id) }}";
+        console.log("Company ID:", companyId);
+        
+        const url = `/admin/metadata/company/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success" && Array.isArray(data.annual_operation_metadata)) {
+                const logs = data.annual_operation_metadata.map(log => {
+                    let preparedBy = "N/A";
+
+                    // Attempt to parse the PreparedBy JSON string
+                    try {
+                        const parsedPreparedBy = JSON.parse(log.PreparedBy);
+                        if (Array.isArray(parsedPreparedBy) && parsedPreparedBy.length > 0) {
+                            preparedBy = parsedPreparedBy.map(prep => `
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="${prep.avatar}" alt="${prep.name}" style="width: 30px; height: 30px; border-radius: 50%;" />
+                                    <div>
+                                        <strong>${prep.name}</strong><br />
+                                        <small>${prep.email}</small>
+                                    </div>
+                                </div>
+                            `).join("<br />");
+                        }
+                    } catch (e) {
+                        console.error("Error parsing PreparedBy field:", e);
+                    }
+
+                    return {
+                        operation_name: log.OperationName || "N/A",
+                        calendarYear: log.calendar_year?.name || "N/A",
+                        expected_operations_per_year: log.annual_no_of_operation || "N/A",
+                        prepared_by: preparedBy,
+                        status: log.Status || "N/A",
+                        id: log.annual_op_metadata_ID || "N/A"
+                    };
+                });
+
+                // Populate the table with the fetched data
+                annualOperationMetadataTable.clear();
+                annualOperationMetadataTable.rows.add(logs).draw();
+
+                // Enable rendering HTML in the 'Prepared By' column
+                annualOperationMetadataTable.columns().every(function () {
+                    this.render(function (data, type, row) {
+                        if (type === 'display') {
+                            return data;
+                        }
+                        return data;
+                    });
+                });
+            } else {
+                displayMessage('warning', 'No annual operation logs found or invalid data structure.');
+            }
+        } catch (error) {
+            console.error("Error fetching annual operation logs:", error);
+            displayMessage('danger', 'An error occurred while fetching annual operation logs. Please try again.');
+        } finally {
+            hideElement(spinner);
+        }
+
+    });
+    document.querySelector('#annual-operation-log-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-annual-operation-metadata') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operation Log', url, 'POST', formData);
+            if (result.status === 'success') {
+                updateAnnualOperationLogTable(result.annual_operation_logs);
+            }
+        } catch (error) {
+            console.error('Error storing annual operation log:', error);
+        }
+    });
+
+    /**
+     * Adds an activity for the specified metadata ID.
+     * @param {number} metadataId - The ID of the metadata to add an activity for.
+     */
+    function addActivityAnnualOperationLog(metadataId) {
+        console.log("Adding activity for metadata ID:", metadataId);
+
+        const form = document.querySelector('form#annual-operations-activity-form');
+        if (!form) {
+            console.log('Form with ID "annual-operations-activity-form" not found.');
+            return;
+        }
+
+        // Reset the form and populate default options
+        form.reset();
+
+        // Set the metadata ID in the form
+        const metadataInput = form.querySelector('input[name="annual_op_metadata_ID"]');
+        if (metadataInput) {
+            metadataInput.value = metadataId;
+        } else {
+            console.error('Input field "annual_op_metadata_ID" not found in the form.');
+        }
+
+        // Show the modal for adding activities
+        const modalElement = document.getElementById('annualOperationsActivityModal');
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else {
+            console.error('Modal with ID "annualOperationsActivityModal" not found.');
+        }
+    }
+
+    /**
+     * Updates the Annual Operation Log table with new data.
+     * @param {Array} logs - Array of annual operation logs.
+     */
+    function updateAnnualOperationLogTable(logs) {
+        const tableBody = document.querySelector('#tbl-annual-operation-log tbody');
+        tableBody.innerHTML = logs.map(log => `
+            <tr>
+                <td>${log.operation_name}</td>
+                <td>${log.operation?.operation_name || 'N/A'}</td>
+                <td>${log.calendarYear?.name || 'N/A'}</td>
+                <td>${log.quantity_of_waste}</td>
+                <td>${log.water_used_per_year}</td>
+                <td>${log.units_produced_per_year}</td>
+                <td class="text-end">
+                    <div class="dropdown d-inline-block">
+                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
+                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+  </script>
+ <!-- Annual Operation log -->
+ 
     @endsection
 </x-layouts.admin-app>
