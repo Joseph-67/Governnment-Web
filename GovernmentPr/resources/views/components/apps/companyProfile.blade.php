@@ -8866,6 +8866,33 @@
 <!-- end iot device managment -->
  <!-- store production batch tracking -->
     <script>
+        // Initialize DataTable for batch tracking with improved design and UX
+        let batchTrackingTable = $('#tbl-batch-tracking').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                searchPlaceholder: "Search...",
+                lengthMenu: "Show _MENU_ entries",
+                zeroRecords: "No records found",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                infoFiltered: "(filtered from _MAX_ total entries)"
+            },
+            columns: [
+                { data: 'batch_name' },
+                { data: 'product_name' },
+                { data: 'start_date' },
+                { data: 'end_date' },
+                { data: 'status' },
+                { data: 'action', orderable: false, searchable: false }
+            ],
+            data: []
+        });
+
         document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -8874,28 +8901,25 @@
             try {
                 const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
                 if (result.status === 'success') {
-                    const tableBody = document.querySelector('#tbl-batch-tracking tbody');
-                    tableBody.innerHTML = result.productionBatchTracking.map(batch => `
-                        <tr>
-                            <td>${batch.batch_name}</td>
-                            <td>${batch.product?.name || 'N/A'}</td>
-                            <td>${batch.start_date}</td>
-                            <td>${batch.end_date}</td>
-                            <td>${batch.status}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
+                    // Prepare data for DataTable
+                    const data = result.productionBatchTracking.map(batch => ({
+                        batch_name: batch.batch_name,
+                        product_name: batch.product?.name || 'N/A',
+                        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
+                        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
+                        status: batch.status,
+                        action: `<div class="d-flex justify-content-end">
                                     <button class="btn btn-sm btn-primary me-2">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('');
+                                </div>`
+                    }));
+                    batchTrackingTable.clear().rows.add(data).draw();
                 }
             } catch (error) {
                 console.error('Error storing batch tracking:', error);
             }
         });
-    </script>
+        </script>
  <!-- end production batch tracking -->
 <!-- Chemical  -->
 <script>
