@@ -9226,52 +9226,6 @@
         }
     });
     // Edit Operation Category Modal Trigger
-    
-      // Store Annual Operations Log
-    document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-annual-operations-log') }}";
-
-        try {
-            const result = await fetch_cycle('--Store Annual Operations Log', url, 'POST', formData);
-            if (result.status === 'success') {
-                updateAnnualOperationsTable(result.annual_operations_logs);
-            }
-        } catch (error) {
-            console.error('Error storing annual operations log:', error);
-        }
-    });
-
-  
-    /**
-     * Updates the Annual Operations Logs table with new data.
-     * @param {Array} logs - Array of annual operations logs.
-     */
-    function updateAnnualOperationsTable(logs) {
-        const tableBody = document.querySelector('#tbl-annual-operations-log tbody');
-        tableBody.innerHTML = logs.map(operation => `
-            <tr>
-                <td>${operation.operation_name}</td>
-                <td>${operation.operation?.operation_name || 'N/A'}</td>
-                <td>${operation.calendarYear?.name || 'N/A'}</td>
-                <td>${Array.isArray(operation.quantity_of_waste) ? operation.quantity_of_waste.join(', ') : 'N/A'}</td>
-                <td>${operation.water_used_per_year}</td>
-                <td>${operation.units_produced_per_year}</td>
-                <td class="text-end">
-                    <div class="dropdown d-inline-block">
-                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
-                            <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Edit</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
-    }
 
     // Store Operation Log
     document.querySelector('#operations-form').addEventListener('submit', async function (e) {

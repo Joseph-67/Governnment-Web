@@ -225,6 +225,35 @@
                 const modal = new bootstrap.Modal(document.getElementById('subcategoriesModal'));
                 document.getElementById('subcategoriesModalLabel').textContent = `Subcategories for Waste Category: ${wasteCategoryName}`;
                 document.getElementById('waste_category_id').value = wasteCategoryID;
+                fetch(`/admin/waste-subcategories/${wasteCategoryID}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const tbody = document.querySelector('#subcategoriesModal table tbody');
+                        tbody.innerHTML = '';
+                        if (Array.isArray(data) && data.length > 0) {
+                            data.forEach(subcat => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                                    <td>${subcat.waste_sub_category_name || ''}</td>
+                                    <td>${subcat.waste_sub_category_description || ''}</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-danger" type="button" onclick='deleteCategory("${subcat.waste_sub_category_id}", "${subcat.waste_sub_category_name}")'>
+                                            <i class="las la-trash-alt me-1"></i> Delete
+                                        </button>
+                                    </td>
+                                `;
+                                tbody.appendChild(tr);
+                            });
+                        } else {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `<td colspan="3" class="text-center">No subcategories found.</td>`;
+                            tbody.appendChild(tr);
+                        }
+                    })
+                    .catch(() => {
+                        const tbody = document.querySelector('#subcategoriesModal table tbody');
+                        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Failed to load subcategories.</td></tr>`;
+                    });
                 modal.show();
             }
             document.getElementById('btn-submit').addEventListener('click', function() {
