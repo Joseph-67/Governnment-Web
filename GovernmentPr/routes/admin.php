@@ -584,6 +584,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-subcategories/{id}', 'show')->name('admin.show-waste-subcategory');
         Route::put('/waste-subcategories/{id}', 'update')->name('admin.update-waste-subcategory');
         Route::delete('/waste-subcategories/{id}', 'destroy')->name('admin.delete-waste-subcategory');
+        Route::get('/get-waste-subcategories/{value}', 'getWasteSubCategories');
     });
 
     // Water Stock Movement

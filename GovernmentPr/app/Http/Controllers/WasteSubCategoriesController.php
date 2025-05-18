@@ -28,6 +28,8 @@ class WasteSubCategoriesController extends Controller
     public function create()
     {
         //
+        $data['WasteSubCategoryList'] = WasteSubCategories::get();
+        return view("components.apps.waste_sub_category", $data);
     }
 
     /**
@@ -80,9 +82,23 @@ class WasteSubCategoriesController extends Controller
      * @param  \App\Models\WasteSubCategories  $wasteSubCategories
      * @return \Illuminate\Http\Response
      */
+    public function getWasteSubCategories($value)
+    {
+        try {
+            $wasteSubCategories = WasteSubCategories::where('waste_category_id', $value)->get();
+            // dd($wasteSubCategories);
+            return response()->json(['success' => true, 'wasteSubCategory' => $wasteSubCategories]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch Waste Sub Categories: ' . $e->getMessage()
+            ], 500);
+        }
+    }
     public function show(WasteSubCategories $wasteSubCategories)
     {
         //
+
     }
 
     /**
