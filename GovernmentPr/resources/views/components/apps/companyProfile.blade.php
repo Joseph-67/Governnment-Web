@@ -3429,7 +3429,7 @@
                                                 <h4 class="card-title mb-0 fw-bold">
                                                     <i class="las la-box me-2"></i> Batch Production Management Form
                                                 </h4>
-                                                <button type="button" class="btn-close btn-close-white btn-lg" aria-label="Close" style="font-size:2rem;" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
                                             </div>
                                             <div class="card-body">
                                                 <form action="" method="post" id="batch-tracking-form">
@@ -3470,11 +3470,7 @@
                                                             <label for="defective_quantity" class="form-label text-white fw-semibold">Total Quantity Defective</label>
                                                             <input type="number" class="form-control border-0 shadow-sm" id="defective_quantity" name="defective_quantity" placeholder="Enter defective quantity" min="0">
                                                         </div>
-                                                        <!-- Yield Percentage -->
-                                                        <div class="col-md-6">
-                                                            <label for="yield_percentage" class="form-label text-white fw-semibold">Yield Percentage</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
-                                                        </div>
+                                                     
                                                         <!-- Created By -->
                                                         <div class="col-md-6">
                                                             <label for="prepared_by" class="form-label text-white fw-semibold">Created By</label>
@@ -3498,18 +3494,19 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <!-- Predicted Defect Rate -->
+                                                        <!-- Status -->
                                                         <div class="col-md-6">
-                                                            <label for="predicted_defect_rate" class="form-label text-white fw-semibold">Predicted Defect Rate (%)</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
+                                                            <label for="batch_status" class="form-label text-white fw-semibold">Status</label>
+                                                           <select class="form-select border-0 shadow-sm" id="batch_status" name="batch_status">
+                                                            <option value="" selected disabled>Select Status</option>
+                                                            <option value="In Progress">In Progress</option>
+                                                            <option value="Completed">Completed</option>
+                                                            <option value="Rejected">Rejected</option>
+                                                        </select>
+
                                                         </div>
-                                                        <!-- Audit Trail -->
-                                                        <div class="col-md-6">
-                                                            <label for="audit_trail" class="form-label text-white fw-semibold">Audit Trail</label>
-                                                            <select class="form-select border-0 shadow-sm" id="audit_trail" name="audit_trail">
-                                                                <option value="" selected disabled>Select Audit Trail</option>
-                                                            </select>
-                                                        </div>
+                                                        
+                                                        
                                                         <!-- Submit Button -->
                                                         <div class="col-md-12 mt-3 text-end">
                                                             <button type="submit" class="btn btn-light fw-bold px-4 py-2 shadow-sm">Save Batch</button>
@@ -10081,8 +10078,20 @@
             console.log(result.productionBatchTracking);
             console.log('====================================');
             if (result.status === 'success') {
-                updateBatchTrackingTable(result.productionBatchTracking);
-            }
+const batch = result.productionBatchTracking;
+
+    // Prepare the formatted row data
+    const newRow = {
+        batch_name: batch.batch_name || "N/A",
+        product_name: batch.product?.name || "N/A",
+        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+        status: batch.status || "N/A",
+        id: batch.id || "N/A"
+    };
+
+    // Add to DataTable dynamically
+    batchTrackingTable.row.add(newRow).draw(false);            }
         } catch (error) {
             console.error('Error storing batch tracking:', error);
         }
@@ -10091,20 +10100,7 @@
      * Updates the Batch Tracking table with new data.
      * @param {Array} batchTracking - Array of batch tracking objects.
      */
-    function updateBatchTrackingTable(batchTracking) {
-        // Update the DataTable with the new batch tracking data
-        if (Array.isArray(batchTracking)) {
-            const formattedData = batchTracking.map(batch => ({
-            batch_name: batch.batch_name || "N/A",
-            product_name: batch.product?.name || "N/A",
-            start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-            end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-            status: batch.status || "N/A",
-            id: batch.id || "N/A"
-            }));
-            batchTrackingTable.clear().rows.add(formattedData).draw();
-        }
-    }
+    
 
 
    </script>
