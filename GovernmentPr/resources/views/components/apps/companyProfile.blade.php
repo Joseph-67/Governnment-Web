@@ -3399,7 +3399,7 @@
                         <!-- end iot device -->
                          <!-- production batch tracking -->
                         <!-- Batch Tracking Accordion Item -->
-                        <div class="accordion-item">
+                        <div class="accordion-item"> 
                             <h2 class="accordion-header" id="batchTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
@@ -3514,7 +3514,7 @@
 
                                     <!-- Batch Tracking Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-batch-tracking">
+                                        <table class="table table-striped mb-0 w-100" id="tbl-batch-tracking">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Batch Name</th>
@@ -3525,9 +3525,7 @@
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                              
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -8919,7 +8917,7 @@
                     status: batch.status
                 }));
                 batchTrackingTable.clear();
-                batchTrackingTable.rows.add(batches).draw();
+                batchTrackingTable.rows.add(batches).draw();                
             }
         } catch (error) {
             console.error('Error storing batch tracking:', error);
