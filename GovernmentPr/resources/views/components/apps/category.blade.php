@@ -91,7 +91,7 @@
                                         <input type="text" class="form-control" id="waste_description" name="waste_category_description" placeholder="Waste description">
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col"> 
                                     <button type="submit" class="btn btn-primary" id="btn-submit-waste">Save</button>
                                     <span class="loader" id="loader-waste"></span>
                                 </div>
