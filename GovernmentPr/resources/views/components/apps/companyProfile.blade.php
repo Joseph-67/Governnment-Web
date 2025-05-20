@@ -3398,7 +3398,8 @@
                         </div>
                         <!-- end iot device -->
                          <!-- production batch tracking -->
-                        <div class="accordion-item">
+                        <!-- Batch Tracking Accordion Item -->
+                        <div class="accordion-item"> 
                             <h2 class="accordion-header" id="batchTrackingHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
@@ -3407,82 +3408,84 @@
                             </h2>
                             <div id="batchTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="batchTrackingHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
-                                    <!-- Batch Tracking Form -->
-                                    <form action="" method="post" id="batch-tracking-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-3">
-                                            <!-- Batch Name -->
-                                            <div class="col-md-6">
-                                                <label for="batch_name" class="form-label">Batch Name</label>
-                                                <input type="text" class="form-control" id="batch_name" name="batch_name" placeholder="Enter batch name">
-                                            </div>
-
-                                            <!-- Production Date -->
-                                            
-                                    <div class="col-md-6">
-                                        <label for="start_date" class="form-label">Production Date</label>
-                                        <div class="input-group" id="DateRange">
-                                            <input type="date" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" >
-                                            <span class="input-group-text">to</span>
-                                            <input type="date" class="form-control" name="end_date" placeholder="End" aria-label="EndDate">
+                                    <div class="row mb-3 align-items-center">
+                                        <div class="col">
+                                            <h4 class="text-primary mb-0">Batch Tracking</h4>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-primary btn-sm" id="btn-setup-batch-production" onclick="document.getElementById('batch-tracking-form-container').classList.toggle('d-none');">
+                                                <i class="iconoir-plus"></i> Set Up Batch Production
+                                            </button>
                                         </div>
                                     </div>
-                                            
-
-
-                                            <!-- Product -->
-                                            <div class="col-md-6">
-                                                <label for="product" class="form-label">Product</label>
-                                                <select class="form-select" id="product" name="product" >
-                                                    <option value="" selected disabled>Select Product</option>
-                                                @foreach($products as $product)
-                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                @endforeach
-                                                </select>
-                                            </div>
-
-                                            <!-- Quantity -->
-                                            <div class="col-md-6">
-                                                <label for="quantity" class="form-label">Total Quantity</label>
-                                                <input type="number" class="form-control" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
-                                            </div>
-                                                    <!-- quantity defective -->
-                                             <div class="col-md-6">
-                                                <label for="quantity" class="form-label">Total Quantity Defective</label>
-                                                <input type="number" class="form-control" id="quantity" name="defective_quantity" placeholder="Enter quantity" min="0" >
-                                            </div>
-
-                                            <!-- Yield Percentage -->
-                                            <div class="col-md-6">
-                                                <label for="yield_percentage" class="form-label">Yield Percentage</label>
-                                                <input type="number" class="form-control" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
-                                            </div>
+                                    <!-- Batch Tracking Form (hidden by default) -->
+                                    <div id="batch-tracking-form-container" class="d-none">
+                                        <form action="" method="post" id="batch-tracking-form">
+                                            @csrf
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-3">
+                                                <!-- Batch Name -->
+                                                <div class="col-md-6">
+                                                    <label for="batch_name" class="form-label">Batch Name</label>
+                                                    <input type="text" class="form-control" id="batch_name" name="batch_name" placeholder="Enter batch name">
+                                                </div>
+                                                <!-- Production Date -->
+                                                <div class="col-md-6">
+                                                    <label for="start_date" class="form-label">Production Date</label>
+                                                    <div class="input-group" id="DateRange">
+                                                        <input type="date" class="form-control" name="start_date" placeholder="Start" aria-label="StartDate" >
+                                                        <span class="input-group-text">to</span>
+                                                        <input type="date" class="form-control" name="end_date" placeholder="End" aria-label="EndDate">
+                                                    </div>
+                                                </div>
+                                                <!-- Product -->
+                                                <div class="col-md-6">
+                                                    <label for="product" class="form-label">Product</label>
+                                                    <select class="form-select" id="product" name="product" >
+                                                        <option value="" selected disabled>Select Product</option>
+                                                        @foreach($products as $product)
+                                                            <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!-- Quantity -->
+                                                <div class="col-md-6">
+                                                    <label for="quantity" class="form-label">Total Quantity</label>
+                                                    <input type="number" class="form-control" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
+                                                </div>
+                                                <!-- quantity defective -->
+                                                <div class="col-md-6">
+                                                    <label for="defective_quantity" class="form-label">Total Quantity Defective</label>
+                                                    <input type="number" class="form-control" id="defective_quantity" name="defective_quantity" placeholder="Enter quantity" min="0" >
+                                                </div>
+                                                <!-- Yield Percentage -->
+                                                <div class="col-md-6">
+                                                    <label for="yield_percentage" class="form-label">Yield Percentage</label>
+                                                    <input type="number" class="form-control" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
+                                                </div>
                                                 <!-- created by -->
                                                 <div class="col-md-6">
                                                     <label for="prepared_by" class="form-label">Created By</label>
-                                                            <input type="text" class="form-control" id="created_by_input" name="created_by" placeholder="Enter prepared by">
+                                                    <input type="text" class="form-control" id="created_by_input" name="created_by" placeholder="Enter prepared by">
                                                 </div>
-                                                
-
-                                           <!-- geolocation -->
-                                            <div class="col-md-6">
-                                                <label for="geolocation" class="form-label">Geolocation</label>
-                                                <input type="text" class="form-control" id="geolocation" name="geolocation" placeholder="Enter geolocation coordinates (e.g., latitude, longitude)" >
-                                            </div>
-                                                                <!-- IoT Device ID -->
-                                                                <div class="col-md-6">
-                                                                    <label for="iot_device_id" class="form-label">IoT Device</label>
-                                                                    <select class="form-select" id="iot_device_id" name="iot_device">
-                                                                        <option value="" selected disabled>Select IoT Device</option>
-                                                                        @php
-                                                                            $iotDevices = \App\Models\IotDevice::all();
-                                                                        @endphp
-                                                                        @foreach($iotDevices as $device)
-                                                                            <option value="{{ $device->iot_device_id }}">{{ $device->device_name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                     </div>
+                                                <!-- geolocation -->
+                                                <div class="col-md-6">
+                                                    <label for="geolocation" class="form-label">Geolocation</label>
+                                                    <input type="text" class="form-control" id="geolocation" name="geolocation" placeholder="Enter geolocation coordinates (e.g., latitude, longitude)" >
+                                                </div>
+                                                <!-- IoT Device ID -->
+                                                <div class="col-md-6">
+                                                    <label for="iot_device_id" class="form-label">IoT Device</label>
+                                                    <select class="form-select" id="iot_device_id" name="iot_device">
+                                                        <option value="" selected disabled>Select IoT Device</option>
+                                                        @php
+                                                            $iotDevices = \App\Models\IotDevice::all();
+                                                        @endphp
+                                                        @foreach($iotDevices as $device)
+                                                            <option value="{{ $device->iot_device_id }}">{{ $device->device_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 <!-- Predicted Defect Rate -->
                                                 <div class="col-md-6">
                                                     <label for="predicted_defect_rate" class="form-label">Predicted Defect Rate (%)</label>
@@ -3493,22 +3496,25 @@
                                                     <label for="audit_trail" class="form-label">Audit Trail</label>
                                                     <select class="form-select" id="audit_trail" name="audit_trail">
                                                         <option value="" selected disabled>Select Audit Trail</option>
-                                                      
                                                     </select>
                                                 </div>
-
-                                           
-
-                                            <!-- Submit Button -->
-                                            <div class="col-md-12 mt-3 text-end">
-                                                <button type="submit" class="btn btn-primary">Save Batch</button>
+                                                <!-- Submit Button -->
+                                                <div class="col-md-12 mt-3 text-end">
+                                                    <button type="submit" class="btn btn-primary">Save Batch</button>
+                                                </div>
                                             </div>
+                                        </form>
+                                    </div>
+                                    <!-- Spinner before table -->
+                                    <div id="batch-tracking-spinner" class="d-none text-center my-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
-                                    </form>
+                                    </div>
 
                                     <!-- Batch Tracking Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-batch-tracking">
+                                        <table class="table table-striped mb-0 w-100" id="tbl-batch-tracking">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Batch Name</th>
@@ -3519,9 +3525,7 @@
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                              
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -8866,36 +8870,60 @@
 <!-- end iot device managment -->
  <!-- store production batch tracking -->
     <script>
-        document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const url = "{{ route('admin.store-production-batch-tracking') }}";
-
-            try {
-                const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
-                if (result.status === 'success') {
-                    const tableBody = document.querySelector('#tbl-batch-tracking tbody');
-                    tableBody.innerHTML = result.productionBatchTracking.map(batch => `
-                        <tr>
-                            <td>${batch.batch_name}</td>
-                            <td>${batch.product?.name || 'N/A'}</td>
-                            <td>${batch.start_date}</td>
-                            <td>${batch.end_date}</td>
-                            <td>${batch.status}</td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('');
+    // Initialize DataTable for batch tracking
+    let batchTrackingTable = $('#tbl-batch-tracking').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [5] } // Disable sorting on the "Action" column
+        ],
+        data: [],
+        columns: [
+            { data: 'batch_name', title: 'Batch Name' },
+            { data: 'product_name', title: 'Product' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'status', title: 'Status' },
+            {
+                data: null,
+                title: 'Actions',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editBatchTracking(${row.id})">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteBatchTracking(${row.id})">Delete</button>
+                        </div>`;
                 }
-            } catch (error) {
-                console.error('Error storing batch tracking:', error);
             }
-        });
-    </script>
+        ]
+    });
+
+    document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-production-batch-tracking') }}";
+        try {
+            const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+            if (result.status === 'success') {
+                // Prepare data for DataTable
+                const batches = result.productionBatchTracking.map(batch => ({
+                    id: batch.id,
+                    batch_name: batch.batch_name,
+                    product_name: batch.product?.name || 'N/A',
+                    start_date: batch.start_date,
+                    end_date: batch.end_date,
+                    status: batch.status
+                }));
+                batchTrackingTable.clear();
+                batchTrackingTable.rows.add(batches).draw();                
+            }
+        } catch (error) {
+            console.error('Error storing batch tracking:', error);
+        }
+    });
+        </script>
  <!-- end production batch tracking -->
 <!-- Chemical  -->
 <script>

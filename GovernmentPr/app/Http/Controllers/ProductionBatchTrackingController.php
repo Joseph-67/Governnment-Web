@@ -51,7 +51,15 @@ class ProductionBatchTrackingController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'total_quantity' => 'nullable|integer',
-            'defective_quantity' => 'nullable|integer',
+            'defective_quantity' => [
+                'nullable',
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!is_null($value) && !is_null($request->total_quantity) && $value > $request->total_quantity) {
+                        $fail('The defective quantity cannot be greater than the total quantity.');
+                    }
+                },
+            ],
             'yield_percentage' => 'nullable|numeric|min:0|max:100',
             'created_by' => 'required',
             'geolocation' => 'nullable|string|max:255',
