@@ -69,6 +69,7 @@
                 </div>
                 <div id="stockTransactions" class="collapse show">
                     <div class="card-body">
+                        <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -104,6 +105,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        </div>
+                     
                     </div>
                     <div class="card-footer">
                         <div class="table-responsive mt-4">
@@ -244,6 +247,34 @@ document.querySelectorAll('.dropdown-item').forEach(item => {
 // Initialize with default period
 stock_analysis("this_year", "{{ $CompanyChemical->company_chemical_id }}");
 
+</script>
+<!-- download metrics -->
+<script>
+document.getElementById('download-csv').addEventListener('click', () => {
+    const rows = [
+        ["Quantity", "Movement Type", "Calendar Year", "Date", "Remark"],
+        @foreach($CompanyChemical->stockMovements as $transaction)
+        [
+            "{{ $transaction->quantity }}",
+            "{{ $transaction->movement_type }}",
+            "{{ $transaction->calendar_year }}",
+            "{{ \Carbon\Carbon::create($transaction->movement_date)->format('l, d F Y') }}",
+            "{{ $transaction->remark }}"
+        ],
+        @endforeach
+    ];
+
+    let csvContent = "data:text/csv;charset=utf-8," 
+        + rows.map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "chemical_metrics.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
 </script>
 @endsection                
 </x-layouts.admin-app>

@@ -23,6 +23,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\generalSetting;
 use App\Http\Controllers\GuardsController;
 use App\Http\Controllers\InventoryForecastingController;
+use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OperationTypeController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionLogController;
+use App\Http\Controllers\ProductionBatchTrackingController;
 use App\Http\Controllers\QualityControlController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
@@ -51,6 +53,9 @@ use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
+use App\Http\Controllers\WasteSubCategoriesController;
+use App\Http\Controllers\AnnualOperation\MetadataController;
+use App\Http\Controllers\AnnualOperation\ActivityController;
 
 
 
@@ -172,32 +177,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
     });
 
-    Route::controller(CompanyController::class)->group(function() {
-        Route::get('/company', 'index')->name('admin.view-company');
-        Route::get('/create-company', 'create')->name('admin.create-company');
-        Route::post('/save-company', 'store')->name('admin.store-company');
-        Route::get('/show-company/{company}', 'show')->name('admin.show-company');
-        Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
-        Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
-        Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
-        Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
-        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
-        Route::post('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
-        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
-        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
-        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
-        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
-        Route::post('/company/add-question', 'store_question')->name('company.add-question');
-        Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
-        Route::post('/company/add-water-sources', 'store_water_sources')->name('company.add-water-sources');
-        Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
-        Route::post('/company/remove-water-conservation-method', 'remove_water_conservation_method')->name('company.remove-water-conservation-method');
-        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
-        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
-        Route::get('/company/{id}',  'display')->name('company.display');
-        // fetch admin details
-    });
-
     // company users
     Route::controller(CompanyUsersController::class)->group(function(){
         Route::post('/assign-users/store', 'store')->name('admin.store-assign-users');
@@ -245,6 +224,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Water Quality Logs Route
     Route::controller(WaterQualityLogsController::class)->group(function() {
         Route::post('/store-water-quality-logs', 'store')->name('admin.store-water-quality-logs');
+        Route::post('/remove-water-quality-logs', 'store')->name('admin.remove-water-quality-logs');
+        Route::get('/water-quality-logs', 'index')->name('admin.water-quality-logs');
+        Route::get('/water-quality-logs/{id}', 'show')->name('admin.show-water-quality-log');
+        Route::put('/water-quality-logs/{id}', 'update')->name('admin.update-water-quality-log');
+        Route::delete('/water-quality-logs/{id}', 'destroy')->name('admin.delete-water-quality-log');
     });
     // Waste Disposal Route
     Route::controller(WasteDisposalController::class)->group(function() {
@@ -255,8 +239,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(QualityControlController::class)->group(function() {
         Route::post('/quality-control/store', 'store')->name('admin.store-quality-control');
     });
-
-
 
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::post('/company/material-setup', 'store')->name('admin.save-company-material');
@@ -300,20 +282,30 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Company
     Route::controller(CompanyController::class)->group(function() {
-        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::get('/company', 'index')->name('admin.view-company');
+        Route::get('/create-company', 'create')->name('admin.create-company');
+        Route::post('/save-company', 'store')->name('admin.store-company');
+        Route::get('/show-company/{company}', 'show')->name('admin.show-company');
+        Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
+        Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
         Route::post('/add-company-policy', 'add_company_policy')->name('admin.add-company-policy');
+        Route::post('/remove-company-policy', 'remove_company_policy')->name('admin.remove-company-policy');
+        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
+        Route::post('/remove-company-objective', 'remove_company_objective')->name('admin.remove-company-objective');
+        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
+        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::post('/company/add-question', 'store_question')->name('company.add-question');
         Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
         Route::post('/company/add-water-sources', 'store_water_sources')->name('company.add-water-sources');
-        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::post('/company/remove-question', 'remove_question')->name('company.remove-question');
         Route::post('/company/remove-water-conservation-method', 'remove_water_conservation_method')->name('company.remove-water-conservation-method');
-        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-Sources');
-        Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
-        Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
-        Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
-        Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
+        Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-sources');
+        Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
+
+        Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
         Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
         Route::get('/create-company', 'create')->name('admin.create-company');
         Route::get('/show-company/{company}', 'show')->name('admin.show-company');
@@ -379,6 +371,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(InventoryForecastingController::class)->group(function() {
         Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
     });
+    // iot devices
+    Route::controller(IotDeviceController::class)->group(function() {
+        Route::get('/iot-devices', 'index')->name('admin.iot-devices');
+        Route::post('/iot-devices/store', 'store')->name('admin.store-iot-device');
+        Route::get('/iot-devices/{id}', 'show')->name('admin.show-iot-device');
+        Route::put('/iot-devices/{id}', 'update')->name('admin.update-iot-device');
+        Route::delete('/iot-devices/{id}', 'destroy')->name('admin.delete-iot-device');
+    });
 
     // Map Report
     Route::controller(MapReport::class)->group(function(){
@@ -413,7 +413,27 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // annual operation log
     Route::controller(AnnualOperationsLogController::class)->group(function() {
-        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operations-log');
+        Route::post('/annual-operations-log/store', 'store')->name('admin.store-annual-operation-log');
+    });
+
+    // Metadata
+    Route::controller(MetadataController::class)->group(function() {
+        Route::get('/metadata', 'index')->name('admin.metadata');
+        Route::post('/metadata/store', 'store_metadata')->name('admin.store-annual-operation-metadata');
+        Route::get('/metadata/{id}', 'show')->name('admin.show-metadata');
+        Route::put('/metadata/{id}', 'update')->name('admin.update-metadata');
+        Route::delete('/metadata/{id}', 'destroy')->name('admin.delete-metadata');
+        Route::get('/metadata/company/{companyId}', 'getMetadataByCompany')->name('admin.metadata-by-company');
+    });
+
+    // Activity
+    Route::controller(ActivityController::class)->group(function() {
+        Route::get('/activity', 'index')->name('admin.activity');
+        Route::post('/activity/store', 'store')->name('admin.store-activity');
+        Route::get('/activity/{id}', 'show')->name('admin.show-activity');
+        Route::put('/activity/{id}', 'update')->name('admin.update-activity');
+        Route::delete('/activity/{id}', 'destroy')->name('admin.delete-activity');
+        Route::get('/metadata/activities/{metadataId}', 'getActivitiesByMetadata');
     });
 
     // Pages
@@ -468,6 +488,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/production-report/{id}', 'update')->name('admin.update-production-report');
         Route::delete('/production-report/{id}', 'destroy')->name('admin.delete-production-report');
         Route::get('/get-production-data/{selectedCompany}/{selectedYear}', 'create_report');
+    });
+
+    // production batch tracking
+    Route::controller(ProductionBatchTrackingController::class)->group(function() {
+        Route::get('/production-batch-tracking', 'index')->name('admin.production-batch-tracking');
+        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-batch-tracking');
+        Route::get('/production-batch-tracking/{id}', 'show')->name('admin.show-production-batch-tracking');
+        Route::put('/production-batch-tracking/{id}', 'update')->name('admin.update-production-batch-tracking');
+        Route::delete('/production-batch-tracking/{id}', 'destroy')->name('admin.delete-production-batch-tracking');
+        Route::get('/batch-tracking/company/{companyId}', 'getProductionBatchTrackingByCompany');
+        Route::get('/get-production-batch-tracking-data/{selectedCompany}/{selectedYear}', 'create_report');
     });
     
     Route::controller(AddPostController::class)->group(function() {
@@ -558,6 +589,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-categories/{id}', 'show')->name('admin.show-waste-category');
         Route::put('/waste-categories/{id}', 'update')->name('admin.update-waste-category');
         Route::delete('/waste-categories/{id}', 'destroy')->name('admin.delete-waste-category');
+    });
+    // Waste Subcategory
+    Route::controller(WasteSubCategoriesController::class)->group(function() {
+        Route::get('/waste-subcategories', 'index')->name('admin.waste-subcategories');
+        Route::post('/store-waste-subcategory', 'store')->name('admin.store-waste-subcategory');
+        Route::get('/waste-subcategories/{id}', 'show')->name('admin.show-waste-subcategory');
+        Route::put('/waste-subcategories/{id}', 'update')->name('admin.update-waste-subcategory');
+        Route::delete('/waste-subcategories/{id}', 'destroy')->name('admin.delete-waste-subcategory');
+        Route::get('/get-waste-subcategories/{value}', 'getWasteSubCategories');
     });
 
     // Water Stock Movement

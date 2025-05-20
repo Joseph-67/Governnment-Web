@@ -12,7 +12,7 @@
                         <h4 class="card-title">Setup Category</h4>
                     </div>
                     <div class="card-body pt-0">
-                        <form action="{{ route('admin.store-category') }}" method="post">
+                        <form action="{{ route('admin.store-waste-category') }}" method="post">
                             @csrf
                             <div class="row g-2 align-items-end">
                                 <div class="col-md-4">
@@ -35,7 +35,6 @@
                         </form>
                     </div>
                 </div>
-
                 <div class="table-responsive mt-4">
                     <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
                         <thead>
@@ -69,7 +68,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -112,17 +110,19 @@
                         <tbody>
                             @foreach($wasteList as $waste)
                                 <tr>
-                                    <td>{{ $waste->waste_name }}</td>
-                                    <td>{{ $waste->waste_description }}</td>
+                                    <td>{{ $waste->waste_category_name??"" }}</td>
+                                    <td>{{ $waste->waste_category_description??"" }}</td>
                                     <td class="text-end">
-                                        <div class="dropdown d-inline-block">
-                                            <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button">
-                                                <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Open Waste</a>
-                                                <a class="dropdown-item" href="#">Update Waste</a>
-                                                <a class="dropdown-item" href="#" onclick='deleteCategory("{{$waste->wasteID}}", "{{$waste->waste_name}}")'>Delete Waste</a>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-info me-2" type="button" onclick='openSubcategoriesModal("{{ $waste->waste_category_id }}", "{{ $waste->waste_category_name }}")'>
+                                                <i class="las la-list me-1"></i> Subcategory
+                                            </button>
+                                            <button class="btn btn-sm btn-warning me-2" type="button" onclick='editCategory("{{ $waste->waste_category_id }}", "{{ $waste->waste_category_name }}")'>
+                                                <i class="las la-edit me-1"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" type="button" onclick='deleteCategory("{{ $waste->waste_category_id }}", "{{ $waste->waste_category_name }}")'>
+                                                <i class="las la-trash-alt me-1"></i> Delete
+                                            </button>
                                             </div>
                                         </div>
                                     </td>
@@ -136,6 +136,55 @@
     </div>
 
     @section('modals')
+        <!-- Subcategories Modal -->
+        <div class="modal fade" id="subcategoriesModal" tabindex="-1" aria-labelledby="subcategoriesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="subcategoriesModalLabel">
+                            Subcategories for 
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            @csrf
+                            <input type="hidden" name="waste_category_id" id="waste_category_id" value="">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="subcategory_name" class="form-label">Subcategory Name</label>
+                                        <input type="text" class="form-control" id="subcategory_name" name="waste_sub_category_name" placeholder="Subcategory name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="subcategory_description" class="form-label">Subcategory Description</label>
+                                        <input type="text" class="form-control" id="subcategory_description" name="waste_sub_category_description" placeholder="Subcategory description">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary">Add Subcategory</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Subcategory Name</th>
+                                        <th>Subcategory Description</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endsection
 
     @section('scripts')
@@ -169,6 +218,85 @@
                     }
                 });
             }
+            function openSubcategoriesModal(wasteCategoryID, wasteCategoryName) {
+                const modal = new bootstrap.Modal(document.getElementById('subcategoriesModal'));
+                document.getElementById('subcategoriesModalLabel').textContent = `Subcategories for Waste Category: ${wasteCategoryName}`;
+                document.getElementById('waste_category_id').value = wasteCategoryID;
+                let tbody = document.querySelector('#subcategoriesModal table tbody');
+                fetch(`/admin/get-waste-subcategories/${wasteCategoryID}`)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // or response.text() if it's plain text
+                })
+                .then(data => {
+                    console.log(data.wasteSubCategory); // The actual subcategories returned from the server
+                    
+                    if (Array.isArray(data.wasteSubCategory) && data.wasteSubCategory.length > 0) {
+                    tbody.innerHTML = ''; // Clear existing rows
+
+                    data.wasteSubCategory.forEach(subcategory => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${subcategory.waste_sub_category_name}</td>
+                            <td>${subcategory.waste_sub_category_description}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-warning me-2" type="button" onclick='editSubcategory("${subcategory.id}", "${subcategory.waste_sub_category_name}")'>
+                                    <i class="las la-edit me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" type="button" onclick='deleteSubcategory("${subcategory.id}", "${subcategory.waste_sub_category_name}")'>
+                                    <i class="las la-trash-alt me-1"></i> Delete
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }else{
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="text-center">No subcategories found.</td>
+                        </tr>
+                    `;
+                }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="text-center">Failed to load subcategories.</td>
+                        </tr>
+                    `;
+                })
+                modal.show();
+            }
+            document.getElementById('btn-submit').addEventListener('click', function() {
+                document.getElementById('loader').style.display = 'inline-block';
+            });
+            document.querySelector('#subcategoriesModal form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch('/admin/store-waste-subcategory', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Success!', 'Subcategory added successfully.', 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to add subcategory.', 'error');
+                    }
+                })
+                .catch(() => {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                });
+            });
         </script>
     @endsection
 </x-layouts.admin-app>
