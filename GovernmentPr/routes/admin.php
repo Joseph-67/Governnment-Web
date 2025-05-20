@@ -493,10 +493,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // production batch tracking
     Route::controller(ProductionBatchTrackingController::class)->group(function() {
         Route::get('/production-batch-tracking', 'index')->name('admin.production-batch-tracking');
-        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-production-batch-tracking');
+        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-batch-tracking');
         Route::get('/production-batch-tracking/{id}', 'show')->name('admin.show-production-batch-tracking');
         Route::put('/production-batch-tracking/{id}', 'update')->name('admin.update-production-batch-tracking');
         Route::delete('/production-batch-tracking/{id}', 'destroy')->name('admin.delete-production-batch-tracking');
+        Route::get('/batch-tracking/company/{companyId}', 'getProductionBatchTrackingByCompany');
+        Route::get('/get-production-batch-tracking-data/{selectedCompany}/{selectedYear}', 'create_report');
     });
     
     Route::controller(AddPostController::class)->group(function() {
