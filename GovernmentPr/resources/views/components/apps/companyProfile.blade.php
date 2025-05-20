@@ -3420,24 +3420,16 @@
                                                 onclick="toggleBatchTrackingForm()">
                                                 <i class="iconoir-plus"></i> New Batch
                                             </button>
-                                            <script>
-                                                function toggleBatchTrackingForm() {
-                                                    const form = document.getElementById('batch-tracking-form-container');
-                                                    form.classList.toggle('d-none');
-                                                    if (!form.classList.contains('d-none')) {
-                                                        form.scrollIntoView({ behavior: 'smooth' });
-                                                    }
-                                                }
-                                            </script>
                                         </div>
                                     </div>
                                     <!-- Batch Tracking Form (hidden by default) -->
-                                    <div id="batch-tracking-form-container" class="d-none">
+                                    <div id="batch-tracking-form-container" class="d-none position-relative">
                                         <div class="card shadow-lg border-0" style="background: linear-gradient(90deg, #f7b42c 0%, #fc575e 100%); border-radius: 1rem;">
-                                            <div class="card-header text-white" style="background: transparent; border-bottom: none;">
+                                            <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: none;">
                                                 <h4 class="card-title mb-0 fw-bold">
                                                     <i class="las la-box me-2"></i> Batch Production Management Form
                                                 </h4>
+                                                <button type="button" class="btn-close btn-close-white btn-lg" aria-label="Close" style="font-size:2rem;" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
                                             </div>
                                             <div class="card-body">
                                                 <form action="" method="post" id="batch-tracking-form">
@@ -10117,6 +10109,16 @@
 
    </script>
   <!-- End Batch tracking -->
-
+<!-- toggle batch production form open -->
+      <script>
+         function toggleBatchTrackingForm() {
+             const form = document.getElementById('batch-tracking-form-container');
+             form.classList.toggle('d-none');
+             if (!form.classList.contains('d-none')) {
+                 form.scrollIntoView({ behavior: 'smooth' });
+             }
+         }
+     </script>
+<!-- end toggle -->
     @endsection
 </x-layouts.admin-app>
