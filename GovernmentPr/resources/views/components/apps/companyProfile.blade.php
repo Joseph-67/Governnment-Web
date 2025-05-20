@@ -5010,10 +5010,10 @@
      <!-- Annual operations activity -->
     <!-- Annual Operations Activity Modal -->
     <div class="modal fade" id="annualOperationsActivityModal" tabindex="-1" aria-labelledby="annualOperationsActivityModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="annualOperationsActivityModalLabel">Annual Operations Activity</h5>
+                    <h5 class="modal-title" id="annualOperationsActivityModalLabel">Annual Operations Activities for</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -5058,7 +5058,7 @@
                                         <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="material-quantity-used-container-annual-operation-log col-md-12">
+                                        <div class="material-quantity-used-container-annual-operation-activity col-md-12">
                                             <div class="row g-2 align-items-end mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -5133,7 +5133,7 @@
                     </div>
                     <hr class="my-4">
                     <div class="table-responsive">
-                        <table class="table table-striped mb-0" id="tbl-annual-operations-activity">
+                        <table class="table table-striped mb-0 w-100" id="tbl-annual-operations-activity">
                             <thead class="table-light">
                                 <tr>
                                     <th>Activity Name</th>
@@ -9404,6 +9404,7 @@
         }
 
         initializeMaterialSection('.material-quantity-used-container-production-log', '.add-more-material-used-production-log');
+        initializeMaterialSection('.material-quantity-used-container-annual-operation-activity', '.add-more-material-used-production-log');
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -9747,7 +9748,7 @@
                 render: function (data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-primary btn-sm" onclick="addActivityAnnualOperationLog(${row.id})">
+                            <button class="btn btn-primary btn-sm" onclick="addActivityAnnualOperationLog(${row.id}, '${row.operation_name}')">
                                 <i class="fas fa-tasks"></i> Manage Activities
                             </button>
                             <button class="btn btn-success btn-sm" onclick="editAnnualOperationLog(${row.id})">
@@ -9847,41 +9848,6 @@
             console.error('Error storing annual operation log:', error);
         }
     });
-
-    /**
-     * Adds an activity for the specified metadata ID.
-     * @param {number} metadataId - The ID of the metadata to add an activity for.
-     */
-    function addActivityAnnualOperationLog(metadataId) {
-        console.log("Adding activity for metadata ID:", metadataId);
-
-        const form = document.querySelector('form#annual-operations-activity-form');
-        if (!form) {
-            console.log('Form with ID "annual-operations-activity-form" not found.');
-            return;
-        }
-
-        // Reset the form and populate default options
-        form.reset();
-
-        // Set the metadata ID in the form
-        const metadataInput = form.querySelector('input[name="annual_op_metadata_ID"]');
-        if (metadataInput) {
-            metadataInput.value = metadataId;
-        } else {
-            console.error('Input field "annual_op_metadata_ID" not found in the form.');
-        }
-
-        // Show the modal for adding activities
-        const modalElement = document.getElementById('annualOperationsActivityModal');
-        if (modalElement) {
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        } else {
-            console.error('Modal with ID "annualOperationsActivityModal" not found.');
-        }
-    }
-
     /**
      * Updates the Annual Operation Log table with new data.
      * @param {Array} logs - Array of annual operation logs.
@@ -9911,60 +9877,140 @@
         `).join('');
     }
 
+        /**
+     * Adds an activity for the specified metadata ID.
+     * @param {number} metadataId - The ID of the metadata to add an activity for.
+     */
+    function addActivityAnnualOperationLog(metadataId, metadataName) {
+        console.log("Adding activity for metadata ID:", metadataId);
+
+        const form = document.querySelector('form#annual-operations-activity-form');
+        document.getElementById('annualOperationsActivityModalLabel').textContent = `Annual Operations Activities for Annual Operation Metadata: ${metadataName}`;
+        if (!form) {
+            console.log('Form with ID "annual-operations-activity-form" not found.');
+            return;
+        }
+
+        // Reset the form and populate default options
+        form.reset();
+
+        // Set the metadata ID in the form
+        const metadataInput = form.querySelector('input[name="annual_op_metadata_ID"]');
+        if (metadataInput) {
+            metadataInput.value = metadataId;
+        } else {
+            console.error('Input field "annual_op_metadata_ID" not found in the form.');
+        }
+
+        // Show the modal for adding activities
+        const modalElement = document.getElementById('annualOperationsActivityModal');
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else {
+            console.error('Modal with ID "annualOperationsActivityModal" not found.');
+        }
+    }
+
     // annual operation activity
-    document.querySelector('#annualOperationsActivityModal').addEventListener('shown.bs.modal', async function () {
+    let annualOperationsActivityTable = $('#tbl-annual-operations-activity').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        destroy: true,
+        columnDefs: [
+            { orderable: false, targets: [6] } // Disable sorting on the "Action" column
+        ],
+        data: [],
+        columns: [
+            { data: 'activity_name', title: 'Activity Name' },
+            { data: 'operation_name', title: 'Operation Name' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'priority', title: 'Priority' },
+            { data: 'tags', title: 'Tags' },
+            {
+                data: null,
+                title: 'Actions',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteActivity(${row.id})">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>`;
+                }
+            }
+        ]
+    });
+    // Annual Operations Activity Modal: Fetch and display activities for the selected annual operation metadata
+    // This section listens for the modal to be shown, then fetches activities and populates the DataTable.
+    // Listen for when the Annual Operations Activity Modal is shown
+    document.getElementById('annualOperationsActivityModal').addEventListener('shown.bs.modal', async function () {
         const metadataId = document.querySelector('input[name="annual_op_metadata_ID"]').value;
+        if (!metadataId) return;
+
         const url = `/admin/metadata/activities/${metadataId}`;
         const spinner = document.getElementById('loading-spinner');
-
         showElement(spinner);
 
         try {
             const data = await fetchFieldInput(url);
-
             if (data.status === "success" && Array.isArray(data.activities)) {
-                const activitiesTable = $('#tbl-annual-operations-activity').DataTable({
-                    paging: true,
-                    searching: true,
-                    ordering: true,
-                    responsive: true,
-                    destroy: true, // Reinitialize the table
-                    columnDefs: [
-                        { orderable: false, targets: [4] } // Disable sorting on the "Action" column
-                    ],
-                    data: data.activities,
-                    columns: [
-                        { data: 'activity_name', title: 'Activity Name' },
-                        { data: 'activity_description', title: 'Description' },
-                        { data: 'activity_date', title: 'Date' },
-                        { data: 'status', title: 'Status' },
-                        {
-                            data: null,
-                            title: 'Actions',
-                            render: function (data, type, row) {
-                                return `
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteActivity(${row.id})">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </button>
-                                    </div>`;
-                            }
-                        }
-                    ]
-                });
+                const activities = data.activities.map(activity => ({
+                    activity_name: activity.activity_name || "N/A",
+                    operation_name: activity.operation?.operation_name || "N/A",
+                    start_date: activity.start_date ? new Date(activity.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    end_date: activity.end_date ? new Date(activity.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    priority: activity.priority || "N/A",
+                    tags: activity.tags || "N/A",
+                    id: activity.id || "N/A"
+                }));
+
+                annualOperationsActivityTable.clear().rows.add(activities).draw();
             } else {
                 displayMessage('warning', 'No activities found for this metadata.');
+                annualOperationsActivityTable.clear().draw();
             }
         } catch (error) {
             console.error("Error fetching activities:", error);
             displayMessage('danger', 'An error occurred while fetching activities. Please try again.');
+            annualOperationsActivityTable.clear().draw();
         } finally {
             hideElement(spinner);
         }
     });
+    // Form submission for adding activities
+    document.querySelector('#annual-operations-activity-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-activity') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Annual Operation Activity', url, 'POST', formData);
+            if (result.status === 'success') {
+                if (Array.isArray(result.activities)) {
+                    const activities = result.activities.map(activity => ({
+                        activity_name: activity.activity_name || "N/A",
+                        operation_name: activity.operation?.operation_name || "N/A",
+                        start_date: activity.start_date ? new Date(activity.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: activity.end_date ? new Date(activity.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        priority: activity.priority || "N/A",
+                        tags: activity.tags || "N/A",
+                        id: activity.id || "N/A"
+                    }));
+                    annualOperationsActivityTable.clear().rows.add(activities).draw();
+                }
+            }
+        } catch (error) {
+            console.error('Error storing annual operation activity:', error);
+        }
+    });
+
   </script>
  <!-- Annual Operation log -->
  

@@ -55,6 +55,7 @@ use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
 use App\Http\Controllers\AnnualOperation\MetadataController;
+use App\Http\Controllers\AnnualOperation\ActivityController;
 
 
 
@@ -423,6 +424,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/metadata/{id}', 'update')->name('admin.update-metadata');
         Route::delete('/metadata/{id}', 'destroy')->name('admin.delete-metadata');
         Route::get('/metadata/company/{companyId}', 'getMetadataByCompany')->name('admin.metadata-by-company');
+    });
+
+    // Activity
+    Route::controller(ActivityController::class)->group(function() {
+        Route::get('/activity', 'index')->name('admin.activity');
+        Route::post('/activity/store', 'store')->name('admin.store-activity');
+        Route::get('/activity/{id}', 'show')->name('admin.show-activity');
+        Route::put('/activity/{id}', 'update')->name('admin.update-activity');
+        Route::delete('/activity/{id}', 'destroy')->name('admin.delete-activity');
+        Route::get('/metadata/activities/{metadataId}', 'getActivitiesByMetadata');
     });
 
     // Pages
