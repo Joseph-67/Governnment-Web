@@ -10012,6 +10012,7 @@
         ],
         data: [],
         columns: [
+            
             { data: 'batch_name', title: 'Batch Name' },
             { data: 'product_name', title: 'Product Name' },
             { data: 'start_date', title: 'Start Date' },
