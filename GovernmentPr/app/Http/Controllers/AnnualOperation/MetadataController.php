@@ -111,9 +111,22 @@ class MetadataController extends Controller
             ], 500);
         }
 
+        // Return the created metadata
+        $annualOperations = Metadatata::where('is_deleted', '0')
+            ->where('company_id', $request->company_id)
+            ->with(['company', 'calendarYear'])
+            ->get();
+        if ($annualOperations->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to retrieve the created metadata.',
+            ], 404);
+        }
+        // Return the response
         return response()->json([
             'status' => 'success',
             'message' => 'Metadata stored successfully.',
+            'annual_operation_metadatas' => $annualOperations,
         ], 201);
     }
 
