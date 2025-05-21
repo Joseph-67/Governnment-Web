@@ -3539,6 +3539,68 @@
                                             <tbody></tbody>
                                         </table>
                                     </div>
+                                    <!-- End Batch Tracking Table -->
+                                   
+
+                                    <!-- Production Process Modal -->
+                                    <div class="modal fade" id="productionProcessModal" tabindex="-1" aria-labelledby="productionProcessModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-info text-white">
+                                                    <h5 class="modal-title" id="productionProcessModalLabel">Setup Production Process</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Production Process Form -->
+                                                    <form id="production-process-form" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <label for="process_name" class="form-label">Operation Type</label>
+                                                                <input type="text" class="form-control" id="process_name" name="process_name" placeholder="Enter process name" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="process_date_range" class="form-label">Start Date / End Date</label>
+                                                                <div class="input-group" id="process_date_range">
+                                                                    <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date">
+                                                                    <span class="input-group-text">to</span>
+                                                                    <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date">
+                                                                </div>
+                                                            </div>
+                                                        <!-- Pass the logged-in user's ID as a hidden input -->
+                                                        @if(auth('admin')->check())
+                                                            <input type="hidden" name="admin_id" value="{{ auth('admin')->user()->id }}">
+                                                            <input type="hidden" name="admin_name" value="{{ auth('admin')->user()->first_name }}">
+                                                        @elseif(auth('web')->check())
+                                                            <input type="hidden" name="user_id" value="{{ auth('web')->user()->id }}">
+                                                            <input type="hidden" name="user_name" value="{{ auth('web')->user()->first_name }}">
+                                                        @endif
+                                                        <div class="col-md-6">
+                                                            <label for="process_status" class="form-label">Status</label>
+                                                            <select class="form-select" id="process_status" name="process_status" required>
+                                                                <option value="" selected disabled>Select Status</option>
+                                                                <option value="Pending">Pending</option>
+                                                                <option value="In Progress">In Progress</option>
+                                                                <option value="Completed">Completed</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
+                                                        </div>
+                                                            <div class="col-12 mt-3 text-end">
+                                                                <button type="submit" class="btn btn-info">Save Production Process</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <!-- End Production Process Form -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                   
                                 </div>
                             </div>
                         </div>
@@ -9918,6 +9980,7 @@
                 render: function (data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
+                        
                             <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
@@ -10017,13 +10080,40 @@
             { data: 'product_name', title: 'Product Name' },
             { data: 'start_date', title: 'Start Date' },
             { data: 'end_date', title: 'End Date' },
-            { data: 'status', title: 'Status' },
+            {
+                data: 'status',
+                title: 'Status',
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        let badgeClass = 'secondary';
+                        let label = data || 'N/A';
+                        if (typeof data === 'string') {
+                            switch (data.toLowerCase()) {
+                                case 'completed':
+                                    badgeClass = 'success';
+                                    break;
+                                case 'pending':
+                                    badgeClass = 'warning';
+                                    break;
+                                case 'rejected':
+                                    badgeClass = 'dark';
+                                    break;
+                            }
+                        }
+                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                    }
+                    return data;
+                }
+            },
             {
                 data: null,
                 title: 'Actions',
                 render: function (data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-info btn-sm" onclick="showProductionProcessModal()">
+                                        <i class="fas fa-cogs"></i> Setup Production Process
+                                    </button>
                             <button class="btn btn-primary btn-sm" onclick="">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
@@ -10101,7 +10191,7 @@ const batch = result.productionBatchTracking;
      * Updates the Batch Tracking table with new data.
      * @param {Array} batchTracking - Array of batch tracking objects.
      */
-    
+
 
 
    </script>
@@ -10115,6 +10205,12 @@ const batch = result.productionBatchTracking;
                  form.scrollIntoView({ behavior: 'smooth' });
              }
          }
+
+             function showProductionProcessModal() {
+                var modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
+                modal.show();
+            }
+                                    
      </script>
 <!-- end toggle -->
     @endsection
