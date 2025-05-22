@@ -3553,47 +3553,47 @@
                                                 <div class="modal-body">
                                                     <!-- Production Process Form -->
                                                     <form id="production-process-form" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-6">
-                                                                <label for="process_name" class="form-label">Operation Type</label>
-                                                                <input type="text" class="form-control" id="process_name" name="process_name" placeholder="Enter process name" required>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label for="process_date_range" class="form-label">Start Date / End Date</label>
-                                                                <div class="input-group" id="process_date_range">
-                                                                    <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date">
-                                                                    <span class="input-group-text">to</span>
-                                                                    <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date">
-                                                                </div>
-                                                            </div>
-                                                        <!-- Pass the logged-in user's ID as a hidden input -->
-                                                        @if(auth('admin')->check())
-                                                            <input type="hidden" name="admin_id" value="{{ auth('admin')->user()->id }}">
-                                                            <input type="hidden" name="admin_name" value="{{ auth('admin')->user()->first_name }}">
-                                                        @elseif(auth('web')->check())
-                                                            <input type="hidden" name="user_id" value="{{ auth('web')->user()->id }}">
-                                                            <input type="hidden" name="user_name" value="{{ auth('web')->user()->first_name }}">
-                                                        @endif
-                                                        <div class="col-md-6">
-                                                            <label for="process_status" class="form-label">Status</label>
-                                                            <select class="form-select" id="process_status" name="process_status" required>
-                                                                <option value="" selected disabled>Select Status</option>
-                                                                <option value="Pending">Pending</option>
-                                                                <option value="In Progress">In Progress</option>
-                                                                <option value="Completed">Completed</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="remarks" class="form-label">Remarks</label>
-                                                            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
-                                                        </div>
-                                                            <div class="col-12 mt-3 text-end">
-                                                                <button type="submit" class="btn btn-info">Save Production Process</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+    @csrf
+    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+    <input type="hidden" id="batch_id" name="batch_id">
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="operation_type" class="form-label">Operation Type</label>
+            <input type="text" class="form-control" id="operation_type" name="operation_type" placeholder="Enter operation type" required>
+        </div>
+        <div class="col-md-6">
+            <label for="process_date_range" class="form-label">Start Date / End Date</label>
+            <div class="input-group" id="process_date_range">
+                <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date" required>
+                <span class="input-group-text">to</span>
+                <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
+            </div>
+        </div>
+        @if(auth('admin')->check())
+            <input type="hidden" name="operator" value="{{ auth('admin')->user()->id }}">
+        @elseif(auth('web')->check())
+            <input type="hidden" name="operator" value="{{ auth('web')->user()->id }}">
+        @endif
+        <div class="col-md-6">
+            <label for="process_status" class="form-label">Status</label>
+            <select class="form-select" id="process_status" name="process_status" required>
+                <option value="" selected disabled>Select Status</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="remarks" class="form-label">Remarks</label>
+            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
+        </div>
+        <div class="col-12 mt-3 text-end">
+            <button type="submit" class="btn btn-info">Save Production Process</button>
+        </div>
+    </div>
+</form>
+
                                                     <!-- End Production Process Form -->
                                                 </div>
                                             </div>
@@ -10060,9 +10060,8 @@
 
   </script>
  <!-- Annual Operation log -->
-  <!-- Batch tracking -->
-   <script>
-    // Initialize DataTable for Batch Tracking
+ <!-- Batch tracking -->
+<script>
     // Initialize DataTable for Batch Tracking
     const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
         paging: true,
@@ -10075,7 +10074,6 @@
         ],
         data: [],
         columns: [
-            
             { data: 'batch_name', title: 'Batch Name' },
             { data: 'product_name', title: 'Product Name' },
             { data: 'start_date', title: 'Start Date' },
@@ -10111,13 +10109,17 @@
                 render: function (data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-info btn-sm" onclick="showProductionProcessModal()">
-                                        <i class="fas fa-cogs"></i> Setup Production Process
-                                    </button>
-                            <button class="btn btn-primary btn-sm" onclick="">
+                            <button 
+                                class="btn btn-info btn-sm setup-production-btn" 
+                                data-batch-id="${row.batch_id}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#productionProcessModal">
+                                <i class="fas fa-cogs"></i> Setup Production Process
+                            </button>
+                            <button class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm" onclick="">
+                            <button class="btn btn-danger btn-sm">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                         </div>`;
@@ -10125,6 +10127,7 @@
             }
         ]
     });
+
     // Fetch and display batch tracking data
     document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
         const companyId = "{{ json_encode($company->company_id) }}";
@@ -10142,10 +10145,9 @@
                     start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
                     end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
                     status: batch.status || "N/A",
-                    id: batch.id || "N/A"
+                    batch_id: batch.batch_id || "N/A" // ✅ FIXED: correctly named for access
                 }));
 
-                // Populate the table with the fetched data
                 batchTrackingTable.clear().rows.add(batchTrackingData).draw();
             } else {
                 displayMessage('warning', 'No batch tracking data found or invalid data structure.');
@@ -10157,7 +10159,8 @@
             hideElement(spinner);
         }
     });
-    // Form submission for adding batch tracking
+
+    // Handle form submission for adding a new batch
     document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
         e.preventDefault();
         const formData = new FormData(this);
@@ -10165,53 +10168,101 @@
 
         try {
             const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
-            console.log('====================================');
-            console.log(result.productionBatchTracking);
-            console.log('====================================');
             if (result.status === 'success') {
-const batch = result.productionBatchTracking;
+                const batch = result.productionBatchTracking;
 
-    // Prepare the formatted row data
-    const newRow = {
-        batch_name: batch.batch_name || "N/A",
-        product_name: batch.product?.name || "N/A",
-        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-        status: batch.status || "N/A",
-        id: batch.id || "N/A"
-    };
+                const newRow = {
+                    batch_name: batch.batch_name || "N/A",
+                    product_name: batch.product?.name || "N/A",
+                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    status: batch.status || "N/A",
+                    batch_id: batch.batch_id || "N/A" // ✅ FIXED
+                };
 
-    // Add to DataTable dynamically
-    batchTrackingTable.row.add(newRow).draw(false);            }
+                batchTrackingTable.row.add(newRow).draw(false);
+            }
         } catch (error) {
             console.error('Error storing batch tracking:', error);
         }
     });
-    /**
-     * Updates the Batch Tracking table with new data.
-     * @param {Array} batchTracking - Array of batch tracking objects.
-     */
 
-
-
-   </script>
-  <!-- End Batch tracking -->
-<!-- toggle batch production form open -->
-      <script>
-         function toggleBatchTrackingForm() {
-             const form = document.getElementById('batch-tracking-form-container');
-             form.classList.toggle('d-none');
-             if (!form.classList.contains('d-none')) {
-                 form.scrollIntoView({ behavior: 'smooth' });
-             }
-         }
-
-             function showProductionProcessModal() {
-                var modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
-                modal.show();
+    // Handle Setup Production Process button click
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('#tbl-batch-tracking').addEventListener('click', function (e) {
+            const button = e.target.closest('.setup-production-btn');
+            if (button) {
+                const batchId = button.getAttribute('data-batch-id');
+                console.log('Clicked batch ID:', batchId);
+                document.getElementById('batch_id').value = batchId;
             }
-                                    
-     </script>
-<!-- end toggle -->
+        });
+    });
+
+    function toggleBatchTrackingForm() {
+        const form = document.getElementById('batch-tracking-form-container');
+        form.classList.toggle('d-none');
+        if (!form.classList.contains('d-none')) {
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function showProductionProcessModal() {
+        const modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
+        modal.show();
+    }
+</script>
+<!-- End Batch tracking -->
+
+<!-- store production process -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('#production-process-form');
+    if (!form) {
+        console.error('Form not found');
+        return;
+    }
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-production-process') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+            console.log('Server response:', result); // ✅ log for debugging
+
+            if (result.status === 'success') {
+                const productionProcess = result.data;
+
+                const newRow = {
+                    operation_type: productionProcess.operation_type || "N/A",
+                    batch_id: productionProcess.batch_id || "N/A",
+                    start_time: productionProcess.start_time
+                        ? new Date(productionProcess.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                        : "N/A",
+                    end_time: productionProcess.end_time
+                        ? new Date(productionProcess.end_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                        : "N/A",
+                    status: productionProcess.status || "N/A"
+                };
+
+                // ✅ Add the new row to your DataTable
+                batchTrackingTable.row.add(newRow).draw(false);
+
+            } else if (result.status === 'error') {
+                console.error('Backend validation or logic error:', result.message);
+                alert('Error: ' + JSON.stringify(result.message));
+            }
+        } catch (error) {
+            console.error('Error storing production process:', error);
+            alert('Unexpected error occurred. Check console for details.');
+        }
+    });
+});
+
+</script>
+<!-- end store production process -->
+
     @endsection
 </x-layouts.admin-app>
