@@ -176,22 +176,31 @@ let industrial_process = {
   }
   
 
-for (let key in industries) {
-    console.log(industries[key]);
-    let industry = document.querySelector('#industry');
-    industry.innerHTML += `<optgroup label="${key}"></optgroup>`
-    let optGroup = document.querySelector('optgroup[label="'+key+'"]');
-    industries[key].forEach(value => {
-        optGroup.innerHTML += `<option value="${value}">${value}</option>`
-    });
-}
+const industrySelect = document.querySelector('#industry');
+industrySelect.innerHTML = ''; // Clear previous options
 
-for (let key in industrial_process["industrial_processes"]) {
-    console.log(industrial_process["industrial_processes"][key]);
-    let industry = document.querySelector('#industry-process');
-    industry.innerHTML += `<optgroup label="${key}"></optgroup>`
-    let optGroup = document.querySelector('optgroup[label="'+key+'"]');
-    industrial_process["industrial_processes"][key].forEach(value => {
-        optGroup.innerHTML += `<option value="${value}">${value}</option>`
-    });
-}
+Object.entries(industries).forEach(([category, items]) => {
+  const optGroup = document.createElement('optgroup');
+  optGroup.label = category;
+  items.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    optGroup.appendChild(option);
+  });
+  industrySelect.appendChild(optGroup);
+});
+const industryProcessSelect = document.querySelector('#industry-process');
+industryProcessSelect.innerHTML = ''; // Clear previous options
+
+Object.entries(industrial_process["industrial_processes"]).forEach(([key, values]) => {
+  const optGroup = document.createElement('optgroup');
+  optGroup.label = key;
+  values.forEach(value => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    optGroup.appendChild(option);
+  });
+  industryProcessSelect.appendChild(optGroup);
+});

@@ -25,7 +25,13 @@ return new class extends Migration
             $table->json('MaterialUsage')->nullable();
             $table->json('ChemicalUsage')->nullable();
             $table->decimal('WaterUsage', 12, 2)->nullable();
+            $table->decimal('EnergyUsage', 12, 2)->nullable();
+            $table->json('WasteGenerated')->nullable();
             $table->enum('Priority', ['Low', 'Medium', 'High'])->default('Medium');
+            $table->enum('Status', ['Pending', 'In Progress', 'Completed', 'Cancelled'])->nullable();
+            $table->string('ResponsiblePerson', 255)->nullable();
+            $table->string('Location', 255)->nullable();
+            $table->text('SuccessCriteria')->nullable();
             $table->json('Tags')->nullable();
             $table->string('ExternalReference', 255)->nullable();
             $table->timestamps();
