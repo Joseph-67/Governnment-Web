@@ -3429,7 +3429,7 @@
                                                 <h4 class="card-title mb-0 fw-bold">
                                                     <i class="las la-box me-2"></i> Batch Production Management Form
                                                 </h4>
-                                                <button type="button" class="btn-close btn-close-white btn-lg" aria-label="Close" style="font-size:2rem;" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
+                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
                                             </div>
                                             <div class="card-body">
                                                 <form action="" method="post" id="batch-tracking-form">
@@ -3470,11 +3470,7 @@
                                                             <label for="defective_quantity" class="form-label text-white fw-semibold">Total Quantity Defective</label>
                                                             <input type="number" class="form-control border-0 shadow-sm" id="defective_quantity" name="defective_quantity" placeholder="Enter defective quantity" min="0">
                                                         </div>
-                                                        <!-- Yield Percentage -->
-                                                        <div class="col-md-6">
-                                                            <label for="yield_percentage" class="form-label text-white fw-semibold">Yield Percentage</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
-                                                        </div>
+                                                     
                                                         <!-- Created By -->
                                                         <div class="col-md-6">
                                                             <label for="prepared_by" class="form-label text-white fw-semibold">Created By</label>
@@ -3498,18 +3494,19 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <!-- Predicted Defect Rate -->
+                                                        <!-- Status -->
                                                         <div class="col-md-6">
-                                                            <label for="predicted_defect_rate" class="form-label text-white fw-semibold">Predicted Defect Rate (%)</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
+                                                            <label for="batch_status" class="form-label text-white fw-semibold">Status</label>
+                                                           <select class="form-select border-0 shadow-sm" id="batch_status" name="batch_status">
+                                                            <option value="" selected disabled>Select Status</option>
+                                                            <option value="In Progress">In Progress</option>
+                                                            <option value="Completed">Completed</option>
+                                                            <option value="Rejected">Rejected</option>
+                                                        </select>
+
                                                         </div>
-                                                        <!-- Audit Trail -->
-                                                        <div class="col-md-6">
-                                                            <label for="audit_trail" class="form-label text-white fw-semibold">Audit Trail</label>
-                                                            <select class="form-select border-0 shadow-sm" id="audit_trail" name="audit_trail">
-                                                                <option value="" selected disabled>Select Audit Trail</option>
-                                                            </select>
-                                                        </div>
+                                                        
+                                                        
                                                         <!-- Submit Button -->
                                                         <div class="col-md-12 mt-3 text-end">
                                                             <button type="submit" class="btn btn-light fw-bold px-4 py-2 shadow-sm">Save Batch</button>
@@ -3542,6 +3539,68 @@
                                             <tbody></tbody>
                                         </table>
                                     </div>
+                                    <!-- End Batch Tracking Table -->
+                                   
+
+                                    <!-- Production Process Modal -->
+                                    <div class="modal fade" id="productionProcessModal" tabindex="-1" aria-labelledby="productionProcessModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-info text-white">
+                                                    <h5 class="modal-title" id="productionProcessModalLabel">Setup Production Process</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Production Process Form -->
+                                                    <form id="production-process-form" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <label for="process_name" class="form-label">Operation Type</label>
+                                                                <input type="text" class="form-control" id="process_name" name="process_name" placeholder="Enter process name" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="process_date_range" class="form-label">Start Date / End Date</label>
+                                                                <div class="input-group" id="process_date_range">
+                                                                    <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date">
+                                                                    <span class="input-group-text">to</span>
+                                                                    <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date">
+                                                                </div>
+                                                            </div>
+                                                        <!-- Pass the logged-in user's ID as a hidden input -->
+                                                        @if(auth('admin')->check())
+                                                            <input type="hidden" name="admin_id" value="{{ auth('admin')->user()->id }}">
+                                                            <input type="hidden" name="admin_name" value="{{ auth('admin')->user()->first_name }}">
+                                                        @elseif(auth('web')->check())
+                                                            <input type="hidden" name="user_id" value="{{ auth('web')->user()->id }}">
+                                                            <input type="hidden" name="user_name" value="{{ auth('web')->user()->first_name }}">
+                                                        @endif
+                                                        <div class="col-md-6">
+                                                            <label for="process_status" class="form-label">Status</label>
+                                                            <select class="form-select" id="process_status" name="process_status" required>
+                                                                <option value="" selected disabled>Select Status</option>
+                                                                <option value="Pending">Pending</option>
+                                                                <option value="In Progress">In Progress</option>
+                                                                <option value="Completed">Completed</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
+                                                        </div>
+                                                            <div class="col-12 mt-3 text-end">
+                                                                <button type="submit" class="btn btn-info">Save Production Process</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <!-- End Production Process Form -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                   
                                 </div>
                             </div>
                         </div>
@@ -10195,6 +10254,63 @@
             if (!form) {
                 console.log('Form with ID "annual-operations-activity-form" not found.');
                 return;
+
+        }
+
+        // Reset the form and populate default options
+        form.reset();
+
+        // Set the metadata ID in the form
+        const metadataInput = form.querySelector('input[name="annual_op_metadata_ID"]');
+        if (metadataInput) {
+            metadataInput.value = metadataId;
+        } else {
+            console.error('Input field "annual_op_metadata_ID" not found in the form.');
+        }
+
+        // Show the modal for adding activities
+        const modalElement = document.getElementById('annualOperationsActivityModal');
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } else {
+            console.error('Modal with ID "annualOperationsActivityModal" not found.');
+        }
+    }
+
+    // annual operation activity
+    let annualOperationsActivityTable = $('#tbl-annual-operations-activity').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        destroy: true,
+        columnDefs: [
+            { orderable: false, targets: [6] } // Disable sorting on the "Action" column
+        ],
+        data: [],
+        columns: [
+            { data: 'activity_name', title: 'Activity Name' },
+            { data: 'operation_name', title: 'Operation Name' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'priority', title: 'Priority' },
+            { data: 'tags', title: 'Tags' },
+            {
+                data: null,
+                title: 'Actions',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                        
+                            <button class="btn btn-primary btn-sm" onclick="editActivity(${row.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteActivity(${row.id})">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>`;
+                }
             }
 
             // Reset the form and populate default options
@@ -10337,17 +10453,45 @@
         ],
         data: [],
         columns: [
+            
             { data: 'batch_name', title: 'Batch Name' },
             { data: 'product_name', title: 'Product Name' },
             { data: 'start_date', title: 'Start Date' },
             { data: 'end_date', title: 'End Date' },
-            { data: 'status', title: 'Status' },
+            {
+                data: 'status',
+                title: 'Status',
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        let badgeClass = 'secondary';
+                        let label = data || 'N/A';
+                        if (typeof data === 'string') {
+                            switch (data.toLowerCase()) {
+                                case 'completed':
+                                    badgeClass = 'success';
+                                    break;
+                                case 'pending':
+                                    badgeClass = 'warning';
+                                    break;
+                                case 'rejected':
+                                    badgeClass = 'dark';
+                                    break;
+                            }
+                        }
+                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                    }
+                    return data;
+                }
+            },
             {
                 data: null,
                 title: 'Actions',
                 render: function (data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-info btn-sm" onclick="showProductionProcessModal()">
+                                        <i class="fas fa-cogs"></i> Setup Production Process
+                                    </button>
                             <button class="btn btn-primary btn-sm" onclick="">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
@@ -10403,8 +10547,20 @@
             console.log(result.productionBatchTracking);
             console.log('====================================');
             if (result.status === 'success') {
-                updateBatchTrackingTable(result.productionBatchTracking);
-            }
+const batch = result.productionBatchTracking;
+
+    // Prepare the formatted row data
+    const newRow = {
+        batch_name: batch.batch_name || "N/A",
+        product_name: batch.product?.name || "N/A",
+        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+        status: batch.status || "N/A",
+        id: batch.id || "N/A"
+    };
+
+    // Add to DataTable dynamically
+    batchTrackingTable.row.add(newRow).draw(false);            }
         } catch (error) {
             console.error('Error storing batch tracking:', error);
         }
@@ -10413,20 +10569,7 @@
      * Updates the Batch Tracking table with new data.
      * @param {Array} batchTracking - Array of batch tracking objects.
      */
-    function updateBatchTrackingTable(batchTracking) {
-        // Update the DataTable with the new batch tracking data
-        if (Array.isArray(batchTracking)) {
-            const formattedData = batchTracking.map(batch => ({
-            batch_name: batch.batch_name || "N/A",
-            product_name: batch.product?.name || "N/A",
-            start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-            end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-            status: batch.status || "N/A",
-            id: batch.id || "N/A"
-            }));
-            batchTrackingTable.clear().rows.add(formattedData).draw();
-        }
-    }
+
 
 
     </script>
@@ -10464,5 +10607,7 @@
         }
     </script>
     <!-- end toggle -->
+   </script>
+  <!-- End Batch tracking -->
     @endsection
 </x-layouts.admin-app>

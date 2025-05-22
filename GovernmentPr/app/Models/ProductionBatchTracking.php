@@ -18,12 +18,10 @@ class ProductionBatchTracking extends Model
         'end_date',
         'total_quantity',
         'defective_quantity',
-        'yield_percentage',
         'created_by',
         'geolocation',
         'iot_device_id',
         'predicted_defect_rate',
-        'audit_trail_id',
         'status'
     ];
     public function company()
