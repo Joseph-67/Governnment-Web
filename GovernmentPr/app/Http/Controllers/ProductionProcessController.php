@@ -39,45 +39,47 @@ class ProductionProcessController extends Controller
         //
 
 $validator = Validator::make($request->all(), [
-    'company_id' => 'required|integer|exists:companies,company_id',
-    'batch_id' => 'required|exists:production_batch_tracking,batch_id', // ✅ corrected table
-    'operation_type' => 'required|string|max:255',
-    'process_start_date' => 'required|date',
-    'process_end_date' => 'required|date|after:process_start_date',
-    'operator' => 'required|exists:users,id',
-    'process_status' => 'required|string|in:Pending,In Progress,Completed',
-    'remarks' => 'nullable|string|max:1000'
+    'company_id'        => 'required|integer|exists:companies,company_id',
+    'batch_id'          => 'required|exists:production_batch_tracking,batch_id',
+    'operation_type'    => 'required|string|max:255',
+    'process_start_date'=> 'required|date',
+    'process_end_date'  => 'required|date|after_or_equal:process_start_date',
+    'operator'          => 'required|exists:users,id',
+    'process_status'    => 'required|string|in:Pending,In Progress,Completed',
+    'remarks'           => 'nullable|string|max:1000'
 ]);
 
 if ($validator->fails()) {
     return response()->json([
-        'status' => 'error',
-        'message' => $validator->errors(),
+        'status'  => 'error',
+        'errors'  => $validator->errors(),
     ], 422);
 }
 
+$data = [
+    'company_id'   => $request->input('company_id'),
+    'batch_id'     => $request->input('batch_id'),
+    'operation_type'=> $request->input('operation_type'),
+    'start_time'   => $request->input('process_start_date'),
+    'end_time'     => $request->input('process_end_date'),
+    'operator_id'  => $request->input('operator'),
+    'status'       => $request->input('process_status', 'Completed'),
+    'remarks'      => $request->input('remarks')
+];
+
 try {
-    $productionProcess = productionprocess::create([
-        'company_id' => $request->company_id,
-        'batch_id' => $request->batch_id,
-        'operation_type' => $request->operation_type,
-        'start_time' => $request->process_start_date,
-        'end_time' => $request->process_end_date,
-        'operator_id' => $request->operator,
-        'status' => $request->process_status ?? 'Completed',
-        'remarks' => $request->remarks
-    ]);
+    $productionProcess = productionprocess::create($data);
 
     return response()->json([
-        'status' => 'success',
+        'status'  => 'success',
         'message' => 'Production process created successfully.',
-        'data' => $productionProcess
+        'data'    => $productionProcess
     ], 201);
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
     return response()->json([
-        'status' => 'error',
+        'status'  => 'error',
         'message' => 'Failed to create production process.',
-        'error' => $e->getMessage()
+        'error'   => app()->environment('production') ? null : $e->getMessage()
     ], 500);
 }
 

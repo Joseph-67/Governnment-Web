@@ -12,6 +12,7 @@ class productionprocess extends Model
     protected $primaryKey = 'process_id';
     protected $fillable = [
         'batch_id',
+        'company_id',
         'operation_type',
         'start_time',
         'end_time',
@@ -27,5 +28,9 @@ class productionprocess extends Model
     public function operator()
     {
         return $this->belongsTo(User::class, 'operator_id', 'id');
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
 }
