@@ -5047,12 +5047,12 @@
                                 <input type="hidden" name="annual_op_metadata_ID" id="annual_op_metadata_ID">
                                 <div class="row g-4">
                                     <div class="col-md-12">
-                                        <label for="annual_operation_title" class="form-label fw-semibold">Annual Operation Title</label>
-                                        <input type="text" class="form-control" id="annual_operation_title" name="annual_operation_title" placeholder="Enter Annual Operation Title" readonly>
+                                        <label for="annual_operation_title" class="form-label fw-semibold">Annual Operation Activity Title <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="annual_operation_activity_title" name="annual_operation_activity_title" placeholder="Enter Annual Operation Activity Title" readonly>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="operation_name" class="form-label fw-semibold">Operation Activity <span class="text-danger">*</span></label>
-                                        <select class="form-select operation-select" id="operation_name" name="operation_name" required>
+                                        <label for="operation_name" class="form-label fw-semibold">Operation Activity (Operation type) <span class="text-danger">*</span></label>
+                                        <select class="form-select operation-select" id="operation_id" name="operation_activity" required>
                                             <option value="" selected disabled>Select Operation</option>
                                         </select>
                                         <div class="invalid-feedback">Please select an operation activity.</div>
@@ -5068,11 +5068,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="objectives" class="form-label fw-semibold">Objectives</label>
-                                        <textarea name="objectives" id="objectives" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
+                                        <textarea name="Objectives" id="objectives" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="description" class="form-label fw-semibold">Description</label>
-                                        <textarea name="description" id="description" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                                        <textarea name="Description" id="description" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="material-quantity-used-container-annual-operation-activity">
@@ -5174,7 +5174,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="status" class="form-label fw-semibold">Status</label>
-                                        <select class="form-select" id="status" name="status">
+                                        <select class="form-select" id="status" name="Status">
                                             <option value="" selected disabled>Select Status</option>
                                             <option value="pending">Pending</option>
                                             <option value="in_progress">In Progress</option>
@@ -5184,11 +5184,11 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
-                                        <input type="text" class="form-control" id="supervisor" name="supervisor" placeholder="Enter supervisor name">
+                                        <input type="text" class="form-control" id="supervisor" name="Supervisor" placeholder="Enter supervisor name">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location" class="form-label fw-semibold">Location</label>
-                                        <input type="text" class="form-control" id="location" name="location" placeholder="Enter activity location">
+                                        <input type="text" class="form-control" id="location" name="Location" placeholder="Enter activity location">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="success_criteria" class="form-label fw-semibold">Success Criteria</label>
@@ -5196,7 +5196,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="tags" class="form-label fw-semibold">Tags</label>
-                                        <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags (comma separated)">
+                                        <input type="text" class="form-control" id="tags" name="Tags" placeholder="Enter tags (comma separated)">
                                     </div>
                                     <div class="col-12 mt-3 text-end">
                                         <button type="submit" class="btn btn-dark fw-bold px-4 py-2 shadow-sm">Save Activity</button>
@@ -10295,9 +10295,16 @@
         // Form submission for adding activities
         document.querySelector('#annual-operations-activity-form').addEventListener('submit', async function (e) {
             e.preventDefault();
+            console.log('====================================');
+            console.log('Annual Operations Activity Form submitted');
+            console.log('====================================');
             const formData = new FormData(this);
             const url = "{{ route('admin.store-activity') }}";
 
+            // Show loading spinner
+            const spinner = document.getElementById('loading-spinner');
+            showElement(spinner);
+            // Store the activity data
             try {
                 const result = await fetch_cycle('--Store Annual Operation Activity', url, 'POST', formData);
                 if (result.status === 'success') {
