@@ -5267,7 +5267,8 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-primary mb-0">Annual Operations Activities</h4>
-                        <button type="button" class="btn btn-primary btn-sm" id="btn-add-annual-activity" onclick="toggleAnnualOperationActivityForm()">
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-add-annual-activity"
+                            onclick="addActivityAnnualOperationLog()">
                             <i class="iconoir-plus"></i> Add Activity
                         </button>
                     </div>
@@ -10067,6 +10068,7 @@
         });
     </script>
     <!-- Product Management Script -->
+     
     <!-- Annual Operation log -->
     <script>
         // Annual Operation Metadata Management
@@ -10388,195 +10390,199 @@
 
     </script>
     <!-- Annual Operation log -->
+
     <!-- Batch tracking -->
-<script>
-    // Initialize DataTable for Batch Tracking
-    const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        responsive: true,
-        destroy: true,
-        columnDefs: [
-            { orderable: false, targets: [5] } // Disable sorting on the "Actions" column
-        ],
-        data: [],
-        columns: [
-            { data: 'batch_name', title: 'Batch Name' },
-            { data: 'product_name', title: 'Product Name' },
-            { data: 'start_date', title: 'Start Date' },
-            { data: 'end_date', title: 'End Date' },
-            {
-                data: 'status',
-                title: 'Status',
-                render: function (data, type, row) {
-                    if (type === 'display') {
-                        let badgeClass = 'secondary';
-                        let label = data || 'N/A';
-                        if (typeof data === 'string') {
-                            switch (data.toLowerCase()) {
-                                case 'completed':
-                                    badgeClass = 'success';
-                                    break;
-                                case 'pending':
-                                    badgeClass = 'warning';
-                                    break;
-                                case 'rejected':
-                                    badgeClass = 'dark';
-                                    break;
+    <script>
+        // Initialize DataTable for Batch Tracking
+        const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            destroy: true,
+            columnDefs: [
+                { orderable: false, targets: [5] } // Disable sorting on the "Actions" column
+            ],
+            data: [],
+            columns: [
+                { data: 'batch_name', title: 'Batch Name' },
+                { data: 'product_name', title: 'Product Name' },
+                { data: 'start_date', title: 'Start Date' },
+                { data: 'end_date', title: 'End Date' },
+                {
+                    data: 'status',
+                    title: 'Status',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            let badgeClass = 'secondary';
+                            let label = data || 'N/A';
+                            if (typeof data === 'string') {
+                                switch (data.toLowerCase()) {
+                                    case 'completed':
+                                        badgeClass = 'success';
+                                        break;
+                                    case 'pending':
+                                        badgeClass = 'warning';
+                                        break;
+                                    case 'rejected':
+                                        badgeClass = 'dark';
+                                        break;
+                                }
                             }
+                            return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                         }
-                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                        return data;
                     }
-                    return data;
+                },
+                {
+                    data: null,
+                    title: 'Actions',
+                    render: function (data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button 
+                                    class="btn btn-info btn-sm setup-production-btn" 
+                                    data-batch-id="${row.batch_id}" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#productionProcessModal">
+                                    <i class="fas fa-cogs"></i> Setup Production Process
+                                </button>
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </div>`;
+                    }
                 }
-            },
-            {
-                data: null,
-                title: 'Actions',
-                render: function (data, type, row) {
-                    return `
-                        <div class="d-flex justify-content-end gap-2">
-                            <button 
-                                class="btn btn-info btn-sm setup-production-btn" 
-                                data-batch-id="${row.batch_id}" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#productionProcessModal">
-                                <i class="fas fa-cogs"></i> Setup Production Process
-                            </button>
-                            <button class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                        </div>`;
+            ]
+        });
+
+        // Fetch and display batch tracking data
+        document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
+            const companyId = "{{ json_encode($company->company_id) }}";
+            const url = `/admin/batch-tracking/company/${companyId}`;
+            const spinner = document.getElementById('loading-spinner');
+
+            showElement(spinner);
+
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
+                    const batchTrackingData = data.production_batch_tracking.map(batch => ({
+                        batch_name: batch.batch_name || "N/A",
+                        product_name: batch.product?.name || "N/A",
+                        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        status: batch.status || "N/A",
+                        batch_id: batch.batch_id || "N/A" // ✅ FIXED: correctly named for access
+                    }));
+
+                    batchTrackingTable.clear().rows.add(batchTrackingData).draw();
+                } else {
+                    displayMessage('warning', 'No batch tracking data found or invalid data structure.');
                 }
+            } catch (error) {
+                console.error("Error fetching batch tracking data:", error);
+                displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
+            } finally {
+                hideElement(spinner);
             }
-        ]
-    });
+        });
 
-    // Fetch and display batch tracking data
-    document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
-        const companyId = "{{ json_encode($company->company_id) }}";
-        const url = `/admin/batch-tracking/company/${companyId}`;
-        const spinner = document.getElementById('loading-spinner');
+        // Handle form submission for adding a new batch
+        document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const url = "{{ route('admin.store-batch-tracking') }}";
 
-        showElement(spinner);
+            try {
+                const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+                if (result.status === 'success') {
+                    const batch = result.productionBatchTracking;
 
-        try {
-            const data = await fetchFieldInput(url);
-            if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
-                const batchTrackingData = data.production_batch_tracking.map(batch => ({
-                    batch_name: batch.batch_name || "N/A",
-                    product_name: batch.product?.name || "N/A",
-                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    status: batch.status || "N/A",
-                    batch_id: batch.batch_id || "N/A" // ✅ FIXED: correctly named for access
-                }));
+                    const newRow = {
+                        batch_name: batch.batch_name || "N/A",
+                        product_name: batch.product?.name || "N/A",
+                        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        status: batch.status || "N/A",
+                        batch_id: batch.batch_id || "N/A" // ✅ FIXED
+                    };
 
-                batchTrackingTable.clear().rows.add(batchTrackingData).draw();
-            } else {
-                displayMessage('warning', 'No batch tracking data found or invalid data structure.');
+                    batchTrackingTable.row.add(newRow).draw(false);
+                }
+            } catch (error) {
+                console.error('Error storing batch tracking:', error);
             }
-        } catch (error) {
-            console.error("Error fetching batch tracking data:", error);
-            displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
-        } finally {
-            hideElement(spinner);
+        });
+
+        // Handle Setup Production Process button click
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('#tbl-batch-tracking').addEventListener('click', function (e) {
+                const button = e.target.closest('.setup-production-btn');
+                if (button) {
+                    const batchId = button.getAttribute('data-batch-id');
+                    console.log('Clicked batch ID:', batchId);
+                    document.getElementById('batch_id').value = batchId;
+                }
+            });
+        });
+
+        function toggleBatchTrackingForm() {
+            const form = document.getElementById('batch-tracking-form-container');
+            form.classList.toggle('d-none');
+            if (!form.classList.contains('d-none')) {
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
         }
-    });
 
-    // Handle form submission for adding a new batch
-    document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-batch-tracking') }}";
-
-        try {
-            const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
-            if (result.status === 'success') {
-                const batch = result.productionBatchTracking;
-
-                const newRow = {
-                    batch_name: batch.batch_name || "N/A",
-                    product_name: batch.product?.name || "N/A",
-                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    status: batch.status || "N/A",
-                    batch_id: batch.batch_id || "N/A" // ✅ FIXED
-                };
-
-                batchTrackingTable.row.add(newRow).draw(false);
-            }
-        } catch (error) {
-            console.error('Error storing batch tracking:', error);
+        function showProductionProcessModal() {
+            const modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
+            modal.show();
         }
-    });
+    </script>
+    <!-- End Batch tracking -->
 
-    // Handle Setup Production Process button click
+    <!-- store production process -->
+    <script>
+    /**
+     * Handles the submission of the Production Process form in the Batch Tracking section.
+     * - Prevents default form submission.
+     * - Sends form data via AJAX to the server.
+     * - Uses fetch_cycle for AJAX POST.
+     * - On success, you can update the UI or show a toast.
+     * - On error, logs the error or can show a toast.
+     */
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('#tbl-batch-tracking').addEventListener('click', function (e) {
-            const button = e.target.closest('.setup-production-btn');
-            if (button) {
-                const batchId = button.getAttribute('data-batch-id');
-                console.log('Clicked batch ID:', batchId);
-                document.getElementById('batch_id').value = batchId;
+        const form = document.querySelector('#production-process-form');
+        if (!form) return;
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const url = "{{ route('admin.store-production-process') }}";
+
+            try {
+                // Send form data to the server using fetch_cycle helper
+                const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+                if (result.status === 'success') {
+                    // Optionally update UI or table here
+                    // Example: showToast('Production process saved successfully.', 'success');
+                } else if (result.status === 'error') {
+                    // Optionally handle validation errors
+                    // Example: showToast(result.message || 'Error saving production process.', 'error');
+                }
+            } catch (error) {
+                // Log any unexpected errors
+                console.error('Error storing production process:', error);
             }
         });
     });
-
-    function toggleBatchTrackingForm() {
-        const form = document.getElementById('batch-tracking-form-container');
-        form.classList.toggle('d-none');
-        if (!form.classList.contains('d-none')) {
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
-    function showProductionProcessModal() {
-        const modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
-        modal.show();
-    }
-</script>
-<!-- End Batch tracking -->
-
-<!-- store production process -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('#production-process-form');
-    if (!form) {
-        console.error('Form not found');
-        return;
-    }
-
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-production-process') }}";
-
-        try {
-            const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-            console.log('Server response:', result); // ✅ log for debugging
-
-            if (result.status === 'success') {
-                const productionProcess = result.data;
-
-                
-
-            } else if (result.status === 'error') {
-                console.error('Backend validation or logic error:', result.message);
-                // alert removed as requested
-            }
-        } catch (error) {
-            console.error('Error storing production process:', error);
-        }
-    });
-});
-</script>
-
-<!-- end store production process -->
+    </script>
+    <!-- end store production process -->
+    <!-- End Batch tracking -->
 
     @endsection
 </x-layouts.admin-app>
