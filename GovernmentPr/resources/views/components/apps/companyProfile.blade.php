@@ -5088,207 +5088,207 @@
      <!-- Annual operations activity -->
     <!-- Annual Operations Activity Modal -->
     <div class="modal fade" id="annualOperationsActivityModal" tabindex="-1" aria-labelledby="annualOperationsActivityModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-fullscreen">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="annualOperationsActivityModalLabel">Annual Operations Activities for</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="annualOperationsActivityModalLabel">Annual Operations Activities for</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow-sm border-0 d-none" id = "annual-operation-activity-form-card" style="background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%); color: #333;">
+                <div class="card-header d-flex justify-content-between align-items-center rounded-top" style="background: #f8ffae; color: #333;">
+                    <h4 class="card-title mb-0 fw-bold">
+                        <i class="las la-tasks me-2" style="color: #22c55e;"></i> <span class="fw-bold">Annual Operations Activity Form</span>
+                    </h4>
+                    <button type="button" class="btn-close" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="card shadow-sm border-0 d-none" id = "annual-operation-activity-form-card" style="background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%); color: #333;">
-                        <div class="card-header d-flex justify-content-between align-items-center rounded-top" style="background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%); color: #333;">
-                            <h4 class="card-title mb-0 fw-bold">
-                                <i class="las la-tasks me-2"></i> Annual Operations Activity Form
-                            </h4>
-                            <button type="button" class="btn-close" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
+                <div class="card-body">
+                    <form action="" method="post" id="annual-operations-activity-form" class="needs-validation" novalidate>
+                    <input type="hidden" name="annual_op_metadata_ID" id="annual_op_metadata_ID">
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                        <label for="annual_operation_title" class="form-label fw-semibold">Annual Operation Activity Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="annual_operation_activity_title" name="annual_operation_activity_title" placeholder="Enter Annual Operation Activity Title" readonly>
                         </div>
-                        <div class="card-body">
-                            <form action="" method="post" id="annual-operations-activity-form" class="needs-validation" novalidate>
-                                <input type="hidden" name="annual_op_metadata_ID" id="annual_op_metadata_ID">
-                                <div class="row g-4">
-                                    <div class="col-md-12">
-                                        <label for="annual_operation_title" class="form-label fw-semibold">Annual Operation Activity Title <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="annual_operation_activity_title" name="annual_operation_activity_title" placeholder="Enter Annual Operation Activity Title" readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="operation_name" class="form-label fw-semibold">Operation Activity (Operation type) <span class="text-danger">*</span></label>
-                                        <select class="form-select operation-select" id="operation_id" name="operation_activity" required>
-                                            <option value="" selected disabled>Select Operation</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please select an operation activity.</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Activity Date <span class="text-danger">*</span></label>
-                                        <div class="input-group" id="DateRange">
-                                            <input type="date" class="form-control" name="activity_start_date" placeholder="Start" aria-label="StartDate" required>
-                                            <span class="input-group-text">to</span>
-                                            <input type="date" class="form-control rounded-end" name="activity_end_date" placeholder="End" aria-label="EndDate" required>
-                                        </div>
-                                        <div class="invalid-feedback">Please provide both start and end dates.</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="objectives" class="form-label fw-semibold">Objectives</label>
-                                        <textarea name="Objectives" id="objectives" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="description" class="form-label fw-semibold">Description</label>
-                                        <textarea name="Description" id="description" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="material-quantity-used-container-annual-operation-activity">
-                                            <div class="row g-2 align-items-end mb-3">
-                                                <div class="col-md-6">
-                                                    <label for="expected_material" class="form-label fw-semibold">Material Needed</label>
-                                                    <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
-                                                        <option value="" selected disabled>Select Material</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="expected_quantity" class="form-label fw-semibold">Quantity</label>
-                                                    <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Quantity" min="0">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="expected_unit" class="form-label fw-semibold">Unit</label>
-                                                    <input type="text" class="form-control" id="expected_unit" name="material_used[0][unit]" placeholder="Unit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-start">
-                                            <button type="button" class="btn btn-outline-dark btn-sm add-more-material-quantity-annual-operation-activity">
-                                                <i class="las la-plus"></i> Add More
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="chemical-quantity-container-annual-operation-activity">
-                                            <div class="row g-2 align-items-end mb-3">
-                                                <div class="col-md-6">
-                                                    <label for="chemical_used" class="form-label fw-semibold">Chemical Needed</label>
-                                                    <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                        <option value="" selected disabled>Select Chemical</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="chemical_quantity" class="form-label fw-semibold">Quantity</label>
-                                                    <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="chemical_unit" class="form-label fw-semibold">Unit</label>
-                                                    <input type="text" class="form-control" id="chemical_unit" name="chemical_used[0][unit]" placeholder="Unit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-start">
-                                            <button type="button" class="btn btn-outline-dark btn-sm add-more-chemical-quantity-annual-operation-activity">
-                                                <i class="las la-plus"></i> Add More
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="water_usage" class="form-label fw-semibold">Expected Water Usage (Liters)</label>
-                                        <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="energy_usage" class="form-label fw-semibold">Expected Energy Usage (kWh)</label>
-                                        <input type="number" class="form-control" id="energy_usage" name="energy_usage" min="0" placeholder="Enter expected energy usage">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="annual-operation-activity-waste-quantity-container">
-                                            <div class="row g-2 align-items-end mb-3">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="expected_waste" class="form-label fw-bold">Waste Type</label>
-                                                        <select class="form-select waste-select" name="waste_generated[0][waste_id]" id="expected_waste">
-                                                            <option value="" selected disabled>Select Waste</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="expected_quantity" class="form-label fw-bold">Quantity</label>
-                                                        <input type="number" class="form-control" name="waste_generated[0][quantity]" id="expected_quantity" placeholder="Enter Expected Quantity" min="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label for="expected_unit" class="form-label fw-bold">Unit</label>
-                                                        <input type="text" class="form-control" name="waste_generated[0][unit]" id="expected_unit" placeholder="Enter Expected Unit" >
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 text-start">
-                                            <button type="button" class="btn btn-outline-dark btn-sm add-more-annual-activity-waste-quantity-operation">
-                                                <i class="las la-plus"></i> Add More
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="priority" class="form-label fw-semibold">Priority <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="priority" name="priority" required>
-                                            <option value="" selected disabled>Select Priority</option>
-                                            <option value="high">High</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="low">Low</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="status" class="form-label fw-semibold">Status</label>
-                                        <select class="form-select" id="status" name="Status">
-                                            <option value="" selected disabled>Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="in_progress">In Progress</option>
-                                            <option value="completed">Completed</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
-                                        <input type="text" class="form-control" id="supervisor" name="Supervisor" placeholder="Enter supervisor name">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="location" class="form-label fw-semibold">Location</label>
-                                        <input type="text" class="form-control" id="location" name="Location" placeholder="Enter activity location">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="success_criteria" class="form-label fw-semibold">Success Criteria</label>
-                                        <textarea class="form-control" id="success_criteria" name="success_criteria" rows="2" placeholder="Enter success criteria"></textarea>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="tags" class="form-label fw-semibold">Tags</label>
-                                        <input type="text" class="form-control" id="tags" name="Tags" placeholder="Enter tags (comma separated)">
-                                    </div>
-                                    <div class="col-12 mt-3 text-end">
-                                        <button type="submit" class="btn btn-dark fw-bold px-4 py-2 shadow-sm">Save Activity</button>
-                                    </div>
+                        <div class="col-md-6">
+                        <label for="operation_name" class="form-label fw-semibold">Operation Activity (Operation type) <span class="text-danger">*</span></label>
+                        <select class="form-select operation-select" id="operation_id" name="operation_activity" required>
+                            <option value="" selected disabled>Select Operation</option>
+                        </select>
+                        <div class="invalid-feedback">Please select an operation activity.</div>
+                        </div>
+                        <div class="col-md-6">
+                        <label class="form-label fw-semibold">Activity Date <span class="text-danger">*</span></label>
+                        <div class="input-group" id="DateRange">
+                            <input type="date" class="form-control" name="activity_start_date" placeholder="Start" aria-label="StartDate" required>
+                            <span class="input-group-text">to</span>
+                            <input type="date" class="form-control rounded-end" name="activity_end_date" placeholder="End" aria-label="EndDate" required>
+                        </div>
+                        <div class="invalid-feedback">Please provide both start and end dates.</div>
+                        </div>
+                        <div class="col-md-6">
+                        <label for="objectives" class="form-label fw-semibold">Objectives</label>
+                        <textarea name="Objectives" id="objectives" rows="3" class="form-control" placeholder="Enter the objectives of the activity"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                        <label for="description" class="form-label fw-semibold">Description</label>
+                        <textarea name="Description" id="description" rows="3" class="form-control" placeholder="Enter a detailed description of the activity"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="material-quantity-used-container-annual-operation-activity">
+                            <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-6">
+                                <label for="expected_material" class="form-label fw-semibold">Material Needed</label>
+                                <select class="form-select material-select" id="expected_material" name="material_used[0][material_id]">
+                                <option value="" selected disabled>Select Material</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expected_quantity" class="form-label fw-semibold">Quantity</label>
+                                <input type="number" class="form-control" id="expected_quantity" name="material_used[0][quantity]" placeholder="Quantity" min="0">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="expected_unit" class="form-label fw-semibold">Unit</label>
+                                <input type="text" class="form-control" id="expected_unit" name="material_used[0][unit]" placeholder="Unit">
+                            </div>
+                            </div>
+                        </div>
+                        <div class="text-start">
+                            <button type="button" class="btn btn-outline-dark btn-sm add-more-material-quantity-annual-operation-activity">
+                            <i class="las la-plus"></i> Add More
+                            </button>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="chemical-quantity-container-annual-operation-activity">
+                            <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-6">
+                                <label for="chemical_used" class="form-label fw-semibold">Chemical Needed</label>
+                                <select class="form-select chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
+                                <option value="" selected disabled>Select Chemical</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="chemical_quantity" class="form-label fw-semibold">Quantity</label>
+                                <input type="number" class="form-control" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="chemical_unit" class="form-label fw-semibold">Unit</label>
+                                <input type="text" class="form-control" id="chemical_unit" name="chemical_used[0][unit]" placeholder="Unit">
+                            </div>
+                            </div>
+                        </div>
+                        <div class="text-start">
+                            <button type="button" class="btn btn-outline-dark btn-sm add-more-chemical-quantity-annual-operation-activity">
+                            <i class="las la-plus"></i> Add More
+                            </button>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <label for="water_usage" class="form-label fw-semibold">Expected Water Usage (Liters)</label>
+                        <input type="number" class="form-control" id="water_usage" name="water_usage" min="0" placeholder="Enter expected water usage" required>
+                        </div>
+                        <div class="col-md-3">
+                        <label for="energy_usage" class="form-label fw-semibold">Expected Energy Usage (kWh)</label>
+                        <input type="number" class="form-control" id="energy_usage" name="energy_usage" min="0" placeholder="Enter expected energy usage">
+                        </div>
+                        <div class="col-md-6">
+                        <div class="annual-operation-activity-waste-quantity-container">
+                            <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                <label for="expected_waste" class="form-label fw-bold">Waste Type</label>
+                                <select class="form-select waste-select" name="waste_generated[0][waste_id]" id="expected_waste">
+                                    <option value="" selected disabled>Select Waste</option>
+                                </select>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                <label for="expected_quantity" class="form-label fw-bold">Quantity</label>
+                                <input type="number" class="form-control" name="waste_generated[0][quantity]" id="expected_quantity" placeholder="Enter Expected Quantity" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <label for="expected_unit" class="form-label fw-bold">Unit</label>
+                                <input type="text" class="form-control" name="waste_generated[0][unit]" id="expected_unit" placeholder="Enter Expected Unit" >
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-start">
+                            <button type="button" class="btn btn-outline-dark btn-sm add-more-annual-activity-waste-quantity-operation">
+                            <i class="las la-plus"></i> Add More
+                            </button>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <label for="priority" class="form-label fw-semibold">Priority <span class="text-danger">*</span></label>
+                        <select class="form-select" id="priority" name="priority" required>
+                            <option value="" selected disabled>Select Priority</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        </div>
+                        <div class="col-md-4">
+                        <label for="status" class="form-label fw-semibold">Status</label>
+                        <select class="form-select" id="status" name="Status">
+                            <option value="" selected disabled>Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        </div>
+                        <div class="col-md-4">
+                        <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
+                        <input type="text" class="form-control" id="supervisor" name="Supervisor" placeholder="Enter supervisor name">
+                        </div>
+                        <div class="col-md-4">
+                        <label for="location" class="form-label fw-semibold">Location</label>
+                        <input type="text" class="form-control" id="location" name="Location" placeholder="Enter activity location">
+                        </div>
+                        <div class="col-md-4">
+                        <label for="success_criteria" class="form-label fw-semibold">Success Criteria</label>
+                        <textarea class="form-control" id="success_criteria" name="success_criteria" rows="2" placeholder="Enter success criteria"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                        <label for="tags" class="form-label fw-semibold">Tags</label>
+                        <input type="text" class="form-control" id="tags" name="Tags" placeholder="Enter tags (comma separated)">
+                        </div>
+                        <div class="col-12 mt-3 text-end">
+                        <button type="submit" class="btn btn-dark fw-bold px-4 py-2 shadow-sm">Save Activity</button>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-primary mb-0">Annual Operations Activities</h4>
-                        <button type="button" class="btn btn-primary btn-sm" id="btn-add-annual-activity"
-                            onclick="addActivityAnnualOperationLog()">
-                            <i class="iconoir-plus"></i> Add Activity
-                        </button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped mb-0 w-100" id="tbl-annual-operations-activity">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Activity Name</th>
-                                    <th>Operation Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Priority</th>
-                                    <th>Tags</th>
-                                    <th class="text-end">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    </form>
                 </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-primary mb-0">Annual Operations Activities</h4>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-add-annual-activity"
+                    onclick="addActivityAnnualOperationLogForm()">
+                    <i class="iconoir-plus"></i> Add Activity
+                </button>
+                </div>
+                <div class="table-responsive">
+                <table class="table table-striped mb-0 w-100" id="tbl-annual-operations-activity">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Activity Name</th>
+                        <th>Operation Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Priority</th>
+                        <th>Tags</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -10583,6 +10583,26 @@
     </script>
     <!-- end store production process -->
     <!-- End Batch tracking -->
+
+    <script>
+        /**
+         * Toggle the visibility of the annual operation activity form card.
+         * Called when addActivityAnnualOperationLog is invoked.
+         */
+        function addActivityAnnualOperationLogForm() {
+            // Show the activity form card
+            const formCard = document.getElementById('annual-operation-activity-form-card');
+            if (formCard) {
+                formCard.classList.remove('d-none');
+                formCard.scrollIntoView({ behavior: 'smooth' });
+            }
+            // Reset the form fields
+            const form = document.getElementById('annual-operations-activity-form');
+            if (form) {
+                form.reset();
+            }
+        }
+    </script>
 
     @endsection
 </x-layouts.admin-app>
