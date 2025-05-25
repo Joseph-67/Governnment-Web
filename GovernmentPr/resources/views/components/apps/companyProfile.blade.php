@@ -5243,8 +5243,10 @@
                         </select>
                         </div>
                         <div class="col-md-4">
-                        <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
-                        <input type="text" class="form-control" id="supervisor" name="Supervisor" placeholder="Enter supervisor name">
+                            <div class="taggable-container" id="tagging-1">
+                            <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
+                                <div class="supervisor-tag-input"></div>
+                            </div>
                         </div>
                         <div class="col-md-4">
                         <label for="location" class="form-label fw-semibold">Location</label>
@@ -5255,9 +5257,10 @@
                         <textarea class="form-control" id="success_criteria" name="success_criteria" rows="2" placeholder="Enter success criteria"></textarea>
                         </div>
                         <div class="col-md-4">
-                            <div class="tag-selector-container">
-                                <select id="tag-selector" multiple></select>
-                                <div id="selected-tags" class="selected-tags"></div>
+                            <label for="tag-input-field" class="form-label fw-semibold">Tags</label>
+                            <div class="tag-input" id="tag-input">
+                                <input type="text" class="form-control" id="tag-input-field" placeholder="Add a tag..." name= "tags">
+                                <div class="suggestions" id="suggestions"></div>
                             </div>
                         </div>
                         <div class="col-12 mt-3 text-end">
@@ -5365,40 +5368,128 @@
     <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
     <style>
-        .selected-tags {
+        .tag-input {
             display: flex;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
+            /* border: 1px solid #ccc; */
+            padding: 5px;
+            /* border-radius: 8px; */
+            cursor: text;
+            position: relative;
+        }
+
+        .tag-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
         }
 
         .tag {
-            background-color: #007bff;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 14px;
             display: flex;
             align-items: center;
+            background-color: #e0e7ff;
+            color: #1d4ed8;
+            border-radius: 16px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 14px;
         }
 
         .tag span {
-            margin-right: 5px;
-        }
-
-        .tag button {
-            background: none;
-            border: none;
-            color: #fff;
+            margin-left: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        .tag button:hover {
-            color: #ff0000;
+        .tag span:hover {
+            color: #dc2626;
         }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            /* border: 1px solid #ccc; */
+            border-radius: 4px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .suggestion {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .suggestion img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .suggestion:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Profile card */
+        .profile-card {
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        }
+
+        .profile-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        }
+
+        .profile-card .profile-info {
+        padding: 15px;
+        }
+
+        .profile-card .profile-info h2 {
+        margin: 10px 0 5px;
+        font-size: 18px;
+        }
+
+        .profile-card .profile-info p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+        }
+        /* Profile card */
+        .taggable-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .supervisor-tag-input {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 1px solid #ccc; */
+            padding: 5px;
+            border-radius: 8px;
+            cursor: text;
+            position: relative;
+            background-color: #fff;
+        }
+
+        .supervisor-tag-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+        }
+
     </style>
-
     <style>
         .tagify {
             width: 100%;
@@ -10642,79 +10733,173 @@
         }
     </script>
     <script>
-  // Initialize Selectr
-  const selectElement = document.getElementById('tag-selector');
-  const selectr = new Selectr(selectElement, {
-    placeholder: "Add or select tags...",
-    searchable: true
-  });
+        const tagInput = document.getElementById('tag-input');
+        const tagInputField = document.getElementById('tag-input-field');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const tags = [];
+        const suggestions = ["JavaScript", "HTML", "CSS", "React", "Node.js", "Python", "Django", "Flask", "Java", "C++"];
 
-  // Container for selected tags
-  const selectedTagsContainer = document.getElementById('selected-tags');
+        // Function to add a tag
+        function addTag(tag) {
+        if (tag && !tags.includes(tag)) {
+            tags.push(tag);
+            renderTags();
+            tagInputField.value = '';
+            suggestionsDiv.innerHTML = '';
+        }
+        }
 
-  // Function to render selected tags
-  function renderTags() {
-    selectedTagsContainer.innerHTML = '';
-    Array.from(selectElement.selectedOptions).forEach(option => {
-      const tag = document.createElement('div');
-      tag.className = 'tag';
-      tag.innerHTML = `
-        <span>${option.text}</span>
-        <button onclick="removeTag('${option.value}')">&times;</button>
-      `;
-      selectedTagsContainer.appendChild(tag);
-    });
-  }
+        // Function to remove a tag
+        function removeTag(tag) {
+        const index = tags.indexOf(tag);
+        if (index > -1) {
+            tags.splice(index, 1);
+            renderTags();
+        }
+        }
 
-  // Add tag dynamically
-  selectElement.addEventListener('change', renderTags);
+        // Function to render tags
+        function renderTags() {
+        tagInput.innerHTML = '';
+        tags.forEach(tag => {
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+            tagElement.innerHTML = `${tag} <span onclick="removeTag('${tag}')">&times;</span>`;
+            tagInput.appendChild(tagElement);
+        });
+        tagInput.appendChild(tagInputField);
+        tagInput.appendChild(suggestionsDiv);
+        }
 
-  // Remove tag functionality
-  function removeTag(value) {
-    const option = Array.from(selectElement.options).find(opt => opt.value === value);
-    if (option) {
-      option.selected = false;
-      renderTags();
+        // Function to filter and show suggestions
+        function showSuggestions(input) {
+        const filteredSuggestions = suggestions.filter(
+            suggestion => suggestion.toLowerCase().startsWith(input.toLowerCase()) && !tags.includes(suggestion)
+        );
+        suggestionsDiv.innerHTML = '';
+        filteredSuggestions.forEach(suggestion => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'suggestion';
+            suggestionElement.textContent = suggestion;
+            suggestionElement.onclick = () => addTag(suggestion);
+            suggestionsDiv.appendChild(suggestionElement);
+        });
+        }
+
+        // Handle input events
+        tagInputField.addEventListener('input', () => {
+        const input = tagInputField.value.trim();
+        if (input) {
+            showSuggestions(input);
+        } else {
+            suggestionsDiv.innerHTML = '';
+        }
+        });
+
+        tagInputField.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ',') {
+            event.preventDefault();
+            addTag(tagInputField.value.trim());
+        }
+        });
+
+        // Initial rendering
+        renderTags();
+    </script>
+    <script>
+    class TaggingComponent {
+      constructor(containerId, users) {
+        this.container = document.getElementById(containerId);
+        this.tagInput = this.container.querySelector('.supervisor-tag-input');
+        this.tags = [];
+        this.users = users;
+
+        this.renderInputField();
+        this.renderSuggestions();
+      }
+
+      renderInputField() {
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.placeholder = 'Tag someone...';
+        inputField.addEventListener('input', (e) => this.showSuggestions(e.target.value.trim()));
+        inputField.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            this.addTag(e.target.value.trim());
+          }
+        });
+        this.tagInput.appendChild(inputField);
+        this.inputField = inputField;
+      }
+
+      renderSuggestions() {
+        const suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'suggestions';
+        this.tagInput.appendChild(suggestionsDiv);
+        this.suggestionsDiv = suggestionsDiv;
+      }
+
+      showSuggestions(input) {
+        const filteredUsers = this.users.filter(user =>
+          user.name.toLowerCase().includes(input.toLowerCase()) && !this.tags.includes(user.name)
+        );
+        this.suggestionsDiv.innerHTML = '';
+        filteredUsers.forEach(user => {
+          const suggestionElement = document.createElement('div');
+          suggestionElement.className = 'suggestion';
+          suggestionElement.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="${user.profilePic}" alt="${user.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+              <div>
+                <strong style="font-size: 15px; color: #1d4ed8;">${user.name}</strong><br>
+                <span style="font-size: 13px; color: #64748b;">${user.role}</span><br>
+                <span style="font-size: 12px; color: #6366f1;">${user.email}</span>
+              </div>
+            </div>
+          `;
+          suggestionElement.addEventListener('click', () => this.addTag(user.name));
+          this.suggestionsDiv.appendChild(suggestionElement);
+        });
+      }
+
+      addTag(tag) {
+        if (tag && !this.tags.includes(tag)) {
+          this.tags.push(tag);
+          this.renderTags();
+          this.inputField.value = '';
+          this.suggestionsDiv.innerHTML = '';
+        }
+      }
+
+      removeTag(tag) {
+        this.tags = this.tags.filter(t => t !== tag);
+        this.renderTags();
+      }
+
+      renderTags() {
+        this.tagInput.innerHTML = '';
+        this.tags.forEach(tag => {
+          const tagElement = document.createElement('div');
+          tagElement.className = 'tag';
+          tagElement.innerHTML = `${tag} <span>&times;</span>`;
+          tagElement.querySelector('span').addEventListener('click', () => this.removeTag(tag));
+          this.tagInput.appendChild(tagElement);
+        });
+        this.tagInput.appendChild(this.inputField);
+        this.tagInput.appendChild(this.suggestionsDiv);
+      }
     }
-  }
 
-  // Add new tag when typing
-  function addNewTag(inputValue) {
-    const exists = Array.from(selectElement.options).some(opt => opt.value === inputValue);
+    const users = [
+      { name: "John Doe", role: "Web Developer", email: "john.doe@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Jane Smith", role: "Designer", email: "jane.smith@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Alice Johnson", role: "Project Manager", email: "alice.johnson@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Bob Brown", role: "QA Tester", email: "bob.brown@example.com", profilePic: "https://via.placeholder.com/30" },
+    ];
 
-    if (!exists) {
-      const option = document.createElement('option');
-      option.value = inputValue;
-      option.textContent = inputValue;
-      option.selected = true;
-      selectElement.appendChild(option);
-      selectr.addOption({ value: inputValue, text: inputValue });
-      renderTags();
-    }
-  }
-
-  // Listen for key events to detect "Enter" for new tag input
-  document.querySelector('.selectr-input').addEventListener('keydown', function (event) {
-    if (event.key === 'Enter' && this.value.trim()) {
-      addNewTag(this.value.trim());
-      this.value = ''; // Clear input field
-      event.preventDefault(); // Prevent Selectr default behavior
-    }
-  });
-
-  // Populate Selectr with initial options
-  const tags = ["JavaScript", "HTML", "CSS", "React", "Node.js"];
-  tags.forEach(tag => {
-    const option = document.createElement('option');
-    option.value = tag;
-    option.textContent = tag;
-    selectElement.appendChild(option);
-  });
-
-  // Initialize Selectr
-  selectr.setValue([]);
-  renderTags();
-</script>
-
+    new TaggingComponent('tagging-1', users);
+    new TaggingComponent('tagging-2', users);
+  </script>
     @endsection
 </x-layouts.admin-app>

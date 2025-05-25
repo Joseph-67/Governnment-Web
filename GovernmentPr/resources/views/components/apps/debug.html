@@ -1,121 +1,226 @@
-<x-layouts.admin-app>
-    @section('PageTitle', 'Register Company Category')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reusable User Tagging</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-    <div class="container-xxl">
-        <x-validation-errors class="alert" alert />
-        @include('shared.feedback')
-        <div class="row">
-            <!-- Setup Category Section -->
-            <div class="col-md-6">
-                <x-card title="Setup Category">
-                    <form action="{{ route('admin.store-category') }}" method="post">
-                        @csrf
-                        <x-form-group label="Category Title" id="category_title" name="category_title" placeholder="Category title" />
-                        <x-form-group label="Category Description" id="category_description" name="category_description" placeholder="Category description" />
-                        <x-form-submit-button id="btn-submit" label="Save" />
-                    </form>
-                </x-card>
+    .profile-card {
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: center;
+    }
 
-                <x-table id="tbl-company-material" :headers="['Category Name', 'Category Description', 'Action']">
-                    @foreach($categoryList as $category)
-                        <tr>
-                            <td>{{ $category->category_name }}</td>
-                            <td>{{ $category->category_description }}</td>
-                            <td class="text-end">
-                                <x-dropdown :items="[
-                                    ['label' => 'Open Category', 'href' => '#'],
-                                    ['label' => 'Update Category', 'href' => '#'],
-                                    ['label' => 'Delete Category', 'onclick' => 'deleteCategory("'.$category->categoryID.'", "'.$category->category_name.'")'],
-                                    ['label' => 'Setup Price', 'href' => '#', 'data-bs-toggle' => 'modal', 'data-bs-target' => '#exampleModal']
-                                ]" />
-                            </td>
-                        </tr>
-                    @endforeach
-                </x-table>
+    .profile-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .profile-card .profile-info {
+      padding: 15px;
+    }
+
+    .profile-card .profile-info h2 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+    }
+
+    .profile-card .profile-info p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .taggable-container {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .supervisor-tag-input {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 8px;
+      cursor: text;
+      position: relative;
+    }
+
+    .supervisor-tag-input input {
+      border: none;
+      outline: none;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .tag {
+      display: flex;
+      align-items: center;
+      background-color: #e0e7ff;
+      color: #1d4ed8;
+      border-radius: 16px;
+      padding: 5px 10px;
+      margin: 5px;
+      font-size: 14px;
+    }
+
+    .tag span {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .tag span:hover {
+      color: #dc2626;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .suggestion {
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .suggestion img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .suggestion:hover {
+      background-color: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="taggable-container" id="tagging-1">
+    <h3>Tag Users 1</h3>
+    <div class="supervisor-tag-input"></div>
+  </div>
+
+  <div class="taggable-container" id="tagging-2">
+    <h3>Tag Users 2</h3>
+    <div class="supervisor-tag-input"></div>
+  </div>
+
+  <script>
+    class TaggingComponent {
+      constructor(containerId, users) {
+        this.container = document.getElementById(containerId);
+        this.tagInput = this.container.querySelector('.supervisor-tag-input');
+        this.tags = [];
+        this.users = users;
+
+        this.renderInputField();
+        this.renderSuggestions();
+      }
+
+      renderInputField() {
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.placeholder = 'Tag someone...';
+        inputField.addEventListener('input', (e) => this.showSuggestions(e.target.value.trim()));
+        inputField.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            this.addTag(e.target.value.trim());
+          }
+        });
+        this.tagInput.appendChild(inputField);
+        this.inputField = inputField;
+      }
+
+      renderSuggestions() {
+        const suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'suggestions';
+        this.tagInput.appendChild(suggestionsDiv);
+        this.suggestionsDiv = suggestionsDiv;
+      }
+
+      showSuggestions(input) {
+        const filteredUsers = this.users.filter(user =>
+          user.name.toLowerCase().includes(input.toLowerCase()) && !this.tags.includes(user.name)
+        );
+        this.suggestionsDiv.innerHTML = '';
+        filteredUsers.forEach(user => {
+          const suggestionElement = document.createElement('div');
+          suggestionElement.className = 'suggestion';
+          suggestionElement.innerHTML = `
+            <img src="${user.profilePic}" alt="${user.name}">
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+              <span style="font-weight: 600; color: #1d4ed8; font-size: 15px;">${user.name}</span>
+              <span style="color: #64748b; font-size: 13px; margin-top: 2px;">${user.role}</span>
+              <span style="color: #94a3b8; font-size: 12px; margin-top: 2px;">${user.email}</span>
             </div>
+          `;
+          suggestionElement.addEventListener('click', () => this.addTag(user.name));
+          this.suggestionsDiv.appendChild(suggestionElement);
+        });
+      }
 
-            <!-- Setup Waste Category Section -->
-            <div class="col-md-6">
-                <x-card title="Setup Waste Category" class="mt-4">
-                    <form action="{{ route('admin.store-waste-category') }}" method="post">
-                        @csrf
-                        <x-form-group label="Waste Name" id="waste_name" name="waste_name" placeholder="Waste name" />
-                        <x-form-group label="Waste Description" id="waste_description" name="waste_description" placeholder="Waste description" />
-                        <x-form-submit-button id="btn-submit-waste" label="Save" />
-                    </form>
-                </x-card>
+      addTag(tag) {
+        if (tag && !this.tags.includes(tag)) {
+          this.tags.push(tag);
+          this.renderTags();
+          this.inputField.value = '';
+          this.suggestionsDiv.innerHTML = '';
+        }
+      }
 
-                <x-table id="tbl-waste-category" :headers="['Waste Name', 'Waste Description', 'Action']">
-                    @foreach($wasteList as $waste)
-                        <tr>
-                            <td>{{ $waste->waste_name }}</td>
-                            <td>{{ $waste->waste_description }}</td>
-                            <td class="text-end">
-                                <x-dropdown :items="[
-                                    ['label' => 'Open Waste', 'href' => '#'],
-                                    ['label' => 'Update Waste', 'href' => '#'],
-                                    ['label' => 'Delete Waste', 'onclick' => 'deleteCategory("'.$waste->wasteID.'", "'.$waste->waste_name.'")']
-                                ]" />
-                            </td>
-                        </tr>
-                    @endforeach
-                </x-table>
-            </div>
-        </div>
+      removeTag(tag) {
+        this.tags = this.tags.filter(t => t !== tag);
+        this.renderTags();
+      }
 
+      renderTags() {
+        this.tagInput.innerHTML = '';
+        this.tags.forEach(tag => {
+          const tagElement = document.createElement('div');
+          tagElement.className = 'tag';
+          tagElement.innerHTML = `${tag} <span>&times;</span>`;
+          tagElement.querySelector('span').addEventListener('click', () => this.removeTag(tag));
+          this.tagInput.appendChild(tagElement);
+        });
+        this.tagInput.appendChild(this.inputField);
+        this.tagInput.appendChild(this.suggestionsDiv);
+      }
+    }
 
-            @section('modals')
+    const users = [
+      { name: "John Doe", role: "Web Developer", email: "john.doe@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Jane Smith", role: "Designer", email: "jane.smith@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Alice Johnson", role: "Project Manager", email: "alice.johnson@example.com", profilePic: "https://via.placeholder.com/30" },
+      { name: "Bob Brown", role: "QA Tester", email: "bob.brown@example.com", profilePic: "https://via.placeholder.com/30" },
+    ];
 
-            @endsection
-            @section('scripts')
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-                function deleteCategory(id, name) {
-                    // Use a fancy popup (e.g., SweetAlert2)
-                    Swal.fire({
-                        title: `Are you sure you want to delete ${name}?`,
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Perform delete action here
-                            fetch(`/admin/delete-category/${id}`, {
-                                method: 'DELETE',
-                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', }
-                            })
-                                .then(response => {
-                                    if (response.ok) {
-                                        location.reload(); // Reload the page to reflect changes
-                                    } else {
-                                        Swal.fire(
-                                            'Error!',
-                                            'There was an issue deleting the category.',
-                                            'error'
-                                        );
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    Swal.fire(
-                                        'Error!',
-                                        'An unexpected error occurred.',
-                                        'error'
-                                    );
-                                });
-                            console.log('Category deleted');
-                            Swal.fire(
-                                'Deleted!',
-                                'The category has been deleted.',
-                                'success'
-                            );
-                        }
-                    });
-
-                }
-            </script>
-            @endsection
-</x-layouts.admin-app>
+    new TaggingComponent('tagging-1', users);
+    new TaggingComponent('tagging-2', users);
+  </script>
+</body>
+</html>
