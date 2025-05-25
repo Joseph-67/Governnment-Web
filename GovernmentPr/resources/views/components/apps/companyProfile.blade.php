@@ -5255,8 +5255,10 @@
                         <textarea class="form-control" id="success_criteria" name="success_criteria" rows="2" placeholder="Enter success criteria"></textarea>
                         </div>
                         <div class="col-md-4">
-                        <label for="tags" class="form-label fw-semibold">Tags</label>
-                        <input type="text" class="form-control" id="tags" name="Tags" placeholder="Enter tags (comma separated)">
+                            <div class="tag-selector-container">
+                                <select id="tag-selector" multiple></select>
+                                <div id="selected-tags" class="selected-tags"></div>
+                            </div>
                         </div>
                         <div class="col-12 mt-3 text-end">
                         <button type="submit" class="btn btn-dark fw-bold px-4 py-2 shadow-sm">Save Activity</button>
@@ -5361,6 +5363,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
     <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
+    <style>
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tag span {
+            margin-right: 5px;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .tag button:hover {
+            color: #ff0000;
+        }
+    </style>
+
     <style>
         .tagify {
             width: 100%;
@@ -10603,6 +10641,80 @@
             }
         }
     </script>
+    <script>
+  // Initialize Selectr
+  const selectElement = document.getElementById('tag-selector');
+  const selectr = new Selectr(selectElement, {
+    placeholder: "Add or select tags...",
+    searchable: true
+  });
+
+  // Container for selected tags
+  const selectedTagsContainer = document.getElementById('selected-tags');
+
+  // Function to render selected tags
+  function renderTags() {
+    selectedTagsContainer.innerHTML = '';
+    Array.from(selectElement.selectedOptions).forEach(option => {
+      const tag = document.createElement('div');
+      tag.className = 'tag';
+      tag.innerHTML = `
+        <span>${option.text}</span>
+        <button onclick="removeTag('${option.value}')">&times;</button>
+      `;
+      selectedTagsContainer.appendChild(tag);
+    });
+  }
+
+  // Add tag dynamically
+  selectElement.addEventListener('change', renderTags);
+
+  // Remove tag functionality
+  function removeTag(value) {
+    const option = Array.from(selectElement.options).find(opt => opt.value === value);
+    if (option) {
+      option.selected = false;
+      renderTags();
+    }
+  }
+
+  // Add new tag when typing
+  function addNewTag(inputValue) {
+    const exists = Array.from(selectElement.options).some(opt => opt.value === inputValue);
+
+    if (!exists) {
+      const option = document.createElement('option');
+      option.value = inputValue;
+      option.textContent = inputValue;
+      option.selected = true;
+      selectElement.appendChild(option);
+      selectr.addOption({ value: inputValue, text: inputValue });
+      renderTags();
+    }
+  }
+
+  // Listen for key events to detect "Enter" for new tag input
+  document.querySelector('.selectr-input').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && this.value.trim()) {
+      addNewTag(this.value.trim());
+      this.value = ''; // Clear input field
+      event.preventDefault(); // Prevent Selectr default behavior
+    }
+  });
+
+  // Populate Selectr with initial options
+  const tags = ["JavaScript", "HTML", "CSS", "React", "Node.js"];
+  tags.forEach(tag => {
+    const option = document.createElement('option');
+    option.value = tag;
+    option.textContent = tag;
+    selectElement.appendChild(option);
+  });
+
+  // Initialize Selectr
+  selectr.setValue([]);
+  renderTags();
+</script>
 
     @endsection
 </x-layouts.admin-app>
