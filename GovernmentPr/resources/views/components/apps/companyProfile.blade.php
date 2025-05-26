@@ -26,7 +26,12 @@
 
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#inventory" role="tab"
-                            aria-selected="false"><i class="la la-box d-block"></i>Inventory Management</a>
+                            aria-selected="false"><i class="la la-box d-block"></i>Inventory</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#hrms" role="tab"
+                            aria-selected="false"><i class="la la-users d-block"></i>HRMS</a>
                     </li>
 
                     <li class="nav-item">
@@ -1316,7 +1321,451 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- End Waste Management -->
+                <!-- HRMS Tab -->
+                <div class="tab-pane fade" id="hrms" role="tabpanel" aria-labelledby="hrms-tab">
+                    <h3>Human Resource Management System (HRMS)</h3>
+                    <div class="accordion my-3" id="hrmsAccordion">
+                        <!-- Department Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="departmentHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#departmentCollapse" aria-expanded="false" aria-controls="departmentCollapse">
+                                    <i class="las la-building me-2" style="font-size: 1.5rem;"></i> <span>Department Management</span>
+                                </button>
+                            </h2>
+                            <div id="departmentCollapse" class="accordion-collapse collapse" aria-labelledby="departmentHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="department-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <label for="department_name" class="form-label">Department Name</label>
+                                                <input type="text" class="form-control" id="department_name" name="department_name" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="department_head" class="form-label">Department Head</label>
+                                                <input type="text" class="form-control" id="department_head" name="department_head">
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Add Department</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-departments">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Head</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Employees Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="employeesHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#employeesCollapse" aria-expanded="false" aria-controls="employeesCollapse">
+                                    Employees Management
+                                </button>
+                            </h2>
+                            <div id="employeesCollapse" class="accordion-collapse collapse" aria-labelledby="employeesHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="employee-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="employee_name" class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" id="employee_name" name="employee_name" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="employee_email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="employee_email" name="employee_email" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="employee_department" class="form-label">Department</label>
+                                                <select class="form-select" id="employee_department" name="employee_department">
+                                                    <option value="" selected disabled>Choose...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Add Employee</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-employees">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Department</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Attendance Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="attendanceHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#attendanceCollapse" aria-expanded="false" aria-controls="attendanceCollapse">
+                                    Attendance Management
+                                </button>
+                            </h2>
+                            <div id="attendanceCollapse" class="accordion-collapse collapse" aria-labelledby="attendanceHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="attendance-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="attendance_employee" class="form-label">Employee</label>
+                                                <select class="form-select" id="attendance_employee" name="attendance_employee">
+                                                    <option value="" selected disabled>Choose...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="attendance_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="attendance_date" name="attendance_date" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="attendance_status" class="form-label">Status</label>
+                                                <select class="form-select" id="attendance_status" name="attendance_status">
+                                                    <option value="present">Present</option>
+                                                    <option value="absent">Absent</option>
+                                                    <option value="leave">On Leave</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Mark Attendance</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-attendance">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Employee</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Payroll Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="payrollHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#payrollCollapse" aria-expanded="false" aria-controls="payrollCollapse">
+                                    Payroll Management
+                                </button>
+                            </h2>
+                            <div id="payrollCollapse" class="accordion-collapse collapse" aria-labelledby="payrollHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="payroll-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="payroll_employee" class="form-label">Employee</label>
+                                                <select class="form-select" id="payroll_employee" name="payroll_employee">
+                                                    <option value="" selected disabled>Choose...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="payroll_month" class="form-label">Month</label>
+                                                <input type="month" class="form-control" id="payroll_month" name="payroll_month" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="payroll_amount" class="form-label">Amount</label>
+                                                <input type="number" class="form-control" id="payroll_amount" name="payroll_amount" min="0" required>
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Process Payroll</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-payroll">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Employee</th>
+                                                    <th>Month</th>
+                                                    <th>Amount</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Recruitment Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="recruitmentHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#recruitmentCollapse" aria-expanded="false" aria-controls="recruitmentCollapse">
+                                    Recruitment Management
+                                </button>
+                            </h2>
+                            <div id="recruitmentCollapse" class="accordion-collapse collapse" aria-labelledby="recruitmentHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="recruitment-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="candidate_name" class="form-label">Candidate Name</label>
+                                                <input type="text" class="form-control" id="candidate_name" name="candidate_name" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="candidate_position" class="form-label">Position</label>
+                                                <input type="text" class="form-control" id="candidate_position" name="candidate_position" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="candidate_status" class="form-label">Status</label>
+                                                <select class="form-select" id="candidate_status" name="candidate_status">
+                                                    <option value="applied">Applied</option>
+                                                    <option value="interview">Interview</option>
+                                                    <option value="hired">Hired</option>
+                                                    <option value="rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Add Candidate</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-recruitment">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Position</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Leave Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="leaveHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#leaveCollapse" aria-expanded="false" aria-controls="leaveCollapse">
+                                    Leave Management
+                                </button>
+                            </h2>
+                            <div id="leaveCollapse" class="accordion-collapse collapse" aria-labelledby="leaveHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="leave-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="leave_employee" class="form-label">Employee</label>
+                                                <select class="form-select" id="leave_employee" name="leave_employee">
+                                                    <option value="" selected disabled>Choose...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="leave_type" class="form-label">Leave Type</label>
+                                                <select class="form-select" id="leave_type" name="leave_type">
+                                                    <option value="annual">Annual</option>
+                                                    <option value="sick">Sick</option>
+                                                    <option value="casual">Casual</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="leave_dates" class="form-label">Dates</label>
+                                                <input type="text" class="form-control" id="leave_dates" name="leave_dates" placeholder="e.g. 2024-06-01 to 2024-06-10">
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Apply Leave</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-leave">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Employee</th>
+                                                    <th>Type</th>
+                                                    <th>Dates</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Performance Review -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="performanceHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#performanceCollapse" aria-expanded="false" aria-controls="performanceCollapse">
+                                    Performance Review
+                                </button>
+                            </h2>
+                            <div id="performanceCollapse" class="accordion-collapse collapse" aria-labelledby="performanceHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="performance-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="review_employee" class="form-label">Employee</label>
+                                                <select class="form-select" id="review_employee" name="review_employee">
+                                                    <option value="" selected disabled>Choose...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="review_period" class="form-label">Review Period</label>
+                                                <input type="text" class="form-control" id="review_period" name="review_period" placeholder="e.g. Q1 2024">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="review_score" class="form-label">Score</label>
+                                                <input type="number" class="form-control" id="review_score" name="review_score" min="0" max="100">
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-performance">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Employee</th>
+                                                    <th>Period</th>
+                                                    <th>Score</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User Roles Management -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="rolesHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#rolesCollapse" aria-expanded="false" aria-controls="rolesCollapse">
+                                    User Roles Management
+                                </button>
+                            </h2>
+                            <div id="rolesCollapse" class="accordion-collapse collapse" aria-labelledby="rolesHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="role-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <label for="role_name" class="form-label">Role Name</label>
+                                                <input type="text" class="form-control" id="role_name" name="role_name" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="role_description" class="form-label">Description</label>
+                                                <input type="text" class="form-control" id="role_description" name="role_description">
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Add Role</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-roles">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Training & Development -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="trainingHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#trainingCollapse" aria-expanded="false" aria-controls="trainingCollapse">
+                                    Training & Development
+                                </button>
+                            </h2>
+                            <div id="trainingCollapse" class="accordion-collapse collapse" aria-labelledby="trainingHeading">
+                                <div class="accordion-body">
+                                    <form action="" method="post" id="training-form">
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label for="training_title" class="form-label">Training Title</label>
+                                                <input type="text" class="form-control" id="training_title" name="training_title" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="training_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="training_date" name="training_date" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="training_employees" class="form-label">Employees</label>
+                                                <select class="form-select" id="training_employees" name="training_employees[]" multiple>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mt-2 text-end">
+                                                <button type="submit" class="btn btn-primary btn-sm">Add Training</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-striped mb-0" id="tbl-training">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Date</th>
+                                                    <th>Employees</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End HRMS Tab -->
                 <!-- Inventory Management -->
                 <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
                     <h3>Inventory Management</h3>
@@ -10901,5 +11350,32 @@
     new TaggingComponent('tagging-1', users);
     new TaggingComponent('tagging-2', users);
   </script>
+  <!-- Department -->
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const departmentForm = document.getElementById('department-form');
+        if (departmentForm) {
+            departmentForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(departmentForm);
+                const url = "{{ route('admin.store-department') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Department', url, 'POST', formData);
+                    if (result.status === 'success') {
+                        // Optionally update UI or show a success message
+                        console.log("Department stored successfully:", result.department);
+                    } else {
+                        // Handle validation errors
+                        console.error("Error storing department:", result.message);
+                    }
+                } catch (error) {
+                    console.error('Error storing department:', error);
+                }
+            });
+        }
+    });
+   </script>
+  <!-- End Department -->
     @endsection
 </x-layouts.admin-app>
