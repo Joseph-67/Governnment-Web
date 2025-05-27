@@ -4094,58 +4094,99 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-info text-white">
-                                                    <h5 class="modal-title" id="productionProcessModalLabel">Setup Production Process</h5>
+                                                    <h5 class="modal-title" id="productionProcessModalLabel">Production Process</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <!-- Production Process Form -->
-                                                    <form id="production-process-form" method="post">
-    @csrf
-    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-    <input type="hidden" id="batch_id" name="batch_id">
-
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label for="operation_type" class="form-label">Operation Type</label>
-            <input type="text" class="form-control" id="operation_type" name="operation_type" placeholder="Enter operation type" required>
-        </div>
-        <div class="col-md-6">
-            <label for="process_date_range" class="form-label">Start Date / End Date</label>
-            <div class="input-group" id="process_date_range">
-                <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date" required>
-                <span class="input-group-text">to</span>
-                <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
-            </div>
-        </div>
-        @if(auth('admin')->check())
-            <input type="hidden" name="operator" value="{{ auth('admin')->user()->id }}">
-        @elseif(auth('web')->check())
-            <input type="hidden" name="operator" value="{{ auth('web')->user()->id }}">
-        @endif
-        <div class="col-md-6">
-            <label for="process_status" class="form-label">Status</label>
-            <select class="form-select" id="process_status" name="process_status" required>
-                <option value="" selected disabled>Select Status</option>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <label for="remarks" class="form-label">Remarks</label>
-            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
-        </div>
-        <div class="col-12 mt-3 text-end">
-            <button type="submit" class="btn btn-info">Save Production Process</button>
-        </div>
-    </div>
-</form>
-
+                                                    <!-- Button to show the form -->
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h6 class="mb-0">Manage Production Process</h6>
+                                                        <button type="button" class="btn btn-info btn-sm" id="show-production-process-form">
+                                                            <i class="iconoir-plus"></i> Add Production Process
+                                                        </button>
+                                                    </div>
+                                                    <!-- Table of production processes -->
+                                                    <div id="production-process-table-container">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped mb-0 w-100" id="tbl-production-process">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th>Operation Type</th>
+                                                                        <th>Start Date</th>
+                                                                        <th>End Date</th>
+                                                                        <th>Status</th>
+                                                                        <th>Remarks</th>
+                                                                        <th class="text-end">Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Dynamic rows go here -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Production Process Form (hidden by default) -->
+                                                    <div id="production-process-form-container" class="d-none mt-4">
+                                                        <div class="card shadow border-0" style="max-width:900px;margin:auto;">
+                                                            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center rounded-top">
+                                                                <span class="fw-bold"><i class="las la-industry"></i> Add Production Process</span>
+                                                                <!-- Close icon as a visible cancel button (no background, just icon) -->
+                                                                <button type="button" class="btn p-0 border-0" aria-label="Cancel" id="close-production-process-form" style="font-size:2rem; background:none; box-shadow:none; color:#333;">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <form id="production-process-form" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                                    <input type="hidden" id="batch_id" name="batch_id">
+                                                                    <div class="row g-3">
+                                                                        <div class="col-md-6">
+                                                                            <label for="operation_type" class="form-label">Operation Type</label>
+                                                                            <input type="text" class="form-control" id="operation_type" name="operation_type" placeholder="Enter operation type" required>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="process_date_range" class="form-label">Start Date / End Date</label>
+                                                                            <div class="input-group" id="process_date_range">
+                                                                                <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date" required>
+                                                                                <span class="input-group-text">to</span>
+                                                                                <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        @if(auth('admin')->check())
+                                                                            <input type="hidden" name="operator" value="{{ auth('admin')->user()->id }}">
+                                                                        @elseif(auth('web')->check())
+                                                                            <input type="hidden" name="operator" value="{{ auth('web')->user()->id }}">
+                                                                        @endif
+                                                                        <div class="col-md-6">
+                                                                            <label for="process_status" class="form-label">Status</label>
+                                                                            <select class="form-select" id="process_status" name="process_status" required>
+                                                                                <option value="" selected disabled>Select Status</option>
+                                                                                <option value="Pending">Pending</option>
+                                                                                <option value="In Progress">In Progress</option>
+                                                                                <option value="Completed">Completed</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                                            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
+                                                                        </div>
+                                                                        <div class="col-12 mt-3 text-end">
+                                                                            <button type="submit" class="btn btn-info">Save Production Process</button>
+                                                                            <button type="button" class="btn btn-secondary ms-2" id="cancel-production-process-form">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <!-- End Production Process Form -->
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                               
+                                               
 
                                     
                                 </div>
@@ -6225,6 +6266,64 @@
 
             to {
                 transform: rotate(360deg);
+            }
+        }
+    </style>
+
+     <style>
+        #production-process-form-container .card {
+            border-radius: 1rem;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+            background: #f8fafc;
+        }
+        #production-process-form-container .card-header {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
+        }
+        #production-process-form-container .btn-close,
+        #production-process-form-container .btn[aria-label="Cancel"] {
+            opacity: 0.8;
+            background: none !important;
+            box-shadow: none;
+            outline: none;
+            color: #333;
+            font-size: 2rem;
+        }
+        #production-process-form-container .btn-close:hover,
+        #production-process-form-container .btn[aria-label="Cancel"]:hover {
+            opacity: 1;
+            color: #0ea5e9;
+        }
+        #production-process-form-container .card-body {
+            background: #f8fafc;
+        }
+        #production-process-form-container label {
+            font-weight: 500;
+            color: #0ea5e9;
+        }
+        #production-process-form-container .form-control,
+        #production-process-form-container .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid #b6e0fe;
+            background: #fff;
+        }
+        #production-process-form-container .btn-info {
+            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(14,165,233,0.10);
+        }
+        #production-process-form-container .btn-secondary {
+            border-radius: 0.5rem;
+        }
+        @media (min-width: 992px) {
+            #productionProcessModal .modal-dialog {
+                max-width: 1000px;
             }
         }
     </style>
@@ -11217,6 +11316,27 @@
             const modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
             modal.show();
         }
+             // Show/hide production process form logic
+      function showProductionProcessTable() {
+          document.getElementById('production-process-form-container').classList.add('d-none');
+          document.getElementById('production-process-table-container').classList.remove('d-none');
+      }
+      function showProductionProcessForm() {
+          document.getElementById('production-process-form-container').classList.remove('d-none');
+          document.getElementById('production-process-table-container').classList.add('d-none');
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+          const showBtn = document.getElementById('show-production-process-form');
+          const cancelBtn = document.getElementById('cancel-production-process-form');
+          const closeBtn = document.getElementById('close-production-process-form');
+          // Always show table when modal opens
+          $('#productionProcessModal').on('show.bs.modal', function () {
+              showProductionProcessTable();
+          });
+          if (showBtn) showBtn.addEventListener('click', showProductionProcessForm);
+          if (cancelBtn) cancelBtn.addEventListener('click', showProductionProcessTable);
+          if (closeBtn) closeBtn.addEventListener('click', showProductionProcessTable);
+      });
     </script>
     <!-- End Batch tracking -->
 
@@ -11231,29 +11351,78 @@
      * - On error, logs the error or can show a toast.
      */
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#production-process-form');
-        if (!form) return;
-
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const url = "{{ route('admin.store-production-process') }}";
-
-            try {
-                // Send form data to the server using fetch_cycle helper
-                const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-                if (result.status === 'success') {
-                    // Optionally update UI or table here
-                    // Example: showToast('Production process saved successfully.', 'success');
-                } else if (result.status === 'error') {
-                    // Optionally handle validation errors
-                    // Example: showToast(result.message || 'Error saving production process.', 'error');
+        // Initialize DataTable for Production Process
+        const productionProcessTable = $('#tbl-production-process').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            destroy: true,
+            columnDefs: [
+                { orderable: false, targets: [5] }
+            ],
+            data: [],
+            columns: [
+                { data: 'operation_type', title: 'Operation Type' },
+                { data: 'start_date', title: 'Start Date' },
+                { data: 'end_date', title: 'End Date' },
+                { data: 'remarks', title: 'Remarks' },
+                {
+                    data: 'status',
+                    title: 'Status',
+                    render: (data, type) => {
+                        if (type === 'display') {
+                            let badgeClass = 'secondary';
+                            let label = data || 'N/A';
+                            switch ((data || '').toLowerCase()) {
+                                case 'completed': badgeClass = 'success'; break;
+                                case 'pending': badgeClass = 'warning'; break;
+                                case 'rejected': badgeClass = 'dark'; break;
+                            }
+                            return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: null,
+                    title: 'Actions',
+                    render: (data, type, row) => `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.id})">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.id})">Delete</button>
+                        </div>
+                    `
                 }
-            } catch (error) {
-                // Log any unexpected errors
-                console.error('Error storing production process:', error);
-            }
+            ]
         });
+
+        // Handle form submission for adding a new production process
+        const form = document.querySelector('#production-process-form');
+        if (form) {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const url = "{{ route('admin.store-production-process') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                        const formatted = result.production_processes.map(proc => ({
+                            operation_type: proc.operation_type || 'N/A',
+                            start_date: proc.start_date ? new Date(proc.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A',
+                            end_date: proc.end_date ? new Date(proc.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A',
+                            remarks: proc.remarks || '',
+                            status: proc.status || 'N/A',
+                            id: proc.process_id || ''
+                        }));
+                        productionProcessTable.clear().rows.add(formatted).draw();
+                    }
+                } catch (error) {
+                    console.error('Error storing production process:', error);
+                }
+            });
+        }
     });
     </script>
     <!-- end store production process -->
