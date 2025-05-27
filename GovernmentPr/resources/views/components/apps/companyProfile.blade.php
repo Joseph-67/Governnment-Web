@@ -1337,18 +1337,30 @@
                             <div id="departmentCollapse" class="accordion-collapse collapse" aria-labelledby="departmentHeading">
                                 <div class="accordion-body">
                                     <form action="" method="post" id="department-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <label for="department_name" class="form-label">Department Name</label>
-                                                <input type="text" class="form-control" id="department_name" name="department_name" required>
+                                        <div class="card shadow-sm border-0 mb-4">
+                                            <div class="card-header bg-gradient-primary text-white">
+                                                <h5 class="mb-0"><i class="las la-building me-2"></i> Add New Department</h5>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="department_head" class="form-label">Department Head</label>
-                                                <input type="text" class="form-control" id="department_head" name="department_head">
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Add Department</button>
+                                            <div class="card-body">
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                                <div class="row g-3 align-items-end">
+                                                    <div class="col-md-6">
+                                                        <label for="department_name" class="form-label fw-bold">Department Name</label>
+                                                        <input type="text" class="form-control border-primary" id="department_name" name="department_name" required placeholder="Enter department name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="taggable-container " id="manager-tag-input-1">
+                                                            <label for="manager" class="form-label fw-bold">Department Head / Manager</label>
+                                                            <div class="supervisor-tag-input border-primary bg-light">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3 text-end">
+                                                        <button type="submit" class="btn btn-primary px-4 py-2">
+                                                            <i class="las la-plus"></i> Add Department
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -1373,30 +1385,114 @@
                             <h2 class="accordion-header" id="employeesHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#employeesCollapse" aria-expanded="false" aria-controls="employeesCollapse">
-                                    Employees Management
+                                    <i class="las la-user-friends me-2" style="font-size: 1.5rem;"></i> Employees Management
                                 </button>
                             </h2>
                             <div id="employeesCollapse" class="accordion-collapse collapse" aria-labelledby="employeesHeading">
                                 <div class="accordion-body">
-                                    <form action="" method="post" id="employee-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="employee_name" class="form-label">Full Name</label>
-                                                <input type="text" class="form-control" id="employee_name" name="employee_name" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="employee_email" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="employee_email" name="employee_email" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="employee_department" class="form-label">Department</label>
-                                                <select class="form-select" id="employee_department" name="employee_department">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Add Employee</button>
+                                    <form action="" method="post" id="employee-form" enctype="multipart/form-data" class="card shadow-sm border-0 mb-4">
+                                        <div class="card-header bg-gradient-primary text-white">
+                                            <h5 class="mb-0"><i class="las la-user-plus me-2"></i> Add New Employee</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                            <div class="row g-3">
+                                                <div class="col-md-3">
+                                                    <label for="employee_number" class="form-label fw-bold">Employee Number</label>
+                                                    <input type="text" class="form-control" id="employee_number" name="employee_number" required placeholder="e.g. EMP12345">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_first_name" class="form-label fw-bold">First Name</label>
+                                                    <input type="text" class="form-control" id="employee_first_name" name="employee_first_name" required placeholder="First Name">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_last_name" class="form-label fw-bold">Last Name</label>
+                                                    <input type="text" class="form-control" id="employee_last_name" name="employee_last_name" required placeholder="Last Name">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_email" class="form-label fw-bold">Email</label>
+                                                    <input type="email" class="form-control" id="employee_email" name="employee_email" required placeholder="example@company.com">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_phone" class="form-label fw-bold">Phone Number</label>
+                                                    <input type="tel" class="form-control" id="employee_phone" name="employee_phone" placeholder="+234 800 000 0000">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_dob" class="form-label">Date of Birth</label>
+                                                    <input type="date" class="form-control" id="employee_dob" name="employee_dob">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_gender" class="form-label">Gender</label>
+                                                    <select class="form-select" id="employee_gender" name="employee_gender">
+                                                        <option value="" selected disabled>Choose...</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_job_title" class="form-label">Job Title</label>
+                                                    <input type="text" class="form-control" id="employee_job_title" name="employee_job_title">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_department" class="form-label">Department</label>
+                                                    <select class="form-select" id="employee_department" name="employee_department">
+                                                        <option value="" selected disabled>Choose...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_manager" class="form-label">Manager</label>
+                                                    <select class="form-select" id="employee_manager" name="employee_manager">
+                                                        <option value="" selected disabled>Choose...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_hire_date" class="form-label">Hire Date</label>
+                                                    <input type="date" class="form-control" id="employee_hire_date" name="employee_hire_date">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="employee_status" class="form-label">Status</label>
+                                                    <select class="form-select" id="employee_status" name="employee_status">
+                                                        <option value="active" selected>Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                        <option value="terminated">Terminated</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="employee_address" class="form-label">Address</label>
+                                                    <input type="text" class="form-control" id="employee_address" name="employee_address">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="employee_city" class="form-label">City</label>
+                                                    <input type="text" class="form-control" id="employee_city" name="employee_city">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="employee_state" class="form-label">State</label>
+                                                    <input type="text" class="form-control" id="employee_state" name="employee_state">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="employee_zip" class="form-label">Zip Code</label>
+                                                    <input type="text" class="form-control" id="employee_zip" name="employee_zip">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="employee_country" class="form-label">Country</label>
+                                                    <input type="text" class="form-control" id="employee_country" name="employee_country">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="employee_emergency_contact" class="form-label">Emergency Contact</label>
+                                                    <input type="text" class="form-control" id="employee_emergency_contact" name="employee_emergency_contact">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="employee_emergency_phone" class="form-label">Emergency Phone</label>
+                                                    <input type="text" class="form-control" id="employee_emergency_phone" name="employee_emergency_phone">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="employee_profile_picture" class="form-label">Profile Picture</label>
+                                                    <input type="file" class="form-control" id="employee_profile_picture" name="employee_profile_picture" accept="image/*">
+                                                </div>
+                                                <div class="col-12 mt-2 text-end">
+                                                    <button type="submit" class="btn btn-primary btn-sm">Add Employee</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -5924,16 +6020,16 @@
             align-items: center;
             flex-wrap: wrap;
             /* border: 1px solid #ccc; */
-            padding: 5px;
+            /* padding: 5px; */
             border-radius: 8px;
             cursor: text;
             position: relative;
-            background-color: #fff;
+            /* background-color: #fff; */
         }
 
         .supervisor-tag-input input {
-            border: none;
-            outline: none;
+            /* border: none;
+            outline: none; */
             flex: 1;
             min-width: 100px;
         }
@@ -11271,6 +11367,8 @@
         const inputField = document.createElement('input');
         inputField.type = 'text';
         inputField.placeholder = 'Tag someone...';
+        inputField.className = 'form-control';
+        inputField.classList.add('border-primary');
         inputField.addEventListener('input', (e) => this.showSuggestions(e.target.value.trim()));
         inputField.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ',') {
@@ -11347,8 +11445,10 @@
       { name: "Bob Brown", role: "QA Tester", email: "bob.brown@example.com", profilePic: "https://via.placeholder.com/30" },
     ];
 
+    
     new TaggingComponent('tagging-1', users);
-    new TaggingComponent('tagging-2', users);
+    // new TaggingComponent('tagging-2', users);
+    new TaggingComponent('manager-tag-input-1', users);
   </script>
   <!-- Department -->
    <script>
@@ -11358,7 +11458,7 @@
             departmentForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(departmentForm);
-                const url = "{{ route('admin.store-department') }}";
+                const url = "{{ route('admin.store-company-department') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Department', url, 'POST', formData);
@@ -11377,5 +11477,8 @@
     });
    </script>
   <!-- End Department -->
+   <!-- Employee -->
+
+   <!-- Employee -->
     @endsection
 </x-layouts.admin-app>

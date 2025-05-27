@@ -57,6 +57,8 @@ use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
 use App\Http\Controllers\AnnualOperation\MetadataController;
 use App\Http\Controllers\AnnualOperation\ActivityController;
+use App\Http\Controllers\HRMS\CompanyDepartmentController;
+use App\Http\Controllers\HRMS\CompanyEmployeeController;
 
 
 
@@ -119,8 +121,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
     }); 
 
-      //Posts
-      Route::controller(PostsController::class)->group(function() {
+    //Posts
+    Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
     }); 
@@ -131,14 +133,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     //Events
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
-    }); 
+    });
+
     Route::controller(AddEventController::class)->group(function() {
         Route::get ('/create-events', 'index')->name('CMS.add-event');
-    }); 
+    });
+
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email-configuration');
     });
+    
     // email application
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
@@ -317,6 +322,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/save-company', 'store')->name('admin.store-company');
         Route::get('/companies-data', 'getCompaniesData')->name('admin.companies-data');
         Route::get('/companies-state', [CompanyController::class, 'getCompaniesByState'])->name('admin.companies-state');
+    });
+
+    // Company Department
+    Route::controller(CompanyDepartmentController::class)->group(function() {
+        Route::get('/company-departments', 'index')->name('admin.company-departments');
+        Route::post('/company-departments/store', 'store')->name('admin.store-company-department');
+        Route::get('/company-departments/{id}', 'show')->name('admin.show-company-department');
+        Route::put('/company-departments/{id}', 'update')->name('admin.update-company-department');
+        Route::delete('/company-departments/{id}', 'destroy')->name('admin.delete-company-department');
     });
 
     // Company Material

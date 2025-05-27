@@ -13,17 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recp_areas_of_benefits', function (Blueprint $table) {
-            $table->id('areaBenefitID');
-            $table->unsignedBigInteger('companyID');
-            $table->string('benefit_title', 500);
-            $table->enum('status', ['active', 'inactive']);
-            $table->foreign('companyID')
-            ->references('company_id')
-            ->on('companies')
-            ->onDelete('cascade');
-            $table->timestamps();
-        });
+        // Check if the table does not already exist
+        if (!Schema::hasTable('recp_areas_of_benefits')) {
+            Schema::create('recp_areas_of_benefits', function (Blueprint $table) {
+                $table->id('areaBenefitID');
+                $table->unsignedBigInteger('companyID');
+                $table->string('benefit_title', 500);
+                $table->enum('status', ['active', 'inactive']);
+                
+                // Foreign key constraint
+                $table->foreign('companyID')
+                    ->references('company_id')
+                    ->on('companies')
+                    ->onDelete('cascade');
+
+                // Timestamps
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -33,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('r_e_c_p_areas_of_benefits');
+        Schema::dropIfExists('recp_areas_of_benefits');
     }
 };
