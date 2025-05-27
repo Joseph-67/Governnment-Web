@@ -1365,15 +1365,16 @@
                                         </div>
                                     </form>
                                     <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-departments">
-                                            <thead class="table-light">
+                                        <table class="table table-hover table-bordered rounded shadow-sm align-middle w-100" id="tbl-departments">
+                                            <thead class="table-primary text-center">
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Head</th>
-                                                    <th class="text-end">Action</th>
+                                                    <th style="width: 35%;">Department Name</th>
+                                                    <th style="width: 45%;">Department Head / Manager</th>
+                                                    <th style="width: 20%;" class="text-end">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- Department rows will be dynamically populated here -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -11353,11 +11354,11 @@
     </script>
     <script>
     class TaggingComponent {
-      constructor(containerId, users) {
+      constructor(containerId) {
         this.container = document.getElementById(containerId);
         this.tagInput = this.container.querySelector('.supervisor-tag-input');
         this.tags = [];
-        this.users = users;
+        this.userMap = {}; // Maps user names to ids
 
         this.renderInputField();
         this.renderSuggestions();
@@ -11369,11 +11370,14 @@
         inputField.placeholder = 'Tag someone...';
         inputField.className = 'form-control';
         inputField.classList.add('border-primary');
-        inputField.addEventListener('input', (e) => this.showSuggestions(e.target.value.trim()));
+        inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
         inputField.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
-            this.addTag(e.target.value.trim());
+            const name = e.target.value.trim();
+            if (this.userMap[name]) {
+                this.addTag(this.userMap[name], name);
+            }
           }
         });
         this.tagInput.appendChild(inputField);
@@ -11387,10 +11391,22 @@
         this.suggestionsDiv = suggestionsDiv;
       }
 
-      showSuggestions(input) {
-        const filteredUsers = this.users.filter(user =>
-          user.name.toLowerCase().includes(input.toLowerCase()) && !this.tags.includes(user.name)
-        );
+      async fetchUsers(query) {
+        if (!query) {
+          this.suggestionsDiv.innerHTML = '';
+          return;
+        }
+        try {
+          const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}`);
+          const users = await response.json();
+          this.showSuggestions(users.users || []);
+        } catch (error) {
+          console.error("Failed to fetch users:", error);
+        }
+      }
+
+      showSuggestions(users) {
+        const filteredUsers = users.filter(user => !this.tags.includes(user.name));
         this.suggestionsDiv.innerHTML = '';
         filteredUsers.forEach(user => {
           const suggestionElement = document.createElement('div');
@@ -11405,59 +11421,167 @@
               </div>
             </div>
           `;
-          suggestionElement.addEventListener('click', () => this.addTag(user.name));
+          suggestionElement.addEventListener('click', () => this.addTag(user.id, user.name));
           this.suggestionsDiv.appendChild(suggestionElement);
+          
+           // Update the user map
+            this.userMap[user.name] = user.id;
         });
       }
 
-      addTag(tag) {
-        if (tag && !this.tags.includes(tag)) {
-          this.tags.push(tag);
-          this.renderTags();
-          this.inputField.value = '';
-          this.suggestionsDiv.innerHTML = '';
+      addTag(userId, userName) {
+        if (userId && !this.tags.includes(userId)) {
+            this.tags.push(userId);
+            this.renderTags();
+            this.inputField.value = '';
+            this.suggestionsDiv.innerHTML = '';
         }
       }
 
-      removeTag(tag) {
-        this.tags = this.tags.filter(t => t !== tag);
+      removeTag(userId) {
+        this.tags = this.tags.filter(id => id !== userId);
         this.renderTags();
       }
 
       renderTags() {
         this.tagInput.innerHTML = '';
-        this.tags.forEach(tag => {
-          const tagElement = document.createElement('div');
-          tagElement.className = 'tag';
-          tagElement.innerHTML = `${tag} <span>&times;</span>`;
-          tagElement.querySelector('span').addEventListener('click', () => this.removeTag(tag));
-          this.tagInput.appendChild(tagElement);
+        this.tags.forEach(userId => {
+            const userName = Object.keys(this.userMap).find(name => this.userMap[name] === userId);
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+            tagElement.innerHTML = `${userName} <span>&times;</span>`;
+            tagElement.querySelector('span').addEventListener('click', () => this.removeTag(userId));
+            this.tagInput.appendChild(tagElement);
         });
         this.tagInput.appendChild(this.inputField);
         this.tagInput.appendChild(this.suggestionsDiv);
       }
+      // Get selected user IDs and names
+      getSelectedUserIds() {
+        return this.tags;
+      }
+
+      getSelectedUserNames() {
+        return this.tags.map(id => Object.keys(this.userMap).find(name => this.userMap[name] === id));
+      }
     }
-
-    const users = [
-      { name: "John Doe", role: "Web Developer", email: "john.doe@example.com", profilePic: "https://via.placeholder.com/30" },
-      { name: "Jane Smith", role: "Designer", email: "jane.smith@example.com", profilePic: "https://via.placeholder.com/30" },
-      { name: "Alice Johnson", role: "Project Manager", email: "alice.johnson@example.com", profilePic: "https://via.placeholder.com/30" },
-      { name: "Bob Brown", role: "QA Tester", email: "bob.brown@example.com", profilePic: "https://via.placeholder.com/30" },
-    ];
-
     
-    new TaggingComponent('tagging-1', users);
+    // new TaggingComponent('tagging-1');
     // new TaggingComponent('tagging-2', users);
-    new TaggingComponent('manager-tag-input-1', users);
+    let  manager_1 =  new TaggingComponent('manager-tag-input-1');
   </script>
   <!-- Department -->
    <script>
+    /**
+     * Handles the submission of the Department form.
+     * - Prevents default form submission.
+     * - Collects form data and selected manager IDs.
+     * - Sends data to the server using fetch_cycle for AJAX POST.
+     * - Handles success and error responses.
+     */
+    /**
+     * Department Management Script
+     * Handles the submission of the Department form and updates the department table.
+     * - Prevents default form submission.
+     * - Collects form data and selected manager IDs.
+     * - Sends data to the server using fetch_cycle for AJAX POST.
+     * - Handles success and error responses.
+     */
+
+    /**
+     * Department Management Script
+     * Handles the submission of the Department form and updates the department table.
+     * - Prevents default form submission.
+     * - Collects form data and selected manager IDs.
+     * - Sends data to the server using fetch_cycle for AJAX POST.
+     * - Handles success and error responses.
+     */
+
+    let departmentsTable = $('#tbl-departments').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+        ],
+        data: [],
+        columns: [
+            { data: 'name', title: 'Department Name' },
+            {
+                data: 'managers',
+                title: 'Managers',
+                render: function(data, type, row) {
+                    if (Array.isArray(data)) {
+                        return data.map(mgr => `<span class="badge bg-primary">${mgr.name}</span>`).join(' ');
+                    }
+                    return '';
+                }
+            },
+            {
+                data: null,
+                title: 'Action',
+                render: function(data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editDepartment('${row.id}')">
+                                <i class="las la-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteDepartment('${row.id}')">
+                                <i class="las la-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                },
+                className: 'text-end'
+            }
+        ]
+    });
+    // Fetch and display departments when the accordion is expanded
+    document.getElementById('departmentCollapse').addEventListener('shown.bs.collapse', async () => {
+        console.log('====================================');
+        console.log('Fetching departments for company:', "{{ json_encode($company->company_id) }}");
+        console.log('====================================');
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/get-departments/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+            if (data.status === "success" && Array.isArray(data.departments)) {
+                const departments = data.departments.map(department => ({
+                    name: department.DepartmentName || "N/A",
+                    managers: department.managers || [],
+                    id: department.DepartmentID || "N/A"
+                }));
+                departmentsTable.clear().rows.add(departments).draw();
+            } else {
+                displayMessage('warning', 'No departments found or invalid data structure.');
+                departmentsTable.clear().draw();
+            }
+        } catch (error) {
+            console.error("Error fetching departments:", error);
+            displayMessage('danger', 'An error occurred while fetching departments.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
     document.addEventListener('DOMContentLoaded', function () {
         const departmentForm = document.getElementById('department-form');
         if (departmentForm) {
             departmentForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(departmentForm);
+                console.log('====================================');
+                console.log(manager_1.getSelectedUserIds());
+                console.log('====================================');
+                let manager = manager_1.getSelectedUserIds();
+                // Append manager IDs to the form data
+                manager.forEach(id => {
+                    formData.append('manager_ids[]', id);
+                });
+                // Append the company ID to the form data
                 const url = "{{ route('admin.store-company-department') }}";
 
                 try {

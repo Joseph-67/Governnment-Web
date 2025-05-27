@@ -58,7 +58,7 @@ use App\Http\Controllers\WasteSubCategoriesController;
 use App\Http\Controllers\AnnualOperation\MetadataController;
 use App\Http\Controllers\AnnualOperation\ActivityController;
 use App\Http\Controllers\HRMS\CompanyDepartmentController;
-use App\Http\Controllers\HRMS\CompanyEmployeeController;
+use App\Http\Controllers\HRMS\CompanyEmployeesController;
 
 
 
@@ -327,10 +327,21 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Company Department
     Route::controller(CompanyDepartmentController::class)->group(function() {
         Route::get('/company-departments', 'index')->name('admin.company-departments');
+        Route::get('/get-departments/{companyId}', 'getDepartmentsByCompany')->name('admin.get-departments');
         Route::post('/company-departments/store', 'store')->name('admin.store-company-department');
         Route::get('/company-departments/{id}', 'show')->name('admin.show-company-department');
         Route::put('/company-departments/{id}', 'update')->name('admin.update-company-department');
         Route::delete('/company-departments/{id}', 'destroy')->name('admin.delete-company-department');
+    });
+
+    // Company Employee
+    Route::controller(CompanyEmployeesController::class)->group(function() {
+        Route::get('/company-employees', 'index')->name('admin.company-employees');
+        Route::get('/search-employee', 'search')->name('admin.search-employee');
+        Route::post('/company-employees/store', 'store')->name('admin.store-company-employee');
+        Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
+        Route::put('/company-employees/{id}', 'update')->name('admin.update-company-employee');
+        Route::delete('/company-employees/{id}', 'destroy')->name('admin.delete-company-employee');
     });
 
     // Company Material

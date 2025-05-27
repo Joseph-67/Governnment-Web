@@ -12,15 +12,26 @@ class CompanyDepartment extends Model
     protected $primaryKey = 'DepartmentID';
     protected $fillable = [
         'DepartmentName',
-        'ManagerID',
+        'ManagerIDs',
         'CompanyID',
     ];
+    protected $casts = [
+        'ManagerIDs' => 'array', // Assuming ManagerIDs is stored as a JSON array
+    ];
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    public $timestamps = true;
     public function company()
     {
         return $this->belongsTo(Company::class, 'CompanyID', 'CompanyID');
     }
-    public function manager()
+
+    public function managers()
     {
-        return $this->belongsTo(CompanyEmployee::class, 'ManagerID', 'EmployeeID');
+        return $this->hasMany(Employee::class, 'EmployeeID', 'ManagerIDs');
     }
+
 }

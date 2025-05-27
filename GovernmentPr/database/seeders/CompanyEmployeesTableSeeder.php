@@ -32,7 +32,7 @@ class CompanyEmployeesTableSeeder extends Seeder
             'Gender' => $faker->randomElement(['Male', 'Female']),
             'JobTitle' => $faker->jobTitle,
             'DepartmentID' => 1,
-            'ManagerID' => null,
+            'ManagerIDs' => null,
             'HireDate' => $faker->date('Y-m-d', 'now'),
             'Status' => $faker->randomElement(['Active', 'Inactive']),
             'Address' => $faker->streetAddress,

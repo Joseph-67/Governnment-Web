@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('company_departments', function (Blueprint $table) {
             $table->id('DepartmentID');
             $table->string('DepartmentName', 100);
-            $table->unsignedBigInteger('ManagerID')->nullable();
+            $table->json('ManagerIDs')->nullable();
             $table->unsignedBigInteger('CompanyID');
             $table->timestamps();
             $table->foreign('CompanyID')->references('CompanyID')->on('companies');
-            $table->foreign('ManagerID')->references('EmployeeID')->on('company_employees');
+            // $table->foreign('ManagerID')->references('EmployeeID')->on('company_employees');
         });
     }
 

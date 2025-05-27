@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\HRMS;
 use App\Http\Controllers\Controller;
 
-use App\Models\CompanyEmployees;
+use App\Models\HRMS\CompanyEmployees;
 use Illuminate\Http\Request;
 
 class CompanyEmployeesController extends Controller
@@ -16,6 +16,44 @@ class CompanyEmployeesController extends Controller
     public function index()
     {
         //
+    }
+
+    /**
+     * Search for company employees based on query parameters.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $query = CompanyEmployees::query();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                foreach (['FirstName', 'LastName', 'email', 'JobTitle'] as $field) {
+                    $q->orWhere($field, 'like', "%{$search}%");
+                }
+            });
+        }
+
+        $employees = $query->get();
+
+        $users = $employees->map(function ($employee) {
+        $defaultProfilePic = ['avatar-2.jpg', 'avatar-3.jpg', 'avatar-4.jpg'];
+            return [
+                'id' => (string) $employee->EmployeeID,
+                'name' => trim($employee->FirstName . ' ' . $employee->LastName),
+                'role' => $employee->JobTitle,
+                'profilePic' => $employee->ProfilePicture ? asset('storage/' . $employee->ProfilePicture) : asset('adminAssets/images/users/' . $defaultProfilePic[array_rand($defaultProfilePic)]),
+                'email' => $employee->Email,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'users' => $users,
+        ]);
     }
 
     /**

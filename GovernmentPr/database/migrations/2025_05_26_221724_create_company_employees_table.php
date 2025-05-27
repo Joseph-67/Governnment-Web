@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('Gender', ['Male', 'Female', 'Other'])->nullable();
             $table->string('JobTitle', 100)->nullable();
             $table->unsignedBigInteger('DepartmentID')->nullable();
-            $table->unsignedBigInteger('ManagerID')->nullable();
+            $table->json('ManagerIDs')->nullable();
             $table->date('HireDate')->nullable();
             $table->enum('Status', ['Active', 'Inactive', 'On Leave', 'Terminated'])->default('Active');
             $table->text('Address')->nullable();
@@ -42,7 +42,7 @@ return new class extends Migration
 
             $table->foreign('CompanyID')->references('CompanyID')->on('companies')->onDelete('cascade');
             $table->foreign('DepartmentID')->references('DepartmentID')->on('departments')->onDelete('set null');
-            $table->foreign('ManagerID')->references('EmployeeID')->on('company_employees')->onDelete('set null');
+            // $table->foreign('ManagerID')->references('EmployeeID')->on('company_employees')->onDelete('set null');
         });
     }
 
