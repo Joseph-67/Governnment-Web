@@ -22,6 +22,23 @@ class TagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * Search for tags based on a query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->input('query');
+            $tags = Tag::where('name', 'like', '%' . $query . '%')->limit(10)->pluck('name');
+            return response()->json($tags);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to search tags', 'message' => $e->getMessage()], 500);
+        }
+    }
     public function create()
     {
         //

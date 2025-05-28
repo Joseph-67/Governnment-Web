@@ -59,6 +59,7 @@ use App\Http\Controllers\AnnualOperation\MetadataController;
 use App\Http\Controllers\AnnualOperation\ActivityController;
 use App\Http\Controllers\HRMS\CompanyDepartmentController;
 use App\Http\Controllers\HRMS\CompanyEmployeesController;
+use App\Http\Controllers\TagController;
 
 
 
@@ -614,6 +615,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/stock-trading/sell', 'sellStock')->name('admin.sell-stock');
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
+    });
+
+    // Tag
+    Route::controller(TagController::class)->group(function() {
+        Route::get('/tags', 'index')->name('admin.tags');
+        Route::get('/search-tag', 'search')->name('admin.search-tag');
+        Route::post('/tags', 'store')->name('admin.store-tag');
+        Route::get('/tags/{id}', 'show')->name('admin.show-tag');
+        Route::put('/tags/{id}', 'update')->name('admin.update-tag');
+        Route::delete('/tags/{id}', 'destroy')->name('admin.delete-tag');
     });
 
     // waste category
