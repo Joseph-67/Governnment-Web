@@ -7,7 +7,7 @@ use App\Models\HRMS\CompanyDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use App\Models\HRMS\CompanyEmployee;
+use App\Models\HRMS\CompanyEmployees;
 use App\Models\Company;
 /**
  * CompanyDepartmentController handles the management of company departments.
@@ -40,47 +40,49 @@ class CompanyDepartmentController extends Controller
     public function getDepartmentsByCompany($companyId)
     {
         try {
-            $departments = CompanyDepartment::where('CompanyID', $companyId)
-                ->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
+            $departments = CompanyDepartment::where('CompanyID', $companyId)->get();
 
-            $managerIds = $departments->flatMap(function ($dept) {
-                return json_decode($dept->ManagerIDs, true) ?: [];
-            })->unique()->values();
+            $departments = $departments->map(function ($department) {
+            $managerIDs = $department->ManagerIDs 
+                ? (is_array($department->ManagerIDs) ? $department->ManagerIDs : json_decode($department->ManagerIDs, true)) 
+                : [];
 
-            $managers = CompanyEmployee::whereIn('EmployeeID', $managerIds)
-                ->get(['EmployeeID', 'Name'])
-                ->keyBy('EmployeeID');
+            $managers = !empty($managerIDs)
+                ? CompanyEmployees::whereIn('EmployeeID', $managerIDs)
+                ->get(['EmployeeID', 'FirstName', 'LastName', 'Email', 'JobTitle', 'ProfilePicture'])
+                ->map(function ($manager) {
+                    return [
+                    'id' => $manager->EmployeeID,
+                    'name' => trim($manager->FirstName . ' ' . $manager->LastName),
+                    'email' => $manager->Email,
+                    'jobTitle' => $manager->JobTitle,
+                    'profilePic' => $manager->ProfilePicture
+                        ? asset('storage/' . $manager->ProfilePicture)
+                        : asset('adminAssets/images/users/avatar-2.jpg'),
+                    ];
+                })
+                : collect();
 
-            $departments = $departments->map(function ($department) use ($managers) {
-                $ids = json_decode($department->ManagerIDs, true) ?: [];
-                return [
-                    'DepartmentID' => $department->DepartmentID,
-                    'DepartmentName' => $department->DepartmentName,
-                    'managers' => collect($ids)->map(function ($id) use ($managers) {
-                        $manager = $managers->get($id);
-                        return $manager ? [
-                            'id' => $manager->EmployeeID,
-                            'name' => trim(($manager->FirstName ?? '') . ' ' . ($manager->LastName ?? '')),
-                            'email' => $manager->Email ?? null,
-                            'role' => $manager->JobTitle ?? null,
-                            'profilePic' => $manager->ProfilePicture ? asset('storage/' . $manager->ProfilePicture) : asset('adminAssets/images/users/avatar-2.jpg'),
-                        ] : null;
-                    })->filter()->values(),
-                ];
+            return [
+                'DepartmentID' => $department->DepartmentID,
+                'DepartmentName' => $department->DepartmentName,
+                'managers' => $managers,
+            ];
             });
 
             return response()->json([
-                'status' => 'success',
-                'departments' => $departments
-            ]);
+            'status' => 'success',
+            'departments' => $departments
+            ], 200);
         } catch (\Exception $e) {
-            \Log::error('Error fetching departments:', ['exception' => $e]);
             return response()->json([
-                'status' => 'error',
-                'message' => __('An error occurred while fetching departments.')
+            'status' => 'error',
+            'message' => __('An error occurred while fetching departments.'),
+            'error' => $e->getMessage()
             ], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

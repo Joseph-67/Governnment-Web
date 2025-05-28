@@ -31,7 +31,7 @@ class CompanyDepartment extends Model
 
     public function managers()
     {
-        return $this->hasMany(Employee::class, 'EmployeeID', 'ManagerIDs');
+        return $this->hasMany(CompanyEmployees::class, 'EmployeeID', 'ManagerIDs');
     }
 
 }

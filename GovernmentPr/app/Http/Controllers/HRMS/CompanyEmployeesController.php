@@ -30,6 +30,8 @@ class CompanyEmployeesController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->input('search');
+            $company_id = $request->input('company_id');
+            $query->where('CompanyID', $company_id);
             $query->where(function ($q) use ($search) {
                 foreach (['FirstName', 'LastName', 'email', 'JobTitle'] as $field) {
                     $q->orWhere($field, 'like', "%{$search}%");

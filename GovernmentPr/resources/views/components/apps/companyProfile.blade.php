@@ -1351,7 +1351,7 @@
                                                     <div class="col-md-6">
                                                         <div class="taggable-container " id="manager-tag-input-1">
                                                             <label for="manager" class="form-label fw-bold">Department Head / Manager</label>
-                                                            <div class="supervisor-tag-input border-primary bg-light">
+                                                            <div class="manager-tag-input-1 manager-tag-input border-primary bg-light">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1442,10 +1442,11 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label for="employee_manager" class="form-label">Manager</label>
-                                                    <select class="form-select" id="employee_manager" name="employee_manager">
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
+                                                    <div class="taggable-container " id="manager-tag-input-2">
+                                                        <label for="manager" class="form-label fw-bold">Manager</label>
+                                                        <div class="manager-tag-input-2 manager-tag-input border-primary bg-light">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="employee_hire_date" class="form-label">Hire Date</label>
@@ -6075,6 +6076,26 @@
             flex: 1;
             min-width: 100px;
         }
+
+        .manager-tag-input {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 1px solid #ccc; */
+            /* padding: 5px; */
+            border-radius: 8px;
+            cursor: text;
+            position: relative;
+            /* background-color: #fff; */
+        }
+
+        .manager-tag-input input {
+            /* border: none;
+            outline: none; */
+            flex: 1;
+            min-width: 100px;
+        }
+
 
     </style>
     <style>
@@ -11523,9 +11544,9 @@
     </script>
     <script>
     class TaggingComponent {
-      constructor(containerId) {
+      constructor(containerId, TagInput) {
         this.container = document.getElementById(containerId);
-        this.tagInput = this.container.querySelector('.supervisor-tag-input');
+        this.tagInput = this.container.querySelector(`.${TagInput}`);
         this.tags = [];
         this.userMap = {}; // Maps user names to ids
 
@@ -11566,7 +11587,8 @@
           return;
         }
         try {
-          const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}`);
+          const companyId = "{{ $company->company_id }}";
+          const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}&company_id=${encodeURIComponent(companyId)}`);
           const users = await response.json();
           this.showSuggestions(users.users || []);
         } catch (error) {
@@ -11637,7 +11659,8 @@
     
     // new TaggingComponent('tagging-1');
     // new TaggingComponent('tagging-2', users);
-    let  manager_1 =  new TaggingComponent('manager-tag-input-1');
+    let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
+    let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
   </script>
   <!-- Department -->
    <script>
@@ -11681,10 +11704,27 @@
                 data: 'managers',
                 title: 'Managers',
                 render: function(data, type, row) {
-                    if (Array.isArray(data)) {
-                        return data.map(mgr => `<span class="badge bg-primary">${mgr.name}</span>`).join(' ');
+                    if (Array.isArray(data) && data.length > 0) {
+                        return `
+                            <div class="d-flex flex-row flex-wrap gap-2">
+                                ${data.map(mgr => `
+                                    <div class="card shadow-sm mb-0" style="display:inline-block; min-width:220px; max-width:320px;">
+                                        <div class="card-body p-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="${mgr.profilePic || 'https://via.placeholder.com/32'}" alt="${mgr.name ?? mgr.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                                <div>
+                                                    <div class="fw-bold">${mgr.name ?? mgr.full_name ?? 'N/A'}</div>
+                                                    <div class="small text-muted">${mgr.email ?? ''}</div>
+                                                    <div class="small text-secondary">${mgr.jobTitle ?? ''}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
                     }
-                    return '';
+                    return '<span class="text-muted">None</span>';
                 }
             },
             {
