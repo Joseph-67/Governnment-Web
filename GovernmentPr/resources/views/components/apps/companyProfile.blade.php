@@ -5831,9 +5831,10 @@
                         </select>
                         </div>
                         <div class="col-md-4">
-                            <div class="taggable-container" id="tagging-1">
-                            <label for="supervisor" class="form-label fw-semibold">Supervisor</label>
-                                <div class="supervisor-tag-input"></div>
+                            <div class="taggable-container " id="manager-tag-input-3">
+                                <label for="manager" class="form-label fw-bold">Manager</label>
+                                <div class="manager-tag-input-3 manager-tag-input border-primary bg-light">
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -11661,6 +11662,7 @@
     // new TaggingComponent('tagging-2', users);
     let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
     let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
+    let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
   </script>
   <!-- Department -->
    <script>
