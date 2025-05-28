@@ -51,7 +51,7 @@ class CompanyEmployees extends Model
     }
     public function department()
     {
-        return $this->belongsTo(Department::class, 'DepartmentID', 'DepartmentID');
+        return $this->belongsTo(CompanyDepartment::class, 'DepartmentID', 'DepartmentID');
     }
     public function manager()
     {

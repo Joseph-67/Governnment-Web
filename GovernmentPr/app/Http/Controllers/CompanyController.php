@@ -47,6 +47,7 @@ use App\Models\WaterQualityLogs;
 use App\Models\AnnualOperationsLog;
 use App\Models\ProductionLog;
 use App\Models\QualityControl;
+use App\Models\HRMS\CompanyDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
@@ -133,6 +134,10 @@ class CompanyController extends WaterStockMovementController
         $data['annual_operations_logs'] = AnnualOperationsLog::where('company_id', $companyID)->get();
         $data['production_logs'] = ProductionLog::with(['company', 'companyOperation', 'calendarYear'])->where('company_id', $companyID)->get();
         $data['quality_controls_record'] = QualityControl::where('company_id', $companyID)->get();
+        // fetch company departments
+        $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
+        
+
 
         return view('components.apps.companyProfile', $data);
     }   

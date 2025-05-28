@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('DateOfBirth')->nullable();
             $table->enum('Gender', ['Male', 'Female', 'Other'])->nullable();
             $table->string('JobTitle', 100)->nullable();
-            $table->unsignedBigInteger('DepartmentID')->nullable();
+            $table->unsignedBigInteger('DepartmentID');
             $table->json('ManagerIDs')->nullable();
             $table->date('HireDate')->nullable();
             $table->enum('Status', ['Active', 'Inactive', 'On Leave', 'Terminated'])->default('Active');
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('CompanyID')->references('CompanyID')->on('companies')->onDelete('cascade');
-            $table->foreign('DepartmentID')->references('DepartmentID')->on('departments')->onDelete('set null');
+            $table->foreign('DepartmentID')->references('DepartmentID')->on('company_departments')->onDelete('cascade');
             // $table->foreign('ManagerID')->references('EmployeeID')->on('company_employees')->onDelete('set null');
         });
     }
