@@ -1392,6 +1392,7 @@
                             <div id="employeesCollapse" class="accordion-collapse collapse" aria-labelledby="employeesHeading">
                                 <div class="accordion-body">
                                     <form action="" method="post" id="employee-form" enctype="multipart/form-data" class="card shadow-sm border-0 mb-4">
+                                        @csrf
                                         <div class="card-header bg-gradient-primary text-white">
                                             <h5 class="mb-0"><i class="las la-user-plus me-2"></i> Add New Employee</h5>
                                         </div>
@@ -1439,6 +1440,9 @@
                                                     <label for="employee_department" class="form-label">Department</label>
                                                     <select class="form-select" id="employee_department" name="employee_department">
                                                         <option value="" selected disabled>Choose...</option>
+                                                        @foreach($company_departments as $department)
+                                                            <option value="{{ $department->DepartmentID }}">{{ $department->DepartmentName }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
@@ -1457,6 +1461,7 @@
                                                     <select class="form-select" id="employee_status" name="employee_status">
                                                         <option value="active" selected>Active</option>
                                                         <option value="inactive">Inactive</option>
+                                                        <option value="on_leave">On Leave</option>
                                                         <option value="terminated">Terminated</option>
                                                     </select>
                                                 </div>
@@ -11813,7 +11818,41 @@
    </script>
   <!-- End Department -->
    <!-- Employee -->
+    <script>
+ 
+// Handle employee form submission
+document.getElementById('employee-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const url = "{{ route('admin.store-company-employee') }}";
 
+    try {
+        // Ensure the route supports POST; if not, use GET and append params to URL
+        // If the route only supports GET, use the following pattern:
+        // const params = new URLSearchParams(formData).toString();
+        // const response = await fetch(url + '?' + params, { method: 'GET' });
+        // Otherwise, use POST as below if the route supports it:
+        const result = await fetch_cycle('--Store Employee', url, 'POST', formData);
+        if (result.status === 'success' && result.employee) {
+            const emp = result.employee;
+            employeesTable.row.add({
+                name: emp.name ?? "N/A",
+                email: emp.email ?? "N/A",
+                role: emp.role ?? "N/A",
+                department: emp.department?.DepartmentName ?? "N/A",
+                id: emp.id ?? "N/A"
+            }).draw(false);
+        } else {
+            displayMessage('danger', result.message || 'Failed to add employee.');
+        }
+    } catch (error) {
+        console.error('Error storing employee:', error);
+        displayMessage('danger', 'An error occurred while adding employee.');
+    }
+});
+
+    </script>
+    
    <!-- Employee -->
     @endsection
 </x-layouts.admin-app>
