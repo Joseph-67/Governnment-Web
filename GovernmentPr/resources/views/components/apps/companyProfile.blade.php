@@ -5852,10 +5852,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="tag-input-field" class="form-label fw-semibold">Tags</label>
-                            <div class="tag-input" id="tag-input">
-                                <input type="text" class="form-control" id="tag-input-field" placeholder="Add a tag..." name= "tags">
-                                <div class="suggestions" id="suggestions"></div>
-                            </div>
+                            <div id="tagging-system"></div>
                         </div>
                         <div class="col-12 mt-3 text-end">
                         <button type="submit" class="btn btn-dark fw-bold px-4 py-2 shadow-sm">Save Activity</button>
@@ -6011,6 +6008,15 @@
             max-height: 150px;
             overflow-y: auto;
             z-index: 10;
+        }
+
+        .TagSuggestion {
+            padding: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .TagSuggestion:hover {
+            background-color: #f0f0f0;
         }
 
         .suggestion {
@@ -11475,78 +11481,113 @@
         }
     </script>
     <script>
-        const tagInput = document.getElementById('tag-input');
-        const tagInputField = document.getElementById('tag-input-field');
-        const suggestionsDiv = document.getElementById('suggestions');
-        const tags = [];
-        const suggestions = ["JavaScript", "HTML", "CSS", "React", "Node.js", "Python", "Django", "Flask", "Java", "C++"];
+        class TaggingSystem {
+            constructor({ containerId, apiUrl }) {
+                this.container = document.getElementById(containerId);
+                this.apiUrl = apiUrl;
+                this.tags = [];
+                this.init();
+            }
 
-        // Function to add a tag
-        function addTag(tag) {
-        if (tag && !tags.includes(tag)) {
-            tags.push(tag);
-            renderTags();
-            tagInputField.value = '';
-            suggestionsDiv.innerHTML = '';
-        }
+            // Initialize the tagging system
+            init() {
+                this.container.innerHTML = `
+                <div id="tags-container"></div>
+                <input type="text" class="form-control" id="tag-input-field" placeholder="Type to add tags" />
+                <div id="suggestions"></div>
+                `;
+
+                this.tagsContainer = this.container.querySelector("#tags-container");
+                this.inputField = this.container.querySelector("#tag-input-field");
+                this.suggestionsDiv = this.container.querySelector("#suggestions");
+
+                this.bindEvents();
+                this.renderTags();
+            }
+
+            // Fetch suggestions from API
+            async fetchSuggestions(query) {
+                try {
+                const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}`);
+                if (!response.ok) throw new Error("Failed to fetch suggestions");
+                return await response.json();
+                } catch (error) {
+                console.error("Error fetching suggestions:", error);
+                return [];
+                }
+            }
+
+            // Add a tag
+            addTag(tag) {
+                if (tag && !this.tags.includes(tag)) {
+                this.tags.push(tag);
+                this.renderTags();
+                this.inputField.value = "";
+                this.suggestionsDiv.innerHTML = "";
+                }
+            }
+
+            // Remove a tag
+            removeTag(tag) {
+                const index = this.tags.indexOf(tag);
+                if (index > -1) {
+                this.tags.splice(index, 1);
+                this.renderTags();
+                }
+            }
+
+            // Render tags
+            renderTags() {
+                this.tagsContainer.innerHTML = "";
+                this.tags.forEach(tag => {
+                const tagElement = document.createElement("div");
+                tagElement.className = "tag";
+                tagElement.innerHTML = `${tag} <span>&times;</span>`;
+                tagElement.querySelector("span").onclick = () => this.removeTag(tag);
+                this.tagsContainer.appendChild(tagElement);
+                });
+            }
+
+            // Show suggestions
+            async showSuggestions(input) {
+                const fetchedSuggestions = await this.fetchSuggestions(input);
+                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                this.suggestionsDiv.innerHTML = "";
+                filteredSuggestions.forEach(suggestion => {
+                const suggestionElement = document.createElement("div");
+                suggestionElement.className = "TagSuggestion";
+                suggestionElement.textContent = suggestion;
+                suggestionElement.onclick = () => this.addTag(suggestion);
+                this.suggestionsDiv.appendChild(suggestionElement);
+                });
+            }
+
+            // Bind events
+            bindEvents() {
+                this.inputField.addEventListener("input", () => {
+                const input = this.inputField.value.trim();
+                if (input) {
+                    this.showSuggestions(input);
+                } else {
+                    this.suggestionsDiv.innerHTML = "";
+                }
+                });
+
+                this.inputField.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === ",") {
+                    event.preventDefault();
+                    this.addTag(this.inputField.value.trim());
+                }
+                });
+            }
         }
 
-        // Function to remove a tag
-        function removeTag(tag) {
-        const index = tags.indexOf(tag);
-        if (index > -1) {
-            tags.splice(index, 1);
-            renderTags();
-        }
-        }
-
-        // Function to render tags
-        function renderTags() {
-        tagInput.innerHTML = '';
-        tags.forEach(tag => {
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.innerHTML = `${tag} <span onclick="removeTag('${tag}')">&times;</span>`;
-            tagInput.appendChild(tagElement);
+        // Usage example
+        const taggingSystem = new TaggingSystem({
+        containerId: "tagging-system",
+        apiUrl: "{{ url('/admin/search-tag') }}"
         });
-        tagInput.appendChild(tagInputField);
-        tagInput.appendChild(suggestionsDiv);
-        }
 
-        // Function to filter and show suggestions
-        function showSuggestions(input) {
-        const filteredSuggestions = suggestions.filter(
-            suggestion => suggestion.toLowerCase().startsWith(input.toLowerCase()) && !tags.includes(suggestion)
-        );
-        suggestionsDiv.innerHTML = '';
-        filteredSuggestions.forEach(suggestion => {
-            const suggestionElement = document.createElement('div');
-            suggestionElement.className = 'suggestion';
-            suggestionElement.textContent = suggestion;
-            suggestionElement.onclick = () => addTag(suggestion);
-            suggestionsDiv.appendChild(suggestionElement);
-        });
-        }
-
-        // Handle input events
-        tagInputField.addEventListener('input', () => {
-        const input = tagInputField.value.trim();
-        if (input) {
-            showSuggestions(input);
-        } else {
-            suggestionsDiv.innerHTML = '';
-        }
-        });
-
-        tagInputField.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ',') {
-            event.preventDefault();
-            addTag(tagInputField.value.trim());
-        }
-        });
-
-        // Initial rendering
-        renderTags();
     </script>
     <script>
     class TaggingComponent {
