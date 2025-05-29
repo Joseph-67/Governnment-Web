@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\HRMS\CompanyEmployees;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CompanyEmployeesController extends Controller
 {
@@ -76,20 +77,36 @@ class CompanyEmployeesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // Validation rules updated to match fillable and form field names
+{
+    try {
         $validator = \Validator::make($request->all(), [
-            'company_id' => 'required|integer|exists:companies,company_id',
-            'employee_number' => 'required|string|max:255|unique:company_employees,EmployeeNumber',
+            'company_id' => [
+                'required',
+                'integer',
+                'exists:companies,company_id',
+            ],
+            'employee_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('company_employees', 'EmployeeNumber')
+                    ->where(fn($query) => $query->where('CompanyID', $request->input('company_id'))),
+            ],
+            'employee_email' => [
+                'required',
+                'email',
+                Rule::unique('company_employees', 'Email')
+                    ->where(fn($query) => $query->where('CompanyID', $request->input('company_id'))),
+            ],
             'employee_first_name' => 'required|string|max:255',
             'employee_last_name' => 'required|string|max:255',
-            'employee_email' => 'required|email|unique:company_employees,Email',
             'employee_phone' => 'required|string|max:20',
             'employee_dob' => 'required|date',
             'employee_gender' => 'required|in:Male,Female,Other',
             'employee_job_title' => 'required|string|max:255',
             'employee_department' => 'required|integer|exists:company_departments,DepartmentID',
-            'manager' => 'nullable',
+            'manager' => 'nullable|array',
+            'manager.*' => 'exists:company_employees,EmployeeID',
             'employee_hire_date' => 'required|date',
             'employee_status' => 'required|in:active,inactive,on_leave,terminated',
             'employee_address' => 'nullable|string|max:255',
@@ -100,18 +117,25 @@ class CompanyEmployeesController extends Controller
             'employee_emergency_contact' => 'nullable|string|max:255',
             'employee_emergency_phone' => 'nullable|string|max:20',
             'employee_profile_picture' => 'nullable|image|max:2048',
+        ], [
+            'company_id.required' => __('Company ID is required.'),
+            'company_id.exists' => __('The selected company does not exist.'),
+            'employee_number.required' => __('Employee number is required.'),
+            'employee_number.unique' => __('The employee number must be unique within the company.'),
+            'employee_email.required' => __('Email address is required.'),
+            'employee_email.unique' => __('The email has already been taken within this company.'),
+            'manager.*.exists' => __('One or more selected managers do not exist.'),
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-            'success' => false,
-            'errors' => $validator->errors(),
+                'status' => 'error',
+                'errors' => $validator->errors()
             ], 422);
         }
 
         $validated = $validator->validated();
 
-        // Map form fields to database columns
         $data = [
             'CompanyID' => $validated['company_id'],
             'EmployeeNumber' => $validated['employee_number'],
@@ -123,7 +147,7 @@ class CompanyEmployeesController extends Controller
             'Gender' => $validated['employee_gender'],
             'JobTitle' => $validated['employee_job_title'],
             'DepartmentID' => $validated['employee_department'],
-            'ManagerID' => $validated['manager'] ?? null,
+            'ManagerIDs' => isset($validated['manager']) ? json_encode($validated['manager']) : null,
             'HireDate' => $validated['employee_hire_date'],
             'Status' => $validated['employee_status'],
             'Address' => $validated['employee_address'] ?? null,
@@ -135,30 +159,29 @@ class CompanyEmployeesController extends Controller
             'EmergencyPhone' => $validated['employee_emergency_phone'] ?? null,
         ];
 
-        try {
-            if ($request->hasFile('employee_profile_picture')) {
+        if ($request->hasFile('employee_profile_picture')) {
             $path = $request->file('employee_profile_picture')->store('profile_pictures', 'public');
             $data['ProfilePicture'] = $path;
-            }
-
-            // Optionally, set a default password or generate one
-            $data['password'] = bcrypt('defaultPassword123'); // Change as needed
-
-            $employee = CompanyEmployees::create($data);
-
-            return response()->json([
-            'status' => 'success',
-            'message' => 'Employee created successfully.',
-            'employee' => $employee,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => 'An error occurred while creating the employee.',
-            'error' => $e->getMessage(),
-            ], 500);
         }
+
+        $data['password'] = bcrypt('defaultPassword123');
+
+        $employee = CompanyEmployees::create($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => __('Employee created successfully.'),
+            'employee' => $employee
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => __('An error occurred while creating the employee.'),
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     /**
      * Display the specified resource.

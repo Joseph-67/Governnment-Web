@@ -11416,8 +11416,8 @@
                     title: 'Actions',
                     render: (data, type, row) => `
                         <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.id})">Edit</button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.id})">Delete</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id || row.id || "''"})">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id || row.id || "''"})">Delete</button>
                         </div>
                     `
                 }
