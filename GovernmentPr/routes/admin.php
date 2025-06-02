@@ -251,6 +251,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
         Route::delete('/delete-category/{id}', 'destroy')->name('admin.delete-category');
+        Route::post('/update-category/{id}', 'update')->name('admin.update-category');
     });
 
     
