@@ -35,6 +35,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionLogController;
 use App\Http\Controllers\ProductionBatchTrackingController;
+use App\Http\Controllers\ProductionProcessController;
 use App\Http\Controllers\QualityControlController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\RECPController;
@@ -55,7 +56,11 @@ use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
 use App\Http\Controllers\AnnualOperation\MetadataController;
-use App\Http\Controllers\WasteManagementController;
+use App\Http\Controllers\AnnualOperation\ActivityController;
+use App\Http\Controllers\HRMS\CompanyDepartmentController;
+use App\Http\Controllers\HRMS\CompanyEmployeesController;
+use App\Http\Controllers\TagController;
+
 
 
 
@@ -117,8 +122,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
     }); 
 
-      //Posts
-      Route::controller(PostsController::class)->group(function() {
+    //Posts
+    Route::controller(PostsController::class)->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
     }); 
@@ -129,14 +134,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     //Events
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
-    }); 
+    });
+
     Route::controller(AddEventController::class)->group(function() {
         Route::get ('/create-events', 'index')->name('CMS.add-event');
-    }); 
+    });
+
     // Email integration
     Route::controller(EmailIntegration::class)->group(function() {
         Route::get ('/email', 'index')->name('email-configuration');
     });
+    
     // email application
     Route::controller(EmailApp::class)->group(function() {
         Route::get ('/email-app', 'index')->name('view-email');
@@ -318,6 +326,26 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/companies-state', [CompanyController::class, 'getCompaniesByState'])->name('admin.companies-state');
     });
 
+    // Company Department
+    Route::controller(CompanyDepartmentController::class)->group(function() {
+        Route::get('/company-departments', 'index')->name('admin.company-departments');
+        Route::get('/get-departments/{companyId}', 'getDepartmentsByCompany')->name('admin.get-departments');
+        Route::post('/company-departments/store', 'store')->name('admin.store-company-department');
+        Route::get('/company-departments/{id}', 'show')->name('admin.show-company-department');
+        Route::put('/company-departments/{id}', 'update')->name('admin.update-company-department');
+        Route::delete('/company-departments/{id}', 'destroy')->name('admin.delete-company-department');
+    });
+
+    // Company Employee
+    Route::controller(CompanyEmployeesController::class)->group(function() {
+        Route::get('/company-employees', 'index')->name('admin.company-employees');
+        Route::get('/search-employee', 'search')->name('admin.search-employee');
+        Route::post('/company-employees/store', 'store')->name('admin.store-company-employee');
+        Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
+        Route::put('/company-employees/{id}', 'update')->name('admin.update-company-employee');
+        Route::delete('/company-employees/{id}', 'destroy')->name('admin.delete-company-employee');
+    });
+
     // Company Material
     Route::controller(CompanyMaterialController::class)->group(function(){
         Route::get('/material-view/{material}', 'show')->name('admin.view-material');
@@ -426,6 +454,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/metadata/company/{companyId}', 'getMetadataByCompany')->name('admin.metadata-by-company');
     });
 
+    // Activity
+    Route::controller(ActivityController::class)->group(function() {
+        Route::get('/activity', 'index')->name('admin.activity');
+        Route::post('/activity/store', 'store')->name('admin.store-activity');
+        Route::get('/activity/{id}', 'show')->name('admin.show-activity');
+        Route::put('/activity/{id}', 'update')->name('admin.update-activity');
+        Route::delete('/activity/{id}', 'destroy')->name('admin.delete-activity');
+        Route::get('/metadata/activities/{metadataId}', 'getActivitiesByMetadata');
+    });
+
     // Pages
     Route::controller(PagesController::class)->group(function() {
         Route::get ('/CMS', 'index')->name('CMS.CMS');
@@ -483,10 +521,20 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // production batch tracking
     Route::controller(ProductionBatchTrackingController::class)->group(function() {
         Route::get('/production-batch-tracking', 'index')->name('admin.production-batch-tracking');
-        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-production-batch-tracking');
+        Route::post('/production-batch-tracking/store', 'store')->name('admin.store-batch-tracking');
         Route::get('/production-batch-tracking/{id}', 'show')->name('admin.show-production-batch-tracking');
         Route::put('/production-batch-tracking/{id}', 'update')->name('admin.update-production-batch-tracking');
         Route::delete('/production-batch-tracking/{id}', 'destroy')->name('admin.delete-production-batch-tracking');
+        Route::get('/batch-tracking/company/{companyId}', 'getProductionBatchTrackingByCompany');
+        Route::get('/get-production-batch-tracking-data/{selectedCompany}/{selectedYear}', 'create_report');
+    });
+    // Production Process
+    Route::controller(ProductionProcessController::class)->group(function() {
+        Route::get('/production-process', 'index')->name('admin.production-process');
+        Route::post('/production-process/store', 'store')->name('admin.store-production-process');
+        Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
+        Route::put('/production-process/{id}', 'update')->name('admin.update-production-process');
+        Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
     });
     
     Route::controller(AddPostController::class)->group(function() {
@@ -568,6 +616,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/stock-trading/sell', 'sellStock')->name('admin.sell-stock');
         Route::get('/stock-trading/history', 'getTradingHistory')->name('admin.trading-history');
         Route::get('/stock-trading', 'index')->name('admin.stock-trading');
+    });
+
+    // Tag
+    Route::controller(TagController::class)->group(function() {
+        Route::get('/tags', 'index')->name('admin.tags');
+        Route::get('/search-tag', 'search')->name('admin.search-tag');
+        Route::post('/tags', 'store')->name('admin.store-tag');
+        Route::get('/tags/{id}', 'show')->name('admin.show-tag');
+        Route::put('/tags/{id}', 'update')->name('admin.update-tag');
+        Route::delete('/tags/{id}', 'destroy')->name('admin.delete-tag');
     });
 
     // waste category

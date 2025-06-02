@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recp_unit_of_processes', function (Blueprint $table) {
-            $table->id('unitProcessID');
-            $table->unsignedBigInteger('companyID');
-            $table->string('unit_process_title', 500);
-            $table->enum('status', ['active', 'inactive']);
-            $table->foreign('companyID')
-            ->references('company_id')
-            ->on('companies')
-            ->onDelete('cascade');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('recp_unit_of_processes')) {
+            Schema::create('recp_unit_of_processes', function (Blueprint $table) {
+                $table->id('unitProcessID');
+                $table->unsignedBigInteger('companyID');
+                $table->string('unit_process_title', 500);
+                $table->enum('status', ['active', 'inactive']);
+                $table->foreign('companyID')
+                ->references('company_id')
+                ->on('companies')
+                ->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('r_e_c_p_unit_of_processes');
+        Schema::dropIfExists('recp_unit_of_processes');
     }
 };
