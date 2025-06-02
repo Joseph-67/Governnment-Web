@@ -11860,71 +11860,6 @@
   <!-- End Department -->
    <!-- Employee -->
     <script>
-// Initialize DataTable for Employees
-let employeesTable = $('#tbl-employees').DataTable({
-    paging: true,
-    searching: true,
-    ordering: false,
-    responsive: true,
-    columnDefs: [
-        { orderable: false, targets: [4] } // Disable sorting on the "Action" column
-    ],
-    data: [],
-    columns: [
-        { data: 'first_name', title: 'First Name' },
-        { data: 'last_name', title: 'Last Name' },
-        { data: 'job_title', title: 'Job Title' },
-        { data: 'department', title: 'Department' },
-        {
-            data: null,
-            title: 'Action',
-            render: function(data, type, row) {
-                return `
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-outline-primary btn-sm" onclick="editEmployee('${row.id}')">
-                            <i class="las la-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="deleteEmployee('${row.id}')">
-                            <i class="las la-trash-alt"></i> Delete
-                        </button>
-                    </div>
-                `;
-            },
-            className: 'text-end'
-        }
-    ]
-});
-
-// Fetch and display employees when the accordion is expanded
-document.getElementById('employeeCollapse').addEventListener('shown.bs.collapse', async () => {
-    const companyId = "{{ json_encode($company->company_id) }}";
-    const url = `/admin/get-employees/${companyId}`;
-    const spinner = document.getElementById('loading-spinner');
-    showElement(spinner);
-
-    try {
-        const data = await fetchFieldInput(url);
-        if (data.status === "success" && Array.isArray(data.employees)) {
-            const employees = data.employees.map(emp => ({
-                first_name: emp.first_name ?? "N/A",
-                last_name: emp.last_name ?? "N/A",
-                job_title: emp.job_title ?? "N/A",
-                department: emp.department?.DepartmentName ?? "N/A",
-                id: emp.id ?? "N/A"
-            }));
-            employeesTable.clear().rows.add(employees).draw();
-        } else {
-            displayMessage('warning', 'No employees found or invalid data structure.');
-            employeesTable.clear().draw();
-        }
-    } catch (error) {
-        console.error("Error fetching employees:", error);
-        displayMessage('danger', 'An error occurred while fetching employees.');
-    } finally {
-        hideElement(spinner);
-    }
-});
-
 // Handle employee form submission
 document.getElementById('employee-form').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -11932,13 +11867,18 @@ document.getElementById('employee-form').addEventListener('submit', async functi
     const url = "{{ route('admin.store-company-employee') }}";
 
     try {
+        // Ensure the route supports POST; if not, use GET and append params to URL
+        // If the route only supports GET, use the following pattern:
+        // const params = new URLSearchParams(formData).toString();
+        // const response = await fetch(url + '?' + params, { method: 'GET' });
+        // Otherwise, use POST as below if the route supports it:
         const result = await fetch_cycle('--Store Employee', url, 'POST', formData);
         if (result.status === 'success' && result.employee) {
             const emp = result.employee;
             employeesTable.row.add({
-                first_name: emp.first_name ?? "N/A",
-                last_name: emp.last_name ?? "N/A",
-                job_title: emp.job_title ?? "N/A",
+                name: emp.name ?? "N/A",
+                email: emp.email ?? "N/A",
+                role: emp.role ?? "N/A",
                 department: emp.department?.DepartmentName ?? "N/A",
                 id: emp.id ?? "N/A"
             }).draw(false);
