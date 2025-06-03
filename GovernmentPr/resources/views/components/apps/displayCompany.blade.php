@@ -345,6 +345,7 @@ users: selectedUsers,
                                                     <i class="las la-ellipsis-v fs-20 text-muted"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
+                                                    
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open
                                                         Company</a>
@@ -353,6 +354,10 @@ users: selectedUsers,
                                                         onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.querySelector('input[name=company_id]').value = '{{ $company->company_id }}';"
                                                         data-bs-toggle="modal" data-bs-target="#assignUserModal"
                                                         data-company-name="">Assign Users to Company</a>
+                                                        <a class="dropdown-item"
+                                                        >
+                                                        Location
+                                                    </a>
                                                     <form
                                                         action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
                                                         method="POST"

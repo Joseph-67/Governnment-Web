@@ -11862,7 +11862,6 @@
   <!-- End Department -->
    <!-- Employee -->
     <script>
- 
 // Handle employee form submission
 document.getElementById('employee-form').addEventListener('submit', async function (e) {
     e.preventDefault();
