@@ -6377,7 +6377,6 @@
     <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
-    <script src="{{ asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>

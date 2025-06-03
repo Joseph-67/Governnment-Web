@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('water_source_details')) {
         Schema::create('water_source_details', function (Blueprint $table) {
             $table->id('water_source_detail_ID');
             $table->unsignedBigInteger('companyID');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->foreign('company_water_source_id')->references('CompanyWaterSourcesID')->on('company_water_sources');
             $table->timestamps();
         });
+    }
     }
 
     /**
