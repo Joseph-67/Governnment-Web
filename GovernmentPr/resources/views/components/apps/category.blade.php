@@ -35,35 +35,6 @@
                         </form>
                     </div>
                 </div>
-                <!-- Edit Category Card -->
-    <div class="card shadow-sm border-0"  style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
-<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Edit Category</h4>
-        <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-</div>
-     <div class="card-body">
-             <form action="" method="post" id="edit_category_form" class="pt-2">
-                     @csrf
-                     <input type="hidden" name="category_id" id="category_id">
-                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                     
-                     <div class="row g-3">
-                             <div class="col-md-12">
-                                     <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
-                                     <input type="text" class="form-control" id="edit_category_name" name="category_name" placeholder="Enter category name" required>
-                             </div>
-                             <div class="col-12">
-                                     <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
-                                     <textarea class="form-control" id="edit_category_description" name="category_description" rows="3" placeholder="Enter description"></textarea>
-                             </div>
-                     </div>
-             <div class="mt-4 text-end">
-                 <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
-             </div>
-         </form>
-     </div>
-    </div>
-</div>
                 <div class="table-responsive mt-4">
                     <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
                         <thead>
@@ -126,35 +97,6 @@
                         </form>
                     </div>
                 </div>
-<!-- Edit Waste Category Card -->
-    <div class="card shadow-sm border-0"  style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
-<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-    <h4 class="card-title mb-0">Edit Waste Category</h4>
-    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-</div>
-     <div class="card-body">
-         <form action="" method="post" id="edit_waste_category_form" class="pt-2">
-             @csrf
-             <input type="hidden" name="waste_category_id" id="waste_category_id">
-             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-             
-             <div class="row g-3">
-                 <div class="col-md-12">
-                     <label for="edit_waste_category_name" class="form-label fw-bold text-primary">Waste Category Name</label>
-                     <input type="text" class="form-control" id="edit_waste_category_name" name="waste_category_name" placeholder="Enter waste category name" required>
-                 </div>
-                 <div class="col-12">
-                     <label for="edit_waste_category_description" class="form-label fw-bold text-primary">Waste Category Description</label>
-                     <textarea class="form-control" id="edit_waste_category_description" name="waste_category_description" rows="3" placeholder="Enter description"></textarea>
-                 </div>
-                     </div>
-             <div class="mt-4 text-end">
-                 <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
-             </div>
-         </form>
-     </div>
-    </div>
-</div>
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0 table-centered" id="tbl-waste-category">
                         <thead>
