@@ -259,6 +259,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/create-category', 'create')->name('admin.create-category');
         Route::post ('/store-category', 'store')->name('admin.store-category');
         Route::delete('/delete-category/{id}', 'destroy')->name('admin.delete-category');
+        Route::post('/update-category/{id}', 'update')->name('admin.update-category');
     });
 
     
@@ -643,6 +644,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/waste-subcategories/{id}', 'update')->name('admin.update-waste-subcategory');
         Route::delete('/waste-subcategories/{id}', 'destroy')->name('admin.delete-waste-subcategory');
         Route::get('/get-waste-subcategories/{value}', 'getWasteSubCategories');
+    });
+    // Waste Management
+    Route::controller(WasteManagementController::class)->group(function() {
+        Route::get('/waste-management', 'index')->name('admin.waste-management');
+        Route::post('/waste-management/store', 'store')->name('admin.store-waste-management');
+        Route::get('/waste-management/{id}', 'show')->name('admin.show-waste-management');
+        Route::put('/waste-management/{id}', 'update')->name('admin.update-waste-management');
+        Route::delete('/waste-management/{id}', 'destroy')->name('admin.delete-waste-management');
     });
 
     // Water Stock Movement

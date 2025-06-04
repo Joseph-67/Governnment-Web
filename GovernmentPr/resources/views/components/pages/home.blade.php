@@ -553,7 +553,7 @@
                   <span><i class="flaticon-running-man"></i></span>
                </div>
                <div class="tp-funfact-2-content">
-                  <h4><em data-purecounter-duration="1" data-purecounter-end="36" class="purecounter">0</em></h4>
+                  <h4><em data-purecounter-duration="1" data-purecounter-end="12" class="purecounter">0</em></h4>
                   <span>Number Of States</span>
                </div>
             </div>
@@ -799,8 +799,8 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="tp-team-section-title text-center mb-55">
-               <span class="tp-section-subtitle">LEADERSHIP</span>
-               <h4 class="tp-section-title">Let’s Meet With Our Leaders</h4>
+               <span class="tp-section-subtitle">PARTNERS</span>
+               <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
             </div>
          </div>
       </div>
@@ -808,11 +808,11 @@
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
             <div class="tp-team-2-item fix p-relative">
                <div class="tp-team-2-thumb-box fix">
-                  <img class="w-100" src="{{asset('MainAssets/img/team/leader1.jpg')}}" alt="">
+                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo" style="height: 300px; width: 300px;">
                </div>
                <div class="tp-team-2-content text-center">
-                  <h4 class="tp-team-2-title"><a href="team-details.html">BALARABE ABBAS LAWAL</a></h4>
-                  <span>Honourable Minister</span>
+                  <h4 class="tp-team-2-title"><a href="https://www.unido.org/">UNITED NATIONS INDUSTRIAL DEVELOPMENT ORGANIZATION</a></h4>
+                  <span>UNIDO</span>
                   <!-- <div class="tp-team-2-social-box">
                      <button><i class="fa-solid fa-share-nodes"></i></button>
                      <div class="tp-team-2-social">
@@ -824,14 +824,35 @@
                </div>
             </div>
          </div>
+
+                  <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+            <div class="tp-team-2-item fix p-relative">
+               <div class="tp-team-2-thumb-box fix">
+                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" style="height: 300px; width: 300px;">
+               </div>
+               <div class="tp-team-2-content text-center">
+                  <h4 class="tp-team-2-title"><a href="https://www.thegef.org/">GLOBAL ENVIRONMENT FACILITY</a></h4>
+                  <span>GEF</span>
+                  <!-- <div class="tp-team-2-social-box">
+                     <button><i class="fa-solid fa-share-nodes"></i></button>
+                     <div class="tp-team-2-social">
+                        <a class="icon-1" href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a class="icon-2" href="index.html#"><i class="fa-brands fa-instagram"></i></a>
+                        <a class="icon-3" href="index.html#"><i class="fa-brands fa-linkedin-in"></i></a>
+                     </div>
+                  </div> -->
+               </div>
+            </div>
+         </div>
+
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
             <div class="tp-team-2-item fix p-relative">
                <div class="tp-team-2-thumb-box fix">
-                  <img class="w-100" src="{{asset('MainAssets/img/team/leader2.jpg')}}" alt="">
+                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" style="height: 300px; width: 300px;">
                </div>
                <div class="tp-team-2-content text-center">
-                  <h4 class="tp-team-2-title"><a href="team-details.html">AYODELE OLAWANDE</a></h4>
-                  <span>Honourable Minister Of State</span>
+                  <h4 class="tp-team-2-title"><a href=" https://www.manufacturersnigeria.org/">MANUFACTURERS ASSOCIATION OF NIGERIA</a></h4>
+                  <span>MAN</span>
                   <!-- <div class="tp-team-2-social-box">
                      <button><i class="fa-solid fa-share-nodes"></i></button>
                      <div class="tp-team-2-social">

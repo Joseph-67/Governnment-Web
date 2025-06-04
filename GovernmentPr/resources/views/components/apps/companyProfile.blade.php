@@ -3,10 +3,10 @@
 
     <div class="container-xxl">
         <!-- Header -->
-        <div class="profile-header text-center py-5">
+        <!-- <div class="profile-header text-center py-5">
             <h1 class="display-4 fw-bold">Company Profile</h1>
             <p class="">Your company's information at a glance</p>
-        </div>
+        </div> -->
 
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 nav-tabs-custom text-center">
@@ -53,6 +53,8 @@
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
                             aria-selected="false"><i class="la la-user d-block"></i>Contact Personnel Details</a>
                     </li>
+
+                    
                 </ul>
                 <!-- Tab panes -->
             </div>
@@ -6375,7 +6377,6 @@
     <script src="{{ asset('adminAssets/libs/vanillajs-datepicker/js/datepicker-full.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js"></script>
-    <script src="{{ asset('adminAssets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/simplebar/simplebar.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/mobius1-selectr/selectr.min.js')}}"></script>
     <script src="{{ asset('adminAssets/libs/huebee/huebee.pkgd.min.js')}}"></script>
