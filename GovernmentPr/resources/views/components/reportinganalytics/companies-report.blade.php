@@ -125,16 +125,20 @@
             fetch(`/admin/companies-state/?country=${encodeURIComponent(country)}`)
             .then(response => response.json())
             .then(data => {
-                console.log(`Companies Data for ${country}:`, data);
-                // Process and display the data as needed
                 const companies = data.companies;
-                console.log(`Companies for ${country}:`, companies);
                 const carouselInner = document.querySelector('.carousel-inner');
+                // Define gradient backgrounds for variety
+                const gradients = [
+                    'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+                    'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)',
+                    'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)',
+                    'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)',
+                    'linear-gradient(135deg, #1d4350 0%, #a43931 100%)',
+                    'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
+                    'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)',
+                    'linear-gradient(135deg, #e96443 0%, #904e95 100%)'
+                ];
                 companies.forEach((company, index) => {
-                    console.log(`Company ${index + 1}:`, company);
-                    // Create carousel items dynamically
-                    // Create a new carousel item every 5 companies
-                    
                     if (index % 4 === 0) {
                         const carouselItem = document.createElement('div');
                         carouselItem.classList.add('carousel-item');
@@ -144,12 +148,17 @@
                         carouselItem.appendChild(row);
                         carouselInner.appendChild(carouselItem);
                     }
-
-                    const activeRow = carouselInner.querySelector('.carousel-item.active:last-child .row') || carouselInner.querySelector('.carousel-item:last-child .row');
+                    // Find the last carousel-item's row
+                    const activeRow = carouselInner.querySelector('.carousel-item:last-child .row');
                     const col = document.createElement('div');
                     col.classList.add('col-md-3', 'mb-3');
                     const card = document.createElement('div');
                     card.classList.add('card');
+                    // Set gradient background and white text
+                    card.style.background = gradients[index % gradients.length];
+                    card.style.color = '#fff';
+                    card.style.border = 'none';
+                    card.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
                     const cardBody = document.createElement('div');
                     cardBody.classList.add('card-body');
                     const cardTitle = document.createElement('h5');
@@ -167,8 +176,8 @@
             })
             .catch(error => {
                 console.error(`Error fetching companies data for ${country}:`, error);
+            });
         });
-    });
     </script>
     
     <script>
@@ -233,19 +242,25 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-center">
-                <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 1200px; width: 100%;">
-                    <div class="carousel-inner"></div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev" style="display: block; background-color: rgba(0,0,0,0.5); border: none;">
-                        <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next" style="display: block; background-color: rgba(0,0,0,0.5); border: none;">
-                        <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
+<div class="col-12 d-flex justify-content-center">
+    <div id="companyCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="max-width: 1200px; width: 100%;">
+        <div class="carousel-inner d-flex justify-content-start align-items-center px-5">
+        </div>
+        <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y" 
+                type="button" data-bs-target="#companyCarousel" data-bs-slide="prev" 
+                style="background-color: rgba(0,0,0,0.5); border: none; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y" 
+                type="button" data-bs-target="#companyCarousel" data-bs-slide="next" 
+                style="background-color: rgba(0,0,0,0.5); border: none; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
         </div>
         <div class="row mb-4">
             <div class="col-12">
