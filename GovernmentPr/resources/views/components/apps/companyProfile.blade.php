@@ -3,10 +3,10 @@
 
     <div class="container-xxl">
         <!-- Header -->
-        <!-- <div class="profile-header text-center py-5">
+        <div class="profile-header text-center py-5">
             <h1 class="display-4 fw-bold">Company Profile</h1>
             <p class="">Your company's information at a glance</p>
-        </div> -->
+        </div>
 
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 nav-tabs-custom text-center">
