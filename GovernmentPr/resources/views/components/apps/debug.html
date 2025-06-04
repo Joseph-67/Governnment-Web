@@ -1,236 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic User Tagging</title>
-    <style>
-        .tag-input {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            /* border: 1px solid #ccc; */
-            padding: 5px;
-            /* border-radius: 8px; */
-            cursor: text;
-            position: relative;
-        }
-
-        .tag-input input {
-            border: none;
-            outline: none;
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .tag {
-            display: flex;
-            align-items: center;
-            background-color: #e0e7ff;
-            color: #1d4ed8;
-            border-radius: 16px;
-            padding: 5px 10px;
-            margin: 5px;
-            font-size: 14px;
-        }
-
-        .tag span {
-            margin-left: 5px;
-            cursor: pointer;
-        }
-
-        .tag span:hover {
-            color: #dc2626;
-        }
-
-        .suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            /* border: 1px solid #ccc; */
-            border-radius: 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .suggestion {
-            padding: 8px 10px;
-            cursor: pointer;
-        }
-
-        .suggestion img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-        }
-
-        .suggestion:hover {
-            background-color: #f3f4f6;
-        }
-
-        /* Profile card */
-        .profile-card {
-        width: 250px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        text-align: center;
-        }
-
-        .profile-card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        }
-
-        .profile-card .profile-info {
-        padding: 15px;
-        }
-
-        .profile-card .profile-info h2 {
-        margin: 10px 0 5px;
-        font-size: 18px;
-        }
-
-        .profile-card .profile-info p {
-        margin: 0;
-        color: #666;
-        font-size: 14px;
-        }
-        /* Profile card */
-        .taggable-container {
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .supervisor-tag-input {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            /* border: 1px solid #ccc; */
-            /* padding: 5px; */
-            border-radius: 8px;
-            cursor: text;
-            position: relative;
-            /* background-color: #fff; */
-        }
-
-        .supervisor-tag-input input {
-            /* border: none;
-            outline: none; */
-            flex: 1;
-            min-width: 100px;
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advanced Gov Company Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar {
+      height: 100vh;
+      width: 260px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 56px; /* navbar height */
+      background-color: #212529;
+      color: #ddd;
+      overflow-y: auto;
+      transition: width 0.3s ease;
+    }
+    .sidebar.collapsed {
+      width: 60px;
+    }
+    .sidebar a {
+      color: #ddd;
+      padding: 15px 20px;
+      display: block;
+      text-decoration: none;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #495057;
+      color: #fff;
+    }
+    main.content {
+      margin-left: 260px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    main.content.collapsed {
+      margin-left: 60px;
+    }
+    .summary-card {
+      border-radius: 0.5rem;
+      color: white;
+    }
+    .summary-card h3 {
+      font-weight: 700;
+    }
+    /* Scrollable table */
+    .table-responsive {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    /* Search and filter inputs */
+    .filters {
+      margin-bottom: 1rem;
+    }
+    /* Pagination */
+    .pagination {
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
-  <div class="taggable-container" id="tagging-1">
-    <h3>Tag Users</h3>
-    <div class="tag-input"></div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <button id="sidebarToggle" class="btn btn-outline-light me-3 d-md-none">
+        ☰
+      </button>
+      <a class="navbar-brand" href="#">Gov Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Companies</a>
+    <a href="#">Compliance</a>
+    <a href="#">Reports</a>
+    <a href="#">Users</a>
+    <a href="#">Settings</a>
   </div>
 
+  <!-- Main Content -->
+  <main class="content" id="mainContent">
+    <h1 class="mb-4">Dashboard Overview</h1>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="p-4 bg-primary summary-card shadow-sm">
+          <h3 id="totalCompanies">1,245</h3>
+          <p>Total Companies</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-4 bg-success summary-card shadow-sm">
+          <h3 id="activeCompanies">1,030</h3>
+          <p>Active Companies</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-4 bg-warning summary-card shadow-sm">
+          <h3 id="nonCompliantCompanies">215</h3>
+          <p>Non-Compliant</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-4 bg-danger summary-card shadow-sm">
+          <h3 id="pendingAudits">45</h3>
+          <p>Pending Audits</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            Companies by Sector
+          </div>
+          <div class="card-body">
+            <canvas id="sectorPieChart" style="max-height: 300px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            Compliance Trends (Last 12 Months)
+          </div>
+          <div class="card-body">
+            <canvas id="complianceLineChart" style="max-height: 300px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters for Company Table -->
+    <div class="filters row g-3 align-items-center">
+      <div class="col-md-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by Company Name or Registration No." />
+      </div>
+      <div class="col-md-2">
+        <select id="sectorFilter" class="form-select" aria-label="Filter by Sector">
+          <option value="">All Sectors</option>
+          <option>Manufacturing</option>
+          <option>IT Services</option>
+          <option>Retail</option>
+          <option>Transportation</option>
+          <option>Others</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select id="regionFilter" class="form-select" aria-label="Filter by Region">
+          <option value="">All Regions</option>
+          <option>North Region</option>
+          <option>East Region</option>
+          <option>South Region</option>
+          <option>West Region</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select id="complianceFilter" class="form-select" aria-label="Filter by Compliance">
+          <option value="">All Compliance Status</option>
+          <option value="Compliant">Compliant</option>
+          <option value="Non-Compliant">Non-Compliant</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+      <div class="col-md-2 text-end">
+        <button id="clearFilters" class="btn btn-secondary">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Company Details Table -->
+    <h2 class="my-3">Company List</h2>
+    <div class="table-responsive shadow-sm">
+      <table class="table table-striped table-hover align-middle" id="companyTable">
+        <thead class="table-dark sticky-top">
+          <tr>
+            <th scope="col">Company Name</th>
+            <th scope="col">Registration No.</th>
+            <th scope="col">Sector</th>
+            <th scope="col">Region</th>
+            <th scope="col">Status</th>
+            <th scope="col">Compliance</th>
+            <th scope="col">License Expiry</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav>
+      <ul class="pagination" id="pagination"></ul>
+    </nav>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    class TaggingComponent {
-      constructor(containerId) {
-        this.container = document.getElementById(containerId);
-        this.tagInput = this.container.querySelector('.tag-input');
-        this.tags = [];
+    // Sidebar toggle for small screens
+    const sidebarToggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    sidebarToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+    });
 
-        this.renderInputField();
-        this.renderSuggestions();
-      }
+    // Company data array (extend with more records as needed)
+    const companies = [
+      { name: 'Alpha Corp', regNo: '123456789', sector: 'Manufacturing', region: 'North Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2026-03-15' },
+      { name: 'Beta Industries', regNo: '987654321', sector: 'IT Services', region: 'East Region', status: 'Inactive', compliance: 'Pending', licenseExpiry: '2025-11-01' },
+      { name: 'Gamma Traders', regNo: '456123789', sector: 'Retail', region: 'South Region', status: 'Active', compliance: 'Non-Compliant', licenseExpiry: '2024-12-30' },
+      { name: 'Delta Logistics', regNo: '321789456', sector: 'Transportation', region: 'West Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2027-01-20' },
+      { name: 'Epsilon Enterprises', regNo: '654987321', sector: 'Manufacturing', region: 'North Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2025-06-10' },
+      { name: 'Zeta Tech', regNo: '789654123', sector: 'IT Services', region: 'East Region', status: 'Active', compliance: 'Pending', licenseExpiry: '2026-08-25' },
+      { name: 'Eta Retail', regNo: '321654987', sector: 'Retail', region: 'South Region', status: 'Inactive', compliance: 'Non-Compliant', licenseExpiry: '2024-09-15' },
+      { name: 'Theta Transport', regNo: '147258369', sector: 'Transportation', region: 'West Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2027-02-28' },
+      // Add more companies here...
+    ];
 
-      renderInputField() {
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.placeholder = 'Tag someone...';
-        inputField.className = 'form-control';
-        inputField.classList.add('border-primary');
-        inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
-        inputField.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ',') {
-            e.preventDefault();
-            this.addTag(e.target.value.trim());
-          }
-        });
-        this.tagInput.appendChild(inputField);
-        this.inputField = inputField;
-      }
+    // Pagination variables
+    const rowsPerPage = 5;
+    let currentPage = 1;
 
-      renderSuggestions() {
-        const suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'suggestions';
-        this.tagInput.appendChild(suggestionsDiv);
-        this.suggestionsDiv = suggestionsDiv;
-      }
+    // DOM elements for filters and table
+    const searchInput = document.getElementById('searchInput');
+    const sectorFilter = document.getElementById('sectorFilter');
+    const regionFilter = document.getElementById('regionFilter');
+    const complianceFilter = document.getElementById('complianceFilter');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    const companyTableBody = document.querySelector('#companyTable tbody');
+    const paginationContainer = document.getElementById('pagination');
 
-      async fetchUsers(query) {
-        if (!query) {
-          this.suggestionsDiv.innerHTML = '';
-          return;
-        }
-        try {
-          const response = await fetch(`https://api.example.com/users?search=${query}`);
-          const users = await response.json();
-          this.showSuggestions(users);
-        } catch (error) {
-          console.error("Failed to fetch users:", error);
-        }
-      }
+    // Summary card elements
+    const totalCompaniesEl = document.getElementById('totalCompanies');
+    const activeCompaniesEl = document.getElementById('activeCompanies');
+    const nonCompliantCompaniesEl = document.getElementById('nonCompliantCompanies');
+    const pendingAuditsEl = document.getElementById('pendingAudits');
 
-      showSuggestions(users) {
-        const filteredUsers = users.filter(user => !this.tags.includes(user.name));
-        this.suggestionsDiv.innerHTML = '';
-        filteredUsers.forEach(user => {
-          const suggestionElement = document.createElement('div');
-          suggestionElement.className = 'suggestion';
-          suggestionElement.innerHTML = `
-            <img src="${user.profilePic}" alt="${user.name}">
-            <div>
-              <strong>${user.name}</strong>
-              <p>${user.role}</p>
-            </div>
-          `;
-          suggestionElement.addEventListener('click', () => this.addTag(user.name));
-          this.suggestionsDiv.appendChild(suggestionElement);
-        });
-      }
+    // Filter companies based on inputs
+    function filterCompanies() {
+      let filtered = companies.filter(company => {
+        // Search filter: name or regNo includes search text
+        const searchText = searchInput.value.toLowerCase();
+        const matchesSearch = company.name.toLowerCase().includes(searchText) || company.regNo.includes(searchText);
 
-      addTag(tag) {
-        if (tag && !this.tags.includes(tag)) {
-          this.tags.push(tag);
-          this.renderTags();
-          this.inputField.value = '';
-          this.suggestionsDiv.innerHTML = '';
-        }
-      }
+        // Sector filter
+        const matchesSector = sectorFilter.value === '' || company.sector === sectorFilter.value;
 
-      removeTag(tag) {
-        this.tags = this.tags.filter(t => t !== tag);
-        this.renderTags();
-      }
+        // Region filter
+        const matchesRegion = regionFilter.value === '' || company.region === regionFilter.value;
 
-      renderTags() {
-        this.tagInput.innerHTML = '';
-        this.tags.forEach(tag => {
-          const tagElement = document.createElement('div');
-          tagElement.className = 'tag';
-          tagElement.innerHTML = `${tag} <span>&times;</span>`;
-          tagElement.querySelector('span').addEventListener('click', () => this.removeTag(tag));
-          this.tagInput.appendChild(tagElement);
-        });
-        this.tagInput.appendChild(this.inputField);
-        this.tagInput.appendChild(this.suggestionsDiv);
-      }
+        // Compliance filter
+        const matchesCompliance = complianceFilter.value === '' || company.compliance === complianceFilter.value;
+
+        return matchesSearch && matchesSector && matchesRegion && matchesCompliance;
+      });
+
+      return filtered;
     }
 
-    // Initialize the tagging component
-    new TaggingComponent('tagging-1');
+    // Render table rows for current page
+    function renderTable(page = 1) {
+      currentPage = page;
+      const filtered = filterCompanies();
+
+      // Pagination calculations
+      const totalRows = filtered.length;
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+
+      const startIdx = (currentPage - 1) * rowsPerPage;
+      const endIdx = startIdx + rowsPerPage;
+      const rowsToShow = filtered.slice(startIdx, endIdx);
+
+      // Build rows
+      companyTableBody.innerHTML = '';
+      if(rowsToShow.length === 0){
+        companyTableBody.innerHTML = `<tr><td colspan="7" class="text-center">No companies found</td></tr>`;
+      } else {
+        rowsToShow.forEach(c => {
+          const statusBadge = c.status === 'Active' ? 'success' : 'danger';
+          const complianceColor = c.compliance === 'Compliant' ? 'success' :
+                                  c.compliance === 'Non-Compliant' ? 'danger' : 'warning text-dark';
+          companyTableBody.innerHTML += `
+            <tr>
+              <td>${c.name}</td>
+              <td>${c.regNo}</td>
+              <td>${c.sector}</td>
+              <td>${c.region}</td>
+              <td><span class="badge bg-${statusBadge}">${c.status}</span></td>
+              <td><span class="badge bg-${complianceColor}">${c.compliance}</span></td>
+              <td>${c.licenseExpiry}</td>
+            </tr>
+          `;
+        });
+      }
+
+      renderPagination(totalPages);
+      updateSummaryCards(filtered);
+    }
+
+    // Render pagination controls
+    function renderPagination(totalPages) {
+      paginationContainer.innerHTML = '';
+      if (totalPages <= 1) return;
+
+      // Prev button
+      paginationContainer.innerHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+        </li>
+      `;
+
+      // Page buttons (simple, show up to 5 pages)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
+      for (let i = startPage; i <= endPage; i++) {
+        paginationContainer.innerHTML += `
+          <li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      }
+
+      // Next button
+      paginationContainer.innerHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+        </li>
+      `;
+
+      // Attach click handlers for pagination links
+      document.querySelectorAll('#pagination a.page-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const page = Number(e.target.dataset.page);
+          if (page >= 1 && page <= totalPages) {
+            renderTable(page);
+          }
+        });
+      });
+    }
+
+    // Update summary cards dynamically based on filtered data
+    function updateSummaryCards(filtered) {
+      totalCompaniesEl.textContent = filtered.length;
+
+      const activeCount = filtered.filter(c => c.status === 'Active').length;
+      activeCompaniesEl.textContent = activeCount;
+
+      const nonCompliantCount = filtered.filter(c => c.compliance === 'Non-Compliant').length;
+      nonCompliantCompaniesEl.textContent = nonCompliantCount;
+
+      // Example: Pending audits count (for demo, let's say pending audits = companies pending compliance)
+      const pendingCount = filtered.filter(c => c.compliance === 'Pending').length;
+      pendingAuditsEl.textContent = pendingCount;
+    }
+
+    // Clear filters and search
+    clearFiltersBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      sectorFilter.value = '';
+      regionFilter.value = '';
+      complianceFilter.value = '';
+      renderTable(1);
+    });
+
+    // Event listeners for filters/search to update table on change
+    [searchInput, sectorFilter, regionFilter, complianceFilter].forEach(el => {
+      el.addEventListener('input', () => renderTable(1));
+      el.addEventListener('change', () => renderTable(1));
+    });
+
+    // Initial render
+    renderTable(1);
+
+    // CHARTS (reuse from previous code)
+    const sectorCtx = document.getElementById('sectorPieChart').getContext('2d');
+    const sectorPieChart = new Chart(sectorCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Manufacturing', 'IT Services', 'Retail', 'Transportation', 'Others'],
+        datasets: [{
+          label: 'Companies by Sector',
+          data: [300, 250, 200, 150, 345],
+          backgroundColor: [
+            '#0d6efd', // blue
+            '#198754', // green
+            '#ffc107', // yellow
+            '#dc3545', // red
+            '#6c757d'  // gray
+          ],
+          hoverOffset: 30
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'right' }
+        }
+      }
+    });
+
+    const complianceCtx = document.getElementById('complianceLineChart').getContext('2d');
+    const complianceLineChart = new Chart(complianceCtx, {
+      type: 'line',
+      data: {
+        labels: [
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'
+        ],
+        datasets: [
+          {
+            label: 'Compliant',
+            data: [900, 920, 940, 950, 970, 980, 1000, 1010, 1030, 1040, 1050, 1060],
+            borderColor: '#198754',
+            backgroundColor: 'rgba(25, 135, 84, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+          {
+            label: 'Non-Compliant',
+            data: [200, 180, 160, 150, 130, 120, 100, 90, 70, 60, 50, 40],
+            borderColor: '#dc3545',
+            backgroundColor: 'rgba(220, 53, 69, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        stacked: false,
+        plugins: { legend: { position: 'top' }, tooltip: { enabled: true } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Number of Companies' } },
+          x: { title: { display: true, text: 'Month' } }
+        }
+      }
+    });
   </script>
 </body>
 </html>

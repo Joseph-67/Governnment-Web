@@ -186,7 +186,7 @@ users: selectedUsers,
         var tagify = new Tagify(inputElm, {
             tagTextProp: 'name', // very important since a custom template is used with this property as text
             enforceWhitelist: true,
-            maxTags: 1, // Allow only single selection
+            maxTags: 1, // Alacw only single selection
             dropdown: {
             closeOnSelect: true, // Close dropdown after selection
             enabled: 1, // Show suggestions after typing one character
@@ -338,37 +338,38 @@ users: selectedUsers,
                                             @endphp
                                         </td>
                                         <td>
-                                            <div class="dropdown d-inline-block">
-                                                <a class="dropdown-toggle arrow-none" id="dLabel11"
-                                                    data-bs-toggle="dropdown" href="#" role="button"
-                                                    aria-haspopup="false" aria-expanded="false">
-                                                    <i class="las la-ellipsis-v fs-20 text-muted"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel11">
-                                                    
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}">Open
-                                                        Company</a>
-
-                                                    <a class="dropdown-item" href=""
-                                                        onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.querySelector('input[name=company_id]').value = '{{ $company->company_id }}';"
-                                                        data-bs-toggle="modal" data-bs-target="#assignUserModal"
-                                                        data-company-name="">Assign Users to Company</a>
-                                                        <a class="dropdown-item"
-                                                        >
-                                                        Location
-                                                    </a>
-                                                    <form
-                                                        action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this company?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger">Delete
-                                                            Company</button>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                            <a href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" class="btn btn-sm btn-info" title="View Company Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-sm btn-primary"
+                                                title="Assign User"
+                                                onclick="document.getElementById('company_name').value = '{{ $company->company_name }}'; document.querySelector('input[name=company_id]').value = '{{ $company->company_id }}';"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#assignUserModal"
+                                            >
+                                                <i class="fas fa-user-plus"></i>
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-sm btn-secondary"
+                                                title="Show Company on Map"
+                                            >
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </button>
+                                            <form
+                                                action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
+                                                method="POST"
+                                                style="display:inline;"
+                                                onsubmit="return confirm('Are you sure you want to delete this company?');"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete Company">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @endforeach
