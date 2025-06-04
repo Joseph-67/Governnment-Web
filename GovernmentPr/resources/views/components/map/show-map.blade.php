@@ -32,7 +32,7 @@ let getMap = async () => {
 
         function parseDMS(dmsString) {
             const regex = /(\d+)[º°](\d+)'(\d+(?:\.\d+)?)"?([NSEW])/;
-            const [, degrees, minutes, seconds, direction] = dmsString.match(regex);
+            const [degrees, minutes, seconds, direction] = dmsString.match(regex);
             return dmsToDecimal(
                 parseFloat(degrees),
                 parseFloat(minutes),

@@ -432,6 +432,7 @@ class CompanyController extends WaterStockMovementController
     {
         //
         $data['companies'] = Company::where('status', '=', 'active')->get();
+        // dd($data['companies']);
         return view('components.apps.displayCompany', $data);
     }
 
