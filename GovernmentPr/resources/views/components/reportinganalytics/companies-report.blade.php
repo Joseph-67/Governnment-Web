@@ -241,28 +241,27 @@ document.addEventListener('DOMContentLoaded', function () {
             <!-- End Page Header -->
             </div>
         </div>
-        <div class="row mb-4">
-<div class="col-12 d-flex justify-content-center">
-    <div id="companyCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="max-width: 1200px; width: 100%;">
-        <div class="carousel-inner d-flex justify-content-start align-items-center px-5">
+        <div class="row mb-2 justify-content-center align-items-center">
+            <div class="col-12">
+                <div id="companyCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="max-width: 1200px; width: 100%;">
+                    <div class="carousel-inner d-flex justify-content-start align-items-center px-5">
+                    </div>
+                    <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y" 
+                            type="button" data-bs-target="#companyCarousel" data-bs-slide="prev" 
+                            style="background-color: rgba(0,0,0,0.5); border: none; border-radius: 5px; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y" 
+                            type="button" data-bs-target="#companyCarousel" data-bs-slide="next" 
+                            style="background-color: rgba(0,0,0,0.5); border: none; border-radius: 5px; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y" 
-                type="button" data-bs-target="#companyCarousel" data-bs-slide="prev" 
-                style="background-color: rgba(0,0,0,0.5); border: none; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
-            <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y" 
-                type="button" data-bs-target="#companyCarousel" data-bs-slide="next" 
-                style="background-color: rgba(0,0,0,0.5); border: none; height: 50px; width: 50px; display: flex; align-items: center; justify-content: center;">
-            <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</div>
-
-        </div>
-        <div class="row mb-4">
+        <div class="row mb-2">
             <div class="col-12">
             <div id="map" class="rounded shadow-sm"></div>
             </div>
