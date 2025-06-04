@@ -168,6 +168,7 @@
             .catch(error => {
                 console.error(`Error fetching companies data for ${country}:`, error);
         });
+    });
     </script>
     
     <script>
@@ -220,31 +221,35 @@ document.addEventListener('DOMContentLoaded', function () {
         </script>
 
     @endsection
-    <div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Page Header -->
-                <div class="header-title">
-                    <h3>{{ $pageTitle }}</h3>
-                    <p>Welcome to the Companies Report section. Here you can find detailed analytics and insights about various companies.</p>
-                </div>
-                <!-- End Page Header -->
+    <div class="container-sm mt-5">
+        <div class="row mb-4">
+            <div class="col-12">
+            <!-- Page Header -->
+            <div class="header-title">
+                <h3 class="mb-1">{{ $pageTitle }}</h3>
+                <p class="text-muted">Welcome to the Companies Report section. Here you can find detailed analytics and insights about various companies.</p>
+            </div>
+            <!-- End Page Header -->
             </div>
         </div>
-        <div id="companyCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-            <div class="carousel-inner"></div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-center">
+                <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 1200px; width: 100%;">
+                    <div class="carousel-inner"></div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev" style="display: block; background-color: rgba(0,0,0,0.5); border: none;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next" style="display: block; background-color: rgba(0,0,0,0.5); border: none;">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-12">
-                <div class="" id="map"></div>
+            <div id="map" class="rounded shadow-sm"></div>
             </div>
         </div>
         <div class="row">
