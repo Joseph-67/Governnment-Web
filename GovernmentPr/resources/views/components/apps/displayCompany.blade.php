@@ -340,7 +340,14 @@
                     // Add marker if coordinates are valid
                     if (latitude && longitude) {
                         companyMapMarker = L.marker([lat, lng]).addTo(companyMapInstance)
-                            .bindPopup(`<b>${companyName}</b><br>Longitude: ${lng}<br>Latitude: ${lat}`)
+                            .bindPopup(`
+                                <b>${companyName}</b><br>
+                                Longitude: ${lng}<br>
+                                Latitude: ${lat}<br>
+ <a href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" class="btn btn-sm btn-info" title="View Company Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                            `)
                             .openPopup();
                     }
                 }, 300); // Delay to ensure modal and map container are visible
