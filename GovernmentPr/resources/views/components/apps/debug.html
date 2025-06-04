@@ -5234,9 +5234,18 @@
         this.tags = [];
         this.userMap = {}; // Maps user names to ids
 
-        this.renderInputField();
-        this.renderSuggestions();
-      }
+    // Company data array (extend with more records as needed)
+    const companies = [
+      { name: 'Alpha Corp', regNo: '123456789', sector: 'Manufacturing', region: 'North Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2026-03-15' },
+      { name: 'Beta Industries', regNo: '987654321', sector: 'IT Services', region: 'East Region', status: 'Inactive', compliance: 'Pending', licenseExpiry: '2025-11-01' },
+      { name: 'Gamma Traders', regNo: '456123789', sector: 'Retail', region: 'South Region', status: 'Active', compliance: 'Non-Compliant', licenseExpiry: '2024-12-30' },
+      { name: 'Delta Logistics', regNo: '321789456', sector: 'Transportation', region: 'West Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2027-01-20' },
+      { name: 'Epsilon Enterprises', regNo: '654987321', sector: 'Manufacturing', region: 'North Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2025-06-10' },
+      { name: 'Zeta Tech', regNo: '789654123', sector: 'IT Services', region: 'East Region', status: 'Active', compliance: 'Pending', licenseExpiry: '2026-08-25' },
+      { name: 'Eta Retail', regNo: '321654987', sector: 'Retail', region: 'South Region', status: 'Inactive', compliance: 'Non-Compliant', licenseExpiry: '2024-09-15' },
+      { name: 'Theta Transport', regNo: '147258369', sector: 'Transportation', region: 'West Region', status: 'Active', compliance: 'Compliant', licenseExpiry: '2027-02-28' },
+      // Add more companies here...
+    ];
 
       renderInputField() {
         const inputField = document.createElement('input');
@@ -5258,12 +5267,14 @@
         this.inputField = inputField;
       }
 
-      renderSuggestions() {
-        const suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'suggestions';
-        this.tagInput.appendChild(suggestionsDiv);
-        this.suggestionsDiv = suggestionsDiv;
-      }
+    // DOM elements for filters and table
+    const searchInput = document.getElementById('searchInput');
+    const sectorFilter = document.getElementById('sectorFilter');
+    const regionFilter = document.getElementById('regionFilter');
+    const complianceFilter = document.getElementById('complianceFilter');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    const companyTableBody = document.querySelector('#companyTable tbody');
+    const paginationContainer = document.getElementById('pagination');
 
       async fetchUsers(query) {
         if (!query) {
