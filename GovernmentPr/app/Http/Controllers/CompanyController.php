@@ -408,7 +408,7 @@ class CompanyController extends WaterStockMovementController
     public function getCompaniesByState(Request $request)
     {
         $country = $request->input('country');
-
+        // dd($country);
         if (!$country) {
             return response()->json([
                 'status' => 'error',
