@@ -77,15 +77,15 @@
                                             >
                                                 <i class="fas fa-user-plus"></i>
                                             </button>
-                                            <button 
-                                                type="button" 
-                                                class="btn btn-sm btn-secondary"
-                                                title="Show Company on Map"
-                                                onclick="triggerLocation('{{ $company->company_id }}', '{{ $company->company_name }}', '{{ $company->longitude }}', '{{ $company->latitude }}');"
-                                                data-bs-toggle="modal"
-                                            >
-                                                <i class="fas fa-map-marker-alt"></i>
-                                            </button>
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-sm btn-secondary"
+                                            title="Show Company on Map"
+                                            onclick="triggerLocation('{{ encrypt($company->company_id) }}', '{{ $company->company_name }}', '{{ $company->longitude }}', '{{ $company->latitude }}');"
+                                            data-bs-toggle="modal">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+
                                             <form
                                                 action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
                                                 method="POST"
@@ -299,67 +299,74 @@
         </script>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script>
-            // Keep a reference to the map and marker to avoid re-initializing
+            // Company Map Modal Logic
+
+            // Variables to hold the map instance and marker
             let companyMapInstance = null;
             let companyMapMarker = null;
 
-            function triggerLocation(companyId, companyName, longitude, latitude) {
-                // Set modal title
-                document.getElementById('companyMapModalLabel').innerText = `Location of ${companyName}`;
+            /**
+             * Opens the company map modal and displays the company's location on the map.
+             * @param {string} encryptedId - The encrypted company ID.
+             * @param {string} companyName - The name of the company.
+             * @param {string|number} longitude - The longitude of the company.
+             * @param {string|number} latitude - The latitude of the company.
+             */
+            function triggerLocation(encryptedId, companyName, longitude, latitude) {
+            // Set the modal title to include the company name
+            document.getElementById('companyMapModalLabel').innerText = `Location of ${companyName}`;
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('companyMapModal'));
+            modal.show();
 
-                // Show the modal
-                var modal = new bootstrap.Modal(document.getElementById('companyMapModal'));
-                modal.show();
+            // Delay to ensure modal is visible before rendering the map
+            setTimeout(function () {
+                // Remove any existing map instance to avoid duplicates
+                if (companyMapInstance) {
+                companyMapInstance.remove();
+                companyMapInstance = null;
+                }
 
-                // Wait for modal to be fully shown before initializing the map
-                setTimeout(function () {
-                    // If map already exists, remove it to avoid duplicate maps
-                    if (companyMapInstance) {
-                        companyMapInstance.remove();
-                        companyMapInstance = null;
-                    }
+                // Parse latitude and longitude, use defaults if not provided
+                let lat = parseFloat(latitude) || 20;
+                let lng = parseFloat(longitude) || 0;
 
-                    // Parse coordinates as float
-                    let lat = parseFloat(latitude) || 0;
-                    let lng = parseFloat(longitude) || 0;
+                // Initialize the map centered at the company's location
+                companyMapInstance = L.map('companyMap').setView([lat, lng], 13);
 
-                    // Default to a world view if coordinates are not valid
-                    if (!lat && !lng) {
-                        lat = 20;
-                        lng = 0;
-                    }
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(companyMapInstance);
 
-                    // Initialize the map
-                    companyMapInstance = L.map('companyMap').setView([lat, lng], 13);
+                // Prepare the company profile URL
+                const profileUrl = `{{ route('admin.show-company', ['company' => '___ID___']) }}`.replace('___ID___', encryptedId);
 
-                    // Add OpenStreetMap tiles
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(companyMapInstance);
-
-                    // Add marker if coordinates are valid
-                    if (latitude && longitude) {
-                        companyMapMarker = L.marker([lat, lng]).addTo(companyMapInstance)
-                            .bindPopup(`
-                                <b>${companyName}</b><br>
-                                Longitude: ${lng}<br>
-                                Latitude: ${lat}<br>
- <a href="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}" class="btn btn-sm btn-info" title="View Company Details">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                            `)
-                            .openPopup();
-                    }
-                }, 300); // Delay to ensure modal and map container are visible
+                // If coordinates are provided, add a marker and popup
+                if (latitude && longitude) {
+                companyMapMarker = L.marker([lat, lng]).addTo(companyMapInstance)
+                    .bindPopup(
+                    `<b>${companyName}</b><br>
+                    Longitude: ${lng}<br>
+                    Latitude: ${lat}<br>
+                    <a href="${profileUrl}" class="btn btn-sm btn-info mt-2" target="_blank">
+                        View Company Profile
+                    </a>`
+                    )
+                    .openPopup();
+                }
+            }, 300);
             }
 
-            // Optional: Clear map when modal is closed to avoid memory leaks
+            // Cleanup the map instance when the modal is closed
             document.getElementById('companyMapModal').addEventListener('hidden.bs.modal', function () {
-                if (companyMapInstance) {
-                    companyMapInstance.remove();
-                    companyMapInstance = null;
-                }
+            if (companyMapInstance) {
+                companyMapInstance.remove();
+                companyMapInstance = null;
+            }
             });
+        </script>
+
         </script>
     @endsection
 </x-layouts.admin-app>
