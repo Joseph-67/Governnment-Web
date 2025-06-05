@@ -38,6 +38,11 @@ class Company extends Model
         'updated_at',
     ];
 
+    public function companyProducts()
+    {
+        return $this->hasMany(Product::class, 'company_id', 'company_id');
+    }
+
     public function companyMaterials()
     {
         return $this->hasMany(CompanyMaterial::class, 'companyID', 'company_id');

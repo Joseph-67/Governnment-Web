@@ -855,30 +855,42 @@
   <section class="partner-section">
   <span class="tp-section-subtitle">PARTNERS</span>
    <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
-    <div class="slider-container">
-      <div class="slider-track">
-        <!-- Original Logos -->
-        <a href="https://www.unido.org/" target="_blank">
-       <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo">
-      </a>
-      <a href="https://www.thegef.org/">
-      <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo">
-      </a>
-      <a href=" https://www.manufacturersnigeria.org/">
-        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo">
-      </a>
-        <!-- Duplicate Logos for Infinite Loop -->
-        <a href="https://www.unido.org/" target="_blank">
-       <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo">
-      </a>
-      <a href="https://www.thegef.org/">
-      <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo">
-      </a>
-      <a href=" https://www.manufacturersnigeria.org/">
-        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo">
-      </a>
+   <div class="container slider-container">
+      <div class="slider-track d-flex align-items-center" >
+         <!-- Original Logos -->
+         <a href="https://www.unido.org/" target="_blank" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo2.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
+         <a href="https://www.thegef.org/" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo3.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
+         <a href="https://www.manufacturersnigeria.org/" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo1.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
+         <!-- Duplicate Logos for Infinite Loop -->
+         <a href="https://www.unido.org/" target="_blank" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo2.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
+         <a href="https://www.thegef.org/" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo3.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
+         <a href="https://www.manufacturersnigeria.org/" class="mx-3">
+            <div class="card border-0 shadow-sm" style="width: 260px; height: 180px;">
+               <img src="{{asset('MainAssets/img/logo/logo1.png')}}" class="card-img-top img-fluid p-3" style="height: 140px; object-fit: contain;" alt="logo">
+            </div>
+         </a>
       </div>
-    </div>
+   </div>
   </section>
 <!-- team area end -->
 

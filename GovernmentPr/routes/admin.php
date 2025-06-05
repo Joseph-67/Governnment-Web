@@ -488,6 +488,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/products/{id}', 'update')->name('admin.update-product');
         Route::delete('/products/{id}', 'destroy')->name('admin.delete-product');
         Route::get('/get-product/{value}', 'getProduct');
+        Route::get('/products-by-company/{companyId}', 'productsByCompany');
     });
 
     // Product Category

@@ -56,7 +56,8 @@
                                         <td>{{$company->email}}</td>
                                         <td>{{$company->primary_phone_number}}</td>
                                         <td>{{$company->country}}</td>
-                                        <td>{{$company->state}}</td>
+                                        <td>{{$company->state}}
+                                        </td>
                                         <td>
                                             @php
                                                 $date = Carbon\Carbon::create($company->date_of_establishment);
@@ -77,14 +78,23 @@
                                             >
                                                 <i class="fas fa-user-plus"></i>
                                             </button>
-                                        <button 
-                                            type="button" 
-                                            class="btn btn-sm btn-secondary"
-                                            title="Show Company on Map"
-                                            onclick="triggerLocation('{{ encrypt($company->company_id) }}', '{{ $company->company_name }}', '{{ $company->longitude }}', '{{ $company->latitude }}');"
-                                            data-bs-toggle="modal">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </button>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-sm btn-secondary"
+                                                title="Show Company on Map"
+                                                onclick="triggerLocation(
+                                                    '{{ encrypt($company->company_id) }}', 
+                                                    '{{ $company->company_name }}', 
+                                                    '{{ $company->longitude }}', 
+                                                    '{{ $company->latitude }}', 
+                                                    '{{ $company->industry }}',
+                                                    '{{ $company->address }}',
+                                                    '{{ $company->companyProducts }}'
+                                                );"
+                                                data-bs-toggle="modal"
+                                            >
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </button>
 
                                             <form
                                                 action="{{ route('admin.show-company', ['company'=> encrypt($company->company_id)]) }}"
@@ -312,50 +322,59 @@
              * @param {string|number} longitude - The longitude of the company.
              * @param {string|number} latitude - The latitude of the company.
              */
-            function triggerLocation(encryptedId, companyName, longitude, latitude) {
-            // Set the modal title to include the company name
-            document.getElementById('companyMapModalLabel').innerText = `Location of ${companyName}`;
-            // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById('companyMapModal'));
-            modal.show();
+            function triggerLocation(encryptedId, companyName, longitude, latitude, industry, address, companyProducts) {
+                document.getElementById('companyMapModalLabel').innerText = `Location of ${companyName}`;
+                const modal = new bootstrap.Modal(document.getElementById('companyMapModal'));
+                modal.show();
 
-            // Delay to ensure modal is visible before rendering the map
-            setTimeout(function () {
-                // Remove any existing map instance to avoid duplicates
-                if (companyMapInstance) {
-                companyMapInstance.remove();
-                companyMapInstance = null;
-                }
+                setTimeout(function () {
+                    if (companyMapInstance) {
+                        companyMapInstance.remove();
+                        companyMapInstance = null;
+                    }
 
-                // Parse latitude and longitude, use defaults if not provided
-                let lat = parseFloat(latitude) || 20;
-                let lng = parseFloat(longitude) || 0;
+                    let lat = parseFloat(latitude) || 20;
+                    let lng = parseFloat(longitude) || 0;
 
-                // Initialize the map centered at the company's location
-                companyMapInstance = L.map('companyMap').setView([lat, lng], 13);
+                    companyMapInstance = L.map('companyMap').setView([lat, lng], 13);
 
-                // Add OpenStreetMap tiles
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(companyMapInstance);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(companyMapInstance);
 
-                // Prepare the company profile URL
-                const profileUrl = `{{ route('admin.show-company', ['company' => '___ID___']) }}`.replace('___ID___', encryptedId);
+                    const profileUrl = `{{ route('admin.show-company', ['company' => '___ID___']) }}`.replace('___ID___', encryptedId);
 
-                // If coordinates are provided, add a marker and popup
-                if (latitude && longitude) {
-                companyMapMarker = L.marker([lat, lng]).addTo(companyMapInstance)
-                    .bindPopup(
-                    `<b>${companyName}</b><br>
-                    Longitude: ${lng}<br>
-                    Latitude: ${lat}<br>
-                    <a href="${profileUrl}" class="btn btn-sm btn-info mt-2" target="_blank">
-                        View Company Profile
-                    </a>`
-                    )
-                    .openPopup();
-                }
-            }, 300);
+                    // Format company products for display
+                    let productsHtml = '';
+                    if (companyProducts && Array.isArray(companyProducts)) {
+                        console.log('Company Products:', companyProducts);
+                        
+                        productsHtml = '<ul style="padding-left:18px;">';
+                        companyProducts.forEach(function(product) {
+                            console.log('Product:', product);
+                            
+                            productsHtml += `<li>${product.name}</li>`;
+                        });
+                        productsHtml += '</ul>';
+                    } else if (companyProducts && typeof companyProducts === 'string') {
+                        productsHtml = `<div>${companyProducts.name}</div>`;
+                    }
+
+                    if (latitude && longitude) {
+                        companyMapMarker = L.marker([lat, lng]).addTo(companyMapInstance)
+                            .bindPopup(
+                                `Company Name: <b>${companyName}</b><br>
+                                Industry: ${industry}<br>
+                                Address: ${address}<br>
+                                <b>Products:</b> ${productsHtml}
+                                <a href="${profileUrl}" class="btn btn-sm mt-2" style="background-color: #3388ff; color: #fff;" target="_blank">
+                                    View Company
+                                </a>
+                                `
+                            )
+                            .openPopup();
+                    }
+                }, 300);
             }
 
             // Cleanup the map instance when the modal is closed
@@ -367,6 +386,6 @@
             });
         </script>
 
-        </script>
+    
     @endsection
 </x-layouts.admin-app>
