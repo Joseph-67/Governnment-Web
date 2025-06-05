@@ -1,12 +1,83 @@
-                // Initialize the map here if needed
-                // For example, using Leaflet or Google Maps API
-                // This is just a placeholder for your map initialization code
-                // Example using Leaflet:
-                var map = L.map('companyMap').setView([51.505, -0.09], 13);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-                // Add a marker for the company location
-                L.marker([51.505, -0.09]).addTo(map)
-                    .bindPopup('Company Location: ' + companyName)
-                    .openPopup();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite Sliding Partner Section</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+      color: #fff;
+    }
+
+    .partner-section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .partner-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      height: 150px;
+    }
+
+    .slider-track {
+      display: flex;
+      animation: slide 20s linear infinite;
+    }
+
+    .slider-track img {
+      width: 200px;
+      height: 120px;
+      margin: 0 15px;
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .slider-track img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="partner-section">
+    <h2>Our Partners</h2>
+    <div class="slider-container">
+      <div class="slider-track">
+        <!-- Original Logos -->
+        <img src="https://static.abw.by/photos/news/212728_1_350.jpg?v=2" alt="Partner 1">
+        <img src="https://p.ohtuleht.ee/59/i/2022/3/10/y2b3xdmf.p5u.jpg" alt="Partner 2">
+        <img src="https://i.ytimg.com/vi/pSfr4uIDYgc/maxresdefault.jpg" alt="Partner 3">
+        <img src="https://ymimg1.b8cdn.com/uploads/car_model/4119/pictures/3366343/Devel_Sixteen.jpg" alt="Partner 4">
+        <!-- Duplicate Logos for Infinite Loop -->
+        <img src="https://static.abw.by/photos/news/212728_1_350.jpg?v=2" alt="Partner 1">
+        <img src="https://p.ohtuleht.ee/59/i/2022/3/10/y2b3xdmf.p5u.jpg" alt="Partner 2">
+        <img src="https://i.ytimg.com/vi/pSfr4uIDYgc/maxresdefault.jpg" alt="Partner 3">
+        <img src="https://ymimg1.b8cdn.com/uploads/car_model/4119/pictures/3366343/Devel_Sixteen.jpg" alt="Partner 4">
+      </div>
+    </div>
+  </section>
+</body>
+</html>

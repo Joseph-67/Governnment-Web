@@ -794,86 +794,92 @@
 <!-- video area end -->
 
 <!-- team area start -->
-<div class="tp-team-2-area pt-115 pb-90">
-   <div class="container">
-      <div class="row">
-         <div class="col-xl-12">
-            <div class="tp-team-section-title text-center mb-55">
-               <span class="tp-section-subtitle">PARTNERS</span>
-               <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
-            </div>
-         </div>
+<style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      color: #ffffff;
+    }
+
+    .partner-section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .partner-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #ffffff;
+    }
+
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      height: 150px;
+    }
+
+    .slider-track {
+      display: flex;
+      animation: slide 20s linear infinite;
+    }
+
+    .slider-track img {
+      width: 200px;
+      height: 120px;
+      margin: 0 15px;
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .slider-track img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="partner-section">
+  <span class="tp-section-subtitle">PARTNERS</span>
+   <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
+    <div class="slider-container">
+      <div class="slider-track">
+        <!-- Original Logos -->
+        <a href="https://www.unido.org/" target="_blank">
+       <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo">
+      </a>
+      <a href="https://www.thegef.org/">
+      <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo">
+      </a>
+      <a href=" https://www.manufacturersnigeria.org/">
+        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo">
+      </a>
+        <!-- Duplicate Logos for Infinite Loop -->
+        <a href="https://www.unido.org/" target="_blank">
+       <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo">
+      </a>
+      <a href="https://www.thegef.org/">
+      <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo">
+      </a>
+      <a href=" https://www.manufacturersnigeria.org/">
+        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo">
+      </a>
       </div>
-      <div class="swiper-container tp-team-slider-actve">
-      <div class="swiper-wrapper">
-         <div class="swiper-slide">
-      <div class="row justify-content-center">
-         <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-            <div class="tp-team-2-item fix p-relative">
-               <div class="tp-team-2-thumb-box fix">
-                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo" style="height: 300px; width: 300px;">
-               </div>
-               <div class="tp-team-2-content text-center">
-                  <h4 class="tp-team-2-title"><a href="https://www.unido.org/">UNITED NATIONS INDUSTRIAL DEVELOPMENT ORGANIZATION</a></h4>
-                  <span>UNIDO</span>
-                  <!-- <div class="tp-team-2-social-box">
-                     <button><i class="fa-solid fa-share-nodes"></i></button>
-                     <div class="tp-team-2-social">
-                        <a class="icon-1" href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a class="icon-2" href="index.html#"><i class="fa-brands fa-instagram"></i></a>
-                        <a class="icon-3" href="index.html#"><i class="fa-brands fa-linkedin-in"></i></a>
-                     </div>
-                  </div> -->
-               </div>
-            </div>
-         </div>
-         </div>
-
-
-                  <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-            <div class="tp-team-2-item fix p-relative">
-               <div class="tp-team-2-thumb-box fix">
-                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" style="height: 300px; width: 300px;">
-               </div>
-               <div class="tp-team-2-content text-center">
-                  <h4 class="tp-team-2-title"><a href="https://www.thegef.org/">GLOBAL ENVIRONMENT FACILITY</a></h4>
-                  <span>GEF</span>
-                  <!-- <div class="tp-team-2-social-box">
-                     <button><i class="fa-solid fa-share-nodes"></i></button>
-                     <div class="tp-team-2-social">
-                        <a class="icon-1" href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a class="icon-2" href="index.html#"><i class="fa-brands fa-instagram"></i></a>
-                        <a class="icon-3" href="index.html#"><i class="fa-brands fa-linkedin-in"></i></a>
-                     </div>
-                  </div> -->
-               </div>
-            </div>
-         </div>
-
-         <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
-            <div class="tp-team-2-item fix p-relative">
-               <div class="tp-team-2-thumb-box fix">
-                  <img class="w-100" src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" style="height: 300px; width: 300px;">
-               </div>
-               <div class="tp-team-2-content text-center">
-                  <h4 class="tp-team-2-title"><a href=" https://www.manufacturersnigeria.org/">MANUFACTURERS ASSOCIATION OF NIGERIA</a></h4>
-                  <span>MAN</span>
-                  <!-- <div class="tp-team-2-social-box">
-                     <button><i class="fa-solid fa-share-nodes"></i></button>
-                     <div class="tp-team-2-social">
-                        <a class="icon-1" href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a class="icon-2" href="index.html#"><i class="fa-brands fa-instagram"></i></a>
-                        <a class="icon-3" href="index.html#"><i class="fa-brands fa-linkedin-in"></i></a>
-                     </div>
-                  </div> -->
-               </div>
-            </div>
-         </div>
-    
-      </div>
-   </div>
-</div>
-   </div>
+    </div>
+  </section>
 <!-- team area end -->
 
 <!-- testimonial area end -->
