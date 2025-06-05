@@ -804,6 +804,9 @@
             </div>
          </div>
       </div>
+      <div class="swiper-container tp-team-slider-actve">
+      <div class="swiper-wrapper">
+         <div class="swiper-slide">
       <div class="row justify-content-center">
          <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
             <div class="tp-team-2-item fix p-relative">
@@ -824,6 +827,8 @@
                </div>
             </div>
          </div>
+         </div>
+
 
                   <div class="col-xl-4 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
             <div class="tp-team-2-item fix p-relative">
@@ -868,6 +873,7 @@
       </div>
    </div>
 </div>
+   </div>
 <!-- team area end -->
 
 <!-- testimonial area end -->
