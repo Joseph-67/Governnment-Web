@@ -879,7 +879,6 @@
       </a>
       </div>
     </div>
-  </section>
 <!-- team area end -->
 
 <!-- testimonial area end -->
