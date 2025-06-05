@@ -1,13 +1,11 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
-
     <div class="container-xxl">
         <!-- Header -->
         <div class="profile-header text-center py-5">
             <h1 class="display-4 fw-bold">Company Profile</h1>
             <p class="">Your company's information at a glance</p>
         </div>
-
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 nav-tabs-custom text-center">
                 <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
@@ -23,38 +21,30 @@
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
                             aria-selected="false"><i class="la la-chart-line d-block"></i>R.E.C.P</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#inventory" role="tab"
                             aria-selected="false"><i class="la la-box d-block"></i>Inventory</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#hrms" role="tab"
                             aria-selected="false"><i class="la la-users d-block"></i>HRMS</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#operations" role="tab"
                             aria-selected="false"><i class="la la-cogs d-block"></i>Operations Management</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#product-management" role="tab"
                             aria-selected="false"><i class="la la-box-open d-block"></i>Products</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
                             aria-selected="false"><i class="la la-cog d-block"></i>General Settings</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
                             aria-selected="false"><i class="la la-user d-block"></i>Contact Personnel Details</a>
                     </li>
-
-                    
                 </ul>
                 <!-- Tab panes -->
             </div>
@@ -3397,8 +3387,10 @@
                                                         <input type="number" class="form-control" name="operations_per_year" min="0" placeholder="Enter expected operations">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label for="prepared_by" class="form-label">Prepared By</label>
-                                                        <input type="text" class="form-control" name="prepared_by" placeholder="Enter prepared by" required>
+                                                        <div class="taggable-container" id="manager-tag-input-4">
+                                                            <label for="preparedBy" class="form-label fw-bold">Prepared By</label>
+                                                            <div class="manager-tag-input-4 manager-tag-input"></div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for="status" class="form-label">Status</label>
@@ -11710,6 +11702,7 @@
     let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
     let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
     let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
+    let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
   </script>
   <!-- Department -->
    <script>
