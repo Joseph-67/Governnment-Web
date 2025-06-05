@@ -125,8 +125,7 @@ class ProductionBatchTrackingController extends Controller
             'created_by' => 'required|json',
             'geolocation' => 'nullable|string|max:255',
             'iot_device' => 'nullable|integer|exists:iot_devices,id',
-            'predicted_defect_rate' => 'nullable|numeric|min:0|max:100',
-            'audit_trail_id' => 'nullable|integer|exists:audit_trails,id',
+            'batch_status' => 'nullable|in:In Progress,Completed,Rejected',
         ]);
 
         if ($validator->fails()) {
@@ -150,9 +149,7 @@ class ProductionBatchTrackingController extends Controller
                 'created_by' => $request->created_by,
                 'geolocation' => $request->geolocation,
                 'iot_device_id' => $request->iot_device,
-                'predicted_defect_rate' => $request->predicted_defect_rate,
-                'audit_trail_id' => $request->audit_trail_id,
-                'status' => 'Completed',
+                'status' => $request->batch_status ?? 'Completed',
             ]);
         } catch (\Exception $e) {
             return response()->json([

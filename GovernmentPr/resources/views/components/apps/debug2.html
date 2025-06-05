@@ -1,0 +1,42 @@
+    // Fetch users dynamically on input for the supervisor tag input
+    async function fetchUsersDynamic(query) {
+      try {
+        const response = await fetch(`/admin/get-users?query=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Failed to fetch users');
+        const data = await response.json();
+        // Expected data format: [{ name, role, email, profilePic }]
+        return data.users || [];
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
+      }
+    }
+
+    // Patch TaggingComponent to fetch users on input
+    TaggingComponent.prototype.showSuggestions = async function(input) {
+      // Fetch suggestions from server if input is not empty
+      let filteredUsers = [];
+      if (input.length > 1) {
+        filteredUsers = await fetchUsersDynamic(input);
+      } else {
+        filteredUsers = this.users.filter(user =>
+        );
+      }
+      this.suggestionsDiv.innerHTML = '';
+      filteredUsers.forEach(user => {
+        const suggestionElement = document.createElement('div');
+        suggestionElement.className = 'suggestion';
+        suggestionElement.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="${user.profilePic}" alt="${user.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+            <div>
+              <strong style="font-size: 15px; color: #1d4ed8;">${user.name}</strong><br>
+              <span style="font-size: 13px; color: #64748b;">${user.role}</span><br>
+              <span style="font-size: 12px; color: #6366f1;">${user.email}</span>
+            </div>
+          </div>
+        `;
+        suggestionElement.addEventListener('click', () => this.addTag(user.name));
+        this.suggestionsDiv.appendChild(suggestionElement);
+      });
+    };

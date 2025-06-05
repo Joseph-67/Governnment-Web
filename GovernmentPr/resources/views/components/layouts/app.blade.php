@@ -283,7 +283,7 @@
                   <div class="tp-header-top__right-wrap d-flex align-items-center justify-content-end">
                      <div class="tp-header-top__right-info d-none d-xl-block">
                         <span>Council</span>
-                        <span><em>/</em>Goverment</span>
+                        <span><em>/</em>Government</span>
                         <span><em>/</em>Complaints</span>
                      </div>
                      <div class="tp-header-top__right-social">
@@ -494,7 +494,7 @@
                </div>
                <div class="col-xl-2 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                   <div class="tp-footer-widget footer-col-2">
-                     <h4 class="tp-footer-widget-title">Usefull Links</h4>
+                     <h4 class="tp-footer-widget-title">Useful Links</h4>
                      <div class="tp-footer-widget-menu">
                         <ul>
                            <li><a href="index.html#">About us</a></li>

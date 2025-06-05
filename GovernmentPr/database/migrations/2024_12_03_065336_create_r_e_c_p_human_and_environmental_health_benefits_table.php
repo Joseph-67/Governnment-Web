@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('r_e_c_p_human_and_environmental_health_benefits');
+        Schema::dropIfExists('recp_human_and_environmental_health_benefits');
     }
 };
