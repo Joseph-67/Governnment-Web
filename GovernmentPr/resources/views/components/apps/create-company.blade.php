@@ -256,10 +256,12 @@
         }
     </style>
 @endsection
-<div class="container-xxl"> 
-    <x-validation-errors class="alert" alert />
-    @include('shared.feedback')
-    <form action="{{route('admin.store-company')}}" method="post">
+<div class="container-xxl">
+<x-validation-errors class="alert" />
+@include('shared.feedback')
+
+
+<form action="{{route('admin.store-company')}}" method="post">
         @csrf
     <!-- Basic Profile -->
     <x-form-section submit="">
