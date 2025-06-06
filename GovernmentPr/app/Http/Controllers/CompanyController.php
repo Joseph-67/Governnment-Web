@@ -546,7 +546,7 @@ class CompanyController extends WaterStockMovementController
             }
         }
 
-        return back()->withInput()->with(['success', "Company registered successfully"]);
+        return back()->with(['success' => 'Company registered successfully']);
     }
 
     public function store_recp(Request $request) {
