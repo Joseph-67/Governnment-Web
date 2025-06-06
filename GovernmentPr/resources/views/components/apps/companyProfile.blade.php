@@ -3397,7 +3397,7 @@
                                                         <select class="form-select" name="status" required>
                                                             <option value="" selected disabled>Select Status</option>
                                                             <option value="Draft">Draft</option>
-                                                            <option value="Publish">Publish</option>
+                                                            <option value="Published">Publish</option>
                                                             <option value="Archived">Archived</option>
                                                         </select>
                                                     </div>
@@ -10995,6 +10995,16 @@
         document.querySelector('#annual-operations-log-form').addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = new FormData(this);
+            let manager = manager_4.getSelectedUserIds();
+            if (manager.length === 0) {
+                displayMessage('warning', 'Please select at least one manager.');
+                return;
+            }
+
+            manager.forEach(id => {
+                formData.append('prepared_by_ids[]', id);
+            });
+
             const url = "{{ route('admin.store-annual-operation-metadata') }}";
 
             try {
@@ -11697,8 +11707,6 @@
       }
     }
     
-    // new TaggingComponent('tagging-1');
-    // new TaggingComponent('tagging-2', users);
     let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
     let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
     let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
@@ -11818,6 +11826,8 @@
             hideElement(spinner);
         }
     });
+
+    // Handle department form submission
     document.addEventListener('DOMContentLoaded', function () {
         const departmentForm = document.getElementById('department-form');
         if (departmentForm) {

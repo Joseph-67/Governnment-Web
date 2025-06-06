@@ -27,6 +27,7 @@ class Metadatata extends Model
     ];
 
     protected $casts = [
+        'PreparedBy' => 'array',
         'is_deleted' => 'boolean',
         'DateCreated' => 'datetime',
         'LastUpdated' => 'datetime',

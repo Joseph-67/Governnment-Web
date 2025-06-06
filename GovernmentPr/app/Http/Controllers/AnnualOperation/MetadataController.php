@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-
-
-
 class MetadataController extends Controller
 {
 
@@ -72,12 +69,15 @@ class MetadataController extends Controller
      */
     public function store_metadata(Request $request)
     {
+        // dd($request->prepared_by_ids);
+        // Validate the request data
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|integer',
             'operation_name' => 'required|string|max:255',
             'calendar_year' => 'required|integer',
             'operation_per_year' => 'nullable|integer',
-            'prepared_by' =>  'required|json',
+            'prepared_by_ids' => 'required|array',
+            'prepared_by_ids.*' => 'required|integer',
             'status' => [
                 'required',
                 Rule::in(['Draft', 'Published', 'Archived']),
@@ -92,12 +92,12 @@ class MetadataController extends Controller
         }
 
         try {
-            $annualOperations =  Metadatata::create([
+            $annualOperations = Metadatata::create([
                 'company_id' => $request->company_id,
                 'OperationName' => $request->operation_name,
                 'year' => $request->calendar_year,
                 'annual_no_of_operation' => $request->operation_per_year,
-                'PreparedBy' => $request->prepared_by,
+                'PreparedBy' => $request->prepared_by_ids,
                 'DateCreated' => now(),
                 'LastUpdated' => now(),
                 'is_deleted' => false,
@@ -111,17 +111,19 @@ class MetadataController extends Controller
             ], 500);
         }
 
-        // Return the created metadata
+        // Retrieve the created metadata
         $annualOperations = Metadatata::where('is_deleted', '0')
             ->where('company_id', $request->company_id)
             ->with(['company', 'calendarYear'])
             ->get();
+
         if ($annualOperations->isEmpty()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to retrieve the created metadata.',
             ], 404);
         }
+
         // Return the response
         return response()->json([
             'status' => 'success',
@@ -129,6 +131,7 @@ class MetadataController extends Controller
             'annual_operation_metadatas' => $annualOperations,
         ], 201);
     }
+
 
     /**
      * Display the specified resource.
