@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('policies', function (Blueprint $table) {
+        Schema::create('company_policies', function (Blueprint $table) {
             $table->id('policyID');
             $table->unsignedBigInteger('companyID');
-            $table->string('policy_title');
+            $table->unsignedBigInteger('policy_id');
+            $table->foreign('policy_id')
+                  ->references('policy_id')
+                  ->on('policies')
+                  ->onDelete('cascade');
             $table->foreign('companyID')
                     ->references('company_id')
                     ->on('companies')
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('policies');
+        Schema::dropIfExists('company_policies');
     }
 };
