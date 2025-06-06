@@ -11,7 +11,7 @@ class CompanyObjectives extends Model
     protected $primaryKey = 'objectiveID';
     protected $fillable = [
         'companyID',
-        'objective_title',
+        'objective_id',
         'created_at',
         'updated_at',
     ];
