@@ -323,6 +323,18 @@
              * @param {string|number} latitude - The latitude of the company.
              */
             function triggerLocation(encryptedId, companyName, longitude, latitude, industry, address, companyProducts) {
+                console.log('triggerLocation called with:', {
+                    encryptedId,
+                    companyName,
+                    longitude,
+                    latitude,
+                    industry,
+                    address,
+                    companyProducts
+                });
+                console.log('Company Products:', companyProducts);
+                
+                // Check if the modal is already open
                 document.getElementById('companyMapModalLabel').innerText = `Location of ${companyName}`;
                 const modal = new bootstrap.Modal(document.getElementById('companyMapModal'));
                 modal.show();
@@ -346,6 +358,7 @@
 
                     // Format company products for display
                     let productsHtml = '';
+                    companyProducts = JSON.parse(companyProducts);
                     if (companyProducts && Array.isArray(companyProducts)) {
                         console.log('Company Products:', companyProducts);
                         
@@ -357,6 +370,8 @@
                         });
                         productsHtml += '</ul>';
                     } else if (companyProducts && typeof companyProducts === 'string') {
+                        console.log('Company Products (string):', companyProducts, 'array is false', Array.isArray(companyProducts), 'typeof:', typeof companyProducts);
+                        
                         productsHtml = `<div>${companyProducts.name}</div>`;
                     }
 
