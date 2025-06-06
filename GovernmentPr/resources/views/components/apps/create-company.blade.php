@@ -645,10 +645,10 @@
             ${this.getAttributes(tagData)}>
             <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
             <div>
-            <div class='tagify__tag__avatar-wrap'>
-                <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-            </div>
-            <span class='tagify__tag-text'>${tagData.name}</span>
+                <div class='tagify__tag__avatar-wrap'>
+                    <img onerror="this.style.visibility='hidden'" src="${tagData.avatar ? tagData.avatar : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(tagData.name)}" alt="avatar">
+                </div>
+                <span class='tagify__tag-text'>${tagData.name}</span>
             </div>
             </tag>
             `
@@ -659,10 +659,14 @@
             <div ${this.getAttributes(tagData)}
             class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
             tabindex="0"
-            role="option">
-               
-            <strong>${tagData.name}</strong>
-               
+            role="option" style="display: flex; align-items: center; gap: 10px;">
+                <div class='tagify__dropdown__item__avatar-wrap' style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#EEE;">
+                    <img onerror="this.style.visibility='hidden'" src="${tagData.avatar ? tagData.avatar : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(tagData.name)}" style="width:100%;height:100%;object-fit:cover;" alt="avatar">
+                </div>
+                <div style="display:flex;flex-direction:column;">
+                    <strong>${tagData.name}</strong>
+                    <span style="font-size:0.9em;opacity:0.7;">${tagData.email}</span>
+                </div>
             </div>
             `
         }
@@ -673,15 +677,15 @@
             enforceWhitelist: true,
             maxTags: 1, // Allow only single selection
             dropdown: {
-            closeOnSelect: true, // Close dropdown after selection
-            enabled: 1, // Show suggestions after typing one character
-            classname: 'users-list',
-            searchKeys: ['name', 'email'],  // very important to set by which keys to search for suggestions when typing
-            position: "text", // Position suggestions relative to the cursor
+                closeOnSelect: true, // Close dropdown after selection
+                enabled: 1, // Show suggestions after typing one character
+                classname: 'users-list',
+                searchKeys: ['name', 'email'],  // very important to set by which keys to search for suggestions when typing
+                position: "text", // Position suggestions relative to the cursor
             },
             templates: {
-            tag: tagTemplate,
-            dropdownItem: suggestionItemTemplate
+                tag: tagTemplate,
+                dropdownItem: suggestionItemTemplate
             },
             whitelist: []
         });
@@ -693,41 +697,40 @@
             tagify.settings.whitelist.length = 0
             tagify.loading(true).dropdown.hide.call(tagify)
             debounceTimer = setTimeout(async () => {
-            try {
-            tagify.loading(true).dropdown.hide()
-            // Fetch suggestions from the API
-            const url = new URL("{{ route('user.details') }}");
-            url.searchParams.append("query", searchTerm);
-            console.log(url.toString());
+                try {
+                    tagify.loading(true).dropdown.hide()
+                    // Fetch suggestions from the API
+                    const url = new URL("{{ route('user.details') }}");
+                    url.searchParams.append("query", searchTerm);
+                    console.log(url.toString());
 
-            const response = await fetch(url.toString());
-            const users = await response.json();
-            console.log(users);
+                    const response = await fetch(url.toString());
+                    const users = await response.json();
+                    console.log(users);
 
-            if (!users || !Array.isArray(users.users)) {
-            console.error('Unexpected API response structure:', users);
-            return;
-            }
-            // Format the data to match Tagify's whitelist structure
-            let formattedUsers = users.users.map(user => ({
-            value: user.id,
-            name: `${user.first_name} ${user.last_name}`,
-            avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
-            email: user.email,
-            role: 'user'
-            }));
+                    if (!users || !Array.isArray(users.users)) {
+                        console.error('Unexpected API response structure:', users);
+                        return;
+                    }
+                    // Format the data to match Tagify's whitelist structure
+                    let formattedUsers = users.users.map(user => ({
+                        value: user.id,
+                        name: `${user.first_name} ${user.last_name}`,
+                        avatar: user.profile_photo_path ? user.profile_photo_path : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.first_name + ' ' + user.last_name),
+                        email: user.email,
+                        role: 'user'
+                    }));
 
-            // Update Tagify's whitelist and show the dropdown
-            tagify.settings.whitelist = formattedUsers;
-            tagify.loading(false).dropdown.show.call(tagify, searchTerm)
-            } catch (error) {
-            console.error('Error fetching user data:', error);
-            tagify.settings.whitelist = [];
-            tagify.dropdown.show.call('Error fetching data. Try again later.');
-            }
+                    // Update Tagify's whitelist and show the dropdown
+                    tagify.settings.whitelist = formattedUsers;
+                    tagify.loading(false).dropdown.show.call(tagify, searchTerm)
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    tagify.settings.whitelist = [];
+                    tagify.dropdown.show.call('Error fetching data. Try again later.');
+                }
             }, 300); // Delay of 300ms
         });
-        
 
 
     </script>
