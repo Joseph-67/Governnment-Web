@@ -18,7 +18,7 @@ use App\Models\RECP_problem_and_solution;
 use App\Models\RECP_waste_management_method;
 use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
-use App\Models\Policy;
+use App\Models\CompanyPolicy;
 use App\Models\Material;
 use App\Models\WaterQuestionaire;
 use App\Models\CompanyWaterQuestion;
@@ -67,7 +67,7 @@ class CompanyController extends WaterStockMovementController
         $data['company'] = Company::find($companyID);
 
         // Fetch related data
-        $data['company_policies'] = Policy::where('companyID', $companyID)->get();
+        $data['company_policies'] = CompanyPolicy::where('companyID', $companyID)->get();
         $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
         $data['company_benefits'] = RECP_areas_of_benefit::active()->where('companyID', $companyID)->get();
         $data['company_enviromental_benefits'] = RECP_human_and_environmental_health_benefit::active()->where('companyID', $companyID)->get();
