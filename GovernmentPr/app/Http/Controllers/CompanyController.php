@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Policies;
+use App\Models\Objectives;
 use App\Models\CompanyObjectives;
 use App\Models\RECPHistory;
 use App\Models\RECP_areas_of_benefit;
@@ -137,8 +139,6 @@ class CompanyController extends WaterStockMovementController
         // fetch company departments
         $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
         
-
-
         return view('components.apps.companyProfile', $data);
     }   
     /**
@@ -151,8 +151,6 @@ class CompanyController extends WaterStockMovementController
     {
         // Extract the company ID from the request
         $companyId = $request->input('company_id');
-
-    
         // Validation rules
         $companyId = $request->company_id;
         $validator = Validator::make($request->all(), [
@@ -444,7 +442,9 @@ class CompanyController extends WaterStockMovementController
     public function create()
     {
         //
+        dd('create company');
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
+
         return view('components.apps.create-company', $data);
     }
 
