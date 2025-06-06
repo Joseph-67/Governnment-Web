@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('category')->nullable();
+            $table->integer('sequence_order')->default(0);
             $table->date('effective_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->enum('status', ['draft', 'active', 'archived'])->default('draft');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('objective_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->integer('sequence_order')->default(0);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['pending', 'active', 'completed', 'archived'])->default('pending');
