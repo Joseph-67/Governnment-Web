@@ -52,6 +52,7 @@ use App\Http\Controllers\WaterRecyclingLogsController;
 use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
+use App\Http\Controllers\WasteTypeController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
@@ -647,12 +648,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-waste-subcategories/{value}', 'getWasteSubCategories');
     });
     // Waste Management
-    Route::controller(WasteManagementController::class)->group(function() {
+    Route::controller(WasteTypeController::class)->group(function() {
         Route::get('/waste-management', 'index')->name('admin.waste-management');
         Route::post('/waste-management/store', 'store')->name('admin.store-waste-management');
         Route::get('/waste-management/{id}', 'show')->name('admin.show-waste-management');
         Route::put('/waste-management/{id}', 'update')->name('admin.update-waste-management');
         Route::delete('/waste-management/{id}', 'destroy')->name('admin.delete-waste-management');
+        
     });
 
     // Water Stock Movement

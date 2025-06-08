@@ -529,9 +529,9 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.create-category') }}">
+        <a class="nav-link" href="{{ route('admin.waste-management') }}">
             <i class="iconoir-folder menu-icon"></i>
-            <span>Waste Management</span>    
+            <span>Waste Type</span>    
         </a>
     </li>
 
