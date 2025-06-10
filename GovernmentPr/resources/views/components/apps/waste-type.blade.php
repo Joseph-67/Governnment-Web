@@ -1,8 +1,13 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Waste Type')
+    @section('styles')
     <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap5.min.css') }}">
+    <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
+    @endsections
     <div class="container py-5">
         <div class="card shadow rounded-4">
             <div class="card-body">
@@ -50,7 +55,7 @@
                             <!-- Waste Category -->
                             <div class="mb-3 col-6">
                                 <label for="waste_category_id" class="form-label fw-semibold text-primary">Waste Category</label>
-                                <select class="form-select rounded-pill shadow-sm" id="waste_category_id" name="waste_category_id" required>
+                                <select class="form-select rounded-pill shadow-sm" id="waste_category" name="waste_category_id" required>
                                     <option value="">Select category</option>
                                     @foreach($wasteCategories as $category)
                                         <option value="{{ $category->waste_category_id }}"
@@ -70,7 +75,7 @@
                             <!-- Waste Source -->
                             <div class="mb-3 col-6">
                                 <label for="WasteSource" class="form-label fw-semibold text-primary">Waste Source</label>
-                                <select class="form-select rounded-pill shadow-sm" id="WasteSource" name="WasteSource">
+                                <select class="form-select rounded-pill shadow-sm" id="WasteSource" name="waste_source_id">
                                     <option value="">Select waste source</option>
                                     @foreach($wasteSources as $source)
                                         <option value="{{ $source->waste_source_id }}">{{ $source->waste_source_name }}</option>
@@ -80,27 +85,27 @@
                             <!-- Waste Title -->
                             <div class="mb-3 col-6">
                                 <label for="WasteTitle" class="form-label fw-semibold text-primary">Waste Title</label>
-                                <input type="text" class="form-control rounded-pill shadow-sm" id="WasteTitle" name="WasteTitle" placeholder="Enter waste title" required>
+                                <input type="text" class="form-control rounded-pill shadow-sm" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
                             </div>
                             <!-- Quantity -->
                             <div class="mb-3 col-6">
                                 <label for="Quantity" class="form-label fw-semibold text-primary">Quantity</label>
-                                <input type="number" class="form-control rounded-pill shadow-sm" id="Quantity" name="Quantity" placeholder="Enter quantity" required>
+                                <input type="number" class="form-control rounded-pill shadow-sm" id="Quantity" name="quantity" placeholder="Enter quantity" required>
                             </div>
                             <!-- Unit -->
                             <div class="mb-3 col-6">
                                 <label for="Unit" class="form-label fw-semibold text-primary">Unit</label>
-                                <input type="text" class="form-control rounded-pill shadow-sm" id="Unit" name="Unit" placeholder="e.g. kg, tons" required>
+                                <input type="text" class="form-control rounded-pill shadow-sm" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
                             </div>
                             <!-- Date Generated -->
                             <div class="mb-3 col-6">
                                 <label for="DateGenerated" class="form-label fw-semibold text-primary">Date Generated</label>
-                                <input type="date" class="form-control rounded-pill shadow-sm" id="DateGenerated" name="DateGenerated" required>
+                                <input type="date" class="form-control rounded-pill shadow-sm" id="DateGenerated" name="date_generated" required>
                             </div>
                             <!-- Disposal Date -->
                             <div class="mb-3 col-6">
                                 <label for="DisposalDate" class="form-label fw-semibold text-primary">Disposal Date</label>
-                                <input type="date" class="form-control rounded-pill shadow-sm" id="DisposalDate" name="DisposalDate">
+                                <input type="date" class="form-control rounded-pill shadow-sm" id="DisposalDate" name="disposal_date">
                             </div>
                         </div>
                     </div>
@@ -113,14 +118,15 @@
         </div>
     </div>
 
-    <!-- JS Script -->
+    @section('scripts')
+        <!-- JS Script -->
      <!-- filter sub category -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const categorySelect = document.getElementById('waste_category_id');
+            const categorySelect = document.getElementById('waste_category');
             const subCategorySelect = document.getElementById('waste_sub_category_id');
             const allSubCategories = @json($wasteSubCategories);
-
+    
             function updateSubCategories(categoryId) {
                 subCategorySelect.innerHTML = '';
                 if (!categoryId) {
@@ -140,14 +146,14 @@
                     subCategorySelect.innerHTML = '<option value="">No subcategories available</option>';
                 }
             }
-
+    
             categorySelect.addEventListener('change', function () {
                 updateSubCategories(this.value);
             });
-
+    
             // Preselect values if editing
             const preselectedCategory = categorySelect.value;
-            const preselectedSub = "{{ old('waste_sub_category_id', $selectedSubCategoryId ?? '') }}";
+            const preselectedSub = "{{ old('waste_sub_category', $selectedSubCategoryId ?? '') }}";
             if (preselectedCategory) {
                 updateSubCategories(preselectedCategory);
                 setTimeout(() => {
@@ -163,4 +169,64 @@
         });
     </script>
     <!-- end filter sub category -->
+    <!-- Initialize DataTable and handle form submission using fetch_cycle -->
+    <!-- Ensure jQuery is loaded before this script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize DataTable on the correct table selector
+            const table = $('table.table').DataTable({
+                // Optional: customize DataTable options here
+            });
+
+            // Handle form submission for storing waste type using fetch API
+            const form = document.querySelector('#wasteTypeModal form');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                fetch("{{ route('admin.store-waste-management') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Optionally, add the new row to the DataTable
+                        table.row.add([
+                            data.waste_type.waste_title ?? '',
+                            data.waste_type.description ?? '',
+                            data.waste_type.created_at ?? '',
+                            '<button class="btn btn-sm btn-primary">Edit</button>'
+                        ]).draw(false);
+
+                        // Close modal and reset form
+                        $('#wasteTypeModal').modal('hide');
+                        form.reset();
+                    } else if (data.errors) {
+                        // Handle validation errors
+                        alert('Failed to save waste type:\n' + Object.values(data.errors).join('\n'));
+                    } else {
+                        alert('Failed to save waste type.');
+                    }
+                })
+                .catch(() => alert('An error occurred. Please try again.'));
+            });
+        });
+    </script>
+    <!-- DataTables CDN -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/toastify.js') }}"></script>
+    <script src="{{ asset('adminAssets/libs/simple-datatables/umd/simple-datatables.js') }}"></script>
+    <script src="{{ asset('adminAssets/js/pages/datatable.init.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @endsection
 </x-layouts.admin-app>

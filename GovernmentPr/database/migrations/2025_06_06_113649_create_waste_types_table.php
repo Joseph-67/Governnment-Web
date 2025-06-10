@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('waste_types', function (Blueprint $table) {
+         Schema::create('waste_types', function (Blueprint $table) {
             $table->bigIncrements('WasteID');
             $table->unsignedBigInteger('waste_category_id');
             $table->unsignedBigInteger('waste_sub_category_id');
@@ -25,10 +25,10 @@ return new class extends Migration
             $table->date('DisposalDate')->nullable();
             $table->enum('status', ['active', 'inactivate'])->default('active');
             $table->timestamps();
+
+            $table->foreign('waste_category_id')->references('waste_category_id')->on('waste_categories');
             $table->foreign('waste_sub_category_id')->references('waste_sub_category_id')->on('waste_sub_categories');
             $table->foreign('waste_source_id')->references('waste_source_id')->on('waste_sources');
-            $table->foreign('waste_category_id')->references('waste_category_id')->on('waste_categories');
-
         });
     }
 
