@@ -36,6 +36,6 @@ class WasteType extends Model
     }
     public function wasteSource()
     {
-        return $this->belongsTo(WasteSource::class, 'waste_source_id', 'waste_source_id');
+        return $this->belongsTo(WasteSources::class, 'waste_source_id', 'waste_source_id');
     }
 }

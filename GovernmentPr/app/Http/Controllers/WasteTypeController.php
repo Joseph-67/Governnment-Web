@@ -47,13 +47,12 @@ class WasteTypeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-   $validator = Validator::make($request->all(), [
+{
+    $validator = Validator::make($request->all(), [
         'waste_title' => 'required|string|max:255',
-        'waste_category' => 'required|exists:waste_categories,waste_category_id',
-        'waste_sub_category' => 'required|exists:waste_sub_categories,waste_sub_category_id',
-        'waste_source' => 'required|exists:waste_sources,waste_source_id',
+        'waste_category' => 'required',
+        'waste_sub_category' => 'required',
+        'waste_source' => 'required',
         'quantity' => 'required|numeric',
         'unit' => 'required|string|max:50',
         'date_generated' => 'required|date',
@@ -83,16 +82,21 @@ class WasteTypeController extends Controller
     } catch (\Exception $e) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Failed to create waste type: ' . $e->getMessage(),
+            'message' => 'Failed to create waste type.',
+            'error' => $e->getMessage(),
         ], 500);
     }
+
+    // Optional: Load relationships if your WasteType model has them (example: category, source)
+    $wasteType->load(['wasteCategory', 'wasteSubCategory', 'wasteSource']);
 
     return response()->json([
         'status' => 'success',
         'message' => 'Waste type created successfully.',
-        'data' => $wasteType,
+        'wasteType' => $wasteType,
     ], 201);
-    }
+}
+
 
     /**
      * Display the specified resource.
