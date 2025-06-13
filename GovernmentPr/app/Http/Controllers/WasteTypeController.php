@@ -87,8 +87,6 @@ class WasteTypeController extends Controller
         ], 500);
     }
 
-    // Optional: Load relationships if your WasteType model has them (example: category, source)
-    $wasteType->load(['wasteCategory', 'wasteSubCategory', 'wasteSource']);
 
     return response()->json([
         'status' => 'success',
