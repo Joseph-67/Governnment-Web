@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap5.min.css') }}">
     <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
     @endsections
     <div class="container py-5">
         <div class="card shadow rounded-4">
@@ -169,92 +171,11 @@
             }
         });
     </script>
-    
-        <script>
-       // Initialize DataTable for Waste Types
-const wasteTypeTable = $('.table').DataTable({
-    paging: true,
-    searching: true,
-    ordering: true,
-    responsive: true,
-    destroy: true,
-    columnDefs: [
-        { orderable: false, targets: [3] } // "Actions" column index (0-based)
-    ],
-    data: [],
-    columns: [
-        { data: 'waste_title', title: 'Waste Type' },
-        { data: 'description', title: 'Description' },
-        { data: 'date_created', title: 'Date Created' },
-        {
-            data: null,
-            title: 'Actions',
-            render: function (data, type, row) {
-                return `
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="bi bi-pencil"></i> Edit
-                        </button>
-                        <button class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>`;
-            }
-        }
-    ]
-});
-
-// Feedback message function using Toastify
-function displayMessage(type, message) {
-    let bgColor = "#28a745"; // success
-    if (type === 'warning') bgColor = "#ffc107";
-    if (type === 'danger') bgColor = "#dc3545";
-
-    Toastify({
-        text: message,
-        duration: 3000,
-        close: true,
-        gravity: "top",
-        position: "right",
-        backgroundColor: bgColor,
-        stopOnFocus: true
-    }).showToast();
-}
-
-// Handle form submission for adding a new waste type
-document.querySelector('#waste-type-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const url = "{{ route('admin.store-waste-type') }}";
-
-    try {
-        const result = await fetch_cycle('Store Waste Type', url, 'POST', formData);
-        if (result.status === 'success') {
-            const waste = result.savedWasteType;
-
-            const newRow = {
-                waste_title: waste.waste_title || 'N/A',
-                description: waste.description || 'N/A',
-                date_created: waste.date_created
-                    ? new Date(waste.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-                    : 'N/A'
-            };
-
-            wasteTypeTable.row.add(newRow).draw(false);
-            this.reset();
-            displayMessage('success', 'Waste type saved successfully.');
-        } else {
-            displayMessage('warning', 'Failed to save waste type. Please check your input.');
-        }
-    } catch (error) {
-        console.error('Error storing waste type:', error);
-        displayMessage('danger', 'An error occurred while saving. Please try again.');
-    }
-});
-
+    <script>
+        
     </script>
+
     <!-- DataTables CDN -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
