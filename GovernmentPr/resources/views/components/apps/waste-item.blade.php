@@ -88,8 +88,7 @@
                             <!-- Waste Name -->
                             <div class="col-md-6">
                                 <label for="WasteName" class="form-label fw-semibold">Waste Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control shadow-sm border-primary" id="WasteName" name="waste_name" placeholder="Enter waste name" required>
-                                <div class="invalid-feedback">Waste Name is required.</div>
+                                <input type="text" class="form-control shadow-sm border-primary" id="waste_name" name="waste_name" placeholder="Enter waste name" required>
                             </div>
                           
                             <!-- Waste Sub Category -->
@@ -113,7 +112,6 @@
                             <div class="col-md-4">
                                 <label for="Unit" class="form-label fw-semibold">Unit <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control shadow-sm border-primary" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
-                                <div class="invalid-feedback">Unit is required.</div>
                             </div>
                             <!-- Description -->
                             <div class="col-md-4">
