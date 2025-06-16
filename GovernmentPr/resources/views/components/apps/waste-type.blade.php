@@ -9,7 +9,7 @@
     <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
-    @endsections
+    @endsection
     <div class="container py-5">
         <div class="card border-0 shadow-lg rounded-4">
             <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
@@ -51,87 +51,162 @@
     <div class="modal fade" id="wasteTypeModal" tabindex="-1" aria-labelledby="wasteTypeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="wasteTypeModalLabel">
-                        <i class="bi bi-plus-circle"></i>
-                        Set Up Waste Type
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="wasteTypeModalLabel">
+                <i class="bi bi-plus-circle"></i>
+                Set Up Waste Type
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="waste-type-form" action = "{{ route('admin.store-waste-type') }}" class="needs-validation" novalidate>
+                <div class="modal-body bg-light">
+                <div class="row g-3">
+                    <!-- Waste Category -->
+                    <div class="col-md-6">
+                    <label for="waste_category" class="form-label">Waste Category</label>
+                    <select class="form-select shadow-sm" id="waste_category" name="waste_category" required>
+                        <option value="">Select category</option>
+                        @foreach($wasteCategories as $category)
+                        <option value="{{ $category->waste_category_id }}"
+                            {{ old('waste_category_id', $selectedCategoryId ?? '') == $category->waste_category_id ? 'selected' : '' }}>
+                            {{ $category->waste_category_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    </div>
+                    <!-- Waste Sub Category -->
+                    <div class="col-md-6">
+                    <label for="waste_sub_category_id" class="form-label">Waste Sub Category</label>
+                    <select class="form-select shadow-sm" id="waste_sub_category_id" name="waste_sub_category" required>
+                        <!-- Options populated dynamically -->
+                    </select>
+                    </div>
+                    <!-- Waste Title -->
+                    <div class="col-md-8">
+                    <label for="WasteTitle" class="form-label">Waste Title</label>
+                    <input type="text" class="form-control shadow-sm" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
+                    </div>
+                    <!-- Waste Source -->
+                    <div class="col-md-4">
+                    <label for="WasteSource" class="form-label">Waste Source</label>
+                    <select class="form-select shadow-sm" id="WasteSource" name="waste_source">
+                        <option value="">Select waste source</option>
+                        @foreach($wasteSources as $source)
+                        <option value="{{ $source->waste_source_id }}">{{ $source->waste_source_name }}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                    <!-- Quantity -->
+                    <div class="col-md-4">
+                    <label for="Quantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control shadow-sm" id="Quantity" name="quantity" placeholder="Enter quantity" min="0" required>
+                    </div>
+                    <!-- Unit -->
+                    <div class="col-md-2">
+                    <label for="Unit" class="form-label">Unit</label>
+                    <input type="text" class="form-control shadow-sm" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
+                    </div>
+                    <!-- Date Generated -->
+                    <div class="col-md-3">
+                    <label for="DateGenerated" class="form-label fw-semibold text-primary">Date Generated</label>
+                    <input type="date" class="form-control shadow-sm" id="DateGenerated" name="date_generated" required>
+                    </div>
+                    <!-- Disposal Date -->
+                    <div class="col-md-3">
+                    <label for="DisposalDate" class="form-label">Disposal Date</label>
+                    <input type="date" class="form-control shadow-sm" id="DisposalDate" name="disposal_date">
+                    </div>
                 </div>
-                <form id="waste-type-form" method="POST">
-                    @csrf
-                    <div class="modal-body bg-light">
-                        <div class="row g-3">
-                            <!-- Waste Category -->
-                            <div class="col-md-6">
-                                <label for="waste_category" class="form-label">Waste Category</label>
-                                <select class="form-select shadow-sm" id="waste_category" name="waste_category" required>
-                                    <option value="">Select category</option>
-                                    @foreach($wasteCategories as $category)
-                                        <option value="{{ $category->waste_category_id }}"
-                                            {{ old('waste_category_id', $selectedCategoryId ?? '') == $category->waste_category_id ? 'selected' : '' }}>
-                                            {{ $category->waste_category_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <!-- Waste Sub Category -->
-                            <div class="col-md-6">
-                                <label for="waste_sub_category_id" class="form-label">Waste Sub Category</label>
-                                <select class="form-select shadow-sm" id="waste_sub_category_id" name="waste_sub_category" required>
-                                    <!-- Options populated dynamically -->
-                                </select>
-                            </div>
-                            <!-- Waste Title -->
-                            <div class="col-md-8">
-                                <label for="WasteTitle" class="form-label">Waste Title</label>
-                                <input type="text" class="form-control shadow-sm" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
-                            </div>
-                            <!-- Waste Source -->
-                            <div class="col-md-4">
-                                <label for="WasteSource" class="form-label">Waste Source</label>
-                                <select class="form-select shadow-sm" id="WasteSource" name="waste_source">
-                                    <option value="">Select waste source</option>
-                                    @foreach($wasteSources as $source)
-                                        <option value="{{ $source->waste_source_id }}">{{ $source->waste_source_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <!-- Quantity -->
-                            <div class="col-md-4">
-                                <label for="Quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control shadow-sm" id="Quantity" name="quantity" placeholder="Enter quantity" min="0" required>
-                            </div>
-                            <!-- Unit -->
-                            <div class="col-md-2">
-                                <label for="Unit" class="form-label">Unit</label>
-                                <input type="text" class="form-control shadow-sm" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
-                            </div>
-                            <!-- Date Generated -->
-                            <div class="col-md-3">
-                                <label for="DateGenerated" class="form-label fw-semibold text-primary">Date Generated</label>
-                                <input type="date" class="form-control shadow-sm" id="DateGenerated" name="date_generated" required>
-                            </div>
-                            <!-- Disposal Date -->
-                            <div class="col-md-3">
-                                <label for="DisposalDate" class="form-label">Disposal Date</label>
-                                <input type="date" class="form-control shadow-sm" id="DisposalDate" name="disposal_date">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer bg-light border-0 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success px-4 fw-semibold shadow-sm">
-                            <i class="bi bi-save me-2"></i>Save Waste Type
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer bg-light border-0 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success px-4 fw-semibold shadow-sm">
+                        <i class="bi bi-save me-2"></i>Save Waste Type
+                    </button>
+                </div>
+            </form>
             </div>
         </div>
     </div>
+    <!-- End of Modal -->
     @endsection
 
     @section('scripts')
-        <!-- JS Script -->
+    <!-- JS Script -->
+     <script>
+        async function submitWasteTypeForm(event) {
+            event.preventDefault();
+            console.log('Form submitted:', event.target);
+            const formData = new FormData(event.target);
+            const formUrl = event.target.action || null;
+            if (!formUrl) {
+                Toastify({
+                    text: "Form action URL is not set.",
+                    backgroundColor: "#dc3545",
+                    duration: 4000
+                }).showToast();
+                return;
+            }
+            // Validate form data
+            try {
+                const response = await fetch(formUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Assuming the response contains a success message or data
+                    console.log("Record added successfully:", result);
+                    // Show success message
+                    console.log("Form submitted successfully");
+                    if (result.success) {
+                        Toastify({
+                            text: result.message || "Record added successfully!",
+                            backgroundColor: "#28a745",
+                            duration: 3000
+                        }).showToast();
+                        form.reset();
+                    } else {
+                        Toastify({
+                            text: result.message || "Record added successfully!",
+                            backgroundColor: "#28a745",
+                            duration: 3000
+                        }).showToast();
+                    }
+
+                    // Optionally, close modal and refresh table here
+                    // $('#wasteTypeModal').modal('hide');
+                    // You may want to reload the table data here
+                } else {
+                    let errorMsg = "Failed to add waste type.";
+                    if (result.errors) {
+                        errorMsg = Object.values(result.errors).flat().join('\n');
+                    }
+                    Toastify({
+                        text: errorMsg,
+                        backgroundColor: "#dc3545",
+                        duration: 4000
+                    }).showToast();
+                }
+            } catch (error) {
+                Toastify({
+                    text: "An error occurred. Please try again.",
+                    backgroundColor: "#dc3545",
+                    duration: 4000
+                }).showToast();
+            }
+            
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('waste-type-form').addEventListener('submit', submitWasteTypeForm);
+        });
+     </script>
      <!-- filter sub category -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -180,88 +255,6 @@
             }
         });
     </script>
-       <script>
-       // Initialize DataTable for Waste Types
-const wasteTypeTable = $('.table').DataTable({
-    paging: true,
-    searching: true,
-    ordering: true,
-    responsive: true,
-    destroy: true,
-    columnDefs: [
-        { orderable: false, targets: [3] } // "Actions" column index (0-based)
-    ],
-    data: [],
-    columns: [
-        { data: 'waste_title', title: 'Waste Type' },
-        { data: 'description', title: 'Description' },
-        { data: 'date_created', title: 'Date Created' },
-        {
-            data: null,
-            title: 'Actions',
-            render: function (data, type, row) {
-                return `
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="bi bi-pencil"></i> Edit
-                        </button>
-                        <button class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>`;
-            }
-        }
-    ]
-});
-
-// Feedback message function using Toastify
-function displayMessage(type, message) {
-    let bgColor = "#28a745"; // success
-    if (type === 'warning') bgColor = "#ffc107";
-    if (type === 'danger') bgColor = "#dc3545";
-
-    Toastify({
-        text: message,
-        duration: 3000,
-        close: true,
-        gravity: "top",
-        position: "right",
-        backgroundColor: bgColor,
-        stopOnFocus: true
-    }).showToast();
-}
-
-// Handle form submission for adding a new waste type
-document.querySelector('#waste-type-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const url = "{{ route('admin.store-waste-type') }}";
-
-    try {
-        const result = await fetch_cycle('Store Waste Type', url, 'POST', formData);
-        if (result.status === 'success') {
-            const waste = result.savedWasteType;
-
-            const newRow = {
-                waste_title: waste.waste_title || 'N/A',
-                description: waste.description || 'N/A',
-                date_created: waste.date_created
-                    ? new Date(waste.date_created).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-                    : 'N/A'
-            };
-
-            wasteTypeTable.row.add(newRow).draw(false);
-            this.reset();
-            displayMessage('success', 'Waste type saved successfully.');
-        } else {
-            displayMessage('warning', 'Failed to save waste type. Please check your input.');
-        }
-    } catch (error) {
-        console.error('Error storing waste type:', error);
-        displayMessage('danger', 'An error occurred while saving. Please try again.');
-    }
-});
-</script>
 
     <!-- DataTables CDN -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
