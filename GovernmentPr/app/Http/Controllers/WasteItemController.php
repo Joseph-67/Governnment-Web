@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\WasteType;
-use App\Models\WasteCategory;
+use App\Models\WasteItem;
 use App\Models\WasteSubCategories;
-use App\Models\WasteSources;
 use Illuminate\Support\Facades\Validator;
 
 
 
-class WasteTypeController extends Controller
+class WasteItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,14 +18,9 @@ class WasteTypeController extends Controller
      */
     public function index()
 {
-    $data['wasteCategories'] = WasteCategory::select('waste_category_id', 'waste_category_name')->get();
-
     // Include waste_category_id so subcategories can be filtered in the frontend
     $data['wasteSubCategories'] = WasteSubCategories::select('waste_sub_category_id', 'waste_sub_category_name', 'waste_category_id')->get();
-
-    $data['wasteSources'] = WasteSources::select('waste_source_id', 'waste_source_name')->get();
-
-    return view('components.apps.waste-type', $data);
+    return view('components.apps.waste-item', $data);
 }
 
 
@@ -49,14 +42,11 @@ class WasteTypeController extends Controller
     public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'waste_title' => 'required|string|max:255',
-        'waste_category' => 'required',
+        'waste_name' => 'required|string|max:255',
         'waste_sub_category' => 'required',
-        'waste_source' => 'required',
         'quantity' => 'required|numeric',
-        'unit' => 'required|string|max:50',
-        'date_generated' => 'required|date',
-        'disposal_date' => 'nullable|date',
+        'unit' => 'nullable|string|max:50',
+        'description' => 'nullable|string|max:500',
     ]);
 
     if ($validator->fails()) {
@@ -68,16 +58,13 @@ class WasteTypeController extends Controller
     }
 
     try {
-        $wasteType = WasteType::create([
-            'WasteTitle' => $request->waste_title,
-            'waste_category_id' => $request->waste_category,
+        $wasteItem = WasteItem::create([
+            'name' => $request->waste_name,
+            'description' => $request->description,
             'waste_sub_category_id' => $request->waste_sub_category,
-            'waste_source_id' => $request->waste_source,
-            'Quantity' => $request->quantity,
-            'Unit' => $request->unit,
-            'DateGenerated' => $request->date_generated,
-            'DisposalDate' => $request->disposal_date,
-            'status' => 'active',
+            'quantity_per_unit' => $request->quantity,
+            'unit' => $request->unit,
+            'Status' => 'active',
         ]);
     } catch (\Exception $e) {
         return response()->json([

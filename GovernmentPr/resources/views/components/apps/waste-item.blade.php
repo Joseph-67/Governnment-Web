@@ -82,47 +82,27 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="waste-type-form" action="{{ route('admin.store-waste-type') }}" class="needs-validation" novalidate autocomplete="off">
+                <form id="waste-type-form" action="{{ route('admin.store-waste-item') }}" class="needs-validation" novalidate autocomplete="off">
                     <div class="modal-body bg-light rounded-bottom-4">
                         <div class="row g-4">
-                            <!-- Waste Category -->
+                            <!-- Waste Name -->
                             <div class="col-md-6">
-                                <label for="waste_category" class="form-label fw-semibold">Waste Category <span class="text-danger">*</span></label>
-                                <select class="form-select shadow-sm border-primary" id="waste_category" name="waste_category" required>
-                                    <option value="">Select category</option>
-                                    @foreach($wasteCategories as $category)
-                                        <option value="{{ $category->waste_category_id }}"
-                                            {{ old('waste_category_id', $selectedCategoryId ?? '') == $category->waste_category_id ? 'selected' : '' }}>
-                                            {{ $category->waste_category_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Please select a waste category.</div>
+                                <label for="WasteName" class="form-label fw-semibold">Waste Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control shadow-sm border-primary" id="WasteName" name="waste_name" placeholder="Enter waste name" required>
+                                <div class="invalid-feedback">Waste Name is required.</div>
                             </div>
+                          
                             <!-- Waste Sub Category -->
                             <div class="col-md-6">
                                 <label for="waste_sub_category_id" class="form-label fw-semibold">Waste Sub Category <span class="text-danger">*</span></label>
                                 <select class="form-select shadow-sm border-primary" id="waste_sub_category_id" name="waste_sub_category" required>
-                                    <!-- Options populated dynamically -->
-                                </select>
-                                <div class="invalid-feedback">Please select a sub category.</div>
-                            </div>
-                            <!-- Waste Title -->
-                            <div class="col-md-8">
-                                <label for="WasteTitle" class="form-label fw-semibold">Waste Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control shadow-sm border-primary" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
-                                <div class="invalid-feedback">Waste title is required.</div>
-                            </div>
-                            <!-- Waste Source -->
-                            <div class="col-md-4">
-                                <label for="WasteSource" class="form-label fw-semibold">Waste Source</label>
-                                <select class="form-select shadow-sm border-primary" id="WasteSource" name="waste_source">
-                                    <option value="">Select waste source</option>
-                                    @foreach($wasteSources as $source)
-                                        <option value="{{ $source->waste_source_id }}">{{ $source->waste_source_name }}</option>
+                                    <option selected disabled>Select sub category</option>
+                                    @foreach($wasteSubCategories as $subCategory)
+                                        <option value="{{ $subCategory->waste_sub_category_id }}">{{ $subCategory->waste_sub_category_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            
                             <!-- Quantity -->
                             <div class="col-md-4">
                                 <label for="Quantity" class="form-label fw-semibold">Quantity <span class="text-danger">*</span></label>
@@ -130,23 +110,17 @@
                                 <div class="invalid-feedback">Please enter a valid quantity.</div>
                             </div>
                             <!-- Unit -->
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <label for="Unit" class="form-label fw-semibold">Unit <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control shadow-sm border-primary" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
                                 <div class="invalid-feedback">Unit is required.</div>
                             </div>
-                            <!-- Date Generated -->
-                            <div class="col-md-3">
-                                <label for="DateGenerated" class="form-label fw-semibold">Date Generated <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control shadow-sm border-primary" id="DateGenerated" name="date_generated" required>
-                                <div class="invalid-feedback">Please select a date.</div>
+                            <!-- Description -->
+                            <div class="col-md-4">
+                                <label for="Description" class="form-label fw-semibold">Description</label>
+                                <textarea class="form-control shadow-sm border-primary" id="Description" name="description" rows="3" placeholder="Enter a brief description"></textarea>
+
                             </div>
-                            <!-- Disposal Date -->
-                            <div class="col-md-3">
-                                <label for="DisposalDate" class="form-label fw-semibold">Disposal Date</label>
-                                <input type="date" class="form-control shadow-sm border-primary" id="DisposalDate" name="disposal_date">
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer bg-light border-0 rounded-bottom-4 d-flex justify-content-end">
                         <button type="submit" class="btn btn-success px-4 fw-semibold shadow-sm">
@@ -237,54 +211,7 @@
             document.getElementById('waste-type-form').addEventListener('submit', submitWasteTypeForm);
         });
      </script>
-     <!-- filter sub category -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const categorySelect = document.getElementById('waste_category');
-            const subCategorySelect = document.getElementById('waste_sub_category_id');
-            const allSubCategories = @json($wasteSubCategories);
-    
-            function updateSubCategories(categoryId) {
-                subCategorySelect.innerHTML = '';
-                if (!categoryId) {
-                    subCategorySelect.innerHTML = '<option value="">Please select a category first</option>';
-                    return;
-                }
-                const matchingSubs = allSubCategories.filter(sub => sub.waste_category_id == categoryId);
-                if (matchingSubs.length > 0) {
-                    subCategorySelect.innerHTML = '<option value="">Select sub category</option>';
-                    matchingSubs.forEach(sub => {
-                        const option = document.createElement('option');
-                        option.value = sub.waste_sub_category_id;
-                        option.textContent = sub.waste_sub_category_name;
-                        subCategorySelect.appendChild(option);
-                    });
-                } else {
-                    subCategorySelect.innerHTML = '<option value="">No subcategories available</option>';
-                }
-            }
-    
-            categorySelect.addEventListener('change', function () {
-                updateSubCategories(this.value);
-            });
-    
-            // Preselect values if editing
-            const preselectedCategory = categorySelect.value;
-            const preselectedSub = "{{ old('waste_sub_category', $selectedSubCategoryId ?? '') }}";
-            if (preselectedCategory) {
-                updateSubCategories(preselectedCategory);
-                setTimeout(() => {
-                    Array.from(subCategorySelect.options).forEach(opt => {
-                        if (opt.value === preselectedSub) {
-                            opt.selected = true;
-                        }
-                    });
-                }, 50);
-            } else {
-                subCategorySelect.innerHTML = '<option value="">Please Wait....</option>';
-            }
-        });
-    </script>
+
 
     <!-- DataTables CDN -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

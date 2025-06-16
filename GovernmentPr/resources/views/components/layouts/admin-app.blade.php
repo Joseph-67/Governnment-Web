@@ -529,9 +529,9 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.store-waste-type') }}">
+        <a class="nav-link" href="{{ route('admin.waste-items') }}">
             <i class="iconoir-folder menu-icon"></i>
-            <span>Waste Type</span>    
+            <span>Waste Item</span>    
         </a>
     </li>
 
