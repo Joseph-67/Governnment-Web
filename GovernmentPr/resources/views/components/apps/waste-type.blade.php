@@ -11,19 +11,24 @@
 
     @endsections
     <div class="container py-5">
-        <div class="card shadow rounded-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="mb-0 fw-bold text-primary">
-                        <i class="bi bi-recycle me-2"></i>Waste Type Management
+        <div class="card border-0 shadow-lg rounded-4">
+            <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="card-title mb-0 fw-bold">
+                        <i class="bi bi-recycle me-2"></i>
+                        Waste Type Management
                     </h3>
-                    <button class="btn btn-success px-4 py-2 fw-semibold shadow" data-bs-toggle="modal" data-bs-target="#wasteTypeModal">
-                        <i class="bi bi-plus-circle me-1"></i> Set Up Waste Type
-                    </button>
                 </div>
-
+                <button type="button" class="btn btn-success rounded-pill px-4 d-flex align-items-center shadow"
+                    data-bs-toggle="modal" data-bs-target="#wasteTypeModal" aria-label="Set Up Waste Type"
+                    title="Add a new waste type">
+                    <i class="bi bi-plus-circle me-2 fs-5"></i>
+                    Set Up Waste Type
+                </button>
+            </div>
+            <div class="card-body bg-light rounded-bottom-4">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle rounded-3 overflow-hidden shadow-sm">
+                    <table class="table table-hover align-middle rounded-3 overflow-hidden shadow-sm mb-0">
                         <thead class="table-primary text-white">
                             <tr>
                                 <th>Waste Type</th>
@@ -41,24 +46,26 @@
         </div>
     </div>
 
-    <!-- Waste Type Modal -->
+    @section('modals')
+    <!-- Modal for Adding Waste Type -->
     <div class="modal fade" id="wasteTypeModal" tabindex="-1" aria-labelledby="wasteTypeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title fw-bold" id="wasteTypeModalLabel">
-                        <i class="bi bi-plus-circle me-2"></i>Set Up Waste Type
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="wasteTypeModalLabel">
+                        <i class="bi bi-plus-circle"></i>
+                        Set Up Waste Type
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="waste-type-form" action="" method="POST">
+                <form id="waste-type-form" method="POST">
                     @csrf
                     <div class="modal-body bg-light">
-                        <div class="row">
+                        <div class="row g-3">
                             <!-- Waste Category -->
-                            <div class="mb-3 col-6">
-                                <label for="waste_category_id" class="form-label fw-semibold text-primary">Waste Category</label>
-                                <select class="form-select rounded-pill shadow-sm" id="waste_category" name="waste_category" required>
+                            <div class="col-md-6">
+                                <label for="waste_category" class="form-label">Waste Category</label>
+                                <select class="form-select shadow-sm" id="waste_category" name="waste_category" required>
                                     <option value="">Select category</option>
                                     @foreach($wasteCategories as $category)
                                         <option value="{{ $category->waste_category_id }}"
@@ -69,56 +76,59 @@
                                 </select>
                             </div>
                             <!-- Waste Sub Category -->
-                            <div class="mb-3 col-6">
-                                <label for="waste_sub_category_id" class="form-label fw-semibold text-primary">Waste Sub Category</label>
-                                <select class="form-select rounded-pill shadow-sm" id="waste_sub_category_id" name="waste_sub_category" required>
-                                    <!-- <option value="">Please select a category first...</option> -->
+                            <div class="col-md-6">
+                                <label for="waste_sub_category_id" class="form-label">Waste Sub Category</label>
+                                <select class="form-select shadow-sm" id="waste_sub_category_id" name="waste_sub_category" required>
+                                    <!-- Options populated dynamically -->
                                 </select>
                             </div>
+                            <!-- Waste Title -->
+                            <div class="col-md-8">
+                                <label for="WasteTitle" class="form-label">Waste Title</label>
+                                <input type="text" class="form-control shadow-sm" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
+                            </div>
                             <!-- Waste Source -->
-                            <div class="mb-3 col-6">
-                                <label for="WasteSource" class="form-label fw-semibold text-primary">Waste Source</label>
-                                <select class="form-select rounded-pill shadow-sm" id="WasteSource" name="waste_source">
+                            <div class="col-md-4">
+                                <label for="WasteSource" class="form-label">Waste Source</label>
+                                <select class="form-select shadow-sm" id="WasteSource" name="waste_source">
                                     <option value="">Select waste source</option>
                                     @foreach($wasteSources as $source)
                                         <option value="{{ $source->waste_source_id }}">{{ $source->waste_source_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- Waste Title -->
-                            <div class="mb-3 col-6">
-                                <label for="WasteTitle" class="form-label fw-semibold text-primary">Waste Title</label>
-                                <input type="text" class="form-control rounded-pill shadow-sm" id="WasteTitle" name="waste_title" placeholder="Enter waste title" required>
-                            </div>
                             <!-- Quantity -->
-                            <div class="mb-3 col-6">
-                                <label for="Quantity" class="form-label fw-semibold text-primary">Quantity</label>
-                                <input type="number" class="form-control rounded-pill shadow-sm" id="Quantity" name="quantity" placeholder="Enter quantity" required>
+                            <div class="col-md-4">
+                                <label for="Quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control shadow-sm" id="Quantity" name="quantity" placeholder="Enter quantity" min="0" required>
                             </div>
                             <!-- Unit -->
-                            <div class="mb-3 col-6">
-                                <label for="Unit" class="form-label fw-semibold text-primary">Unit</label>
-                                <input type="text" class="form-control rounded-pill shadow-sm" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
+                            <div class="col-md-2">
+                                <label for="Unit" class="form-label">Unit</label>
+                                <input type="text" class="form-control shadow-sm" id="Unit" name="unit" placeholder="e.g. kg, tons" required>
                             </div>
                             <!-- Date Generated -->
-                            <div class="mb-3 col-6">
+                            <div class="col-md-3">
                                 <label for="DateGenerated" class="form-label fw-semibold text-primary">Date Generated</label>
-                                <input type="date" class="form-control rounded-pill shadow-sm" id="DateGenerated" name="date_generated" required>
+                                <input type="date" class="form-control shadow-sm" id="DateGenerated" name="date_generated" required>
                             </div>
                             <!-- Disposal Date -->
-                            <div class="mb-3 col-6">
-                                <label for="DisposalDate" class="form-label fw-semibold text-primary">Disposal Date</label>
-                                <input type="date" class="form-control rounded-pill shadow-sm" id="DisposalDate" name="disposal_date">
+                            <div class="col-md-3">
+                                <label for="DisposalDate" class="form-label">Disposal Date</label>
+                                <input type="date" class="form-control shadow-sm" id="DisposalDate" name="disposal_date">
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer bg-light border-0">
-                        <button type="submit" class="btn btn-success rounded-pill px-4 fw-semibold">Save Waste Type</button>
+                    <div class="modal-footer bg-light border-0 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success px-4 fw-semibold shadow-sm">
+                            <i class="bi bi-save me-2"></i>Save Waste Type
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    @endsection
 
     @section('scripts')
         <!-- JS Script -->
