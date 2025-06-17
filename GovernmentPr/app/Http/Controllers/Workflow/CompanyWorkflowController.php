@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Workflow;
+use App\Http\Controllers\Controller;
 
 use App\Models\CompanyWorkflow;
 use Illuminate\Http\Request;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyWorkflowController extends Controller
 {
@@ -28,24 +32,44 @@ class CompanyWorkflowController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request data
         // Server-side validation using Validator
         $validator = \Validator::make($request->all(), [
             'company_id' => 'required|integer',
             'workflow_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'created_by' => 'required|integer',
-            'guard' => 'nullable|string|max:255',
-            'status' => 'required|in:active,inactive',
+            'workflow_description' => 'nullable|string',
+            'workflow_status' => 'required|in:active,inactive',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+        try {
+            $data = [
+                'company_id' => $validator->validated()['company_id'],
+                'workflow_name' => $validator->validated()['workflow_name'],
+                'description' => $validator->validated()['workflow_description'] ?? null,
+                'created_by' => auth(auth()->getDefaultDriver())->id(), // Get user id based on the current guard
+                'guard' => auth()->getDefaultDriver(), // Get the guard of the authenticated user
+                'status' => $validator->validated()['workflow_status'],
+            ];
+            $companyWorkflow = CompanyWorkflow::create($data);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create company workflow.',
+                'error' => $e->getMessage()
+            ], 500);
         }
 
-        $companyWorkflow = CompanyWorkflow::create($validator->validated());
+        // Return a success response
+        // Return a success response with the created company workflow
+        $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)->get();
 
-        return response()->json($companyWorkflow, 201);
+        return response()->json([
+            'status' => 'success',
+            'workflows' => $allCompanyWorkflows
+        ], 201);
     }
 
     /**

@@ -2797,7 +2797,7 @@
                                 aria-labelledby="workflowManagementHeading" data-bs-parent="#operationsAccordion">
                                 <div class="accordion-body">
                                     <!-- Workflow Management Form -->
-                                    <form action="" method="post" id="workflow-management-form">
+                                    <form action="" id="workflow-management-form">
                                         @csrf
                                         <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                         <div class="row g-3">
@@ -2825,7 +2825,7 @@
                                     </form>
                                     <!-- Workflow Management Table -->
                                     <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-workflow-management">
+                                        <table class="table table-striped mb-0 w-100" id="tbl-workflow-management">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Workflow Name</th>
@@ -11966,7 +11966,7 @@
      */
 
     // Initialize DataTable for Company Workflow
-    let workflowTable = $('#tbl-company-workflow').DataTable({
+    let workflowTable = $('#tbl-workflow-management').DataTable({
         paging: true,
         searching: true,
         ordering: false,
@@ -11976,8 +11976,10 @@
         ],
         data: [],
         columns: [
-            { data: 'step_name', title: 'Step Name' },
+            { data: 'workflow_name', title: 'Workflow Name' },
             { data: 'description', title: 'Description' },
+            { data: 'created_by', title: 'Created By' },
+            { data: 'status', title: 'Status' },
             {
                 data: null,
                 title: 'Action',
@@ -12028,7 +12030,7 @@
 
     // Handle workflow form submission
     document.addEventListener('DOMContentLoaded', function () {
-        const workflowForm = document.getElementById('workflow-form');
+        const workflowForm = document.getElementById('workflow-management-form');
         if (workflowForm) {
             workflowForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
