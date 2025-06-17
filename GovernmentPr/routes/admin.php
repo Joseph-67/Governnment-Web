@@ -61,8 +61,7 @@ use App\Http\Controllers\AnnualOperation\ActivityController;
 use App\Http\Controllers\HRMS\CompanyDepartmentController;
 use App\Http\Controllers\HRMS\CompanyEmployeesController;
 use App\Http\Controllers\TagController;
-
-
+use App\Http\Controllers\Workflow\CompanyWorkflowController;
 
 
 // Guest Admin Routes
@@ -198,6 +197,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/waste/{id}', 'update')->name('admin.update-waste');
         Route::delete('/waste/{id}', 'destroy')->name('admin.delete-waste');
         Route::get('/get-waste/{value}', 'getCompanyWastes');
+    });
+
+    // Workflow Management
+    Route::controller(CompanyWorkflowController::class)->group(function() {
+        Route::get('/workflow', 'index')->name('admin.workflow');
+        Route::post('/workflow/store', 'store')->name('admin.store-company-workflow');
+        Route::get('/workflow/{id}', 'show')->name('admin.show-workflow');
+        Route::put('/workflow/{id}', 'update')->name('admin.update-workflow');
+        Route::delete('/workflow/{id}', 'destroy')->name('admin.delete-workflow');
+        Route::get('/workflow/company/{companyId}', 'getWorkflowsByCompany')->name('admin.workflow-by-company');
+        Route::get('/get-workflows/{company_id}', 'getWorkflows')->name('admin.get-workflows');
     });
     
     // Equipment Log
@@ -649,12 +659,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     // Waste Management
     Route::controller(WasteTypeController::class)->group(function() {
-        Route::get('/waste-management', 'index')->name('admin.waste-management');
-        Route::post('/waste-management/store', 'store')->name('admin.store-waste-management');
-        Route::get('/waste-management/{id}', 'show')->name('admin.show-waste-management');
-        Route::put('/waste-management/{id}', 'update')->name('admin.update-waste-management');
-        Route::delete('/waste-management/{id}', 'destroy')->name('admin.delete-waste-management');
-        
+        Route::get('/waste-types', 'index')->name('admin.waste-types');
+        Route::post('/waste-types', 'store')->name('admin.store-waste-type');
+        Route::get('/waste-types/{id}', 'show')->name('admin.show-waste-type');
+        Route::put('/waste-types/{id}', 'update')->name('admin.update-waste-type');
+        Route::delete('/waste-types/{id}', 'destroy')->name('admin.delete-waste-type');
     });
 
     // Water Stock Movement

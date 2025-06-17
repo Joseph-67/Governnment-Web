@@ -13,7 +13,7 @@ class WasteType extends Model
     protected $fillable = [
         'waste_category_id',
         'waste_sub_category_id',
-        'waste_sources_id',
+        'waste_source_id',
         'WasteTitle',
         'Quantity',
         'Unit',
@@ -36,6 +36,6 @@ class WasteType extends Model
     }
     public function wasteSource()
     {
-        return $this->belongsTo(WasteSource::class, 'waste_source_id', 'waste_source_id');
+        return $this->belongsTo(WasteSources::class, 'waste_source_id', 'waste_source_id');
     }
 }

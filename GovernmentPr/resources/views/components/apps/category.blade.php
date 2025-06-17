@@ -12,7 +12,7 @@
                         <h4 class="card-title">Setup Category</h4>
                     </div>
                     <div class="card-body pt-0">
-                        <form action="{{ route('admin.store-waste-category') }}" method="post">
+                        <form action="{{ route('admin.store-category') }}" method="post">
                             @csrf
                             <div class="row g-2 align-items-end">
                                 <div class="col-md-4">
@@ -35,7 +35,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="table-responsive mt-4">
+                <div class="table-responsive">
                     <table class="table table-bordered mb-0 table-centered" id="tbl-company-material">
                         <thead>
                             <tr>
@@ -74,7 +74,7 @@
                         <h4 class="card-title">Setup Waste Category</h4>
                     </div>
                     <div class="card-body pt-0">
-                        <form action="{{ route('admin.store-waste-management') }}" method="post">
+                        <form action="{{ route('admin.store-waste-category') }}" method="post">
                             @csrf
                             <div class="row g-2 align-items-end">
                                 <div class="col-md-4">

@@ -1,83 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinite Sliding Partner Section</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ffafbd, #ffc3a0);
-      color: #fff;
-    }
+            const formData = new FormData(form);
+            const formUrl = form.action || null;
+            if (!formUrl) {
+                Toastify({
+                    text: "Form action URL is not set.",
+                    backgroundColor: "#dc3545",
+                    duration: 4000
+                }).showToast();
+                return;
+            }
+            // Validate form data
+            try {
+                const response = await fetch(formUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
 
-    .partner-section {
-      padding: 60px 20px;
-      text-align: center;
-    }
+                const result = await response.json();
 
-    .partner-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 40px;
-      color: #333;
-    }
+                if (response.ok) {
+                    // Assuming the response contains a success message or data
+                    console.log("Record added successfully:", result);
+                    // Show success message
+                    console.log("Form submitted successfully");
+                    if (result.success) {
+                        Toastify({
+                            text: result.message || "Record added successfully!",
+                            backgroundColor: "#28a745",
+                            duration: 3000
+                        }).showToast();
+                        form.reset();
+                    } else {
+                        Toastify({
+                            text: result.message || "Record added successfully!",
+                            backgroundColor: "#28a745",
+                            duration: 3000
+                        }).showToast();
+                    }
 
-    .slider-container {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      height: 150px;
-    }
-
-    .slider-track {
-      display: flex;
-      animation: slide 20s linear infinite;
-    }
-
-    .slider-track img {
-      width: 200px;
-      height: 120px;
-      margin: 0 15px;
-      border-radius: 15px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .slider-track img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    @keyframes slide {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-  </style>
-</head>
-<body>
-  <section class="partner-section">
-    <h2>Our Partners</h2>
-    <div class="slider-container">
-      <div class="slider-track">
-        <!-- Original Logos -->
-        <img src="https://static.abw.by/photos/news/212728_1_350.jpg?v=2" alt="Partner 1">
-        <img src="https://p.ohtuleht.ee/59/i/2022/3/10/y2b3xdmf.p5u.jpg" alt="Partner 2">
-        <img src="https://i.ytimg.com/vi/pSfr4uIDYgc/maxresdefault.jpg" alt="Partner 3">
-        <img src="https://ymimg1.b8cdn.com/uploads/car_model/4119/pictures/3366343/Devel_Sixteen.jpg" alt="Partner 4">
-        <!-- Duplicate Logos for Infinite Loop -->
-        <img src="https://static.abw.by/photos/news/212728_1_350.jpg?v=2" alt="Partner 1">
-        <img src="https://p.ohtuleht.ee/59/i/2022/3/10/y2b3xdmf.p5u.jpg" alt="Partner 2">
-        <img src="https://i.ytimg.com/vi/pSfr4uIDYgc/maxresdefault.jpg" alt="Partner 3">
-        <img src="https://ymimg1.b8cdn.com/uploads/car_model/4119/pictures/3366343/Devel_Sixteen.jpg" alt="Partner 4">
-      </div>
-    </div>
-  </section>
-</body>
-</html>
+                    // Optionally, close modal and refresh table here
+                    // $('#wasteTypeModal').modal('hide');
+                    // You may want to reload the table data here
+                } else {
+                    let errorMsg = "Failed to add waste type.";
+                    if (result.errors) {
+                        errorMsg = Object.values(result.errors).flat().join('\n');
+                    }
+                    Toastify({
+                        text: errorMsg,
+                        backgroundColor: "#dc3545",
+                        duration: 4000
+                    }).showToast();
+                }
+            } catch (error) {
+                Toastify({
+                    text: "An error occurred. Please try again.",
+                    backgroundColor: "#dc3545",
+                    duration: 4000
+                }).showToast();
+            }

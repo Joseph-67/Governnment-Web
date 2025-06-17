@@ -2784,6 +2784,63 @@
                 <!-- Operations Management -->
                 <div class="tab-pane p-3" id="operations" role="tabpanel">
                     <div class="accordion" id="operationsAccordion">
+                        <!-- Company Workflow Management Accordion Item -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="workflowManagementHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#workflowManagementCollapse" aria-expanded="false"
+                                    aria-controls="workflowManagementCollapse">
+                                    <i class="las la-project-diagram me-2" style="font-size: 1.5rem;"></i> Organization Workflow Management
+                                </button>
+                            </h2>
+                            <div id="workflowManagementCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="workflowManagementHeading" data-bs-parent="#operationsAccordion">
+                                <div class="accordion-body">
+                                    <!-- Workflow Management Form -->
+                                    <form action="" id="workflow-management-form">
+                                        @csrf
+                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="workflow_name" class="form-label">Workflow Name</label>
+                                                <input type="text" class="form-control" id="workflow_name" name="workflow_name" placeholder="Enter workflow name" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="workflow_description" class="form-label">Description</label>
+                                                <input type="text" class="form-control" id="workflow_description" name="workflow_description" placeholder="Enter description">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="workflow_status" class="form-label">Status</label>
+                                                <select class="form-select" id="workflow_status" name="workflow_status" required>
+                                                    <option value="" selected disabled>Select status</option>
+                                                    <option value="active">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                    <option value="archived">Archived</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 text-end mt-3">
+                                                <button type="submit" class="btn btn-primary">Save Workflow</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Workflow Management Table -->
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped mb-0 w-100" id="tbl-workflow-management">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Workflow Name</th>
+                                                    <th>Description</th>
+                                                    <th>Owner</th>
+                                                    <th>Status</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="operationTypeHeading">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -11864,39 +11921,182 @@
   <!-- End Department -->
    <!-- Employee -->
     <script>
-// Handle employee form submission
-document.getElementById('employee-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const url = "{{ route('admin.store-company-employee') }}";
+        // Handle employee form submission
+        document.getElementById('employee-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const url = "{{ route('admin.store-company-employee') }}";
 
-    try {
-        // Ensure the route supports POST; if not, use GET and append params to URL
-        // If the route only supports GET, use the following pattern:
-        // const params = new URLSearchParams(formData).toString();
-        // const response = await fetch(url + '?' + params, { method: 'GET' });
-        // Otherwise, use POST as below if the route supports it:
-        const result = await fetch_cycle('--Store Employee', url, 'POST', formData);
-        if (result.status === 'success' && result.employee) {
-            const emp = result.employee;
-            employeesTable.row.add({
-                name: emp.name ?? "N/A",
-                email: emp.email ?? "N/A",
-                role: emp.role ?? "N/A",
-                department: emp.department?.DepartmentName ?? "N/A",
-                id: emp.id ?? "N/A"
-            }).draw(false);
-        } else {
-            displayMessage('danger', result.message || 'Failed to add employee.');
-        }
-    } catch (error) {
-        console.error('Error storing employee:', error);
-        displayMessage('danger', 'An error occurred while adding employee.');
-    }
-});
+            try {
+                // Ensure the route supports POST; if not, use GET and append params to URL
+                // If the route only supports GET, use the following pattern:
+                // const params = new URLSearchParams(formData).toString();
+                // const response = await fetch(url + '?' + params, { method: 'GET' });
+                // Otherwise, use POST as below if the route supports it:
+                const result = await fetch_cycle('--Store Employee', url, 'POST', formData);
+                if (result.status === 'success' && result.employee) {
+                    const emp = result.employee;
+                    employeesTable.row.add({
+                        name: emp.name ?? "N/A",
+                        email: emp.email ?? "N/A",
+                        role: emp.role ?? "N/A",
+                        department: emp.department?.DepartmentName ?? "N/A",
+                        id: emp.id ?? "N/A"
+                    }).draw(false);
+                } else {
+                    displayMessage('danger', result.message || 'Failed to add employee.');
+                }
+            } catch (error) {
+                console.error('Error storing employee:', error);
+                displayMessage('danger', 'An error occurred while adding employee.');
+            }
+        });
 
     </script>
-    
    <!-- Employee -->
+    <!-- Company Workflow Management Script -->
+    <script>
+    /**
+     * Company Workflow Management Script
+     * Handles:
+     * - Fetching and displaying company workflows in a DataTable.
+     * - Adding, editing, and deleting workflow steps.
+     * - Submitting the workflow form and updating the workflow table.
+     * - Uses fetch_cycle for AJAX requests.
+     */
+
+    // Initialize DataTable for Company Workflow
+    let workflowTable = $('#tbl-workflow-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+        ],
+        data: [],
+        columns: [
+            { data: 'workflow_name', title: 'Workflow Name' },
+            { data: 'description', title: 'Description' },
+            { data: 'created_by', title: 'Created By' },
+            { data: 'status', title: 'Status' },
+            {
+                data: null,
+                title: 'Action',
+                render: function(data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.id}')">
+                                <i class="las la-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteWorkflowStep('${row.id}')">
+                                <i class="las la-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                },
+                className: 'text-end'
+            }
+        ]
+    });
+
+    // Fetch and display workflows when the accordion is expanded
+    document.getElementById('workflowManagementCollapse').addEventListener('shown.bs.collapse', async () => {
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/get-workflows/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+            if (data.status === "success" && Array.isArray(data.workflows)) {
+                const workflows = data.workflows.map(wf => ({
+                    workflow_name: wf.workflow_name || "N/A",
+                    description: wf.description || "",
+                    created_by: wf.created_by?.name || "N/A",
+                    status: wf.status || "N/A",
+                    id: wf.workflow_id || "N/A"
+                }));
+                workflowTable.clear().rows.add(workflows).draw();
+            } else {
+                displayMessage('warning', 'No workflows found or invalid data structure.');
+                workflowTable.clear().draw();
+            }
+        } catch (error) {
+            console.error("Error fetching workflows:", error);
+            displayMessage('danger', 'An error occurred while fetching workflows.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
+
+    // Handle workflow form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const workflowForm = document.getElementById('workflow-management-form');
+        if (workflowForm) {
+            workflowForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(workflowForm);
+                const url = "{{ route('admin.store-company-workflow') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Workflow', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.workflows)) {
+                        const workflows = result.workflows.map(wf => ({
+                            step_name: wf.step_name || "N/A",
+                            description: wf.description || "",
+                            id: wf.id || "N/A"
+                        }));
+                        workflowTable.clear().rows.add(workflows).draw();
+                    }
+                } catch (error) {
+                    console.error('Error storing workflow:', error);
+                }
+            });
+        }
+    });
+
+    // Edit workflow step
+    window.editWorkflowStep = function(id) {
+        // Fetch workflow step details and populate the form for editing
+        // (Implementation depends on your backend API)
+        // Example:
+        // fetch(`/admin/get-workflow-step/${id}`).then(...);
+        alert('Edit workflow step: ' + id);
+    };
+
+    // Delete workflow step
+    window.deleteWorkflowStep = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this workflow step?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/delete-workflow-step/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        workflowTable.row($(`button[onclick="deleteWorkflowStep('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Workflow step has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete workflow step.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+    </script>
+    <!-- End Company Workflow Management Script -->
     @endsection
 </x-layouts.admin-app>
