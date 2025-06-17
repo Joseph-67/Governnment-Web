@@ -39,22 +39,43 @@ class CompanyWorkflowController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
-        
-        // Fetch all workflows for the given company with creator details
+
+        // Fetch workflows with dynamic creator details
         $workflows = CompanyWorkflow::where('company_id', $company_id)
-            ->with([
-                'creator' => function ($query) {
-                    $query->select('id', 'name', 'email', 'profile_picture');
-                }
-            ])
-            ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status')
+            ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status', 'created_at')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($workflow) {
+                // Fetch the creator details dynamically
+                $workflow->creator = $this->fetchCreator($workflow->guard, $workflow->created_by);
+                return $workflow;
+            });
 
         return response()->json([
             'status' => 'success',
             'workflows' => $workflows
         ]);
+    }
+
+    private function fetchCreator(string $guard, int $creatorId): ?object
+    {
+        // Define guard-to-table mapping
+        $tableMapping = [
+            'admin' => 'admins',
+            'employee' => 'company_employees',
+            'web' => 'users',
+        ];
+
+        if (!isset($tableMapping[$guard])) {
+            \Log::warning("Invalid guard '{$guard}' for creator ID: {$creatorId}");
+            return null;
+        }
+
+        // Fetch creator details from the appropriate table
+        return \DB::table($tableMapping[$guard])
+            ->where('id', $creatorId)
+            ->select('id', 'email', 'profile_photo_path', 'first_name', 'last_name', 'other_name')
+            ->first();
     }
 
     /**
