@@ -28,6 +28,36 @@ class CompanyWorkflowController extends Controller
     }
 
     /**
+     * Get all workflows for a given company.
+     */
+    public function getWorkflows($company_id)
+    {
+        $validator = Validator::make(['company_id' => $company_id], [
+            'company_id' => 'required|integer|exists:companies,company_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+        
+        // Fetch all workflows for the given company with creator details
+        $workflows = CompanyWorkflow::where('company_id', $company_id)
+            ->with([
+                'creator' => function ($query) {
+                    $query->select('id', 'name', 'email', 'profile_picture');
+                }
+            ])
+            ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'workflows' => $workflows
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -36,7 +66,14 @@ class CompanyWorkflowController extends Controller
         // Server-side validation using Validator
         $validator = \Validator::make($request->all(), [
             'company_id' => 'required|integer',
-            'workflow_name' => 'required|string|max:255',
+            'workflow_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('company_workflows')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
+                }),
+            ],
             'workflow_description' => 'nullable|string',
             'workflow_status' => 'required|in:active,inactive',
         ]);
@@ -68,6 +105,7 @@ class CompanyWorkflowController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'message' => 'Company workflow created successfully.',
             'workflows' => $allCompanyWorkflows
         ], 201);
     }

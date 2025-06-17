@@ -12011,9 +12011,11 @@
             const data = await fetchFieldInput(url);
             if (data.status === "success" && Array.isArray(data.workflows)) {
                 const workflows = data.workflows.map(wf => ({
-                    step_name: wf.step_name || "N/A",
+                    workflow_name: wf.workflow_name || "N/A",
                     description: wf.description || "",
-                    id: wf.id || "N/A"
+                    created_by: wf.created_by?.name || "N/A",
+                    status: wf.status || "N/A",
+                    id: wf.workflow_id || "N/A"
                 }));
                 workflowTable.clear().rows.add(workflows).draw();
             } else {

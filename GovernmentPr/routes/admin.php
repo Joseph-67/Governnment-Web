@@ -207,6 +207,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/workflow/{id}', 'update')->name('admin.update-workflow');
         Route::delete('/workflow/{id}', 'destroy')->name('admin.delete-workflow');
         Route::get('/workflow/company/{companyId}', 'getWorkflowsByCompany')->name('admin.workflow-by-company');
+        Route::get('/get-workflows/{company_id}', 'getWorkflows')->name('admin.get-workflows');
     });
     
     // Equipment Log
