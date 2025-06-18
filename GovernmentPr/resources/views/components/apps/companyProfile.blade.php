@@ -5770,7 +5770,73 @@
             </div>
         </div>
     </div>
+    <!-- End Workflow Edit Form Modal -->
+    <!-- Stage Management Modal -->
+    <div class="modal fade" id="stageManagementModal" tabindex="-1" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="stage-management-form">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="workflow_id" id="stage_workflow_id">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="stageManagementModalLabel">
+                            Stage Management for <span id="stage-workflow-title"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="stage_name" class="form-label">Stage Name</label>
+                                <input type="text" class="form-control" id="stage_name" name="stage_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stage_description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="stage_description" name="stage_description" placeholder="Enter stage description">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stage_status" class="form-label">Status</label>
+                                <select class="form-select" id="stage_status" name="stage_status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="halted">Halted</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stage_sequence_order" class="form-label">Sequence Order</label>
+                                <input type="number" class="form-control" id="stage_sequence_order" name="stage_sequence_order" min="1" placeholder="Enter sequence order">
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3 text-end">
+                            <button type="submit" class="btn btn-info">Save Stage</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive px-3 pb-3">
+                    <table class="table table-striped mb-0 w-100" id="tbl-stage-management">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Stage Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Sequence Order</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic rows will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Stage Management Modal -->
     <!-- end workflow management -->
+
      <!-- Annual operations activity -->
     <!-- Annual Operations Activity Modal -->
     <div class="modal fade" id="annualOperationsActivityModal" tabindex="-1" aria-labelledby="annualOperationsActivityModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -12052,6 +12118,9 @@
                 render: function(data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="manageWorkflowStages('${row.workflow_id}')">
+                                <i class="las la-layer-group"></i> Stages
+                            </button>
                             <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.workflow_id}')">
                                 <i class="las la-edit"></i> Edit
                             </button>
@@ -12200,5 +12269,174 @@
     };
     </script>
     <!-- End Company Workflow Management Script -->
+    <!-- Stage Management Script -->
+    <script>
+    /**
+     * Stage Management Script
+     * Handles:
+     * - Fetching and displaying stages for a batch in a DataTable.
+     * - Adding, editing, and deleting stages.
+     * - Submitting the stage management form and updating the stage table.
+     * - Uses fetch_cycle for AJAX requests.
+     */
+
+    // Initialize DataTable for Stage Management
+    // Initialize DataTable for Stage Management
+    const stageTable = $('#tbl-stage-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [4] } // Action column
+        ],
+        data: [],
+        columns: [
+            { data: 'stage_name', title: 'Stage Name' },
+            { data: 'description', title: 'Description' },
+            { data: 'status', title: 'Status' },
+            { data: 'sequence_order', title: 'Sequence Order' },
+            {
+                data: null,
+                title: 'Action',
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="editStage('${row.stage_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteStage('${row.stage_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
+            }
+        ]
+    });
+
+    window.manageWorkflowStages = function(workflowId) {
+                // clear the form fields
+        document.getElementById('stage-management-form').reset();
+        // Set the batch_id (or workflow_id) in the hidden input for the stage form
+        document.getElementById('stage_workflow_id').value = workflowId;
+
+        const workflow = workflowTable.row($(`button[onclick="manageWorkflowStages('${workflowId}')"]`).parents('tr')).data();
+        if (workflow && document.getElementById('stage-workflow-title')) {
+            document.getElementById('stage-workflow-title').textContent = workflow.workflow_name || '';
+        }
+
+        // Fetch and display stages for the selected workflow
+        (async () => {
+            const url = `/admin/get-company-stages/${workflowId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.stages)) {
+                    const stages = data.stages.map(stage => ({
+                        stage_name: stage.stage_name || "N/A",
+                        description: stage.stage_description || "",
+                        status: stage.stage_status || "N/A",
+                        sequence_order: stage.sequence_order || "N/A",
+                        stage_id: stage.stage_id || stage.id || "N/A"
+                    }));
+                    stageTable.clear().rows.add(stages).draw();
+                    // Clear the form for new entry
+                    document.getElementById('stage-management-form').reset();
+                } else {
+                    stageTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching stages:", error);
+                stageTable.clear().draw();
+            }
+        })();
+        
+        // Show the stage management modal
+        const modal = new bootstrap.Modal(document.getElementById('stageManagementModal'));
+        modal.show();
+    };
+
+
+    // Handle stage form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const stageForm = document.getElementById('stage-management-form');
+        if (stageForm) {
+            stageForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(stageForm);
+                const url = "{{ route('admin.store-company-stage') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Stage', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.stages)) {
+                        const stages = result.stages.map(stage => ({
+                            stage_name: stage.stage_name || "N/A",
+                            status: stage.stage_status || "N/A",
+                            start_date: stage.stage_start_date || "N/A",
+                            end_date: stage.stage_end_date || "N/A",
+                            description: stage.stage_description || "",
+                            stage_id: stage.stage_id || stage.id || "N/A"
+                        }));
+                        stageTable.clear().rows.add(stages).draw();
+                        stageForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing stage:', error);
+                }
+            });
+        }
+    });
+
+    // Edit stage
+    window.editStage = function(id) {
+        // Fetch stage details and populate the form for editing
+        // (Implementation depends on your backend API)
+        // Example:
+        // fetch(`/admin/get-stage/${id}`).then(...);
+
+        // For demonstration, you can fetch the row data from DataTable
+        const stage = stageTable.row($(`button[onclick="editStage('${id}')"]`).parents('tr')).data();
+        if (stage) {
+            document.getElementById('stage_batch_id').value = stage.batch_id || "";
+            document.getElementById('stage_name').value = stage.stage_name || "";
+            document.getElementById('stage_status').value = stage.status || "";
+            document.getElementById('stage_start_date').value = stage.start_date || "";
+            document.getElementById('stage_end_date').value = stage.end_date || "";
+            document.getElementById('stage_description').value = stage.description || "";
+        }
+    };
+
+    // Delete stage
+    window.deleteStage = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this stage?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/stage/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        stageTable.row($(`button[onclick="deleteStage('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Stage has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete stage.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+    </script>
+    <!-- End Stage Management Script -->
     @endsection
 </x-layouts.admin-app>
