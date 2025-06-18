@@ -33,8 +33,14 @@ class CompanyStageController extends Controller
     
     public function getStagesByWorkflow($workflowId)
     {
-        $stages = CompanyStage::where('workflow_id', $workflowId)->get();
-        return response()->json($stages);
+        $stages = CompanyStage::where('workflow_id', $workflowId)
+            ->orderBy('sequence')
+            ->get(['stage_id', 'name', 'description', 'sequence', 'status']);
+
+        return response()->json([
+            'status' => 'success',
+            'stages' => $stages
+        ]);
     }
     /**
      * Store a newly created resource in storage.
@@ -79,10 +85,14 @@ class CompanyStageController extends Controller
             'status'       => $validated['stage_status'],
         ]);
 
+        $allStages = CompanyStage::where('workflow_id', $validated['workflow_id'])
+        ->orderBy('sequence')
+        ->get();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Company stage created successfully.',
-            'data' => $companyStage
+            'stages' => $allStages
         ], 201);
     }
 

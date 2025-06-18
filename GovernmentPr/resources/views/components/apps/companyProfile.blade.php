@@ -12332,10 +12332,10 @@
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.stages)) {
                     const stages = data.stages.map(stage => ({
-                        stage_name: stage.stage_name || "N/A",
-                        description: stage.stage_description || "",
-                        status: stage.stage_status || "N/A",
-                        sequence_order: stage.sequence_order || "N/A",
+                        stage_name: stage.name || "N/A",
+                        description: stage.description || "",
+                        status: stage.status || "N/A",
+                        sequence_order: stage.sequence || "N/A",
                         stage_id: stage.stage_id || stage.id || "N/A"
                     }));
                     stageTable.clear().rows.add(stages).draw();
@@ -12369,11 +12369,10 @@
                     const result = await fetch_cycle('--Store Stage', url, 'POST', formData);
                     if (result.status === 'success' && Array.isArray(result.stages)) {
                         const stages = result.stages.map(stage => ({
-                            stage_name: stage.stage_name || "N/A",
-                            status: stage.stage_status || "N/A",
-                            start_date: stage.stage_start_date || "N/A",
-                            end_date: stage.stage_end_date || "N/A",
-                            description: stage.stage_description || "",
+                            stage_name: stage.name || "N/A",
+                            description: stage.description || "",
+                            status: stage.status || "N/A",
+                            sequence_order: stage.sequence || "N/A",
                             stage_id: stage.stage_id || stage.id || "N/A"
                         }));
                         stageTable.clear().rows.add(stages).draw();
