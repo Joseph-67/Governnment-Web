@@ -5729,6 +5729,48 @@
     <!-- end update operation log modal -->
     @section('modals')
     <!-- Add your modal content here if needed -->
+    <!-- workflow management -->
+    <!-- Workflow Edit Form Modal -->
+    <div class="modal fade" id="workflowEditModal" tabindex="-1" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="workflow-edit-form" method="post">
+                    @csrf
+                    <input type="hidden" name="workflow_id" id="workflow_edit_id">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="workflowEditModalLabel">Edit Workflow</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="workflow_edit_name" class="form-label">Workflow Name</label>
+                                <input type="text" class="form-control" id="workflow_edit_name" name="workflow_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="workflow_edit_description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="workflow_edit_description" name="description" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="workflow_edit_status" class="form-label">Status</label>
+                                <select class="form-select" id="workflow_edit_status" name="status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Workflow</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end workflow management -->
      <!-- Annual operations activity -->
     <!-- Annual Operations Activity Modal -->
     <div class="modal fade" id="annualOperationsActivityModal" tabindex="-1" aria-labelledby="annualOperationsActivityModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -11966,30 +12008,54 @@
      */
 
     // Initialize DataTable for Company Workflow
+    // Initialize the DataTable for workflow management
     let workflowTable = $('#tbl-workflow-management').DataTable({
-        paging: true,
-        searching: true,
-        ordering: false,
-        responsive: true,
+        paging: true,                  // Enable pagination
+        searching: true,               // Enable search functionality
+        ordering: false,               // Disable global ordering
+        responsive: true,              // Make the table responsive
         columnDefs: [
-            { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+            { orderable: false, targets: [4] } // Disable sorting on the "Action" column
         ],
-        data: [],
+        data: [], // Placeholder for dynamic data
         columns: [
             { data: 'workflow_name', title: 'Workflow Name' },
             { data: 'description', title: 'Description' },
-            { data: 'created_by', title: 'Created By' },
-            { data: 'status', title: 'Status' },
-            {
-                data: null,
+            { 
+                data: 'creator', 
+                title: 'Created By',
+                render: function(data) {
+                    return data 
+                        ? `<div class="d-flex align-items-center">
+                                <img src="${data.profile_picture}" alt="Profile" class="rounded-circle me-2" width="30" height="30">
+                                <div>
+                                    <div>
+                                        <strong>${data.first_name ?? ''} ${data.last_name ?? ''} ${data.other_name ?? ''}</strong>
+                                    </div>
+                                    <span>${data.email}</span>
+                                </div>
+                            </div>`
+                        : 'N/A';
+                }
+            },
+            { 
+                data: 'status', 
+                title: 'Status', 
+                render: function(data) {
+                    const statusClass = data === 'active' ? 'text-success' : 'text-danger';
+                    return `<span class="${statusClass} fw-bold">${data}</span>`;
+                }
+            },
+            { 
+                data: null, 
                 title: 'Action',
                 render: function(data, type, row) {
                     return `
                         <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.id}')">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.workflow_id}')">
                                 <i class="las la-edit"></i> Edit
                             </button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteWorkflowStep('${row.id}')">
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteWorkflowStep('${row.workflow_id}')">
                                 <i class="las la-trash-alt"></i> Delete
                             </button>
                         </div>
@@ -11999,6 +12065,14 @@
             }
         ]
     });
+
+    // Function to load workflows dynamically
+    function loadWorkflows(data) {
+        workflowTable.clear();        // Clear existing data
+        workflowTable.rows.add(data); // Add new data
+        workflowTable.draw();         // Re-render the table
+    }
+
 
     // Fetch and display workflows when the accordion is expanded
     document.getElementById('workflowManagementCollapse').addEventListener('shown.bs.collapse', async () => {
@@ -12013,9 +12087,17 @@
                 const workflows = data.workflows.map(wf => ({
                     workflow_name: wf.workflow_name || "N/A",
                     description: wf.description || "",
-                    created_by: wf.created_by?.name || "N/A",
+                    creator: wf.creator
+                        ? {
+                            first_name: wf.creator.first_name || "N/A",
+                            last_name: wf.creator.last_name || "N/A",
+                            other_name: wf.creator.other_name || "",
+                            profile_picture: wf.creator.profile_photo_path || 'https://via.placeholder.com/30',
+                            email: wf.creator.email || "N/A"
+                        }
+                        : null,
                     status: wf.status || "N/A",
-                    id: wf.workflow_id || "N/A"
+                    workflow_id: wf.workflow_id || "N/A"
                 }));
                 workflowTable.clear().rows.add(workflows).draw();
             } else {
@@ -12062,14 +12144,34 @@
         // (Implementation depends on your backend API)
         // Example:
         // fetch(`/admin/get-workflow-step/${id}`).then(...);
-        alert('Edit workflow step: ' + id);
+
+        // alert('Edit workflow step: ' + id);
+        const workflow = workflowTable.row($(`button[onclick="editWorkflowStep('${id}')"]`).parents('tr')).data();
+        if (workflow) {
+            // Populate the modal form fields with workflow data
+            document.getElementById('workflow_edit_id').value = id;
+            document.getElementById('workflow_edit_name').value = workflow.workflow_name || '';
+            document.getElementById('workflow_edit_description').value = workflow.description || '';
+            // Populate type and status dropdowns if needed (fetch or static)
+            // Example: document.getElementById('workflow_edit_type').value = workflow.type || '';
+            // Set the selected option for status dropdown
+            const statusSelect = document.getElementById('workflow_edit_status');
+            if (statusSelect) {
+                Array.from(statusSelect.options).forEach(option => {
+                    option.selected = (option.value === (workflow.status || ''));
+                });
+            }
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
+            modal.show();
+        }
     };
 
     // Delete workflow step
     window.deleteWorkflowStep = function(id) {
         Swal.fire({
             title: 'Are you sure?',
-            text: "Do you want to delete this workflow step?",
+            text: "Do you want to delete this workflow?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -12077,7 +12179,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const url = `/admin/delete-workflow-step/${id}`;
+                const url = `/admin/workflow/${id}`;
                 try {
                     const response = await fetch(url, {
                         method: 'DELETE',
