@@ -27,41 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `companies`
 --
 
-DROP TABLE IF EXISTS `companies`;
-CREATE TABLE IF NOT EXISTS `companies` (
-  `company_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `company_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `industry` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `industry_process` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `primary_phone_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secondary_phone_number` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zip_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mgrs` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `website_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date_of_establishment` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number_of_employees` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `operations_manager` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contact_person_full_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contact_person_position` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contact_person_contact_number` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_sharable` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`company_id`),
-  UNIQUE KEY `companies_company_name_unique` (`company_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `companies`
---
 
 INSERT INTO `companies` (`company_id`, `company_name`, `industry`, `industry_process`, `email`, `primary_phone_number`, `secondary_phone_number`, `country`, `state`, `city`, `address`, `zip_code`, `longitude`, `latitude`, `mgrs`, `website_url`, `date_of_establishment`, `number_of_employees`, `operations_manager`, `contact_person_full_name`, `contact_person_position`, `contact_person_contact_number`, `is_sharable`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Afdin Petroleum lpg', 'Petrochemicals', '', 'Info@afdinlpg.com', '8025625555.0', NULL, 'Nigeria', 'Kano', 'Kano', '11 club road Kano', NULL, '4º12\'53.8\"N', '46º24\'22.5\"W', NULL, 'Www.Afdinlpg.com', '2001-01-01', '25.0', 'Lawal Dahiru Mangal', 'Anas Waziri', 'Plant Operations Manager', '8035780101.0', '', 'active', NULL, '2025-01-26 23:15:35'),
