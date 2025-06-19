@@ -213,37 +213,7 @@
         }
     }
 
-    function deleteWasteItem(id) {
-        if (confirm("Are you sure you want to delete this item?")) {
-            fetch(`/admin/waste-item/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(result => {
-                Toastify({
-                    text: result.message || "Deleted successfully!",
-                    backgroundColor: "#28a745",
-                    duration: 3000
-                }).showToast();
-                wasteTypeTable.ajax.reload(null, false);
-            })
-            .catch(() => {
-                Toastify({
-                    text: "Failed to delete.",
-                    backgroundColor: "#dc3545",
-                    duration: 4000
-                }).showToast();
-            });
-        }
-    }
-
-    function editWasteItem(id) {
-        alert("Edit feature not yet implemented for ID: " + id);
-    }
+    
 </script>
 
     <!-- DataTables CDN -->
