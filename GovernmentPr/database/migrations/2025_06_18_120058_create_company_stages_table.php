@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('sequence')->default(0);
-            $table->string('status')->default('Pending');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
+            $table->boolean('is_deleted')->default(false);
+            $table->softDeletes(); // For soft delete functionality
             $table->timestamps();
 
             // Foreign key constraints

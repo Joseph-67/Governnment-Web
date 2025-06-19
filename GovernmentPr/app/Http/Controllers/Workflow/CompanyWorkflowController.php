@@ -97,7 +97,7 @@ class CompanyWorkflowController extends Controller
                 }),
             ],
             'workflow_description' => 'nullable|string',
-            'workflow_status' => 'required|in:active,inactive',
+            'workflow_status' => 'required|in:active,inactive,archived',
         ]);
 
         if ($validator->fails()) {
@@ -123,8 +123,15 @@ class CompanyWorkflowController extends Controller
 
         // Return a success response
         // Return a success response with the created company workflow
-        $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)->get();
-
+        $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)
+            ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($workflow) {
+                // Fetch the creator details dynamically
+                $workflow->creator = $this->fetchCreator($workflow->guard, $workflow->created_by);
+                return $workflow;
+            });
         return response()->json([
             'status' => 'success',
             'message' => 'Company workflow created successfully.',
