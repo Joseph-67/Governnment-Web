@@ -5772,7 +5772,7 @@
     </div>
     <!-- End Workflow Edit Form Modal -->
     <!-- Stage Management Modal -->
-    <div class="modal fade" id="stageManagementModal" tabindex="-1" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+    <div class="modal fade" id="stageManagementModal" tabindex="-2" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="stage-management-form">
@@ -5834,7 +5834,141 @@
             </div>
         </div>
     </div>
+    <!-- Edit Stage Modal -->
+    <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <form id="edit-stage-form" method="post" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="stage_id" id="edit_stage_id">
+                    <div class="modal-header bg-gradient-primary text-white rounded-top">
+                        <h5 class="modal-title fw-bold" id="editStageModalLabel">
+                            <i class="las la-edit me-2"></i> Edit Stage
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="edit_stage_name" class="form-label fw-semibold">Stage Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit_stage_name" name="stage_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_stage_description" class="form-label fw-semibold">Description</label>
+                                <input type="text" class="form-control" id="edit_stage_description" name="stage_description">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_stage_status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit_stage_status" name="stage_status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="halted">Halted</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_stage_sequence_order" class="form-label fw-semibold">Sequence Order</label>
+                                <input type="number" class="form-control" id="edit_stage_sequence_order" name="stage_sequence_order" min="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="las la-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="las la-save"></i> Update Stage
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- End Stage Management Modal -->
+     <!-- Task Management Modal -->
+    <!-- Task Management Modal -->
+    <div class="modal fade" id="taskManagementModal" tabindex="-1" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="task-management-form" method="post">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_id" id="task_id">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="taskManagementModalLabel">Task Management</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="task_title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="task_title" name="task_title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="task_assigned_to" class="form-label">Assigned To</label>
+                                <input type="text" class="form-control" id="task_assigned_to" name="task_assigned_to" placeholder="Enter assignee name or email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="task_due_date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="task_due_date" name="task_due_date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="task_priority" class="form-label">Priority</label>
+                                <select class="form-select" id="task_priority" name="task_priority" required>
+                                    <option value="" selected disabled>Select Priority</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="task_description" class="form-label">Description</label>
+                                <textarea class="form-control" id="task_description" name="task_description" rows="3" placeholder="Enter task description"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="task_status" class="form-label">Status</label>
+                                <select class="form-select" id="task_status" name="task_status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="task_tags" class="form-label">Tags</label>
+                                <input type="text" class="form-control" id="task_tags" name="task_tags" placeholder="Comma separated tags">
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3 text-end">
+                            <button type="submit" class="btn btn-primary">Save Task</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive px-3 pb-3">
+                    <table class="table table-striped mb-0 w-100" id="tbl-task-management">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Assigned To</th>
+                                <th>Due Date</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Tags</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic rows will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Task Management Modal -->
+     <!-- End Task Management Modal -->
     <!-- end workflow management -->
 
      <!-- Annual operations activity -->
@@ -12302,6 +12436,9 @@
                 className: 'text-end',
                 render: (data, type, row) => `
                     <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="manageStageTasks('${row.stage_id}')">
+                            <i class="las la-tasks"></i> Tasks
+                        </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="editStage('${row.stage_id}')">
                             <i class="las la-edit"></i> Edit
                         </button>
@@ -12386,21 +12523,32 @@
     });
 
     // Edit stage
-    window.editStage = function(id) {
-        // Fetch stage details and populate the form for editing
-        // (Implementation depends on your backend API)
-        // Example:
-        // fetch(`/admin/get-stage/${id}`).then(...);
+    window.editStage = async function(id) {
+        // Optionally fetch the latest stage data from the server
+        let stage = stageTable.row($(`button[onclick="editStage('${id}')"]`).parents('tr')).data();
 
-        // For demonstration, you can fetch the row data from DataTable
-        const stage = stageTable.row($(`button[onclick="editStage('${id}')"]`).parents('tr')).data();
+        // If not found in DataTable, fetch from backend
+        if (!stage) {
+            try {
+                const response = await fetch(`/admin/get-stage/${id}`);
+                if (response.ok) {
+                    stage = await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to fetch stage:', error);
+                return;
+            }
+        }
+
         if (stage) {
-            document.getElementById('stage_batch_id').value = stage.batch_id || "";
-            document.getElementById('stage_name').value = stage.stage_name || "";
-            document.getElementById('stage_status').value = stage.status || "";
-            document.getElementById('stage_start_date').value = stage.start_date || "";
-            document.getElementById('stage_end_date').value = stage.end_date || "";
-            document.getElementById('stage_description').value = stage.description || "";
+            document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";
+            document.getElementById('edit_stage_name').value = stage.stage_name || stage.name || "";
+            document.getElementById('edit_stage_status').value = stage.status || "";
+            document.getElementById('edit_stage_sequence_order').value = stage.sequence_order || stage.sequence || "";
+            document.getElementById('edit_stage_description').value = stage.description || "";
+            // Show the modal for editing stage
+            const modal = new bootstrap.Modal(document.getElementById('editStageModal'));
+            modal.show();
         }
     };
 
@@ -12416,7 +12564,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const url = `/admin/stage/${id}`;
+                const url = `/admin/company-stages/${id}`;
                 try {
                     const response = await fetch(url, {
                         method: 'DELETE',
@@ -12437,5 +12585,175 @@
     };
     </script>
     <!-- End Stage Management Script -->
+     <!-- Task Management -->
+    <script>
+    /**
+     * Task Management Script
+     * Handles:
+     * - Fetching and displaying tasks for a stage in a DataTable.
+     * - Adding, editing, and deleting tasks.
+     * - Submitting the task management form and updating the task table.
+     * - Uses fetch_cycle for AJAX requests.
+     */
+
+    // Initialize DataTable for Task Management
+    const taskTable = $('#tbl-task-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [4] } // Action column
+        ],
+        data: [],
+        columns: [
+            { data: 'task_name', title: 'Task Name' },
+            { data: 'description', title: 'Description' },
+            { data: 'status', title: 'Status' },
+            { data: 'sequence_order', title: 'Sequence Order' },
+            {
+                data: null,
+                title: 'Action',
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="editTask('${row.task_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteTask('${row.task_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
+            }
+        ]
+    });
+
+    // Show Task Management Modal for a stage
+    window.manageStageTasks = function(stageId) {
+        document.getElementById('task-management-form').reset();
+        document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
+        document.getElementById('task_id').value = "";
+        document.getElementById('task-management-form').querySelector('input[name="stage_id"]').value = stageId;
+
+        // Fetch and display tasks for the selected stage
+        (async () => {
+            const url = `/admin/get-company-tasks/${stageId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.tasks)) {
+                    const tasks = data.tasks.map(task => ({
+                        task_name: task.name || "N/A",
+                        description: task.description || "",
+                        status: task.status || "N/A",
+                        sequence_order: task.sequence || "N/A",
+                        task_id: task.task_id || task.id || "N/A"
+                    }));
+                    taskTable.clear().rows.add(tasks).draw();
+                    document.getElementById('task-management-form').reset();
+                } else {
+                    taskTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+                taskTable.clear().draw();
+            }
+        })();
+
+        // Show the task management modal
+        const modal = new bootstrap.Modal(document.getElementById('taskManagementModal'));
+        modal.show();
+    };
+
+    // Handle task form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const taskForm = document.getElementById('task-management-form');
+        if (taskForm) {
+            taskForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(taskForm);
+                const url = "{{ route('admin.store-company-task') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Task', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.tasks)) {
+                        const tasks = result.tasks.map(task => ({
+                            task_name: task.name || "N/A",
+                            description: task.description || "",
+                            status: task.status || "N/A",
+                            sequence_order: task.sequence || "N/A",
+                            task_id: task.task_id || task.id || "N/A"
+                        }));
+                        taskTable.clear().rows.add(tasks).draw();
+                        taskForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing task:', error);
+                }
+            });
+        }
+    });
+
+    // Edit task
+    window.editTask = async function(id) {
+        let task = taskTable.row($(`button[onclick="editTask('${id}')"]`).parents('tr')).data();
+
+        if (!task) {
+            try {
+                const response = await fetch(`/admin/get-task/${id}`);
+                if (response.ok) {
+                    task = await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to fetch task:', error);
+                return;
+            }
+        }
+
+        if (task) {
+            document.getElementById('task_id').value = task.task_id || task.id || "";
+            document.getElementById('task_name').value = task.task_name || task.name || "";
+            document.getElementById('task_status').value = task.status || "";
+            document.getElementById('task_sequence_order').value = task.sequence_order || task.sequence || "";
+            document.getElementById('task_description').value = task.description || "";
+            // Show the modal for editing task
+            const modal = new bootstrap.Modal(document.getElementById('taskManagementModal'));
+            modal.show();
+        }
+    };
+
+    // Delete task
+    window.deleteTask = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this task?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/company-tasks/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        taskTable.row($(`button[onclick="deleteTask('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Task has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete task.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+    </script>
+     <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>

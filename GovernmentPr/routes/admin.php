@@ -63,6 +63,7 @@ use App\Http\Controllers\HRMS\CompanyEmployeesController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\Workflow\CompanyWorkflowController;
 use App\Http\Controllers\Workflow\CompanyStageController;
+use App\Http\Controllers\Workflow\StageTaskController;
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -216,8 +217,18 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company-stages/store', 'store')->name('admin.store-company-stage');
         Route::get('/company-stages/{id}', 'show')->name('admin.show-company-stage');
         Route::put('/company-stages/{id}', 'update')->name('admin.update-company-stage');
-        Route::delete('/company-stages/{id}', 'destroy')->name('admin.delete-company-stage');
+        Route::delete('/company-stages/{stage_id}', 'destroy')->name('admin.delete-company-stage');
         Route::get('/get-company-stages/{workflowId}', 'getStagesByWorkflow')->name('admin.get-company-stages');
+    });
+
+    // Stage Task
+    Route::controller(StageTaskController::class)->group(function() {
+        Route::get('/stage-tasks', 'index')->name('admin.stage-tasks');
+        Route::post('/stage-tasks/store', 'store')->name('admin.store-stage-task');
+        Route::get('/stage-tasks/{id}', 'show')->name('admin.show-stage-task');
+        Route::put('/stage-tasks/{id}', 'update')->name('admin.update-stage-task');
+        Route::delete('/stage-tasks/{id}', 'destroy')->name('admin.delete-stage-task');
+        Route::get('/get-stage-tasks/{company_stage_id}', 'getStageTasksByCompanyStage')->name('admin.get-stage-tasks');
     });
     
     // Equipment Log

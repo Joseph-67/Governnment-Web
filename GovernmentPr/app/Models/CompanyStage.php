@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyStage extends Model
 {
     use HasFactory;
+use \Illuminate\Database\Eloquent\SoftDeletes;
     protected $table = 'company_stages';
     protected $primaryKey = 'stage_id';
 
@@ -18,7 +19,13 @@ class CompanyStage extends Model
         'description',
         'sequence',
         'status',
+        'is_deleted',
     ];
+
+    protected $casts = [
+        'is_deleted' => 'boolean',
+    ];
+
 
     // Relationships
     public function company()
