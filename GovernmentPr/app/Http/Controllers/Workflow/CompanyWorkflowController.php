@@ -81,6 +81,7 @@ class CompanyWorkflowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -158,8 +159,41 @@ class CompanyWorkflowController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CompanyWorkflow $companyWorkflow)
+    public function destroy(CompanyWorkflow $companyWorkflow, $id)
     {
         //
+        // Validate the ID
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|integer|exists:company_workflows,workflow_id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+        // Find the company workflow by ID
+        $companyWorkflow = CompanyWorkflow::find($id);
+        if (!$companyWorkflow) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Company workflow not found.'
+            ], 404);
+        }
+        // Attempt to delete the company workflow
+        // Attempt to delete the company workflow
+        // Use try-catch to handle any exceptions during deletion
+        try {
+            $companyWorkflow->delete();
+            // $allCompanyWorkflows = CompanyWorkflow::where('company_id', $companyWorkflow->company_id)->get();
+            return response()->json([
+                'status' => 'success',
+                // 'workflows' => $allCompanyWorkflows,
+                'message' => 'Company workflow deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete company workflow.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

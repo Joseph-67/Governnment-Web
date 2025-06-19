@@ -9,15 +9,15 @@ class ProductionBatchTracking extends Model
 {
     use HasFactory;
     protected $table = 'production_batch_tracking';
-    protected $primaryKey = 'batch_id';
-    protected $fillable = [
-        'batch_name',
-        'company_id',
+    company_id',
         'product_id',
         'start_date',
         'end_date',
         'total_quantity',
-        'defective_quantity',
+        'defective_protected $primaryKey = 'batch_id';
+    protected $fillable = [
+        'batch_name',
+        'quantity',
         'created_by',
         'geolocation',
         'iot_device_id',
