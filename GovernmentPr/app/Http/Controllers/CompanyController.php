@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Models\Policies;
+use App\Models\CompanyPolicy;
 use App\Models\Objectives;
 use App\Models\CompanyObjectives;
 use App\Models\RECPHistory;
@@ -67,7 +67,7 @@ class CompanyController extends WaterStockMovementController
         $data['company'] = Company::find($companyID);
 
         // Fetch related data
-        $data['company_policies'] = Policy::where('companyID', $companyID)->get();
+        $data['company_policies'] = CompanyPolicy::where('companyID', $companyID)->get();
         $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
         $data['company_benefits'] = RECP_areas_of_benefit::active()->where('companyID', $companyID)->get();
         $data['company_enviromental_benefits'] = RECP_human_and_environmental_health_benefit::active()->where('companyID', $companyID)->get();
