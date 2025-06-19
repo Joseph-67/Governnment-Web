@@ -5894,7 +5894,7 @@
                 <form id="task-management-form" method="post">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                    <input type="hidden" name="task_id" id="task_id">
+                    <input type="hidden" name="stage_id" id="stage_workflow_id">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title" id="taskManagementModalLabel">Task Management</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -5906,8 +5906,11 @@
                                 <input type="text" class="form-control" id="task_title" name="task_title" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="task_assigned_to" class="form-label">Assigned To</label>
-                                <input type="text" class="form-control" id="task_assigned_to" name="task_assigned_to" placeholder="Enter assignee name or email">
+                                <div class="taggable-container " id="manager-tag-input-5">
+                                    <label for="manager" class="form-label">Supervisor</label>
+                                    <div class="manager-tag-input-5 manager-tag-input border-primary bg-light">
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="task_due_date" class="form-label">Due Date</label>
@@ -5938,7 +5941,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="task_tags" class="form-label">Tags</label>
-                                <input type="text" class="form-control" id="task_tags" name="task_tags" placeholder="Comma separated tags">
+                                <div id="tagging-system-2"></div>
                             </div>
                         </div>
                         <div class="col-12 mt-3 text-end">
@@ -6399,6 +6402,124 @@
             outline: none; */
             flex: 1;
             min-width: 100px;
+        }
+
+
+    </style>
+    <style>
+        /* Tag Input Wrapper */
+        .tag-inline-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            /* gap: 4px;
+            padding: 4px 8px; */
+            background: #fff;
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            /* min-height: 38px; */
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .tag-inline-container:focus-within {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+            border-color: #86b7fe;
+        }
+
+        /* Tag Styling */
+        .task-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 12px 4px 10px;
+            border-radius: 1rem;
+            font-size: 14px;
+            margin: 2px 2px 2px 0;
+            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
+            font-weight: 500;
+            cursor: default;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .task-tag:hover {
+            background: #0b5ed7;
+            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
+            transform: translateY(-1px) scale(1.04);
+        }
+        .task-tag span {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+        .task-tag span:hover {
+            opacity: 1;
+            color: #f87171;
+        }
+
+        /* Input Styling */
+        #task-tag-input {
+            flex-grow: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            color: #212529;
+            margin: 2px 0;
+        }
+        #task-tag-input::placeholder {
+            color: #adb5bd;
+            opacity: 1;
+        }
+
+        /* Suggestions Dropdown */
+        #task-suggestions {
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 20;
+            position: absolute;
+            /* left: 0;
+            right: 0;
+            min-width: 180px; */
+        }
+
+        .task-suggestion {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 15px;
+            color: #212529;
+            background: transparent;
+            transition: background 0.18s, color 0.18s;
+        }
+        .task-suggestion:last-child {
+            border-bottom: none;
+        }
+        .task-suggestion:hover,
+        .task-suggestion.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        /* Scrollbar Styling */
+        #task-suggestions::-webkit-scrollbar {
+            width: 8px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
         }
 
 
@@ -11783,6 +11904,117 @@
         }
     </script>
     <script>
+        class TaskTaggingSystem {
+            constructor({ containerId, apiUrl }) {
+                this.container = document.getElementById(containerId);
+                this.apiUrl = apiUrl;
+                this.tags = [];
+                this.init();
+            }
+
+            // Initialize the tagging system
+            init() {
+                // Render the tag input UI
+                this.container.innerHTML = `
+                    <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
+                        <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
+                        <input type="text" class="form-control border-0 shadow-none" id="task-tag-input" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;"/>
+                    </div>
+                    <div id="task-suggestions"></div>
+                `;
+
+                this.tagsContainer = this.container.querySelector("#task-tags-container");
+                this.inputField = this.container.querySelector("#task-tag-input");
+                this.suggestionsDiv = this.container.querySelector("#task-suggestions");
+
+                this.bindEvents();
+                this.renderTags();
+            }
+
+
+            // Fetch suggestions from API
+            async fetchSuggestions(query) {
+                try {
+                    const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}&type=task`);
+                    if (!response.ok) throw new Error("Failed to fetch task suggestions");
+                    return await response.json();
+                } catch (error) {
+                    console.error("Error fetching task suggestions:", error);
+                    return [];
+                }
+            }
+
+            // Add a task tag
+            addTag(tag) {
+                if (tag && !this.tags.includes(tag)) {
+                    this.tags.push(tag);
+                    this.renderTags();
+                    this.inputField.value = "";
+                    this.suggestionsDiv.innerHTML = "";
+                }
+            }
+
+            // Remove a task tag
+            removeTag(tag) {
+                const index = this.tags.indexOf(tag);
+                if (index > -1) {
+                    this.tags.splice(index, 1);
+                    this.renderTags();
+                }
+            }
+
+            // Render task tags
+            renderTags() {
+                this.tagsContainer.innerHTML = "";
+                this.tags.forEach(tag => {
+                    const tagElement = document.createElement("div");
+                    tagElement.className = "task-tag";
+                    tagElement.innerHTML = `${tag} <span>&times;</span>`;
+                    tagElement.querySelector("span").onclick = () => this.removeTag(tag);
+                    this.tagsContainer.appendChild(tagElement);
+                });
+            }
+
+            // Show task suggestions
+            async showSuggestions(input) {
+                const fetchedSuggestions = await this.fetchSuggestions(input);
+                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                this.suggestionsDiv.innerHTML = "";
+                filteredSuggestions.forEach(suggestion => {
+                    const suggestionElement = document.createElement("div");
+                    suggestionElement.className = "task-suggestion";
+                    suggestionElement.textContent = suggestion;
+                    suggestionElement.onclick = () => this.addTag(suggestion);
+                    this.suggestionsDiv.appendChild(suggestionElement);
+                });
+            }
+
+            // Bind events
+            bindEvents() {
+                this.inputField.addEventListener("input", () => {
+                    const input = this.inputField.value.trim();
+                    if (input) {
+                        this.showSuggestions(input);
+                    } else {
+                        this.suggestionsDiv.innerHTML = "";
+                    }
+                });
+
+                this.inputField.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === ",") {
+                        event.preventDefault();
+                        this.addTag(this.inputField.value.trim());
+                    }
+                });
+            }
+        }
+
+        // Usage example
+        const taskTaggingSystem2 = new TaskTaggingSystem({
+            containerId: "tagging-system-2",
+            apiUrl: "{{ url('/admin/search-tag') }}"
+        });
+
         class TaggingSystem {
             constructor({ containerId, apiUrl }) {
                 this.container = document.getElementById(containerId);
@@ -11908,12 +12140,14 @@
         inputField.type = 'text';
         inputField.placeholder = 'Tag someone...';
         inputField.className = 'form-control';
-        inputField.classList.add('border-primary');
+        inputField.classList.add('form-control');
         inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
         inputField.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
             const name = e.target.value.trim();
+            console.log("Adding tag:", name);
+            
             if (this.userMap[name]) {
                 this.addTag(this.userMap[name], name);
             }
@@ -11939,6 +12173,7 @@
           const companyId = "{{ $company->company_id }}";
           const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}&company_id=${encodeURIComponent(companyId)}`);
           const users = await response.json();
+          console.log("Fetched users:", users);
           this.showSuggestions(users.users || []);
         } catch (error) {
           console.error("Failed to fetch users:", error);
@@ -12010,6 +12245,7 @@
     let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
     let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
     let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
+    let  manager_5 =  new TaggingComponent('manager-tag-input-5', 'manager-tag-input-5');
   </script>
   <!-- Department -->
    <script>
@@ -12328,9 +12564,19 @@
                     const result = await fetch_cycle('--Store Workflow', url, 'POST', formData);
                     if (result.status === 'success' && Array.isArray(result.workflows)) {
                         const workflows = result.workflows.map(wf => ({
-                            step_name: wf.step_name || "N/A",
+                            workflow_name: wf.workflow_name || "N/A",
                             description: wf.description || "",
-                            id: wf.id || "N/A"
+                            creator: wf.creator
+                                ? {
+                                    first_name: wf.creator.first_name || "N/A",
+                                    last_name: wf.creator.last_name || "N/A",
+                                    other_name: wf.creator.other_name || "",
+                                    profile_picture: wf.creator.profile_photo_path || 'https://via.placeholder.com/30',
+                                    email: wf.creator.email || "N/A"
+                                }
+                                : null,
+                            status: wf.status || "N/A",
+                            workflow_id: wf.workflow_id || "N/A"
                         }));
                         workflowTable.clear().rows.add(workflows).draw();
                     }
@@ -12633,12 +12879,12 @@
     window.manageStageTasks = function(stageId) {
         document.getElementById('task-management-form').reset();
         document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
-        document.getElementById('task_id').value = "";
+        // document.getElementById('task_id').value = "";
         document.getElementById('task-management-form').querySelector('input[name="stage_id"]').value = stageId;
 
         // Fetch and display tasks for the selected stage
         (async () => {
-            const url = `/admin/get-company-tasks/${stageId}`;
+            const url = `/admin/get-stage-tasks/${stageId}`;
             try {
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.tasks)) {
@@ -12672,7 +12918,7 @@
             taskForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(taskForm);
-                const url = "{{ route('admin.store-company-task') }}";
+                const url = "{{ route('admin.store-stage-task') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Task', url, 'POST', formData);
@@ -12700,7 +12946,7 @@
 
         if (!task) {
             try {
-                const response = await fetch(`/admin/get-task/${id}`);
+                const response = await fetch(`/admin/get-stage-tasks/${id}`);
                 if (response.ok) {
                     task = await response.json();
                 }
@@ -12734,7 +12980,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const url = `/admin/company-tasks/${id}`;
+                const url = `/admin/stage-tasks/${id}`;
                 try {
                     const response = await fetch(url, {
                         method: 'DELETE',

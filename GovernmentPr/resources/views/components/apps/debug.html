@@ -1,64 +1,64 @@
-            const formData = new FormData(form);
-            const formUrl = form.action || null;
-            if (!formUrl) {
-                Toastify({
-                    text: "Form action URL is not set.",
-                    backgroundColor: "#dc3545",
-                    duration: 4000
-                }).showToast();
-                return;
-            }
-            // Validate form data
-            try {
-                const response = await fetch(formUrl, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+        const formData = new FormData(form);
+        const formUrl = form.action || null;
+        if (!formUrl) {
+            Toastify({
+                text: "Form action URL is not set.",
+                backgroundColor: "#dc3545",
+                duration: 4000
+            }).showToast();
+            return;
+        }
+        // Validate form data
+        try {
+            const response = await fetch(formUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
 
-                const result = await response.json();
+            const result = await response.json();
 
-                if (response.ok) {
-                    // Assuming the response contains a success message or data
-                    console.log("Record added successfully:", result);
-                    // Show success message
-                    console.log("Form submitted successfully");
-                    if (result.success) {
-                        Toastify({
-                            text: result.message || "Record added successfully!",
-                            backgroundColor: "#28a745",
-                            duration: 3000
-                        }).showToast();
-                        form.reset();
-                    } else {
-                        Toastify({
-                            text: result.message || "Record added successfully!",
-                            backgroundColor: "#28a745",
-                            duration: 3000
-                        }).showToast();
-                    }
-
-                    // Optionally, close modal and refresh table here
-                    // $('#wasteTypeModal').modal('hide');
-                    // You may want to reload the table data here
-                } else {
-                    let errorMsg = "Failed to add waste type.";
-                    if (result.errors) {
-                        errorMsg = Object.values(result.errors).flat().join('\n');
-                    }
+            if (response.ok) {
+                // Assuming the response contains a success message or data
+                console.log("Record added successfully:", result);
+                // Show success message
+                console.log("Form submitted successfully");
+                if (result.success) {
                     Toastify({
-                        text: errorMsg,
-                        backgroundColor: "#dc3545",
-                        duration: 4000
+                        text: result.message || "Record added successfully!",
+                        backgroundColor: "#28a745",
+                        duration: 3000
+                    }).showToast();
+                    form.reset();
+                } else {
+                    Toastify({
+                        text: result.message || "Record added successfully!",
+                        backgroundColor: "#28a745",
+                        duration: 3000
                     }).showToast();
                 }
-            } catch (error) {
+
+                // Optionally, close modal and refresh table here
+                // $('#wasteTypeModal').modal('hide');
+                // You may want to reload the table data here
+            } else {
+                let errorMsg = "Failed to add waste type.";
+                if (result.errors) {
+                    errorMsg = Object.values(result.errors).flat().join('\n');
+                }
                 Toastify({
-                    text: "An error occurred. Please try again.",
+                    text: errorMsg,
                     backgroundColor: "#dc3545",
                     duration: 4000
                 }).showToast();
             }
+        } catch (error) {
+            Toastify({
+                text: "An error occurred. Please try again.",
+                backgroundColor: "#dc3545",
+                duration: 4000
+            }).showToast();
+        }
