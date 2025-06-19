@@ -664,6 +664,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-items/{id}', 'show')->name('admin.show-waste-item');
         Route::put('/waste-items/{id}', 'update')->name('admin.update-waste-item');
         Route::delete('/waste-items/{id}', 'destroy')->name('admin.delete-waste-item');
+        Route::get('/get-waste-items', 'data')->name('admin.get-waste-items');
+
     });
 
     // Water Stock Movement

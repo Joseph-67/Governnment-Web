@@ -52,19 +52,19 @@
             </div>
             <div class="card-body bg-light rounded-bottom-4">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle rounded-3 overflow-hidden shadow-sm mb-0" style="background: #fff;">
-                        <thead class="table-primary text-white" style="background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);">
-                            <tr style="font-size: 1.05rem;">
-                                <th class="fw-semibold py-3 px-4">Waste Type</th>
-                                <th class="fw-semibold py-3 px-4">Description</th>
-                                <th class="fw-semibold py-3 px-4">Date Created</th>
-                                <th class="fw-semibold py-3 px-4 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Add more rows dynamically -->
-                        </tbody>
-                    </table>
+        <table class="table table-hover align-middle shadow-sm" id="tbl-waste-types">
+    <thead class="table-primary text-white">
+        <tr>
+            <th>Waste Name</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Sub Category</th>
+        <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
                 </div>
             </div>
         </div>
@@ -134,82 +134,117 @@
 
     @section('scripts')
     <!-- JS Script -->
-     <script>
-        async function submitWasteTypeForm(event) {
-            event.preventDefault();
-            console.log('Form submitted:', event.target);
-            const formData = new FormData(event.target);
-            const formUrl = event.target.action || null;
-            if (!formUrl) {
-                Toastify({
-                    text: "Form action URL is not set.",
-                    backgroundColor: "#dc3545",
-                    duration: 4000
-                }).showToast();
-                return;
-            }
-            // Validate form data
-            try {
-                const response = await fetch(formUrl, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+   <script>
+    let wasteTypeTable;
 
-                const result = await response.json();
-
-                if (response.ok) {
-                    // Assuming the response contains a success message or data
-                    console.log("Record added successfully:", result);
-                    // Show success message
-                    console.log("Form submitted successfully");
-                    if (result.success) {
-                        Toastify({
-                            text: result.message || "Record added successfully!",
-                            backgroundColor: "#28a745",
-                            duration: 3000
-                        }).showToast();
-                        form.reset();
-                    } else {
-                        Toastify({
-                            text: result.message || "Record added successfully!",
-                            backgroundColor: "#28a745",
-                            duration: 3000
-                        }).showToast();
+    document.addEventListener('DOMContentLoaded', function () {
+        wasteTypeTable = $('#tbl-waste-types').DataTable({
+            ajax: {
+                url: "{{ route('admin.get-waste-items') }}",
+                dataSrc: 'data'
+            },
+            columns: [
+                { data: 'name', title: 'Waste Name' },
+                { data: 'quantity', title: 'Quantity' },
+                { data: 'unit', title: 'Unit' },
+                { data: 'sub_category', title: 'Sub Category' },
+                {
+                    data: 'id',
+                    className: 'text-center',
+                    render: function (data) {
+                        return `
+                            <button class="btn btn-sm btn-primary me-1" onclick="editWasteItem(${data})">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteWasteItem(${data})">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
                     }
-
-                    // Optionally, close modal and refresh table here
-                    // $('#wasteTypeModal').modal('hide');
-                    // You may want to reload the table data here
-                } else {
-                    let errorMsg = "Failed to add waste type.";
-                    if (result.errors) {
-                        errorMsg = Object.values(result.errors).flat().join('\n');
-                    }
-                    Toastify({
-                        text: errorMsg,
-                        backgroundColor: "#dc3545",
-                        duration: 4000
-                    }).showToast();
                 }
-            } catch (error) {
+            ]
+        });
+
+        document.getElementById('waste-type-form').addEventListener('submit', submitWasteTypeForm);
+    });
+
+    async function submitWasteTypeForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
                 Toastify({
-                    text: "An error occurred. Please try again.",
+                    text: result.message || "Added successfully!",
+                    backgroundColor: "#28a745",
+                    duration: 3000
+                }).showToast();
+
+                wasteTypeTable.row.add(result.data).draw(false);
+                form.reset();
+            } else {
+                let errorMsg = result.message || "Failed to add.";
+                if (result.errors) {
+                    errorMsg = Object.values(result.errors).flat().join('\n');
+                }
+                Toastify({
+                    text: errorMsg,
                     backgroundColor: "#dc3545",
                     duration: 4000
                 }).showToast();
             }
-            
+        } catch (error) {
+            Toastify({
+                text: "Error occurred. Try again.",
+                backgroundColor: "#dc3545",
+                duration: 4000
+            }).showToast();
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('waste-type-form').addEventListener('submit', submitWasteTypeForm);
-        });
-     </script>
+    function deleteWasteItem(id) {
+        if (confirm("Are you sure you want to delete this item?")) {
+            fetch(`/admin/waste-item/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(result => {
+                Toastify({
+                    text: result.message || "Deleted successfully!",
+                    backgroundColor: "#28a745",
+                    duration: 3000
+                }).showToast();
+                wasteTypeTable.ajax.reload(null, false);
+            })
+            .catch(() => {
+                Toastify({
+                    text: "Failed to delete.",
+                    backgroundColor: "#dc3545",
+                    duration: 4000
+                }).showToast();
+            });
+        }
+    }
 
+    function editWasteItem(id) {
+        alert("Edit feature not yet implemented for ID: " + id);
+    }
+</script>
 
     <!-- DataTables CDN -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

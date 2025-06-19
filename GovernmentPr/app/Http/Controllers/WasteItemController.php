@@ -18,10 +18,32 @@ class WasteItemController extends Controller
      */
     public function index()
 {
-    // Include waste_category_id so subcategories can be filtered in the frontend
-    $data['wasteSubCategories'] = WasteSubCategories::select('waste_sub_category_id', 'waste_sub_category_name', 'waste_category_id')->get();
+    $data['wasteSubCategories'] = WasteSubCategories::select('waste_sub_category_id', 'waste_sub_category_name')->get();
+    $data['wasteItems'] = WasteItem::with('wasteSubCategory')->get();
     return view('components.apps.waste-item', $data);
 }
+public function data()
+{
+    try {
+        $items = WasteItem::with('wasteSubCategory')->latest()->get();
+
+        $formatted = $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'quantity' => $item->quantity_per_unit,
+                'unit' => $item->unit,
+                'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-',
+            ];
+        });
+
+        return response()->json(['data' => $formatted]);
+    } catch (\Exception $e) {
+        return response()->json(['data' => [], 'error' => $e->getMessage()], 500);
+    }
+}
+
+
 
 
     /**
@@ -39,48 +61,40 @@ class WasteItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+   
+public function store(Request $request)
 {
-    $validator = Validator::make($request->all(), [
+    $validated = $request->validate([
         'waste_name' => 'required|string|max:255',
-        'waste_sub_category' => 'required',
-        'quantity' => 'required|numeric',
-        'unit' => 'nullable|string|max:50',
-        'description' => 'nullable|string|max:500',
+        'waste_sub_category' => 'required|exists:waste_sub_categories,waste_sub_category_id',
+        'quantity' => 'required|numeric|min:0',
+        'unit' => 'required|string|max:50',
+        'description' => 'nullable|string|max:1000',
     ]);
 
-    if ($validator->fails()) {
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Validation failed.',
-            'errors'  => $validator->errors(),
-        ], 422);
-    }
+    $item = WasteItem::create([
+        'name' => $validated['waste_name'],
+        'waste_sub_category_id' => $validated['waste_sub_category'],
+        'quantity_per_unit' => $validated['quantity'],
+        'unit' => $validated['unit'],
+        'description' => $validated['description'] ?? null,
+    ]);
 
-    try {
-        $wasteItem = WasteItem::create([
-            'name' => $request->waste_name,
-            'description' => $request->description,
-            'waste_sub_category_id' => $request->waste_sub_category,
-            'quantity_per_unit' => $request->quantity,
-            'unit' => $request->unit,
-            'Status' => 'active',
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Failed to create waste type.',
-            'error' => $e->getMessage(),
-        ], 500);
-    }
-
+    $item->load('wasteSubCategory');
 
     return response()->json([
-        'status' => 'success',
-        'message' => 'Waste type created successfully.',
-        'wasteType' => $wasteType,
-    ], 201);
+        'success' => true,
+        'message' => 'Waste item saved successfully.',
+        'data' => [
+            'id' => $item->id,
+            'name' => $item->name,
+            'quantity' => $item->quantity_per_unit,
+            'unit' => $item->unit,
+            'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-'
+        ]
+    ]);
 }
+
 
 
     /**
