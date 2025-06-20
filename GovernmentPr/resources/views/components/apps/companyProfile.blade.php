@@ -5834,7 +5834,7 @@
             </div>
         </div>
     </div>
-        <!-- Edit Stage Modal -->
+    <!-- Edit Stage Modal -->
     <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
@@ -6519,6 +6519,124 @@
         #task-suggestions::-webkit-scrollbar-thumb:hover {
             background: #0b5ed7;
         }
+    </style>
+    <style>
+        /* Tag Input Wrapper */
+        .tag-inline-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            /* gap: 4px;
+            padding: 4px 8px; */
+            background: #fff;
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            /* min-height: 38px; */
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .tag-inline-container:focus-within {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+            border-color: #86b7fe;
+        }
+
+        /* Tag Styling */
+        .task-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 12px 4px 10px;
+            border-radius: 1rem;
+            font-size: 14px;
+            margin: 2px 2px 2px 0;
+            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
+            font-weight: 500;
+            cursor: default;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .task-tag:hover {
+            background: #0b5ed7;
+            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
+            transform: translateY(-1px) scale(1.04);
+        }
+        .task-tag span {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+        .task-tag span:hover {
+            opacity: 1;
+            color: #f87171;
+        }
+
+        /* Input Styling */
+        #task-tag-input {
+            flex-grow: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            color: #212529;
+            margin: 2px 0;
+        }
+        #task-tag-input::placeholder {
+            color: #adb5bd;
+            opacity: 1;
+        }
+
+        /* Suggestions Dropdown */
+        #task-suggestions {
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 20;
+            position: absolute;
+            /* left: 0;
+            right: 0;
+            min-width: 180px; */
+        }
+
+        .task-suggestion {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 15px;
+            color: #212529;
+            background: transparent;
+            transition: background 0.18s, color 0.18s;
+        }
+        .task-suggestion:last-child {
+            border-bottom: none;
+        }
+        .task-suggestion:hover,
+        .task-suggestion.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        /* Scrollbar Styling */
+        #task-suggestions::-webkit-scrollbar {
+            width: 8px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
+        }
+
+
     </style>
     <style>
         .tagify {
@@ -11900,6 +12018,117 @@
         }
     </script>
     <script>
+        class TaskTaggingSystem {
+            constructor({ containerId, apiUrl }) {
+                this.container = document.getElementById(containerId);
+                this.apiUrl = apiUrl;
+                this.tags = [];
+                this.init();
+            }
+
+            // Initialize the tagging system
+            init() {
+                // Render the tag input UI
+                this.container.innerHTML = `
+                    <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
+                        <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
+                        <input type="text" class="form-control border-0 shadow-none" id="task-tag-input" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;"/>
+                    </div>
+                    <div id="task-suggestions"></div>
+                `;
+
+                this.tagsContainer = this.container.querySelector("#task-tags-container");
+                this.inputField = this.container.querySelector("#task-tag-input");
+                this.suggestionsDiv = this.container.querySelector("#task-suggestions");
+
+                this.bindEvents();
+                this.renderTags();
+            }
+
+
+            // Fetch suggestions from API
+            async fetchSuggestions(query) {
+                try {
+                    const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}&type=task`);
+                    if (!response.ok) throw new Error("Failed to fetch task suggestions");
+                    return await response.json();
+                } catch (error) {
+                    console.error("Error fetching task suggestions:", error);
+                    return [];
+                }
+            }
+
+            // Add a task tag
+            addTag(tag) {
+                if (tag && !this.tags.includes(tag)) {
+                    this.tags.push(tag);
+                    this.renderTags();
+                    this.inputField.value = "";
+                    this.suggestionsDiv.innerHTML = "";
+                }
+            }
+
+            // Remove a task tag
+            removeTag(tag) {
+                const index = this.tags.indexOf(tag);
+                if (index > -1) {
+                    this.tags.splice(index, 1);
+                    this.renderTags();
+                }
+            }
+
+            // Render task tags
+            renderTags() {
+                this.tagsContainer.innerHTML = "";
+                this.tags.forEach(tag => {
+                    const tagElement = document.createElement("div");
+                    tagElement.className = "task-tag";
+                    tagElement.innerHTML = `${tag} <span>&times;</span>`;
+                    tagElement.querySelector("span").onclick = () => this.removeTag(tag);
+                    this.tagsContainer.appendChild(tagElement);
+                });
+            }
+
+            // Show task suggestions
+            async showSuggestions(input) {
+                const fetchedSuggestions = await this.fetchSuggestions(input);
+                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                this.suggestionsDiv.innerHTML = "";
+                filteredSuggestions.forEach(suggestion => {
+                    const suggestionElement = document.createElement("div");
+                    suggestionElement.className = "task-suggestion";
+                    suggestionElement.textContent = suggestion;
+                    suggestionElement.onclick = () => this.addTag(suggestion);
+                    this.suggestionsDiv.appendChild(suggestionElement);
+                });
+            }
+
+            // Bind events
+            bindEvents() {
+                this.inputField.addEventListener("input", () => {
+                    const input = this.inputField.value.trim();
+                    if (input) {
+                        this.showSuggestions(input);
+                    } else {
+                        this.suggestionsDiv.innerHTML = "";
+                    }
+                });
+
+                this.inputField.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === ",") {
+                        event.preventDefault();
+                        this.addTag(this.inputField.value.trim());
+                    }
+                });
+            }
+        }
+
+        // Usage example
+        const taskTaggingSystem2 = new TaskTaggingSystem({
+            containerId: "tagging-system-2",
+            apiUrl: "{{ url('/admin/search-tag') }}"
+        });
+
         class TaggingSystem {
             constructor({ containerId, apiUrl }) {
                 this.container = document.getElementById(containerId);
@@ -12155,6 +12384,7 @@
             e.preventDefault();
             const name = e.target.value.trim();
             console.log("Adding tag:", name);
+            
             if (this.userMap[name]) {
                 this.addTag(this.userMap[name], name);
             }
@@ -12594,32 +12824,17 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Toast helper
-        function showToast(message, type = 'success') {
-            Toastify({
-                text: message,
-                duration: 4000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: type === 'success'
-                        ? "linear-gradient(to right, #00b09b, #96c93d)"
-                        : "linear-gradient(to right, #ff0000, #ff1745)"
-                },
-                stopOnFocus: true,
-            }).showToast();
-        }
+    // Edit workflow step
+    window.editWorkflowStep = function(id) {
+        // Fetch workflow step details and populate the form for editing
+        // (Implementation depends on your backend API)
+        // Example:
+        // fetch(`/admin/get-workflow-step/${id}`).then(...);
 
-        // Edit workflow step
-        window.editWorkflowStep = function (id) {
-            const row = $(`button[onclick="editWorkflowStep('${id}')"]`).closest('tr');
-            const workflow = workflowTable.row(row).data();
-            if (!workflow) {
-                showToast('Workflow data not found.', 'error');
-                return;
-            }
+        // alert('Edit workflow step: ' + id);
+        const workflow = workflowTable.row($(`button[onclick="editWorkflowStep('${id}')"]`).parents('tr')).data();
+        if (workflow) {
+            // Populate the modal form fields with workflow data
             document.getElementById('workflow_edit_id').value = id;
             document.getElementById('workflow_edit_name').value = workflow.workflow_name || '';
             document.getElementById('workflow_edit_description').value = workflow.description || '';
@@ -12635,6 +12850,7 @@
             // Show the modal
             const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
             modal.show();
+        }
     };
 
     // Delete workflow step
@@ -12791,21 +13007,14 @@
     });
 
     // Edit stage
-    window.editStage = function(id) {
-        // Fetch stage details and populate the form for editing
-        // (Implementation depends on your backend API)
-        // Example:
-        // fetch(`/admin/get-stage/${id}`).then(...);
-
-        // For demonstration, you can fetch the row data from DataTable
-
+    window.editStage = async function(id) {
         // Optionally fetch the latest stage data from the server
         let stage = stageTable.row($(`button[onclick="editStage('${id}')"]`).parents('tr')).data();
 
         // If not found in DataTable, fetch from backend
         if (!stage) {
             try {
-                const response = await fetch(`/admin/get-company-stages/${id}`);
+                const response = await fetch(`/admin/get-stage/${id}`);
                 if (response.ok) {
                     stage = await response.json();
                 }
@@ -12815,7 +13024,6 @@
             }
         }
 
-        
         if (stage) {
             document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";
             document.getElementById('edit_stage_name').value = stage.stage_name || stage.name || "";
@@ -12861,7 +13069,7 @@
     };
     </script>
     <!-- End Stage Management Script -->
-    <!-- Task Management -->
+     <!-- Task Management -->
     <script>
     /**
      * Task Management Script
@@ -12948,7 +13156,7 @@
             taskForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(taskForm);
-                const url = "{{ route('admin.store-stage-task') }}";
+                const url = "{{ route('admin.store-company-stage') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Task', url, 'POST', formData);

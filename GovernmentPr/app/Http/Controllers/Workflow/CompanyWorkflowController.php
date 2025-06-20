@@ -123,7 +123,7 @@ class CompanyWorkflowController extends Controller
 
         // Return a success response
         // Return a success response with the created company workflow
-            $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)
+        $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)
             ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get()
@@ -132,7 +132,6 @@ class CompanyWorkflowController extends Controller
                 $workflow->creator = $this->fetchCreator($workflow->guard, $workflow->created_by);
                 return $workflow;
             });
-
         return response()->json([
             'status' => 'success',
             'message' => 'Company workflow created successfully.',
@@ -162,6 +161,41 @@ class CompanyWorkflowController extends Controller
     public function update(Request $request, CompanyWorkflow $companyWorkflow)
     {
         //
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'workflow_name' => [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('company_workflows')->where(function ($query) use ($companyWorkflow) {
+                return $query->where('company_id', $companyWorkflow->company_id);
+            })->ignore($companyWorkflow->workflow_id, 'workflow_id'),
+            ],
+            'workflow_description' => 'nullable|string',
+            'workflow_status' => 'required|in:active,inactive',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            $companyWorkflow->workflow_name = $validator->validated()['workflow_name'];
+            $companyWorkflow->description = $validator->validated()['workflow_description'] ?? null;
+            $companyWorkflow->status = $validator->validated()['workflow_status'];
+            $companyWorkflow->save();
+        } catch (\Exception $e) {
+            return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to update company workflow.',
+            'error' => $e->getMessage()
+            ], 500);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company workflow updated successfully.',
+            'workflow' => $companyWorkflow
+        ]);
     }
 
     /**
