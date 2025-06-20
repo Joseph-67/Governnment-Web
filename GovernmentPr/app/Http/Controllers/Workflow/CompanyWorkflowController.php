@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Workflow;
 use App\Http\Controllers\Controller;
 
 use App\Models\CompanyWorkflow;
-use Illuminate\Http\JsonResponse;
-
 use Illuminate\Http\Request;
 
 use Illuminate\Validation\Rule;
@@ -153,52 +151,10 @@ class CompanyWorkflowController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-{
-    // 🔍 Find the workflow record
-    $companyWorkflow = CompanyWorkflow::findOrFail($id);
-
-    // ✅ Validate input
-    $validator = Validator::make($request->all(), [
-        'workflow_name' => [
-            'required',
-            'string',
-            'max:255',
-            Rule::unique('company_workflows')->where(function ($query) use ($companyWorkflow) {
-                return $query->where('company_id', $companyWorkflow->company_id);
-            })->ignore($companyWorkflow->workflow_id, 'workflow_id'), // Make sure 'workflow_id' is the correct column name
-        ],
-        'description' => 'nullable|string',
-        'status' => 'required|in:active,inactive,pending',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json([
-            'status' => 'error',
-            'errors' => $validator->errors()
-        ], 422);
+    public function update(Request $request, CompanyWorkflow $companyWorkflow)
+    {
+        //
     }
-
-    try {
-        // 💾 Update workflow record
-        $companyWorkflow->workflow_name = $validator->validated()['workflow_name'];
-        $companyWorkflow->description = $validator->validated()['description'] ?? null;
-        $companyWorkflow->status = $validator->validated()['status'];
-        $companyWorkflow->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Company workflow updated successfully.',
-            'workflow' => $companyWorkflow
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Failed to update company workflow.',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-}
 
     /**
      * Remove the specified resource from storage.

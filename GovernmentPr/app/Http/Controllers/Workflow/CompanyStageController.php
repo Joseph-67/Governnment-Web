@@ -34,8 +34,7 @@ class CompanyStageController extends Controller
     public function getStagesByWorkflow($workflowId)
     {
         $stages = CompanyStage::where('workflow_id', $workflowId)
-        ->where('is_deleted', false)    
-        ->orderBy('sequence')
+            ->orderBy('sequence')
             ->get(['stage_id', 'name', 'description', 'sequence', 'status']);
 
         return response()->json([
@@ -55,8 +54,7 @@ class CompanyStageController extends Controller
                 'string',
                 'max:255',
                 Rule::unique('company_stages', 'name')->where(function ($query) use ($request) {
-                    return $query->where('workflow_id', $request->workflow_id)->where('company_id', $request->company_id)
-                        ->where('is_deleted', false); // Ensure the stage name is unique within the same workflow and company
+                    return $query->where('workflow_id', $request->workflow_id);
                 }),
             ],
             'workflow_id' => 'required|exists:company_workflows,workflow_id',
@@ -66,7 +64,7 @@ class CompanyStageController extends Controller
             'stage_status' => [
                 'required',
                 'string',
-                Rule::in(['pending', 'in_progress', 'completed', 'cancelled']),
+                Rule::in(['pending', 'In Progress', 'Completed', 'Cancelled']),
             ],
             // Add other fields and rules as needed
         ]);
@@ -88,7 +86,6 @@ class CompanyStageController extends Controller
         ]);
 
         $allStages = CompanyStage::where('workflow_id', $validated['workflow_id'])
-        ->where('is_deleted', false)
         ->orderBy('sequence')
         ->get();
 
@@ -126,19 +123,8 @@ class CompanyStageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CompanyStage $companyStage, $stage_id)
+    public function destroy(CompanyStage $companyStage)
     {
-        $companyStage = CompanyStage::findOrFail($stage_id);
-        // Soft delete the stage
-        $companyStage->is_deleted = true;
-        $companyStage->deleted_at = now(); // Set the deleted_at timestamp
-        $companyStage->status = 'cancelled'; // Optionally update the status to 'cancelled'
-        $companyStage->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Company stage deleted successfully.'
-        ]);
+        //
     }
-    
 }

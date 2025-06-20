@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Models\CompanyPolicy;
-use App\Models\Objectives;
 use App\Models\CompanyObjectives;
 use App\Models\RECPHistory;
 use App\Models\RECP_areas_of_benefit;
@@ -18,7 +16,7 @@ use App\Models\RECP_problem_and_solution;
 use App\Models\RECP_waste_management_method;
 use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
-use App\Models\Policy;
+use App\Models\CompanyPolicy;
 use App\Models\Material;
 use App\Models\WaterQuestionaire;
 use App\Models\CompanyWaterQuestion;
@@ -139,6 +137,8 @@ class CompanyController extends WaterStockMovementController
         // fetch company departments
         $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
         
+
+
         return view('components.apps.companyProfile', $data);
     }   
     /**
@@ -151,6 +151,8 @@ class CompanyController extends WaterStockMovementController
     {
         // Extract the company ID from the request
         $companyId = $request->input('company_id');
+
+    
         // Validation rules
         $companyId = $request->company_id;
         $validator = Validator::make($request->all(), [
@@ -443,8 +445,6 @@ class CompanyController extends WaterStockMovementController
     {
         //
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
-        $data['policies'] = Policies::where('status', 'active')->get();
-        $data['objectives'] = Objectives::where('status', 'active')->get();
         return view('components.apps.create-company', $data);
     }
 
