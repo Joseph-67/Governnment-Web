@@ -5895,7 +5895,7 @@
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="stage_id" id="stage_workflow_id">
-                    <div class="modal-header bg-primary text-white">
+                    <div class="modal-header bg-info">
                         <h5 class="modal-title" id="taskManagementModalLabel">Task Management</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -5945,7 +5945,7 @@
                             </div>
                         </div>
                         <div class="col-12 mt-3 text-end">
-                            <button type="submit" class="btn btn-primary">Save Task</button>
+                            <button type="submit" class="btn btn-info">Save Task</button>
                         </div>
                     </div>
                 </form>
@@ -5954,7 +5954,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Title</th>
-                                <th>Assigned To</th>
+                                <th>Supervisor</th>
                                 <th>Due Date</th>
                                 <th>Priority</th>
                                 <th>Status</th>
@@ -13091,10 +13091,12 @@
         ],
         data: [],
         columns: [
-            { data: 'task_name', title: 'Task Name' },
-            { data: 'description', title: 'Description' },
+            { data: 'title', title: 'Title' },
+            { data: 'supervisor', title: 'Supervisor' },
+            { data: 'due_date', title: 'Due Date' },
+            { data: 'priority', title: 'Priority' },
             { data: 'status', title: 'Status' },
-            { data: 'sequence_order', title: 'Sequence Order' },
+            { data: 'tags', title: 'Tags' },
             {
                 data: null,
                 title: 'Action',
