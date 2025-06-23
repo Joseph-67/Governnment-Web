@@ -40,3 +40,403 @@
         this.suggestionsDiv.appendChild(suggestionElement);
       });
     };
+<<<<<<< Updated upstream
+=======
+
+    // Delete workflow step
+    window.deleteWorkflowStep = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this workflow?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/workflow/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        workflowTable.row($(`button[onclick="deleteWorkflowStep('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Workflow step has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete workflow step.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+
+    </script>
+    <!-- End Company Workflow Management Script -->
+    <!-- Stage Management Script -->
+    <script>
+    /**
+     * Stage Management Script
+     * Handles:
+     * - Fetching and displaying stages for a batch in a DataTable.
+     * - Adding, editing, and deleting stages.
+     * - Submitting the stage management form and updating the stage table.
+     * - Uses fetch_cycle for AJAX requests.
+     */
+
+    // Initialize DataTable for Stage Management
+    // Initialize DataTable for Stage Management
+    const stageTable = $('#tbl-stage-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [4] } // Action column
+        ],
+        data: [],
+        columns: [
+            { data: 'stage_name', title: 'Stage Name' },
+            { data: 'description', title: 'Description' },
+            { data: 'status', title: 'Status' },
+            { data: 'sequence_order', title: 'Sequence Order' },
+            {
+                data: null,
+                title: 'Action',
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="manageStageTasks('${row.stage_id}')">
+                            <i class="las la-tasks"></i> Tasks
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="editStage('${row.stage_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteStage('${row.stage_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
+            }
+        ]
+    });
+
+    window.manageWorkflowStages = function(workflowId) {
+                // clear the form fields
+        document.getElementById('stage-management-form').reset();
+        // Set the batch_id (or workflow_id) in the hidden input for the stage form
+        document.getElementById('stage_workflow_id').value = workflowId;
+
+        const workflow = workflowTable.row($(`button[onclick="manageWorkflowStages('${workflowId}')"]`).parents('tr')).data();
+        if (workflow && document.getElementById('stage-workflow-title')) {
+            document.getElementById('stage-workflow-title').textContent = workflow.workflow_name || '';
+        }
+
+        // Fetch and display stages for the selected workflow
+        (async () => {
+            const url = `/admin/get-company-stages/${workflowId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.stages)) {
+                    const stages = data.stages.map(stage => ({
+                        stage_name: stage.name || "N/A",
+                        description: stage.description || "",
+                        status: stage.status || "N/A",
+                        sequence_order: stage.sequence || "N/A",
+                        stage_id: stage.stage_id || stage.id || "N/A"
+                    }));
+                    stageTable.clear().rows.add(stages).draw();
+                    // Clear the form for new entry
+                    document.getElementById('stage-management-form').reset();
+                } else {
+                    stageTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching stages:", error);
+                stageTable.clear().draw();
+            }
+        })();
+        
+        // Show the stage management modal
+        const modal = new bootstrap.Modal(document.getElementById('stageManagementModal'));
+        modal.show();
+    };
+
+
+    // Handle stage form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const stageForm = document.getElementById('stage-management-form');
+        if (stageForm) {
+            stageForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(stageForm);
+                const url = "{{ route('admin.store-company-stage') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Stage', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.stages)) {
+                        const stages = result.stages.map(stage => ({
+                            stage_name: stage.name || "N/A",
+                            description: stage.description || "",
+                            status: stage.status || "N/A",
+                            sequence_order: stage.sequence || "N/A",
+                            stage_id: stage.stage_id || stage.id || "N/A"
+                        }));
+                        stageTable.clear().rows.add(stages).draw();
+                        stageForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing stage:', error);
+                }
+            });
+        }
+    });
+
+    // Edit stage
+    window.editStage = function(id) {
+        // Fetch stage details and populate the form for editing
+        // (Implementation depends on your backend API)
+        // Example:
+        // fetch(`/admin/get-stage/${id}`).then(...);
+
+        // For demonstration, you can fetch the row data from DataTable
+
+        // Optionally fetch the latest stage data from the server
+        let stage = stageTable.row($(`button[onclick="editStage('${id}')"]`).parents('tr')).data();
+
+        // If not found in DataTable, fetch from backend
+        if (!stage) {
+            try {
+                const response = await fetch(`/admin/get-company-stages/${id}`);
+                if (response.ok) {
+                    stage = await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to fetch stage:', error);
+                return;
+            }
+        }
+
+        
+        if (stage) {
+            document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";
+            document.getElementById('edit_stage_name').value = stage.stage_name || stage.name || "";
+            document.getElementById('edit_stage_status').value = stage.status || "";
+            document.getElementById('edit_stage_sequence_order').value = stage.sequence_order || stage.sequence || "";
+            document.getElementById('edit_stage_description').value = stage.description || "";
+            // Show the modal for editing stage
+            const modal = new bootstrap.Modal(document.getElementById('editStageModal'));
+            modal.show();
+        }
+    };
+
+    // Delete stage
+    window.deleteStage = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this stage?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/company-stages/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        stageTable.row($(`button[onclick="deleteStage('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Stage has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete stage.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+    </script>
+    <!-- End Stage Management Script -->
+    <!-- Task Management -->
+    <script>
+    /**
+     * Task Management Script
+     * Handles:
+     * - Fetching and displaying tasks for a stage in a DataTable.
+     * - Adding, editing, and deleting tasks.
+     * - Submitting the task management form and updating the task table.
+     * - Uses fetch_cycle for AJAX requests.
+     */
+
+    // Initialize DataTable for Task Management
+    const taskTable = $('#tbl-task-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [4] } // Action column
+        ],
+        data: [],
+        columns: [
+            { data: 'task_name', title: 'Task Name' },
+            { data: 'description', title: 'Description' },
+            { data: 'status', title: 'Status' },
+            { data: 'sequence_order', title: 'Sequence Order' },
+            {
+                data: null,
+                title: 'Action',
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="editTask('${row.task_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteTask('${row.task_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
+            }
+        ]
+    });
+
+    // Show Task Management Modal for a stage
+    window.manageStageTasks = function(stageId) {
+        document.getElementById('task-management-form').reset();
+        document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
+        // document.getElementById('task_id').value = "";
+        document.getElementById('task-management-form').querySelector('input[name="stage_id"]').value = stageId;
+
+        // Fetch and display tasks for the selected stage
+        (async () => {
+            const url = `/admin/get-stage-tasks/${stageId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.tasks)) {
+                    const tasks = data.tasks.map(task => ({
+                        task_name: task.name || "N/A",
+                        description: task.description || "",
+                        status: task.status || "N/A",
+                        sequence_order: task.sequence || "N/A",
+                        task_id: task.task_id || task.id || "N/A"
+                    }));
+                    taskTable.clear().rows.add(tasks).draw();
+                    document.getElementById('task-management-form').reset();
+                } else {
+                    taskTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+                taskTable.clear().draw();
+            }
+        })();
+
+        // Show the task management modal
+        const modal = new bootstrap.Modal(document.getElementById('taskManagementModal'));
+        modal.show();
+    };
+
+    // Handle task form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const taskForm = document.getElementById('task-management-form');
+        if (taskForm) {
+            taskForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(taskForm);
+                const url = "{{ route('admin.store-stage-task') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Task', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.tasks)) {
+                        const tasks = result.tasks.map(task => ({
+                            task_name: task.name || "N/A",
+                            description: task.description || "",
+                            status: task.status || "N/A",
+                            sequence_order: task.sequence || "N/A",
+                            task_id: task.task_id || task.id || "N/A"
+                        }));
+                        taskTable.clear().rows.add(tasks).draw();
+                        taskForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing task:', error);
+                }
+            });
+        }
+    });
+
+    // Edit task
+    window.editTask = async function(id) {
+        let task = taskTable.row($(`button[onclick="editTask('${id}')"]`).parents('tr')).data();
+
+        if (!task) {
+            try {
+                const response = await fetch(`/admin/get-stage-tasks/${id}`);
+                if (response.ok) {
+                    task = await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to fetch task:', error);
+                return;
+            }
+        }
+
+        if (task) {
+            document.getElementById('task_id').value = task.task_id || task.id || "";
+            document.getElementById('task_name').value = task.task_name || task.name || "";
+            document.getElementById('task_status').value = task.status || "";
+            document.getElementById('task_sequence_order').value = task.sequence_order || task.sequence || "";
+            document.getElementById('task_description').value = task.description || "";
+            // Show the modal for editing task
+            const modal = new bootstrap.Modal(document.getElementById('taskManagementModal'));
+            modal.show();
+        }
+    };
+
+    // Delete task
+    window.deleteTask = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this task?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/stage-tasks/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        taskTable.row($(`button[onclick="deleteTask('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Task has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete task.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+    </script>
+     <!-- End Task Management -->
+    @endsection
+</x-layouts.admin-app>
+>>>>>>> Stashed changes

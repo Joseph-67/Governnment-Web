@@ -97,7 +97,7 @@ class CompanyWorkflowController extends Controller
                 }),
             ],
             'workflow_description' => 'nullable|string',
-            'workflow_status' => 'required|in:active,inactive,archived',
+            'workflow_status' => 'required|in:active,inactive',
         ]);
 
         if ($validator->fails()) {

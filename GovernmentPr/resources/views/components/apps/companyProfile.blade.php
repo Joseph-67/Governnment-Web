@@ -5772,7 +5772,7 @@
     </div>
     <!-- End Workflow Edit Form Modal -->
     <!-- Stage Management Modal -->
-    <div class="modal fade" id="stageManagementModal" tabindex="-2" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+  <div class="modal fade" id="stageManagementModal" tabindex="-2" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="stage-management-form">
@@ -12675,80 +12675,66 @@
      * Company Workflow Management Script
      * Handles:
      * - Fetching and displaying company workflows in a DataTable.
-     * - Adding, editing, and deleting workflow steps.
-     * - Submitting the workflow form and updating the workflow table.
+     * - Adding, editing, and deleting workflows.
      * - Uses fetch_cycle for AJAX requests.
      */
 
     // Initialize DataTable for Company Workflow
-    // Initialize the DataTable for workflow management
-    let workflowTable = $('#tbl-workflow-management').DataTable({
-        paging: true,                  // Enable pagination
-        searching: true,               // Enable search functionality
-        ordering: false,               // Disable global ordering
-        responsive: true,              // Make the table responsive
+    const workflowTable = $('#tbl-workflow-management').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
         columnDefs: [
-            { orderable: false, targets: [4] } // Disable sorting on the "Action" column
+            { orderable: false, targets: [4] }
         ],
-        data: [], // Placeholder for dynamic data
+        data: [],
         columns: [
             { data: 'workflow_name', title: 'Workflow Name' },
             { data: 'description', title: 'Description' },
-            { 
-                data: 'creator', 
+            {
+                data: 'creator',
                 title: 'Created By',
-                render: function(data) {
-                    return data 
-                        ? `<div class="d-flex align-items-center">
-                                <img src="${data.profile_picture}" alt="Profile" class="rounded-circle me-2" width="30" height="30">
-                                <div>
-                                    <div>
-                                        <strong>${data.first_name ?? ''} ${data.last_name ?? ''} ${data.other_name ?? ''}</strong>
-                                    </div>
-                                    <span>${data.email}</span>
-                                </div>
-                            </div>`
-                        : 'N/A';
-                }
+                render: data => data
+                    ? `<div class="d-flex align-items-center">
+                            <img src="${data.profile_picture}" alt="Profile" class="rounded-circle me-2" width="30" height="30">
+                            <div>
+                                <strong>${data.first_name ?? ''} ${data.last_name ?? ''} ${data.other_name ?? ''}</strong>
+                                <div>${data.email}</div>
+                            </div>
+                       </div>`
+                    : 'N/A'
             },
-            { 
-                data: 'status', 
-                title: 'Status', 
-                render: function(data) {
-                    const statusClass = data === 'active' ? 'text-success' : 'text-danger';
-                    return `<span class="${statusClass} fw-bold">${data}</span>`;
-                }
+            {
+                data: 'status',
+                title: 'Status',
+                render: data => `<span class="${data === 'active' ? 'text-success' : 'text-danger'} fw-bold">${data}</span>`
             },
-            { 
-                data: null, 
+            {
+                data: null,
                 title: 'Action',
-                render: function(data, type, row) {
-                    return `
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-secondary btn-sm" onclick="manageWorkflowStages('${row.workflow_id}')">
-                                <i class="las la-layer-group"></i> Stages
-                            </button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.workflow_id}')">
-                                <i class="las la-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteWorkflowStep('${row.workflow_id}')">
-                                <i class="las la-trash-alt"></i> Delete
-                            </button>
-                        </div>
-                    `;
-                },
-                className: 'text-end'
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="manageWorkflowStages('${row.workflow_id}')">
+                            <i class="las la-layer-group"></i> Stages
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="editWorkflowStep('${row.workflow_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteWorkflowStep('${row.workflow_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
             }
         ]
     });
 
-    // Function to load workflows dynamically
+    // Load workflows into the table
     function loadWorkflows(data) {
-        workflowTable.clear();        // Clear existing data
-        workflowTable.rows.add(data); // Add new data
-        workflowTable.draw();         // Re-render the table
+        workflowTable.clear().rows.add(data).draw();
     }
-
 
     // Fetch and display workflows when the accordion is expanded
     document.getElementById('workflowManagementCollapse').addEventListener('shown.bs.collapse', async () => {
@@ -12775,7 +12761,7 @@
                     status: wf.status || "N/A",
                     workflow_id: wf.workflow_id || "N/A"
                 }));
-                workflowTable.clear().rows.add(workflows).draw();
+                loadWorkflows(workflows);
             } else {
                 displayMessage('warning', 'No workflows found or invalid data structure.');
                 workflowTable.clear().draw();
@@ -12815,7 +12801,7 @@
                             status: wf.status || "N/A",
                             workflow_id: wf.workflow_id || "N/A"
                         }));
-                        workflowTable.clear().rows.add(workflows).draw();
+                        loadWorkflows(workflows);
                     }
                 } catch (error) {
                     console.error('Error storing workflow:', error);
@@ -12825,6 +12811,7 @@
     });
 
     // Edit workflow step
+<<<<<<< Updated upstream
     window.editWorkflowStep = function(id) {
         // Fetch workflow step details and populate the form for editing
         // (Implementation depends on your backend API)
@@ -12851,6 +12838,30 @@
             const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
             modal.show();
         }
+=======
+    window.editWorkflowStep = function (id) {
+        const row = $(`button[onclick="editWorkflowStep('${id}')"]`).closest('tr');
+        const workflow = workflowTable.row(row).data();
+        if (!workflow) {
+            Toastify({
+                text: 'Workflow data not found.',
+                duration: 4000,
+                style: { background: "linear-gradient(to right, #ff0000, #ff1745)" }
+            }).showToast();
+            return;
+        }
+        document.getElementById('workflow_edit_id').value = id;
+        document.getElementById('workflow_edit_name').value = workflow.workflow_name || '';
+        document.getElementById('workflow_edit_description').value = workflow.description || '';
+        const statusSelect = document.getElementById('workflow_edit_status');
+        if (statusSelect) {
+            Array.from(statusSelect.options).forEach(option => {
+                option.selected = (option.value === (workflow.status || ''));
+            });
+        }
+        const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
+        modal.show();
+>>>>>>> Stashed changes
     };
 
     // Delete workflow step
