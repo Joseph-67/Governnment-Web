@@ -13157,8 +13157,17 @@
         if (taskForm) {
             taskForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
+                let task_manager = manager_5.getSelectedUserIds();
+                // Append manager IDs to the form data
+                task_manager.forEach(id => {
+                    formData.append('supervisor_ids[]', id);
+                });
+                let task_tags = taskTaggingSystem2.getTagIds();
+                task_tags.forEach(id => {
+                    formData.append('task_tag_ids[]', id);
+                });
                 const formData = new FormData(taskForm);
-                const url = "{{ route('admin.store-company-stage') }}";
+                const url = "{{ route('admin.store-company-stage-task') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Task', url, 'POST', formData);

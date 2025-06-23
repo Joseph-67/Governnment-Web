@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StageTask;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Models\HRMS\CompanyEmployees;
 use App\Models\CompanyStage;
+use App\Models\CompanyStageTask;
+use App\Models\TaskTag;
 use App\Models\Company;
+
 class StageTaskController extends Controller
 {
     /**
@@ -38,20 +41,30 @@ class StageTaskController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'company_stage_id' => 'required|exists:company_stages,id',
-            'assigned_to' => 'nullable|exists:company_employees,id',
+            'supervisor_ids' => 'nullable|array',
+            'supervisor_ids.*' => 'exists:company_employees,id',
             'due_date' => 'nullable|date',
+            'priority' => 'nullable|in:low,medium,high',
+            'status' => 'nullable|in:pending,completed,overdue',
+            'task_tag_ids' => 'nullable|array',
+            'task_tag_ids.*' => 'exists:task_tags,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $stageTask = StageTask::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
+        $stageTask = CompanyStageTask::create([
+            'company_id' => $request->input('company_id'),
             'company_stage_id' => $request->input('company_stage_id'),
-            'assigned_to' => $request->input('assigned_to'),
+            'task_name' => $request->input('name'),
+            'description' => $request->input('description'),
             'due_date' => $request->input('due_date'),
+            'priority' => $request->input('priority'),
+            'status' => $request->input('status'),
+            'supervisor_ids' => $request->input('supervisor_ids') ? json_encode($request->input('supervisor_ids')) : null,
+            'task_tag_ids' => $request->input('task_tag_ids') ? json_encode($request->input('task_tag_ids')) : null,
+            
         ]);
 
         return response()->json(['message' => 'Stage task created successfully', 'data' => $stageTask], 201);
