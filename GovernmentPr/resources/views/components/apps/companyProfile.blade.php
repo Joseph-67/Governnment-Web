@@ -12812,6 +12812,7 @@
 
     // Edit workflow step
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     window.editWorkflowStep = function(id) {
         // Fetch workflow step details and populate the form for editing
         // (Implementation depends on your backend API)
@@ -12839,6 +12840,8 @@
             modal.show();
         }
 =======
+=======
+>>>>>>> Stashed changes
     window.editWorkflowStep = function (id) {
         const row = $(`button[onclick="editWorkflowStep('${id}')"]`).closest('tr');
         const workflow = workflowTable.row(row).data();
@@ -12861,6 +12864,9 @@
         }
         const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
         modal.show();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     };
 
