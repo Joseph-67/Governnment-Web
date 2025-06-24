@@ -12811,37 +12811,6 @@
     });
 
     // Edit workflow step
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    window.editWorkflowStep = function(id) {
-        // Fetch workflow step details and populate the form for editing
-        // (Implementation depends on your backend API)
-        // Example:
-        // fetch(`/admin/get-workflow-step/${id}`).then(...);
-
-        // alert('Edit workflow step: ' + id);
-        const workflow = workflowTable.row($(`button[onclick="editWorkflowStep('${id}')"]`).parents('tr')).data();
-        if (workflow) {
-            // Populate the modal form fields with workflow data
-            document.getElementById('workflow_edit_id').value = id;
-            document.getElementById('workflow_edit_name').value = workflow.workflow_name || '';
-            document.getElementById('workflow_edit_description').value = workflow.description || '';
-            // Populate type and status dropdowns if needed (fetch or static)
-            // Example: document.getElementById('workflow_edit_type').value = workflow.type || '';
-            // Set the selected option for status dropdown
-            const statusSelect = document.getElementById('workflow_edit_status');
-            if (statusSelect) {
-                Array.from(statusSelect.options).forEach(option => {
-                    option.selected = (option.value === (workflow.status || ''));
-                });
-            }
-            // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
-            modal.show();
-        }
-=======
-=======
->>>>>>> Stashed changes
     window.editWorkflowStep = function (id) {
         const row = $(`button[onclick="editWorkflowStep('${id}')"]`).closest('tr');
         const workflow = workflowTable.row(row).data();
@@ -12864,10 +12833,6 @@
         }
         const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
         modal.show();
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     };
 
     // Delete workflow step
