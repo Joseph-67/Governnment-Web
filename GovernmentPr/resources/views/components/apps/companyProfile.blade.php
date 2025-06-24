@@ -12238,22 +12238,20 @@
 
     </script>
     <script>
-    /** * TaskTaggingSystem class for managing task tagging functionality.
-     * * - Handles user input for task tagging.
-     * * - Fetches task suggestions from the server.
-     * * * Allows adding and removing task tags.
-     * */
+        /** * TaskTaggingSystem class for managing task tagging functionality.
+         * * - Handles user input for task tagging.
+         * * - Fetches task suggestions from the server.
+         * * * Allows adding and removing task tags.
+         * */
         class TaskTaggingSystem {
             constructor({ containerId, apiUrl }) {
                 this.container = document.getElementById(containerId);
                 this.apiUrl = apiUrl;
-                this.tags = [];
+                this.tags = []; // Store tags as objects with id and name
                 this.init();
             }
 
-            // Initialize the tagging system
             init() {
-                // Render the tag input UI
                 this.container.innerHTML = `
                     <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
                         <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
@@ -12270,22 +12268,21 @@
                 this.renderTags();
             }
 
-
             // Fetch suggestions from API
             async fetchSuggestions(query) {
                 try {
                     const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}&type=task`);
                     if (!response.ok) throw new Error("Failed to fetch task suggestions");
-                    return await response.json();
+                    return await response.json(); // Assuming suggestions include id and name
                 } catch (error) {
                     console.error("Error fetching task suggestions:", error);
                     return [];
                 }
             }
 
-            // Add a task tag
+            // Add a task tag (with id)
             addTag(tag) {
-                if (tag && !this.tags.includes(tag)) {
+                if (tag && !this.tags.some(existingTag => existingTag.id === tag.id)) {
                     this.tags.push(tag);
                     this.renderTags();
                     this.inputField.value = "";
@@ -12294,12 +12291,9 @@
             }
 
             // Remove a task tag
-            removeTag(tag) {
-                const index = this.tags.indexOf(tag);
-                if (index > -1) {
-                    this.tags.splice(index, 1);
-                    this.renderTags();
-                }
+            removeTag(tagId) {
+                this.tags = this.tags.filter(tag => tag.id !== tagId);
+                this.renderTags();
             }
 
             // Render task tags
@@ -12308,8 +12302,8 @@
                 this.tags.forEach(tag => {
                     const tagElement = document.createElement("div");
                     tagElement.className = "task-tag";
-                    tagElement.innerHTML = `${tag} <span>&times;</span>`;
-                    tagElement.querySelector("span").onclick = () => this.removeTag(tag);
+                    tagElement.innerHTML = `${tag.name} <span>&times;</span>`;
+                    tagElement.querySelector("span").onclick = () => this.removeTag(tag.id);
                     this.tagsContainer.appendChild(tagElement);
                 });
             }
@@ -12317,12 +12311,14 @@
             // Show task suggestions
             async showSuggestions(input) {
                 const fetchedSuggestions = await this.fetchSuggestions(input);
-                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                const filteredSuggestions = fetchedSuggestions.filter(suggestion => 
+                    !this.tags.some(tag => tag.id === suggestion.id)
+                );
                 this.suggestionsDiv.innerHTML = "";
                 filteredSuggestions.forEach(suggestion => {
                     const suggestionElement = document.createElement("div");
                     suggestionElement.className = "task-suggestion";
-                    suggestionElement.textContent = suggestion;
+                    suggestionElement.textContent = suggestion.name;
                     suggestionElement.onclick = () => this.addTag(suggestion);
                     this.suggestionsDiv.appendChild(suggestionElement);
                 });
@@ -12342,9 +12338,17 @@
                 this.inputField.addEventListener("keydown", (event) => {
                     if (event.key === "Enter" || event.key === ",") {
                         event.preventDefault();
-                        this.addTag(this.inputField.value.trim());
+                        const input = this.inputField.value.trim();
+                        if (input) {
+                            this.addTag({ id: null, name: input }); // Add as a plain tag if no API ID
+                        }
                     }
                 });
+            }
+
+            // Extract tag IDs for submission
+            getTagIds() {
+                return this.tags.map(tag => tag.id).filter(id => id !== null); // Only include tags with valid IDs
             }
         }
 
@@ -13136,9 +13140,16 @@
     // Handle task form submission
     document.addEventListener('DOMContentLoaded', function () {
         const taskForm = document.getElementById('task-management-form');
+        console.log('====================================');
+        console.log('Task Form:', taskForm, taskTaggingSystem2);
+        console.log('====================================');
+        
         if (taskForm) {
             taskForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
+                console.log("hello world tag", taskTaggingSystem2, taskTaggingSystem2.getTagIds());
+                
+                const formData = new FormData(taskForm);
                 let task_manager = manager_5.getSelectedUserIds();
                 // Append manager IDs to the form data
                 task_manager.forEach(id => {
@@ -13148,7 +13159,7 @@
                 task_tags.forEach(id => {
                     formData.append('task_tag_ids[]', id);
                 });
-                const formData = new FormData(taskForm);
+                
                 const url = "{{ route('admin.store-company-stage-task') }}";
 
                 try {
