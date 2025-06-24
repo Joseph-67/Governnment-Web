@@ -205,7 +205,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/workflow', 'index')->name('admin.workflow');
         Route::post('/workflow/store', 'store')->name('admin.store-company-workflow');
         Route::get('/workflow/{id}', 'show')->name('admin.show-workflow');
-        Route::put('/workflow/{id}', 'update')->name('admin.update-workflow');
+        Route::post('/update-company-workflow/', 'update')->name('admin.update-company-workflow');
         Route::delete('/workflow/{id}', 'destroy')->name('admin.delete-workflow');
         Route::get('/workflow/company/{companyId}', 'getWorkflowsByCompany')->name('admin.workflow-by-company');
         Route::get('/get-workflows/{company_id}', 'getWorkflows')->name('admin.get-workflows');
@@ -344,7 +344,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/remove-water-sources', 'remove_water_sources')->name('company.remove-water-sources');
         Route::post('/company/add-water-usage', 'store_water_usage')->name('company.add-water-usage');
         Route::get('/company/{id}',  'display')->name('company.display');
-
         Route::post('/add-company-objective', 'add_company_objective')->name('admin.add-company-objective');
         Route::get('/company/{id}/create-recp', 'create_resp')->name('admin.create-recp');
         Route::get('/create-company', 'create')->name('admin.create-company');

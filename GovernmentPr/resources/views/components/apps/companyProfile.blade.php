@@ -5749,11 +5749,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="workflow_edit_description" class="form-label">Description</label>
-                                <input type="text" class="form-control" id="workflow_edit_description" name="description" />
+                                <input type="text" class="form-control" id="workflow_edit_description" name="workflow_description" />
                             </div>
                             <div class="col-md-6">
                                 <label for="workflow_edit_status" class="form-label">Status</label>
-                                <select class="form-select" id="workflow_edit_status" name="status" required>
+                                <select class="form-select" id="workflow_edit_status" name="workflow_status" required>
                                     <option value="" selected disabled>Select Status</option>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
@@ -12838,6 +12838,37 @@
         const modal = new bootstrap.Modal(document.getElementById('workflowEditModal'));
         modal.show();
     };
+
+    document.getElementById('workflow-edit-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.update-company-workflow') }}";
+        try {
+            const result = await fetch_cycle('--Update Workflow', url, 'POST', formData);
+            if (result.status === 'success' && Array.isArray(result.workflows)) {
+                const workflows = result.workflows.map(wf => ({
+                    workflow_name: wf.workflow_name || "N/A",
+                    description: wf.description || "",
+                    creator: wf.creator
+                        ? {
+                            first_name: wf.creator.first_name || "N/A",
+                            last_name: wf.creator.last_name || "N/A",
+                            other_name: wf.creator.other_name || "",
+                            profile_picture: wf.creator.profile_photo_path || 'https://via.placeholder.com/30',
+                            email: wf.creator.email || "N/A"
+                        }
+                        : null,
+                    status: wf.status || "N/A",
+                    workflow_id: wf.workflow_id || "N/A"
+                }));
+                loadWorkflows(workflows);
+                const modal = bootstrap.Modal.getInstance(document.getElementById('workflowEditModal'));
+                if (modal) modal.hide();
+            }
+        } catch (error) {
+            console.error('Error updating workflow:', error);
+        }
+    });
 
     // Delete workflow step
     window.deleteWorkflowStep = function(id) {

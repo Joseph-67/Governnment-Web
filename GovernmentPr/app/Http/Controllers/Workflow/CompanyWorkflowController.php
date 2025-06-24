@@ -163,6 +163,8 @@ class CompanyWorkflowController extends Controller
         //
         // Validate the request data
         $validator = Validator::make($request->all(), [
+            'company_id' => 'required|integer|exists:companies,company_id',
+            'workflow_id' => 'required|integer|exists:company_workflows,workflow_id',
             'workflow_name' => [
             'required',
             'string',
@@ -172,7 +174,7 @@ class CompanyWorkflowController extends Controller
             })->ignore($companyWorkflow->workflow_id, 'workflow_id'),
             ],
             'workflow_description' => 'nullable|string',
-            'workflow_status' => 'required|in:active,inactive',
+            'workflow_status' => 'required|in:active,inactive,pending',
         ]);
 
         if ($validator->fails()) {
@@ -180,6 +182,8 @@ class CompanyWorkflowController extends Controller
         }
 
         try {
+            // Update the company workflow with validated data
+            $companyWorkflow->company_id = $validator->validated()['company_id'];
             $companyWorkflow->workflow_name = $validator->validated()['workflow_name'];
             $companyWorkflow->description = $validator->validated()['workflow_description'] ?? null;
             $companyWorkflow->status = $validator->validated()['workflow_status'];
