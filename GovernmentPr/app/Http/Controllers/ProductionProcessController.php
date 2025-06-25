@@ -77,12 +77,25 @@ class ProductionProcessController extends Controller
             ->with(['operator', 'company'])
             ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Production process created successfully.',
-            'production_processes' => $productionProcesses
-        ], 201);
+      return response()->json([
+    'status' => 'success',
+    'message' => 'Production process created successfully.',
+    'production_processes' => $productionProcesses
+], 201);
 
+
+}
+
+public function getByBatch($batch_id)
+{
+    $processes = productionprocess::where('batch_id', $batch_id)
+        ->with(['operator', 'company'])
+        ->get();
+
+    return response()->json([
+        'status' => 'success',
+        'production_processes' => $processes
+    ]);
 }
 
 
