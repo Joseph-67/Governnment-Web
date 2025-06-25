@@ -33,7 +33,7 @@ class TagController extends Controller
     {
         try {
             $query = $request->input('query');
-            $tags = Tag::where('name', 'like', '%' . $query . '%')->limit(10)->pluck('name');
+            $tags = Tag::where('name', 'like', '%' . $query . '%')->limit(10)->get(['tagID', 'name']);
             return response()->json($tags);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to search tags', 'message' => $e->getMessage()], 500);

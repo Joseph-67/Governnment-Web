@@ -12091,14 +12091,25 @@
 
             // Show task suggestions
             async showSuggestions(input) {
-                const fetchedSuggestions = await this.fetchSuggestions(input);
-                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                const suggestions = await this.fetchSuggestions(input);
+                // Only show suggestions not already tagged (by id or name)
+                const filtered = suggestions.filter(s =>
+                    !this.tags.some(tag => tag === s || tag.id === s.id || tag === s.name || tag === s.name)
+                );
                 this.suggestionsDiv.innerHTML = "";
-                filteredSuggestions.forEach(suggestion => {
+                filtered.forEach(suggestion => {
                     const suggestionElement = document.createElement("div");
                     suggestionElement.className = "task-suggestion";
-                    suggestionElement.textContent = suggestion;
-                    suggestionElement.onclick = () => this.addTag(suggestion);
+                    suggestionElement.textContent = suggestion.name || suggestion.label || suggestion.tag || suggestion;
+                    suggestionElement.onclick = () => {
+                        // Prefer id+name if available, else just string
+                        if (suggestion.id !== undefined && suggestion.name !== undefined) {
+                            this.addTag({ id: suggestion.id, name: suggestion.name });
+                        } else if (typeof suggestion === "string") {
+                            this.addTag(suggestion);
+                        }
+                        this.suggestionsDiv.innerHTML = "";
+                    };
                     this.suggestionsDiv.appendChild(suggestionElement);
                 });
             }
@@ -12123,6 +12134,7 @@
             }
             // Extract tag IDs for submission
             getTagIds() {
+                console.log("Extracting tag IDs for submission:", this.tags);
                 return this.tags.map(tag => tag.id).filter(id => id !== null); // Only include tags with valid IDs
             }
         }
@@ -12962,7 +12974,10 @@
                     formData.append('supervisor_ids[]', id);
                 });
                 let task_tags = taskTaggingSystem2.getTagIds();
+                console.log('Task Tags:', task_tags);
                 task_tags.forEach(id => {
+                    console.log('id', id);
+                    
                     formData.append('task_tag_ids[]', id);
                 });
                 

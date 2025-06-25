@@ -22,6 +22,16 @@ return new class extends Migration
             $table->enum('status', ['pending', 'completed', 'overdue'])->default('pending');
             $table->json('supervisor_ids')->nullable();
             $table->json('task_tag_ids')->nullable();
+            // Additional fields for task management
+            $table->unsignedBigInteger('created_by')->nullable(); // User ID of the creator
+            $table->string('guard')->nullable(); // Guard for the user who created the task
+
+            $table->unsignedBigInteger('updated_by')->nullable(); // User ID of the updated task
+            $table->string('updated_guard')->nullable(); // Guard for the user who updated the task
+            
+            // Soft delete flag
+            $table->boolean('is_deleted')->default(false);
+            // Timestamps for tracking task progress
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

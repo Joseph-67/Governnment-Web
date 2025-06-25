@@ -222,7 +222,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
     
     // Company Stage Tasks
-    Route::controller(CompanyStageTaskController::class)->group(function() {
+    Route::controller(StageTaskController::class)->group(function() {
         Route::get('/company-stage-tasks', 'index')->name('admin.company-stage-tasks');
         Route::post('/company-stage-tasks/store', 'store')->name('admin.store-company-stage-task');
         Route::get('/company-stage-tasks/{id}', 'show')->name('admin.show-company-stage-task');

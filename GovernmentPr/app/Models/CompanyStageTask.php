@@ -22,6 +22,11 @@ class CompanyStageTask extends Model
         'status',
         'supervisor_ids',
         'task_tag_ids',
+        'created_by', // User who created the task
+        'guard', // Guard for the user who created the task
+        'updated_by', // User who updated the task
+        'updated_guard', // Guard for the user who updated the task
+        'is_deleted', // Soft delete flag
         'started_at',
         'completed_at',
     ];
