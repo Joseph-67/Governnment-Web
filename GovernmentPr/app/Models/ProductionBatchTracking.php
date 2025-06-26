@@ -9,21 +9,22 @@ class ProductionBatchTracking extends Model
 {
     use HasFactory;
     protected $table = 'production_batch_tracking';
-    company_id',
+    protected $primaryKey = 'batch_id';
+    protected $fillable = [
+        'batch_name',
+        'company_id',
         'product_id',
         'start_date',
         'end_date',
         'total_quantity',
-        'defective_protected $primaryKey = 'batch_id';
-    protected $fillable = [
-        'batch_name',
-        'quantity',
+        'defective_quantity',
+        'yield_percentage',
         'created_by',
         'geolocation',
         'iot_device_id',
-        'predicted_defect_rate',
-        'status'
+        'status',
     ];
+  
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');

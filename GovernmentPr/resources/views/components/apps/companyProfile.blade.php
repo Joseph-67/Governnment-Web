@@ -4106,13 +4106,7 @@
                                                             <label for="predicted_defect_rate" class="form-label text-white fw-semibold">Predicted Defect Rate (%)</label>
                                                             <input type="number" class="form-control border-0 shadow-sm" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
                                                         </div>
-                                                        <!-- Audit Trail -->
-                                                        <div class="col-md-6">
-                                                            <label for="audit_trail" class="form-label text-white fw-semibold">Audit Trail</label>
-                                                            <select class="form-select border-0 shadow-sm" id="audit_trail" name="audit_trail">
-                                                                <option value="" selected disabled>Select Audit Trail</option>
-                                                            </select>
-                                                        </div>
+                                                      
                                                         <!-- Submit Button -->
                                                         <div class="col-md-12 mt-3 text-end">
                                                             <button type="submit" class="btn btn-light fw-bold px-4 py-2 shadow-sm">Save Batch</button>
@@ -11920,81 +11914,104 @@
      * - On success, you can update the UI or show a toast.
      * - On error, logs the error or can show a toast.
      */
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize DataTable for Production Process
-        const productionProcessTable = $('#tbl-production-process').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            responsive: true,
-            destroy: true,
-            columnDefs: [
-                { orderable: false, targets: [5] }
-            ],
-            data: [],
-            columns: [
-                { data: 'operation_type', title: 'Operation Type' },
-                { data: 'start_date', title: 'Start Date' },
-                { data: 'end_date', title: 'End Date' },
-                { data: 'remarks', title: 'Remarks' },
-                {
-                    data: 'status',
-                    title: 'Status',
-                    render: (data, type) => {
-                        if (type === 'display') {
-                            let badgeClass = 'secondary';
-                            let label = data || 'N/A';
-                            switch ((data || '').toLowerCase()) {
-                                case 'completed': badgeClass = 'success'; break;
-                                case 'pending': badgeClass = 'warning'; break;
-                                case 'rejected': badgeClass = 'dark'; break;
-                            }
-                            return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+   
+document.addEventListener('DOMContentLoaded', function () {
+    const batchId = document.querySelector('#batch_id')?.value;
+
+    const productionProcessTable = $('#tbl-production-process').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        destroy: true,
+        columnDefs: [
+            { orderable: false, targets: [5] }
+        ],
+        data: [],
+        columns: [
+            { data: 'operation_type', title: 'Operation Type' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'remarks', title: 'Remarks' },
+            {
+                data: 'status',
+                title: 'Status',
+                render: (data, type) => {
+                    if (type === 'display') {
+                        let badgeClass = 'secondary';
+                        let label = data || 'N/A';
+                        switch ((data || '').toLowerCase()) {
+                            case 'completed': badgeClass = 'success'; break;
+                            case 'pending': badgeClass = 'warning'; break;
+                            case 'rejected': badgeClass = 'dark'; break;
                         }
-                        return data;
+                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                     }
-                },
-                {
-                    data: null,
-                    title: 'Actions',
-                    render: (data, type, row) => `
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id || row.id || "''"})">Edit</button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id || row.id || "''"})">Delete</button>
-                        </div>
-                    `
+                    return data;
                 }
-            ]
-        });
-
-        // Handle form submission for adding a new production process
-        const form = document.querySelector('#production-process-form');
-        if (form) {
-            form.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const url = "{{ route('admin.store-production-process') }}";
-
-                try {
-                    const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-                    if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                        const formatted = result.production_processes.map(proc => ({
-                            operation_type: proc.operation_type || 'N/A',
-                            start_date: proc.start_date ? new Date(proc.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A',
-                            end_date: proc.end_date ? new Date(proc.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A',
-                            remarks: proc.remarks || '',
-                            status: proc.status || 'N/A',
-                            id: proc.process_id || ''
-                        }));
-                        productionProcessTable.clear().rows.add(formatted).draw();
-                    }
-                } catch (error) {
-                    console.error('Error storing production process:', error);
-                }
-            });
-        }
+            },
+            {
+                data: null,
+                title: 'Actions',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id || row.id || "''"})">Edit</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id || row.id || "''"})">Delete</button>
+                    </div>
+                `
+            }
+        ]
     });
-    </script>
+
+    // ✅ Load existing records on page load
+    if (batchId) {
+        fetch(`/production-process/batch/${batchId}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                    const formatted = result.production_processes.map(proc => ({
+                        operation_type: proc.operation_type || 'N/A',
+                        start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                        end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                        remarks: proc.remarks || '',
+                        status: proc.status || 'N/A',
+                        id: proc.process_id || ''
+                    }));
+                    productionProcessTable.clear().rows.add(formatted).draw();
+                }
+            }).catch(error => console.error('Fetch error:', error));
+    }
+
+    // ✅ Handle form submission
+    const form = document.querySelector('#production-process-form');
+    if (form) {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const url = "{{ route('admin.store-production-process') }}";
+
+            try {
+                const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+                if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                    const formatted = result.production_processes.map(proc => ({
+                        operation_type: proc.operation_type || 'N/A',
+                        start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                        end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                        remarks: proc.remarks || '',
+                        status: proc.status || 'N/A',
+                        id: proc.process_id || ''
+                    }));
+                    productionProcessTable.clear().rows.add(formatted).draw();
+                }
+            } catch (error) {
+                console.error('Error storing production process:', error);
+            }
+        });
+    }
+});
+</script>
+
+    
     <!-- end store production process -->
     <!-- End Batch tracking -->
 
