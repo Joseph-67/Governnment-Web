@@ -5833,7 +5833,7 @@
     <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
-                <form id="edit-stage-form" method="post" autocomplete="off">
+                <form id="edit-stage-form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="stage_id" id="edit_stage_id">
                     <div class="modal-header bg-gradient-primary text-white rounded-top">
@@ -12971,7 +12971,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.manageWorkflowStages = function(workflowId) {
-                // clear the form fields
+        // clear the form fields
         document.getElementById('stage-management-form').reset();
         // Set the batch_id (or workflow_id) in the hidden input for the stage form
         document.getElementById('stage_workflow_id').value = workflowId;
@@ -13070,6 +13070,34 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.show();
         }
     };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const editStageForm = document.getElementById('edit-stage-form');
+        if (editStageForm) {
+            editStageForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(editStageForm);
+                const url = "{{ route('admin.update-company-stage') }}";
+                try {
+                    const result = await fetch_cycle('--Update Stage', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.stages)) {
+                        const stages = result.stages.map(stage => ({
+                            stage_name: stage.name || "N/A",
+                            description: stage.description || "",
+                            status: stage.status || "N/A",
+                            sequence_order: stage.sequence || "N/A",
+                            stage_id: stage.stage_id || stage.id || "N/A"
+                        }));
+                        stageTable.clear().rows.add(stages).draw();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editStageModal'));
+                        if (modal) modal.hide();
+                    }
+                } catch (error) {
+                    console.error('Error updating stage:', error);
+                }
+            });
+        }
+    });
 
     // Delete stage
     window.deleteStage = function(id) {
