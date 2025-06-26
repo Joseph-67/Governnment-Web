@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
-            $table->enum('status', ['pending', 'completed', 'overdue'])->default('pending');
+            $table->enum('status', ['pending', 'completed', 'overdue', 'in_progress', 'cancelled'])->default('pending');
             $table->json('supervisor_ids')->nullable();
             $table->json('task_tag_ids')->nullable();
             // Additional fields for task management

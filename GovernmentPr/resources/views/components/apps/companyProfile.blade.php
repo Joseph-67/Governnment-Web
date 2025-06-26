@@ -12028,18 +12028,18 @@
 
             // Initialize the tagging system
             init() {
-                // Render the tag input UI
+                // Build the tag input UI
                 this.container.innerHTML = `
-                    <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
-                        <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
-                        <input type="text" class="form-control border-0 shadow-none" id="task-tag-input" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;"/>
+                    <div class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0 10px;">
+                        <div class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
+                        <input type="text" class="form-control border-0 shadow-none" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;" />
                     </div>
-                    <div id="task-suggestions"></div>
+                    <div class="task-suggestions"></div>
                 `;
 
-                this.tagsContainer = this.container.querySelector("#task-tags-container");
-                this.inputField = this.container.querySelector("#task-tag-input");
-                this.suggestionsDiv = this.container.querySelector("#task-suggestions");
+                this.tagsContainer = this.container.querySelector(".tags-display");
+                this.inputField = this.container.querySelector("input[type='text']");
+                this.suggestionsDiv = this.container.querySelector(".task-suggestions");
 
                 this.bindEvents();
                 this.renderTags();
@@ -12059,13 +12059,27 @@
             }
 
             // Add a task tag
-            addTag(tag) {
-                if (tag && !this.tags.includes(tag)) {
-                    this.tags.push(tag);
-                    this.renderTags();
-                    this.inputField.value = "";
-                    this.suggestionsDiv.innerHTML = "";
+            addTag(idOrName, name = null) {
+                // If called with (id, name) from suggestion, use id as tag object
+                let tagObj;
+                if (typeof idOrName === "object" && idOrName !== null) {
+                    tagObj = idOrName;
+                } else if (name !== null) {
+                    tagObj = { id: idOrName, name };
+                } else {
+                    // Called from free input, treat as plain string
+                    tagObj = { id: null, name: idOrName };
                 }
+                // Prevent duplicates by name (case-insensitive)
+                if (
+                    tagObj.name &&
+                    !this.tags.some(t => t.name.toLowerCase() === tagObj.name.toLowerCase())
+                ) {
+                    this.tags.push(tagObj);
+                    this.renderTags();
+                }
+                this.inputField.value = "";
+                this.suggestionsDiv.innerHTML = "";
             }
 
             // Remove a task tag
@@ -12083,7 +12097,10 @@
                 this.tags.forEach(tag => {
                     const tagElement = document.createElement("div");
                     tagElement.className = "task-tag";
-                    tagElement.innerHTML = `${tag} <span>&times;</span>`;
+                    tagElement.innerHTML = `
+                        ${tag.name}
+                        <span title="Remove tag">&times;</span>
+                    `;
                     tagElement.querySelector("span").onclick = () => this.removeTag(tag);
                     this.tagsContainer.appendChild(tagElement);
                 });
@@ -12093,23 +12110,13 @@
             async showSuggestions(input) {
                 const suggestions = await this.fetchSuggestions(input);
                 // Only show suggestions not already tagged (by id or name)
-                const filtered = suggestions.filter(s =>
-                    !this.tags.some(tag => tag === s || tag.id === s.id || tag === s.name || tag === s.name)
-                );
+                const filteredSuggestions = suggestions.filter(suggestion => !this.tags.includes(suggestion.name));
                 this.suggestionsDiv.innerHTML = "";
-                filtered.forEach(suggestion => {
+                filteredSuggestions.forEach(suggestion => {
                     const suggestionElement = document.createElement("div");
                     suggestionElement.className = "task-suggestion";
-                    suggestionElement.textContent = suggestion.name || suggestion.label || suggestion.tag || suggestion;
-                    suggestionElement.onclick = () => {
-                        // Prefer id+name if available, else just string
-                        if (suggestion.id !== undefined && suggestion.name !== undefined) {
-                            this.addTag({ id: suggestion.id, name: suggestion.name });
-                        } else if (typeof suggestion === "string") {
-                            this.addTag(suggestion);
-                        }
-                        this.suggestionsDiv.innerHTML = "";
-                    };
+                    suggestionElement.textContent = suggestion.name;
+                    suggestionElement.addEventListener('click', () => this.addTag(suggestion.tagID, suggestion.name));
                     this.suggestionsDiv.appendChild(suggestionElement);
                 });
             }
@@ -12134,8 +12141,12 @@
             }
             // Extract tag IDs for submission
             getTagIds() {
-                console.log("Extracting tag IDs for submission:", this.tags);
-                return this.tags.map(tag => tag.id).filter(id => id !== null); // Only include tags with valid IDs
+                // Return an array of tag IDs (excluding null/undefined)
+                console.log(this.tags);
+                
+                return this.tags
+                    .map(tag => tag.id)
+                    .filter(id => typeof id !== "undefined" && id !== null && id !== "");
             }
         }
 
