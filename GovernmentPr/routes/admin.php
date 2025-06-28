@@ -228,7 +228,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/company-stage-tasks/{id}', 'show')->name('admin.show-company-stage-task');
         Route::put('/company-stage-tasks/{id}', 'update')->name('admin.update-company-stage-task');
         Route::delete('/company-stage-tasks/{id}', 'destroy')->name('admin.delete-company-stage-task');
-        Route::get('/get-stage-tasks/{stageId}', 'getStageTasks')->name('admin.get-stage-tasks');
+        Route::get('/get-stage-tasks/{stageId}', 'getTasksByStage')->name('admin.get-stage-tasks');
     });
 
     // Equipment Log

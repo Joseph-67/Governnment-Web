@@ -13265,7 +13265,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!task) {
             try {
-                const response = await fetch(`/admin/get-stage-tasks/${id}`);
+                const response = await fetch(`/admin/get-stage-tasks/${stageId}`);
                 if (response.ok) {
                     task = await response.json();
                 }

@@ -33,6 +33,22 @@ class StageTaskController extends Controller
     }
 
     /**
+     * Get all tasks for a given stage.
+     */
+    public function getTasksByStage($stageId)
+    {
+        $tasks = CompanyStageTask::where('company_stage_id', $stageId)
+            ->where('is_deleted', false)
+            ->orderBy('created_at', 'desc')
+            ->get(['task_id', 'task_name', 'description', 'due_date', 'priority', 'status', 'supervisor_ids', 'task_tag_ids']);
+
+        return response()->json([
+            'status' => 'success',
+            'tasks' => $tasks
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
