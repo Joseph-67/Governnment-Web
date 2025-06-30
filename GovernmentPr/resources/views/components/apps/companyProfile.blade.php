@@ -5835,6 +5835,7 @@
             <div class="modal-content shadow-lg border-0 rounded-3">
                 <form id="edit-stage-form" method="post" autocomplete="off">
                     @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="stage_id" id="edit_stage_id">
                     <div class="modal-header bg-gradient-primary text-white rounded-top">
                         <h5 class="modal-title fw-bold" id="editStageModalLabel">
@@ -13058,6 +13059,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
+        // Populate the form fields with stage data
+        console.log("Editing stage:", stage);
+        
 
         if (stage) {
             document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";

@@ -127,6 +127,7 @@ class StageTaskController extends Controller
     public function update(Request $request, StageTask $stageTask)
     {
         //
+        
     }
 
     /**

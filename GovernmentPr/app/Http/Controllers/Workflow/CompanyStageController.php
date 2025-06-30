@@ -118,6 +118,58 @@ class CompanyStageController extends Controller
     public function update(Request $request, CompanyStage $companyStage)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'stage_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('company_stages', 'name')->where(function ($query) use ($companyStage) {
+                    return $query->where('workflow_id', $companyStage->workflow_id);
+                })->ignore($companyStage->stage_id, 'stage_id'),
+            ],
+            'workflow_id' => 'required|exists:company_workflows,workflow_id',
+            'company_id' => 'required|exists:companies,company_id',
+            'stage_description' => 'nullable|string|max:1000',
+            'stage_sequence_order' => 'required|integer|min:0',
+            'stage_status' => [
+                'required',
+                'string',
+                Rule::in(['pending', 'In Progress', 'Completed', 'Cancelled']),
+            ],
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+    try {
+        // Find the company stage by ID
+        $companyStage = CompanyStage::find($validator->validated()['stage_id']);
+        // Update the company stage with validated data
+        $companyStage->name = $validator->validated()['stage_name'];
+        $companyStage->description = $validator->validated()['stage_description'] ?? null;
+        $companyStage->sequence = $validator->validated()['stage_sequence_order'];
+        $companyStage->status = $validator->validated()['stage_status'];
+        $companyStage->save();
+
+        // Get all stages for the workflow after update
+        $allStages = CompanyStage::where('workflow_id', $companyStage->workflow_id)
+            ->orderBy('sequence')
+            ->get();
+
+            
+        // Return a success response with the updated stages
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company stage updated successfully.',
+            'stages' => $allStages
+        ] , 200);
+    } catch (\Exception $e) {
+        return response()->json([
+        'status' => 'error', 
+        'message' => 'Failed to update company stage.',
+        'error' => $e->getMessage()
+        ], 500);
+        }
     }
 
     /**
