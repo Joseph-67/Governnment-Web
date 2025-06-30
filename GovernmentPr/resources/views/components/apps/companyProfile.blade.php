@@ -13180,6 +13180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Show Task Management Modal for a stage
     window.manageStageTasks = function(stageId) {
+        console.log("Manage Stage Tasks for Stage ID:", stageId);
         document.getElementById('task-management-form').reset();
         document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
         // document.getElementById('task_id').value = "";
@@ -13192,11 +13193,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.tasks)) {
                     const tasks = data.tasks.map(task => ({
-                        task_name: task.name || "N/A",
-                        description: task.description || "",
+                        title: task.title || task.task_name || "N/A",
+                        supervisor: Array.isArray(task.supervisors)
+                            ? task.supervisors.map(sup =>
+                                [sup.first_name, sup.last_name].filter(Boolean).join(" ") + (sup.email ? ` (${sup.email})` : "")
+                              ).join(", ")
+                            : (task.supervisor || "N/A"),
+                        due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        priority: task.priority || "N/A",
                         status: task.status || "N/A",
-                        sequence_order: task.sequence || "N/A",
-                        task_id: task.task_id || task.id || "N/A"
+                        tags: Array.isArray(task.tags)
+                            ? task.tags.map(tag => tag.name || tag).join(", ")
+                            : (task.tags || ""),
+                        task_id: task.stage_task_id || task.id || "N/A"
                     }));
                     taskTable.clear().rows.add(tasks).draw();
                     document.getElementById('task-management-form').reset();
