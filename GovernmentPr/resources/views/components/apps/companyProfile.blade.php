@@ -5730,7 +5730,6 @@
             <div class="modal-content">
                 <form id="workflow-edit-form" method="post">
                     @csrf
-                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="workflow_id" id="workflow_edit_id">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title" id="workflowEditModalLabel">Edit Workflow</h5>
@@ -12047,18 +12046,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Initialize the tagging system
             init() {
-                // Render the tag input UI
+                // Build the tag input UI
                 this.container.innerHTML = `
-                    <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
-                        <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
-                        <input type="text" class="form-control border-0 shadow-none" id="task-tag-input" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;"/>
+                    <div class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0 10px;">
+                        <div class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
+                        <input type="text" class="form-control border-0 shadow-none" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;" />
                     </div>
-                    <div id="task-suggestions"></div>
+                    <div class="task-suggestions"></div>
                 `;
 
-                this.tagsContainer = this.container.querySelector("#task-tags-container");
-                this.inputField = this.container.querySelector("#task-tag-input");
-                this.suggestionsDiv = this.container.querySelector("#task-suggestions");
+                this.tagsContainer = this.container.querySelector(".tags-display");
+                this.inputField = this.container.querySelector("input[type='text']");
+                this.suggestionsDiv = this.container.querySelector(".task-suggestions");
 
                 this.bindEvents();
                 this.renderTags();
@@ -12078,13 +12077,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Add a task tag
-            addTag(tag) {
-                if (tag && !this.tags.includes(tag)) {
-                    this.tags.push(tag);
-                    this.renderTags();
-                    this.inputField.value = "";
-                    this.suggestionsDiv.innerHTML = "";
+            addTag(idOrName, name = null) {
+                // If called with (id, name) from suggestion, use id as tag object
+                let tagObj;
+                if (typeof idOrName === "object" && idOrName !== null) {
+                    tagObj = idOrName;
+                } else if (name !== null) {
+                    tagObj = { id: idOrName, name };
+                } else {
+                    // Called from free input, treat as plain string
+                    tagObj = { id: null, name: idOrName };
                 }
+                // Prevent duplicates by name (case-insensitive)
+                if (
+                    tagObj.name &&
+                    !this.tags.some(t => t.name.toLowerCase() === tagObj.name.toLowerCase())
+                ) {
+                    this.tags.push(tagObj);
+                    this.renderTags();
+                }
+                this.inputField.value = "";
+                this.suggestionsDiv.innerHTML = "";
             }
 
             // Remove a task tag
@@ -12102,7 +12115,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.tags.forEach(tag => {
                     const tagElement = document.createElement("div");
                     tagElement.className = "task-tag";
-                    tagElement.innerHTML = `${tag} <span>&times;</span>`;
+                    tagElement.innerHTML = `
+                        ${tag.name}
+                        <span title="Remove tag">&times;</span>
+                    `;
                     tagElement.querySelector("span").onclick = () => this.removeTag(tag);
                     this.tagsContainer.appendChild(tagElement);
                 });
@@ -12110,14 +12126,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Show task suggestions
             async showSuggestions(input) {
-                const fetchedSuggestions = await this.fetchSuggestions(input);
-                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
+                const suggestions = await this.fetchSuggestions(input);
+                // Only show suggestions not already tagged (by id or name)
+                const filteredSuggestions = suggestions.filter(suggestion => !this.tags.includes(suggestion.name));
                 this.suggestionsDiv.innerHTML = "";
                 filteredSuggestions.forEach(suggestion => {
                     const suggestionElement = document.createElement("div");
                     suggestionElement.className = "task-suggestion";
-                    suggestionElement.textContent = suggestion;
-                    suggestionElement.onclick = () => this.addTag(suggestion);
+                    suggestionElement.textContent = suggestion.name;
+                    suggestionElement.addEventListener('click', () => this.addTag(suggestion.tagID, suggestion.name));
                     this.suggestionsDiv.appendChild(suggestionElement);
                 });
             }
@@ -12140,234 +12157,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-        }
-
-        // Usage example
-        const taskTaggingSystem2 = new TaskTaggingSystem({
-            containerId: "tagging-system-2",
-            apiUrl: "{{ url('/admin/search-tag') }}"
-        });
-
-        class TaggingSystem {
-            constructor({ containerId, apiUrl }) {
-                this.container = document.getElementById(containerId);
-                this.apiUrl = apiUrl;
-                this.tags = [];
-                this.init();
-            }
-
-            // Initialize the tagging system
-            init() {
-                this.container.innerHTML = `
-                <div id="tags-container"></div>
-                <input type="text" class="form-control" id="tag-input-field" placeholder="Type to add tags" />
-                <div id="suggestions"></div>
-                `;
-
-                this.tagsContainer = this.container.querySelector("#tags-container");
-                this.inputField = this.container.querySelector("#tag-input-field");
-                this.suggestionsDiv = this.container.querySelector("#suggestions");
-
-                this.bindEvents();
-                this.renderTags();
-            }
-
-            // Fetch suggestions from API
-            async fetchSuggestions(query) {
-                try {
-                const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}`);
-                if (!response.ok) throw new Error("Failed to fetch suggestions");
-                return await response.json();
-                } catch (error) {
-                console.error("Error fetching suggestions:", error);
-                return [];
-                }
-            }
-
-            // Add a tag
-            addTag(tag) {
-                if (tag && !this.tags.includes(tag)) {
-                this.tags.push(tag);
-                this.renderTags();
-                this.inputField.value = "";
-                this.suggestionsDiv.innerHTML = "";
-                }
-            }
-
-            // Remove a tag
-            removeTag(tag) {
-                const index = this.tags.indexOf(tag);
-                if (index > -1) {
-                this.tags.splice(index, 1);
-                this.renderTags();
-                }
-            }
-
-            // Render tags
-            renderTags() {
-                this.tagsContainer.innerHTML = "";
-                this.tags.forEach(tag => {
-                const tagElement = document.createElement("div");
-                tagElement.className = "tag";
-                tagElement.innerHTML = `${tag} <span>&times;</span>`;
-                tagElement.querySelector("span").onclick = () => this.removeTag(tag);
-                this.tagsContainer.appendChild(tagElement);
-                });
-            }
-
-            // Show suggestions
-            async showSuggestions(input) {
-                const fetchedSuggestions = await this.fetchSuggestions(input);
-                const filteredSuggestions = fetchedSuggestions.filter(suggestion => !this.tags.includes(suggestion));
-                this.suggestionsDiv.innerHTML = "";
-                filteredSuggestions.forEach(suggestion => {
-                const suggestionElement = document.createElement("div");
-                suggestionElement.className = "TagSuggestion";
-                suggestionElement.textContent = suggestion;
-                suggestionElement.onclick = () => this.addTag(suggestion);
-                this.suggestionsDiv.appendChild(suggestionElement);
-                });
-            }
-
-            // Bind events
-            bindEvents() {
-                this.inputField.addEventListener("input", () => {
-                const input = this.inputField.value.trim();
-                if (input) {
-                    this.showSuggestions(input);
-                } else {
-                    this.suggestionsDiv.innerHTML = "";
-                }
-                });
-
-                this.inputField.addEventListener("keydown", (event) => {
-                if (event.key === "Enter" || event.key === ",") {
-                    event.preventDefault();
-                    this.addTag(this.inputField.value.trim());
-                }
-                });
-            }
-        }
-
-        // Usage example
-        const taggingSystem = new TaggingSystem({
-        containerId: "tagging-system",
-        apiUrl: "{{ url('/admin/search-tag') }}"
-        });
-
-    </script>
-    <script>
-        /** * TaskTaggingSystem class for managing task tagging functionality.
-         * * - Handles user input for task tagging.
-         * * - Fetches task suggestions from the server.
-         * * * Allows adding and removing task tags.
-         * */
-        class TaskTaggingSystem {
-            constructor({ containerId, apiUrl }) {
-                this.container = document.getElementById(containerId);
-                this.apiUrl = apiUrl;
-                this.tags = []; // Store tags as objects with id and name
-                this.init();
-            }
-
-            init() {
-                this.container.innerHTML = `
-                    <div id="tag-input-wrapper" class="tag-inline-container" style="display: flex; align-items: center; flex-wrap: wrap; padding: 0px 10px;">
-                        <div id="task-tags-container" class="tags-display" style="display: flex; flex-wrap: wrap;"></div>
-                        <input type="text" class="form-control border-0 shadow-none" id="task-tag-input" autocomplete="off" placeholder="Add a task tag..." style="flex: 1; min-width: 120px;"/>
-                    </div>
-                    <div id="task-suggestions"></div>
-                `;
-
-                this.tagsContainer = this.container.querySelector("#task-tags-container");
-                this.inputField = this.container.querySelector("#task-tag-input");
-                this.suggestionsDiv = this.container.querySelector("#task-suggestions");
-
-                this.bindEvents();
-                this.renderTags();
-            }
-
-            // Fetch suggestions from API
-            async fetchSuggestions(query) {
-                try {
-                    const response = await fetch(`${this.apiUrl}?query=${encodeURIComponent(query)}&type=task`);
-                    if (!response.ok) throw new Error("Failed to fetch task suggestions");
-                    return await response.json(); // Assuming suggestions include id and name
-                } catch (error) {
-                    console.error("Error fetching task suggestions:", error);
-                    return [];
-                }
-            }
-
-            // Add a task tag (with id)
-            addTag(tag) {
-                if (tag && !this.tags.some(existingTag => existingTag.id === tag.id)) {
-                    this.tags.push(tag);
-                    this.renderTags();
-                    this.inputField.value = "";
-                    this.suggestionsDiv.innerHTML = "";
-                }
-            }
-
-            // Remove a task tag
-            removeTag(tagId) {
-                this.tags = this.tags.filter(tag => tag.id !== tagId);
-                this.renderTags();
-            }
-
-            // Render task tags
-            renderTags() {
-                this.tagsContainer.innerHTML = "";
-                this.tags.forEach(tag => {
-                    const tagElement = document.createElement("div");
-                    tagElement.className = "task-tag";
-                    tagElement.innerHTML = `${tag.name} <span>&times;</span>`;
-                    tagElement.querySelector("span").onclick = () => this.removeTag(tag.id);
-                    this.tagsContainer.appendChild(tagElement);
-                });
-            }
-
-            // Show task suggestions
-            async showSuggestions(input) {
-                const fetchedSuggestions = await this.fetchSuggestions(input);
-                const filteredSuggestions = fetchedSuggestions.filter(suggestion => 
-                    !this.tags.some(tag => tag.id === suggestion.id)
-                );
-                this.suggestionsDiv.innerHTML = "";
-                filteredSuggestions.forEach(suggestion => {
-                    const suggestionElement = document.createElement("div");
-                    suggestionElement.className = "task-suggestion";
-                    suggestionElement.textContent = suggestion.name;
-                    suggestionElement.onclick = () => this.addTag(suggestion);
-                    this.suggestionsDiv.appendChild(suggestionElement);
-                });
-            }
-
-            // Bind events
-            bindEvents() {
-                this.inputField.addEventListener("input", () => {
-                    const input = this.inputField.value.trim();
-                    if (input) {
-                        this.showSuggestions(input);
-                    } else {
-                        this.suggestionsDiv.innerHTML = "";
-                    }
-                });
-
-                this.inputField.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter" || event.key === ",") {
-                        event.preventDefault();
-                        const input = this.inputField.value.trim();
-                        if (input) {
-                            this.addTag({ id: null, name: input }); // Add as a plain tag if no API ID
-                        }
-                    }
-                });
-            }
-
             // Extract tag IDs for submission
             getTagIds() {
-                return this.tags.map(tag => tag.id).filter(id => id !== null); // Only include tags with valid IDs
+                // Return an array of tag IDs (excluding null/undefined)
+                console.log(this.tags);
+                
+                return this.tags
+                    .map(tag => tag.id)
+                    .filter(id => typeof id !== "undefined" && id !== null && id !== "");
             }
         }
 
@@ -13154,12 +12951,36 @@ document.addEventListener('DOMContentLoaded', function () {
         ordering: false,
         responsive: true,
         columnDefs: [
-            { orderable: false, targets: [4] } // Action column
+            { orderable: false, targets: [6] } // Action column
         ],
         data: [],
         columns: [
             { data: 'title', title: 'Title' },
-            { data: 'supervisor', title: 'Supervisor' },
+            {
+                data: 'supervisor',
+                title: 'Supervisor',
+                render: function(data, type, row) {
+                    // If supervisor is an array of objects, display as cards
+                    if (Array.isArray(row.supervisors) && row.supervisors.length > 0) {
+                        return row.supervisors.map(sup => `
+                            <div class="card shadow-sm mb-1" style="display:inline-block; min-width:220px; max-width:320px;">
+                                <div class="card-body p-2">
+                                    <div class="d-flex align-items-center">
+                                        <img src="${sup.profilePic || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                        <div>
+                                            <div class="fw-bold">${sup.name ?? sup.full_name ?? 'N/A'}</div>
+                                            <div class="small text-muted">${sup.email ?? ''}</div>
+                                            <div class="small text-secondary">${sup.jobTitle ?? ''}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                    // Fallback: display as plain text
+                    return data || '<span class="text-muted">None</span>';
+                }
+            },
             { data: 'due_date', title: 'Due Date' },
             { data: 'priority', title: 'Priority' },
             { data: 'status', title: 'Status' },
@@ -13181,13 +13002,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     });
-
     // Show Task Management Modal for a stage
     window.manageStageTasks = function(stageId) {
         console.log("Manage Stage Tasks for Stage ID:", stageId);
         document.getElementById('task-management-form').reset();
         document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
-        // document.getElementById('task_id').value = "";
         document.getElementById('task-management-form').querySelector('input[name="stage_id"]').value = stageId;
 
         // Fetch and display tasks for the selected stage
@@ -13198,11 +13017,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.status === "success" && Array.isArray(data.tasks)) {
                     const tasks = data.tasks.map(task => ({
                         title: task.title || task.task_name || "N/A",
-                        supervisor: Array.isArray(task.supervisors)
-                            ? task.supervisors.map(sup =>
-                                [sup.first_name, sup.last_name].filter(Boolean).join(" ") + (sup.email ? ` (${sup.email})` : "")
-                              ).join(", ")
-                            : (task.supervisor || "N/A"),
+                        supervisor: Array.isArray(task.supervisors) && task.supervisors.length > 0
+                            ? task.supervisors.map(sup => `
+                                <div class="card shadow-sm mb-1" style="display:inline-block; min-width:220px; max-width:320px;">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${sup.ProfilePicture || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                            <div>
+                                                <div class="fw-bold">${sup.name ?? sup.full_name ?? [sup.FirstName, sup.LastName].filter(Boolean).join(" ") ?? 'N/A'}</div>
+                                                <div class="small text-muted">${sup.Email ?? ''}</div>
+                                                <div class="small text-secondary">${sup.EmployeeNumber ?? ''}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')
+                            : '<span class="text-muted">None</span>',
                         due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
                         priority: task.priority || "N/A",
                         status: task.status || "N/A",
@@ -13246,7 +13076,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData.append('supervisor_ids[]', id);
                 });
                 let task_tags = taskTaggingSystem2.getTagIds();
+                console.log('Task Tags:', task_tags);
                 task_tags.forEach(id => {
+                    console.log('id', id);
+                    
                     formData.append('task_tag_ids[]', id);
                 });
                 

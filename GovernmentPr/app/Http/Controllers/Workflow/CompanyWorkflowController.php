@@ -182,30 +182,12 @@ class CompanyWorkflowController extends Controller
         }
 
         try {
-            // Find the company workflow by ID
-            $companyWorkflow = CompanyWorkflow::find($validator->validated()['workflow_id']);
             // Update the company workflow with validated data
+            $companyWorkflow->company_id = $validator->validated()['company_id'];
             $companyWorkflow->workflow_name = $validator->validated()['workflow_name'];
             $companyWorkflow->description = $validator->validated()['workflow_description'] ?? null;
             $companyWorkflow->status = $validator->validated()['workflow_status'];
             $companyWorkflow->save();
-
-            // Return a success response with the created company workflow
-            $allCompanyWorkflows = CompanyWorkflow::where('company_id', $request->company_id)
-            ->select('workflow_id', 'company_id', 'workflow_name', 'description', 'created_by', 'guard', 'status', 'created_at')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($workflow) {
-                // Fetch the creator details dynamically
-                $workflow->creator = $this->fetchCreator($workflow->guard, $workflow->created_by);
-                return $workflow;
-            });
-            // Return a success response with the updated workflows
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Company workflow updated successfully.',
-                'workflows' => $allCompanyWorkflows
-            ]);
         } catch (\Exception $e) {
             return response()->json([
             'status' => 'error',
@@ -213,6 +195,11 @@ class CompanyWorkflowController extends Controller
             'error' => $e->getMessage()
             ], 500);
         }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company workflow updated successfully.',
+            'workflow' => $companyWorkflow
+        ]);
     }
 
     /**
