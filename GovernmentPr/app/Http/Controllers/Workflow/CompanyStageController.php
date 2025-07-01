@@ -135,12 +135,13 @@ class CompanyStageController extends Controller
             'stage_status' => [
                 'required',
                 'string',
-                Rule::in(['pending', 'In Progress', 'Completed', 'Cancelled']),
+                Rule::in(['pending', 'in_progress', 'completed', 'cancelled', 'halted']),
             ],
         ]);
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
+        
         $validated = $validator->validated();
         $companyStage = CompanyStage::find($validated['stage_id']);
         if (!$companyStage) {
@@ -154,6 +155,7 @@ class CompanyStageController extends Controller
             'sequence'     => $validated['stage_sequence_order'],
             'status'       => $validated['stage_status'],
         ]);
+
         $allStages = CompanyStage::where('workflow_id', $validated['workflow_id'])
             ->orderBy('sequence')
             ->get();
@@ -161,7 +163,8 @@ class CompanyStageController extends Controller
             'status' => 'success',
             'message' => 'Company stage updated successfully.',
             'stages' => $allStages
-        ], 200);
+        ]);
+        
     }
 
     /**
