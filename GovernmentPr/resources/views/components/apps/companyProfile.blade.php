@@ -13150,12 +13150,36 @@ document.addEventListener('DOMContentLoaded', function () {
         ordering: false,
         responsive: true,
         columnDefs: [
-            { orderable: false, targets: [4] } // Action column
+            { orderable: false, targets: [6] } // Action column
         ],
         data: [],
         columns: [
             { data: 'title', title: 'Title' },
-            { data: 'supervisor', title: 'Supervisor' },
+            {
+                data: 'supervisor',
+                title: 'Supervisor',
+                render: function(data, type, row) {
+                    // If supervisor is an array of objects, display as cards
+                    if (Array.isArray(row.supervisors) && row.supervisors.length > 0) {
+                        return row.supervisors.map(sup => `
+                            <div class="card shadow-sm mb-1" style="display:inline-block; min-width:220px; max-width:320px;">
+                                <div class="card-body p-2">
+                                    <div class="d-flex align-items-center">
+                                        <img src="${sup.profilePic || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                        <div>
+                                            <div class="fw-bold">${sup.name ?? sup.full_name ?? 'N/A'}</div>
+                                            <div class="small text-muted">${sup.email ?? ''}</div>
+                                            <div class="small text-secondary">${sup.jobTitle ?? ''}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                    // Fallback: display as plain text
+                    return data || '<span class="text-muted">None</span>';
+                }
+            },
             { data: 'due_date', title: 'Due Date' },
             { data: 'priority', title: 'Priority' },
             { data: 'status', title: 'Status' },
@@ -13177,13 +13201,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     });
-
     // Show Task Management Modal for a stage
     window.manageStageTasks = function(stageId) {
         console.log("Manage Stage Tasks for Stage ID:", stageId);
         document.getElementById('task-management-form').reset();
         document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
-        // document.getElementById('task_id').value = "";
         document.getElementById('task-management-form').querySelector('input[name="stage_id"]').value = stageId;
 
         // Fetch and display tasks for the selected stage
@@ -13194,11 +13216,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.status === "success" && Array.isArray(data.tasks)) {
                     const tasks = data.tasks.map(task => ({
                         title: task.title || task.task_name || "N/A",
-                        supervisor: Array.isArray(task.supervisors)
-                            ? task.supervisors.map(sup =>
-                                [sup.first_name, sup.last_name].filter(Boolean).join(" ") + (sup.email ? ` (${sup.email})` : "")
-                              ).join(", ")
-                            : (task.supervisor || "N/A"),
+                        supervisor: Array.isArray(task.supervisors) && task.supervisors.length > 0
+                            ? task.supervisors.map(sup => `
+                                <div class="card shadow-sm mb-1" style="display:inline-block; min-width:220px; max-width:320px;">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${sup.profilePic || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                            <div>
+                                                <div class="fw-bold">${sup.name ?? sup.full_name ?? [sup.FirstName, sup.LastName].filter(Boolean).join(" ") ?? 'N/A'}</div>
+                                                <div class="small text-muted">${sup.Email ?? ''}</div>
+                                                <div class="small text-secondary">${sup.EmployeeNumber ?? ''}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')
+                            : '<span class="text-muted">None</span>',
                         due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
                         priority: task.priority || "N/A",
                         status: task.status || "N/A",
