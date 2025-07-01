@@ -13221,7 +13221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="card shadow-sm mb-1" style="display:inline-block; min-width:220px; max-width:320px;">
                                     <div class="card-body p-2">
                                         <div class="d-flex align-items-center">
-                                            <img src="${sup.profilePic || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                            <img src="${sup.ProfilePicture || 'https://via.placeholder.com/32'}" alt="${sup.name ?? sup.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
                                             <div>
                                                 <div class="fw-bold">${sup.name ?? sup.full_name ?? [sup.FirstName, sup.LastName].filter(Boolean).join(" ") ?? 'N/A'}</div>
                                                 <div class="small text-muted">${sup.Email ?? ''}</div>
