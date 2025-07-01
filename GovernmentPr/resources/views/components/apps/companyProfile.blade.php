@@ -13299,6 +13299,35 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.show();
         }
     };
+    document.addEventListener('DOMContentLoaded', function () {
+        const editTaskForm = document.getElementById('edit-task-form');
+        if (editTaskForm) {
+            editTaskForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(editTaskForm);
+                const url = "";
+                try {
+                    const result = await fetch_cycle('--Update Task', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.tasks)) {
+                        const tasks = result.tasks.map(task => ({
+                            title: task.title || "N/A",
+                            supervisor: task.supervisor || "N/A",
+                            due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            priority: task.priority || "N/A",
+                            status: task.status || "N/A",
+                            tags: Array.isArray(task.tags) ? task.tags.map(tag => tag.name || tag).join(", ") : (task.tags || ""),
+                            task_id: task.task_id || task.id || "N/A"
+                        }));
+                        taskTable.clear().rows.add(tasks).draw();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('taskManagementModal'));
+                        if (modal) modal.hide();
+                    }
+                } catch (error) {
+                    console.error('Error updating task:', error);
+                }
+            });
+        }
+    });
 
     // Delete task
     window.deleteTask = function(id) {

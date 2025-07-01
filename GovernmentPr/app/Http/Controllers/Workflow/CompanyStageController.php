@@ -124,12 +124,10 @@ class CompanyStageController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('company_stages', 'name')->ignore($request->stage_id)->where(function ($query) use ($request) {
-                    return $query->where('workflow_id', $request->workflow_id);
+                Rule::unique('company_stages', 'name')->ignore($request->stage_id, 'stage_id')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
                 }),
             ],
-            'workflow_id' => 'required|exists:company_workflows,workflow_id',
-            'company_id' => 'required|exists:companies,company_id',
             'stage_description' => 'nullable|string|max:1000',
             'stage_sequence_order' => 'required|integer|min:0',
             'stage_status' => [
@@ -141,29 +139,29 @@ class CompanyStageController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
-        
-        $validated = $validator->validated();
-        $companyStage = CompanyStage::find($validated['stage_id']);
-        if (!$companyStage) {
-            return response()->json(['status' => 'error', 'message' => 'Company stage not found.'], 404);
-        }
-        $companyStage->update([
-            'company_id'   => $validated['company_id'],
-            'workflow_id'  => $validated['workflow_id'],
-            'name'         => $validated['stage_name'],
-            'description'  => $validated['stage_description'] ?? null,
-            'sequence'     => $validated['stage_sequence_order'],
-            'status'       => $validated['stage_status'],
-        ]);
+        // try {
+            $validated = $validator->validated();
 
-        $allStages = CompanyStage::where('workflow_id', $validated['workflow_id'])
-            ->orderBy('sequence')
-            ->get();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Company stage updated successfully.',
-            'stages' => $allStages
-        ]);
+            $companyStage = CompanyStage::findOrFail($validated['stage_id']);
+            $companyStage->update([
+                'name'         => $validated['stage_name'],
+                'description'  => $validated['stage_description'] ?? null,
+                'sequence'     => $validated['stage_sequence_order'],
+                'status'       => $validated['stage_status'],
+            ]);
+
+            $allStages = CompanyStage::where('workflow_id', $companyStage->workflow_id)
+                ->orderBy('sequence')
+                ->get();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Company stage updated successfully.',
+                'stages' => $allStages
+            ]);
+        // } catch (\Exception $e) {
+        //     return response()->json(['status' => 'error', 'message' => 'Failed to update company stage.'], 500);
+        // }
         
     }
 
