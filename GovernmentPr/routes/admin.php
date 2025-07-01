@@ -216,7 +216,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/company-stages', 'index')->name('admin.company-stages');
         Route::post('/company-stages/store', 'store')->name('admin.store-company-stage');
         Route::get('/company-stages/{id}', 'show')->name('admin.show-company-stage');
-        Route::put('/company-stages/{id}', 'update')->name('admin.update-company-stage');
+        Route::post('/company-stages/', 'update')->name('admin.update-company-stage');
         Route::delete('/company-stages/{id}', 'destroy')->name('admin.delete-company-stage');
         Route::get('/get-company-stages/{workflowId}', 'getStagesByWorkflow')->name('admin.get-company-stages');
     });
@@ -228,7 +228,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/company-stage-tasks/{id}', 'show')->name('admin.show-company-stage-task');
         Route::put('/company-stage-tasks/{id}', 'update')->name('admin.update-company-stage-task');
         Route::delete('/company-stage-tasks/{id}', 'destroy')->name('admin.delete-company-stage-task');
-        Route::get('/get-stage-tasks/{stageId}', 'getStageTasks')->name('admin.get-stage-tasks');
+        Route::get('/get-stage-tasks/{stageId}', 'getTasksByStage')->name('admin.get-stage-tasks');
     });
 
     // Equipment Log

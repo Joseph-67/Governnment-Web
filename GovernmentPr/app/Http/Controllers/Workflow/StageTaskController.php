@@ -33,6 +33,42 @@ class StageTaskController extends Controller
     }
 
     /**
+     * Get all tasks for a given stage.
+     */
+    /**
+     * Get all tasks for a given stage.
+     *
+     * @param  int  $stageId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTasksByStage($stageId)
+    {
+        $tasks = CompanyStageTask::where('company_stage_id', $stageId)
+            ->where('is_deleted', false)
+            ->orderByDesc('created_at')
+            ->get([
+                'stage_task_id',
+                'task_name',
+                'description',
+                'due_date',
+                'priority',
+                'status',
+                'supervisor_ids',
+                'task_tag_ids'
+            ])
+            ->map(function ($task) {
+                $task->supervisors = $this->fetchSupervisors(json_decode($task->supervisor_ids, true) ?: []);
+                $task->tags = $this->fetchTags(json_decode($task->task_tag_ids, true) ?: []);
+                return $task;
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'tasks' => $tasks
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -103,6 +139,44 @@ class StageTaskController extends Controller
             ], 500);
         }
 
+    }
+    /**
+     * Fetch tags by their IDs.
+     *
+     * @param  array|int  $tagIDs
+     * @return \Illuminate\Support\Collection
+     */
+    protected function fetchTags($tagIDs)
+    {
+        if (empty($tagIDs)) {
+            return collect();
+        }
+
+        $ids = is_array($tagIDs) ? $tagIDs : [$tagIDs];
+
+        return \DB::table('tags')
+            ->whereIn('tagID', $ids)
+            ->select('tagID', 'name', 'slug')
+            ->get();
+    }
+
+    /**
+     * Fetch supervisors by their IDs.
+     *
+     * @param  array|int  $supervisorIDs
+     * @return \Illuminate\Support\Collection
+     */
+    protected function fetchSupervisors($supervisorIDs)
+    {
+        if (empty($supervisorIDs)) {
+            return collect();
+        }
+
+        $ids = is_array($supervisorIDs) ? $supervisorIDs : [$supervisorIDs];
+
+        return CompanyEmployees::whereIn('EmployeeID', $ids)
+            ->select('EmployeeID', 'FirstName', 'LastName', 'Email', 'EmployeeNumber', 'ProfilePicture')
+            ->get();
     }
 
     /**

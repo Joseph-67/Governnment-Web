@@ -5833,7 +5833,7 @@
     <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
-                <form id="edit-stage-form" method="post" autocomplete="off">
+                <form id="edit-stage-form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="stage_id" id="edit_stage_id">
@@ -12972,7 +12972,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.manageWorkflowStages = function(workflowId) {
-                // clear the form fields
+        // clear the form fields
         document.getElementById('stage-management-form').reset();
         // Set the batch_id (or workflow_id) in the hidden input for the stage form
         document.getElementById('stage_workflow_id').value = workflowId;
@@ -13075,6 +13075,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const editStageForm = document.getElementById('edit-stage-form');
+        if (editStageForm) {
+            editStageForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(editStageForm);
+                const url = "{{ route('admin.update-company-stage') }}";
+                try {
+                    const result = await fetch_cycle('--Update Stage', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.stages)) {
+                        const stages = result.stages.map(stage => ({
+                            stage_name: stage.name || "N/A",
+                            description: stage.description || "",
+                            status: stage.status || "N/A",
+                            sequence_order: stage.sequence || "N/A",
+                            stage_id: stage.stage_id || stage.id || "N/A"
+                        }));
+                        stageTable.clear().rows.add(stages).draw();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editStageModal'));
+                        if (modal) modal.hide();
+                    }
+                } catch (error) {
+                    console.error('Error updating stage:', error);
+                }
+            });
+        }
+    });
+
     // Delete stage
     window.deleteStage = function(id) {
         Swal.fire({
@@ -13156,6 +13184,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Show Task Management Modal for a stage
     window.manageStageTasks = function(stageId) {
+        console.log("Manage Stage Tasks for Stage ID:", stageId);
         document.getElementById('task-management-form').reset();
         document.getElementById('stage_workflow_id').value = ""; // Clear workflow id if present
         // document.getElementById('task_id').value = "";
@@ -13168,11 +13197,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.tasks)) {
                     const tasks = data.tasks.map(task => ({
-                        task_name: task.name || "N/A",
-                        description: task.description || "",
+                        title: task.title || task.task_name || "N/A",
+                        supervisor: Array.isArray(task.supervisors)
+                            ? task.supervisors.map(sup =>
+                                [sup.first_name, sup.last_name].filter(Boolean).join(" ") + (sup.email ? ` (${sup.email})` : "")
+                              ).join(", ")
+                            : (task.supervisor || "N/A"),
+                        due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        priority: task.priority || "N/A",
                         status: task.status || "N/A",
-                        sequence_order: task.sequence || "N/A",
-                        task_id: task.task_id || task.id || "N/A"
+                        tags: Array.isArray(task.tags)
+                            ? task.tags.map(tag => tag.name || tag).join(", ")
+                            : (task.tags || ""),
+                        task_id: task.stage_task_id || task.id || "N/A"
                     }));
                     taskTable.clear().rows.add(tasks).draw();
                     document.getElementById('task-management-form').reset();
@@ -13241,7 +13278,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!task) {
             try {
-                const response = await fetch(`/admin/get-stage-tasks/${id}`);
+                const response = await fetch(`/admin/get-stage-tasks/${stageId}`);
                 if (response.ok) {
                     task = await response.json();
                 }
