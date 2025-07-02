@@ -198,7 +198,7 @@ class StageTaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StageTask $stageTask)
+    public function update(Request $request)
     {
         //
         $validator = Validator::make($request->all(), [
@@ -230,6 +230,7 @@ class StageTaskController extends Controller
             // Find the stage task by ID
             $stageTask = CompanyStageTask::findOrFail($validated['stage_task_id']);
             $stageTask->update([
+                'company_id'     => $request->input('company_id'),
                 'task_name'      => $validated['task_title'],
                 'description'    => $validated['task_description'] ?? null,
                 'due_date'       => $validated['task_due_date'] ?? null,

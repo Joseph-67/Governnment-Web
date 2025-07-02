@@ -5886,10 +5886,10 @@
     <div class="modal fade" id="taskManagementModal" tabindex="-1" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="task-management-form" method="post">
+                <form id="task-management-form">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                    <input type="hidden" name="stage_id" id="stage_workflow_id">
+                    <input type="hidden" name="stage_id" id="stage_task_id">
                     <div class="modal-header bg-info">
                         <h5 class="modal-title" id="taskManagementModalLabel">Task Management</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -5973,7 +5973,7 @@
                 <form id="edit-stage-task-form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                    <input type="hidden" name="task_id" id="edit_task_id">
+                    <input type="hidden" name="stage_task_id" id="edit_task_id">
                 <div class="modal-header bg-gradient-primary text-white rounded-top">
                     <h5 class="modal-title" id="editStageTaskModalLabel">Edit Stage Task</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -13176,7 +13176,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!task) {
             try {
-                const response = await fetch(`/admin/get-stage-tasks/${stageId}`);
+                const response = await fetch(`/admin/get-stage-tasks/${id}`);
                 if (response.ok) {
                     task = await response.json();
                 }
@@ -13185,18 +13185,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
-
-        const modal = new bootstrap.Modal(document.getElementById('editStageTaskModal'));
+        console.log("Editing task:", task);
+        if (task) {
+            document.getElementById('edit_task_id').value = task.task_id || task.id || "";
+            document.getElementById('edit_task_title').value = task.title || task.task_name || "";
+            document.getElementById('edit_task_description').value = task.description || "";
+            document.getElementById('edit_task_status').value = task.status || "";
+            document.getElementById('edit_task_priority').value = task.priority || "";
+            document.getElementById('edit_task_due_date').value = task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : "";
+            const modal = new bootstrap.Modal(document.getElementById('editStageTaskModal'));
             modal.show();
+            
+        } 
+
+        
     };
+
+    // Handle task edit form submission
     document.addEventListener('DOMContentLoaded', function () {
-        const editTaskForm = document.getElementById('edit-task-form');
+        const editTaskForm = document.getElementById('edit-stage-task-form');
         if (editTaskForm) {
             editTaskForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(editTaskForm);
                 const url = "{{ route('admin.update-company-stage-task') }}";
-                
                 try {
                     const result = await fetch_cycle('--Update Task', url, 'POST', formData);
                     if (result.status === 'success' && Array.isArray(result.tasks)) {
