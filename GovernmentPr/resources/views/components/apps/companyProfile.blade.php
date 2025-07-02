@@ -13047,6 +13047,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 className: 'text-end',
                 render: (data, type, row) => `
                     <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-light btn-sm" onclick="viewTask('${row.task_id}')">
+                            <i class="las la-eye"></i> View Task
+                        </button>
+                        <button class="btn btn-outline-warning btn-sm" onclick="/* scheduleTask logic here */">
+                            <i class="las la-calendar-plus"></i> Schedule Management
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="/* assignEmployee logic here */">
+                            <i class="las la-user-plus"></i> Assigned Employee
+                        </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="editTask('${row.task_id}')">
                             <i class="las la-edit"></i> Edit
                         </button>
