@@ -19,6 +19,7 @@ class TaskSchedule extends Model
         'recurrence_rule_id',
         'status'
     ];
+    
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
