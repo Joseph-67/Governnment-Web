@@ -446,6 +446,7 @@ class CompanyController extends WaterStockMovementController
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
         $data['pageTitle'] = 'Create New Company';
         $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
+        
         return view('components.apps.create-company', $data);
     }
 
