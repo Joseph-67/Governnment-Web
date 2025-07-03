@@ -428,43 +428,14 @@
         <div class="row">
             <h5>Organization Policy</h5>
             <p>Select the area(s) your company policy imply.</p>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="quality policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Quality policy </label>
+            @foreach($policies as $key => $policy)
+                <div class="col-md-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="policy_{{ $policy->policy_id }}" value="{{ $policy->policy_id }}" name="policy[]">
+                        <label class="form-check-label" for="policy_{{ $policy->policy_id }}">{{ $policy->title }}</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="environmental policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Enviromental Policy. </label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="health and safety policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Health and safety policy. </label>
-                </div>
-            </div>
-            <x-section-border />
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="human resource policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Human resource policy. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="data protection policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Data protection policy. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="cooperate social responsibility policy" name="policy[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Cooperate social reponsibility policy. </label>
-                </div>
-            </div>
+            @endforeach
             
             <h5 class="mt-4">Organization Objective</h5>
             <p>Select the area(s) your company objective imply.</p>

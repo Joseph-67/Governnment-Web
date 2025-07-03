@@ -57,7 +57,6 @@ use Carbon\Carbon;
 
 class CompanyController extends WaterStockMovementController
 {
-   
     public function show($company)
     {
         $companyID = decrypt($company);
@@ -107,7 +106,6 @@ class CompanyController extends WaterStockMovementController
         $data['availableWaterInflowBalance'] = $this->getTotalCheckIn($companyID);
         $data['availableWaterOutflowBalance'] = $this->getTotalCheckOut($companyID);
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
-
         // Fetch operations
 
 
@@ -447,7 +445,7 @@ class CompanyController extends WaterStockMovementController
         //
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
         $data['pageTitle'] = 'Create New Company';
-        $data['policies'] = Policies::where('status', 'active')->get(['policyID', 'policy_title']);
+        $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
         return view('components.apps.create-company', $data);
     }
 
