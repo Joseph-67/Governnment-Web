@@ -38,6 +38,7 @@ use App\Models\CalendarYear;
 use App\Models\CompanyWaste;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\Policies;
 use App\Models\EquipmentType;
 use App\Models\EquipmentLog;
 use App\Models\User;
@@ -445,6 +446,8 @@ class CompanyController extends WaterStockMovementController
     {
         //
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
+        $data['pageTitle'] = 'Create New Company';
+        $data['policies'] = Policies::where('status', 'active')->get(['policyID', 'policy_title']);
         return view('components.apps.create-company', $data);
     }
 
