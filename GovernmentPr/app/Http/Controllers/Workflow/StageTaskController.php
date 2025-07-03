@@ -198,9 +198,71 @@ class StageTaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StageTask $stageTask)
+    public function update(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'stage_task_id' => 'required|exists:company_stage_tasks,stage_task_id',
+            'task_title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('company_stage_tasks', 'task_name')->ignore($request->stage_task_id, 'stage_task_id')->where(function ($query) use ($request) {
+                    return $query->where('company_id', $request->company_id);
+                }),
+            ],
+            'task_description' => 'nullable|string|max:1000',
+            'supervisor_ids' => 'nullable|array',
+            'supervisor_ids.*' => 'integer|exists:company_employees,EmployeeID',
+            'task_due_date' => 'required|date',
+            'task_priority' => 'nullable|in:low,medium,high',
+            'task_status' => 'required|string|in:pending,completed,overdue,in_progress,cancelled',
+            'task_tag_ids' => 'nullable|array',
+            'task_tag_ids.*' => 'integer|exists:tags,tagID',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+        try {
+
+            $validated = $validator->validated();
+
+            // Find the stage task by ID
+            $stageTask = CompanyStageTask::findOrFail($validated['stage_task_id']);
+            $stageTask->update([
+                'company_id'     => $request->input('company_id'),
+                'task_name'      => $validated['task_title'],
+                'description'    => $validated['task_description'] ?? null,
+                'due_date'       => $validated['task_due_date'] ?? null,
+                'priority'       => $validated['task_priority'] ?? null,
+                'status'         => $validated['task_status'] ?? null,
+                'supervisor_ids' => json_encode($validated['supervisor_ids'] ?? []),
+                'task_tag_ids'   => json_encode($validated['task_tag_ids'] ?? []),
+            ]);
+
+            // Fetch all tasks for the stage after update
+            $allTasks = CompanyStageTask::where('company_stage_id', $stageTask->company_stage_id)
+                ->where('is_deleted', false)
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(function ($task) {
+                    $task->supervisors = $this->fetchSupervisors(json_decode($task->supervisor_ids, true) ?: []);
+                    $task->tags = $this->fetchTags(json_decode($task->task_tag_ids, true) ?: []);
+                    return $task;
+                });
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Stage task updated successfully',
+                'data'    => $stageTask,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Failed to update task. Please try again.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+        
     }
 
     /**

@@ -5834,6 +5834,7 @@
             <div class="modal-content shadow-lg border-0 rounded-3">
                 <form id="edit-stage-form" autocomplete="off">
                     @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="stage_id" id="edit_stage_id">
                     <div class="modal-header bg-gradient-primary text-white rounded-top">
                         <h5 class="modal-title fw-bold" id="editStageModalLabel">
@@ -5885,10 +5886,10 @@
     <div class="modal fade" id="taskManagementModal" tabindex="-1" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="task-management-form" method="post">
+                <form id="task-management-form">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                    <input type="hidden" name="stage_id" id="stage_workflow_id">
+                    <input type="hidden" name="stage_id" id="stage_task_id">
                     <div class="modal-header bg-info">
                         <h5 class="modal-title" id="taskManagementModalLabel">Task Management</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -5964,6 +5965,62 @@
             </div>
         </div>
     </div>
+<!-- Edit Stage Task Modal -->
+    <div class="modal fade" id="editStageTaskModal" tabindex="-1" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+
+                <form id="edit-stage-task-form" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="stage_task_id" id="edit_task_id">
+                <div class="modal-header bg-gradient-primary text-white rounded-top">
+                    <h5 class="modal-title" id="editStageTaskModalLabel">Edit Stage Task</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="edit_task_title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="edit_task_title" name="task_title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_task_due_date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="edit_task_due_date" name="task_due_date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_task_priority" class="form-label">Priority</label>
+                                <select class="form-select" id="edit_task_priority" name="task_priority" required>
+                                    <option value="" selected disabled>Select Priority</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_task_status" class="form-label">Status</label>
+                                <select class="form-select" id="edit_task_status" name="task_status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="edit_task_description" class="form-label">Description</label>
+                                <textarea class="form-control" id="edit_task_description" name="task_description" rows="3" placeholder="Enter task description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3 text-end">
+                            <button type="submit" class="btn btn-primary">Update Task</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Edit Stage Task Modal -->
     <!-- End Task Management Modal -->
     <!-- Task Scheduling Modal -->
     <div class="modal fade" id="taskSchedulingModal" tabindex="-1" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
@@ -12944,6 +13001,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
+        // Populate the form fields with stage data
+        console.log("Editing stage:", stage);
+        
 
         if (stage) {
             document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";
@@ -13369,7 +13429,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!task) {
             try {
-                const response = await fetch(`/admin/get-stage-tasks/${stageId}`);
+                const response = await fetch(`/admin/get-stage-tasks/${id}`);
                 if (response.ok) {
                     task = await response.json();
                 }
@@ -13378,18 +13438,52 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
-
+        console.log("Editing task:", task);
         if (task) {
-            document.getElementById('task_id').value = task.task_id || task.id || "";
-            document.getElementById('task_name').value = task.task_name || task.name || "";
-            document.getElementById('task_status').value = task.status || "";
-            document.getElementById('task_sequence_order').value = task.sequence_order || task.sequence || "";
-            document.getElementById('task_description').value = task.description || "";
-            // Show the modal for editing task
-            const modal = new bootstrap.Modal(document.getElementById('taskManagementModal'));
+            document.getElementById('edit_task_id').value = task.task_id || task.id || "";
+            document.getElementById('edit_task_title').value = task.title || task.task_name || "";
+            document.getElementById('edit_task_description').value = task.description || "";
+            document.getElementById('edit_task_status').value = task.status || "";
+            document.getElementById('edit_task_priority').value = task.priority || "";
+            document.getElementById('edit_task_due_date').value = task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : "";
+            const modal = new bootstrap.Modal(document.getElementById('editStageTaskModal'));
             modal.show();
-        }
+            
+        } 
+
+        
     };
+
+    // Handle task edit form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const editTaskForm = document.getElementById('edit-stage-task-form');
+        if (editTaskForm) {
+            editTaskForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(editTaskForm);
+                const url = "{{ route('admin.update-company-stage-task') }}";
+                try {
+                    const result = await fetch_cycle('--Update Task', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.tasks)) {
+                        const tasks = result.tasks.map(task => ({
+                            title: task.title || "N/A",
+                            supervisor: task.supervisor || "N/A",
+                            due_date: task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            priority: task.priority || "N/A",
+                            status: task.status || "N/A",
+                            tags: Array.isArray(task.tags) ? task.tags.map(tag => tag.name || tag).join(", ") : (task.tags || ""),
+                            task_id: task.task_id || task.id || "N/A"
+                        }));
+                        taskTable.clear().rows.add(tasks).draw();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('taskManagementModal'));
+                        if (modal) modal.hide();
+                    }
+                } catch (error) {
+                    console.error('Error updating task:', error);
+                }
+            });
+        }
+    });
 
     // Delete task
     window.deleteTask = function(id) {
