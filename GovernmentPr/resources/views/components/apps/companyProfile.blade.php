@@ -4078,11 +4078,11 @@
                                                             <label for="yield_percentage" class="form-label text-white fw-semibold">Yield Percentage</label>
                                                             <input type="number" class="form-control border-0 shadow-sm" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
                                                         </div>
-                                                        <!-- Created By -->
-                                                        <div class="col-md-6">
-                                                            <label for="prepared_by" class="form-label text-white fw-semibold">Created By</label>
-                                                            <input type="text" class="form-control border-0 shadow-sm" id="created_by_input" name="created_by" placeholder="Enter prepared by">
-                                                        </div>
+                                                        @if(auth('admin')->check())
+                                                            <input type="hidden" name="created_by" value="{{ auth('admin')->user()->id }}">
+                                                        @elseif(auth('web')->check())
+                                                            <input type="hidden" name="created_by" value="{{ auth('web')->user()->id }}">
+                                                        @endif
                                                         <!-- Geolocation -->
                                                         <div class="col-md-6">
                                                             <label for="geolocation" class="form-label text-white fw-semibold">Geolocation</label>
@@ -4162,7 +4162,7 @@
                                                             <table class="table table-striped mb-0 w-100" id="tbl-production-process">
                                                                 <thead class="table-light">
                                                                     <tr>
-                                                                        <th>Operation Type</th>
+                                                                        <th>Workflow</th>
                                                                         <th>Start Date</th>
                                                                         <th>End Date</th>
                                                                         <th>Status</th>
@@ -4193,8 +4193,13 @@
                                                                     <input type="hidden" id="batch_id" name="batch_id">
                                                                     <div class="row g-3">
                                                                         <div class="col-md-6">
-                                                                            <label for="operation_type" class="form-label">Operation Type</label>
-                                                                            <input type="text" class="form-control" id="operation_type" name="operation_type" placeholder="Enter operation type" required>
+                                                                            <label for="workflow" class="form-label">Workflow</label>
+                                                                            <select class="form-select" id="workflow" name="workflow" required>
+                                                                                <option value="" selected disabled>Select Workflow</option>
+                                                                                @foreach($company_workflows as $workflow)
+                                                                                    <option value="{{ $workflow->workflow_id }}">{{ $workflow->workflow_name }}</option>
+                                                                                @endforeach
+                                                                            </select>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <label for="process_date_range" class="form-label">Start Date / End Date</label>
@@ -4232,11 +4237,77 @@
                                                         </div>
                                                     </div>
                                                     <!-- End Production Process Form -->
+                                                    
+                                                    
+                                                   
                                                 </div>
                                                 </div>
                                                 </div>
                                                 </div>
                                                
+                                              <!-- Edit Production Process Modal -->
+<!-- Edit Production Process Modal -->
+<div class="modal fade" id="editProductionProcessModal" tabindex="-1" aria-labelledby="editProductionProcessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg mt-5"> <!-- Added mt-5 to bring it down -->
+        <div class="modal-content shadow-lg rounded-4">
+            <form id="edit-production-process-form" method="post">
+                @csrf
+                <input type="hidden" name="process_id" id="edit_process_id">
+                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+
+                <div class="modal-header bg-info text-white rounded-top-4">
+                    <h5 class="modal-title" id="editProductionProcessModalLabel">Edit Production Process</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="edit_workflow" class="form-label">Workflow</label>
+                            <select class="form-select" id="edit_workflow" name="workflow" >
+                                <option value="" selected disabled>Select Workflow</option>
+                                @foreach($company_workflows as $workflow)
+                                    <option value="{{ $workflow->workflow_id }}">{{ $workflow->workflow_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="edit_process_date_range" class="form-label">Start Date / End Date</label>
+                            <div class="input-group" id="edit_process_date_range">
+                                <input type="date" class="form-control" id="edit_process_start_date" name="process_start_date" required>
+                                <span class="input-group-text">to</span>
+                                <input type="date" class="form-control" id="edit_process_end_date" name="process_end_date" required>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-6">
+                            <label for="edit_process_status" class="form-label">Status</label>
+                            <select class="form-select" id="edit_process_status" name="process_status" required>
+                                <option value="" selected disabled>Select Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="edit_remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="edit_remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-info text-white">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+                                                    <!-- End Edit Production Process Modal -->
                                                
 
                                     
@@ -7050,187 +7121,7 @@
     <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
     <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="{{ asset('adminAssets/js/app.js')}}"></script>
-    <!-- created by tagify -->
-    <script>
-    (function() {
-        const input = document.querySelector("input[name='created_by']");
-        if (!input) return;
-
-        // Tagify instance for "created_by"
-        const tagify = new Tagify(input, {
-            tagTextProp: 'name',
-            skipInvalid: true,
-            dropdown: {
-                closeOnSelect: false,
-                enabled: 1,
-                classname: 'users-list',
-                searchKeys: ['name', 'email'],
-                position: "text",
-                mapValueTo: "email",
-            },
-            templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate,
-                dropdownHeader: dropdownHeaderTemplate
-            },
-            whitelist: [],
-            transformTag: transformTagData,
-            validate: validateTagData
-        });
-
-        function tagTemplate(tagData) {
-            return `
-                <tag title="${tagData.email}" contenteditable='false' spellcheck='false' tabIndex="-1" class="tagify__tag ${tagData.class || ""}" ${this.getAttributes(tagData)}>
-                    <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-                    <div>
-                        <div class='tagify__tag__avatar-wrap'>
-                            <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-                        </div>
-                        <span class='tagify__tag-text'>${tagData.name}</span>
-                    </div>
-                </tag>
-            `;
-        }
-
-        function suggestionItemTemplate(tagData) {
-            return `
-                <div ${this.getAttributes(tagData)} class='tagify__dropdown__item ${tagData.class || ""}' tabindex="0" role="option">
-                    ${tagData.avatar ? `<div class='tagify__dropdown__item__avatar-wrap'><img onerror="this.style.visibility='hidden'" src="${tagData.avatar}"></div>` : ''}
-                    <strong>${tagData.name}</strong>
-                    <span>${tagData.email}</span>
-                </div>
-            `;
-        }
-
-        function dropdownHeaderTemplate(suggestions) {
-            return `
-                <header class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
-                    <strong>${this.value.length ? `Add Remaining` : 'Add All'}</strong>
-                    <a class='remove-all-tags'>Remove all</a>
-                </header>
-            `;
-        }
-
-        function transformTagData(tagData) {
-            const { name, email } = parseFullValue(tagData.name);
-            tagData.name = name;
-            tagData.email = email || tagData.email;
-        }
-
-        function validateTagData(tagData) {
-            const name = tagData?.name || '';
-            const email = tagData?.email || '';
-            if (!name) return "Missing name";
-            if (!validateEmail(email)) return "Invalid email";
-            return true;
-        }
-
-        function escapeHTML(s) {
-            return typeof s === 'string' ? s
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/`|'/g, "&#039;")
-                : s;
-        }
-
-        tagify.dropdown.createListHTML = (suggestionsList) => {
-            const rolesOfUsers = suggestionsList.reduce((acc, suggestion) => {
-                const role = suggestion.role || 'Not Assigned';
-                acc[role] = acc[role] || [];
-                acc[role].push(suggestion);
-                return acc;
-            }, {});
-
-            const getUsersSuggestionsHTML = (roleUsers) => roleUsers.map((suggestion) => {
-                suggestion.value = escapeHTML(tagify.dropdown.getMappedValue.call(tagify, suggestion));
-                return tagify.settings.templates.dropdownItem.call(tagify, suggestion);
-            }).join("");
-
-            return Object.entries(rolesOfUsers).map(([role, roleUsers]) => {
-                return `<div class="tagify__dropdown__itemsGroup" data-title="Role ${role}:">${getUsersSuggestionsHTML(roleUsers)}</div>`;
-            }).join("");
-        };
-
-        tagify.on('input', debounce(async (e) => {
-            const searchTerm = e.detail.value.trim();
-            if (searchTerm.length < 2) return;
-
-            tagify.settings.whitelist.length = 0;
-            tagify.loading(true).dropdown.hide();
-
-            try {
-                const url = new URL("{{ route('admins.details') }}");
-                url.searchParams.append("query", searchTerm);
-
-                const response = await fetch(url.toString());
-                const users = await response.json();
-
-                if (!users || !Array.isArray(users.users)) {
-                    console.error('Unexpected API response structure:', users);
-                    return;
-                }
-
-                // Only include non-admin users
-                const filteredUsers = users.users
-                    .filter(user => user.role !== 'admin')
-                    .map(user => formatUser(user, user.role || 'user'));
-
-                tagify.settings.whitelist = filteredUsers;
-                tagify.loading(false).dropdown.show(searchTerm);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                tagify.settings.whitelist = [];
-                tagify.dropdown.show('Error fetching data. Try again later.');
-            }
-        }, 300));
-
-        tagify.on('dropdown:select', (e) => {
-            if (e.detail.event.target.matches('.remove-all-tags')) {
-                tagify.removeAllTags();
-            } else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`)) {
-                tagify.dropdown.selectAll();
-            }
-        });
-
-        tagify.on('edit:start', ({ detail: { tag, data } }) => {
-            tagify.setTagTextNode(tag, `${data.name} <${data.email}>`);
-        });
-
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function parseFullValue(value) {
-            const parts = value.split(/<(.*?)>/g);
-            return {
-                name: parts[0]?.trim() || '',
-                email: parts[1]?.replace(/<(.*?)>/g, '').trim() || ''
-            };
-        }
-
-        function formatUser(user, role) {
-            return {
-                value: user.id,
-                name: `${user.first_name} ${user.last_name}`,
-                avatar: user.profile_photo_path || 'https://via.placeholder.com/80',
-                email: user.email,
-                role
-            };
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-    })();
-    </script>
-    <!-- end created by tagify -->
-    <script>
+        <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
         const tagify = new Tagify(inputElm, {
@@ -11877,205 +11768,160 @@
 
     <!-- Batch tracking -->
     <script>
-        // Initialize DataTable for Batch Tracking
-        const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            responsive: true,
-            destroy: true,
-            columnDefs: [
-                { orderable: false, targets: [5] } // Disable sorting on the "Actions" column
-            ],
-            data: [],
-            columns: [
-                { data: 'batch_name', title: 'Batch Name' },
-                { data: 'product_name', title: 'Product Name' },
-                { data: 'start_date', title: 'Start Date' },
-                { data: 'end_date', title: 'End Date' },
-                {
-                    data: 'status',
-                    title: 'Status',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            let badgeClass = 'secondary';
-                            let label = data || 'N/A';
-                            if (typeof data === 'string') {
-                                switch (data.toLowerCase()) {
-                                    case 'completed':
-                                        badgeClass = 'success';
-                                        break;
-                                    case 'pending':
-                                        badgeClass = 'warning';
-                                        break;
-                                    case 'rejected':
-                                        badgeClass = 'dark';
-                                        break;
-                                }
-                            }
-                            return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: null,
-                    title: 'Actions',
-                    render: function (data, type, row) {
-                        return `
-                            <div class="d-flex justify-content-end gap-2">
-                                <button 
-                                    class="btn btn-info btn-sm setup-production-btn" 
-                                    data-batch-id="${row.batch_id}" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#productionProcessModal">
-                                    <i class="fas fa-cogs"></i> Setup Production Process
-                                </button>
-                                <button class="btn btn-primary btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </div>`;
-                    }
-                }
-            ]
-        });
-
-        // Fetch and display batch tracking data
-        document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
-            const companyId = "{{ json_encode($company->company_id) }}";
-            const url = `/admin/batch-tracking/company/${companyId}`;
-            const spinner = document.getElementById('loading-spinner');
-
-            showElement(spinner);
-
-            try {
-                const data = await fetchFieldInput(url);
-                if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
-                    const batchTrackingData = data.production_batch_tracking.map(batch => ({
-                        batch_name: batch.batch_name || "N/A",
-                        product_name: batch.product?.name || "N/A",
-                        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        status: batch.status || "N/A",
-                        batch_id: batch.batch_id || "N/A" // ✅ FIXED: correctly named for access
-                    }));
-
-                    batchTrackingTable.clear().rows.add(batchTrackingData).draw();
-                } else {
-                    displayMessage('warning', 'No batch tracking data found or invalid data structure.');
-                }
-            } catch (error) {
-                console.error("Error fetching batch tracking data:", error);
-                displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
-            } finally {
-                hideElement(spinner);
-            }
-        });
-
-        // Handle form submission for adding a new batch
-        document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const url = "{{ route('admin.store-batch-tracking') }}";
-
-            try {
-                const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
-                if (result.status === 'success') {
-                    const batch = result.productionBatchTracking;
-
-                    const newRow = {
-                        batch_name: batch.batch_name || "N/A",
-                        product_name: batch.product?.name || "N/A",
-                        start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        status: batch.status || "N/A",
-                        batch_id: batch.batch_id || "N/A" // ✅ FIXED
-                    };
-
-                    batchTrackingTable.row.add(newRow).draw(false);
-                }
-            } catch (error) {
-                console.error('Error storing batch tracking:', error);
-            }
-        });
-
-        // Handle Setup Production Process button click
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelector('#tbl-batch-tracking').addEventListener('click', function (e) {
-                const button = e.target.closest('.setup-production-btn');
-                if (button) {
-                    const batchId = button.getAttribute('data-batch-id');
-                    console.log('Clicked batch ID:', batchId);
-                    document.getElementById('batch_id').value = batchId;
-                }
-            });
-        });
-
-        function toggleBatchTrackingForm() {
-            const form = document.getElementById('batch-tracking-form-container');
-            form.classList.toggle('d-none');
-            if (!form.classList.contains('d-none')) {
-                form.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function showProductionProcessModal() {
-            const modal = new bootstrap.Modal(document.getElementById('productionProcessModal'));
-            modal.show();
-        }
-             // Show/hide production process form logic
-      function showProductionProcessTable() {
-          document.getElementById('production-process-form-container').classList.add('d-none');
-          document.getElementById('production-process-table-container').classList.remove('d-none');
-      }
-      function showProductionProcessForm() {
-          document.getElementById('production-process-form-container').classList.remove('d-none');
-          document.getElementById('production-process-table-container').classList.add('d-none');
-      }
-      document.addEventListener('DOMContentLoaded', function () {
-          const showBtn = document.getElementById('show-production-process-form');
-          const cancelBtn = document.getElementById('cancel-production-process-form');
-          const closeBtn = document.getElementById('close-production-process-form');
-          // Always show table when modal opens
-          $('#productionProcessModal').on('show.bs.modal', function () {
-              showProductionProcessTable();
-          });
-          if (showBtn) showBtn.addEventListener('click', showProductionProcessForm);
-          if (cancelBtn) cancelBtn.addEventListener('click', showProductionProcessTable);
-          if (closeBtn) closeBtn.addEventListener('click', showProductionProcessTable);
-      });
-    </script>
-    <!-- End Batch tracking -->
-
-    <!-- store production process -->
-    <script>
-    /**
-     * Handles the submission of the Production Process form in the Batch Tracking section.
-     * - Prevents default form submission.
-     * - Sends form data via AJAX to the server.
-     * - Uses fetch_cycle for AJAX POST.
-     * - On success, you can update the UI or show a toast.
-     * - On error, logs the error or can show a toast.
-     */
-   
 document.addEventListener('DOMContentLoaded', function () {
-    const batchId = document.querySelector('#batch_id')?.value;
+    // --- Batch Tracking Table ---
+    const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        destroy: true,
+        columnDefs: [{ orderable: false, targets: [5] }],
+        data: [],
+        columns: [
+            { data: 'batch_name', title: 'Batch Name' },
+            { data: 'product_name', title: 'Product Name' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            {
+                data: 'status',
+                title: 'Status',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        let badgeClass = 'secondary';
+                        let label = data || 'N/A';
+                        if (typeof data === 'string') {
+                            switch (data.toLowerCase()) {
+                                case 'completed': badgeClass = 'success'; break;
+                                case 'pending': badgeClass = 'warning'; break;
+                                case 'rejected': badgeClass = 'dark'; break;
+                            }
+                        }
+                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                    }
+                    return data;
+                }
+            },
+            {
+                data: null,
+                title: 'Actions',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-info btn-sm setup-production-btn">
+                                <i class="fas fa-cogs"></i> Setup Production Process
+                            </button>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>`;
+                }
+            }
+        ]
+    });
 
+    // --- Fetch Batch Tracking Data ---
+    document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
+        const companyId = "{{ json_encode($company->company_id) }}";
+        const url = `/admin/batch-tracking/company/${companyId}`;
+        const spinner = document.getElementById('loading-spinner');
+        showElement(spinner);
+
+        try {
+            const data = await fetchFieldInput(url);
+            if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
+                const batchTrackingData = data.production_batch_tracking.map(batch => ({
+                    batch_name: batch.batch_name || "N/A",
+                    product_name: batch.product?.name || "N/A",
+                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    status: batch.status || "N/A",
+                    batch_id: batch.batch_id || "N/A"
+                }));
+                batchTrackingTable.clear().rows.add(batchTrackingData).draw();
+            } else {
+                displayMessage('warning', 'No batch tracking data found or invalid data structure.');
+            }
+        } catch (error) {
+            console.error("Error fetching batch tracking data:", error);
+            displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
+        } finally {
+            hideElement(spinner);
+        }
+    });
+
+    // Make toggleBatchTrackingForm globally accessible
+    window.toggleBatchTrackingForm = function () {
+        const form = document.getElementById('batch-tracking-form-container');
+        form.classList.toggle('d-none');
+        if (!form.classList.contains('d-none')) {
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    // --- Add Batch Tracking ---
+    document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-batch-tracking') }}";
+        try {
+            const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+            if (result.status === 'success') {
+                const batch = result.productionBatchTracking;
+                const newRow = {
+                    batch_name: batch.batch_name || "N/A",
+                    product_name: batch.product?.name || "N/A",
+                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                    status: batch.status || "N/A",
+                    batch_id: batch.batch_id || "N/A"
+                };
+                batchTrackingTable.row.add(newRow).draw(false);
+            }
+        } catch (error) {
+            console.error('Error storing batch tracking:', error);
+        }
+    });
+
+    // --- Setup Production Process Modal ---
+    $(document).on('click', '.setup-production-btn', function () {
+        const rowData = batchTrackingTable.row($(this).closest('tr')).data();
+        const batchId = rowData.batch_id || '';
+        const productionProcessForm = document.getElementById('production-process-form');
+        if (productionProcessForm) productionProcessForm.reset();
+        document.getElementById('batch_id').value = batchId;
+        showProductionProcessModal(batchId);
+    });
+
+    // --- Show/Hide Production Process Form/Table ---
+    function showProductionProcessTable() {
+        
+        document.getElementById('production-process-form-container').classList.add('d-none');
+        document.getElementById('production-process-table-container').classList.remove('d-none');
+    }
+    function showProductionProcessForm() {
+        document.getElementById('production-process-form-container').classList.remove('d-none');
+        document.getElementById('production-process-table-container').classList.add('d-none');
+    }
+    $('#productionProcessModal').on('show.bs.modal', showProductionProcessTable);
+    document.getElementById('show-production-process-form')?.addEventListener('click', showProductionProcessForm);
+    document.getElementById('cancel-production-process-form')?.addEventListener('click', showProductionProcessTable);
+    document.getElementById('close-production-process-form')?.addEventListener('click', showProductionProcessTable);
+
+    // --- Production Process Table ---
     const productionProcessTable = $('#tbl-production-process').DataTable({
         paging: true,
         searching: true,
         ordering: true,
         responsive: true,
         destroy: true,
-        columnDefs: [
-            { orderable: false, targets: [5] }
-        ],
+        columnDefs: [{ orderable: false, targets: [5] }],
         data: [],
         columns: [
-            { data: 'operation_type', title: 'Operation Type' },
+            { data: 'workflow_name', title: 'Workflow' },
             { data: 'start_date', title: 'Start Date' },
             { data: 'end_date', title: 'End Date' },
             { data: 'remarks', title: 'Remarks' },
@@ -12101,63 +11947,239 @@ document.addEventListener('DOMContentLoaded', function () {
                 title: 'Actions',
                 render: (data, type, row) => `
                     <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id || row.id || "''"})">Edit</button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id || row.id || "''"})">Delete</button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id})">Edit</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id})">Delete</button>
                     </div>
                 `
             }
         ]
     });
 
-    // ✅ Load existing records on page load
-    if (batchId) {
-        fetch(`/production-process/batch/${batchId}`)
-            .then(res => res.json())
-            .then(result => {
-                if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                    const formatted = result.production_processes.map(proc => ({
-                        operation_type: proc.operation_type || 'N/A',
-                        start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
-                        end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+    // --- Fetch Production Process Table for Batch ---
+    window.showProductionProcessModal = function (batchId) {
+        const modalElement = document.getElementById('productionProcessModal');
+        if (!modalElement) return;
+        (async function populateProductionProcessTable() {
+            if (!batchId) return;
+            const url = `/admin/production-process/batch/${batchId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.production_processes)) {
+                    const processes = data.production_processes.map(proc => ({
+                        workflow_name: (proc.workflow && proc.workflow.workflow_name) ? proc.workflow.workflow_name : 'N/A',
+                        start_date: proc.start_time ? (() => { const d = new Date(proc.start_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
+                        end_date: proc.end_time ? (() => { const d = new Date(proc.end_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
                         remarks: proc.remarks || '',
                         status: proc.status || 'N/A',
-                        id: proc.process_id || ''
+                        process_id: proc.process_id || ''
                     }));
-                    productionProcessTable.clear().rows.add(formatted).draw();
+                    productionProcessTable.clear().rows.add(processes).draw();
+                } else {
+                    productionProcessTable.clear().draw();
                 }
-            }).catch(error => console.error('Fetch error:', error));
-    }
+            } catch (error) {
+                console.error("Error fetching production process data:", error);
+                productionProcessTable.clear().draw();
+            } finally {
+                hideElement(document.getElementById('loading-spinner'));
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            }
+        })();
+    };
 
-    // ✅ Handle form submission
+    // --- Store Production Process ---
     const form = document.querySelector('#production-process-form');
     if (form) {
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = new FormData(form);
             const url = "{{ route('admin.store-production-process') }}";
-
             try {
                 const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
                 if (result.status === 'success' && Array.isArray(result.production_processes)) {
                     const formatted = result.production_processes.map(proc => ({
-                        operation_type: proc.operation_type || 'N/A',
+                        workflow_name: proc.workflow?.workflow_name || 'N/A',
                         start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
                         end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
                         remarks: proc.remarks || '',
                         status: proc.status || 'N/A',
-                        id: proc.process_id || ''
+                        process_id: proc.process_id || ''
                     }));
                     productionProcessTable.clear().rows.add(formatted).draw();
+                    form.reset();
                 }
             } catch (error) {
                 console.error('Error storing production process:', error);
             }
         });
     }
+
+    // Edit Production Process Modal Handler
+    window.editProductionProcess = async function(id) {
+        // Try to get the process data from the DataTable row
+        const row = $(`button[onclick="editProductionProcess(${id})"]`).closest('tr');
+        let process = productionProcessTable.row(row).data();
+
+        // If not found, fetch from backend
+        if (!process) {
+            try {
+                const response = await fetch(`/admin/production-process/${id}`);
+                if (response.ok) {
+                    process = await response.json();
+                } else {
+                    console.error('Failed to fetch production process:', response.statusText);
+                    return;
+                }
+            } catch (error) {
+                console.error('Failed to fetch production process:', error);
+                return;
+            }
+        }
+        if (!process) return;
+
+       
+
+        // Populate form fields
+        document.getElementById('edit_process_id').value = process.process_id || process.id || "";
+        document.getElementById('edit_process_start_date').value = formatDateForInput(process.start_time || process.start_date);
+        document.getElementById('edit_process_end_date').value = formatDateForInput(process.end_time || process.end_date);
+        document.getElementById('edit_process_status').value = process.status || "";
+        document.getElementById('edit_remarks').value = process.remarks || "";
+
+        // Populate workflow select
+        // Populate workflow select with the workflow directly from the DataTable row first, then fetch all others
+        const workflowSelect = document.getElementById('edit_workflow');
+        workflowSelect.innerHTML = '';
+
+        // Get workflow from the current row (prefer direct row data)
+        let currentWorkflowId = process.workflow_id || (process.workflow && (process.workflow.id || process.workflow.workflow_id)) || '';
+        let currentWorkflowName = process.workflow_name || (process.workflow && (process.workflow.name || process.workflow.workflow_name)) || 'Select Workflow';
+
+        // Add the workflow from the row as the first (selected) option
+        if (currentWorkflowId) {
+            workflowSelect.appendChild(new Option(currentWorkflowName, currentWorkflowId, true, true));
+        }
+
+        // Fetch all workflows for the company and add the rest (avoid duplicate)
+        try {
+            const companyId = "{{ json_encode($company->company_id) }}";
+            const url = `/admin/get-workflows/${companyId}`;
+            const data = await fetchFieldInput(url);
+
+            if (data.status === "success" && Array.isArray(data.workflows)) {
+            data.workflows.forEach(wf => {
+                const wfId = wf.workflow_id || wf.id;
+                // Avoid duplicate of the already-selected workflow
+                if (wfId != currentWorkflowId) {
+                workflowSelect.appendChild(new Option(wf.workflow_name || wf.name || '', wfId));
+                }
+            });
+            }
+        } catch (error) {
+            // fallback: just show the current workflow
+            if (currentWorkflowId) {
+            workflowSelect.innerHTML = `<option value="${currentWorkflowId}" selected>${currentWorkflowName}</option>`;
+            }
+        }
+
+        // Show the modal
+        new bootstrap.Modal(document.getElementById('editProductionProcessModal')).show();
+
+        // Helper function to format date as YYYY-MM-DD for input fields
+        function formatDateForInput(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if (isNaN(date)) return '';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+    };
+
+    // --- Update Production Process ---
+    const editForm = document.querySelector('#edit-production-process-form');
+if (editForm) {
+    editForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(editForm);
+        const processId = formData.get('process_id');
+
+        if (!processId) {
+            console.error('No process_id provided for update.');
+            return;
+        }
+
+        try {
+            const url = `/admin/production-process/${processId}`;
+            const result = await fetch_cycle('--Update Production Process', url, 'POST', formData);
+
+            if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                const formatted = result.production_processes.map(proc => ({
+                    workflow_name: proc.workflow?.workflow_name || 'N/A',
+                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                    remarks: proc.remarks || '',
+                    status: proc.status || 'N/A',
+                    process_id: proc.process_id || ''
+                }));
+
+                productionProcessTable.clear().rows.add(formatted).draw();
+
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editProductionProcessModal'));
+                if (modal) modal.hide();
+
+                // Optionally reset the form
+                editForm.reset();
+            } else {
+                console.error('Update failed:', result.errors || result.message);
+            }
+        } catch (error) {
+            console.error('Error updating production process:', error);
+        }
+    });
+}
+
+    
+    
+    
+    // --- Delete Production Process ---
+    window.deleteProductionProcess = function (processId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this production process?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/production-process/${processId}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        productionProcessTable.row($(`button[onclick="deleteProductionProcess(${processId})"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Production process has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete production process.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
 });
 </script>
 
-    
     <!-- end store production process -->
     <!-- End Batch tracking -->
 

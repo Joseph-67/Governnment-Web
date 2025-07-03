@@ -566,10 +566,11 @@ Route::controller(ProductionProcessController::class)->group(function () {
     Route::get('/production-process', 'index')->name('admin.production-process');
     Route::post('/production-process/store', 'store')->name('admin.store-production-process');
     Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
-    Route::put('/production-process/{id}', 'update')->name('admin.update-production-process');
+    Route::post('/production-process/{id}', 'update')->name('admin.update-production-process');
     Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
     Route::get('/production-process/batch/{batch_id}', 'getByBatch')->name('admin.get-production-processes');
 });
+
     
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');

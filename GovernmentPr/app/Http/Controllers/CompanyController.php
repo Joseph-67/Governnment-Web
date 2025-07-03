@@ -45,6 +45,7 @@ use App\Models\User;
 use App\Models\WasteDisposal;
 use App\Models\WaterStockMovement;
 use App\Models\WaterQualityLogs;
+use App\Models\CompanyWorkflow;
 use App\Models\AnnualOperationsLog;
 use App\Models\ProductionLog;
 use App\Models\QualityControl;
@@ -135,7 +136,8 @@ class CompanyController extends WaterStockMovementController
         $data['quality_controls_record'] = QualityControl::where('company_id', $companyID)->get();
         // fetch company departments
         $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
-        
+        //fetch company workflows
+        $data['company_workflows'] = CompanyWorkflow::where('company_id', $companyID)->get(['workflow_id', 'workflow_name']);
 
 
         return view('components.apps.companyProfile', $data);
