@@ -6022,6 +6022,95 @@
     </div>
     <!-- END: Edit Stage Task Modal -->
     <!-- End Task Management Modal -->
+    <!-- Task Scheduling Modal -->
+    <div class="modal fade" id="taskSchedulingModal" tabindex="-1" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="task-scheduling-form" method="post">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_id" id="task_id">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="taskSchedulingModalLabel">
+                            <i class="las la-calendar-check me-2"></i> Task Scheduling
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="schedule_task_title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="schedule_task_title" name="task_title" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="schedule_start_date" class="form-label">Start Time</label>
+                                <input type="datetime" class="form-control" id="schedule_start_date" name="start_date" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="schedule_end_date" class="form-label">End Time</label>
+                                <input type="datetime" class="form-control" id="schedule_end_date" name="end_date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="schedule_status" class="form-label">Status</label>
+                                <select class="form-select" id="schedule_status" name="status" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="is_recurrence" class="form-label">Is Recurring?</label>
+                                <div class="d-flex align-items-center mt-2">
+                                    <div class="form-check me-4">
+                                        <input class="form-check-input" type="radio" id="is_recurrence" name="is_recurrence" value="1">
+                                        <label class="form-check-label" for="is_recurrence">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="is_not_recurrence" name="is_recurrence" value="0" checked>
+                                        <label class="form-check-label" for="is_not_recurrence">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" id="recurrence-rule-container" style="display: none;">
+                                <label for="recurrence_rule_id" class="form-label">Recurrence Rule</label>
+                                <select class="form-select" id="recurrence_rule_id" name="recurrence_rule_id">
+                                    <option value="" selected disabled>Select Recurrence Rule</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3 text-end">
+                            <button type="submit" class="btn btn-primary">Schedule Task</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive px-3 pb-3">
+                    <table class="table table-striped mb-0 w-100" id="tbl-task-scheduling">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Assignee</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic rows will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Task Scheduling Modal -->
      <!-- End Task Management Modal -->
     <!-- end workflow management -->
 
@@ -13050,7 +13139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button class="btn btn-outline-light btn-sm" onclick="viewTask('${row.task_id}')">
                             <i class="las la-eye"></i> View Task
                         </button>
-                        <button class="btn btn-outline-warning btn-sm" onclick="/* scheduleTask logic here */">
+                        <button class="btn btn-outline-warning btn-sm" onclick="scheduleTask('${row.task_id}')">
                             <i class="las la-calendar-plus"></i> Schedule Management
                         </button>
                         <button class="btn btn-outline-info btn-sm" onclick="/* assignEmployee logic here */">
@@ -13122,6 +13211,8 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.show();
     };
 
+
+
     // Handle task form submission
     document.addEventListener('DOMContentLoaded', function () {
         const taskForm = document.getElementById('task-management-form');
@@ -13169,6 +13260,168 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    // Task Scheduling Management
+    // Initialize DataTable for Task Scheduling
+    const taskSchedulingTable = $('#tbl-task-scheduling').DataTable({
+        paging: true,
+        searching: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: [5] } // Action column
+        ],
+        data: [],
+        columns: [
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'recurrence', title: 'Recurrence' },
+            { data: 'status', title: 'Status' },
+            { data: 'remarks', title: 'Remarks' },
+            {
+                data: null,
+                title: 'Action',
+                className: 'text-end',
+                render: (data, type, row) => `
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="editTaskSchedule('${row.schedule_id}')">
+                            <i class="las la-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteTaskSchedule('${row.schedule_id}')">
+                            <i class="las la-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                `
+            }
+        ]
+    });
+
+    // Show Task Scheduling Modal for a task
+    window.scheduleTask = function(taskId) {
+        document.getElementById('task-scheduling-form').reset();
+        document.getElementById('task_id').value = taskId;
+
+        // Fetch and display schedules for the selected task
+        (async () => {
+            const url = `/admin/get-task-schedules/${taskId}`;
+            // const url = ``;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.schedules)) {
+                    const schedules = data.schedules.map(schedule => ({
+                        employee: schedule.employee?.name || "N/A",
+                        start_date: schedule.start_date ? new Date(schedule.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        status: schedule.status || "N/A",
+                        remarks: schedule.remarks || "",
+                        schedule_id: schedule.schedule_id || schedule.id || "N/A"
+                    }));
+                    taskSchedulingTable.clear().rows.add(schedules).draw();
+                    document.getElementById('task-scheduling-form').reset();
+                } else {
+                    taskSchedulingTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching task schedules:", error);
+                taskSchedulingTable.clear().draw();
+            }
+        })();
+
+        // Show the task scheduling modal
+        const modal = new bootstrap.Modal(document.getElementById('taskSchedulingModal'));
+        modal.show();
+    };
+
+    // Handle task scheduling form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const schedulingForm = document.getElementById('task-scheduling-form');
+        if (schedulingForm) {
+            schedulingForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(schedulingForm);
+                const url = "";
+
+                try {
+                    const result = await fetch_cycle('--Store Task Schedule', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.schedules)) {
+                        const schedules = result.schedules.map(schedule => ({
+                            employee: schedule.employee?.name || "N/A",
+                            start_date: schedule.start_date ? new Date(schedule.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            end_date: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            status: schedule.status || "N/A",
+                            remarks: schedule.remarks || "",
+                            schedule_id: schedule.schedule_id || schedule.id || "N/A"
+                        }));
+                        taskSchedulingTable.clear().rows.add(schedules).draw();
+                        schedulingForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing task schedule:', error);
+                }
+            });
+        }
+    });
+
+    // Edit task schedule
+    window.editTaskSchedule = async function(id) {
+        let schedule = taskSchedulingTable.row($(`button[onclick="editTaskSchedule('${id}')"]`).parents('tr')).data();
+
+        if (!schedule) {
+            try {
+                const response = await fetch(`/admin/get-task-schedule/${id}`);
+                if (response.ok) {
+                    schedule = await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to fetch task schedule:', error);
+                return;
+            }
+        }
+
+        if (schedule) {
+            document.getElementById('schedule_id').value = schedule.schedule_id || schedule.id || "";
+            document.getElementById('employee_id').value = schedule.employee_id || "";
+            document.getElementById('start_date').value = schedule.start_date || "";
+            document.getElementById('end_date').value = schedule.end_date || "";
+            document.getElementById('status').value = schedule.status || "";
+            document.getElementById('remarks').value = schedule.remarks || "";
+            // Show the modal for editing schedule
+            const modal = new bootstrap.Modal(document.getElementById('taskSchedulingModal'));
+            modal.show();
+        }
+    };
+
+    // Delete task schedule
+    window.deleteTaskSchedule = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this schedule?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/task-schedules/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        taskSchedulingTable.row($(`button[onclick="deleteTaskSchedule('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Schedule has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete schedule.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
 
     // Edit task
     window.editTask = async function(id) {
