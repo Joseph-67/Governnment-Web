@@ -17,6 +17,7 @@ use App\Models\RECP_waste_management_method;
 use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
 use App\Models\CompanyPolicy;
+use App\Models\Objectives;
 use App\Models\Material;
 use App\Models\WaterQuestionaire;
 use App\Models\CompanyWaterQuestion;
@@ -446,9 +447,10 @@ class CompanyController extends WaterStockMovementController
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
         $data['pageTitle'] = 'Create New Company';
         $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
+        $data['objectives'] = Objectives::where('status', 'active')->get('objective_id', 'title');
         return view('components.apps.create-company', $data);
     }
-
+    
     public function create_resp($id)
     {
         //
