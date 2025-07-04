@@ -64,6 +64,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\Workflow\CompanyWorkflowController;
 use App\Http\Controllers\Workflow\CompanyStageController;
 use App\Http\Controllers\Workflow\StageTaskController;
+use App\Http\Controllers\Workflow\TaskScheduleController;
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -229,6 +230,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company-stage-tasks/', 'update')->name('admin.update-company-stage-task');
         Route::delete('/company-stage-tasks/{id}', 'destroy')->name('admin.delete-company-stage-task');
         Route::get('/get-stage-tasks/{stageId}', 'getTasksByStage')->name('admin.get-stage-tasks');
+    });
+
+    // Company Stage Task Schedules
+    Route::controller(TaskScheduleController::class)->group(function() {
+        Route::get('/company-stage-task-schedules', 'index')->name('admin.company-stage-task-schedules');
+        Route::post('/company-stage-task-schedules/store', 'store')->name('admin.store-company-stage-task-schedule');
+        Route::get('/company-stage-task-schedules/{id}', 'show')->name('admin.show-company-stage-task-schedule');
+        Route::put('/company-stage-task-schedules/{id}', 'update')->name('admin.update-company-stage-task-schedule');
+        Route::delete('/company-stage-task-schedules/{id}', 'destroy')->name('admin.delete-company-stage-task-schedule');
+        Route::get('/get-task-schedules/{taskId}', 'getSchedulesByTask')->name('admin.get-task-schedules');
     });
 
     // Equipment Log

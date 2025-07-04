@@ -13291,15 +13291,46 @@ if (editForm) {
         ordering: false,
         responsive: true,
         columnDefs: [
-            { orderable: false, targets: [5] } // Action column
+            { orderable: false, targets: [5] } // Disable sorting on the Action column
         ],
         data: [],
         columns: [
-            { data: 'start_date', title: 'Start Date' },
-            { data: 'end_date', title: 'End Date' },
-            { data: 'recurrence', title: 'Recurrence' },
-            { data: 'status', title: 'Status' },
-            { data: 'remarks', title: 'Remarks' },
+            {
+                data: 'start_date',
+                title: 'Start Date',
+                render: (data) => data ? new Date(data).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'
+            },
+            {
+                data: 'end_date',
+                title: 'End Date',
+                render: (data) => data ? new Date(data).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'
+            },
+            {
+                data: 'recurrence',
+                title: 'Recurrence',
+                render: (data) => data ? data : '<span class="text-muted">None</span>'
+            },
+            {
+                data: 'status',
+                title: 'Status',
+                render: (data) => {
+                    let badgeClass = 'secondary';
+                    let label = data || 'N/A';
+                    if (typeof data === 'string') {
+                        switch (data.toLowerCase()) {
+                            case 'completed': badgeClass = 'success'; break;
+                            case 'pending': badgeClass = 'warning'; break;
+                            case 'rejected': badgeClass = 'dark'; break;
+                        }
+                    }
+                    return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                }
+            },
+            {
+                data: 'remarks',
+                title: 'Remarks',
+                render: (data) => data ? data : ''
+            },
             {
                 data: null,
                 title: 'Action',
