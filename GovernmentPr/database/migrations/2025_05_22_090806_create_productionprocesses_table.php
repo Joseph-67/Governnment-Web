@@ -17,7 +17,7 @@ return new class extends Migration
     $table->bigIncrements('process_id');
     $table->unsignedBigInteger('company_id'); // Added company_id
     $table->unsignedBigInteger('batch_id');
-    $table->string('operation_type');
+    $table->unsignedBigInteger('workflow_id');
     $table->timestamp('start_time');
     $table->timestamp('end_time');
     $table->unsignedBigInteger('operator_id');
@@ -28,6 +28,7 @@ return new class extends Migration
     $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
     $table->foreign('batch_id')->references('batch_id')->on('production_batch_tracking')->onDelete('cascade');
     $table->foreign('operator_id')->references('id')->on('users')->onDelete('cascade');
+    $table->foreign('workflow_id')->references('workflow_id')->on('company_workflows')->onDelete('cascade');
 
     $table->timestamps();
 });

@@ -64,6 +64,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\Workflow\CompanyWorkflowController;
 use App\Http\Controllers\Workflow\CompanyStageController;
 use App\Http\Controllers\Workflow\StageTaskController;
+use App\Http\Controllers\Workflow\TaskScheduleController;
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -229,6 +230,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company-stage-tasks/', 'update')->name('admin.update-company-stage-task');
         Route::delete('/company-stage-tasks/{id}', 'destroy')->name('admin.delete-company-stage-task');
         Route::get('/get-stage-tasks/{stageId}', 'getTasksByStage')->name('admin.get-stage-tasks');
+    });
+
+    // Company Stage Task Schedules
+    Route::controller(TaskScheduleController::class)->group(function() {
+        Route::get('/company-stage-task-schedules', 'index')->name('admin.company-stage-task-schedules');
+        Route::post('/company-stage-task-schedules/store', 'store')->name('admin.store-company-stage-task-schedule');
+        Route::get('/company-stage-task-schedules/{id}', 'show')->name('admin.show-company-stage-task-schedule');
+        Route::put('/company-stage-task-schedules/{id}', 'update')->name('admin.update-company-stage-task-schedule');
+        Route::delete('/company-stage-task-schedules/{id}', 'destroy')->name('admin.delete-company-stage-task-schedule');
+        Route::get('/get-task-schedules/{taskId}', 'getSchedulesByTask')->name('admin.get-task-schedules');
     });
 
     // Equipment Log
@@ -566,10 +577,11 @@ Route::controller(ProductionProcessController::class)->group(function () {
     Route::get('/production-process', 'index')->name('admin.production-process');
     Route::post('/production-process/store', 'store')->name('admin.store-production-process');
     Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
-    Route::put('/production-process/{id}', 'update')->name('admin.update-production-process');
+    Route::post('/production-process/{id}', 'update')->name('admin.update-production-process');
     Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
     Route::get('/production-process/batch/{batch_id}', 'getByBatch')->name('admin.get-production-processes');
 });
+
     
     Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');

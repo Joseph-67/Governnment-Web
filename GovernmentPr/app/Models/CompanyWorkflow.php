@@ -23,6 +23,12 @@ class CompanyWorkflow extends Model
     {
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
+   
+
+    public function productionprocess()
+    {
+        return $this->belongsTo(productionprocess::class, 'workflow_id', 'workflow_id');
+    }
 
     public function creator() {
         switch ($this->guard) {
