@@ -11,9 +11,9 @@ class Objectives extends Model
     protected $table = 'objectives';
     protected $primaryKey = 'objective_id';
     protected $fillable = [
-        'company_id',
-        'objective_name',
-        'objective_description',
+        'name',
+        'description',
+        'sequence_order',
         'start_date',
         'end_date',
         'status'

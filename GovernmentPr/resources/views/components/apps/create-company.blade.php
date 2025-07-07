@@ -439,69 +439,14 @@
             
             <h5 class="mt-4">Organization Objective</h5>
             <p>Select the area(s) your company objective imply.</p>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="business growth" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Business growth </label>
+            @foreach($objectives as $objective)
+                <div class="col-md-4 mt-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck_{{ $objective->objective_id }}" value="{{ $objective->objective_id }}" name="objective[]">
+                        <label class="form-check-label" for="flexSwitchCheck_{{ $objective->objective_id }}">{{ $objective->name }}</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="customer satisfaction" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Customer satisfaction. </label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="material optimization" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Material optimization. </label>
-                </div>
-            </div>
-            <x-section-border />
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="waste minimization" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Waste minimization. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="measurable and timely targets" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Measurable & timely targets. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="innovation" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Innovation. </label>
-                </div>
-            </div>
-            <x-section-border />
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="sustainability" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Sustainability. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="employee management" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Employee management. </label>
-                </div>
-            </div>
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="market expansion" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Market expansion. </label>
-                </div>
-            </div>
-            <x-section-border />
-            <div class="col-md-4 mt-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="hman enviromental health" name="objective[]">
-                    <label class="form-check-label" for="flexSwitchCheckDefault"> Human environmental health. </label>
-                </div>
-            </div>
+            @endforeach
         </div>
     </x-slot>
 </x-form-section>

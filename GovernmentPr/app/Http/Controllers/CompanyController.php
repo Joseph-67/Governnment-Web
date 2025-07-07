@@ -449,7 +449,7 @@ class CompanyController extends WaterStockMovementController
         $data['usersList'] = User::where('status','active')->select('id','first_name','last_name')->get();
         $data['pageTitle'] = 'Create New Company';
         $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
-        $data['objectives'] = Objectives::where('status', 'active')->get('objective_id', 'title');
+        $data['objectives'] = Objectives::where('status', 'active')->get(['objective_id', 'name']);
         return view('components.apps.create-company', $data);
     }
     
@@ -613,7 +613,6 @@ class CompanyController extends WaterStockMovementController
                         'companyID' => $request['company_id'],
                         'enviromental_benefit_title' => $healthBenefit
                     ]);
-
                     $check = true;
                 }
 
@@ -766,7 +765,6 @@ class CompanyController extends WaterStockMovementController
                     ]);
                     $check = true;
                 }
-
             }
         }
 
