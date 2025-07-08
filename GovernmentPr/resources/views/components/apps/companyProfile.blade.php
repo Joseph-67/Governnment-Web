@@ -5796,7 +5796,7 @@
     <!-- Add your modal content here if needed -->
     <!-- workflow management -->
     <!-- Workflow Edit Form Modal -->
-    <div class="modal fade" id="workflowEditModal" tabindex="-1" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
+    <div class="modal fade" id="workflowEditModal" tabindex="-4" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="workflow-edit-form" method="post">
@@ -5837,7 +5837,7 @@
     </div>
     <!-- End Workflow Edit Form Modal -->
     <!-- Stage Management Modal -->
-  <div class="modal fade" id="stageManagementModal" tabindex="-2" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+  <div class="modal fade" id="stageManagementModal" tabindex="-4" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="stage-management-form">
@@ -5900,7 +5900,7 @@
         </div>
     </div>
     <!-- Edit Stage Modal -->
-    <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+    <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-3" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
                 <form id="edit-stage-form" autocomplete="off">
@@ -5954,7 +5954,7 @@
     <!-- End Stage Management Modal -->
      <!-- Task Management Modal -->
     <!-- Task Management Modal -->
-    <div class="modal fade" id="taskManagementModal" tabindex="-1" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
+    <div class="modal fade" id="taskManagementModal" tabindex="-3" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="task-management-form">
@@ -6037,7 +6037,7 @@
         </div>
     </div>
 <!-- Edit Stage Task Modal -->
-    <div class="modal fade" id="editStageTaskModal" tabindex="-1" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+    <div class="modal fade" id="editStageTaskModal" tabindex="-2" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
 
@@ -6094,7 +6094,7 @@
     <!-- END: Edit Stage Task Modal -->
     <!-- End Task Management Modal -->
     <!-- Task Scheduling Modal -->
-    <div class="modal fade" id="taskSchedulingModal" tabindex="-1" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="taskSchedulingModal" tabindex="-2" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="task-scheduling-form" method="post">
@@ -6111,7 +6111,7 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="schedule_task_title" class="form-label">Task Title</label>
-                                <input type="text" class="form-control" id="schedule_task_title" name="task_title" required>
+                                <input type="text" class="form-control" id="schedule_task_title" name="task_title" required readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="schedule_start_date" class="form-label">Start Time</label>
@@ -13291,10 +13291,25 @@ if (editForm) {
         ordering: false,
         responsive: true,
         columnDefs: [
-            { orderable: false, targets: [5] } // Disable sorting on the Action column
+            { orderable: false, targets: [6] } // Disable sorting on the Action column
         ],
         data: [],
         columns: [
+            {
+                data: 'title',
+                title: 'Title',
+                render: (data) => data ? data : 'N/A'
+            },
+            {
+                data: 'assignee',
+                title: 'Assignee',
+                render: (data, type, row) => {
+                    if (row.employee && row.employee.name) {
+                        return row.employee.name;
+                    }
+                    return data ? data : '<span class="text-muted">None</span>';
+                }
+            },
             {
                 data: 'start_date',
                 title: 'Start Date',
@@ -13306,8 +13321,8 @@ if (editForm) {
                 render: (data) => data ? new Date(data).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'
             },
             {
-                data: 'recurrence',
-                title: 'Recurrence',
+                data: 'priority',
+                title: 'Priority',
                 render: (data) => data ? data : '<span class="text-muted">None</span>'
             },
             {
@@ -13325,11 +13340,6 @@ if (editForm) {
                     }
                     return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                 }
-            },
-            {
-                data: 'remarks',
-                title: 'Remarks',
-                render: (data) => data ? data : ''
             },
             {
                 data: null,
@@ -13354,6 +13364,9 @@ if (editForm) {
         document.getElementById('task-scheduling-form').reset();
         document.getElementById('task_id').value = taskId;
 
+        const row = taskTable.row($(`button[onclick="scheduleTask('${taskId}')"]`).parents('tr')).data();
+        console.log('Task Title:', row ? row.title || row.task_name || 'N/A' : 'N/A');
+        document.getElementById('schedule_task_title').value = row ? row.title || row.task_name || 'N/A' : 'N/A';
         // Fetch and display schedules for the selected task
         (async () => {
             const url = `/admin/get-task-schedules/${taskId}`;
