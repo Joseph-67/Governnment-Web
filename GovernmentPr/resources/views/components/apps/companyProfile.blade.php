@@ -6113,14 +6113,14 @@
                                 <label for="schedule_task_title" class="form-label">Task Title</label>
                                 <input type="text" class="form-control" id="schedule_task_title" name="task_title" required readonly>
                             </div>
-                            <div class="col-md-3">
-                                <label for="schedule_start_date" class="form-label">Start Time</label>
-                                <input type="datetime" class="form-control" id="schedule_start_date" name="start_date" required>
+                            <div class="col-md-6">
+                            <label for="start_date" class="form-label text-white fw-semibold">Production Date</label>
+                            <div class="input-group" id="DateRange">
+                                <input type="date" class="form-control border-0 shadow-sm" name="start_date" placeholder="Start" aria-label="StartDate">
+                                <span class="input-group-text bg-white border-0">to</span>
+                                <input type="date" class="form-control border-0 shadow-sm" name="end_date" placeholder="End" aria-label="EndDate">
                             </div>
-                            <div class="col-md-3">
-                                <label for="schedule_end_date" class="form-label">End Time</label>
-                                <input type="datetime" class="form-control" id="schedule_end_date" name="end_date" required>
-                            </div>
+                        </div>
                             <div class="col-md-6">
                                 <label for="schedule_status" class="form-label">Status</label>
                                 <select class="form-select" id="schedule_status" name="status" required>
