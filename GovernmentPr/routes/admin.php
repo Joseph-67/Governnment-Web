@@ -65,6 +65,7 @@ use App\Http\Controllers\Workflow\CompanyWorkflowController;
 use App\Http\Controllers\Workflow\CompanyStageController;
 use App\Http\Controllers\Workflow\StageTaskController;
 use App\Http\Controllers\Workflow\TaskScheduleController;
+use App\Http\Controllers\Workflow\RecurrenceRuleController;
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -220,6 +221,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company-stages/', 'update')->name('admin.update-company-stage');
         Route::delete('/company-stages/{id}', 'destroy')->name('admin.delete-company-stage');
         Route::get('/get-company-stages/{workflowId}', 'getStagesByWorkflow')->name('admin.get-company-stages');
+    });
+
+    // Recurrence Rule
+    Route::controller(RecurrenceRuleController::class)->group(function() {
+        Route::get('/recurrence-rules', 'index')->name('admin.recurrence-rules');
+        Route::post('/recurrence-rules/store', 'store')->name('admin.store-recurrence-rule');
+        Route::get('/recurrence-rules/{id}', 'show')->name('admin.show-recurrence-rule');
+        Route::put('/recurrence-rules/{id}', 'update')->name('admin.update-recurrence-rule');
+        Route::delete('/recurrence-rules/{id}', 'destroy')->name('admin.delete-recurrence-rule');
+        Route::get('/get-recurrence-rules/{companyId}', 'getRecurrenceRulesByCompany')->name('admin.get-recurrence-rules');
     });
     
     // Company Stage Tasks

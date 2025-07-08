@@ -25,6 +25,18 @@ class TaskScheduleController extends Controller
     }
 
     /**
+     * Get all schedules for a specific task.
+     *
+     * @param int $taskId
+     * @return \Illuminate\Http\Response
+     */
+    public function getSchedulesByTask($taskId)
+    {
+        $schedules = TaskSchedule::where('task_id', $taskId)->get();
+        return response()->json($schedules);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

@@ -6121,7 +6121,7 @@
                                 <label for="schedule_end_date" class="form-label">End Time</label>
                                 <input type="datetime" class="form-control" id="schedule_end_date" name="end_date" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="schedule_status" class="form-label">Status</label>
                                 <select class="form-select" id="schedule_status" name="status" required>
                                     <option value="" selected disabled>Select Status</option>
@@ -6131,7 +6131,7 @@
                                     <option value="cancelled">Cancelled</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="is_recurrence" class="form-label">Is Recurring?</label>
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="form-check me-4">
@@ -6144,14 +6144,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6" id="recurrence-rule-container" style="display: none;">
+                            <div class="col-md-4" id="recurrence-rule-container" style="display: none;">
                                 <label for="recurrence_rule_id" class="form-label">Recurrence Rule</label>
                                 <select class="form-select" id="recurrence_rule_id" name="recurrence_rule_id">
                                     <option value="" selected disabled>Select Recurrence Rule</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                    <option value="custom">Custom</option>
                                 </select>
                             </div>
                         </div>
@@ -13398,6 +13394,81 @@ if (editForm) {
         modal.show();
     };
 
+    
+    // Show/hide recurrence rule container based on is_recurrence radio
+    document.addEventListener('DOMContentLoaded', function () {
+        const recurrenceRadios = document.querySelectorAll('input[name="is_recurrence"]');
+        const recurrenceRuleContainer = document.getElementById('recurrence-rule-container');
+        if (recurrenceRadios.length && recurrenceRuleContainer) {
+            function toggleRecurrenceRule() {
+                const checked = Array.from(recurrenceRadios).find(r => r.checked);
+                if (checked && checked.value === "1") {
+                    recurrenceRuleContainer.style.display = '';
+                } else {
+                    recurrenceRuleContainer.style.display = 'none';
+                }
+            }
+            recurrenceRadios.forEach(radio => {
+                radio.addEventListener('change', toggleRecurrenceRule);
+            });
+            // Initial state
+            toggleRecurrenceRule();
+        }
+    });
+    
+    // Fetch recurrence rule when a recurrence_rule_id is selected
+    document.addEventListener('DOMContentLoaded', function () {
+        const recurrenceRuleSelect = document.getElementById('recurrence_rule_id');
+        if (recurrenceRuleSelect) {
+            recurrenceRuleSelect.addEventListener('focus', async function () {
+                // Populate recurrence rule select options dynamically
+                try {
+                    const companyId = "{{ json_encode($company->company_id) }}";
+                    const url = `/admin/get-recurrence-rules/${companyId}`;
+                    const data = await fetchFieldInput(url);
+                    if (data.status === "success" && Array.isArray(data.recurrence_rules)) {
+                        // Clear existing options
+                        recurrenceRuleSelect.innerHTML = '';
+                        // Add default option
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = 'Select recurrence rule';
+                        defaultOption.disabled = true;
+                        defaultOption.selected = true;
+                        recurrenceRuleSelect.appendChild(defaultOption);
+                        // Add options from data
+                        data.recurrence_rules.forEach(rule => {
+                            const option = document.createElement('option');
+                            option.value = rule.id || rule.recurrence_rule_id;
+                            option.textContent = rule.name || rule.title || 'Rule';
+                            recurrenceRuleSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error fetching recurrence rules:", error);
+                }
+            });
+
+            recurrenceRuleSelect.addEventListener('change', async function () {
+                const ruleId = this.value;
+                if (!ruleId) return;
+                try {
+                    const url = `/admin/get-recurrence-rule/${ruleId}`;
+                    const data = await fetchFieldInput(url);
+                    if (data.status === "success" && data.recurrence_rule) {
+                        // Example: populate a description field or display rule details
+                        const descField = document.getElementById('recurrence_rule_description');
+                        if (descField) {
+                            descField.textContent = data.recurrence_rule.description || '';
+                        }
+                        // You can populate other fields as needed
+                    }
+                } catch (error) {
+                    console.error("Error fetching recurrence rule:", error);
+                }
+            });
+        }
+    });
     // Handle task scheduling form submission
     document.addEventListener('DOMContentLoaded', function () {
         const schedulingForm = document.getElementById('task-scheduling-form');
