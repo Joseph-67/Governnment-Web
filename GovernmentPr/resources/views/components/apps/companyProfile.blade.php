@@ -6114,11 +6114,12 @@
                                 <input type="text" class="form-control" id="schedule_task_title" name="task_title" required readonly>
                             </div>
                             <div class="col-md-6">
-                            <label for="start_date" class="form-label text-white fw-semibold">Production Date</label>
-                            <div class="input-group" id="DateRange">
-                                <input type="date" class="form-control border-0 shadow-sm" name="start_date" id="schedule_start_date" placeholder="Start" aria-label="StartDate">
-                                <span class="input-group-text bg-white border-0">to</span>
-                                <input type="date" class="form-control border-0 shadow-sm" name="end_date" id="schedule_end_date" placeholder="End" aria-label="EndDate">
+                                <label for="start_date" class="form-label fw-semibold">Scheduled Date</label>
+                                <div class="input-group" id="DateRange">
+                                    <input type="date" class="form-control" name="start_date" id="schedule_start_date" placeholder="Start" aria-label="StartDate">
+                                    <span class="input-group-text">to</span>
+                                    <input type="date" class="form-control" name="end_date" id="schedule_end_date" placeholder="End" aria-label="EndDate">
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <label for="schedule_status" class="form-label">Status</label>
@@ -6159,11 +6160,11 @@
                     <table class="table table-striped mb-0 w-100" id="tbl-task-scheduling">
                         <thead class="table-light">
                             <tr>
-                                <th>Title</th>
+                                <th>Recurrence</th>
                                 <th>Assignee</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th>Priority</th>
+                                <th>Frequency</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -13291,8 +13292,8 @@ if (editForm) {
         data: [],
         columns: [
             {
-                data: 'title',
-                title: 'Title',
+                data: 'is_recurrence',
+                title: 'Recurrence',
                 render: (data) => data ? data : 'N/A'
             },
             {
@@ -13316,8 +13317,8 @@ if (editForm) {
                 render: (data) => data ? new Date(data).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'
             },
             {
-                data: 'priority',
-                title: 'Priority',
+                data: 'frequency',
+                title: 'Frequency',
                 render: (data) => data ? data : '<span class="text-muted">None</span>'
             },
             {
@@ -13368,17 +13369,21 @@ if (editForm) {
             // const url = ``;
             try {
                 const data = await fetchFieldInput(url);
-                if (data.status === "success" && Array.isArray(data.schedules)) {
-                    const schedules = data.schedules.map(schedule => ({
+                if (data.status === "success" && Array.isArray(data.task_schedules)) {
+                    const schedules = data.task_schedules.map(schedule => ({
                         employee: schedule.employee?.name || "N/A",
-                        start_date: schedule.start_date ? new Date(schedule.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        end_date: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        status: schedule.status || "N/A",
-                        remarks: schedule.remarks || "",
-                        schedule_id: schedule.schedule_id || schedule.id || "N/A"
+                        start_date: schedule.start_time ? new Date(schedule.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: schedule.end_time ? new Date(schedule.end_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        status: (schedule.status && schedule.status.toLowerCase() === "in_progress") 
+                            ? "In Progress" 
+                            : (schedule.status ? schedule.status.charAt(0).toUpperCase() + schedule.status.slice(1) : "N/A"),
+                        is_recurrence: schedule.is_recurrence=== true
+                            ? '<span class="text-success"><i class="las la-check-circle"></i> Yes</span>'
+                            : '<span class="text-danger"><i class="las la-times-circle"></i> No</span>',
+                        frequency: schedule.recurrenceRule && schedule.recurrenceRule.frequency ? schedule.recurrenceRule.frequency : "N/A",
+                        schedule_id: schedule.task_schedule_id || schedule.id || "N/A"
                     }));
                     taskSchedulingTable.clear().rows.add(schedules).draw();
-                    document.getElementById('task-scheduling-form').reset();
                 } else {
                     taskSchedulingTable.clear().draw();
                 }
@@ -13418,8 +13423,12 @@ if (editForm) {
     // Fetch recurrence rule when a recurrence_rule_id is selected
     document.addEventListener('DOMContentLoaded', function () {
         const recurrenceRuleSelect = document.getElementById('recurrence_rule_id');
+        console.log("Recurrence Rule Select Element:", recurrenceRuleSelect);
+        
         if (recurrenceRuleSelect) {
             recurrenceRuleSelect.addEventListener('focus', async function () {
+                console.log("Recurrence Rule Select Focused: ", recurrenceRuleSelect);
+                
                 // Populate recurrence rule select options dynamically
                 try {
                     const companyId = "{{ json_encode($company->company_id) }}";
@@ -13439,7 +13448,7 @@ if (editForm) {
                         data.recurrence_rules.forEach(rule => {
                             const option = document.createElement('option');
                             option.value = rule.id || rule.recurrence_rule_id;
-                            option.textContent = rule.name || rule.title || 'Rule';
+                            option.textContent = rule.name || rule.title || rule.frequency || 'Rule';
                             recurrenceRuleSelect.appendChild(option);
                         });
                     }
@@ -13468,6 +13477,7 @@ if (editForm) {
             });
         }
     });
+
     // Handle task scheduling form submission
     document.addEventListener('DOMContentLoaded', function () {
         const schedulingForm = document.getElementById('task-scheduling-form');
@@ -13475,7 +13485,7 @@ if (editForm) {
             schedulingForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(schedulingForm);
-                const url = "";
+                const url = "{{ route('admin.store-company-stage-task-schedule') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Task Schedule', url, 'POST', formData);

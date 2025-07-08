@@ -25,6 +25,22 @@ class RecurrenceRuleController extends Controller
     }
 
     /**
+     * Get all recurrence rules for a specific company.
+     *
+     * @param int $companyId
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecurrenceRulesByCompany($companyId)
+    {
+        $rules = RecurrenceRule::where('company_id', $companyId)->get();
+        return response()->json([
+            'recurrence_rules' => $rules,
+            'message' => 'Recurrence rules retrieved successfully.',
+            'status' => 'success'
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

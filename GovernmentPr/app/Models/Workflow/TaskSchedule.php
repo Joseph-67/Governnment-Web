@@ -4,6 +4,8 @@ namespace App\Models\Workflow;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CompanyStageTask;
+use App\Models\Workflow\RecurrenceRule;
 
 class TaskSchedule extends Model
 {
@@ -32,6 +34,6 @@ class TaskSchedule extends Model
     }
     public function task()
     {
-        return $this->belongsTo(Task::class, 'task_id', 'id');
+        return $this->belongsTo(CompanyStageTask::class, 'task_id', 'stage_task_id');
     }
 }

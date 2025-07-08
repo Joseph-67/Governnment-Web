@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Workflow\TaskSchedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class TaskScheduleController extends Controller
 {
@@ -32,8 +34,14 @@ class TaskScheduleController extends Controller
      */
     public function getSchedulesByTask($taskId)
     {
-        $schedules = TaskSchedule::where('task_id', $taskId)->get();
-        return response()->json($schedules);
+        $schedules = TaskSchedule::where('task_id', $taskId)
+        ->with(['recurrenceRule'])
+        ->get();
+        return response()->json([
+            'task_schedules' => $schedules,
+            'message' => 'Task schedules retrieved successfully.',
+            'status' => 'success'
+        ], 200);
     }
 
     /**
@@ -42,6 +50,38 @@ class TaskScheduleController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'company_id' => 'required|integer|exists:companies,company_id',
+            'task_id' => 'required|integer|exists:company_stage_tasks,stage_task_id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => [
+                'required',
+                Rule::in(['pending', 'in_progress', 'completed', 'cancelled']),
+            ],
+            'is_recurrence' => 'boolean',
+            'recurrence_rule_id' => 'nullable|integer|exists:recurrence_rules,recurrence_rule_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        $taskSchedule = TaskSchedule::create([
+            'task_id' => $request->input('task_id'),
+            'start_time' => $request->input('start_date'),
+            'end_time' => $request->input('end_date'),
+            'status' => $request->input('status'),
+            'is_recurrence' => $request->input('is_recurrence', false),
+            'recurrence_rule_id' => $request->input('recurrence_rule_id', null),
+            'company_id' => $request->input('company_id'), // Assuming the user is
+        ]);
+
+        return response()->json([
+            'message' => 'Task schedule created successfully.',
+            'task_schedule' => $taskSchedule,
+            'status' => 'success'
+        ], 201);
     }
 
     /**
