@@ -6116,9 +6116,9 @@
                             <div class="col-md-6">
                             <label for="start_date" class="form-label text-white fw-semibold">Production Date</label>
                             <div class="input-group" id="DateRange">
-                                <input type="date" class="form-control border-0 shadow-sm" name="start_date" placeholder="Start" aria-label="StartDate">
+                                <input type="date" class="form-control border-0 shadow-sm" name="start_date" id="schedule_start_date" placeholder="Start" aria-label="StartDate">
                                 <span class="input-group-text bg-white border-0">to</span>
-                                <input type="date" class="form-control border-0 shadow-sm" name="end_date" placeholder="End" aria-label="EndDate">
+                                <input type="date" class="form-control border-0 shadow-sm" name="end_date" id="schedule_end_date" placeholder="End" aria-label="EndDate">
                             </div>
                         </div>
                             <div class="col-md-6">
