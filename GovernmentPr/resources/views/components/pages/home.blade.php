@@ -41,6 +41,81 @@
    }
 </style>
 
+<!-- team area start -->
+<style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      color: #ffffff;
+    }
+
+    .partner-section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .partner-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #ffffff;
+    }
+
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      height: 150px;
+    }
+
+    .slider-track {
+      display: flex;
+      animation: slide 20s linear infinite;
+    }
+
+    .slider-track img {
+      width: 200px;
+      height: 120px;
+      margin: 0 15px;
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .slider-track img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+@endsection
+@section('scripts')
+<script>
+   function updateTemperatureAndTime() {
+      // Simulated temperature for demonstration purposes
+      const temperature = Math.floor(Math.random() * 35) + 15; // Random temperature between 15°C and 50°C
+      const now = new Date();
+      const options = { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+      const localTime = now.toLocaleTimeString([], options);
+
+      document.querySelector('.tp-slider-meta-content span').innerHTML = `${temperature}°C<br>${localTime}`;
+   }
+
+   // Update every minute
+   setInterval(updateTemperatureAndTime, 60000);
+   // Initial call
+   updateTemperatureAndTime();
+</script>
 @endsection
 <main>
 
@@ -91,36 +166,28 @@
                            <div class="tp-slider-content-wrap p-relative z-index-2">
                               <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
                               <div class="tp-slider-title-box p-relative">
-                                 <span class="tp-slider-subtitle">OUR VISION</span>
+                                 <span class="tp-slider-subtitle text-uppercase">🌍 Welcome to the NGN IEE-RECP Project</span>
                                  <h4 class="tp-slider-title" style="font-size: 2.5rem;">
-                                    To foster a green economy through cleaner technologies, efficient resource use, and inclusive policies by 2033.
+                                 Driving Nigeria’s Industrial Sustainability through Innovation and Efficiency.
                                  </h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
                                  <div class="tp-slider-btn">
                                     <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
                                  </div>
-                                 <div class="tp-slider-video d-flex align-items-center">
-                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
-                                       <i class="fa-sharp fa-light fa-play"></i>
-                                    </a>
-                                    <span>Watch Our <br> Showcase</span>
-                                 </div>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
-
                </div>
             </div>
-
             <!-- Slide 2 -->
             <div class="swiper-slide">
                <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
                   <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-2.jpg') }}');"></div>
 
-                  <!-- Shapes (same structure) -->
+                  <!-- Shapes -->
                   <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
                   <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
                   <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
@@ -131,9 +198,9 @@
                            <div class="tp-slider-content-wrap p-relative z-index-2">
                               <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
                               <div class="tp-slider-title-box p-relative">
-                                 <span class="tp-slider-subtitle">OUR VISION</span>
+                                 <span class="tp-slider-subtitle">🔧🌱⚙️ OUR MISSION</span>
                                  <h4 class="tp-slider-title" style="font-size: 2.5rem;">
-                                    To achieve a circular economy with inclusive growth, efficient resource use, and minimal environmental impact by 2033.
+                                 Driving sustainable growth through RECP and innovation.
                                  </h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
@@ -154,7 +221,6 @@
 
                </div>
             </div>
-
             <!-- Slide 3 -->
             <div class="swiper-slide">
                <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
@@ -171,9 +237,48 @@
                            <div class="tp-slider-content-wrap p-relative z-index-2">
                               <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
                               <div class="tp-slider-title-box p-relative">
-                                 <span class="tp-slider-subtitle">OUR VISION</span>
+                                 <span class="tp-slider-subtitle">🌍💡 OUR VISION</span>
                                  <h4 class="tp-slider-title" style="font-size: 2.5rem;">
-                                    Champion Nigeria's leadership in sustainability by embedding RECP principles into national policies and addressing global environmental issues.
+                                 A sustainable Nigeria powered by RECP principles.
+                                 </h4>
+                              </div>
+                              <div class="tp-slider-video-box d-flex align-items-center">
+                                 <div class="tp-slider-btn">
+                                    <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
+                                 </div>
+                                 <div class="tp-slider-video d-flex align-items-center">
+                                    <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
+                                       <i class="fa-sharp fa-light fa-play"></i>
+                                    </a>
+                                    <span>Watch Our <br> Showcase</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="swiper-slide">
+               <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
+                  <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/slider-4.jpg') }}');"></div>
+
+                  <!-- Shapes (same structure) -->
+                  <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
+                  <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
+
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-xl-9 col-lg-10 col-md-12">
+                           <div class="tp-slider-content-wrap p-relative z-index-2">
+                              <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
+                              <div class="tp-slider-title-box p-relative">
+                                 <span class="tp-slider-subtitle">🎯⚡♻️ OUR GOAL</span>
+                                 <h4 class="tp-slider-title" style="font-size: 2.5rem;">
+                                    To empower communities through sustainable development initiatives and innovative solutions.
                                  </h4>
                               </div>
                               <div class="tp-slider-video-box d-flex align-items-center">
@@ -706,10 +811,7 @@
                         </div>
                      </div>
                   </div>
-                  
-                 
-                  
-                                              
+
                   </div>
                </div>
             </div>
@@ -792,66 +894,6 @@
    </div>
 </div>
 <!-- video area end -->
-
-<!-- team area start -->
-<style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ffffff, #ffffff);
-      color: #ffffff;
-    }
-
-    .partner-section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .partner-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 40px;
-      color: #ffffff;
-    }
-
-    .slider-container {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      height: 150px;
-    }
-
-    .slider-track {
-      display: flex;
-      animation: slide 20s linear infinite;
-    }
-
-    .slider-track img {
-      width: 200px;
-      height: 120px;
-      margin: 0 15px;
-      border-radius: 15px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .slider-track img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    @keyframes slide {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-  </style>
-</head>
-<body>
   <section class="partner-section">
   <span class="tp-section-subtitle">PARTNERS</span>
    <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
