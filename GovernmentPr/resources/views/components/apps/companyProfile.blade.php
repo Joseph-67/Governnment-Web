@@ -6178,6 +6178,47 @@
         </div>
     </div>
     <!-- End Task Scheduling Modal -->
+    <!-- Assign Employee to Task Modal -->
+    <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <form id="assign-employee-task-form" method="post" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_id" id="assign_task_id">
+                    <div class="modal-header bg-gradient-primary text-white rounded-top">
+                        <h5 class="modal-title fw-bold" id="assignEmployeeToTaskModalLabel">
+                            <i class="las la-user-plus me-2"></i> Assign Employee to Task
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="employee_select" class="form-label">Select Employee(s)</label>
+                                <select class="form-select" id="employee_select" name="employee_ids[]" multiple required>
+                                    <!-- Options should be populated dynamically via JS or server-side -->
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
+                                <textarea class="form-control" id="assignment_note" name="assignment_note" rows="2" placeholder="Add any notes for the assignee(s)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="las la-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="las la-user-check"></i> Assign
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Assign Employee to Task Modal -->
      <!-- End Task Management Modal -->
     <!-- end workflow management -->
 
