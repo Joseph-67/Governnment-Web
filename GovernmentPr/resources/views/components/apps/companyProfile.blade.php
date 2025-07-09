@@ -13057,7 +13057,6 @@ if (editForm) {
         }
         // Populate the form fields with stage data
         console.log("Editing stage:", stage);
-        
 
         if (stage) {
             document.getElementById('edit_stage_id').value = stage.stage_id || stage.id || "";
