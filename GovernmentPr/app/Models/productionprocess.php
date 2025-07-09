@@ -5,42 +5,41 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class productionprocess extends Model
+class ProductionProcess extends Model
 {
     use HasFactory;
-    protected $table = 'productionprocesses';
-protected $primaryKey = 'process_id';
 
-protected $fillable = [
-    'batch_id',
-    'company_id',
-    'workflow_id',
-    'start_time',
-    'end_time',
-    'operator_id',
-    'status',
-    'remarks'
-];
+    protected $table = 'ProductionProcesses';
+    protected $primaryKey = 'process_id';
 
-public function batch()
-{
-    return $this->belongsTo(ProductionBatchTracking::class, 'batch_id', 'batch_id');
-}
+    protected $fillable = [
+        'batch_id',
+        'company_id',
+        'workflow_id',
+        'start_time',
+        'end_time',
+        'operator_id',
+        'status',
+        'remarks',
+    ];
 
-public function workflow()
-{
-    return $this->belongsTo(CompanyWorkflow::class, 'workflow_id', 'workflow_id');
-}
+    public function batch()
+    {
+        return $this->belongsTo(ProductionBatchTracking::class, 'batch_id', 'batch_id');
+    }
 
+    public function workflow()
+    {
+        return $this->belongsTo(CompanyWorkflow::class, 'workflow_id', 'workflow_id');
+    }
 
-public function operator()
-{
-    return $this->belongsTo(User::class, 'operator_id', 'id');
-}
+    public function operator()
+    {
+        return $this->belongsTo(User::class, 'operator_id', 'id');
+    }
 
-public function company()
-{
-    return $this->belongsTo(Company::class, 'company_id', 'company_id');
-}
-
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'company_id');
+    }
 }

@@ -4209,11 +4209,6 @@
                                                                                 <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
                                                                             </div>
                                                                         </div>
-                                                                        @if(auth('admin')->check())
-                                                                            <input type="hidden" name="operator" value="{{ auth('admin')->user()->id }}">
-                                                                        @elseif(auth('web')->check())
-                                                                            <input type="hidden" name="operator" value="{{ auth('web')->user()->id }}">
-                                                                        @endif
                                                                         <div class="col-md-6">
                                                                             <label for="process_status" class="form-label">Status</label>
                                                                             <select class="form-select" id="process_status" name="process_status" required>
@@ -11998,7 +11993,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!modalElement) return;
         (async function populateProductionProcessTable() {
             if (!batchId) return;
-            const url = `/admin/production-process/batch/${batchId}`;
+            const url = `/admin/get-production-process/${batchId}`;
             try {
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.production_processes)) {
@@ -12025,32 +12020,32 @@ document.addEventListener('DOMContentLoaded', function () {
         })();
     };
 
-    // --- Store Production Process ---
-    const form = document.querySelector('#production-process-form');
-    if (form) {
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const url = "{{ route('admin.store-production-process') }}";
-            try {
-                const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-                if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                    const formatted = result.production_processes.map(proc => ({
-                        workflow_name: proc.workflow?.workflow_name || 'N/A',
-                        start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
-                        end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
-                        remarks: proc.remarks || '',
-                        status: proc.status || 'N/A',
-                        process_id: proc.process_id || ''
-                    }));
-                    productionProcessTable.clear().rows.add(formatted).draw();
-                    form.reset();
-                }
-            } catch (error) {
-                console.error('Error storing production process:', error);
+    // --- Production Process Form Submission ---
+    document.getElementById('production-process-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-production-process') }}";
+        try {
+            const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+            if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                const formatted = result.production_processes.map(proc => ({
+                    workflow_name: proc.workflow?.workflow_name || 'N/A',
+                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                    remarks: proc.remarks || '',
+                    status: proc.status || 'N/A',
+                    process_id: proc.process_id || ''
+                }));
+                productionProcessTable.clear().rows.add(formatted).draw();
+                // Hide form and show table
+                showProductionProcessTable();
+                // Optionally reset the form
+                this.reset();
             }
-        });
-    }
+        } catch (error) {
+            console.error('Error storing production process:', error);
+        }
+    });
 
     // Edit Production Process Modal Handler
     window.editProductionProcess = async function(id) {

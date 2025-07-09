@@ -590,7 +590,7 @@ Route::controller(ProductionProcessController::class)->group(function () {
     Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
     Route::post('/production-process/{id}', 'update')->name('admin.update-production-process');
     Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
-    Route::get('/production-process/batch/{batch_id}', 'getByBatch')->name('admin.get-production-processes');
+    Route::get('/get-production-process/{batch_id}', 'getProductionProcessByBatch')->name('admin.get-production-processes');
 });
 
     
