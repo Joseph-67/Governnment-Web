@@ -1,10 +1,9 @@
 <!doctype html>
-<html class="no-js" lang="en_us">
-
+<html lang="en_us" class="no-js">
 <head>
    <meta charset="utf-8">
    <meta http-equiv="x-ua-compatible" content="ie=edge">
-   <title> @yield('PageTitle') – Federal Ministry of Environment </title>
+   <title>@yield('PageTitle') – Federal Ministry of Environment</title>
    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
    <meta name="description" content="">
    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,135 +11,66 @@
    <!-- Open Graph Meta Tags -->
    <meta property="og:title" content="@yield('PageTitle') – Federal Ministry of Environment">
    <meta property="og:description" content="Nigeria promotes RECP for sustainable industrial growth and environmental protection.">
-   <meta property="og:image" content="{{asset('MainAssets/img/logo/logo3.png')}}">
+   <meta property="og:image" content="{{ asset('MainAssets/img/logo/logo3.png') }}">
    <meta property="og:url" content="https://recp.elitetechnologydev.ng/home">
    <meta property="og:type" content="website">
    <meta property="og:site_name" content="Federal Ministry of Environment">
 
-   <!-- Place favicon.ico in the root directory -->
-   <link rel="shortcut icon" type="image/x-icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
+   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('MainAssets/img/logo/icon-100x100.png') }}" sizes="32x32">
 
-   <!-- CSS here -->
-   <link rel="stylesheet" href="{{asset('MainAssets/css/bootstrap.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/animate.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/swiper-bundle.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/slick.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/flaticon_statex.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/magnific-popup.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/font-awesome-pro.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/spacing.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/custom-animation.css')}}">
-   <link rel="stylesheet" href="{{asset('MainAssets/css/main.css')}}">
+   <!-- CSS -->
+   @foreach([
+      'bootstrap', 'animate', 'swiper-bundle', 'slick', 'flaticon_statex', 'magnific-popup',
+      'font-awesome-pro', 'spacing', 'custom-animation', 'main'
+   ] as $css)
+      <link rel="stylesheet" href="{{ asset("MainAssets/css/$css.css") }}">
+   @endforeach
+
    <style>
-      .dropdown-menu{
-         padding: 10px 0;
+      .dropdown-menu { padding: 10px 0; }
+      .dropdown-item { padding: 15px 15px; margin: 2px 0; }
+      .logo-link { display: inline-block; }
+      .logo-img { max-width: 50px; height: auto; display: inline-block; z-index: 9; }
+      .tp-header-logo a img { max-height: 30px; height: auto; }
+      @media (max-width: 1200px) {
+         .tp-header-menu nav ul { justify-content: center; }
       }
-      .dropdown-item{
-         padding: 15px 15px;
-         margin: 2px 0;
-
+      @media (max-width: 991.98px) {
+         .tp-header-menu { display: none; }
+         .tp-menu-bar { display: inline-block; font-size: 24px; cursor: pointer; background: none; border: none; }
+         .tp-header-right-box { justify-content: flex-end; }
+         .tp-header-logo { text-align: left; }
       }
-     /* Base logo styling */
-.logo-link {
-  display: inline-block;
-  /* gap: 0px;
-  align-items: center;
-  z-index: 10; 
-  position: relative;
-  flex-wrap: wrap; Allows wrapping on small screens */
-}
-
-.logo-img {
-  max-width: 50px;
-  height: auto;
-  display: inline-block;
-  z-index: 9;
-}
-
-/* Adjust logo images in a row */
-.tp-header-logo a img {
-  max-height: 30px;
-  height: auto;
-}
-
-/* Responsive tweaks */
-@media (max-width: 1200px) {
-  .tp-header-menu nav ul {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 991.98px) {
-  .tp-header-menu {
-    display: none;
-  }
-
-  .tp-menu-bar {
-    display: inline-block;
-    font-size: 24px;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
-
-  .tp-header-right-box {
-    justify-content: flex-end;
-  }
-
-  .tp-header-logo {
-    text-align: left;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .tp-header-logo a img {
-    max-width: 25px;
-  }
-
-  .tp-header-right-tel-icon-box {
-    display: none !important;
-  }
-
-  .tp-header-right-search {
-    display: none !important;
-  }
-
-  .tp-btn.dropdown-toggle {
-    padding: 6px 10px;
-    font-size: 14px;
-  }
-}
-
+      @media (max-width: 575.98px) {
+         .tp-header-logo a img { max-width: 25px; }
+         .tp-header-right-tel-icon-box,
+         .tp-header-right-search { display: none !important; }
+         .tp-btn.dropdown-toggle { padding: 6px 10px; font-size: 14px; }
+      }
    </style>
 </head>
-
 <body>
-
-   <!-- pre loader area start -->
+   <!-- Preloader -->
    <div id="loading">
       <div id="loading-center">
          <div id="loading-center-absolute">
-            <div class="object" id="object_four"></div>
-            <div class="object" id="object_three"></div>
-            <div class="object" id="object_two"></div>
-            <div class="object" id="object_one"></div>
+            @foreach(['four', 'three', 'two', 'one'] as $obj)
+               <div class="object" id="object_{{ $obj }}"></div>
+            @endforeach
          </div>
       </div>
    </div>
-   <!-- pre loader area end -->
 
-   <!-- back to top start -->
+   <!-- Back to top -->
    <div class="back-to-top-wrapper">
       <button id="back_to_top" type="button" class="back-to-top-btn">
          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-               stroke-linejoin="round" />
+            <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
          </svg>
       </button>
    </div>
-   <!-- back to top end -->
 
-   <!-- search popup start -->
+   <!-- Search popup -->
    <div class="search__popup">
       <div class="container">
          <div class="row">
@@ -149,38 +79,29 @@
                   <div class="search__top d-flex justify-content-between align-items-center">
                      <div class="search__logo">
                         <a href="{{ url('/') }}">
-                           <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
+                           @foreach(['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
+                              <img src="{{ asset("MainAssets/img/logo/$logo") }}" alt="logo" class="logo-sm" style="max-width:50px">
+                           @endforeach
                         </a>
                      </div>
                      <div class="search__close">
                         <button type="button" class="search__close-btn search-close-btn">
-                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
+                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                            </svg>
                         </button>
                      </div>
                   </div>
                   <div class="search__form">
-                     <form action="index.html#">
+                     <form action="#">
                         <div class="search__input">
                            <input class="search-input-field" type="text" placeholder="Type here to search...">
                            <span class="search-focus-border"></span>
                            <button type="submit">
-                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                 <path
-                                    d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                 <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                 <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                               </svg>
                            </button>
                         </div>
@@ -191,9 +112,8 @@
          </div>
       </div>
    </div>
-   <!-- search popup end -->
 
-   <!-- tp-offcanvus-area-start -->
+   <!-- Offcanvas -->
    <div class="tpoffcanvas-area">
       <div class="tpoffcanvas">
          <div class="tpoffcanvas__close-btn">
@@ -201,30 +121,25 @@
          </div>
          <div class="tpoffcanvas__logo">
             <a href="{{ url('/') }}">
-            <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
+               @foreach(['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
+                  <img src="{{ asset("MainAssets/img/logo/$logo") }}" alt="logo" class="logo-sm" style="max-width:50px">
+               @endforeach
             </a>
          </div>
          <div class="tpoffcanvas__title">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima incidunt eaque ab cumque, porro maxime
-               autem sed.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima incidunt eaque ab cumque, porro maxime autem sed.</p>
          </div>
          <div class="tp-main-menu-mobile d-xl-none"></div>
          <div class="tpoffcanvas__contact-info">
-            <div class="tpoffcanvas__contact-title">
-               <h5>Contact us</h5>
-            </div>
+            <div class="tpoffcanvas__contact-title"><h5>Contact us</h5></div>
             <ul>
                <li>
                   <i class="fa-light fa-location-dot"></i>
-                  <a href="https://www.google.com/maps/@23.8223586,90.3661283,15z" target="_blank">76
-                  Federal Ministry of Environment Headquarters</a>
+                  <a href="https://www.google.com/maps/@23.8223586,90.3661283,15z" target="_blank">76 Federal Ministry of Environment Headquarters</a>
                </li>
                <li>
                   <i class="fas fa-envelope"></i>
-                  <a href="https://template.wphix.com/cdn-cgi/l/email-protection#70031f1c11021514171530171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="f88c909d959d888d8a9db89f95999194d69b9795">[email&#160;protected]</span></a>
+                  <a href="#"><span class="__cf_email__" data-cfemail="f88c909d959d888d8a9db89f95999194d69b9795">[email&#160;protected]</span></a>
                </li>
                <li>
                   <i class="fal fa-phone-alt"></i>
@@ -233,34 +148,27 @@
             </ul>
          </div>
          <div class="tpoffcanvas__input">
-            <div class="tpoffcanvas__input-title">
-               <h4>Get UPdate</h4>
-            </div>
-            <form action="index.html#">
+            <div class="tpoffcanvas__input-title"><h4>Get Update</h4></div>
+            <form action="#">
                <div class="p-relative">
                   <input type="text" placeholder="Enter mail">
-                  <button>
-                     <i class="fas fa-paper-plane"></i>
-                  </button>
+                  <button><i class="fas fa-paper-plane"></i></button>
                </div>
             </form>
          </div>
          <div class="tpoffcanvas__social">
             <div class="social-icon">
-               <a href="index.html#"><i class="fab fa-twitter"></i></a>
-               <a href="index.html#"><i class="fab fa-instagram"></i></a>
-               <a href="index.html#"><i class="fab fa-facebook-f"></i></a>
-               <a href="index.html#"><i class="fab fa-pinterest-p"></i></a>
+               @foreach(['twitter', 'instagram', 'facebook-f', 'pinterest-p'] as $icon)
+                  <a href="#"><i class="fab fa-{{ $icon }}"></i></a>
+               @endforeach
             </div>
          </div>
       </div>
    </div>
    <div class="body-overlay"></div>
-   <!-- tp-offcanvus-area-end -->
 
    <header class="tp-header-height">
-
-      <!-- header top area start -->
+      <!-- Header Top -->
       <div class="tp-header-top__area tp-header-top__space d-none d-md-block theme-bg-2">
          <div class="container-fluid">
             <div class="row">
@@ -269,12 +177,11 @@
                      <ul>
                         <li>
                            <i class="flaticon-map"></i>
-                           <a href="https://www.google.com/maps/@23.822337,90.3654296,15z?entry=ttu" target="_blank">76
-                           Federal Ministry of Environment Headquarters</a>
+                           <a href="https://www.google.com/maps/@23.822337,90.3654296,15z?entry=ttu" target="_blank">76 Federal Ministry of Environment Headquarters</a>
                         </li>
                         <li>
                            <i class="flaticon-envelope"></i>
-                           <a href="https://template.wphix.com/cdn-cgi/l/email-protection#630d0606070b060f1323000c0e13020d1a4d000c0e"><span class="__cf_email__" data-cfemail="630d0606070b060f1323000c0e13020d1a4d000c0e">[email&#160;protected]</span></a>
+                           <a href="#"><span class="__cf_email__" data-cfemail="630d0606070b060f1323000c0e13020d1a4d000c0e">[email&#160;protected]</span></a>
                         </li>
                      </ul>
                   </div>
@@ -287,47 +194,40 @@
                         <span><em>/</em>Complaints</span>
                      </div>
                      <div class="tp-header-top__right-social">
-                        <a href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="index.html#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="index.html#"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="index.html#"><i class="fa-brands fa-twitter"></i></a>
+                        @foreach(['facebook-f', 'instagram', 'linkedin-in', 'twitter'] as $icon)
+                           <a href="#"><i class="fa-brands fa-{{ $icon }}"></i></a>
+                        @endforeach
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- header top area end -->
-
-      <!-- header area end -->
+      <!-- Header Main -->
       <div id="header-sticky" class="tp-header-area tp-header-plr">
          <div class="container-fluid">
             <div class="row align-items-center">
-                  <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
-                    <div class="tp-header-logo logo-grid">
-                      <a href="{{ url('/') }}" style="display: flex; align-items: center; gap: 10px;">
-                        <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-                        <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo" style="max-width:50px">
-                      </a>
-                    </div>
+               <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-8">
+                  <div class="tp-header-logo logo-grid">
+                     <a href="{{ url('/') }}" style="display: flex; align-items: center; gap: 10px;">
+                        @foreach(['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
+                           <img src="{{ asset("MainAssets/img/logo/$logo") }}" alt="logo" class="logo-sm" style="max-width:50px">
+                        @endforeach
+                     </a>
                   </div>
+               </div>
                <div class="col-xxl-6 col-xl-7 d-none d-xl-block">
                   <div class="tp-header-menu">
                      <nav class="tp-main-menu-content">
                         <ul>
-                           <li class="has-dropdown">
-                              <a href="{{route('home')}}">HOME</a>
-  
-                           </li>
+                           <li class="has-dropdown"><a href="{{ route('home') }}">HOME</a></li>
                            <li class="has-dropdown">
                               <a href="#">ABOUT US</a>
                               <ul class="tp-submenu submenu">
-                                 <li><a href="{{route('mandate')}}">MANDATE</a></li>
-                                 <li><a href="{{route('organisation')}}">ORGANIZATION</a></li>
-                                 <li><a href="">LEADERSHIP</a></li>
-                                 <li><a href="">CAREER</a></li>
+                                 <li><a href="{{ route('mandate') }}">MANDATE</a></li>
+                                 <li><a href="{{ route('organisation') }}">ORGANIZATION</a></li>
+                                 <li><a href="#">LEADERSHIP</a></li>
+                                 <li><a href="#">CAREER</a></li>
                               </ul>
                            </li>
                            <li class="has-dropdown">
@@ -343,27 +243,16 @@
                                  <li><a href="#">ACRSEAL</a></li>
                                  <li><a href="#">CLEAN AND GREEN INITIATIVE</a></li>
                               </ul>
-                              
                            </li>
-                           
-                          
                            <li class="has-dropdown">
                               <a href="#">MORE</a>
                               <ul class="tp-submenu submenu">
-                              <li class="has-dropdown">
-                                 <a href="#">EVENTS & NEWS</a>
-                              </li>
-                              <li class="has-dropdown">
-                                 <a href="#">AGENCIES</a>
-                              </li>
-                              <li class="has-dropdown">
-                                 <a href="#">MEDIA & FOLLOWING</a>
-                              </li>
-                                 
-                              
+                                 <li class="has-dropdown"><a href="#">EVENTS & NEWS</a></li>
+                                 <li class="has-dropdown"><a href="#">AGENCIES</a></li>
+                                 <li class="has-dropdown"><a href="#">MEDIA & FOLLOWING</a></li>
                               </ul>
                            </li>
-                           <li><a href="{{route('contact-us')}}">CONTACT</a></li>
+                           <li><a href="{{ route('contact-us') }}">CONTACT</a></li>
                         </ul>
                      </nav>
                   </div>
@@ -374,100 +263,73 @@
                         <div class="tp-header-right-search d-none d-sm-block">
                            <button class="search-open-btn"><i class="fa-regular fa-magnifying-glass"></i></button>
                         </div>
-                        <div class="tp-header-right-btn" >
-                           <a class="tp-btn dropdown-toggle" style="color: #fff;" href="{{route('login')}}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false"> LOGIN </a>
+                        <div class="tp-header-right-btn">
+                           <a class="tp-btn dropdown-toggle" style="color: #fff;" href="{{ route('login') }}" role="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">LOGIN</a>
                            <ul class="dropdown-menu" aria-labelledby="loginDropdown">
-                              <li><a href="{{route('login')}}" class="dropdown-item">User Login</a></li>
-                              <li><a href="{{route('admin.login')}}" class="dropdown-item">Admin Login</a></li>
+                              <li><a href="{{ route('login') }}" class="dropdown-item">User Login</a></li>
+                              <li><a href="{{ route('admin.login') }}" class="dropdown-item">Admin Login</a></li>
                            </ul>
-                           
                         </div>
                         <div class="tp-header-right-tel-icon-box d-none d-lg-block">
                            <div class="tp-header-right-tel-icon d-flex align-items-center">
-                             <i class="flaticon-phone-call-1"></i>
-                             <div class="tp-header-right-tel-content">
-                               <span>Call Us</span>
-                               <a href="tel:(234)9160173332">09160173332</a>
-                             </div>
+                              <i class="flaticon-phone-call-1"></i>
+                              <div class="tp-header-right-tel-content">
+                                 <span>Call Us</span>
+                                 <a href="tel:(234)9160173332">09160173332</a>
+                              </div>
                            </div>
-                        </div>                     
+                        </div>
                         <div class="tp-header-bar d-xl-none text-end">
-                           <button class="tp-menu-bar">
-                               <i class="fa-light fa-bars-staggered"></i>
-                           </button>
-                       </div>
+                           <button class="tp-menu-bar"><i class="fa-light fa-bars-staggered"></i></button>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- header area end -->
-
-
    </header>
 
    @yield('pageContent')
 
    <footer>
-   
-      <!-- footer-top area start -->
+      <!-- Footer Top -->
       <div id="footer-one-page" class="tp-footer-top-area tp-footer-top-bdr-bottom pt-35 theme-bg-2">
          <div class="container">
             <div class="row">
                <div class="col-xl-4 col-lg-4 col-md-6">
                   <div class="tp-footer-top-item tp-footer-top-space-1 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon">
-                        <i class="flaticon-globe"></i>
-                     </div>
+                     <div class="tp-footer-top-info-icon"><i class="flaticon-globe"></i></div>
                      <div class="tp-footer-top-info">
                         <h4 class="tp-footer-top-info-title">Address</h4>
-                        <span>
-                           <a href="#">Federal Ministry of Environment Headquarters 3FH3+WC8, Mabushi 900108, Abuja
-                           </a>
-                        </span>
+                        <span><a href="#">Federal Ministry of Environment Headquarters 3FH3+WC8, Mabushi 900108, Abuja</a></span>
                      </div>
                   </div>
                </div>
                <div class="col-xl-4 col-lg-4 col-md-6">
                   <div class="tp-footer-top-item tp-footer-top-space-2 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon">
-                        <i class="flaticon-email"></i>
-                     </div>
+                     <div class="tp-footer-top-info-icon"><i class="flaticon-email"></i></div>
                      <div class="tp-footer-top-info">
                         <h4 class="tp-footer-top-info-title">Contact</h4>
-                        <span>
-                           <a href="https://template.wphix.com/cdn-cgi/l/email-protection#493a3d283d2c31212c253920272f26092e24282025672a2624"><span class="__cf_email__" data-cfemail="285b5c495c4d50404d445841464e47684f45494144064b4745">[email&#160;protected]</span></a>
-                        </span>
-                        <span>
-                           <a href="tel:+88(3265)56720">+88 (3265) 56720</a>
-                        </span>
+                        <span><a href="#"><span class="__cf_email__" data-cfemail="285b5c495c4d50404d445841464e47684f45494144064b4745">[email&#160;protected]</span></a></span>
+                        <span><a href="tel:+88(3265)56720">+88 (3265) 56720</a></span>
                      </div>
                   </div>
                </div>
                <div class="col-xl-4 col-lg-4 col-md-6">
                   <div class="tp-footer-top-item tp-footer-top-space-3 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon">
-                        <i class="flaticon-fast-time"></i>
-                     </div>
+                     <div class="tp-footer-top-info-icon"><i class="flaticon-fast-time"></i></div>
                      <div class="tp-footer-top-info">
                         <h4 class="tp-footer-top-info-title">Clock</h4>
-                        <span>
-                           Mon - Sat 8 am - 5 pm
-                           Friday: Closed
-                        </span>
+                        <span>Mon - Sat 8 am - 5 pm<br>Friday: Closed</span>
                      </div>
-                    
                   </div>
                </div>
-               
             </div>
          </div>
       </div>
-      
-      <!-- footer-top area end -->
-   
-      <!-- footer area start -->
+
+      <!-- Footer Main -->
       <div class="tp-footer-area theme-bg-2 pt-110 pb-60 p-relative z-index">
          <div class="tp-footer-shape">
             <img src="assets/img/footer/footer-shape.png" alt="">
@@ -477,17 +339,14 @@
                <div class="col-xl-3 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                   <div class="tp-footer-widget footer-col-1">
                      <div class="tp-footer-widget-logo">
-                     <a href="">
-                           <!-- <img src="{{asset('MainAssets/img/logo/fme-logo.png')}}"  alt="logo"> -->
-                           <img src="{{asset('MainAssets/img/logo/logo3.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo1.png')}}" alt="logo" class="logo-sm" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo4.jpeg')}}" alt="logo" style="max-width:50px">
-                           <img src="{{asset('MainAssets/img/logo/logo2.png')}}" alt="logo"  style="max-width:50px">
-      </a>
+                        <a href="">
+                           @foreach(['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
+                              <img src="{{ asset("MainAssets/img/logo/$logo") }}" alt="logo" class="logo-sm" style="max-width:50px">
+                           @endforeach
+                        </a>
                      </div>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-40">We focus on innovative strategies that emphasize the use of environmental re - engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.
-                        </p>
+                        <p class="mb-40">We focus on innovative strategies that emphasize the use of environmental re-engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.</p>
                         <a class="tp-btn white-anim" href="about.html">KNOW MORE</a>
                      </div>
                   </div>
@@ -497,11 +356,11 @@
                      <h4 class="tp-footer-widget-title">Useful Links</h4>
                      <div class="tp-footer-widget-menu">
                         <ul>
-                           <li><a href="index.html#">About us</a></li>
-                           <li><a href="index.html#">Our Team</a></li>
-                           <li><a href="index.html#">Upcoming Events</a></li>
-                           <li><a href="index.html#">Latest News</a></li>
-                           <li><a href="index.html#">Contact Us</a></li>
+                           <li><a href="#">About us</a></li>
+                           <li><a href="#">Our Team</a></li>
+                           <li><a href="#">Upcoming Events</a></li>
+                           <li><a href="#">Latest News</a></li>
+                           <li><a href="#">Contact Us</a></li>
                         </ul>
                      </div>
                   </div>
@@ -511,42 +370,14 @@
                      <h4 class="tp-footer-widget-title">Instagram</h4>
                      <div class="tp-footer-widget-instagram">
                         <ul>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-1.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-2.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-3.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-4.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-1.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="index.html#">
-                                 <img src="assets/img/instagram/insta-2.jpg" alt="">
-                                 <i class="fa-brands fa-instagram"></i>
-                              </a>
-                           </li>
+                           @foreach([1,2,3,4,1,2] as $i)
+                              <li>
+                                 <a href="#">
+                                    <img src="assets/img/instagram/insta-{{ $i }}.jpg" alt="">
+                                    <i class="fa-brands fa-instagram"></i>
+                                 </a>
+                              </li>
+                           @endforeach
                         </ul>
                      </div>
                   </div>
@@ -555,12 +386,9 @@
                   <div class="tp-footer-widget footer-col-4">
                      <h4 class="tp-footer-widget-title">News & Updates</h4>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-25">
-                           The latest Mayorx news, articles, and resources
-                           sent straight to your inbox every month
-                        </p>
+                        <p class="mb-25">The latest Mayorx news, articles, and resources sent straight to your inbox every month</p>
                      </div>
-                     <form action="index.html#">
+                     <form action="#">
                         <div class="tp-footer-mail-box p-relative">
                            <input type="text" placeholder="Your Email">
                            <button class="tp-btn-subscribe-sm">SUBSCRIBE</button>
@@ -579,58 +407,38 @@
             </div>
          </div>
       </div>
-      <!-- footer area end -->
-   
-      <!-- copy-right area start -->
+
+      <!-- Copyright -->
       <div class="tp-copyright-area tp-copyright-space green-bg pt-25 pb-25">
          <div class="container">
             <div class="row align-items-center">
                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <div class="tp-copyright-left-text text-center text-md-start">
-                     <p>© Copyright 2025 by <a href="index.html#">Elite Tech. Dev.</a></p>
+                     <p>© Copyright 2025 by <a href="#">Elite Tech. Dev.</a></p>
                   </div>
                </div>
                <div class="col-xl-6 col-lg-6 col-md-6 d-none col-sm-6 d-sm-block">
                   <div class="tp-copyright-right-social text-center text-md-end">
-                     <a href="index.html#"><i class="fa-brands fa-facebook-f"></i></a>
-                     <a href="index.html#"><i class="fa-brands fa-pinterest-p"></i></a>
-                     <a href="index.html#"><i class="fa-brands fa-instagram"></i></a>
-                     <a href="index.html#"><i class="fa-brands fa-twitter"></i></a>
+                     @foreach(['facebook-f', 'pinterest-p', 'instagram', 'twitter'] as $icon)
+                        <a href="#"><i class="fa-brands fa-{{ $icon }}"></i></a>
+                     @endforeach
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <!-- copy-right area end -->
-   
    </footer>
 
-
-
-   <!-- JS here -->
-   <script data-cfasync="false" src="{{ asset('MainAssets/scripts/5c5dd728/cloudflare-static/email-decode.min.js')}}"></script><script src="assets/js/vendor/jquery.js"></script>
-   <script src="{{ asset('MainAssets/js/vendor/jquery.js')}}"></script>
-   <script src="{{asset('MainAssets/js/vendor/waypoints.js')}}"></script>
-   <script src="{{asset('MainAssets/js/bootstrap-bundle.js')}}"></script>
-   <script src="{{asset('MainAssets/js/meanmenu.js')}}"></script>
-   <script src="{{asset('MainAssets/js/gsap.min.js')}}"></script>
-   <script src="{{asset('MainAssets/js/ScrollTrigger.min.js')}}"></script>
-   <script src="{{asset('MainAssets/js/split-text.min.js')}}"></script>
-   <script src="{{asset('MainAssets/js/swiper-bundle.js')}}"></script>
-   <script src="{{asset('MainAssets/js/slick.js')}}"></script>
-   <script src="{{asset('MainAssets/js/range-slider.js')}}"></script>
-   <script src="{{asset('MainAssets/js/magnific-popup.js')}}"></script>
-   <script src="{{asset('MainAssets/js/nice-select.js')}}"></script>
-   <script src="{{asset('MainAssets/js/purecounter.js')}}"></script>
-   <script src="{{asset('MainAssets/js/countdown.js')}}"></script>
-   <script src="{{asset('MainAssets/js/jequery-knob.js')}}"></script>
-   <script src="{{asset('MainAssets/js/jequery-appear.js')}}"></script>
-   <script src="{{asset('MainAssets/js/wow.js')}}"></script>
-   <script src="{{asset('MainAssets/js/jarallax.js')}}"></script>
-   <script src="{{asset('MainAssets/js/isotope-pkgd.js')}}"></script>
-   <script src="{{asset('MainAssets/js/imagesloaded-pkgd.js')}}"></script>
-   <script src="{{asset('MainAssets/js/ajax-form.js')}}"></script>
-   <script src="{{asset('MainAssets/js/main.js')}}"></script>
+   <!-- JS -->
+   <script data-cfasync="false" src="{{ asset('MainAssets/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script>
+   <script src="{{ asset('MainAssets/js/vendor/jquery.js') }}"></script>
+   @foreach([
+      'vendor/waypoints', 'bootstrap-bundle', 'meanmenu', 'gsap.min', 'ScrollTrigger.min', 'split-text.min',
+      'swiper-bundle', 'slick', 'range-slider', 'magnific-popup', 'nice-select', 'purecounter', 'countdown',
+      'jequery-knob', 'jequery-appear', 'wow', 'jarallax', 'isotope-pkgd', 'imagesloaded-pkgd', 'ajax-form', 'main'
+   ] as $js)
+      <script src="{{ asset("MainAssets/js/$js.js") }}"></script>
+   @endforeach
+   @yield('scripts')
 </body>
-
 </html>
