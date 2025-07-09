@@ -13196,7 +13196,7 @@ if (editForm) {
                         <button class="btn btn-outline-warning btn-sm" onclick="scheduleTask('${row.task_id}')">
                             <i class="las la-calendar-plus"></i> Schedule Management
                         </button>
-                        <button class="btn btn-outline-info btn-sm" onclick="/* assignEmployee logic here */">
+                        <button class="btn btn-outline-info btn-sm" onclick="assignTask('${row.task_id}')">
                             <i class="las la-user-plus"></i> Assigned Employee
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="editTask('${row.task_id}')">
@@ -13605,6 +13605,40 @@ if (editForm) {
         });
     };
 
+    // assign task
+    window.assignTask = function(taskId) {
+        console.log("Assign Task for Task ID:", taskId);
+        document.getElementById('assign-employee-task-form').reset();
+        document.getElementById('assign_task_id').value = taskId;
+
+        // Fetch and display assigned employees for the selected task
+        (async () => {
+            const url = `/admin/get-task-assignees/${taskId}`;
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.assignees)) {
+                    const assignees = data.assignees.map(assignee => ({
+                        employee_id: assignee.employee_id || assignee.id || "N/A",
+                        name: assignee.name || assignee.full_name || "N/A",
+                        email: assignee.email || "N/A",
+                        job_title: assignee.job_title || "N/A"
+                    }));
+                    // Populate the assign task table or form as needed
+                    // For example, you can use a DataTable or a simple list
+                } else {
+                    // Handle no assignees case
+                }
+            } catch (error) {
+                console.error("Error fetching task assignees:", error);
+            }
+        })();
+
+        // Show the assign task modal
+        const modal = new bootstrap.Modal(document.getElementById('assignEmployeeToTaskModal'));
+        modal.show();
+    };
+
+
     // Edit task
     window.editTask = async function(id) {
         let task = taskTable.row($(`button[onclick="editTask('${id}')"]`).parents('tr')).data();
@@ -13698,6 +13732,8 @@ if (editForm) {
             }
         });
     };
+
+
     </script>
      <!-- End Task Management -->
     @endsection

@@ -66,6 +66,7 @@ use App\Http\Controllers\Workflow\CompanyStageController;
 use App\Http\Controllers\Workflow\StageTaskController;
 use App\Http\Controllers\Workflow\TaskScheduleController;
 use App\Http\Controllers\Workflow\RecurrenceRuleController;
+use App\Http\Controllers\Workflow\TaskEmployeeController;
 
 // Guest Admin Routes
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
@@ -99,8 +100,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/users-management', 'index')->name('admin.users-management');
         Route::get('/users-details',  'getAllUsers')->name('users.details');
         Route::post('/view-users',  'store')->name('store-users-details');
-
     });
+
     // roles
     Route::controller(RolesController::class)->group(function(){
         Route::get('/settings/role', 'index')->name('admin.display-roles');
@@ -110,11 +111,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
         Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
+
     // settings
     Route::controller(generalSetting::class)->group(function() {
         Route::get('/general-setting', 'create')->name('admin.general-setting');
         Route::post ('/register-settings', 'store')->name('admin.store-settings');
     });
+
     // Guards
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
@@ -130,7 +133,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/cms-posts', 'index')->name('CMS.posts');
         Route::post ('/save-posts', 'store')->name('admin.store-post');
     }); 
-      Route::controller(AddPostController::class)->group(function() {
+
+    Route::controller(AddPostController::class)->group(function() {
         Route::get ('/cms-Addpost', 'index')->name('CMS.add-post');
     });
 
@@ -138,6 +142,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(EventController::class)->group(function() {
         Route::get ('/cms-events', 'index')->name('CMS.event');
     });
+
 
     Route::controller(AddEventController::class)->group(function() {
         Route::get ('/create-events', 'index')->name('CMS.add-event');
@@ -231,6 +236,15 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/recurrence-rules/{id}', 'update')->name('admin.update-recurrence-rule');
         Route::delete('/recurrence-rules/{id}', 'destroy')->name('admin.delete-recurrence-rule');
         Route::get('/get-recurrence-rules/{companyId}', 'getRecurrenceRulesByCompany')->name('admin.get-recurrence-rules');
+    });
+
+    Route::controller(TaskEmployeeController::class)->group(function() {
+        Route::get('/task-employees', 'index')->name('admin.task-employees');
+        Route::post('/task-employees/store', 'store')->name('admin.store-task-employee');
+        Route::get('/task-employees/{id}', 'show')->name('admin.show-task-employee');
+        Route::put('/task-employees/{id}', 'update')->name('admin.update-task-employee');
+        Route::delete('/task-employees/{id}', 'destroy')->name('admin.delete-task-employee');
+        Route::get('/get-task-employees/{taskId}', 'getEmployeesByTask')->name('admin.get-task-employees');
     });
     
     // Company Stage Tasks
@@ -472,6 +486,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get ('/materials', 'index')->name('materials.material');
         Route::post ('/save-material', 'store')->name('admin.store-material');
     });
+
     // Operation Category
     Route::controller(OperationCategoryController::class)->group(function(){
         Route::get('/operation-category', 'index')->name('admin.operation-category');
@@ -582,16 +597,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/batch-tracking/company/{companyId}', 'getProductionBatchTrackingByCompany');
         Route::get('/get-production-batch-tracking-data/{selectedCompany}/{selectedYear}', 'create_report');
     });
+
     // Production Process
-    
-Route::controller(ProductionProcessController::class)->group(function () {
-    Route::get('/production-process', 'index')->name('admin.production-process');
-    Route::post('/production-process/store', 'store')->name('admin.store-production-process');
-    Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
-    Route::post('/production-process/{id}', 'update')->name('admin.update-production-process');
-    Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
-    Route::get('/get-production-process/{batch_id}', 'getProductionProcessByBatch')->name('admin.get-production-processes');
-});
+    Route::controller(ProductionProcessController::class)->group(function () {
+        Route::get('/production-process', 'index')->name('admin.production-process');
+        Route::post('/production-process/store', 'store')->name('admin.store-production-process');
+        Route::get('/production-process/{id}', 'show')->name('admin.show-production-process');
+        Route::post('/production-process/{id}', 'update')->name('admin.update-production-process');
+        Route::delete('/production-process/{id}', 'destroy')->name('admin.delete-production-process');
+        Route::get('/get-production-process/{batch_id}', 'getProductionProcessByBatch')->name('admin.get-production-processes');
+    });
 
     
     Route::controller(AddPostController::class)->group(function() {
