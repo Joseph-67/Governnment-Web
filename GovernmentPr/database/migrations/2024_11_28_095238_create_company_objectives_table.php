@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('company_objectives', function (Blueprint $table) {
-            $table->id('objectiveID');
+            $table->id('companyobjectiveID');
             $table->unsignedBigInteger('companyID');
             $table->unsignedBigInteger('objective_id')->unique();
             $table->foreign('objective_id')
