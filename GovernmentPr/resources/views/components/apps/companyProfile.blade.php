@@ -4209,11 +4209,6 @@
                                                                                 <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
                                                                             </div>
                                                                         </div>
-                                                                        @if(auth('admin')->check())
-                                                                            <input type="hidden" name="operator" value="{{ auth('admin')->user()->id }}">
-                                                                        @elseif(auth('web')->check())
-                                                                            <input type="hidden" name="operator" value="{{ auth('web')->user()->id }}">
-                                                                        @endif
                                                                         <div class="col-md-6">
                                                                             <label for="process_status" class="form-label">Status</label>
                                                                             <select class="form-select" id="process_status" name="process_status" required>
@@ -5796,7 +5791,7 @@
     <!-- Add your modal content here if needed -->
     <!-- workflow management -->
     <!-- Workflow Edit Form Modal -->
-    <div class="modal fade" id="workflowEditModal" tabindex="-1" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
+    <div class="modal fade" id="workflowEditModal" tabindex="-4" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="workflow-edit-form" method="post">
@@ -5837,7 +5832,7 @@
     </div>
     <!-- End Workflow Edit Form Modal -->
     <!-- Stage Management Modal -->
-  <div class="modal fade" id="stageManagementModal" tabindex="-2" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+  <div class="modal fade" id="stageManagementModal" tabindex="-4" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="stage-management-form">
@@ -5900,7 +5895,7 @@
         </div>
     </div>
     <!-- Edit Stage Modal -->
-    <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-1" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+    <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-3" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
                 <form id="edit-stage-form" autocomplete="off">
@@ -5954,7 +5949,7 @@
     <!-- End Stage Management Modal -->
      <!-- Task Management Modal -->
     <!-- Task Management Modal -->
-    <div class="modal fade" id="taskManagementModal" tabindex="-1" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
+    <div class="modal fade" id="taskManagementModal" tabindex="-3" aria-labelledby="taskManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="task-management-form">
@@ -6037,7 +6032,7 @@
         </div>
     </div>
 <!-- Edit Stage Task Modal -->
-    <div class="modal fade" id="editStageTaskModal" tabindex="-1" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
+    <div class="modal fade" id="editStageTaskModal" tabindex="-2" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
 
@@ -6094,7 +6089,7 @@
     <!-- END: Edit Stage Task Modal -->
     <!-- End Task Management Modal -->
     <!-- Task Scheduling Modal -->
-    <div class="modal fade" id="taskSchedulingModal" tabindex="-1" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="taskSchedulingModal" tabindex="-2" aria-labelledby="taskSchedulingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="task-scheduling-form" method="post">
@@ -6111,17 +6106,17 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="schedule_task_title" class="form-label">Task Title</label>
-                                <input type="text" class="form-control" id="schedule_task_title" name="task_title" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="schedule_start_date" class="form-label">Start Time</label>
-                                <input type="datetime" class="form-control" id="schedule_start_date" name="start_date" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="schedule_end_date" class="form-label">End Time</label>
-                                <input type="datetime" class="form-control" id="schedule_end_date" name="end_date" required>
+                                <input type="text" class="form-control" id="schedule_task_title" name="task_title" required readonly>
                             </div>
                             <div class="col-md-6">
+                                <label for="start_date" class="form-label fw-semibold">Scheduled Date</label>
+                                <div class="input-group" id="DateRange">
+                                    <input type="date" class="form-control" name="start_date" id="schedule_start_date" placeholder="Start" aria-label="StartDate">
+                                    <span class="input-group-text">to</span>
+                                    <input type="date" class="form-control" name="end_date" id="schedule_end_date" placeholder="End" aria-label="EndDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="schedule_status" class="form-label">Status</label>
                                 <select class="form-select" id="schedule_status" name="status" required>
                                     <option value="" selected disabled>Select Status</option>
@@ -6131,7 +6126,7 @@
                                     <option value="cancelled">Cancelled</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="is_recurrence" class="form-label">Is Recurring?</label>
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="form-check me-4">
@@ -6144,14 +6139,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6" id="recurrence-rule-container" style="display: none;">
+                            <div class="col-md-4" id="recurrence-rule-container" style="display: none;">
                                 <label for="recurrence_rule_id" class="form-label">Recurrence Rule</label>
                                 <select class="form-select" id="recurrence_rule_id" name="recurrence_rule_id">
                                     <option value="" selected disabled>Select Recurrence Rule</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                    <option value="custom">Custom</option>
                                 </select>
                             </div>
                         </div>
@@ -6164,11 +6155,11 @@
                     <table class="table table-striped mb-0 w-100" id="tbl-task-scheduling">
                         <thead class="table-light">
                             <tr>
-                                <th>Title</th>
+                                <th>Recurrence</th>
                                 <th>Assignee</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th>Priority</th>
+                                <th>Frequency</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -6182,6 +6173,47 @@
         </div>
     </div>
     <!-- End Task Scheduling Modal -->
+    <!-- Assign Employee to Task Modal -->
+    <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <form id="assign-employee-task-form" method="post" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_id" id="assign_task_id">
+                    <div class="modal-header bg-gradient-primary text-white rounded-top">
+                        <h5 class="modal-title fw-bold" id="assignEmployeeToTaskModalLabel">
+                            <i class="las la-user-plus me-2"></i> Assign Employee to Task
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="employee_select" class="form-label">Select Employee(s)</label>
+                                <select class="form-select" id="employee_select" name="employee_ids[]" multiple required>
+                                    <!-- Options should be populated dynamically via JS or server-side -->
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
+                                <textarea class="form-control" id="assignment_note" name="assignment_note" rows="2" placeholder="Add any notes for the assignee(s)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="las la-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="las la-user-check"></i> Assign
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Assign Employee to Task Modal -->
      <!-- End Task Management Modal -->
     <!-- end workflow management -->
 
@@ -11961,7 +11993,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!modalElement) return;
         (async function populateProductionProcessTable() {
             if (!batchId) return;
-            const url = `/admin/production-process/batch/${batchId}`;
+            const url = `/admin/get-production-process/${batchId}`;
             try {
                 const data = await fetchFieldInput(url);
                 if (data.status === "success" && Array.isArray(data.production_processes)) {
@@ -11988,32 +12020,32 @@ document.addEventListener('DOMContentLoaded', function () {
         })();
     };
 
-    // --- Store Production Process ---
-    const form = document.querySelector('#production-process-form');
-    if (form) {
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const url = "{{ route('admin.store-production-process') }}";
-            try {
-                const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-                if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                    const formatted = result.production_processes.map(proc => ({
-                        workflow_name: proc.workflow?.workflow_name || 'N/A',
-                        start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
-                        end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
-                        remarks: proc.remarks || '',
-                        status: proc.status || 'N/A',
-                        process_id: proc.process_id || ''
-                    }));
-                    productionProcessTable.clear().rows.add(formatted).draw();
-                    form.reset();
-                }
-            } catch (error) {
-                console.error('Error storing production process:', error);
+    // --- Production Process Form Submission ---
+    document.getElementById('production-process-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const url = "{{ route('admin.store-production-process') }}";
+        try {
+            const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+            if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                const formatted = result.production_processes.map(proc => ({
+                    workflow_name: proc.workflow?.workflow_name || 'N/A',
+                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                    remarks: proc.remarks || '',
+                    status: proc.status || 'N/A',
+                    process_id: proc.process_id || ''
+                }));
+                productionProcessTable.clear().rows.add(formatted).draw();
+                // Hide form and show table
+                showProductionProcessTable();
+                // Optionally reset the form
+                this.reset();
             }
-        });
-    }
+        } catch (error) {
+            console.error('Error storing production process:', error);
+        }
+    });
 
     // Edit Production Process Modal Handler
     window.editProductionProcess = async function(id) {
@@ -13290,10 +13322,25 @@ if (editForm) {
         ordering: false,
         responsive: true,
         columnDefs: [
-            { orderable: false, targets: [5] } // Disable sorting on the Action column
+            { orderable: false, targets: [6] } // Disable sorting on the Action column
         ],
         data: [],
         columns: [
+            {
+                data: 'is_recurrence',
+                title: 'Recurrence',
+                render: (data) => data ? data : 'N/A'
+            },
+            {
+                data: 'assignee',
+                title: 'Assignee',
+                render: (data, type, row) => {
+                    if (row.employee && row.employee.name) {
+                        return row.employee.name;
+                    }
+                    return data ? data : '<span class="text-muted">None</span>';
+                }
+            },
             {
                 data: 'start_date',
                 title: 'Start Date',
@@ -13305,8 +13352,8 @@ if (editForm) {
                 render: (data) => data ? new Date(data).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'
             },
             {
-                data: 'recurrence',
-                title: 'Recurrence',
+                data: 'frequency',
+                title: 'Frequency',
                 render: (data) => data ? data : '<span class="text-muted">None</span>'
             },
             {
@@ -13324,11 +13371,6 @@ if (editForm) {
                     }
                     return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                 }
-            },
-            {
-                data: 'remarks',
-                title: 'Remarks',
-                render: (data) => data ? data : ''
             },
             {
                 data: null,
@@ -13353,23 +13395,30 @@ if (editForm) {
         document.getElementById('task-scheduling-form').reset();
         document.getElementById('task_id').value = taskId;
 
+        const row = taskTable.row($(`button[onclick="scheduleTask('${taskId}')"]`).parents('tr')).data();
+        console.log('Task Title:', row ? row.title || row.task_name || 'N/A' : 'N/A');
+        document.getElementById('schedule_task_title').value = row ? row.title || row.task_name || 'N/A' : 'N/A';
         // Fetch and display schedules for the selected task
         (async () => {
             const url = `/admin/get-task-schedules/${taskId}`;
             // const url = ``;
             try {
                 const data = await fetchFieldInput(url);
-                if (data.status === "success" && Array.isArray(data.schedules)) {
-                    const schedules = data.schedules.map(schedule => ({
+                if (data.status === "success" && Array.isArray(data.task_schedules)) {
+                    const schedules = data.task_schedules.map(schedule => ({
                         employee: schedule.employee?.name || "N/A",
-                        start_date: schedule.start_date ? new Date(schedule.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        end_date: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                        status: schedule.status || "N/A",
-                        remarks: schedule.remarks || "",
-                        schedule_id: schedule.schedule_id || schedule.id || "N/A"
+                        start_date: schedule.start_time ? new Date(schedule.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        end_date: schedule.end_time ? new Date(schedule.end_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                        status: (schedule.status && schedule.status.toLowerCase() === "in_progress") 
+                            ? "In Progress" 
+                            : (schedule.status ? schedule.status.charAt(0).toUpperCase() + schedule.status.slice(1) : "N/A"),
+                        is_recurrence: schedule.is_recurrence=== true
+                            ? '<span class="text-success"><i class="las la-check-circle"></i> Yes</span>'
+                            : '<span class="text-danger"><i class="las la-times-circle"></i> No</span>',
+                        frequency: schedule.recurrenceRule && schedule.recurrenceRule.frequency ? schedule.recurrenceRule.frequency : "N/A",
+                        schedule_id: schedule.task_schedule_id || schedule.id || "N/A"
                     }));
                     taskSchedulingTable.clear().rows.add(schedules).draw();
-                    document.getElementById('task-scheduling-form').reset();
                 } else {
                     taskSchedulingTable.clear().draw();
                 }
@@ -13384,6 +13433,86 @@ if (editForm) {
         modal.show();
     };
 
+    
+    // Show/hide recurrence rule container based on is_recurrence radio
+    document.addEventListener('DOMContentLoaded', function () {
+        const recurrenceRadios = document.querySelectorAll('input[name="is_recurrence"]');
+        const recurrenceRuleContainer = document.getElementById('recurrence-rule-container');
+        if (recurrenceRadios.length && recurrenceRuleContainer) {
+            function toggleRecurrenceRule() {
+                const checked = Array.from(recurrenceRadios).find(r => r.checked);
+                if (checked && checked.value === "1") {
+                    recurrenceRuleContainer.style.display = '';
+                } else {
+                    recurrenceRuleContainer.style.display = 'none';
+                }
+            }
+            recurrenceRadios.forEach(radio => {
+                radio.addEventListener('change', toggleRecurrenceRule);
+            });
+            // Initial state
+            toggleRecurrenceRule();
+        }
+    });
+    
+    // Fetch recurrence rule when a recurrence_rule_id is selected
+    document.addEventListener('DOMContentLoaded', function () {
+        const recurrenceRuleSelect = document.getElementById('recurrence_rule_id');
+        console.log("Recurrence Rule Select Element:", recurrenceRuleSelect);
+        
+        if (recurrenceRuleSelect) {
+            recurrenceRuleSelect.addEventListener('focus', async function () {
+                console.log("Recurrence Rule Select Focused: ", recurrenceRuleSelect);
+                
+                // Populate recurrence rule select options dynamically
+                try {
+                    const companyId = "{{ json_encode($company->company_id) }}";
+                    const url = `/admin/get-recurrence-rules/${companyId}`;
+                    const data = await fetchFieldInput(url);
+                    if (data.status === "success" && Array.isArray(data.recurrence_rules)) {
+                        // Clear existing options
+                        recurrenceRuleSelect.innerHTML = '';
+                        // Add default option
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = 'Select recurrence rule';
+                        defaultOption.disabled = true;
+                        defaultOption.selected = true;
+                        recurrenceRuleSelect.appendChild(defaultOption);
+                        // Add options from data
+                        data.recurrence_rules.forEach(rule => {
+                            const option = document.createElement('option');
+                            option.value = rule.id || rule.recurrence_rule_id;
+                            option.textContent = rule.name || rule.title || rule.frequency || 'Rule';
+                            recurrenceRuleSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error fetching recurrence rules:", error);
+                }
+            });
+
+            recurrenceRuleSelect.addEventListener('change', async function () {
+                const ruleId = this.value;
+                if (!ruleId) return;
+                try {
+                    const url = `/admin/get-recurrence-rule/${ruleId}`;
+                    const data = await fetchFieldInput(url);
+                    if (data.status === "success" && data.recurrence_rule) {
+                        // Example: populate a description field or display rule details
+                        const descField = document.getElementById('recurrence_rule_description');
+                        if (descField) {
+                            descField.textContent = data.recurrence_rule.description || '';
+                        }
+                        // You can populate other fields as needed
+                    }
+                } catch (error) {
+                    console.error("Error fetching recurrence rule:", error);
+                }
+            });
+        }
+    });
+
     // Handle task scheduling form submission
     document.addEventListener('DOMContentLoaded', function () {
         const schedulingForm = document.getElementById('task-scheduling-form');
@@ -13391,7 +13520,7 @@ if (editForm) {
             schedulingForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(schedulingForm);
-                const url = "";
+                const url = "{{ route('admin.store-company-stage-task-schedule') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Task Schedule', url, 'POST', formData);

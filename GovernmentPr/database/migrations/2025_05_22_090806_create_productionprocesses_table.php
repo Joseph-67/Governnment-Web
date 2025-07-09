@@ -13,26 +13,36 @@ return new class extends Migration
      */
     public function up()
     {
-     Schema::create('productionprocesses', function (Blueprint $table) {
-    $table->bigIncrements('process_id');
-    $table->unsignedBigInteger('company_id'); // Added company_id
-    $table->unsignedBigInteger('batch_id');
-    $table->unsignedBigInteger('workflow_id');
-    $table->timestamp('start_time');
-    $table->timestamp('end_time');
-    $table->unsignedBigInteger('operator_id');
-    $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Completed');
-    $table->text('remarks')->nullable();
+        Schema::create('ProductionProcesses', function (Blueprint $table) {
+            $table->bigIncrements('process_id');
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('batch_id');
+            $table->unsignedBigInteger('workflow_id');
+            $table->unsignedBigInteger('operator_id');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
+            $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Completed');
+            $table->text('remarks')->nullable();
+            $table->timestamps();
 
-    // Foreign key constraints
-    $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
-    $table->foreign('batch_id')->references('batch_id')->on('production_batch_tracking')->onDelete('cascade');
-    $table->foreign('operator_id')->references('id')->on('users')->onDelete('cascade');
-    $table->foreign('workflow_id')->references('workflow_id')->on('company_workflows')->onDelete('cascade');
-
-    $table->timestamps();
-});
-
+            // Foreign key constraints
+            $table->foreign('company_id')
+                ->references('company_id')
+                ->on('companies')
+                ->onDelete('cascade');
+            $table->foreign('batch_id')
+                ->references('batch_id')
+                ->on('production_batch_tracking')
+                ->onDelete('cascade');
+            $table->foreign('workflow_id')
+                ->references('workflow_id')
+                ->on('company_workflows')
+                ->onDelete('cascade');
+            $table->foreign('operator_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+        });
     }
 
     /**
@@ -42,6 +52,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productionprocesses');
+        Schema::dropIfExists('ProductionProcesses');
     }
 };
