@@ -35,7 +35,7 @@ class objectives extends Seeder
             'sequence_order' => $index + 1,
             'start_date' => null,
             'end_date' => null,
-            'status' => 'pending',
+            'status' => 'active',
             'created_at' => now(),
             'updated_at' => now(),
             ]);

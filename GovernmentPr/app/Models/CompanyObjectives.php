@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyObjectives extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'objectiveID';
+    protected $primaryKey = 'companyobjectiveID';
     protected $fillable = [
         'companyID',
         'objective_id',

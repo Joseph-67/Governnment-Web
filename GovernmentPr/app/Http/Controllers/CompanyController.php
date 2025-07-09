@@ -528,15 +528,14 @@ class CompanyController extends WaterStockMovementController
         if ($company) {
             # code...
             if (isset($request['policy'])) {
-                # code...
-                foreach ($request['policy'] as $key => $policy) {
-                    # code...
-                    $policyModel = Policy::create([
-                        'companyID' => $company->company_id,
-                        'policy_title' => $policy
-                    ]);
-                }
-            }
+        foreach ($request['policy'] as $policyID) {
+            CompanyPolicy::create([
+                'companyID'  => $company->company_id,
+                'policy_id'  => $policyID,
+            ]);
+        }
+    }
+
 
             if (isset($request['objective'])) {
                 # code...
@@ -545,7 +544,7 @@ class CompanyController extends WaterStockMovementController
                 # code...
                 $objectiveModel = CompanyObjectives::create([
                     'companyID' => $company->company_id,
-                    'objective_title' => $objective
+                    'objective_id' => $objective
                 ]);
             }
             }

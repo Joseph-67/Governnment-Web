@@ -727,11 +727,11 @@ Route::controller(ProductionProcessController::class)->group(function () {
     });
 
     // Users Management
-    // Route::controller(UsersManagementController::class)->group(function(){
-    //     Route::post('/view-users',  'store')->name('view.details');
-    //     Route::get('/users-details',  'getAllUsers')->name('users.details');
-    //     Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
-    // });
+    Route::controller(UsersManagementController::class)->group(function(){
+        Route::post('/view-users',  'store')->name('view.details');
+        Route::get('/users-details',  'getAllUsers')->name('users.details');
+        Route::get('/users-management', 'show_usersmanagement')->name('admin.users-management');
+    });
 
     // View Email
     Route::get('/notifications/{id}', [ViewEmailController::class, 'show'])->name('notifications.show');

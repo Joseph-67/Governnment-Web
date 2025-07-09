@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('sequence_order')->default(0);
             $table->date('effective_date')->nullable();
             $table->date('expiry_date')->nullable();
-            $table->enum('status', ['draft', 'active', 'archived'])->default('draft');
+            $table->enum('status', ['active','draft','archived'])->default('draft');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

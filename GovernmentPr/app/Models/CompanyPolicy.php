@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyPolicy extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'policyID';
+    protected $primaryKey = 'companypolicyID';
     protected $fillable = [
         'companyID',
         'policy_id',
