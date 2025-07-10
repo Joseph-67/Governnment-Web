@@ -146,7 +146,7 @@
                      [
                         'bg' => 'slider-2.jpg',
                         'subtitle' => '🔧🌱⚙️ OUR MISSION',
-                        'title' => "Driving sustainable growth through RECP and innovation.",
+                        'title' => "Fostering sustainable growth through RECP and innovation.",
                         'video' => true,
                      ],
                      [
@@ -206,6 +206,28 @@
    {{-- HERO AREA END --}}
 
    {{-- FEATURE AREA --}}
+{{-- ABOUT THE PROJECT SECTION --}}
+<section id="about-project" class="tp-about-area pt-130 pb-110 p-relative z-index grey-bg-2">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <div class="card" style="background-color: #f0f8ff;"> {{-- Unique background color --}}
+               <div class="card-body">
+                  <h4 class="card-title">ABOUT THE PROJECT</h4>
+                  <p class="card-text">The NGN IEE-RECP Project is a national initiative aimed at transforming Nigeria’s industrial landscape through Resource Efficiency and Cleaner Production (RECP) and Industrial Energy Efficiency (IEE). With a focus on sustainability, innovation, and inclusive growth, we are empowering industries to reduce waste, optimize resource use, and improve environmental performance.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6">
+            <div class="card" style="background-color: #f0f8ff;"> {{-- Unique background color --}}
+               <div class="card-body">
+                        <h4 class="card-title">💡 Our Mission</h4>
+                        <p class="card-text">To accelerate the adoption of cleaner, efficient, and innovative technologies in Nigeria’s industrial sector—enhancing productivity, reducing environmental impact, and supporting sustainable development goals (SDGs).</p>
+                     </div>
+               </div>
+         </div>
+   </section>
+   {{-- ABOUT THE PROJECT SECTION END --}}
    <section id="feature-one-page" class="tp-feature-area pt-130 pb-110 p-relative z-index grey-bg-2">
       <div class="tp-feature-shape-1 d-none d-xxl-block">
          <img src="{{asset('MainAssets/img/feature/ab-shape-2.png')}}" alt="">
@@ -217,11 +239,11 @@
          <div class="row row-cols-xl-5 row-cols-lg-3 justify-content-center justify-content-xl-start">
             @php
                $features = [
-                  ['icon' => 'fas fa-rocket mission-icon', 'title' => 'OUR MISSION'],
-                  ['icon' => 'fa fa-recycle', 'title' => 'ENVIRONMENTAL PROTECTION'],
-                  ['icon' => 'fa fa-water', 'title' => 'Natural Resources Conservation'],
-                  ['icon' => 'fa fa-building', 'title' => 'SUSTAINABLE DEVELOPMENT'],
-                  ['icon' => 'fa fa-hands-helping', 'title' => 'COMMUNITY INVOLVEMENT'],
+                    ['icon' => 'fas fa-chart-line', 'title' => 'RESOURCE EFFICIENCY'],
+                    ['icon' => 'fas fa-industry', 'title' => 'CLEANER PRODUCTION'],
+                    ['icon' => 'fas fa-bolt', 'title' => 'ENERGY OPTIMIZATION'],
+                    ['icon' => 'fas fa-lightbulb', 'title' => 'INNOVATION IN CLEAN TECHNOLOGIES'],
+                    ['icon' => 'fas fa-user-graduate', 'title' => 'CAPACITY BUILDING'],
                ];
             @endphp
             @foreach($features as $i => $feature)
@@ -261,11 +283,14 @@
             <div class="row">
                <div class="col-xl-3 col-lg-4 col-md-12">
                   <div class="tp-about-feature-box">
-                     <h4 class="tp-about-feature-title">Ministerial focal points</h4>
+                     <h4 class="tp-about-feature-title">Why RECP Matters</h4>
                      <div class="tp-about-feature-list">
                         <ul>
-                           <li><a href="#">Energy Efficiency</a></li>
-                           <li><a href="#">Promoting Sustainability</a></li>
+                           <li><a href="#">🌱Sustainable Growth</a></li>
+                           <li><a href="#">⚡Energy Access</a></li>
+                           <li><a href="#">💰Cost Saving</a></li>
+                           <li><a href="#">🌍Climate Action</a></li>
+                           <li><a href="#">👷Workplace Safety</a></li>
                         </ul>
                      </div>
                      <div class="tp-about-feature-btn">
@@ -276,22 +301,13 @@
                <div class="col-xl-6 col-lg-8 col-md-12">
                   <div class="tp-about-content-wrap p-relative">
                      <div class="tp-about-text">
+                        <h4 class="tp-about-title">Resource Efficiency and Cleaner Production (RECP)</h4>
                         <p>Resource Efficiency and Cleaner Production (RECP) is a key strategy for promoting sustainable industrial development in Nigeria. As the country seeks to reduce environmental impact while boosting economic growth, RECP offers practical solutions to minimize waste, optimize resource use, and encourage cleaner technologies across industries.</p>
                      </div>
                      <div class="tp-about-city-info d-flex align-items-center">
-                        <i class="flaticon-smart-city"></i>
-                        <span>How We Serve Our Fatherland</span>
-                     </div>
-                     <div class="tp-about-progress p-relative">
-                        <span class="progress-label">Number Of States Impacted</span>
-                        <span class="progress-count">92%</span>
-                        <div class="progress">
-                           <div class="progress-bar wow slideInLeft" data-wow-duration="1s" data-wow-delay=".3s"
-                               role="progressbar" data-width="92%" aria-valuenow="25" aria-valuemin="0"
-                               aria-valuemax="100"
-                               style="width: 58%; visibility: visible; animation-duration: 1s; animation-delay: 0.3s; animation-name: slideInLeft;">
-                           </div>
-                        </div>
+                        <i class="flaticon-smart-city me-2"></i>
+                        <span class="me-2">Target Locations:</span>
+                        <h4 class="mb-0">Lagos, Ogun, Kano, Kaduna, Aba, Warri, Onitsha, Port Harcourt, Calabar</h4>
                      </div>
                   </div>
                </div>
@@ -354,48 +370,48 @@
          <div class="row">
             <div class="col-xl-12">
                <div class="tp-service-title-box text-center mb-70">
-                  <span class="tp-section-subtitle">OUR DEPARTMENTS</span>
-                  <h4 class="tp-section-title text-white">Explore our departments</h4>
+                  <span class="tp-section-subtitle">EXPLORE OUR SECTORs</span>
+                  <h4 class="tp-section-title text-white">Industries prioritized by the project</h4>
                </div>
             </div>
          </div>
          <div class="row">
             @php
-               $departments = [
+               $sectors = [
                   [
-                     'icon' => 'flaticon-approved',
-                     'title' => 'Audit',
-                     'desc' => 'The Audit department ensures transparency and accuracy in our operations.',
+                     'icon' => 'fas fa-tools', // Updated icon for Building Materials
+                     'title' => 'Building Materials',
+                     'desc' => 'Producers of cement, bricks, and tiles with high energy and material use.',
                   ],
                   [
-                     'icon' => 'fa fa-wind',
-                     'title' => 'Climate Change',
-                     'desc' => 'Dedicated to addressing the impacts of climate change through research, advocacy, and action.',
+                     'icon' => 'fas fa-industry', // Updated icon for Iron & Steel
+                     'title' => 'Iron & Steel',
+                     'desc' => 'Heavy industries focused on smelting, rolling, and metal fabrication.',
                   ],
                   [
-                     'icon' => 'fa fa-file-invoice',
-                     'title' => 'Finance & Accounts',
-                     'desc' => 'Ensures accurate financial records, supports strategic planning, and maintains financial health.',
+                     'icon' => 'fas fa-carrot', // Updated icon for Food Processing & Agriculture
+                     'title' => 'Food Processing & Agriculture',
+                     'desc' => 'Agro-industries transforming raw food into packaged goods.',
                   ],
                   [
-                     'icon' => 'fas fa-briefcase',
+                     'icon' => 'fas fa-concierge-bell', // Updated icon for General Services
                      'title' => 'General Services',
                      'desc' => 'Provides essential support functions to ensure smooth operations within an organization.',
                   ],
                ];
             @endphp
-            @foreach($departments as $i => $dept)
+            @foreach($sectors as $i => $sector)
                <div class="col-xl-3 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".{{ 3 + $i * 2 }}s">
                   <div class="tp-service-item p-relative">
                      <div class="tp-service-shape">
                         <img src="{{asset('MainAssets/img/service/sv-item-shape.png')}}" alt="">
                      </div>
                      <div class="tp-service-icon">
-                        <i class="{{ $dept['icon'] }}"></i>
+                        <i class="{{ $sector['icon'] }}"></i>
                      </div>
                      <div class="tp-service-content">
-                        <h4 class="tp-service-title-sm"><a href="service-details.html">{{ $dept['title'] }}</a></h4>
-                        <p>{{ $dept['desc'] }}</p>
+                        <h4 class="tp-service-title-sm"><a href="service-details.html">{{ $sector['title'] }}</a></h4>
+                        <p>{{ $sector['desc'] }}</p>
                      </div>
                      <div class="tp-service-link">
                         <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
@@ -719,5 +735,59 @@
       </div>
    </section>
    {{-- BLOG AREA END --}}
+{{-- GET INVOLVED SECTION --}}
+   <section id="get-involved" class="tp-get-involved-area pt-100 pb-90">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12 text-center">
+               <h2 class="tp-section-title">🤝 Get Involved</h2>
+               <h4 class="tp-section-subtitle">Join Nigeria’s Journey to Industrial Sustainability</h4>
+               <p>Are you a business owner, engineer, policymaker, academic, or clean-tech innovator? The NGN IEE-RECP Project invites you to become part of a nationwide movement to transform Nigeria’s industrial future.</p>
+            </div>
+         </div>
+         <div class="row mt-4">
+            <div class="col-md-4">
+               <h5>For Industrial Enterprises</h5>
+               <p><strong>Improve efficiency. Cut costs. Stay competitive.</strong><br>Join our RECP/IEE assessments, access technical support, and adopt clean technologies to reduce waste, energy use, and emissions in your production processes.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Register Your Facility]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Academics & Researchers</h5>
+                        <p><strong>Shape the future of sustainable industrial innovation.</strong><br>Collaborate on research, curriculum development, and capacity-building programs in cleaner production and industrial energy efficiency.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Partner with Us]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Technical Experts & Auditors</h5>
+                        <p><strong>Become a certified RECP/IEE expert.</strong><br>Get trained and certified to deliver resource and energy assessments for industries across Nigeria.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Apply for Certification]</a>
+                     </div>
+                  </div>
+                  <div class="row mt-4">
+                     <div class="col-md-4">
+                        <h5>For Policymakers & Agencies</h5>
+                        <p><strong>Drive policy change through evidence-based practices.</strong><br>Support the integration of RECP/IEE into national strategies for climate action, green economy, and industrial competitiveness.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Collaborate with the Project]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Innovators & Solution Providers</h5>
+                        <p><strong>Scale your clean tech solutions.</strong><br>Showcase and pilot your innovations in materials efficiency, renewable energy, waste recovery, and industrial automation.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Submit Your Innovation]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>Have questions or proposals?</h5>
+                        <p>We’d love to hear from you!</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Contact Us]</a>
+         </div>
+      </div>
+      <div class="row mt-4">
+         <div class="col-md-12 text-center">
+            <a href="#" class="btn btn-secondary">[Join the Network]</a>
+            <a href="#" class="btn btn-secondary">[Become an Auditor]</a>
+            <a href="#" class="btn btn-secondary">[Access Training]</a>
+         </div>
+      </div>
+   </div>
+</section>
+{{-- GET INVOLVED SECTION END --}}
 </main>
 @endsection
