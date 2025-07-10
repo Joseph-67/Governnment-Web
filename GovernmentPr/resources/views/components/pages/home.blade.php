@@ -568,11 +568,46 @@
    {{-- VIDEO AREA END --}}
 
    {{-- PARTNER SECTION --}}
-   <section class="partner-section">
-      <span class="tp-section-subtitle">PARTNERS</span>
-      <h4 class="tp-section-title">Let’s Meet With Our Partners</h4>
-
-   </section>
+      <!-- brand area start -->
+      <div class="tp-brand-area pb-120">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-12">
+                  <div class="tp-brand-title-box mb-60 text-center">
+                     <i class="flaticon-spark"></i>
+                     <span class="tp-section-subtitle-2">CHECK OUR PARTNER AND SUPPORTES</span>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-xl-12">
+                  <div class="tp-brand-slider-wrapper">
+                     <div class="swiper-container tp-brand-slider-active">
+                        <div class="swiper-wrapper">
+                           @php
+                              $partners = [
+                                 ['url' => 'https://www.unido.org/', 'img' => 'logo2.png'],
+                                 ['url' => 'https://www.thegef.org/', 'img' => 'logo3.png'],
+                                 ['url' => 'https://www.manufacturersnigeria.org/', 'img' => 'logo1.png'],
+                              ];
+                           @endphp
+                           @foreach(array_merge($partners, $partners) as $partner)
+                              <a href="{{ $partner['url'] }}" target="_blank" class="mx-3">
+                                 <div class="swiper-slide">
+                                    <div class="tp-brand-item text-center">
+                                       <img src="{{asset('MainAssets/img/logo/' . $partner['img'])}}" alt="logo">
+                                    </div>
+                                 </div>
+                              </a>
+                           @endforeach
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- brand area end -->
    {{-- PARTNER SECTION END --}}
 
    {{-- TESTIMONIAL AREA --}}

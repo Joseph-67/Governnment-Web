@@ -430,7 +430,7 @@
    </footer>
 
    <!-- JS -->
-   <script data-cfasync="false" src="{{ asset('MainAssets/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script>
+   <script data-cfasync="false" src="{{ asset('MainAssets/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script>
    <script src="{{ asset('MainAssets/js/vendor/jquery.js') }}"></script>
    @foreach([
       'vendor/waypoints', 'bootstrap-bundle', 'meanmenu', 'gsap.min', 'ScrollTrigger.min', 'split-text.min',
