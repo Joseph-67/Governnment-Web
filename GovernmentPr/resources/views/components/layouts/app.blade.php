@@ -294,87 +294,129 @@
 
    <footer>
       <!-- Footer Top -->
-      <div id="footer-one-page" class="tp-footer-top-area tp-footer-top-bdr-bottom pt-35 theme-bg-2">
+      <div id="footer-one-page" class="tp-footer-top-area tp-footer-top-bdr-bottom pt-35" style="background-color: #006747;">
          <div class="container">
             <div class="row">
-               <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="tp-footer-top-item tp-footer-top-space-1 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon"><i class="flaticon-globe"></i></div>
-                     <div class="tp-footer-top-info">
-                        <h4 class="tp-footer-top-info-title">Address</h4>
-                        <span><a href="#">Federal Ministry of Environment Headquarters 3FH3+WC8, Mabushi 900108, Abuja</a></span>
+               @php
+                  $footerContacts = [
+                     [
+                        'icon' => 'flaticon-globe',
+                        'title' => 'Address',
+                        'content' => [
+                           [
+                              'type' => 'link',
+                              'href' => '#',
+                              'text' => 'Federal Ministry of Environment Headquarters 3FH3+WC8, Mabushi 900108, Abuja',
+                              'class' => 'text-light'
+                           ]
+                        ]
+                     ],
+                     [
+                        'icon' => 'flaticon-email',
+                        'title' => 'Contact',
+                        'content' => [
+                           [
+                              'type' => 'email',
+                              'email' => '[email&#160;protected]',
+                              'cfemail' => '285b5c495c4d50404d445841464e47684f45494144064b4745'
+                           ],
+                           [
+                              'type' => 'link',
+                              'href' => 'tel:+88(3265)56720',
+                              'text' => '+88 (3265) 56720'
+                           ]
+                        ]
+                     ],
+                     [
+                        'icon' => 'flaticon-fast-time',
+                        'title' => 'Clock',
+                        'content' => [
+                           [
+                              'type' => 'text',
+                              'text' => 'Mon - Sat 8 am - 5 pm<br>Friday: Closed'
+                           ]
+                        ]
+                     ]
+                  ];
+                  $brandColor = '#006747'; // main green
+                  $accentColor = '#FFD600'; // yellow accent
+                  $footerTextColor = '#fff';
+               @endphp
+               @foreach($footerContacts as $contact)
+                  <div class="col-xl-4 col-lg-4 col-md-6">
+                     <div class="tp-footer-top-item tp-footer-top-space-{{ $loop->iteration }} d-flex align-items-center">
+                        <div class="tp-footer-top-info-icon"><i class="{{ $contact['icon'] }}" style="color: {{ $accentColor }};"></i></div>
+                        <div class="tp-footer-top-info">
+                           <h4 class="tp-footer-top-info-title" style="color: {{ $footerTextColor }};">{{ $contact['title'] }}</h4>
+                           @foreach($contact['content'] as $item)
+                              @if($item['type'] === 'link')
+                                 <span><a href="{{ $item['href'] }}" class="{{ $item['class'] ?? '' }}" style="color: {{ $footerTextColor }};">{{ $item['text'] }}</a></span>
+                              @elseif($item['type'] === 'email')
+                                 <span>
+                                    <a href="#">
+                                       <span class="__cf_email__" data-cfemail="{{ $item['cfemail'] }}" style="color: {{ $footerTextColor }};">{{ $item['email'] }}</span>
+                                    </a>
+                                 </span>
+                              @elseif($item['type'] === 'text')
+                                 <span style="color: {{ $footerTextColor }};">{!! $item['text'] !!}</span>
+                              @endif
+                           @endforeach
+                        </div>
                      </div>
                   </div>
-               </div>
-               <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="tp-footer-top-item tp-footer-top-space-2 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon"><i class="flaticon-email"></i></div>
-                     <div class="tp-footer-top-info">
-                        <h4 class="tp-footer-top-info-title">Contact</h4>
-                        <span><a href="#"><span class="__cf_email__" data-cfemail="285b5c495c4d50404d445841464e47684f45494144064b4745">[email&#160;protected]</span></a></span>
-                        <span><a href="tel:+88(3265)56720">+88 (3265) 56720</a></span>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="tp-footer-top-item tp-footer-top-space-3 d-flex align-items-center">
-                     <div class="tp-footer-top-info-icon"><i class="flaticon-fast-time"></i></div>
-                     <div class="tp-footer-top-info">
-                        <h4 class="tp-footer-top-info-title">Clock</h4>
-                        <span>Mon - Sat 8 am - 5 pm<br>Friday: Closed</span>
-                     </div>
-                  </div>
-               </div>
+               @endforeach
             </div>
          </div>
       </div>
 
       <!-- Footer Main -->
-      <div class="tp-footer-area theme-bg-2 pt-110 pb-60 p-relative z-index">
+      <div class="tp-footer-area pt-110 pb-60 p-relative z-index" style="background-color: {{ $brandColor }};">
          <div class="tp-footer-shape">
-            <img src="assets/img/footer/footer-shape.png" alt="">
+            <img src="{{ asset('MainAssets/img/footer/footer-shape.png') }}" alt="">
          </div>
          <div class="container">
             <div class="row">
                <div class="col-xl-3 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                   <div class="tp-footer-widget footer-col-1">
                      <div class="tp-footer-widget-logo">
-                        <a href="">
+                        <a href="{{ url('/') }}">
                            @foreach(['logo3.png', 'logo1.png', 'logo4.jpeg', 'logo2.png'] as $logo)
                               <img src="{{ asset("MainAssets/img/logo/$logo") }}" alt="logo" class="logo-sm" style="max-width:50px">
                            @endforeach
                         </a>
                      </div>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-40">We focus on innovative strategies that emphasize the use of environmental re-engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.</p>
-                        <a class="tp-btn white-anim" href="about.html">KNOW MORE</a>
+                        <p class="mb-40" style="color: {{ $footerTextColor }};">
+                           We focus on innovative strategies that emphasize the use of environmental re-engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.
+                        </p>
+                        <a class="tp-btn white-anim" href="{{ route('mandate') }}" style="background-color: {{ $accentColor }}; color: {{ $brandColor }};">KNOW MORE</a>
                      </div>
                   </div>
                </div>
                <div class="col-xl-2 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                   <div class="tp-footer-widget footer-col-2">
-                     <h4 class="tp-footer-widget-title">Useful Links</h4>
+                     <h4 class="tp-footer-widget-title" style="color: {{ $footerTextColor }};">Useful Links</h4>
                      <div class="tp-footer-widget-menu">
                         <ul>
-                           <li><a href="#">About us</a></li>
-                           <li><a href="#">Our Team</a></li>
-                           <li><a href="#">Upcoming Events</a></li>
-                           <li><a href="#">Latest News</a></li>
-                           <li><a href="#">Contact Us</a></li>
+                           <li><a href="{{ route('mandate') }}" style="color: {{ $footerTextColor }};">About us</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Our Team</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Upcoming Events</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Latest News</a></li>
+                           <li><a href="{{ route('contact-us') }}" style="color: {{ $footerTextColor }};">Contact Us</a></li>
                         </ul>
                      </div>
                   </div>
                </div>
                <div class="col-xl-3 col-lg-4 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
                   <div class="tp-footer-widget footer-col-3">
-                     <h4 class="tp-footer-widget-title">Instagram</h4>
+                     <h4 class="tp-footer-widget-title" style="color: {{ $footerTextColor }};">Instagram</h4>
                      <div class="tp-footer-widget-instagram">
                         <ul>
                            @foreach([1,2,3,4,1,2] as $i)
                               <li>
                                  <a href="#">
-                                    <img src="assets/img/instagram/insta-{{ $i }}.jpg" alt="">
-                                    <i class="fa-brands fa-instagram"></i>
+                                    <img src="{{ asset("MainAssets/img/instagram/insta-$i.jpg") }}" alt="">
+                                    <i class="fa-brands fa-instagram" style="color: {{ $accentColor }};"></i>
                                  </a>
                               </li>
                            @endforeach
@@ -384,19 +426,19 @@
                </div>
                <div class="col-xl-4 col-lg-6 col-md-6 mb-50 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
                   <div class="tp-footer-widget footer-col-4">
-                     <h4 class="tp-footer-widget-title">News & Updates</h4>
+                     <h4 class="tp-footer-widget-title" style="color: {{ $footerTextColor }};">News & Updates</h4>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-25">The latest Mayorx news, articles, and resources sent straight to your inbox every month</p>
+                        <p class="mb-25" style="color: {{ $footerTextColor }};">The latest Mayorx news, articles, and resources sent straight to your inbox every month</p>
                      </div>
                      <form action="#">
                         <div class="tp-footer-mail-box p-relative">
-                           <input type="text" placeholder="Your Email">
-                           <button class="tp-btn-subscribe-sm">SUBSCRIBE</button>
+                           <input type="text" placeholder="Your Email" style="background: {{ $footerTextColor }}; color: {{ $brandColor }};">
+                           <button class="tp-btn-subscribe-sm" style="background-color: {{ $accentColor }}; color: {{ $brandColor }};">SUBSCRIBE</button>
                         </div>
                         <div class="tp-footer-check-box">
                            <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                              <label class="form-check-label" for="flexCheckDefault">
+                              <label class="form-check-label" for="flexCheckDefault" style="color: {{ $footerTextColor }};">
                                  I agree that my data is collected
                               </label>
                            </div>
@@ -409,18 +451,18 @@
       </div>
 
       <!-- Copyright -->
-      <div class="tp-copyright-area tp-copyright-space green-bg pt-25 pb-25">
+      <div class="tp-copyright-area tp-copyright-space pt-25 pb-25" style="background-color: #004225;">
          <div class="container">
             <div class="row align-items-center">
                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <div class="tp-copyright-left-text text-center text-md-start">
-                     <p>© Copyright 2025 by <a href="#">Elite Tech. Dev.</a></p>
+                     <p style="color: {{ $footerTextColor }};">© Copyright {{ date('Y') }} by <a href="#" style="color: {{ $accentColor }};">Elite Tech. Dev.</a></p>
                   </div>
                </div>
                <div class="col-xl-6 col-lg-6 col-md-6 d-none col-sm-6 d-sm-block">
                   <div class="tp-copyright-right-social text-center text-md-end">
                      @foreach(['facebook-f', 'pinterest-p', 'instagram', 'twitter'] as $icon)
-                        <a href="#"><i class="fa-brands fa-{{ $icon }}"></i></a>
+                        <a href="#"><i class="fa-brands fa-{{ $icon }}" ></i></a>
                      @endforeach
                   </div>
                </div>

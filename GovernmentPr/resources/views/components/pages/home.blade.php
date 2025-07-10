@@ -301,6 +301,53 @@
    </section>
    {{-- ABOUT AREA END --}}
 
+   @php
+      $partners = [
+         ['url' => 'https://www.unido.org/', 'img' => 'logo2.png', 'name' => 'UNIDO'],
+         ['url' => 'https://www.thegef.org/', 'img' => 'logo3.png', 'name' => 'GEF'],
+         ['url' => 'https://www.manufacturersnigeria.org/', 'img' => 'logo1.png', 'name' => 'MAN'],
+      ];
+   @endphp
+   <!-- brand area start -->
+   <div class="tp-brand-area pb-120">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-brand-title-box mb-60 text-center">
+                  <i class="flaticon-spark"></i>
+                  <span class="tp-section-subtitle-2">CHECK OUR PARTNERS AND SUPPORTERS</span>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-brand-slider-wrapper">
+                  <div class="swiper-container tp-brand-slider-active">
+                     <div class="swiper-wrapper">
+                     @foreach($partners as $partner)
+                        <div class="swiper-slide">
+                           <a href="{{ $partner['url'] }}" target="_blank" rel="noopener" class="tp-brand-item text-center d-block">
+                              <img src="{{ asset('MainAssets/img/logo/' . $partner['img']) }}" alt="{{ $partner['name'] }} logo" style="height: 100px; width: 100px; object-fit: contain;">
+                           </a>
+                        </div>
+                     @endforeach
+                     @foreach($partners as $partner)
+                        <div class="swiper-slide">
+                           <a href="{{ $partner['url'] }}" target="_blank" rel="noopener" class="tp-brand-item text-center d-block">
+                              <img src="{{ asset('MainAssets/img/logo/' . $partner['img']) }}" alt="{{ $partner['name'] }} logo" style="height: 100px; width: 100px; object-fit: contain;">
+                           </a>
+                        </div>
+                     @endforeach
+                     
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- brand area end -->
+
    {{-- SERVICE AREA --}}
    <section id="service-one-page" class="tp-service-area p-relative theme-bg-2 pt-120 pb-90">
       <div class="container custom-container">
@@ -566,49 +613,6 @@
       </div>
    </section>
    {{-- VIDEO AREA END --}}
-
-   {{-- PARTNER SECTION --}}
-      <!-- brand area start -->
-      <div class="tp-brand-area pb-120">
-         <div class="container">
-            <div class="row">
-               <div class="col-xl-12">
-                  <div class="tp-brand-title-box mb-60 text-center">
-                     <i class="flaticon-spark"></i>
-                     <span class="tp-section-subtitle-2">CHECK OUR PARTNER AND SUPPORTES</span>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-xl-12">
-                  <div class="tp-brand-slider-wrapper">
-                     <div class="swiper-container tp-brand-slider-active">
-                        <div class="swiper-wrapper">
-                           @php
-                              $partners = [
-                                 ['url' => 'https://www.unido.org/', 'img' => 'logo2.png'],
-                                 ['url' => 'https://www.thegef.org/', 'img' => 'logo3.png'],
-                                 ['url' => 'https://www.manufacturersnigeria.org/', 'img' => 'logo1.png'],
-                              ];
-                           @endphp
-                           @foreach(array_merge($partners, $partners) as $partner)
-                              <a href="{{ $partner['url'] }}" target="_blank" class="mx-3">
-                                 <div class="swiper-slide">
-                                    <div class="tp-brand-item text-center">
-                                       <img src="{{asset('MainAssets/img/logo/' . $partner['img'])}}" alt="logo">
-                                    </div>
-                                 </div>
-                              </a>
-                           @endforeach
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- brand area end -->
-   {{-- PARTNER SECTION END --}}
 
    {{-- TESTIMONIAL AREA --}}
    <section class="tp-testimonial-area theme-bg-2 pt-120 pb-120 z-index">
