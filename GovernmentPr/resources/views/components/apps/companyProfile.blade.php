@@ -13794,12 +13794,10 @@ if (editForm) {
             }
         });
     };
-<<<<<<< Updated upstream
-
 
 
     </script>
-
+<script>
     // Show task metrics modal
     $(document).on('click', '.setup-task-metrics', async function() {
         const rowData = taskSchedulingTable.row($(this).closest('tr')).data();
