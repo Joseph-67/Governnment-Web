@@ -65,6 +65,7 @@ use App\Http\Controllers\Workflow\CompanyWorkflowController;
 use App\Http\Controllers\Workflow\CompanyStageController;
 use App\Http\Controllers\Workflow\StageTaskController;
 use App\Http\Controllers\Workflow\TaskScheduleController;
+use App\Http\Controllers\Workflow\TaskScheduleMetricsController;
 use App\Http\Controllers\Workflow\RecurrenceRuleController;
 use App\Http\Controllers\Workflow\TaskEmployeeController;
 
@@ -266,6 +267,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::delete('/company-stage-task-schedules/{id}', 'destroy')->name('admin.delete-company-stage-task-schedule');
         Route::get('/get-task-schedules/{taskId}', 'getSchedulesByTask')->name('admin.get-task-schedules');
     });
+    // Task Schedule Metrics
+    Route::controller(TaskScheduleMetricsController::class)->group(function() {
+        Route::get('/task-schedule-metrics', 'index')->name('admin.task-schedule-metrics');
+        Route::post('/task-schedule-metrics/store', 'store')->name('admin.store-task-metrics');
+        Route::get('/task-schedule-metrics/{id}', 'show')->name('admin.show-task-schedule-metric');
+        Route::post('/task-schedule-metrics/{id}', 'update')->name('admin.update-task-schedule-metric');
+        Route::delete('/task-schedule-metrics/{id}', 'destroy')->name('admin.delete-task-schedule-metric');
+        Route::get('/get-task-schedule-metrics/{taskId}', 'getMetricsByTask')->name('admin.get-task-schedule-metrics');
+    });
+
 
     // Equipment Log
     Route::controller(EquipmentLogController::class)->group(function() {

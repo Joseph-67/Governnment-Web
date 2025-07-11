@@ -6172,6 +6172,64 @@
             </div>
         </div>
     </div>
+    <!-- Task Metrics Modal -->
+    <div class="modal fade" id="taskMetricsModal" tabindex="-1" aria-labelledby="taskMetricsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" style="min-height: 80vh;">
+            <div class="modal-content shadow-lg border-0 rounded-3" style="min-height: 75vh;">
+                <form id="task-metrics-form" method="post">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_schedule_id">
+
+                    <div class="modal-header bg-primary text-white rounded-top">
+                        <h5 class="modal-title fw-bold" id="taskMetricsModalLabel">
+                            <i class="las la-flask me-2"></i> Task Metrics: Expected Quantities
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label for="expected_chemical_quantity" class="form-label fw-semibold">Expected Chemical Quantity</label>
+                                <input type="number" class="form-control" id="expected_chemical_quantity" name="expected_chemical_quantity" min="0" step="any" placeholder="Enter expected chemical quantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expected_material_quantity" class="form-label fw-semibold">Expected Material Quantity</label>
+                                <input type="number" class="form-control" id="expected_material_quantity" name="expected_material_quantity" min="0" step="any" placeholder="Enter expected material quantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expected_water_quantity" class="form-label fw-semibold">Expected Water Quantity (Liters)</label>
+                                <input type="number" class="form-control" id="expected_water_quantity" name="expected_water_quantity" min="0" step="any" placeholder="Enter expected water quantity" required>
+                            </div>
+                        </div>
+                        <div class="col-12 text-end mb-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2 shadow-sm">
+                                <i class="las la-save"></i> Save Metrics
+                            </button>
+                        </div>
+                    </div>
+                </form>
+               
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0 w-100" id="tbl-task-metrics">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Chemical Quantity</th>
+                                        <th>Material Quantity</th>
+                                        <th>Water Quantity (L)</th>
+                                        <th >Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Metrics rows will be dynamically loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    
+            </div>
+        </div>
+    </div>
+    <!-- End Task Metrics Modal -->
     <!-- End Task Scheduling Modal -->
     <!-- Assign Employee to Task Modal -->
     <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
@@ -13378,6 +13436,10 @@ if (editForm) {
                 className: 'text-end',
                 render: (data, type, row) => `
                     <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-secondary btn-sm setup-task-metrics">
+                        <i class="las la-chart-bar"></i> Metrics
+                    </button>
+                    </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="editTaskSchedule('${row.schedule_id}')">
                             <i class="las la-edit"></i> Edit
                         </button>
@@ -13543,6 +13605,7 @@ if (editForm) {
         }
     });
 
+    
     // Edit task schedule
     window.editTaskSchedule = async function(id) {
         let schedule = taskSchedulingTable.row($(`button[onclick="editTaskSchedule('${id}')"]`).parents('tr')).data();
@@ -13731,9 +13794,153 @@ if (editForm) {
             }
         });
     };
+<<<<<<< Updated upstream
 
 
     </script>
+=======
+    // Show task metrics modal
+    $(document).on('click', '.setup-task-metrics', async function() {
+        const rowData = taskSchedulingTable.row($(this).closest('tr')).data();
+        const scheduleId = rowData.task_schedule_id || rowData.schedule_id || rowData.id || '';
+        document.querySelector('#task-metrics-form input[name="task_schedule_id"]').value = scheduleId;
+        const taskMetricsModal = new bootstrap.Modal(document.getElementById('taskMetricsModal'));
+        taskMetricsModal.show();
+    });
+   // Initialize the DataTable
+const taskMetricsHistoryTable = $('#tbl-task-metrics').DataTable({
+    paging: true,
+    searching: true,
+    ordering: false,
+    responsive: true,
+    data: [],
+    columns: [
+        { data: 'expected_chemical_quantity' },           // Chemical Quantity
+        { data: 'expected_material_quantity' },           // Material Quantity
+        { data: 'expected_water_quantity' },              // Water Quantity (L)
+        {
+            data: null,                                   // Action buttons
+            orderable: false,
+            className: 'text-center',                        // Align right
+            render: (data, type, row) => `
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="editTaskMetrics('${row.task_metrics_id}')">
+                        <i class="las la-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteTaskMetrics('${row.task_metrics_id}')">
+                        <i class="las la-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `
+        }
+    ]
+});
+
+// Fetch and reload task metrics
+async function reloadTaskMetrics(scheduleId) {
+    if (!scheduleId) return;
+
+    const url = `/admin/get-task-schedule-metrics/${scheduleId}`;
+    try {
+        const response = await fetch_cycle('--Reload Task Metrics', url, 'GET');
+        if (response.status === "success" && Array.isArray(response.task_schedule_metrics)) {
+            const metrics = response.task_schedule_metrics.map(metric => ({
+                expected_chemical_quantity: metric.expected_chemical_quantity || "N/A",
+                expected_material_quantity: metric.expected_material_quantity || "N/A",
+                expected_water_quantity: metric.expected_water_quantity || "N/A",
+                task_metrics_id: metric.task_schedule_metric_id || metric.id || "N/A"
+            }));
+            taskMetricsHistoryTable.clear().rows.add(metrics).draw();
+        } else {
+            taskMetricsHistoryTable.clear().draw();
+        }
+    } catch (error) {
+        console.error("Error reloading task metrics:", error);
+        taskMetricsHistoryTable.clear().draw();
+    }
+}
+
+// Handle form submission
+document.getElementById('task-metrics-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const scheduleId = formData.get('task_schedule_id');
+    const url = "{{ route('admin.store-task-metrics') }}";
+
+    try {
+        const result = await fetch_cycle('--Store Task Metrics', url, 'POST', formData);
+        if (result.status === 'success') {
+            await reloadTaskMetrics(scheduleId);
+            this.reset();
+        } else {
+            console.warn('Task metric store failed:', result);
+        }
+    } catch (error) {
+        console.error('Error storing task metrics:', error);
+    }
+});
+
+// Fetch when modal opens
+$('#taskMetricsModal').on('shown.bs.modal', async function () {
+    const scheduleId = document.querySelector('#task-metrics-form input[name="task_schedule_id"]').value;
+    await reloadTaskMetrics(scheduleId);
+});
+
+
+    // Edit task metrics
+    window.editTaskMetrics = async function(id) {
+        let metric;
+        try {
+            const response = await fetch(`/admin/get-task-metrics-by-id/${id}`);
+            if (response.ok) {
+                metric = await response.json();
+            }
+        } catch (error) {
+            console.error('Failed to fetch task metrics:', error);
+            return;
+        }
+        if (metric) {
+            document.querySelector('#task-metrics-form input[name="expected_chemical_quantity"]').value = metric.expected_chemical_quantity || "";
+            document.querySelector('#task-metrics-form input[name="expected_material_quantity"]').value = metric.expected_material_quantity || "";
+            document.querySelector('#task-metrics-form input[name="expected_water_quantity"]').value = metric.expected_water_quantity || "";
+            document.querySelector('#task-metrics-form input[name="task_metrics_id"]').value = metric.task_metrics_id || metric.id || "";
+        }
+    };
+
+    // Delete task metrics
+    window.deleteTaskMetrics = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this task metrics entry?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/task-metrics/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        taskMetricsHistoryTable.row($(`button[onclick="deleteTaskMetrics('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Task metrics entry has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete task metrics.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+        </script>
+>>>>>>> Stashed changes
      <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>
