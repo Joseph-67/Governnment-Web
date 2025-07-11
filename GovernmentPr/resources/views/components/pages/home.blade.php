@@ -315,7 +315,7 @@
                <img src="{{asset('MainAssets/img/about/ab-shape-1.png')}}" alt="">
             </div>
             <div class="tp-about-right-img d-none d-xl-block wow tpfadeRight" data-wow-duration=".9s" data-wow-delay=".3s">
-               <img src="{{asset('MainAssets/img/about/minister2.png')}}" alt="">
+               <img src="{{asset('MainAssets/img/about/banner.png')}}" alt="">
             </div>
             <div class="row">
                <div class="col-xl-3 col-lg-4 col-md-12">
