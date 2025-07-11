@@ -13794,10 +13794,6 @@ if (editForm) {
             }
         });
     };
-
-
-    </script>
-<script>
     // Show task metrics modal
     $(document).on('click', '.setup-task-metrics', async function() {
         const rowData = taskSchedulingTable.row($(this).closest('tr')).data();
@@ -13939,7 +13935,6 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
         });
     };
         </script>
-
      <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>
