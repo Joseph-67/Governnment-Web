@@ -2,6 +2,43 @@
 @section('PageTitle', 'Home')
 @section('pageContent')
 @section('styles')
+      <style>
+         .tp-funfact-2-item {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            padding: 40px 20px 30px 20px;
+            transition: box-shadow 0.3s;
+            border-bottom: 6px solid #1e7e34; /* brand green */
+         }
+         .tp-funfact-2-item:hover {
+            box-shadow: 0 8px 32px rgba(30,126,52,0.15);
+            border-bottom: 6px solid #ffc107; /* brand yellow on hover */
+         }
+         .tp-funfact-2-icon span {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e7e34 60%, #ffc107 100%);
+            color: #fff;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            font-size: 2.2rem;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 12px rgba(30,126,52,0.12);
+         }
+         .tp-funfact-2-content h4 {
+            color: #1e7e34;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+         }
+         .tp-funfact-2-content span {
+            color: #222;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+      </style>
 <style>
    /* Slider Title Responsive Font Size */
    .tp-slider-title {
@@ -23,9 +60,9 @@
       background-size: cover;
       background-position: center;
    }
-   .tp-slider-content-wrap {
+   /* .tp-slider-content-wrap {
       text-align: center;
-   }
+   } */
 
    /* Responsive Video Box */
    @media (max-width: 767px) {
@@ -453,13 +490,14 @@
 
    {{-- FUNFACT AREA --}}
    <section class="tp-funfact-2-area tp-funfact-2-bg pt-120 pb-90 p-relative" data-background="{{asset('MainAssets/img/funfact/funfact-bg.jpg')}}">
+
       <div class="container">
          <div class="row">
             @php
                $funfacts = [
                   ['icon' => 'flaticon-foundation', 'end' => 820, 'suffix' => '+', 'label' => 'Years of Foundation'],
-                  ['icon' => 'flaticon-running-man', 'end' => 12, 'suffix' => '', 'label' => 'Number Of States'],
-                  ['icon' => 'flaticon-landscape', 'end' => 150, 'suffix' => '', 'label' => 'Number of Companies'],
+                  ['icon' => 'flaticon-landscape', 'end' => 12, 'suffix' => '', 'label' => 'Number Of States'],
+                  ['icon' => 'flaticon-factory', 'end' => 150, 'suffix' => '', 'label' => 'Number of Companies'],
                   ['icon' => 'flaticon-windrose', 'end' => 920, 'suffix' => '+', 'label' => 'Successful Rating'],
                ];
             @endphp
