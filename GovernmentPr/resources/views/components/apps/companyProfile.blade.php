@@ -6153,13 +6153,11 @@
                     </div>
                     <div class="modal-body bg-light">
                         <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="employee_select" class="form-label">Select Employee(s)</label>
-                                <select class="form-select" id="employee_select" name="employee_ids[]" multiple required>
-                                    <!-- Options should be populated dynamically via JS or server-side -->
-                                </select>
+                            <div class="taggable-container col-md-6" id="manager-tag-input-6">
+                                <label for="manager" class="form-label">Employee</label>
+                                <div class="manager-tag-input-6 manager-tag-input border-primary bg-light"></div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
                                 <textarea class="form-control" id="assignment_note" name="assignment_note" rows="2" placeholder="Add any notes for the assignee(s)"></textarea>
                             </div>
@@ -12466,6 +12464,7 @@ if (editForm) {
     let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
     let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
     let  manager_5 =  new TaggingComponent('manager-tag-input-5', 'manager-tag-input-5');
+    let  manager_6 =  new TaggingComponent('manager-tag-input-6', 'manager-tag-input-6');
   </script>
   <!-- Department -->
    <script>
