@@ -41,6 +41,5 @@ class objectives extends Seeder
             ]);
         }
         // Insert sample objectives into the objectives table
-        
     }
 }

@@ -6141,7 +6141,7 @@
     <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
-                <form id="assign-employee-task-form" method="post" autocomplete="off">
+                <form id="assign-employee-task-form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="task_id" id="assign_task_id">
@@ -6153,9 +6153,9 @@
                     </div>
                     <div class="modal-body bg-light">
                         <div class="row g-3">
-                            <div class="taggable-container col-md-6" id="manager-tag-input-6">
-                                <label for="manager" class="form-label">Employee</label>
-                                <div class="manager-tag-input-6 manager-tag-input border-primary bg-light"></div>
+                            <div class="col-md-6">
+                                <label for="employee_tag_input" class="form-label">Employee</label>
+                                <input id="employee_tag_input" name="employees" class="form-control" placeholder="Select employee(s)" autocomplete="off">
                             </div>
                             <div class="col-md-6">
                                 <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
@@ -6176,7 +6176,39 @@
         </div>
     </div>
     <!-- End Assign Employee to Task Modal -->
-     <!-- End Task Management Modal -->
+    <!-- Employee Assignment Management Table Modal -->
+    <div class="modal fade" id="employeeAssignmentManagementModal" tabindex="-1" aria-labelledby="employeeAssignmentManagementModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <div class="modal-header bg-gradient-primary text-white rounded-top">
+                    <h5 class="modal-title fw-bold" id="employeeAssignmentManagementModalLabel">
+                        <i class="las la-users-cog me-2"></i> Employee Assignment Management
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0 w-100" id="tbl-employee-assignment-management">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Email</th>
+                                    <th>Assigned Task</th>
+                                    <th>Assignment Note</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Employee Assignment Management Table Modal -->
     <!-- end workflow management -->
 
      <!-- Annual operations activity -->
@@ -13276,7 +13308,6 @@ if (editForm) {
             });
         }
     });
-
     // Task Scheduling Management
     // Initialize DataTable for Task Scheduling
     const taskSchedulingTable = $('#tbl-task-scheduling').DataTable({
@@ -13605,7 +13636,6 @@ if (editForm) {
         modal.show();
     };
 
-
     // Edit task
     window.editTask = async function(id) {
         let task = taskTable.row($(`button[onclick="editTask('${id}')"]`).parents('tr')).data();
@@ -13632,9 +13662,7 @@ if (editForm) {
             const modal = new bootstrap.Modal(document.getElementById('editStageTaskModal'));
             modal.show();
             
-        } 
-
-        
+        }
     };
 
     // Handle task edit form submission
@@ -13839,7 +13867,89 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             }
         });
     };
-        </script>
+
+            // Employee Assignment Management
+            // Initialize DataTable for Employee Assignment Management
+            const employeeAssignmentTable = $('#tbl-employee-assignment-management').DataTable({
+                paging: true,
+                searching: true,
+                ordering: false,
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [4] } // Action column
+                ],
+                data: [],
+                columns: [
+                    { data: 'employee_name', title: 'Employee Name' },
+                    { data: 'email', title: 'Email' },
+                    { data: 'job_title', title: 'Job Title' },
+                    { data: 'assignment_status', title: 'Status' },
+                    {
+                        data: null,
+                        title: 'Action',
+                        className: 'text-end',
+                        render: (data, type, row) => `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-danger btn-sm" onclick="removeEmployeeAssignment('${row.assignment_id}')">
+                                    <i class="las la-trash-alt"></i> Remove
+                                </button>
+                            </div>
+                        `
+                    }
+                ]
+            });
+
+            // Show Employee Assignment Management Modal for a task
+            window.viewEmployeeAssignmentManagement = function(taskId) {
+                // Fetch and display assigned employees for the selected task
+                (async () => {
+                    const url = `/admin/get-task-assignees/${taskId}`;
+                    try {
+                        const data = await fetchFieldInput(url);
+                        if (data.status === "success" && Array.isArray(data.assignees)) {
+                            const assignees = data.assignees.map(assignee => ({
+                                employee_name: assignee.name || assignee.full_name || "N/A",
+                                email: assignee.email || "N/A",
+                                job_title: assignee.job_title || "N/A",
+                                assignment_status: assignee.status || "N/A",
+                                assignment_id: assignee.assignment_id || assignee.id || "N/A"
+                            }));
+                            employeeAssignmentTable.clear().rows.add(assignees).draw();
+                        } else {
+                            employeeAssignmentTable.clear().draw();
+                        }
+                    } catch (error) {
+                        console.error("Error fetching task assignees:", error);
+                        employeeAssignmentTable.clear().draw();
+                    }
+                })();
+
+                // Show the employee assignment management modal
+                const modal = new bootstrap.Modal(document.getElementById('employeeAssignmentManagementModal'));
+                modal.show();
+            };
+
+            // Remove employee assignment from task
+            window.removeEmployeeAssignment = function(assignmentId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to remove this employee from the task?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove!'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const url = `/admin/task-assignment/${assignmentId}`;
+                        try {
+                            const response = await fetch(url, {
+                                method: 'DELETE',
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                            });
+                            const data = await response.json();
+                            if (data.status === 'success') {
+                                employeeAssignmentTable.row($(`button[onclick=        </script>
      <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>
