@@ -64,7 +64,7 @@ class CompanyStageController extends Controller
             'stage_status' => [
                 'required',
                 'string',
-                Rule::in(['pending', 'In Progress', 'Completed', 'Cancelled']),
+                Rule::in(['pending', 'in_progress', 'completed', 'halted', 'cancelled']),
             ],
             // Add other fields and rules as needed
         ]);

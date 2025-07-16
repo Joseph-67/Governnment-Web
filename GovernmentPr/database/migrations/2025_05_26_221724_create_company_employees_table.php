@@ -28,10 +28,10 @@ return new class extends Migration
             $table->date('HireDate')->nullable();
             $table->enum('Status', ['Active', 'Inactive', 'On Leave', 'Terminated'])->default('Active');
             $table->text('Address')->nullable();
-            $table->string('City', 50)->nullable();
-            $table->string('State', 50)->nullable();
+            $table->string('City', 100)->nullable();
+            $table->string('State', 100)->nullable();
             $table->string('ZipCode', 10)->nullable();
-            $table->string('Country', 50)->nullable();
+            $table->string('Country', 100)->nullable();
             $table->string('EmergencyContact', 100)->nullable();
             $table->string('EmergencyPhone', 20)->nullable();
             $table->string('ProfilePicture')->nullable();
