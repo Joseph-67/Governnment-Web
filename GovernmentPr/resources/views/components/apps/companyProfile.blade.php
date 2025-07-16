@@ -13898,7 +13898,7 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
                     }
                 ]
             });
-
+            
             // Show Employee Assignment Management Modal for a task
             window.viewEmployeeAssignmentManagement = function(taskId) {
                 // Fetch and display assigned employees for the selected task
@@ -13930,26 +13930,8 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             };
 
             // Remove employee assignment from task
-            window.removeEmployeeAssignment = function(assignmentId) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Do you want to remove this employee from the task?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, remove!'
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        const url = `/admin/task-assignment/${assignmentId}`;
-                        try {
-                            const response = await fetch(url, {
-                                method: 'DELETE',
-                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
-                            });
-                            const data = await response.json();
-                            if (data.status === 'success') {
-                                employeeAssignmentTable.row($(`button[onclick=        </script>
-     <!-- End Task Management -->
+            
+    </script>
+    <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>
