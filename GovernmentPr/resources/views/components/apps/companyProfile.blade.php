@@ -13128,6 +13128,28 @@ if (editForm) {
         // Show modal
         new bootstrap.Modal(document.getElementById('setStageDurationModal')).show();
     };
+
+    // submit estimated duration
+    const estimatedTimeForm = document.getElementById('estimated-time-stage-form');
+    if (estimatedTimeForm) {
+        estimatedTimeForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(estimatedTimeForm);
+            const url = "{{ route('admin.update-estimated-time') }}";
+
+            try {
+                const result = await fetch_cycle('--Store Estimated Time', url, 'POST', formData);
+                if (result.status === 'success') {
+                    // Handle success (e.g., refresh stage data)
+                    console.log('Estimated time stored successfully');
+                }
+            } catch (error) {
+                console.error('Error storing estimated time:', error);
+            }
+        });
+    }
+
+
     // Edit stage
     window.editStage = async function(id) {
         // Optionally fetch the latest stage data from the server

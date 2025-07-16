@@ -16,6 +16,7 @@ class CompanyStage extends Model
         'workflow_id',
         'name',
         'description',
+        'estimated_time', // Estimated time in hours
         'sequence',
         'status',
     ];

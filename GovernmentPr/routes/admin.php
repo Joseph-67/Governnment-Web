@@ -225,6 +225,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company-stages/store', 'store')->name('admin.store-company-stage');
         Route::get('/company-stages/{id}', 'show')->name('admin.show-company-stage');
         Route::post('/update-company-stage/', 'update')->name('admin.update-company-stage');
+        Route::post('/company-stage-tasks/estimated-time/', 'updateEstimatedTime')->name('admin.update-estimated-time');
         Route::delete('/company-stages/{id}', 'destroy')->name('admin.delete-company-stage');
         Route::get('/get-company-stages/{workflowId}', 'getStagesByWorkflow')->name('admin.get-company-stages');
     });

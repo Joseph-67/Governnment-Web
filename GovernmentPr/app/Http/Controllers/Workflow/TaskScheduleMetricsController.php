@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Workflow;
 
+use App\Http\Controllers\Controller;
 use App\Models\Workflow\TaskScheduleMetrics;
 use App\Models\Workflow\CompanyStageTask;
 use App\Models\Company;

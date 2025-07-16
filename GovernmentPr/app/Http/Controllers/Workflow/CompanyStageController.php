@@ -173,6 +173,44 @@ class CompanyStageController extends Controller
         }
     }
 
+/**
+     * Update the estimated time for the specified resource.
+     */
+    public function updateEstimatedTime(Request $request)
+    {
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'stage_id' => 'required|exists:company_stages,stage_id',
+            'estimated_time' => 'required|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        // Find the company stage by ID
+        $companyStage = CompanyStage::find($validator->validated()['stage_id']);
+
+        try {
+            // Update the estimated time
+            $companyStage->estimated_time = $validator->validated()['estimated_time'];
+            $companyStage->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estimated time updated successfully.',
+                'company_stage' => $companyStage
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error', 
+                'message' => 'Failed to update estimated time.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+
     /**
      * Remove the specified resource from storage.
      */
