@@ -6154,8 +6154,11 @@
                     <div class="modal-body bg-light">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="employee_tag_input" class="form-label">Employee</label>
-                                <input id="employee_tag_input" name="employees" class="form-control" placeholder="Select employee(s)" autocomplete="off">
+                                <div class="taggable-container " id="manager-tag-input-6">
+                                    <label for="manager" class="form-label">Employee</label>
+                                    <div class="manager-tag-input-6 manager-tag-input border-primary bg-light">
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
