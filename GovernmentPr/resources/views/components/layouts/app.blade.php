@@ -48,6 +48,7 @@
          .tp-btn.dropdown-toggle { padding: 6px 10px; font-size: 14px; }
       }
    </style>
+   @yield('styles')
 </head>
 <body>
    <!-- Preloader -->

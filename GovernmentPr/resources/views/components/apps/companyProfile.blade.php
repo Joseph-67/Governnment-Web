@@ -403,10 +403,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `Develop policy and regulation that deliver economic, human and environmental health gain to your company.`)"
                                                 value="Develop policy and regulation that deliver economic, human and environmental health gain to your company."
-                                                name="areas_of_company_benefit[]" {{(in_array("Develop policy and
-                                                regulation that deliver economic, human and environmental health gain to
-                                                your company.", array_column($company_benefits->toArray(),
-                                            'benefit_title')))? "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("Develop policy and regulation that deliver economic, human and environmental health gain to your company.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Develop policy and regulation
                                                 that deliver economic, humanand environmental health gain to your
                                                 company. </label>
@@ -417,11 +415,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.`)"
                                                 value="To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise."
-                                                name="areas_of_company_benefit[]" {{(in_array("To offer standard
-                                                accreditation and certification capacity building on ISO 15000 and 14000
-                                                series to your enterprise.", array_column($company_benefits->toArray(),
-                                            'benefit_title')))?
-                                            "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To offer standard accreditation and certification capacity building on ISO 15000 and 14000 series to your enterprise.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To offer standard accreditation
                                                 and certification capacity building on ISO 15000 and 14000 series to
                                                 your enterprise </label>
@@ -432,13 +427,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.`)"
                                                 value="To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector."
-                                                name="areas_of_company_benefit[]" {{(in_array("To deliver impactful
-                                                training on Resource Efficient and Cleaner Production (RECP), including
-                                                comprehensive support materials, toolkits, and learning resources,
-                                                tailored for staff and employees across Nigeria's industrial
-                                                manufacturing sector.", array_column($company_benefits->toArray(),
-                                            'benefit_title')))?
-                                            "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To deliver impactful training on Resource Efficient and Cleaner Production (RECP), including comprehensive support materials, toolkits, and learning resources, tailored for staff and employees across Nigeria's industrial manufacturing sector.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To deliver impactful training on
                                                 Resource Efficient and Cleaner Production (RECP), including
                                                 comprehensive support materials, toolkits, and learning resources,
@@ -451,12 +441,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.`)"
                                                 value="To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes."
-                                                name="areas_of_company_benefit[]" {{(in_array("To strengthen the
-                                                internal capacity for delivering RECP training and related technical
-                                                assistance to your enterprise, ensuring long-term impact and achieving
-                                                commercially sustainable outcomes.",
-                                                array_column($company_benefits->toArray(), 'benefit_title')))?
-                                            "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To strengthen the internal capacity for delivering RECP training and related technical assistance to your enterprise, ensuring long-term impact and achieving commercially sustainable outcomes.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To strengthen the internal
                                                 capacity for delivering RECP training and related technical
                                                 assistance to your enterprise, ensuring long-term impact and
@@ -468,13 +454,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.`)"
                                                 value="To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector."
-                                                name="areas_of_company_benefit[]" {{(in_array("To raise awareness and
-                                                implement pilot programs on RECP, aimed at enhancing productivity
-                                                through efficient use of manufacturing inputs (water, chemicals, and
-                                                materials), minimizing waste and emissions, and promoting regulatory
-                                                compliance while boosting competitiveness within your industrial
-                                                sector.", array_column($company_benefits->toArray(), 'benefit_title')))?
-                                            "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To raise awareness and implement pilot programs on RECP, aimed at enhancing productivity through efficient use of manufacturing inputs (water, chemicals, and materials), minimizing waste and emissions, and promoting regulatory compliance while boosting competitiveness within your industrial sector.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To raise awareness and implement
                                                 pilot programs on RECP, aimed at enhancing productivity through
                                                 efficient use of manufacturing inputs (water, chemicals, and
@@ -488,11 +469,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.`)"
                                                 value="To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs."
-                                                name="areas_of_company_benefit[]" {{(in_array("To enhance the adoption
-                                                of RECP practices and associated investments by providing a targeted
-                                                financial assistance package for companies participating in RECP pilot
-                                                programs.", array_column($company_benefits->toArray(),
-                                            'benefit_title')))? "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To enhance the adoption of RECP practices and associated investments by providing a targeted financial assistance package for companies participating in RECP pilot programs.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To enhance the adoption of RECP
                                                 practices and associated investments by providing a targeted
                                                 financial assistance package for companies participating in RECP
@@ -504,12 +482,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeUtmostBenefit(this, '{{$company->company_id}}', `To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.`)"
                                                 value="To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects."
-                                                name="areas_of_company_benefit[]" {{(in_array("To deliver the
-                                                cost-saving benefits of RECP to your industrial manufacturing sector by
-                                                facilitating greater access to financial mechanisms—both commercial and
-                                                government—to support the financing of RECP projects.",
-                                                array_column($company_benefits->toArray(),
-                                            'benefit_title')))? "checked": ""}}>
+                                                name="areas_of_company_benefit[]"
+                                                {{ in_array("To deliver the cost-saving benefits of RECP to your industrial manufacturing sector by facilitating greater access to financial mechanisms—both commercial and government—to support the financing of RECP projects.", array_column($company_benefits->toArray(), 'benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> To deliver the cost-saving
                                                 benefits of RECP to your industrial manufacturing sector by
                                                 facilitating greater access to financial mechanisms—both commercial
@@ -525,10 +499,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a minimum 20% reduction in energy consumption within one year.`)"
                                                 value="Achieve a minimum 20% reduction in energy consumption within one year."
-                                                name="environment_health_benefit[]" {{(in_array("Achieve a minimum 20%
-                                                reduction in energy consumption within one year.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Achieve a minimum 20% reduction in energy consumption within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Achieve a minimum 20% reduction
                                                 in energy consumption within one year. </label>
                                         </div>
@@ -536,12 +508,10 @@
                                     <div class="col-md-12 mt-md-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
-                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months.`)"
-                                                value="Achieve a 40% reduction in CO<sub>2</sub> emissions within 18 months."
-                                                name="environment_health_benefit[]" {{(in_array("Achieve a 40% reduction
-                                                in CO<sub>2</sub> emissions within 18 months.",
-                                            array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 40% reduction in CO2 emissions within 18 months.`)"
+                                                value="Achieve a 40% reduction in CO2 emissions within 18 months."
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Achieve a 40% reduction in CO2 emissions within 18 months.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Achieve a 40% reduction in
                                                 CO<sub>2</sub> emissions within 18 months.</label>
                                         </div>
@@ -551,10 +521,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Double your water productivity within one year.`)"
                                                 value="Double your water productivity within one year."
-                                                name="environment_health_benefit[]" {{(in_array("Double your water
-                                                productivity within one year.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Double your water productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Double your water productivity
                                                 within one year. </label>
                                         </div>
@@ -564,10 +532,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve a 50% increase in overall material productivity within one year.`)"
                                                 value="Achieve a 50% increase in overall material productivity within one year."
-                                                name="environment_health_benefit[]" {{(in_array("Achieve a 50% increase
-                                                in overall material productivity within one year.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Achieve a 50% increase in overall material productivity within one year.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Achieve a 50% increase in
                                                 overall material productivity within one year. </label>
                                         </div>
@@ -577,11 +543,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.`)"
                                                 value="Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices."
-                                                name="environment_health_benefit[]" {{(in_array("Attain ISO 14000
-                                                certification to demonstrate your commitment to effective environmental
-                                                management and sustainability practices.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Attain ISO 14000 certification to demonstrate your commitment to effective environmental management and sustainability practices.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Attain ISO 14000 certification
                                                 to demonstrate your commitment to effective environmental management
                                                 and sustainability practices. </label>
@@ -592,10 +555,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve an increase in overall annual financial savings.`)"
                                                 value="Achieve an increase in overall annual financial savings."
-                                                name="environment_health_benefit[]" {{(in_array("Achieve an increase in
-                                                overall annual financial savings.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Achieve an increase in overall annual financial savings.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Achieve an increase in overall
                                                 annual financial savings. </label>
                                         </div>
@@ -605,10 +566,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Enhance customer satisfaction through improved products, services, and overall experience.`)"
                                                 value="Enhance customer satisfaction through improved products, services, and overall experience."
-                                                name="environment_health_benefit[]" {{(in_array("Enhance customer
-                                                satisfaction through improved products, services, and overall
-                                                experience.", array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Enhance customer satisfaction through improved products, services, and overall experience.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Enhance customer satisfaction
                                                 through improved products, services, and overall experience.
                                             </label>
@@ -619,11 +578,8 @@
                                             <input class="form-check-input" type="checkbox" role="switch" id=""
                                                 onchange="ChangeEnvironmentalBenefit(this, '{{$company->company_id}}', `Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.`)"
                                                 value="Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management."
-                                                name="environment_health_benefit[]" {{(in_array("Achieve ISO 15000
-                                                series certification to demonstrate adherence to international standards
-                                                for information and communication technology management.",
-                                                array_column($company_enviromental_benefits->toArray(),
-                                            'environmental_benefit_title')))? "checked": ""}}>
+                                                name="environment_health_benefit[]"
+                                                {{ in_array("Achieve ISO 15000 series certification to demonstrate adherence to international standards for information and communication technology management.", array_column($company_enviromental_benefits->toArray(), 'environmental_benefit_title')) ? "checked" : "" }}>
                                             <label class="form-check-label" for=""> Achieve ISO 15000 series
                                                 certification to demonstrate adherence to international standards
                                                 for information and communication technology management. </label>
@@ -786,23 +742,19 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Attitudinal change (negligence attitude).`)"
                                                     value="Attitudinal change (negligence attitude)."
-                                                    name="house_keeping[]" {{(in_array("Attitudinal change (negligence
-                                                    attitude).", array_column($company_house_keeping->toArray(),
-                                                'practice_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Attitudinal change
-                                                    (negligence attitude). </label>
+                                                    name="house_keeping[]"
+                                                    {{ in_array("Attitudinal change (negligence attitude).", array_column($company_house_keeping->toArray(), 'practice_title')) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Attitudinal change (negligence attitude). </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Improved workplace management.`)"
-                                                    value="Improved workplace management." name="house_keeping[]"
-                                                    {{(in_array("Improved workplace management.",
-                                                    array_column($company_house_keeping->toArray(),
-                                                'practice_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Improved Workplace
-                                                    management. </label>
+                                                    value="Improved workplace management."
+                                                    name="house_keeping[]"
+                                                    {{ in_array("Improved workplace management.", array_column($company_house_keeping->toArray(), 'practice_title')) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Improved Workplace management. </label>
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-2">
@@ -810,22 +762,18 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Good operating practices(personel practices, waste segregation etc.).`)"
                                                     value="Good operating practices(personel practices, waste segregation etc.)."
-                                                    name="house_keeping[]" {{(in_array("Good operating
-                                                    practices(personel practices, waste segregation etc.).",
-                                                    array_column($company_house_keeping->toArray(),
-                                                'practice_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Good operating
-                                                    practices(personel practices, waste segregation etc.). </label>
+                                                    name="house_keeping[]"
+                                                    {{ in_array("Good operating practices(personel practices, waste segregation etc.).", array_column($company_house_keeping->toArray(), 'practice_title')) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Good operating practices(personel practices, waste segregation etc.). </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeGoodHouseKeeping(this, '{{$company->company_id}}', `Workers motivation.`)"
-                                                    value="Workers motivation." name="house_keeping[]"
-                                                    {{(in_array("Workers motivation.",
-                                                    array_column($company_house_keeping->toArray(),
-                                                'practice_title')))? "checked": ""}}>
+                                                    value="Workers motivation."
+                                                    name="house_keeping[]"
+                                                    {{ in_array("Workers motivation.", array_column($company_house_keeping->toArray(), 'practice_title')) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Workers motivation. </label>
                                             </div>
                                         </div>
@@ -926,14 +874,18 @@
                                 <!-- waste reduction measures -->
                                 <div class="tab-pane fade" id="process-waste-reduction-measures">
                                     <div class="row mb-2">
+                                        @php
+                                            // Get all checked waste reduction titles as an array for easy lookup
+                                            $checkedWasteReductions = array_column($company_waste_reduction_measures->toArray(), 'waste_reduction_title');
+                                        @endphp
+
                                         <div class="col-md-6">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Water recycling flow.`)"
                                                     id="" value="Water recycling flow."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Water recycling
-                                                    flow.", array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Water recycling flow.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Water recycling flow.
                                                 </label>
                                             </div>
@@ -943,10 +895,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Waste water treatment.`)"
                                                     value="Waste water treatment."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Waste water
-                                                    treatment.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Waste water treatment.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Waste water treatment.
                                                 </label>
                                             </div>
@@ -956,10 +906,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Monitoring of the quality and quantity of waste water.`)"
                                                     value="Monitoring of the quality and quantity of waste water."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Monitoring of
-                                                    the quality and quantity of waste water.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Monitoring of the quality and quantity of waste water.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Monitoring of the quality
                                                     and quantity of wastewater. </label>
                                             </div>
@@ -969,11 +917,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Using production equipment or technology that supports energy/resource-efficient production.`)"
                                                     value="Using production equipment or technology that supports energy/resource-efficient production."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Using production
-                                                    equipment or technology that supports energy/resource-efficient
-                                                    production.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Using production equipment or technology that supports energy/resource-efficient production.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Using production equipment
                                                     or technology that supports energy/resource-efficient
                                                     production. </label>
@@ -984,10 +929,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of waste for internal energy sources.`)"
                                                     value="Use of waste for internal energy sources."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Use of waste for
-                                                    internal energy sources.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Use of waste for internal energy sources.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Use of waste for internal
                                                     energy sources. </label>
                                             </div>
@@ -997,10 +940,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Installation of lighting sensor.`)"
                                                     value="Installation of lighting sensor."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Installation of
-                                                    lighting sensor.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Installation of lighting sensor.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Installation of lighting
                                                     sensor. </label>
                                             </div>
@@ -1010,10 +951,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Utilization of sunlight for daytime lighting.`)"
                                                     value="Utilization of sunlight for daytime lighting."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Utilization of
-                                                    sunlight for daytime lighting.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Utilization of sunlight for daytime lighting.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Utilization of sunlight for
                                                     daytime lighting. </label>
                                             </div>
@@ -1023,10 +962,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Use of enviromentally friendly/renewable energy.`)"
                                                     value="Use of enviromentally friendly/renewable energy."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Use of
-                                                    enviromentally friendly/renewable energy.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Use of enviromentally friendly/renewable energy.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Use of enviromentally
                                                     friendly/renewable energy. </label>
                                             </div>
@@ -1036,10 +973,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Recording of fuel usage.`)"
                                                     value="Recording of fuel usage."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Recording of
-                                                    fuel usage.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Recording of fuel usage.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Recording of fuel usage.
                                                 </label>
                                             </div>
@@ -1049,10 +984,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Minimize the use of generating sets.`)"
                                                     value="Minimize the use of generating sets."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Minimize the use
-                                                    of generating sets.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Minimize the use of generating sets.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Minimize the use of
                                                     generating sets. </label>
                                             </div>
@@ -1062,10 +995,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Substitute high yield pollutant raw materials with other less polluting materials.`)"
                                                     value="Substitute high yield pollutant raw materials with other less polluting materials."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Substitute high
-                                                    yield pollutant raw materials with other less polluting materials.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Substitute high yield pollutant raw materials with other less polluting materials.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Substitute high yield
                                                     pollutant raw materials with other less polluting materials.
                                                 </label>
@@ -1076,10 +1007,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Maintain the unit process/equipment to minimize emission of pollutants.`)"
                                                     value="Maintain the unit process/equipment to minimize emission of pollutants."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Maintain the
-                                                    unit process/equipment to minimize emission of pollutants.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Maintain the unit process/equipment to minimize emission of pollutants.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Maintain the unit
                                                     process/equipment to minimize emission of pollutants. </label>
                                             </div>
@@ -1089,10 +1018,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Diluting the air pollutants.`)"
                                                     value="Diluting the air pollutants."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Diluting the air
-                                                    pollutants.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Diluting the air pollutants.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Diluting the air pollutants.
                                                 </label>
                                             </div>
@@ -1102,11 +1029,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Plant flowers and trees around the premises to reduce large number of pollutants in the air.`)"
                                                     value="Plant flowers and trees around the premises to reduce large number of pollutants in the air."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Plant flowers
-                                                    and trees around the premises to reduce large number of pollutants
-                                                    in the air.",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Plant flowers and trees around the premises to reduce large number of pollutants in the air.", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Plant flowers and trees
                                                     around the premises to reduce large number of pollutants in the
                                                     air. </label>
@@ -1117,11 +1041,8 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeWasteReductionMeasures(this, '{{$company->company_id}}', `Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).`)"
                                                     value="Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy)."
-                                                    name="RECP_waste_reduction_measures[]" {{(in_array("Fuel
-                                                    substituting(petrol and diesel can be replaced with compressed
-                                                    natural gas, solar and wind energy).",
-                                                    array_column($company_waste_reduction_measures->toArray(),
-                                                'waste_reduction_title')))? "checked": ""}}>
+                                                    name="RECP_waste_reduction_measures[]"
+                                                    {{ in_array("Fuel substituting(petrol and diesel can be replaced with compressed natural gas, solar and wind energy).", $checkedWasteReductions) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Fuel substituting(petrol and
                                                     diesel can be replaced with compressed natural gas, solar and
                                                     wind energy). </label>
@@ -1205,17 +1126,19 @@
                                 <!--  -->
                                 <div class="tab-pane fade" id="product-recovery">
                                     <div class="row mb-2">
+                                        @php
+                                            // Get all checked product recovery method titles as an array for easy lookup
+                                            $checkedProductRecoveryMethods = array_column($company_product_recovery_measures->toArray(), 'recovery_method_title');
+                                        @endphp
+
                                         <div class="col-md-6">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `High temperature recovery method`)"
                                                     value="High temperature recovery method"
-                                                    name="product_recovery_measures[]" {{(in_array("High temperature
-                                                    recovery method",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> High temperature recovery
-                                                    method </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("High temperature recovery method", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> High temperature recovery method </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -1223,12 +1146,9 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using correct material ratio`)"
                                                     value="Using correct material ratio"
-                                                    name="product_recovery_measures[]" {{(in_array("Using correct
-                                                    material ratio",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Using correct material ratio
-                                                </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Using correct material ratio", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Using correct material ratio </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
@@ -1236,12 +1156,9 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Using standard measuring equipment`)"
                                                     value="Using standard measuring equipment"
-                                                    name="product_recovery_measures[]" {{(in_array("Using standard
-                                                    measuring equipment",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Using standard measuring
-                                                    equipment </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Using standard measuring equipment", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Using standard measuring equipment </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
@@ -1249,12 +1166,9 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate chemical/ material storage facility`)"
                                                     value="Adequate chemical/ material storage facility"
-                                                    name="product_recovery_measures[]" {{(in_array("Adequate chemical/
-                                                    material storage facility",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Adequate chemical/ material
-                                                    storage facility </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Adequate chemical/ material storage facility", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Adequate chemical/ material storage facility </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
@@ -1262,22 +1176,18 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Adequate container seal to prevent spill`)"
                                                     value="Adequate container seal to prevent spill"
-                                                    name="product_recovery_measures[]" {{(in_array("Adequate container
-                                                    seal to prevent spill",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Adequate container seal to
-                                                    prevent spill </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Adequate container seal to prevent spill", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Adequate container seal to prevent spill </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Recycling`)"
-                                                    value="Recycling" name="product_recovery_measures[]"
-                                                    {{(in_array("Recycling",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
+                                                    value="Recycling"
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Recycling", $checkedProductRecoveryMethods) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Recycling </label>
                                             </div>
                                         </div>
@@ -1285,10 +1195,9 @@
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Filtration`)"
-                                                    value="Filtration" name="product_recovery_measures[]"
-                                                    {{(in_array("Filtration",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
+                                                    value="Filtration"
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Filtration", $checkedProductRecoveryMethods) ? "checked" : "" }}>
                                                 <label class="form-check-label" for=""> Filtration </label>
                                             </div>
                                         </div>
@@ -1297,12 +1206,9 @@
                                                 <input class="form-check-input" type="checkbox" role="switch" id=""
                                                     onchange="ChangeProductRecoveryMeasure(this, '{{$company->company_id}}', `Extended Producer Responsibility(EPR)`)"
                                                     value="Extended Producer Responsibility(EPR)"
-                                                    name="product_recovery_measures[]" {{(in_array("Extended Producer
-                                                    Responsibility(EPR)",
-                                                    array_column($company_product_recovery_measures->toArray(),
-                                                'recovery_method_title')))? "checked": ""}}>
-                                                <label class="form-check-label" for=""> Extended Producer
-                                                    Responsibility(EPR) </label>
+                                                    name="product_recovery_measures[]"
+                                                    {{ in_array("Extended Producer Responsibility(EPR)", $checkedProductRecoveryMethods) ? "checked" : "" }}>
+                                                <label class="form-check-label" for=""> Extended Producer Responsibility(EPR) </label>
                                             </div>
                                         </div>
 
@@ -6172,6 +6078,64 @@
             </div>
         </div>
     </div>
+    <!-- Task Metrics Modal -->
+    <div class="modal fade" id="taskMetricsModal" tabindex="-1" aria-labelledby="taskMetricsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" style="min-height: 80vh;">
+            <div class="modal-content shadow-lg border-0 rounded-3" style="min-height: 75vh;">
+                <form id="task-metrics-form" method="post">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="task_schedule_id">
+
+                    <div class="modal-header bg-primary text-white rounded-top">
+                        <h5 class="modal-title fw-bold" id="taskMetricsModalLabel">
+                            <i class="las la-flask me-2"></i> Task Metrics: Expected Quantities
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label for="expected_chemical_quantity" class="form-label fw-semibold">Expected Chemical Quantity</label>
+                                <input type="number" class="form-control" id="expected_chemical_quantity" name="expected_chemical_quantity" min="0" step="any" placeholder="Enter expected chemical quantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expected_material_quantity" class="form-label fw-semibold">Expected Material Quantity</label>
+                                <input type="number" class="form-control" id="expected_material_quantity" name="expected_material_quantity" min="0" step="any" placeholder="Enter expected material quantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expected_water_quantity" class="form-label fw-semibold">Expected Water Quantity (Liters)</label>
+                                <input type="number" class="form-control" id="expected_water_quantity" name="expected_water_quantity" min="0" step="any" placeholder="Enter expected water quantity" required>
+                            </div>
+                        </div>
+                        <div class="col-12 text-end mb-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2 shadow-sm">
+                                <i class="las la-save"></i> Save Metrics
+                            </button>
+                        </div>
+                    </div>
+                </form>
+               
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0 w-100" id="tbl-task-metrics">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Chemical Quantity</th>
+                                        <th>Material Quantity</th>
+                                        <th>Water Quantity (L)</th>
+                                        <th >Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Metrics rows will be dynamically loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    
+            </div>
+        </div>
+    </div>
+    <!-- End Task Metrics Modal -->
     <!-- End Task Scheduling Modal -->
     <!-- Assign Employee to Task Modal -->
     <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
@@ -13378,6 +13342,10 @@ if (editForm) {
                 className: 'text-end',
                 render: (data, type, row) => `
                     <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-secondary btn-sm setup-task-metrics">
+                        <i class="las la-chart-bar"></i> Metrics
+                    </button>
+                    </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="editTaskSchedule('${row.schedule_id}')">
                             <i class="las la-edit"></i> Edit
                         </button>
@@ -13543,6 +13511,7 @@ if (editForm) {
         }
     });
 
+    
     // Edit task schedule
     window.editTaskSchedule = async function(id) {
         let schedule = taskSchedulingTable.row($(`button[onclick="editTaskSchedule('${id}')"]`).parents('tr')).data();
@@ -13731,9 +13700,147 @@ if (editForm) {
             }
         });
     };
+    // Show task metrics modal
+    $(document).on('click', '.setup-task-metrics', async function() {
+        const rowData = taskSchedulingTable.row($(this).closest('tr')).data();
+        const scheduleId = rowData.task_schedule_id || rowData.schedule_id || rowData.id || '';
+        document.querySelector('#task-metrics-form input[name="task_schedule_id"]').value = scheduleId;
+        const taskMetricsModal = new bootstrap.Modal(document.getElementById('taskMetricsModal'));
+        taskMetricsModal.show();
+    });
+   // Initialize the DataTable
+const taskMetricsHistoryTable = $('#tbl-task-metrics').DataTable({
+    paging: true,
+    searching: true,
+    ordering: false,
+    responsive: true,
+    data: [],
+    columns: [
+        { data: 'expected_chemical_quantity' },           // Chemical Quantity
+        { data: 'expected_material_quantity' },           // Material Quantity
+        { data: 'expected_water_quantity' },              // Water Quantity (L)
+        {
+            data: null,                                   // Action buttons
+            orderable: false,
+            className: 'text-center',                        // Align right
+            render: (data, type, row) => `
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="editTaskMetrics('${row.task_metrics_id}')">
+                        <i class="las la-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteTaskMetrics('${row.task_metrics_id}')">
+                        <i class="las la-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `
+        }
+    ]
+});
+
+// Fetch and reload task metrics
+async function reloadTaskMetrics(scheduleId) {
+    if (!scheduleId) return;
+
+    const url = `/admin/get-task-schedule-metrics/${scheduleId}`;
+    try {
+        const response = await fetch_cycle('--Reload Task Metrics', url, 'GET');
+        if (response.status === "success" && Array.isArray(response.task_schedule_metrics)) {
+            const metrics = response.task_schedule_metrics.map(metric => ({
+                expected_chemical_quantity: metric.expected_chemical_quantity || "N/A",
+                expected_material_quantity: metric.expected_material_quantity || "N/A",
+                expected_water_quantity: metric.expected_water_quantity || "N/A",
+                task_metrics_id: metric.task_schedule_metric_id || metric.id || "N/A"
+            }));
+            taskMetricsHistoryTable.clear().rows.add(metrics).draw();
+        } else {
+            taskMetricsHistoryTable.clear().draw();
+        }
+    } catch (error) {
+        console.error("Error reloading task metrics:", error);
+        taskMetricsHistoryTable.clear().draw();
+    }
+}
+
+// Handle form submission
+document.getElementById('task-metrics-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const scheduleId = formData.get('task_schedule_id');
+    const url = "{{ route('admin.store-task-metrics') }}";
+
+    try {
+        const result = await fetch_cycle('--Store Task Metrics', url, 'POST', formData);
+        if (result.status === 'success') {
+            await reloadTaskMetrics(scheduleId);
+            this.reset();
+        } else {
+            console.warn('Task metric store failed:', result);
+        }
+    } catch (error) {
+        console.error('Error storing task metrics:', error);
+    }
+});
+
+// Fetch when modal opens
+$('#taskMetricsModal').on('shown.bs.modal', async function () {
+    const scheduleId = document.querySelector('#task-metrics-form input[name="task_schedule_id"]').value;
+    await reloadTaskMetrics(scheduleId);
+});
 
 
-    </script>
+    // Edit task metrics
+    window.editTaskMetrics = async function(id) {
+        let metric;
+        try {
+            const response = await fetch(`/admin/get-task-metrics-by-id/${id}`);
+            if (response.ok) {
+                metric = await response.json();
+            }
+        } catch (error) {
+            console.error('Failed to fetch task metrics:', error);
+            return;
+        }
+        if (metric) {
+            document.querySelector('#task-metrics-form input[name="expected_chemical_quantity"]').value = metric.expected_chemical_quantity || "";
+            document.querySelector('#task-metrics-form input[name="expected_material_quantity"]').value = metric.expected_material_quantity || "";
+            document.querySelector('#task-metrics-form input[name="expected_water_quantity"]').value = metric.expected_water_quantity || "";
+            document.querySelector('#task-metrics-form input[name="task_metrics_id"]').value = metric.task_metrics_id || metric.id || "";
+        }
+    };
+
+    // Delete task metrics
+    window.deleteTaskMetrics = function(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this task metrics entry?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const url = `/admin/task-metrics/${id}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        taskMetricsHistoryTable.row($(`button[onclick="deleteTaskMetrics('${id}')"]`).parents('tr')).remove().draw();
+                        Swal.fire('Deleted!', 'Task metrics entry has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Error!', data.message || 'Failed to delete task metrics.', 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                }
+            }
+        });
+    };
+        </script>
      <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>

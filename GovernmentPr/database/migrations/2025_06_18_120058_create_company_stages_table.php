@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('workflow_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->decimal('estimated_time', 8, 2)->default(0.00); // Estimated time in hours
             $table->integer('sequence')->default(0);
             $table->string('status')->default('Pending');
             $table->timestamps();
