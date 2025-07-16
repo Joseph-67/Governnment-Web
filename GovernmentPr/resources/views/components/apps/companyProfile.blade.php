@@ -5800,6 +5800,49 @@
             </div>
         </div>
     </div>
+    <!-- End Stage Management Modal -->
+    <!-- Estimated Time Stage Modal (Improved Design & Pop-Out) -->
+    <div class="modal fade" id="setStageDurationModal" tabindex="-1" aria-labelledby="estimatedTimeStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg animate__animated animate__zoomIn">
+            <div class="modal-content shadow-lg border-0 rounded-4">
+                <form id="estimated-time-stage-form" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="stage_id" id="estimated_time_stage_id">
+                    <div class="modal-header bg-gradient-primary text-white rounded-top-4">
+                        <h5 class="modal-title fw-bold" id="estimatedTimeStageModalLabel">
+                            <i class="las la-clock me-2"></i> Set Estimated Time for Stage
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="estimated_time_stage_name" class="form-label fw-semibold">Stage Name</label>
+                                <input type="text" class="form-control" id="estimated_time_stage_name" name="stage_name" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estimated_time" class="form-label fw-semibold">Estimated Time (hours)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="estimated_time" name="estimated_time" min="0" step="0.01" placeholder="Enter estimated time" required>
+                                    <span class="input-group-text"><i class="las la-hourglass-half"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="las la-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-info px-4 fw-bold">
+                            <i class="las la-save"></i> Save Estimated Time
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Estimated Time Stage Modal -->
     <!-- Edit Stage Modal -->
     <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-3" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -12959,6 +13002,43 @@ if (editForm) {
                         <button class="btn btn-outline-danger btn-sm" onclick="deleteStage('${row.stage_id}')">
                             <i class="las la-trash-alt"></i> Delete
                         </button>
+                        <div class="dropdown d-inline-block">
+                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="las la-ellipsis-h"></i> More
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="viewStageDetails('${row.stage_id}')">
+                                        <i class="las la-eye"></i> View Details
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="duplicateStage('${row.stage_id}')">
+                                        <i class="las la-copy"></i> Duplicate
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="archiveStage('${row.stage_id}')">
+                                        <i class="las la-archive"></i> Archive
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="setStageDuration('${row.stage_id}', '${row.stage_name}', '${row.estimated_time || ''}')">
+                                        <i class="las la-clock"></i> Estimated Time
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="inputMaterial('${row.stage_id}')">
+                                        <i class="las la-cube"></i> Input Material
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="outputMaterial('${row.stage_id}')">
+                                        <i class="las la-box"></i> Output Material
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 `
             }
@@ -13036,6 +13116,18 @@ if (editForm) {
         }
     });
 
+    // Estimated Time Management
+    window.setStageDuration = function(id, stage_name, estimated_time="") {
+        // Get stage data from DataTable row
+        
+        // Populate modal fields
+        document.getElementById('estimated_time_stage_id').value = id || "";
+        document.getElementById('estimated_time_stage_name').value = stage_name  || "";
+        document.getElementById('estimated_time').value = estimated_time || "";
+
+        // Show modal
+        new bootstrap.Modal(document.getElementById('setStageDurationModal')).show();
+    };
     // Edit stage
     window.editStage = async function(id) {
         // Optionally fetch the latest stage data from the server
