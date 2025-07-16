@@ -5800,6 +5800,49 @@
             </div>
         </div>
     </div>
+    <!-- End Stage Management Modal -->
+    <!-- Estimated Time Stage Modal (Improved Design & Pop-Out) -->
+    <div class="modal fade" id="setStageDurationModal" tabindex="-1" aria-labelledby="estimatedTimeStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg animate__animated animate__zoomIn">
+            <div class="modal-content shadow-lg border-0 rounded-4">
+                <form id="estimated-time-stage-form" autocomplete="off">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                    <input type="hidden" name="stage_id" id="estimated_time_stage_id">
+                    <div class="modal-header bg-gradient-primary text-white rounded-top-4">
+                        <h5 class="modal-title fw-bold" id="estimatedTimeStageModalLabel">
+                            <i class="las la-clock me-2"></i> Set Estimated Time for Stage
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="estimated_time_stage_name" class="form-label fw-semibold">Stage Name</label>
+                                <input type="text" class="form-control" id="estimated_time_stage_name" name="stage_name" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estimated_time" class="form-label fw-semibold">Estimated Time (hours)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="estimated_time" name="estimated_time" min="0" step="0.01" placeholder="Enter estimated time" required>
+                                    <span class="input-group-text"><i class="las la-hourglass-half"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="las la-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-info px-4 fw-bold">
+                            <i class="las la-save"></i> Save Estimated Time
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Estimated Time Stage Modal -->
     <!-- Edit Stage Modal -->
     <div class="modal fade animate__animated animate__fadeInDown" id="editStageModal" tabindex="-3" aria-labelledby="editStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -6141,7 +6184,7 @@
     <div class="modal fade" id="assignEmployeeToTaskModal" tabindex="-1" aria-labelledby="assignEmployeeToTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
-                <form id="assign-employee-task-form" method="post" autocomplete="off">
+                <form id="assign-employee-task-form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                     <input type="hidden" name="task_id" id="assign_task_id">
@@ -6153,13 +6196,14 @@
                     </div>
                     <div class="modal-body bg-light">
                         <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="employee_select" class="form-label">Select Employee(s)</label>
-                                <select class="form-select" id="employee_select" name="employee_ids[]" multiple required>
-                                    <!-- Options should be populated dynamically via JS or server-side -->
-                                </select>
+                            <div class="col-md-6">
+                                <div class="taggable-container " id="manager-tag-input-6">
+                                    <label for="manager" class="form-label">Employee</label>
+                                    <div class="manager-tag-input-6 manager-tag-input border-primary bg-light">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="assignment_note" class="form-label">Assignment Note (optional)</label>
                                 <textarea class="form-control" id="assignment_note" name="assignment_note" rows="2" placeholder="Add any notes for the assignee(s)"></textarea>
                             </div>
@@ -6178,7 +6222,39 @@
         </div>
     </div>
     <!-- End Assign Employee to Task Modal -->
-     <!-- End Task Management Modal -->
+    <!-- Employee Assignment Management Table Modal -->
+    <div class="modal fade" id="employeeAssignmentManagementModal" tabindex="-1" aria-labelledby="employeeAssignmentManagementModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <div class="modal-header bg-gradient-primary text-white rounded-top">
+                    <h5 class="modal-title fw-bold" id="employeeAssignmentManagementModalLabel">
+                        <i class="las la-users-cog me-2"></i> Employee Assignment Management
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0 w-100" id="tbl-employee-assignment-management">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Email</th>
+                                    <th>Assigned Task</th>
+                                    <th>Assignment Note</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Employee Assignment Management Table Modal -->
     <!-- end workflow management -->
 
      <!-- Annual operations activity -->
@@ -12466,6 +12542,7 @@ if (editForm) {
     let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
     let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
     let  manager_5 =  new TaggingComponent('manager-tag-input-5', 'manager-tag-input-5');
+    let  manager_6 =  new TaggingComponent('manager-tag-input-6', 'manager-tag-input-6');
   </script>
   <!-- Department -->
    <script>
@@ -12925,6 +13002,43 @@ if (editForm) {
                         <button class="btn btn-outline-danger btn-sm" onclick="deleteStage('${row.stage_id}')">
                             <i class="las la-trash-alt"></i> Delete
                         </button>
+                        <div class="dropdown d-inline-block">
+                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="las la-ellipsis-h"></i> More
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="viewStageDetails('${row.stage_id}')">
+                                        <i class="las la-eye"></i> View Details
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="duplicateStage('${row.stage_id}')">
+                                        <i class="las la-copy"></i> Duplicate
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="archiveStage('${row.stage_id}')">
+                                        <i class="las la-archive"></i> Archive
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="setStageDuration('${row.stage_id}', '${row.stage_name}', '${row.estimated_time || ''}')">
+                                        <i class="las la-clock"></i> Estimated Time
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="inputMaterial('${row.stage_id}')">
+                                        <i class="las la-cube"></i> Input Material
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="outputMaterial('${row.stage_id}')">
+                                        <i class="las la-box"></i> Output Material
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 `
             }
@@ -13002,6 +13116,18 @@ if (editForm) {
         }
     });
 
+    // Estimated Time Management
+    window.setStageDuration = function(id, stage_name, estimated_time="") {
+        // Get stage data from DataTable row
+        
+        // Populate modal fields
+        document.getElementById('estimated_time_stage_id').value = id || "";
+        document.getElementById('estimated_time_stage_name').value = stage_name  || "";
+        document.getElementById('estimated_time').value = estimated_time || "";
+
+        // Show modal
+        new bootstrap.Modal(document.getElementById('setStageDurationModal')).show();
+    };
     // Edit stage
     window.editStage = async function(id) {
         // Optionally fetch the latest stage data from the server
@@ -13277,7 +13403,6 @@ if (editForm) {
             });
         }
     });
-
     // Task Scheduling Management
     // Initialize DataTable for Task Scheduling
     const taskSchedulingTable = $('#tbl-task-scheduling').DataTable({
@@ -13606,7 +13731,6 @@ if (editForm) {
         modal.show();
     };
 
-
     // Edit task
     window.editTask = async function(id) {
         let task = taskTable.row($(`button[onclick="editTask('${id}')"]`).parents('tr')).data();
@@ -13633,9 +13757,7 @@ if (editForm) {
             const modal = new bootstrap.Modal(document.getElementById('editStageTaskModal'));
             modal.show();
             
-        } 
-
-        
+        }
     };
 
     // Handle task edit form submission
@@ -13840,7 +13962,71 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             }
         });
     };
-        </script>
-     <!-- End Task Management -->
+
+            // Employee Assignment Management
+            // Initialize DataTable for Employee Assignment Management
+            const employeeAssignmentTable = $('#tbl-employee-assignment-management').DataTable({
+                paging: true,
+                searching: true,
+                ordering: false,
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [4] } // Action column
+                ],
+                data: [],
+                columns: [
+                    { data: 'employee_name', title: 'Employee Name' },
+                    { data: 'email', title: 'Email' },
+                    { data: 'job_title', title: 'Job Title' },
+                    { data: 'assignment_status', title: 'Status' },
+                    {
+                        data: null,
+                        title: 'Action',
+                        className: 'text-end',
+                        render: (data, type, row) => `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-danger btn-sm" onclick="removeEmployeeAssignment('${row.assignment_id}')">
+                                    <i class="las la-trash-alt"></i> Remove
+                                </button>
+                            </div>
+                        `
+                    }
+                ]
+            });
+            
+            // Show Employee Assignment Management Modal for a task
+            window.viewEmployeeAssignmentManagement = function(taskId) {
+                // Fetch and display assigned employees for the selected task
+                (async () => {
+                    const url = `/admin/get-task-assignees/${taskId}`;
+                    try {
+                        const data = await fetchFieldInput(url);
+                        if (data.status === "success" && Array.isArray(data.assignees)) {
+                            const assignees = data.assignees.map(assignee => ({
+                                employee_name: assignee.name || assignee.full_name || "N/A",
+                                email: assignee.email || "N/A",
+                                job_title: assignee.job_title || "N/A",
+                                assignment_status: assignee.status || "N/A",
+                                assignment_id: assignee.assignment_id || assignee.id || "N/A"
+                            }));
+                            employeeAssignmentTable.clear().rows.add(assignees).draw();
+                        } else {
+                            employeeAssignmentTable.clear().draw();
+                        }
+                    } catch (error) {
+                        console.error("Error fetching task assignees:", error);
+                        employeeAssignmentTable.clear().draw();
+                    }
+                })();
+
+                // Show the employee assignment management modal
+                const modal = new bootstrap.Modal(document.getElementById('employeeAssignmentManagementModal'));
+                modal.show();
+            };
+
+            // Remove employee assignment from task
+            
+    </script>
+    <!-- End Task Management -->
     @endsection
 </x-layouts.admin-app>

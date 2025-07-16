@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        if (!Schema::hasTable('users')) {
+            Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
@@ -25,7 +26,8 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
-        });
+            });
+        }
     }
 
     /**
