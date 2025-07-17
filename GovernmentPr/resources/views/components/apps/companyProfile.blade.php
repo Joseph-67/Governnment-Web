@@ -5765,10 +5765,10 @@
                                 <label for="stage_status" class="form-label">Status</label>
                                 <select class="form-select" id="stage_status" name="stage_status" required>
                                     <option value="" selected disabled>Select Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="in_progress">In Progress</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="halted">Halted</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -5801,6 +5801,74 @@
         </div>
     </div>
     <!-- End Stage Management Modal -->
+    <!-- View Single Company Stage Modal (Enhanced UI/UX) -->
+    <div class="modal fade" id="viewSingleCompanyStageModal" tabindex="-1" aria-labelledby="viewSingleCompanyStageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-4">
+                <div class="modal-header bg-gradient-primary text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold" id="viewSingleCompanyStageModalLabel">
+                        <i class="las la-layer-group me-2"></i> Stage Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="stage-icon mb-3">
+                                <i class="las la-stream" style="font-size: 3rem; color: #22c55e;"></i>
+                            </div>
+                            <h3 class="fw-bold text-primary mb-1" id="stage_name_preview">Stage Name</h3>
+                            <span class="badge bg-info text-white px-3 py-2" id="stage_status_preview">Status</span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Description</label>
+                                <div class="p-2 rounded bg-white border" id="stage_description_preview">Stage description goes here.</div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Sequence Order</label>
+                                    <div class="p-2 rounded bg-white border" id="stage_sequence_order_preview">1</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Estimated Time (hrs)</label>
+                                    <div class="p-2 rounded bg-white border" id="stage_estimated_time_preview">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Tasks in this Stage</label>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered mb-0" id="tbl-stage-tasks-preview">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Task Title</th>
+                                            <th>Supervisor</th>
+                                            <th>Due Date</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic rows will be appended here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="las la-times"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End View Single Company Stage Modal -->
     <!-- Estimated Time Stage Modal (Improved Design & Pop-Out) -->
     <div class="modal fade" id="setStageDurationModal" tabindex="-1" aria-labelledby="estimatedTimeStageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-lg animate__animated animate__zoomIn">
@@ -13116,6 +13184,68 @@ if (editForm) {
         }
     });
 
+    // View stage details using modal
+    window.viewStageDetails = async function(id) {
+        let stage;
+        try {
+            const response = await fetch_cycle('--Fetch Stage Details', `/admin/company-stages/${id}`, 'GET');
+            if (response && response.status === "success") {
+                stage = response.company_stage || response;
+            }
+        } catch (error) {
+            console.error('Failed to fetch stage details:', error);
+            return;
+        }
+        if (stage) {
+            // Populate modal fields
+            const modal = document.getElementById('viewSingleCompanyStageModal');
+            modal.querySelector('.modal-header').innerHTML = `
+                <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                        <i class="las la-layer-group text-white" style="font-size:1.7rem;"></i>
+                    </span>
+                    <span class="fw-bold" style="font-size:1.2rem;">${stage.name || stage.stage_name || "Stage Details"}</span>
+                </div>
+            `;
+            // Build enhanced modal body UI
+            modal.querySelector('.modal-body').innerHTML = `
+                <div class="modal-body bg-light">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="stage-icon mb-3">
+                                <i class="las la-stream" style="font-size: 3rem;"></i>
+                            </div>
+                            <h3 class="fw-bold mb-1" id="stage_name_preview">${stage.name || stage.stage_name || "Stage Name"}</h3>
+                            <span class="badge bg-info text-white px-3 py-2" id="stage_status_preview">${stage.status || "Status"}</span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Description</label>
+                                <div class="p-2 rounded bg-white border" id="stage_description_preview">${stage.description ? stage.description : "Stage description goes here."}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Sequence Order</label>
+                            <div class="p-2 rounded bg-white border" id="stage_sequence_order_preview">${stage.sequence}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Estimated Time (hrs)</label>
+                            <div class="p-2 rounded bg-white border" id="stage_estimated_time_preview">${stage.estimated_time}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.querySelector('.modal-footer').innerHTML = `
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="setStageDuration('${stage.stage_id || stage.id}', '${stage.name || stage.stage_name}', '${stage.estimated_time || ''}')">
+                    <i class="las la-clock"></i> Set Estimated Time
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            `;
+            new bootstrap.Modal(modal).show();
+        }
+    };
     // Estimated Time Management
     window.setStageDuration = function(id, stage_name, estimated_time="") {
         // Get stage data from DataTable row
