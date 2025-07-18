@@ -13116,6 +13116,39 @@ if (editForm) {
         }
     });
 
+    // View stage details
+    window.viewStageDetails = function(id) {
+        // Get stage data 
+        let stage = stageTable.row($(`button[onclick="viewStageDetails('${id}')"]`).parents('tr')).data();
+        if (!stage) {
+            try {
+                const response = await fetch_cycle('--Fetch Stage Details', `/admin/get-stage/${id}`, 'GET');
+                if (response && response.status === 'success' && response.stage) {
+                    stage = {
+                        stage_name: response.stage.name || "N/A",
+                        description: response.stage.description || "",
+                        status: response.stage.status || "N/A",
+                        sequence_order: response.stage.sequence || "N/A",
+                        stage_id: response.stage.stage_id || response.stage.id || "N/A"
+                    };
+                }
+            } catch (error) {
+                console.error('Failed to fetch stage details:', error);
+                stage = {};
+            }
+        }
+        // Populate the modal with stage details
+        document.getElementById('stage_details_name').textContent = stage.stage_name || 'N/A';
+        document.getElementById('stage_details_description').textContent = stage.description || 'N/A';
+        document.getElementById('stage_details_status').textContent = stage.status || 'N/A';
+        document.getElementById('stage_details_sequence_order').textContent = stage.sequence_order || 'N/A';
+        document.getElementById('stage_details_id').textContent = stage.stage_id || 'N/A';
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('viewStageDetailsModal'));
+        modal.show();
+    };
+
     // Estimated Time Management
     window.setStageDuration = function(id, stage_name, estimated_time="") {
         // Get stage data from DataTable row
