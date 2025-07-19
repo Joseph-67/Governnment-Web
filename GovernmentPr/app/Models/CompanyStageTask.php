@@ -38,14 +38,26 @@ class CompanyStageTask extends Model
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
+    public $timestamps = true;
+    protected $dates = ['due_date', 'started_at', 'completed_at'];
+    /**
+     * Define the relationships.
+     */
     public function companyStage()
     {
-        return $this->belongsTo(CompanyStage::class, 'company_stage_id', 'id');
+        return $this->belongsTo(CompanyStage::class, 'company_stage_id', 'stage_id');
     }
+
+    public function companyWorkflow()
+    {
+        return $this->belongsTo(CompanyWorkflow::class, 'workflow_id', 'workflow_id');
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id', 'id');
     }
+
     // The supervisor_ids are stored as JSON array in the database
     public function supervisors()
     {

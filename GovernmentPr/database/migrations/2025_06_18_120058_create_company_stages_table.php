@@ -19,7 +19,15 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('estimated_time', 8, 2)->default(0.00); // Estimated time in hours
             $table->integer('sequence')->default(0);
-            $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled'])->default('Pending');
+            $table->enum('status', [
+                'Pending',
+                'In Progress',
+                'Completed',
+                'Cancelled',
+                'On Hold',
+                'Approved',
+                'Rejected'
+            ])->default('Pending');
             $table->timestamps();
 
             // Foreign key constraints

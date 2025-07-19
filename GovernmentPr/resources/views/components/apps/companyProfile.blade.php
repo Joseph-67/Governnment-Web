@@ -13197,51 +13197,81 @@ if (editForm) {
             return;
         }
         if (stage) {
-            // Populate modal fields
+            // Enhanced UI/UX for Stage Details Modal
             const modal = document.getElementById('viewSingleCompanyStageModal');
             modal.querySelector('.modal-header').innerHTML = `
                 <div class="d-flex align-items-center gap-2">
-                    <span class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
-                        <i class="las la-layer-group text-white" style="font-size:1.7rem;"></i>
+                    <span class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center shadow" style="width:48px;height:48px;">
+                        <i class="las la-layer-group text-white" style="font-size:2rem;"></i>
                     </span>
-                    <span class="fw-bold" style="font-size:1.2rem;">${stage.name || stage.stage_name || "Stage Details"}</span>
+                    <div>
+                        <span class="fw-bold" style="font-size:1.3rem;">${stage.name || stage.stage_name || "Stage Details"}</span>
+                        <div class="small text-muted">${stage.status ? `<span class="badge bg-info">${stage.status}</span>` : ""}</div>
+                    </div>
                 </div>
             `;
-            // Build enhanced modal body UI
             modal.querySelector('.modal-body').innerHTML = `
-                <div class="modal-body bg-light">
+                <div class="container-fluid py-2">
                     <div class="row g-4 align-items-center">
                         <div class="col-md-4 text-center">
-                            <div class="stage-icon mb-3">
-                                <i class="las la-stream" style="font-size: 3rem;"></i>
+                            <div class="stage-icon mb-2">
+                                <i class="las la-stream text-primary" style="font-size: 3.2rem;"></i>
                             </div>
-                            <h3 class="fw-bold mb-1" id="stage_name_preview">${stage.name || stage.stage_name || "Stage Name"}</h3>
+                            <h4 class="fw-bold mb-1" id="stage_name_preview">${stage.name || stage.stage_name || "Stage Name"}</h4>
                             <span class="badge bg-info text-white px-3 py-2" id="stage_status_preview">${stage.status || "Status"}</span>
                         </div>
                         <div class="col-md-8">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Description</label>
-                                <div class="p-2 rounded bg-white border" id="stage_description_preview">${stage.description ? stage.description : "Stage description goes here."}</div>
+                                <label class="form-label fw-semibold text-secondary">Description</label>
+                                <div class="p-2 rounded bg-white border shadow-sm" id="stage_description_preview" style="min-height:48px;">${stage.description ? stage.description : "<span class='text-muted'>No description provided.</span>"}</div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-secondary">Sequence Order</label>
+                                    <div class="p-2 rounded bg-white border shadow-sm" id="stage_sequence_order_preview">${stage.sequence ? stage.sequence : "<span class='text-muted'>N/A</span>"}</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-secondary">Estimated Time (hrs)</label>
+                                    <div class="p-2 rounded bg-white border shadow-sm" id="stage_estimated_time_preview">${stage.estimated_time ? stage.estimated_time : "<span class='text-muted'>N/A</span>"}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Sequence Order</label>
-                            <div class="p-2 rounded bg-white border" id="stage_sequence_order_preview">${stage.sequence}</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Estimated Time (hrs)</label>
-                            <div class="p-2 rounded bg-white border" id="stage_estimated_time_preview">${stage.estimated_time}</div>
+                    <!-- Stage Tasks Section -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-secondary">Stage Tasks</label>
+                            <div class="p-2 rounded bg-white border shadow-sm" id="stage_tasks_preview">
+                                ${
+                                    Array.isArray(stage.tasks) && stage.tasks.length > 0
+                                        ? `<ul class="list-group mb-0">
+                                            ${stage.tasks.map(task => `
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span>
+                                                        <i class="las la-tasks text-primary me-2"></i>
+                                                        <strong>${task.title || task.task_name || "Task"}</strong>
+                                                        ${task.status ? `<span class="badge bg-secondary ms-2">${task.status}</span>` : ""}
+                                                    </span>
+                                                    <span class="text-muted small">${task.due_date ? new Date(task.due_date).toLocaleDateString('en-GB') : ""}</span>
+                                                </li>
+                                            `).join('')}
+                                        </ul>`
+                                        : "<span class='text-muted'>No tasks assigned to this stage.</span>"
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
             modal.querySelector('.modal-footer').innerHTML = `
-                <button type="button" class="btn btn-outline-primary btn-sm" onclick="setStageDuration('${stage.stage_id || stage.id}', '${stage.name || stage.stage_name}', '${stage.estimated_time || ''}')">
-                    <i class="las la-clock"></i> Set Estimated Time
-                </button>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="setStageDuration('${stage.stage_id || stage.id}', '${stage.name || stage.stage_name}', '${stage.estimated_time || ''}')">
+                        <i class="las la-clock"></i> Set Estimated Time
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="las la-times"></i> Close
+                    </button>
+                </div>
             `;
             new bootstrap.Modal(modal).show();
         }

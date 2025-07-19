@@ -27,6 +27,11 @@ class CompanyStage extends Model
         return $this->belongsTo(Company::class, 'company_id', 'company_id');
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(CompanyStageTask::class, 'company_stage_id', 'stage_id');
+    }
+
     public function workflow()
     {
         return $this->belongsTo(Workflow::class, 'workflow_id', 'workflow_id');

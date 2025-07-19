@@ -102,7 +102,7 @@ class CompanyStageController extends Controller
     public function show($id)
     {
         //
-        $companyStage = CompanyStage::find($id);
+        $companyStage = CompanyStage::with('tasks')->find($id);
         if (!$companyStage) {
             return response()->json(['status' => 'error', 'message' => 'Company stage not found.'], 404);
         }
