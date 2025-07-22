@@ -13116,6 +13116,39 @@ if (editForm) {
         }
     });
 
+    // View stage details
+    window.viewStageDetails = function(id) {
+        // Get stage data 
+        let stage = stageTable.row($(`button[onclick="viewStageDetails('${id}')"]`).parents('tr')).data();
+        if (!stage) {
+            try {
+                const response = await fetch_cycle('--Fetch Stage Details', `/admin/get-stage/${id}`, 'GET');
+                if (response && response.status === 'success' && response.stage) {
+                    stage = {
+                        stage_name: response.stage.name || "N/A",
+                        description: response.stage.description || "",
+                        status: response.stage.status || "N/A",
+                        sequence_order: response.stage.sequence || "N/A",
+                        stage_id: response.stage.stage_id || response.stage.id || "N/A"
+                    };
+                }
+            } catch (error) {
+                console.error('Failed to fetch stage details:', error);
+                stage = {};
+            }
+        }
+        // Populate the modal with stage details
+        document.getElementById('stage_details_name').textContent = stage.stage_name || 'N/A';
+        document.getElementById('stage_details_description').textContent = stage.description || 'N/A';
+        document.getElementById('stage_details_status').textContent = stage.status || 'N/A';
+        document.getElementById('stage_details_sequence_order').textContent = stage.sequence_order || 'N/A';
+        document.getElementById('stage_details_id').textContent = stage.stage_id || 'N/A';
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('viewStageDetailsModal'));
+        modal.show();
+    };
+
     // Estimated Time Management
     window.setStageDuration = function(id, stage_name, estimated_time="") {
         // Get stage data from DataTable row
@@ -13380,51 +13413,85 @@ if (editForm) {
 
     // Handle task form submission
     document.addEventListener('DOMContentLoaded', function () {
-        const taskForm = document.getElementById('task-management-form');
-        console.log('====================================');
-        console.log('Task Form:', taskForm, taskTaggingSystem2);
-        console.log('====================================');
-        
-        if (taskForm) {
-            taskForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                console.log("hello world tag", taskTaggingSystem2, taskTaggingSystem2.getTagIds());
-                
-                const formData = new FormData(taskForm);
-                let task_manager = manager_5.getSelectedUserIds();
-                // Append manager IDs to the form data
-                task_manager.forEach(id => {
-                    formData.append('supervisor_ids[]', id);
-                });
-                let task_tags = taskTaggingSystem2.getTagIds();
-                console.log('Task Tags:', task_tags);
-                task_tags.forEach(id => {
-                    console.log('id', id);
-                    
-                    formData.append('task_tag_ids[]', id);
-                });
-                
-                const url = "{{ route('admin.store-company-stage-task') }}";
+    const taskForm = document.getElementById('task-management-form');
 
-                try {
-                    const result = await fetch_cycle('--Store Task', url, 'POST', formData);
-                    if (result.status === 'success' && Array.isArray(result.tasks)) {
-                        const tasks = result.tasks.map(task => ({
-                            task_name: task.name || "N/A",
-                            description: task.description || "",
-                            status: task.status || "N/A",
-                            sequence_order: task.sequence || "N/A",
-                            task_id: task.task_id || task.id || "N/A"
-                        }));
-                        taskTable.clear().rows.add(tasks).draw();
-                        taskForm.reset();
-                    }
-                } catch (error) {
-                    console.error('Error storing task:', error);
+    if (!taskForm) return;
+
+    taskForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(taskForm);
+
+        // Append selected supervisor IDs
+        const supervisorIds = manager_5.getSelectedUserIds();
+        supervisorIds.forEach(id => formData.append('supervisor_ids[]', id));
+
+        // Append selected tag IDs
+        const tagIds = taskTaggingSystem2.getTagIds();
+        tagIds.forEach(id => formData.append('task_tag_ids[]', id));
+
+        const url = "{{ route('admin.store-company-stage-task') }}";
+
+        try {
+            const result = await fetch_cycle('--Store Task', url, 'POST', formData);
+
+            if (result.status === 'success' && result.data) {
+                const task = result.data;
+
+                // Prepare the row data for DataTable
+                const formattedTask = {
+                    title: task.task_name || "N/A",
+                    supervisor: '', // Will be rendered by DataTable using `supervisors`
+                    supervisors: Array.isArray(task.supervisors) ? task.supervisors.map(sup => ({
+                        profilePic: sup.ProfilePicture || '',
+                        name: sup.name || sup.full_name || [sup.FirstName, sup.LastName].filter(Boolean).join(' ') || 'N/A',
+                        email: sup.Email || '',
+                        jobTitle: sup.EmployeeNumber || ''
+                    })) : [],
+                    due_date: task.due_date
+                        ? new Date(task.due_date).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        })
+                        : 'N/A',
+                    priority: task.priority || 'N/A',
+                    status: task.status || 'N/A',
+                    tags: Array.isArray(task.tags)
+                        ? task.tags.map(tag => tag.name || tag).join(', ')
+                        : (task.tags || ''),
+                    task_id: task.stage_task_id || task.id || 'N/A'
+                };
+
+                // Check if this task already exists in the table
+                const rowIndex = taskTable.rows().indexes().filter(i => {
+                    return taskTable.row(i).data().task_id === formattedTask.task_id;
+                });
+
+                let updatedRow;
+                if (rowIndex.length > 0) {
+                    // Update existing row
+                    taskTable.row(rowIndex[0]).data(formattedTask).draw(false);
+                    updatedRow = taskTable.row(rowIndex[0]).nodes().to$();
+                } else {
+                    // Add as new row
+                    taskTable.row.add(formattedTask).draw(false);
+                    updatedRow = taskTable.row(':last').nodes().to$();
                 }
-            });
+
+                // Highlight the updated or added row
+                updatedRow.addClass('table-success');
+                setTimeout(() => updatedRow.removeClass('table-success'), 2000);
+
+                // Reset the form
+                taskForm.reset();
+            }
+        } catch (error) {
+            console.error('Error submitting task:', error);
         }
     });
+});
+
     // Task Scheduling Management
     // Initialize DataTable for Task Scheduling
     const taskSchedulingTable = $('#tbl-task-scheduling').DataTable({
@@ -13752,6 +13819,29 @@ if (editForm) {
         const modal = new bootstrap.Modal(document.getElementById('assignEmployeeToTaskModal'));
         modal.show();
     };
+    // Handle assign employee form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const assignEmployeeForm = document.getElementById('assign-employee-task-form');
+        if (assignEmployeeForm) {
+            assignEmployeeForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(assignEmployeeForm);
+                // Append selected supervisor IDs
+                const employeeIds = manager_6.getSelectedUserIds();
+                employeeIds.forEach(id => formData.append('employee_ids[]', id));
+                const url = "{{ route('admin.store-task-employee') }}";
+                try {
+                    const result = await fetch_cycle('--Assign Employee to Task', url, 'POST', formData);
+                    if (result.status === 'success') {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('assignEmployeeToTaskModal'));
+                        if (modal) modal.hide();
+                    }
+                } catch (error) {
+                    console.error('Error assigning employee to task:', error);
+                }
+            });
+        }
+    });
 
     // Edit task
     window.editTask = async function(id) {

@@ -29,27 +29,53 @@ class TaskEmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-        $validator = Validator::make($request->all(), [
-            'task_id' => 'required|integer|exists:tasks,id',
-            'employee_id' => 'required|integer|exists:employees,id',
-            'assigned_at' => 'nullable|date',
-        ]);
+            public function store(Request $request)
+            {
+                $validator = Validator::make($request->all(), [
+                    'company_id'     => 'required|integer|exists:companies,company_id',
+                    'task_id'        => 'required|integer|exists:company_stage_tasks,stage_task_id',
+                    'employee_ids'   => 'required|array',
+                    'employee_ids.*' => 'integer|exists:company_employees,EmployeeID',
+                    'assigned_at'    => 'nullable|date',
+                    'assignment_note'=> 'nullable|string'
+                ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+                if ($validator->fails()) {
+                    return response()->json(['errors' => $validator->errors()], 422);
+                }
 
-        $taskEmployee = TaskEmployee::create([
-            'task_id' => $request->input('task_id'),
-            'employee_id' => $request->input('employee_id'),
-            'assigned_at' => $request->input('assigned_at'),
-        ]);
+                try {
+                    $created = [];
+                    foreach ($request->employee_ids as $employeeId) {
+                        $existing = TaskEmployee::where('task_id', $request->task_id)
+                            ->where('employee_id', $employeeId)
+                            ->first();
 
-        return response()->json(['data' => $taskEmployee], 201);
-    }
+                        if (!$existing) {
+                            $created[] = TaskEmployee::create([
+                                'company_id' => $request->company_id,
+                                'task_id'    => $request->task_id,
+                                'employee_id'=> $employeeId,
+                                'assigned_at'=> $request->assigned_at,
+                                'comments'   => $request->assignment_note,
+                            ]);
+                        }
+                    }
+
+                    return response()->json([
+                        'status'        => 'success',
+                        'message'       => 'Task Employees assigned successfully.',
+                        'task_employees'=> $created
+                    ], 201);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Failed to create TaskEmployee.',
+                        'error'   => $e->getMessage()
+                    ], 500);
+                }
+            }
+
 
     /**
      * Display the specified resource.
