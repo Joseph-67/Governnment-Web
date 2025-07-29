@@ -1051,6 +1051,24 @@ class RECPController extends Controller
         //
     }
 
+    public function store_status(Request $request)
+    {
+        //
+        $validator = Validator::make($request->all(), [
+            'company' => ['required', 'numeric'],
+            'status' => ['required', 'string', Rule::in(['approved', 'disapproved', 'pending'])],
+            'remark' => ['nullable', 'string', 'max:255']
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+    }
+
+
     /**
      * Display the specified resource.
      *
