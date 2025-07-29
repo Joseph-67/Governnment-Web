@@ -14179,5 +14179,7 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             
     </script>
     <!-- End Task Management -->
+    
+
     @endsection
 </x-layouts.admin-app>
