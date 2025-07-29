@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('recp_id'); // Primary key for the recps table
             $table->unsignedBigInteger('company_id'); // Foreign key to companies table
             $table->enum('status', ['approve', 'disapprove', 'pending']); // Add your desired columns here
-            $table->string('remark'); // Name of the RECP
+            $table->string('remark')->nullable(); // Name of the RECP
             $table->timestamps();
             
         });

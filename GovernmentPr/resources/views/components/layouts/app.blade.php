@@ -429,7 +429,7 @@
                   <div class="tp-footer-widget footer-col-4">
                      <h4 class="tp-footer-widget-title" style="color: {{ $footerTextColor }};">News & Updates</h4>
                      <div class="tp-footer-widget-content">
-                        <p class="mb-25" style="color: {{ $footerTextColor }};">The latest Mayorx news, articles, and resources sent straight to your inbox every month</p>
+                        <p class="mb-25" style="color: {{ $footerTextColor }};">The latest RECP news, articles, and resources sent straight to your inbox every month</p>
                      </div>
                      <form action="#">
                         <div class="tp-footer-mail-box p-relative">

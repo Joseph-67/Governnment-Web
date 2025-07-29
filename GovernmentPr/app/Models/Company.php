@@ -156,5 +156,9 @@ public static function totalNewCompaniesThisWeek()
 {
     return self::where('created_at', '>=', now()->startOfWeek())->count(); // BEGIN: Count new companies this week
 } // END:
+public static function totalStates()
+{
+    return self::distinct('state')->count('state');
+}
 
 }
