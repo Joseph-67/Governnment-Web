@@ -1218,6 +1218,44 @@
                             </div>
                         </div>
                     </div>
+                    @if(auth()->guard('admin')->check())
+                        <!-- RECP Approval and Disapproval Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="recpHeading">
+                                <button class="accordion-button collapsed p-3 bg-primary text-white" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#recpCollapse" aria-expanded="false" aria-controls="recpCollapse">
+                                    <i class="las la-check-circle me-2" style="font-size: 1.5rem;"></i> 
+                                    <span class="fw-bold">RECP Approval and Disapproval</span>
+                                </button>
+                            </h2>
+                            <div id="recpCollapse" class="accordion-collapse collapse" aria-labelledby="recpHeading">
+                                <div class="accordion-body">
+                                    <div class="card shadow-sm border-0 mb-4">
+                                        <div class="card-body">
+                                            @if(auth()->guard('admin')->check())
+                                                <form action="" method="post" id="recp-form">
+                                                    <div class="mb-3">
+                                                        <label for="recpStatus" class="form-label">Select RECP Status</label>
+                                                        <select class="form-select" id="recpStatus" name="recp_status" required>
+                                                            <option value="" disabled selected>Select status</option>
+                                                            <option value="approved">Approved</option>
+                                                            <option value="disapproved">Disapproved</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="recpComments" class="form-label">Comments</label>
+                                                        <textarea class="form-control" id="recpComments" name="recp_comments" rows="3" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End RECP Approval and Disapproval Section -->
+                    @endif
                 </div>
                 <!-- End Waste Management -->
                 <!-- HRMS Tab -->
