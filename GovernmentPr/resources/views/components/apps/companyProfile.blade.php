@@ -14179,7 +14179,45 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             
     </script>
     <!-- End Task Management -->
-    
+    <!-- Recp form submission -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const recpForm = document.getElementById('recp-form');
+        if (recpForm) {
+            recpForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(recpForm);
+                const url = "{{ route('admin.store-recp') }}";
+
+                try {
+                    const result = await fetch_cycle('--Store Recp', url, 'POST', formData);
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Recp has been successfully submitted.',
+                            icon: 'success'
+                        });
+                        recpForm.reset();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: result.message || 'Failed to submit Recp.',
+                            icon: 'error'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error submitting Recp:', error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An unexpected error occurred.',
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+    });
+    </script>
+    <!-- Recp form submission -->
 
     @endsection
 </x-layouts.admin-app>
