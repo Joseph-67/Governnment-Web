@@ -9379,7 +9379,7 @@
             const problemSummary = document.querySelector('#problem_summary').value.trim();
             const suggestedSolution = document.querySelector('#suggested_solution').value.trim();
 
-            if (!problemSummary || !suggestedSolution) {
+            if (!problemSummary) {
                 Toastify({
                     text: !problemSummary ? "Problem summary field cannot be empty." : "Suggested solution field cannot be empty.",
                     duration: 3000,

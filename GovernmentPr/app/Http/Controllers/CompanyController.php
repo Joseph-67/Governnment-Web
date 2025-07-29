@@ -474,7 +474,7 @@ class CompanyController extends WaterStockMovementController
             'company_name' => ['required', 'string', 'min:3', 'max:225'],
             'industry' => ['required', 'string', 'min:3', 'max:225'],
             'industry_process_used' => ['nullable', 'string', 'min:3', 'max:225'],
-            'email' => ['required', 'string', 'min:3', 'max:225'],
+            'email' => ['nullable', 'string', 'min:3', 'max:225'],
             'website_address' => ['nullable', 'url'],
             'primary_phone_number' => ['required', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
             'secondary_phone_number' => ['nullable', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
@@ -492,10 +492,10 @@ class CompanyController extends WaterStockMovementController
             'policy.*' => ['string'],
             'objective' => ['nullable', 'array'],
             'objective.*' => ['string'],
-            'enviromental_operations_manager' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_name' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_position' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_phone_number' => ['required', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
+            'enviromental_operations_manager' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_name' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_position' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_phone_number' => ['nullable', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
             'is_sherable' => ['nullable', 'string']
         ]);
 
