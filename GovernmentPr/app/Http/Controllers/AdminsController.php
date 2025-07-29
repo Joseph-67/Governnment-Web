@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admins;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -107,9 +108,20 @@ class AdminsController extends Controller
      * @param  \App\Models\Admins  $admins
      * @return \Illuminate\Http\Response
      */
+    private function countActiveCompanies()
+    {
+        $activeCompanyCount = Company::totalActiveCompanies();
+        return $activeCompanyCount;
+    }
 
+    private function newCompaniesByWeek() {
+        $companyCount = Company::totalNewCompaniesThisWeek();
+        return $companyCount;
+    }
     public function display_dashboard() {
-        return view('components.admin.dashboard');
+        $data['activeCompanyCount'] = $this->countActiveCompanies();
+        $data['newCompanies'] = $this->newCompaniesByWeek();
+        return view('components.admin.dashboard', $data);
     }
     public function show(Admins $admins)
     {

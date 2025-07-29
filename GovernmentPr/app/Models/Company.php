@@ -144,4 +144,17 @@ class Company extends Model
         return $this->hasMany(WaterPollutionUsage::class);
     }
 
+public static function totalActiveCompanies()
+{
+    return self::where('status', 'active')->count(); // BEGIN: Count active companies
+} // END:
+public static function totalInactiveCompanies()
+{
+    return self::where('status', 'inactive')->count(); // BEGIN: Count inactive companies
+}
+public static function totalNewCompaniesThisWeek()
+{
+    return self::where('created_at', '>=', now()->startOfWeek())->count(); // BEGIN: Count new companies this week
+} // END:
+
 }
