@@ -1070,6 +1070,17 @@ class CompanyController extends WaterStockMovementController
     }
     //end store water source
 
+    public function countCompaniesByIndustry($industry) {
+        $companyCount = Company::where('industry', $industry)
+            ->where('status', 'active')
+            ->count();
+        return response()->json([
+            'status' => 'success',
+            'industry' => $industry,
+            'company_count' => $companyCount
+        ]);
+    }
+
 //    water usage logs
 public function store_water_usage_log(Request $request) {
    
