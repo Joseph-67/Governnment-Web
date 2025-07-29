@@ -67,6 +67,8 @@ class CompanyController extends WaterStockMovementController
         $data['company'] = Company::find($companyID);
 
         // Fetch related data
+        $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
+        $data['objectives']= Objectives::where('status', 'active')->get(['objective_id', 'name']);
         $data['company_policies'] = CompanyPolicy::where('companyID', $companyID)->get();
         $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
         $data['company_benefits'] = RECP_areas_of_benefit::active()->where('companyID', $companyID)->get();
@@ -399,6 +401,9 @@ class CompanyController extends WaterStockMovementController
         $data['all_water_conservation_methods'] = WaterConservationMethod::get(['WaterConservationMethodId', 'label', 'method']);
         $data['all_water_sources'] = WaterSources::get(['WaterSourcesId', 'sources']);
         $data['all_chemicals'] = Chemicals::get(['chemical_id', 'name']);
+        $data['policies'] = Policies::get(["policy_id", "title"]);
+        $data['objectives'] = Objectives::get(["objective_id", "name"]);
+
         $data['total_materials'] = Material::count();
         $data['total_water_sources'] = WaterSources::count();
         $data['total_water_questions'] = WaterQuestionaire::count();
@@ -788,7 +793,7 @@ class CompanyController extends WaterStockMovementController
     public function add_company_policy(Request $request) {
         $validator =Validator::make($request->all(),[
             'company'   => ['required', 'numeric'],
-            'policy'    =>  ['required', Rule::unique('policies', 'policy_title')->where(function ($query) use ($request) {
+            'policy'    =>  ['required', Rule::unique('company_policies', 'policy_id')->where(function ($query) use ($request) {
                                 return $query->where('companyID', $request['company']);
                             }),]
         ]);
@@ -800,9 +805,9 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        Policy::create([
+        CompanyPolicy::create([
             'companyID'    =>  $request->company,
-            'policy_title'  =>  $request->policy
+            'policy_id'  =>  $request->policy
         ]);
         return response()->json([
             'status' => 'success',
@@ -823,7 +828,7 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        Policy::where('companyID', $request->company)->where('policy_title',$request->policy)->delete();
+        CompanyPolicy::where('companyID', $request->company)->where('policy_id',$request->policy)->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Policy removed successfully.',
@@ -834,7 +839,7 @@ class CompanyController extends WaterStockMovementController
     public function add_company_objective(Request $request) {
         $validator =Validator::make($request->all(),[
             'company'   => ['required', 'numeric'],
-            'objective'    =>  ['required', Rule::unique('company_objectives', 'objective_title')->where(function ($query) use ($request) {
+            'objective'    =>  ['required', Rule::unique('company_objectives', 'objective_id')->where(function ($query) use ($request) {
                                 return $query->where('companyID', $request['company']);
                             }),]
         ]);
@@ -848,7 +853,7 @@ class CompanyController extends WaterStockMovementController
         }
         CompanyObjectives::create([
             'companyID'    =>  $request->company,
-            'objective_title'  =>  $request->objective
+            'objective_id'  =>  $request->objective
         ]);
         return response()->json([
             'status' => 'success',
@@ -870,7 +875,7 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        CompanyObjectives::where('companyID', $request->company)->where('objective_title',$request->objective)->delete();
+        CompanyObjectives::where('companyID', $request->company)->where('objective_id',$request->objective)->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Objective removed successfully.',

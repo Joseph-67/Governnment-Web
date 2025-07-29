@@ -38,6 +38,121 @@
             font-size: 1.1rem;
             letter-spacing: 0.5px;
         }
+        /* service area */
+         /* Uniform card size for service cards */
+         .tp-service-item {
+            min-height: 370px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-sizing: border-box;
+         }
+         .tp-service-icon {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+         .tp-service-content {
+            flex: 1 1 auto;
+         }
+         .tp-service-title-sm {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+         }
+         .tp-service-link {
+            margin-top: auto;
+         }
+         @media (max-width: 991.98px) {
+            .tp-service-item {
+               min-height: 340px;
+            }
+         }
+         @media (max-width: 767.98px) {
+            .tp-service-item {
+               min-height: 300px;
+            }
+         }
+         /* end service area */
+         /* blog area */
+         /* Uniform card size for blog cards */
+         .tp-blog__item {
+            height: 420px;
+            min-height: 420px;
+            max-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+         }
+         .tp-blog__item:hover {
+            box-shadow: 0 8px 24px rgba(30,126,52,0.13);
+         }
+         .tp-blog__thumb {
+            height: 200px;
+            min-height: 200px;
+            max-height: 200px;
+            overflow: hidden;
+         }
+         .tp-blog__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+         }
+         .tp-blog__content-wrap {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 18px 18px 18px;
+         }
+         .tp-blog__title-sm {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+         }
+         .tp-blog__link {
+            margin-top: auto;
+         }
+         @media (max-width: 991.98px) {
+            .tp-blog__item {
+               height: 380px;
+               min-height: 380px;
+               max-height: 380px;
+            }
+            .tp-blog__thumb {
+               height: 170px;
+               min-height: 170px;
+               max-height: 170px;
+            }
+         }
+         @media (max-width: 767.98px) {
+            .tp-blog__item {
+               height: 340px;
+               min-height: 340px;
+               max-height: 340px;
+            }
+            .tp-blog__thumb {
+               height: 130px;
+               min-height: 130px;
+               max-height: 130px;
+            }
+         }
+         /* end blog area */
       </style>
 <style>
    /* Slider Title Responsive Font Size */
@@ -120,6 +235,7 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
    }
+
 </style>
 @endsection
 @section('scripts')
@@ -294,6 +410,7 @@
                      </div>
                   </div>
                </div>
+               
             @endforeach
          </div>
       </div>
@@ -331,7 +448,7 @@
                         </ul>
                      </div>
                      <div class="tp-about-feature-btn">
-                        <a class="tp-btn-purple" href="{{ route('mandate') }}">KNOW MORE</a>
+                        <a class="tp-btn-purple" href="{{ asset('MainAssets/pdf/INSIDE RECOMMEDATION.pdf') }}" target="_blank" rel="noopener">KNOW MORE</a>
                      </div>
                   </div>
                </div>
@@ -403,6 +520,7 @@
 
    {{-- SERVICE AREA --}}
    <section id="service-one-page" class="tp-service-area p-relative theme-bg-2 pt-120 pb-90">
+      
       <div class="container custom-container">
          <div class="row">
             <div class="col-xl-12">
@@ -512,8 +630,8 @@
             @php
                $funfacts = [
                   ['icon' => 'flaticon-foundation', 'end' => 820, 'suffix' => '+', 'label' => 'Years of Foundation'],
-                  ['icon' => 'flaticon-landscape', 'end' => 12, 'suffix' => '', 'label' => 'Number Of States'],
-                  ['icon' => 'flaticon-factory', 'end' => 150, 'suffix' => '', 'label' => 'Number of Companies'],
+                    ['icon' => 'flaticon-landscape', 'end' => \App\Models\Company::totalStates(), 'suffix' => '', 'label' => 'Number Of States'],
+                    ['icon' => 'flaticon-factory', 'end' => \App\Models\Company::totalActiveCompanies(), 'suffix' => '', 'label' => 'Number of Companies'],
                   ['icon' => 'flaticon-windrose', 'end' => 920, 'suffix' => '+', 'label' => 'Successful Rating'],
                ];
             @endphp
@@ -668,7 +786,7 @@
    </section>
    {{-- VIDEO AREA END --}}
 
-   {{-- TESTIMONIAL AREA --}}
+   <!-- {{-- TESTIMONIAL AREA --}}
    <section class="tp-testimonial-area theme-bg-2 pt-120 pb-120 z-index">
       <div class="container">
          <div class="row justify-content-center">
@@ -724,7 +842,7 @@
          </div>
       </div>
    </section>
-   {{-- TESTIMONIAL AREA END --}}
+   {{-- TESTIMONIAL AREA END --}} -->
 
    {{-- BLOG AREA --}}
    <section id="blog-one-page" class="tp-blog-area pt-100 pb-90">
@@ -755,10 +873,10 @@
                ];
             @endphp
             @foreach($blogs as $blog)
-               <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                  <div class="tp-blog__item">
+               <div class="col-xl-4 col-lg-4 col-md-6 mb-30 d-flex">
+                  <div class="tp-blog__item w-100">
                      <div class="tp-blog__thumb p-relative fix">
-                        <a href="#"><img class="w-100" style="height: 250px; object-fit: cover;" src="{{asset('MainAssets/img/home/' . $blog['img'])}}" alt=""></a>
+                        <a href="#"><img class="w-100" src="{{asset('MainAssets/img/home/' . $blog['img'])}}" alt=""></a>
                      </div>
                      <div class="tp-blog__content-wrap">
                         <h5 class="tp-blog__title-sm"><a href="blog-details.html">{{ $blog['title'] }}</a></h5>

@@ -28,6 +28,11 @@ class CompanyUsers extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public static function countCompaniesForUser($userId)
+    {
+        return self::where('user_id', $userId)->count();
+    }
+    
    
    
 }

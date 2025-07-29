@@ -11,7 +11,9 @@
                 <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                     <div class="col-9">
                     <p class="text-dark mb-0 fw-semibold fs-14">Managed Companies</p>
-                    <h3 class="mt-2 mb-0 fw-bold">1,024</h3>
+                    <h3 class="mt-2 mb-0 fw-bold">
+                        {{ \App\Models\CompanyUsers::countCompaniesForUser(auth()->id()) }}
+                    </h3>
                     </div>
                     <div class="col-3 align-self-center">
                     <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
@@ -144,7 +146,7 @@
             <div class="col-md-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">Energy Efficiency by Company</h4>
+                        <h4 class="card-title mb-0">Waste Efficiency by Company</h4>
                     </div>
                     <div class="card-body">
                         <div id="energy-efficiency-histogram"></div>

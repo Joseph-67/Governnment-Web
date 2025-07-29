@@ -161,80 +161,21 @@
                         <div class="card-body pt-0">
                             <!-- Policy -->
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="quality-policy" value="quality policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'quality policy')"
-                                            name="policy[]" {{(in_array('quality policy',
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label" for="quality-policy">Quality policy </label>
+                                @foreach($policies as $policy)
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="policy-{{ $policy->policy_id }}"
+                                                value="{{ $policy->policy_id }}"
+                                                onchange="ChangePolicy(this, '{{ $company->company_id }}', '{{ $policy->policy_id }}')"
+                                                name="policy[]"
+                                                {{ (in_array($policy->policy_id, array_column($company_policies->toArray(), 'policy_id'))) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="policy-{{ $policy->policy_id }}">
+                                                {{ ucfirst($policy->title) }}
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="environmental-policy" value="environmental policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'environmental policy')"
-                                            name="policy[]" {{(in_array("environmental policy",
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label" for="environmental-policy">Enviromental
-                                            Policy.</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="health-and-safety-policy" value="health and safety policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'health and safety policy')"
-                                            name="policy[]" {{(in_array('health and safety policy',
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label" for="health-and-safety-policy">Health and
-                                            safety policy. </label>
-                                    </div>
-                                </div>
-                                <x-section-border />
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="human-resource-policy" value="human resource policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'human resource policy')"
-                                            name="policy[]" {{(in_array('human resource policy',
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label" for="human-resource-policy">Human resource
-                                            policy. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="data-protection-policy" value="data protection policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'data protection policy')"
-                                            name="policy[]" {{(in_array('data protection policy',
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label" for="data-protection-policy">Data protection
-                                            policy. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="cooperate-social-responsibility-policy"
-                                            value="cooperate social responsibility policy"
-                                            onchange="ChangePolicy(this, '{{$company->company_id}}', 'cooperate social responsibility policy')"
-                                            name="policy[]" {{(in_array('cooperate social responsibility policy',
-                                            array_column($company_policies->toArray(), 'policy_title')))? "checked":
-                                        ""}}>
-                                        <label class="form-check-label"
-                                            for="cooperate-social-responsibility-policy">Cooperate social
-                                            reponsibility policy. </label>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <!-- End Policy -->
                         </div><!--end card-body-->
@@ -250,115 +191,21 @@
                         <div class="card-body pt-0">
                             <!-- objective -->
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="business-growth"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'business growth')"
-                                            value="business growth" name="objective[]" {{(in_array("business growth",
-                                            array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="business-growth"> Business growth
-                                        </label>
+                                @foreach($objectives as $objective)
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="objective-{{ $objective->objective_id }}"
+                                                value="{{ $objective->objective_id }}"
+                                                onchange="ChangeObjective(this, '{{ $company->company_id }}', '{{ $objective->objective_id }}')"
+                                                name="objective[]"
+                                                {{ in_array($objective->objective_id, array_column($company_objectives->toArray(), 'objective_id')) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="objective-{{ $objective->objective_id }}">
+                                                {{ ucfirst($objective->name) }}
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="customer-satisfaction"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'customer satisfaction')"
-                                            value="customer satisfaction" name="objective[]" {{(in_array("customer
-                                            satisfaction", array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="customer-satisfaction"> Customer
-                                            satisfaction. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="material-optimization"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'material optimization')"
-                                            value="material optimization" name="objective[]" {{(in_array("material
-                                            optimization", array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="material-optimization"> Material
-                                            optimization. </label>
-                                    </div>
-                                </div>
-                                <x-section-border />
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="waste-minimization"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'waste minimization')"
-                                            value="waste minimization" name="objective[]" {{(in_array("waste
-                                            minimization", array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="waste-minimization"> Waste
-                                            minimization. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="measurable-and-timely-targets"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'measurable and timely targets')"
-                                            value="measurable and timely targets" name="objective[]"
-                                            {{(in_array("measurable and timely targets",
-                                            array_column($company_objectives->toArray(), 'objective_title')))?
-                                        "checked": ""}}>
-                                        <label class="form-check-label" for="measurable-and-timely-targets">
-                                            Measurable & timely targets. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="innovation"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'innovation')"
-                                            value="innovation" name="objective[]" {{(in_array("innovation",
-                                            array_column($company_objectives->toArray(), 'objective_title')))?
-                                        "checked": ""}}>
-                                        <label class="form-check-label" for="innovation"> Innovation. </label>
-                                    </div>
-                                </div>
-                                <x-section-border />
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="sustainability"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'sustainability')"
-                                            value="sustainability" name="objective[]" {{(in_array("sustainability",
-                                            array_column($company_objectives->toArray(), 'objective_title')))?
-                                        "checked": ""}}>
-                                        <label class="form-check-label" for="sustainability"> Sustainability.
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="employee-management"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'employee management')"
-                                            value="employee management" name="objective[]" {{(in_array("employee
-                                            management", array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="employee-management"> Employee
-                                            management. </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="market-expansion"
-                                            onchange="ChangeObjectives(this, '{{$company->company_id}}', 'market expansion')"
-                                            value="market expansion" name="objective[]" {{(in_array("market expansion",
-                                            array_column($company_objectives->toArray(),
-                                        'objective_title')))? "checked": ""}}>
-                                        <label class="form-check-label" for="market-expansion"> Market expansion.
-                                        </label>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <!-- End Policy -->
                         </div><!--end card-body-->
@@ -8572,7 +8419,7 @@
         }
         // end company policies
         // Company Objectives
-        async function changeObjectives(element, company, objective) {
+        async function ChangeObjective(element, company, objective) {
             console.log(element, company, objective);
 
             const uri = element.checked 
