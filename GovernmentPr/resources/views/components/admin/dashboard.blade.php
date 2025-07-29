@@ -3,24 +3,75 @@
     @section('scripts')
     <script src="{{ asset('adminAssets/js/industryjson.js') }}"></script>
     <script>
+    console.log('Industries:', industries);
 
-        console.log('Industries Keys:', Object.keys(industries));
-        let sectorsContainer = document.getElementById('companies-sector');
+    const sectorsContainer = document.getElementById('companies-sector');
 
-        // BEGIN: Insert random sectors
-        const randomSectors = Object.keys(industries).sort(() => 0.5 - Math.random()).slice(0, 5);
-        console.log('Random Sectors:', randomSectors);
-        randomSectors.forEach(sector => {
-            console.log('Sector:', sector);
-            const sectorElement = `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${sector}  <!-- Assuming sector has a 'name' property -->
-                                <span class="badge bg-primary rounded-pill">${sector.count}</span>  <!-- Assuming sector has a 'count' property -->
-                            </li>`;
-            sectorsContainer.innerHTML += sectorElement; // Use innerHTML to append the sectorElement
+    // Generate sectors from industries keys
+    let allSectors = Object.keys(industries).map(key => ({
+        name: key,
+        count: 0  // Total companies across all industries in this sector
+    }));
+
+    // Pick 5 random sectors
+    const selectedSectors = allSectors.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    // Track fetch completion
+    let fetchPromises = [];
+
+    selectedSectors.forEach(sector => {
+        const industriesInSector = industries[sector.name];
+
+        if (!Array.isArray(industriesInSector)) {
+            console.warn(`No industries found for sector: ${sector.name}`);
+            return;
+        }
+
+        industriesInSector.forEach(industry => {
+            const fetchPromise = fetch(`/admin/count/companies/${industry}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    const count = data.company_count || 0;
+                    sector.count += count;
+                })
+                .catch(err => {
+                    console.error(`Error fetching count for ${industry}:`, err);
+                });
+
+            fetchPromises.push(fetchPromise);
         });
-        // END: Insert random sectors
-        
-    </script>
+    });
+
+    // Once all fetches are done, render total counts per sector
+    Promise.all(fetchPromises).then(() => {
+        renderSectors();
+    });
+    const badgeColors = ['bg-primary', 'bg-success', 'bg-warning', 'bg-danger', 'bg-info', 'bg-secondary'];
+
+    function renderSectors() {
+    sectorsContainer.innerHTML = ''; // Clear previous results
+
+    selectedSectors.forEach((sector, index) => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = sector.name;
+
+        const countBadge = document.createElement('span');
+        const badgeColor = badgeColors[index % badgeColors.length]; // Rotate colors
+        countBadge.className = `badge ${badgeColor} rounded-pill`;
+        countBadge.textContent = sector.count;
+
+        li.appendChild(nameSpan);
+        li.appendChild(countBadge);
+
+        sectorsContainer.appendChild(li);
+    });
+}
+
+</script>
     @endsection
     <div class="container-xxl">
         <div class="row justify-content-center">
