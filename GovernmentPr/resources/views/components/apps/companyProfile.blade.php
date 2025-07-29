@@ -14179,10 +14179,7 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             
     </script>
     <!-- End Task Management -->
-    <script>
+    
 
-        // RECP status
-        
-    </script>
     @endsection
 </x-layouts.admin-app>
