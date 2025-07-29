@@ -1233,7 +1233,7 @@
                                     <div class="card shadow-sm border-0 mb-4">
                                         <div class="card-body">
                                             @if(auth()->guard('admin')->check())
-                                                <form action="" method="post" id="recp-form">
+                                                <form action="" id="recp-form">
                                                     <div class="mb-3">
                                                         <label for="recpStatus" class="form-label">Select RECP Status</label>
                                                         <select class="form-select" id="recpStatus" name="recp_status" required>
@@ -14178,5 +14178,8 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             
     </script>
     <!-- End Task Management -->
+    <script>
+    
+    </script>
     @endsection
 </x-layouts.admin-app>
