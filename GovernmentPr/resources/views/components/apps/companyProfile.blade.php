@@ -1072,7 +1072,7 @@
                                 <button class="accordion-button collapsed p-3 bg-primary text-white" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#recpCollapse" aria-expanded="false" aria-controls="recpCollapse">
                                     <i class="las la-check-circle me-2" style="font-size: 1.5rem;"></i> 
-                                    <span class="fw-bold">RECP Approval and Disapproval</span>
+                                    <span class="fw-bold">RECP Compliance</span>
                                 </button>
                             </h2>
                             <div id="recpCollapse" class="accordion-collapse collapse" aria-labelledby="recpHeading">
@@ -1085,15 +1085,15 @@
                                                     <div class="mb-3">
                                                         <label for="recpStatus" class="form-label">Select RECP Status</label>
                                                         <select class="form-select" id="recpStatus" name="recp_status" required>
-                                                            <option value="" disabled selected>Select status</option>
-                                                            <option {{ ($recp_state->status == 'approved')? "selected":"" }} value="approved">Approved</option>
-                                                            <option {{ ($recp_state->status == 'disapproved')? "selected":"" }} value="disapproved">Disapproved</option>
-                                                            <option {{ ($recp_state->status == 'pending')? "selected":"" }} value="pending">Pending</option>
+                                                            <option value="" disabled {{ empty($recp_state->status) ? 'selected' : '' }}>Select status</option>
+                                                            @foreach(['approved' => 'Approved', 'disapproved' => 'Disapproved', 'pending' => 'Pending'] as $value => $label)
+                                                                <option value="{{ $value }}" {{ ($recp_state->status ?? '') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="recpComments" class="form-label">Comments</label>
-                                                        <textarea class="form-control" id="recpComments" name="recp_comment" rows="3"> {{ $recp_state->remark }} </textarea>
+                                                        <textarea class="form-control" id="recpComments" name="recp_comment" rows="3" placeholder="Enter comments">{{ old('recp_comment', $recp_state->remark ?? '') }}</textarea>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </form>
