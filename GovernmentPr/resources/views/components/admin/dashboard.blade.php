@@ -294,67 +294,42 @@
                                     <tr>
                                         <th class="border-top-0">#</th>
                                         <th class="border-top-0">Company Name</th>
-                                        <th class="border-top-0">Registration No.</th>
-                                        <th class="border-top-0">Sector</th>
+                                        <th class="border-top-0">Industry</th>
                                         <th class="border-top-0">Region</th>
                                         <th class="border-top-0">Status</th>
                                         <th class="border-top-0">Compliance</th>
-                                        <th class="border-top-0">Licence Expiry</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                    $key = 1;
+                                    @endphp
+                                    @foreach($recpCompanies as $company)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Acme Corp</td>
-                                        <td>REG-202301</td>
-                                        <td>Technology</td>
-                                        <td>Nairobi</td>
-                                        <td><span class="badge bg-success">Active</span></td>
-                                        <td><span class="badge bg-success">Compliant</span></td>
-                                        <td>2025-12-31</td>
+                                        <td>{{ $key++ }}</td>
+                                        <td>{{ $company->company->company_name }}</td>
+                                        <td>{{ $company->company->industry }}</td>
+                                        <td>{{ $company->company->country }}, {{ $company->company->state }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $company->company->status === 'active' ? 'success' : ($company->company->status === 'inactive' ? 'secondary' : 'warning') }}">
+                                                {{ $company->company->status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ $company->status === 'approved' ? 'success' : ($company->status === 'pending' ? 'warning' : 'danger') }}">
+                                                {{ $company->status === "approved" ? "Compliant" : ($company->status === "pending" ? "Review" : "Non-compliant") }}
+                                            </span>
+                                        </td>
                                     </tr>
+                                    @endforeach
+                                    @if($recpCompanies->isEmpty())
                                     <tr>
-                                        <td>2</td>
-                                        <td>Beta Finance</td>
-                                        <td>REG-202302</td>
-                                        <td>Finance</td>
-                                        <td>Mombasa</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                        <td><span class="badge bg-warning">Review</span></td>
-                                        <td>2024-09-15</td>
+                                        <td colspan="6" class="text-center">No companies found matching the criteria.</td>
                                     </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>HealthPlus</td>
-                                        <td>REG-202303</td>
-                                        <td>Healthcare</td>
-                                        <td>Kisumu</td>
-                                        <td><span class="badge bg-danger">Non-Compliant</span></td>
-                                        <td><span class="badge bg-danger">Non-Compliant</span></td>
-                                        <td>2024-06-30</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>ManuFact</td>
-                                        <td>REG-202304</td>
-                                        <td>Manufacturing</td>
-                                        <td>Nakuru</td>
-                                        <td><span class="badge bg-success">Active</span></td>
-                                        <td><span class="badge bg-success">Compliant</span></td>
-                                        <td>2026-01-20</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Retailers Inc</td>
-                                        <td>REG-202305</td>
-                                        <td>Retail</td>
-                                        <td>Eldoret</td>
-                                        <td><span class="badge bg-secondary">Inactive</span></td>
-                                        <td><span class="badge bg-secondary">N/A</span></td>
-                                        <td>2023-11-10</td>
-                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
+                            {{ $recpCompanies->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>
@@ -365,7 +340,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h4 class="card-title">Active Users</h4>
+                                <h4 class="card-title">Active Admins</h4>
                             </div>
                             <!--end col-->
                         </div>
@@ -380,62 +355,35 @@
                                         <th class="border-top-0">#</th>
                                         <th class="border-top-0">User Name</th>
                                         <th class="border-top-0">Email</th>
-                                        <th class="border-top-0">Company</th>
-                                        <th class="border-top-0">Role</th>
                                         <th class="border-top-0">Last Active</th>
                                         <th class="border-top-0">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($activeAdmins as $user)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Jane Doe</td>
-                                        <td>jane@example.com</td>
-                                        <td>Acme Corp</td>
-                                        <td>Admin</td>
-                                        <td>2 min ago</td>
-                                        <td><span class="badge bg-success">Online</span></td>
+                                        <td>{{ $user->id }}</td>
+                                        <td class="text-capitalize">{{ $user->last_name }} {{ $user->first_name }} {{ $user->other_name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'N/A' }}</td>
+                                        <td>
+                                            @if ($user->isOnline())
+                                                <span class="badge bg-success">
+                                                    Online
+                                                </span>
+                                            @else
+                                                <span class="text-muted">
+                                                    Last seen: {{ optional($user->lastSeen())->diffForHumans() ?? 'Unknown' }}
+                                                </span>
+
+                                            @endif
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>John Smith</td>
-                                        <td>john@example.com</td>
-                                        <td>Beta Finance</td>
-                                        <td>Auditor</td>
-                                        <td>10 min ago</td>
-                                        <td><span class="badge bg-warning">Idle</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Mary Johnson</td>
-                                        <td>mary@example.com</td>
-                                        <td>HealthPlus</td>
-                                        <td>User</td>
-                                        <td>30 min ago</td>
-                                        <td><span class="badge bg-secondary">Offline</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Alex Lee</td>
-                                        <td>alex@example.com</td>
-                                        <td>ManuFact</td>
-                                        <td>User</td>
-                                        <td>5 min ago</td>
-                                        <td><span class="badge bg-success">Online</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Grace Kim</td>
-                                        <td>grace@example.com</td>
-                                        <td>Retailers Inc</td>
-                                        <td>Manager</td>
-                                        <td>1 hour ago</td>
-                                        <td><span class="badge bg-secondary">Offline</span></td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <p class="m-0 fs-12 fst-italic ps-2 text-muted">User activity updates every 5 minutes.</p>
+                        <p class="m-0 fs-12 fst-italic ps-2 text-muted">User activity updates every 30 minutes.</p>
                     </div>
                     <!--end card-body-->
                 </div>

@@ -96,6 +96,10 @@ class AdminsController extends Controller
             'password' => $request->password,
         ], $request->remember)) {
             # code...
+            // Auth::guard('admin')->user()->update([
+            //     'last_login_at' => now(),
+            // ]);
+            
             $request->session()->regenerate();
             return redirect()->intended(route('admin.dashboard', ['admin' => 'admin']));
         }
@@ -151,6 +155,21 @@ class AdminsController extends Controller
         return $recpPendingCompanies;
     }
 
+    private function RECPCompanies() {
+        return recp::with('company')->paginate(5);
+    }
+
+    private function fetchAdmins()  {
+        $admins = Admins::activeAdmin()->get(['id', 'first_name', 'last_name', 'email', 'last_login_at', 'profile_photo_path', 'status', 'updated_at']);
+        return $admins;
+    }
+
+    /**
+     * Show the admin dashboard.
+     *
+     * @return \Illuminate\View\View
+     */
+
     public function display_dashboard() {
         $data['activeCompanyCount'] = $this->countActiveCompanies();
         $data['newCompanies'] = $this->newCompaniesByWeek();
@@ -160,6 +179,10 @@ class AdminsController extends Controller
         $data['disapprovedCompaniesThisWeek'] = $this->DisapprovedCompaniesOnRECPThisWeek();
         $data['pendingCompanies'] = $this->PendingCompaniesOnRecp();
         $data['pendingCompaniesThisWeek'] = $this->PendingCompaniesOnRECPThisWeek();
+        $data['recpCompanies'] = $this->RECPCompanies();
+        $data['activeAdmins'] = $this->fetchAdmins();
+
+        // dd($data);
         return view('components.admin.dashboard', $data);
     }
     public function show(Admins $admins)
