@@ -470,7 +470,7 @@
                                 @endphp
                                     <div class="dropdown-menu dropdown-menu-end">
                               @foreach($regions as $region)
-                                <a class="dropdown-item" href="{{ url()->current() }}?region={{ $region }}">
+                                <a class="dropdown-item" href="#">
                                     {{ $region }}
                                 </a>
                             @endforeach
