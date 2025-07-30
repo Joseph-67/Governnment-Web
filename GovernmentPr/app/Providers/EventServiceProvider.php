@@ -43,6 +43,12 @@ class EventServiceProvider extends ServiceProvider
                     'last_login_at' => now(),
                 ]);
             }
+           if ($event->user instanceof \App\Models\CompanyUsers) {
+        $event->user->update([
+            'last_login_at' => now(),
+        ]);
+    }
+
         });
     }
 

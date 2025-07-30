@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admins;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\CompanyUsers;
 use App\Models\recp;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -163,6 +164,11 @@ class AdminsController extends Controller
         $admins = Admins::activeAdmin()->get(['id', 'first_name', 'last_name', 'email', 'last_login_at', 'profile_photo_path', 'status', 'updated_at']);
         return $admins;
     }
+   private function fetchUsers()
+{
+    return CompanyUsers::with('user', 'company')->get(); // eager load user details
+}
+
 
     /**
      * Show the admin dashboard.
@@ -181,6 +187,8 @@ class AdminsController extends Controller
         $data['pendingCompaniesThisWeek'] = $this->PendingCompaniesOnRECPThisWeek();
         $data['recpCompanies'] = $this->RECPCompanies();
         $data['activeAdmins'] = $this->fetchAdmins();
+        $data['activeUsers']=$this->fetchUsers();
+
 
         // dd($data);
         return view('components.admin.dashboard', $data);

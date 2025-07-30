@@ -390,6 +390,65 @@
                 <!--end card-->
             </div>
             <!--end col-->
+               <div class="col-lg-12">
+                <div class="card card-h-100">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h4 class="card-title">Active Users</h4>
+                            </div>
+                            <!--end col-->
+                        </div>
+                        <!--end row-->
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="border-top-0">#</th>
+                                        <th class="border-top-0">Name</th>
+                                        <th class="border-top-0">Email</th>
+                                        <th class="border-top-0">Company</th>
+                                        <th class="border-top-0">Last Active</th>
+                                        <th class="border-top-0">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                      @foreach($activeUsers as $user)
+                                <tr>
+                                    <td>{{ $user->company_user_id }}</td>
+                                    <td>{{ $user->user->first_name ?? '' }} {{ $user->user->last_name ?? '' }}</td>
+                                    <td>{{ $user->user->email ?? 'N/A' }}</td>
+                                    <td>{{ $user->company->company_name ?? 'N/A' }}</td>
+                                    <td>{{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'N/A' }}</td>
+
+                                    <td>
+                                            @if ($user->isOnline())
+                                                <span class="badge bg-success">
+                                                    Online
+                                                </span>
+                                            @else
+                                                <span class="text-muted">
+                                                    Last seen: {{ optional($user->lastSeen())->diffForHumans() ?? 'Unknown' }}
+                                                </span>
+
+                                            @endif
+                                        </td>
+
+                                </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="m-0 fs-12 fst-italic ps-2 text-muted">User activity updates every 5 minutes.</p>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
         </div>
         <!--end row-->
         <div class="row justify-content-center">

@@ -21,7 +21,9 @@
                     </div>
                     </div>
                 </div>
-                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">+12</span> This Week</p>
+                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">
+                {{ \App\Models\CompanyUsers::countCompaniesThisWeekForUser(auth()->id()) }}
+                </span> This Week</p>
                 </div>
             </div>
             </div>
@@ -31,7 +33,9 @@
                 <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                     <div class="col-9">
                     <p class="text-dark mb-0 fw-semibold fs-14">R.E.C.P Audited</p>
-                    <h3 class="mt-2 mb-0 fw-bold">872</h3>
+                    <h3 class="mt-2 mb-0 fw-bold">
+                        {{ \App\Models\CompanyUsers::AuditedCompaniesForUser(auth()->id())->count() }}
+                    </h3>
                     </div>
                     <div class="col-3 align-self-center">
                     <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
@@ -39,7 +43,10 @@
                     </div>
                     </div>
                 </div>
-                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">+8</span> Audited This Week</p>
+                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">
+                {{ \App\Models\CompanyUsers::AuditedThisWeekForUser(auth()->id())->count() }}
+
+                </span> Audited This Week</p>
                 </div>
             </div>
             </div>
@@ -49,7 +56,9 @@
                 <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                     <div class="col-9">
                     <p class="text-dark mb-0 fw-semibold fs-14">Non-Compliant</p>
-                    <h3 class="mt-2 mb-0 fw-bold">152</h3>
+                    <h3 class="mt-2 mb-0 fw-bold">
+                        {{ \App\Models\CompanyUsers::DisapprovedCompaniesForUser(auth()->id())->count() }}
+                    </h3>
                     </div>
                     <div class="col-3 align-self-center">
                     <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
@@ -57,7 +66,9 @@
                     </div>
                     </div>
                 </div>
-                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">+5</span> This Week</p>
+                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">
+                {{ \App\Models\CompanyUsers::DisapprovedThisWeekForUser(auth()->id())->count() }}
+                </span> This Week</p>
                 </div>
             </div>
             </div>
@@ -67,7 +78,9 @@
                 <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                     <div class="col-9">
                     <p class="text-dark mb-0 fw-semibold fs-14">Pending Audit</p>
-                    <h3 class="mt-2 mb-0 fw-bold">37</h3>
+                    <h3 class="mt-2 mb-0 fw-bold">
+                        {{ \App\Models\CompanyUsers::PendingCompaniesForUser(auth()->id())->count() }}
+                    </h3>
                     </div>
                     <div class="col-3 align-self-center">
                     <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
@@ -75,7 +88,9 @@
                     </div>
                     </div>
                 </div>
-                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-warning">+3</span> Pending This Week</p>
+                <p class="mb-0 text-truncate text-muted mt-3"><span class="text-warning">
+                {{ \App\Models\CompanyUsers::PendingThisWeekForUser(auth()->id())->count() }}
+                </span> Pending This Week</p>
                 </div>
             </div>
             </div>
@@ -123,7 +138,7 @@
                 <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                     <div class="col-9">
                     <p class="text-dark mb-0 fw-semibold fs-14">Waste Reduction</p>
-                    <h3 class="mt-2 mb-0 fw-bold">12%</h3>
+                    <h3 class="mt-2 mb-0 fw-bold">0%</h3>
                     </div>
                     <div class="col-3 align-self-center">
                         <div
@@ -156,7 +171,7 @@
             <div class="col-md-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">Energy Efficiency Distribution</h4>
+                        <h4 class="card-title mb-0">Waste Efficiency Distribution</h4>
                     </div>
                     <div class="card-body">
                         <div id="energy-efficiency-pie"></div>
@@ -177,42 +192,39 @@
                     <thead class="table-light">
                         <tr>
                         <th>Company Name</th>
-                        <th>Industry</th>
+                        <th>Email</th>
                         <th class="text-end">Status</th>
                         <th class="text-end">Last Audited</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <td>Alpha Corp</td>
-                        <td>Manufacturing</td>
-                        <td class="text-end"><span class="badge bg-success">Compliant</span></td>
-                        <td class="text-end">2024-06-01</td>
-                        </tr>
-                        <tr>
-                        <td>Beta Ltd</td>
-                        <td>Energy</td>
-                        <td class="text-end"><span class="badge bg-warning">Pending</span></td>
-                        <td class="text-end">2024-05-20</td>
-                        </tr>
-                        <tr>
-                        <td>Gamma Inc</td>
-                        <td>Technology</td>
-                        <td class="text-end"><span class="badge bg-danger">Non-Compliant</span></td>
-                        <td class="text-end">2024-05-15</td>
-                        </tr>
-                        <tr>
-                        <td>Delta LLC</td>
-                        <td>Logistics</td>
-                        <td class="text-end"><span class="badge bg-success">Compliant</span></td>
-                        <td class="text-end">2024-06-03</td>
-                        </tr>
-                        <tr>
-                        <td>Epsilon PLC</td>
-                        <td>Retail</td>
-                        <td class="text-end"><span class="badge bg-success">Compliant</span></td>
-                        <td class="text-end">2024-05-28</td>
-                        </tr>
+                        @php
+                            $companies = \App\Models\CompanyUsers::getCompaniesWithStatusForUser(auth()->id());
+                        @endphp
+                        @forelse($companies as $company)
+                            <tr>
+                                <td>{{ $company['company_name'] ?? '-' }}</td>
+                                <td>{{ $company['email'] ?? '-' }}</td>
+                                <td class="text-end">
+                                    @if($company['status'] === 'approved')
+                                        <span class="badge bg-success">Compliant</span>
+                                    @elseif($company['status'] === 'pending')
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @elseif($company['status'] === 'disapproved')
+                                        <span class="badge bg-danger">Non-Compliant</span>
+                                    @else
+                                        <span class="badge bg-secondary">Unknown</span>
+                                    @endif
+                                </td>
+                                <td class="text-end">
+                                    {{ $company['last_audited'] ? \Carbon\Carbon::parse($company['last_audited'])->format('Y-m-d') : '-' }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center">No companies found.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                     </table>
                 </div>
