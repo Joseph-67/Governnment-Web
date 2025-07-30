@@ -143,8 +143,8 @@ class CompanyController extends WaterStockMovementController
         $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
         //fetch company workflows
         $data['company_workflows'] = CompanyWorkflow::where('company_id', $companyID)->get(['workflow_id', 'workflow_name']);
-
-
+        //fetch all states
+        $data['regions']= Company::getAllRegions();
         return view('components.apps.companyProfile', $data);
     }   
     /**

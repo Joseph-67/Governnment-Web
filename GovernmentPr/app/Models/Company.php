@@ -42,7 +42,10 @@ class Company extends Model
     {
         return $this->hasMany(Product::class, 'company_id', 'company_id');
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);    
+    }
     public function companyMaterials()
     {
         return $this->hasMany(CompanyMaterial::class, 'companyID', 'company_id');
@@ -164,6 +167,15 @@ class Company extends Model
     {
         return self::distinct('state')->count('state');
     }
+    public static function getAllRegions()
+{
+    return self::select('state')
+        ->whereNotNull('state')
+        ->distinct()
+        ->orderBy('state')
+        ->pluck('state');
+}
+
     
 
 }

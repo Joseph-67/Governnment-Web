@@ -463,15 +463,20 @@
                                 <div class="dropdown">
                                     <a href="#" class="btn bt btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="icofont-location-pin fs-5 me-1"></i>
-                                        Nairobi<i class="las la-angle-down ms-1"></i>
+                                        Nigeria<i class="las la-angle-down ms-1"></i>
                                     </a>
+                                @php
+                                $regions = \App\Models\Company::getAllRegions();
+                                @endphp
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Nairobi</a>
-                                        <a class="dropdown-item" href="#">Mombasa</a>
-                                        <a class="dropdown-item" href="#">Kisumu</a>
-                                        <a class="dropdown-item" href="#">Nakuru</a>
-                                        <a class="dropdown-item" href="#">Eldoret</a>
+                              @foreach($regions as $region)
+                                <a class="dropdown-item" href="{{ url()->current() }}?region={{ $region }}">
+                                    {{ $region }}
+                                </a>
+                            @endforeach
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -482,7 +487,7 @@
                             <hr class="hr-dashed border-secondary w-25 mt-0 mx-auto">
                         </div>
                         <div class="text-center">
-                            <h4>Nairobi</h4>
+                            <h4>Nigeria</h4>
                             <p class="text-muted mt-2">Shows the compliance status of companies in the selected region.</p>
                             <button type="button" class="btn btn-outline-primary px-3 mt-2">View Regional Details</button>
                         </div>
