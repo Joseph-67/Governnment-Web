@@ -144,21 +144,26 @@ class Company extends Model
         return $this->hasMany(WaterPollutionUsage::class);
     }
 
-public static function totalActiveCompanies()
-{
-    return self::where('status', 'active')->count(); // BEGIN: Count active companies
-} // END:
-public static function totalInactiveCompanies()
-{
-    return self::where('status', 'inactive')->count(); // BEGIN: Count inactive companies
-}
-public static function totalNewCompaniesThisWeek()
-{
-    return self::where('created_at', '>=', now()->startOfWeek())->count(); // BEGIN: Count new companies this week
-} // END:
-public static function totalStates()
-{
-    return self::distinct('state')->count('state');
-}
+    public function companyRecp() {
+        return $this->hasOne(recp::class, 'company_id', 'company_id'); // Define the one-to-one relationship with the recp model
+    }
+
+    public static function totalActiveCompanies()
+    {
+        return self::where('status', 'active')->count(); // BEGIN: Count active companies
+    } // END:
+    public static function totalInactiveCompanies()
+    {
+        return self::where('status', 'inactive')->count(); // BEGIN: Count inactive companies
+    }
+    public static function totalNewCompaniesThisWeek()
+    {
+        return self::where('created_at', '>=', now()->startOfWeek())->count(); // BEGIN: Count new companies this week
+    } // END:
+    public static function totalStates()
+    {
+        return self::distinct('state')->count('state');
+    }
+    
 
 }

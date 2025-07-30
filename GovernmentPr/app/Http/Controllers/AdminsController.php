@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admins;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\recp;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -118,9 +119,47 @@ class AdminsController extends Controller
         $companyCount = Company::totalNewCompaniesThisWeek();
         return $companyCount;
     }
+
+    private function ActiveCompaniesOnRECP()  {
+        $recpApprovedCompanies = recp::totalRegisteredCompanies();
+        return $recpApprovedCompanies;
+    }
+
+
+    private function ActiveCompaniesOnRECPThisWeek()  {
+        $recpApprovedCompanies = recp::totalRegisteredCompaniesThisWeek();
+        return $recpApprovedCompanies;
+    }
+
+    private function DisapprovedCompaniesOnRECP()  {
+        $recpDisapprovedCompanies = recp::totalDisapprovedCompanies();
+        return $recpDisapprovedCompanies;
+    }
+
+    private function DisapprovedCompaniesOnRECPThisWeek()  {
+        $recpDisapprovedCompanies = recp::totalDisapprovedCompaniesThisWeek();
+        return $recpDisapprovedCompanies;
+    }
+
+    private function PendingCompaniesOnRecp() {
+        $recpPendingCompanies = recp::totalPendingCompanies();
+        return $recpPendingCompanies;
+    }
+
+    private function PendingCompaniesOnRECPThisWeek()  {
+        $recpPendingCompanies = recp::totalPendingCompaniesThisWeek();
+        return $recpPendingCompanies;
+    }
+
     public function display_dashboard() {
         $data['activeCompanyCount'] = $this->countActiveCompanies();
         $data['newCompanies'] = $this->newCompaniesByWeek();
+        $data['approvedCompanies'] = $this->ActiveCompaniesOnRECP();
+        $data['approvedCompaniesThisWeek'] = $this->ActiveCompaniesOnRECPThisWeek();
+        $data['disapprovedCompanies'] = $this->DisapprovedCompaniesOnRECP();
+        $data['disapprovedCompaniesThisWeek'] = $this->DisapprovedCompaniesOnRECPThisWeek();
+        $data['pendingCompanies'] = $this->PendingCompaniesOnRecp();
+        $data['pendingCompaniesThisWeek'] = $this->PendingCompaniesOnRECPThisWeek();
         return view('components.admin.dashboard', $data);
     }
     public function show(Admins $admins)

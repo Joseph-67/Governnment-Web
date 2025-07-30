@@ -16,6 +16,7 @@ use App\Models\RECP_waste_management_method;
 use App\Models\RECP_waste_reduction_measure;
 use App\Models\RECP_product_recovery_method;
 use App\Models\Policy;
+use App\Models\recp;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -1051,13 +1052,13 @@ class RECPController extends Controller
         //
     }
 
-    public function store_status(Request $request)
+    public function store_recp_status(Request $request)
     {
         //
         $validator = Validator::make($request->all(), [
-            'company' => ['required', 'numeric'],
-            'status' => ['required', 'string', Rule::in(['approved', 'disapproved', 'pending'])],
-            'remark' => ['nullable', 'string', 'max:255']
+            'company_id' => ['required', 'numeric'],
+            'recp_status' => ['required', 'string', Rule::in(['approved', 'disapproved', 'pending'])],
+            'recp_comment' => ['nullable', 'string', 'max:255']
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -1066,6 +1067,28 @@ class RECPController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+        $recpStatus = recp::updateOrCreate(
+            ['company_id' => $request->company_id],
+            [
+                'status' => $request->recp_status,
+                'remark' => $request->recp_comment
+            ]
+        );
+        if (!$recpStatus) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update RECP status.'
+            ], 500);
+        }
+        // If the recp status is updated successfully, we can also update the recp status in the company table
+        $recp = recp::find($recpStatus->recp_id);
+        // dd($recp);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'RECP status updated successfully.',
+            'recp' => $recp
+        ], 200);
     }
 
 

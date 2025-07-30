@@ -43,6 +43,7 @@ use App\Models\Policies;
 use App\Models\EquipmentType;
 use App\Models\EquipmentLog;
 use App\Models\User;
+use App\Models\recp;
 use App\Models\WasteDisposal;
 use App\Models\WaterStockMovement;
 use App\Models\WaterQualityLogs;
@@ -82,6 +83,7 @@ class CompanyController extends WaterStockMovementController
         $data['company_hazarduous_material'] = RECP_harzardous_materials::active()->where('companyID', $companyID)->select('hazarduousMaterialID', 'material_title')->get();
         $data['company_unit_process'] = RECP_unit_of_process::active()->where('companyID', $companyID)->select('unitProcessID', 'unit_process_title')->get();
         $data['company_problems_and_solutions'] = RECP_problem_and_solution::active()->where('companyID', $companyID)->select('problemSolutionID', 'problem_title', 'solution_title')->get();
+        $data['recp_state'] = recp::where('company_id', $companyID)->first(['recp_id', 'status', 'remark']);
 
         // Fetch materials
         $data['materials'] = Material::active()->select('materialID', 'material')->get();

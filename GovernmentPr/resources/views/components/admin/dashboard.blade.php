@@ -106,7 +106,7 @@
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
                                 <p class="text-dark mb-0 fw-semibold fs-14">Active Companies</p>
-                                <h3 class="mt-2 mb-0 fw-bold">872</h3>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $approvedCompanies }}</h3>
                             </div>
                             <!--end col-->
                             <div class="col-3 align-self-center">
@@ -117,7 +117,7 @@
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">+8</span>
+                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">+{{ $approvedCompaniesThisWeek }}</span>
                             Active This Week</p>
                     </div>
                     <!--end card-body-->
@@ -131,7 +131,7 @@
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
                                 <p class="text-dark mb-0 fw-semibold fs-14">Non-Compliant</p>
-                                <h3 class="mt-2 mb-0 fw-bold">152</h3>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $disapprovedCompanies }}</h3>
                             </div>
                             <!--end col-->
                             <div class="col-3 align-self-center">
@@ -142,7 +142,7 @@
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">+5</span>
+                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">+{{ $disapprovedCompaniesThisWeek }}</span>
                             Non-Compliant This Week</p>
                     </div>
                     <!--end card-body-->
@@ -156,7 +156,7 @@
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
                                 <p class="text-dark mb-0 fw-semibold fs-14">Pending Audit</p>
-                                <h3 class="mt-2 mb-0 fw-bold">37</h3>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $pendingCompanies }}</h3>
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
@@ -164,7 +164,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-warning">+3</span> Pending This Week</p>
+                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-warning">+{{ $pendingCompaniesThisWeek }}</span> Pending This Week</p>
                     </div>
                 </div>
             </div>

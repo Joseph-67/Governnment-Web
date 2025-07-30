@@ -1081,18 +1081,19 @@
                                         <div class="card-body">
                                             @if(auth()->guard('admin')->check())
                                                 <form id="recp-form">
+                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                                                     <div class="mb-3">
                                                         <label for="recpStatus" class="form-label">Select RECP Status</label>
                                                         <select class="form-select" id="recpStatus" name="recp_status" required>
                                                             <option value="" disabled selected>Select status</option>
-                                                            <option value="approved">Approved</option>
-                                                            <option value="disapproved">Disapproved</option>
-                                                            <option value="pending">Pending</option>
+                                                            <option {{ ($recp_state->status == 'approved')? "selected":"" }} value="approved">Approved</option>
+                                                            <option {{ ($recp_state->status == 'disapproved')? "selected":"" }} value="disapproved">Disapproved</option>
+                                                            <option {{ ($recp_state->status == 'pending')? "selected":"" }} value="pending">Pending</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="recpComments" class="form-label">Comments</label>
-                                                        <textarea class="form-control" id="recpComments" name="recp_comments" rows="3" required></textarea>
+                                                        <textarea class="form-control" id="recpComments" name="recp_comment" rows="3"> {{ $recp_state->remark }} </textarea>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </form>
@@ -14034,7 +14035,7 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
             recpForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(recpForm);
-                const url = "{{ route('admin.store-recp') }}";
+                const url = "{{ route('admin.store-recp-status') }}";
 
                 try {
                     const result = await fetch_cycle('--Store Recp', url, 'POST', formData);
@@ -14044,7 +14045,6 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
                             text: 'Recp has been successfully submitted.',
                             icon: 'success'
                         });
-                        recpForm.reset();
                     } else {
                         Swal.fire({
                             title: 'Error',

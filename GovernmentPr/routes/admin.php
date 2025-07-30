@@ -645,6 +645,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
         Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
         Route::post('/add-waste-reduction-measure', 'add_waste_reduction_measure')->name('admin.add-waste-reduction-measure');
+        Route::post('/store-recp-status', 'store_recp_status')->name('admin.store-recp-status');
         
         
         // Update
