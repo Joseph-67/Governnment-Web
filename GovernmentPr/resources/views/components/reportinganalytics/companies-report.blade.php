@@ -308,10 +308,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                             <th colspan="8" class="w-450">Gains from RECP methodologies</th>
                                             <th rowspan="2" class="w-450">Company's policy alignment with RECP strategy</th>
                                             @if($policies)
-                                            <th colspan="6" class="">Policy Areas</th>
+                                            <th colspan="{{ count($policies) }}" class="">Policy Areas</th>
                                             @endif
                                             @if($objectives)
-                                            <th colspan="10" class="">Objective Areas</th>
+                                            <th colspan="{{ count($objectives) }}" class="">Objective Areas</th>
                                             @endif
                                             <th rowspan="2" class="w-450">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
                                             <th colspan="5" class="w-450">Housekeeping Options</th>
