@@ -1078,7 +1078,7 @@ class CompanyController extends WaterStockMovementController
     //end store water source
 
     public function countCompaniesByIndustry($industry) {
-        $companyCount = Company::where('industry', $industry)
+        $companyCount = Company::whereRaw('LOWER(industry) = ?', $industry)
             ->where('status', 'active')
             ->count();
         return response()->json([

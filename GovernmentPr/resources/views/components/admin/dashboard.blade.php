@@ -31,14 +31,15 @@
     // Fetch company counts for each industry in the selected sectors
     selectedSectors.forEach(sector => {
         const industriesInSector = industries[sector.name];
-
+        // console.log(sector.name.toLowerCase(), "this sector kenna");
+        
         if (!Array.isArray(industriesInSector)) {
             console.warn(`No industries found for sector: ${sector.name}`);
             return;
         }
 
         industriesInSector.forEach(industry => {
-            const fetchPromise = fetch(`/admin/count/companies/${industry}`)
+            const fetchPromise = fetch(`/admin/count/companies/${industry.toLowerCase()}`)
                 .then(response => response.json())
                 .then(data => {
 
