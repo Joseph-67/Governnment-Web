@@ -33,9 +33,9 @@ industry_keys = list(industries.keys())
 # --- Database configuration ---
 db_config = {
     'host': 'localhost',
-    'user': 'your_db_username',
-    'password': 'your_db_password',
-    'database': 'your_database_name'
+    'user': 'root',
+    'password': '',
+    'database': 'governmentapp'
 }
 
 # --- Fetch companies from DB ---
