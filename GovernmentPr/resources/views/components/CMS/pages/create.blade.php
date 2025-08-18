@@ -13,7 +13,7 @@ body, input, textarea, select, button {
 #editor-container {
     border: 1px solid #ddd;
     border-radius: 6px;
-    background: #fff;
+    /* background: #fff; */
     display: flex;
     flex-direction: column;
     height: auto;
@@ -59,7 +59,7 @@ body, input, textarea, select, button {
     top: 0; left: 0; right: 0; bottom: 0;
     width: 100%; height: 100%;
     z-index: 1050;
-    background: #fff;
+    /* background: #fff; */
     padding: 1rem;
 }
 
