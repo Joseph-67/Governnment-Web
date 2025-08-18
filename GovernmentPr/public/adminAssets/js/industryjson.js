@@ -1,85 +1,173 @@
 let industries = {
-    "Agriculture" : [
-        "Crop Production (e.g., cassava, maize, rice)",
+    "Agriculture": [
+        "Crop Production",
         "Livestock Farming",
-        "Fisheries and Aquaculture",
-        "Forestry",
+        "Fisheries & Aquaculture",
+        "Forestry & Logging",
+        "Agricultural Technology (AgriTech)",
+        "Agro-Processing"
     ],
-    "Mining and Quarrying" : [
-        "Oil and Gas",
+
+    "Mining and Quarrying": [
+        "Oil and Gas Exploration",
         "Coal Mining",
-        "Limestone and Cement Production",
-        "Gold and Precious Minerals"
+        "Limestone & Cement Mining",
+        "Gold Mining",
+        "Tin, Iron Ore & Other Solid Minerals",
+        "Quarrying (Stone, Sand, Gravel)"
     ],
-    "Energy and Power Generation" : [
+
+    "Energy and Power Generation": [
         "Hydroelectric Power",
-        "Renewable Energy (e.g., solar, wind)",
+        "Solar Energy",
+        "Wind Energy",
+        "Geothermal Energy",
+        "Biomass & Biofuels",
+        "Nuclear Energy",
+        "Thermal Power"
     ],
-    "Manufacturing" : [
-        "Food and Beverage Processing",
-        "Textile and Garment Production",
-        "Plastics and Packaging",
-        "Chemicals and Fertilizers",
-        "Building Materials"
+
+    "Manufacturing": [
+        "Food and Beverage",
+        "Textiles & Apparel",
+        "Plastics & Rubber",
+        "Chemicals & Fertilizers",
+        "Building Materials (Cement, Glass, Ceramics)",
+        "Automobile & Auto Parts",
+        "Electronics & Electrical Equipment",
+        "Metallurgy & Steel",
+        "Paper & Packaging"
     ],
-    "Construction" : [
-        "Real Estate Development",
-        "Infrastructure Projects (e.g., roads, bridges)",        
+
+    "Furniture & Woodwork": [
+        "Household Furniture",
+        "Office Furniture",
+        "Luxury & Custom Furniture",
+        "Wood Products & Carpentry",
+        "Mattresses & Upholstery",
+        "Interior Design & Home Decor"
     ],
-    "Petrochemicals" : [
-        "Refining Crude Oil",
-        "Lubricants and Petrochemical Products",
+
+    "Construction & Real Estate": [
+        "Residential Real Estate",
+        "Commercial Real Estate",
+        "Industrial Real Estate",
+        "Infrastructure Projects (Roads, Bridges, Railways)",
+        "Urban Development"
     ],
-    "Banking and Finance" : [
-        "Commercial and Microfinance Banks",
-        "Fintech and Mobile Payments",
-        "Insurance",
+
+    "Petrochemicals": [
+        "Crude Oil Refining",
+        "Lubricants & Additives",
+        "Plastics & Synthetics",
+        "Petrochemical Products"
     ],
-    "Telecommunications" : [
-        "Mobile Network Providers",
-        "Internet Service Providers",
+
+    "Banking, Finance & Insurance": [
+        "Commercial Banking",
+        "Microfinance",
+        "Investment Banking",
+        "Fintech & Digital Payments",
+        "Pension Funds",
+        "Insurance (Life, Health, General)",
+        "Capital Markets & Securities"
     ],
-    "Information Technology" : [
+
+    "Telecommunications": [
+        "Mobile Networks",
+        "Broadband & Internet Services",
+        "Satellite Communications",
+        "Data Centers & Cloud Hosting"
+    ],
+
+    "Information & Communication Technology (ICT)": [
         "Software Development",
-        "IT Infrastructure and Cloud Services"
+        "IT Infrastructure & Networking",
+        "Cybersecurity",
+        "Artificial Intelligence & Machine Learning",
+        "Blockchain & Web3",
+        "Cloud Computing & SaaS",
+        "IT Consulting"
     ],
-    "Transport and Logistics" : [
-        "Freight and Haulage",
-        "Shipping and Maritime Services",
-        "Aviation"
+
+    "Transport & Logistics": [
+        "Road Freight & Haulage",
+        "Maritime & Shipping",
+        "Aviation & Airlines",
+        "Rail Transport",
+        "Courier & Delivery Services",
+        "Warehousing & Supply Chain"
     ],
-    "Retail and Wholesale Trade" : [
-        "E-commerce Platforms",
-        "Consumer Goods Distribution",
+
+    "Retail & Wholesale Trade": [
+        "E-commerce",
+        "Supermarkets & Consumer Goods",
+        "Wholesale Distribution",
+        "Luxury & Fashion Retail"
     ],
-    "Media and Entertainment" : [
-        "Consumer Goods Distribution",
-        "Music Industry",
-        "Sports and Events Management"
+
+    "Media, Entertainment & Creative Arts": [
+        "Film & Television",
+        "Music & Performing Arts",
+        "Sports & Esports",
+        "Advertising & Marketing",
+        "Publishing & Print Media",
+        "Digital Media & Content Creation"
     ],
-    "Healthcare" : [
-        "Pharmaceutical Production",
-        "Hospitals and Clinics",
-        "Medical Equipment",
+
+    "Healthcare & Life Sciences": [
+        "Pharmaceuticals",
+        "Hospitals & Clinics",
+        "Medical Equipment & Devices",
+        "Biotechnology",
+        "Health Insurance",
+        "Telemedicine & Digital Health"
     ],
-    "Hospitality and Tourism" : [
-        "Hotels and Resorts",
-        "Ecotourism"
+
+    "Hospitality & Tourism": [
+        "Hotels & Resorts",
+        "Restaurants & Food Services",
+        "Travel Agencies",
+        "Ecotourism & Cultural Tourism",
+        "Events & Leisure"
     ],
-    "Education" : [
-        "Universities and Private Schools",
-        "EdTech"
+
+    "Education": [
+        "Primary & Secondary Education",
+        "Universities & Higher Institutions",
+        "Vocational & Technical Training",
+        "EdTech & Online Learning"
     ],
-    "Professional Services" : [
+
+    "Professional & Business Services": [
         "Legal Services",
-        "Accounting and Consulting"
+        "Accounting & Auditing",
+        "Consulting",
+        "Human Resources & Recruitment",
+        "Engineering Services",
+        "Marketing & PR"
     ],
-    "Nonprofit and NGOs" : [
-        "Development and Aid Organizations",
+
+    "Nonprofit & NGOs": [
+        "Development Organizations",
+        "Charitable Foundations",
+        "International NGOs",
+        "Community-Based Organizations"
     ],
-    "Emerging Industries" : [
+
+    "Government & Public Administration": [
+        "Federal & State Agencies",
+        "Local Government Authorities",
+        "Regulatory Bodies",
+        "Public Utilities"
+    ],
+
+    "Emerging Industries": [
         "Renewable Energy",
         "Agribusiness Technology",
-        "Creative Arts and Design"
+        "Creative Arts & Digital Economy",
+        "Space Technology",
+        "Green Economy & Sustainability",
+        "Smart Cities & IoT"
     ]
 }
