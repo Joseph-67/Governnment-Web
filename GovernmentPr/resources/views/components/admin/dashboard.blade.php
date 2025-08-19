@@ -146,6 +146,74 @@
         // Call the function
         getMap();
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-company");
+    const sectorSelect = document.getElementById("sector-filter");
+    const regionSelect = document.getElementById("region-filter");
+    const complianceSelect = document.getElementById("compliance-filter");
+    const clearButton = document.getElementById("clear-filters");
+
+    const tableBody = document.querySelector("tbody");
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+    const noResultRow = document.createElement("tr");
+    noResultRow.innerHTML = `<td colspan="6" class="text-center text-danger">Company record doesn't exist</td>`;
+
+    function getCellText(row, index) {
+        return (row.cells[index]?.textContent || "").trim().toLowerCase();
+    }
+
+    function filterTable() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        const selectedSector = sectorSelect.value.trim().toLowerCase();
+        const selectedRegion = regionSelect.value.trim().toLowerCase();
+        const selectedCompliance = complianceSelect.value.trim().toLowerCase();
+
+        tableBody.innerHTML = "";
+        let found = false;
+
+        rows.forEach(row => {
+            const companyName = getCellText(row, 1);
+            const industry = getCellText(row, 2);
+            const region = getCellText(row, 3);
+            const compliance = getCellText(row, 5);
+
+            const matchesName = !searchTerm || companyName.includes(searchTerm);
+            const matchesSector = !selectedSector || industry === selectedSector;
+            const matchesRegion = !selectedRegion || region.includes(selectedRegion);
+            const matchesCompliance = !selectedCompliance || compliance === selectedCompliance;
+
+            // Show row if it matches all active filters
+            if (matchesName && matchesSector && matchesRegion && matchesCompliance) {
+                tableBody.appendChild(row);
+                found = true;
+            }
+        });
+
+        if (!found) {
+            tableBody.appendChild(noResultRow);
+        }
+    }
+
+    // Attach filter events
+    searchInput.addEventListener("input", filterTable);
+    sectorSelect.addEventListener("change", filterTable);
+    regionSelect.addEventListener("change", filterTable);
+    complianceSelect.addEventListener("change", filterTable);
+
+    // Clear filters
+    clearButton.addEventListener("click", function () {
+        searchInput.value = "";
+        sectorSelect.value = "";
+        regionSelect.value = "";
+        complianceSelect.value = "";
+        tableBody.innerHTML = "";
+        rows.forEach(row => tableBody.appendChild(row));
+    });
+});
+</script>
+
+
 
     @endsection
     @section('modals')
@@ -331,41 +399,49 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="row g-2 mb-3" method="GET" action="">
+                            
                             <div class="col-md-3">
-                                <input type="text" name="company" class="form-control" placeholder="Search Company" value="{{ request('company') }}">
-                            </div>
-                            <div class="col-md-2">
-                                <select name="sector" class="form-select">
-                                    <option value="">All Sectors</option>
-                                    <option value="Technology" {{ request('sector') == 'Technology' ? 'selected' : '' }}>Technology</option>
-                                    <option value="Finance" {{ request('sector') == 'Finance' ? 'selected' : '' }}>Finance</option>
-                                    <option value="Healthcare" {{ request('sector') == 'Healthcare' ? 'selected' : '' }}>Healthcare</option>
-                                    <option value="Manufacturing" {{ request('sector') == 'Manufacturing' ? 'selected' : '' }}>Manufacturing</option>
-                                    <option value="Retail" {{ request('sector') == 'Retail' ? 'selected' : '' }}>Retail</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="region" class="form-select">
-                                    <option value="">All Regions</option>
-                                    <option value="Nairobi" {{ request('region') == 'Nairobi' ? 'selected' : '' }}>Nairobi</option>
-                                    <option value="Mombasa" {{ request('region') == 'Mombasa' ? 'selected' : '' }}>Mombasa</option>
-                                    <option value="Kisumu" {{ request('region') == 'Kisumu' ? 'selected' : '' }}>Kisumu</option>
-                                    <option value="Nakuru" {{ request('region') == 'Nakuru' ? 'selected' : '' }}>Nakuru</option>
-                                    <option value="Eldoret" {{ request('region') == 'Eldoret' ? 'selected' : '' }}>Eldoret</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="compliance" class="form-select">
-                                    <option value="">All Compliance</option>
-                                    <option value="Compliant" {{ request('compliance') == 'Compliant' ? 'selected' : '' }}>Compliant</option>
-                                    <option value="Review" {{ request('compliance') == 'Review' ? 'selected' : '' }}>Review</option>
-                                    <option value="Non-Compliant" {{ request('compliance') == 'Non-Compliant' ? 'selected' : '' }}>Non-Compliant</option>
-                                    <option value="N/A" {{ request('compliance') == 'N/A' ? 'selected' : '' }}>N/A</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" class="btn btn-primary">Clear Filters</button>
-                            </div>
+    <input type="text" id="search-company" class="form-control" placeholder="Search Company">
+</div>
+
+<div class="col-md-2">
+    <select id="sector-filter" class="form-select">
+        <option value="">All Sectors</option>
+        <option value="Technology">Technology</option>
+        <option value="Finance">Finance</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Manufacturing">Manufacturing</option>
+        <option value="Retail">Retail</option>
+    </select>
+</div>
+
+<div class="col-md-2">
+    <select id="region-filter" class="form-select">
+        <option value="">All Regions</option>
+        @php
+            $regions = \App\Models\Company::getAllRegions();
+        @endphp
+        @foreach($regions as $region)
+            <option value="{{ $region }}">{{ $region }}</option>
+        @endforeach
+    </select>
+</div>
+
+<div class="col-md-2">
+    <select id="compliance-filter" class="form-select">
+        <option value="">All Compliance</option>
+        <option value="Compliant">Compliant</option>
+        <option value="Review">Review</option>
+        <option value="Non-Compliant">Non-Compliant</option>
+        <option value="N/A">N/A</option>
+    </select>
+</div>
+
+<div class="col-md-3">
+    <button type="button" id="clear-filters" class="btn btn-primary">Clear Filters</button>
+</div>
+
+                           
                         </div>
                         
                         <div class="table-responsive">
