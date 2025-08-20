@@ -5,13 +5,22 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
+                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-circle-left me-1"></i> 
+                </a>
                 <h1 class="h3 fw-bold text-dark mb-0">Guards Management</h1>
             </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuard">
                 <i class="fas fa-plus me-1"></i> Add Guard
             </button>
         </div>
-
+        <x-validation-errors class="alert" alert />
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <!-- Table -->
         <div class="card shadow-sm border-0">
             <div class="table-responsive">
@@ -20,7 +29,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Guard Name</th>
-                            <th scope="col">Description</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Created At</th>
                             <th scope="col" class="text-end">Actions</th>
                         </tr>
@@ -30,8 +39,12 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td class="fw-semibold">{{ $guard->title }}</td>
-                                <td>{{ $guard->description ?? '—' }}</td>
-                                <td>{{ $guard->created_at?->format('d M Y') }}</td>
+                                <td>
+                                    <span class="badge {{ $guard->status ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $guard->status ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
+                                <td>{{ $guard->created_at?->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <!-- Edit -->
                                     <a href="" 
@@ -78,8 +91,11 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="title" class="form-label">Guard Name</label>
-                            <input type="text" name="title" id="title" 
-                                   class="form-control" placeholder="e.g. web, api, admin" required>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}" 
+                                   class="form-control @error('title') border-danger @enderror" placeholder="e.g. web, api, admin" required>
+                            @error('title')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -48,53 +48,81 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // dd($request->guard);
-        foreach ($request['guard'] as $key => $guard) {
-            # code...
-            // dd($guard);
-            $validator =Validator::make($request->all(),[
-                'role_title' => ['required', 'string', 'min:3', 'max:20', Rule::unique('roles', 'name')->where(function ($query) use ($guard) {
-                    return $query->where('guard_name', $guard);
-                }),],
-                'guard' => ['required', 'array'],
-                'guard.*' => ['required', 'string', 'min:3', 'max:20']
+        try {
+            // Validate request
+            $validator = Validator::make($request->all(), [
+                'name' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:20',
+                    Rule::unique('roles', 'name')->where(function ($query) use ($request) {
+                        return $query->where('guard_name', $request->guard_name);
+                    }),
+                ],
+                'guard_name' => ['required', 'string', 'min:3', 'max:20']
             ]);
 
             if ($validator->fails()) {
-                # code...
-                return back()->withErrors($validator);
-            }            
-        }
+                return back()->withErrors($validator)->withInput();
+            }
 
-        // `unique:permissions,name,{$guard},guard_name`,
-        foreach ($request['guard'] as $key => $guard) {
-            Role::create([
-                'name' => $request['role_title'],
-                'guard_name' => $guard
+            // Create Role
+            $role = Role::create([
+                'name' => $request->name,
+                'guard_name' => $request->guard_name
             ]);
-        }
 
-        return back()->with(['success' => `{$request->role_title} role created successfully.`]);
+            return back()->with([
+                'success' => "{$role->name} role created successfully."
+            ])->withInput();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database-specific errors
+            return back()->with([
+                'error' => 'Database error: ' . $e->getMessage()
+            ])->withInput();
+
+        } catch (\Exception $e) {
+            // General errors
+            return back()->with([
+                'error' => 'Something went wrong: ' . $e->getMessage()
+            ])->withInput();
+        }
     }
+
 
     public function assign_role_permission(Request $request)
     {
-        // dd($request);
-        $validator =Validator::make($request->all(),[
-            'role' => ['required', 'numeric'],
-            'permission' => ['required', 'numeric']
+        $request->validate([
+            'role_id' => 'required|integer|exists:roles,id',
+            'permission_id' => 'required|integer|exists:permissions,id',
+            'guard_name' => 'required|string',
+            'checked' => 'required|boolean',
         ]);
 
-        if ($validator->fails()) {
-            # code...
-            return response()->json(['error' =>  $validator], 400);
+        $role = Role::findOrFail($request->role_id);
+        $permission = Permission::findOrFail($request->permission_id);
+
+        try {
+            if ($request->checked) {
+                // Assign permission
+                if (!$role->hasPermissionTo($permission)) {
+                    $role->givePermissionTo($permission);
+                }
+            } else {
+                // Revoke permission
+                if ($role->hasPermissionTo($permission)) {
+                    $role->revokePermissionTo($permission);
+                }
+            }
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            \Log::error('Role-Permission sync failed: '.$e->getMessage());
+            return response()->json(['success' => false], 500);
         }
-        // fetch role
-        $role = Role::find($request['role']);
-        $permission = Permission::find($request['permission']);
-        $role->givePermissionTo($permission);
-        return response()->json(['message' =>  'Permission assigned to role successfully.'], 200);
     }
 
     public function revoke_role_permission(Request $request)

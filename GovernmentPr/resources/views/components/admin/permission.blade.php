@@ -4,14 +4,27 @@
     <div class="container py-5">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 fw-bold text-dark">Permissions Management</h1>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-circle-left me-1"></i> 
+                </a>
+                <h1 class="h3 fw-bold text-dark mb-0">Permissions Management</h1>
+            </div>
             <button class="btn btn-primary d-flex align-items-center gap-2" 
                     data-bs-toggle="modal" 
                     data-bs-target="#addPermission">
                 <i class="fas fa-plus"></i> Add Permission
             </button>
         </div>
-
+        <x-validation-errors class="alert" alert />
+        {{-- Success Message --}}
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i> {{-- Bootstrap Icons if available --}}
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <!-- Table -->
         <div class="card shadow-sm border-0">
             <div class="table-responsive">
@@ -31,7 +44,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $permission->name }}</td>
                                 <td><span class="badge bg-secondary">{{ $permission->guard_name }}</span></td>
-                                <td>{{ $permission->created_at->format('d M Y') }}</td>
+                                <td>{{ $permission->created_at?->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <!-- Edit -->
                                     <a href="" 
