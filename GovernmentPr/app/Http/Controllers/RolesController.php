@@ -16,11 +16,16 @@ class RolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function manage() {
+        $data['roles'] = Role::get();
+        $data['guards'] = guard::get();
+        return view('components.admin.roles', $data);
+    }
     public function index()
     {
         //
-        $data['roles'] = Role::where('guard_name', '=', 'web')->get();
-        $data['permissions'] = Permission::where('guard_name', '=', 'web')->get();
+        $data['roles'] = Role::get();
+        $data['permissions'] = Permission::get();
         $data['guards'] = guard::where('status', '=', 'active')->select('title')->get();
         return view('components.admin.role-management', $data);
     }

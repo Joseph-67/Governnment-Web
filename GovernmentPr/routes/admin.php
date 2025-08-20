@@ -93,8 +93,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // permissions
     Route::controller(PermissionsController::class)->group(function() {
+        Route::get('/permissions', 'index')->name('admin.permissions');
         Route::post('/permission', 'store')->name('admin.store-permission');
     });
+
+
 
     //users
     Route::controller(UsersManagementController::class)->group(function(){
@@ -105,6 +108,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // roles
     Route::controller(RolesController::class)->group(function(){
+        Route::get('/roles', 'manage')->name('admin.roles');
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
         Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
@@ -121,6 +125,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Guards
     Route::controller(GuardsController::class)->group(function() {
+        Route::get('/guards', 'index')->name('admin.guards');
         Route::post('/guard', 'store')->name('admin.store-guard');
     }); 
 

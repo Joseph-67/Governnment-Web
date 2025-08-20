@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use App\Models\guard;
 
 class PermissionsController extends Controller
 {
     //
+    public function index() {
+        $data['permissions'] = Permission::get();
+        $data['guards'] = guard::get();
+        return view('components.admin.permission', $data);
+    }
+
     public function store(Request $request) {
         // dd($request->guard);
         foreach ($request['guard'] as $key => $guard) {
