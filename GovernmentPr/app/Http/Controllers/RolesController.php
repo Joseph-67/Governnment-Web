@@ -21,12 +21,13 @@ class RolesController extends Controller
         $data['guards'] = guard::get();
         return view('components.admin.roles', $data);
     }
+
     public function index()
     {
-        //
-        $data['roles'] = Role::get();
+        $data['roles'] = Role::with('permissions')->get(); // eager load permissions
         $data['permissions'] = Permission::get();
-        $data['guards'] = guard::where('status', '=', 'active')->select('title')->get();
+        $data['guards'] = Guard::where('status', 'active')->select('title')->get();
+
         return view('components.admin.role-management', $data);
     }
 
