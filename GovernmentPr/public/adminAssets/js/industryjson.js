@@ -1,173 +1,265 @@
-let industries = {
-    "Agriculture": [
-        "Crop Production",
-        "Livestock Farming",
-        "Fisheries & Aquaculture",
-        "Forestry & Logging",
-        "Agricultural Technology (AgriTech)",
-        "Agro-Processing"
-    ],
+let industries ={
+  "Agriculture and Agribusiness": [
+    "Crop Farming – Cereals, Fruits, Vegetables",
+    "Livestock Farming – Poultry, Cattle, Dairy",
+    "Fisheries & Aquaculture",
+    "Agro-Processing & Value-Added Products",
+    "Agricultural Inputs – Seeds, Fertilizers, Pesticides",
+    "Agricultural Equipment & Machinery",
+    "AgriTech & Precision Farming Solutions",
+    "Irrigation & Water Management",
+    "Forestry & Timber Production",
+    "Organic & Sustainable Farming"
+  ],
 
-    "Mining and Quarrying": [
-        "Oil and Gas Exploration",
-        "Coal Mining",
-        "Limestone & Cement Mining",
-        "Gold Mining",
-        "Tin, Iron Ore & Other Solid Minerals",
-        "Quarrying (Stone, Sand, Gravel)"
-    ],
+  "Manufacturing and Industrial Production": [
+    "Food & Beverage Manufacturing",
+    "Textiles, Apparel & Garment Manufacturing",
+    "Leather & Footwear Production",
+    "Chemicals, Paints & Fertilizers",
+    "Pharmaceuticals & Biotechnology",
+    "Plastics & Rubber Products",
+    "Cement & Building Materials",
+    "Metals, Steel & Aluminium Production",
+    "Automobile Assembly & Auto Parts",
+    "Electronics & Electrical Equipment",
+    "Industrial Machinery & Tools",
+    "Paper, Printing & Packaging",
+    "Furniture & Wood Products",
+    "Glass & Ceramics Manufacturing"
+  ],
 
-    "Energy and Power Generation": [
-        "Hydroelectric Power",
-        "Solar Energy",
-        "Wind Energy",
-        "Geothermal Energy",
-        "Biomass & Biofuels",
-        "Nuclear Energy",
-        "Thermal Power"
-    ],
+  "Construction and Real Estate": [
+    "Residential & Commercial Construction",
+    "Roads, Bridges & Civil Engineering Works",
+    "Real Estate Development & Property Sales",
+    "Real Estate Investment & Property Management",
+    "Architecture & Urban Planning",
+    "Interior Design & Decoration",
+    "Facility Management Services",
+    "Smart Buildings & Green Construction",
+    "Building Materials Supply & Distribution"
+  ],
 
-    "Manufacturing": [
-        "Food and Beverage",
-        "Textiles & Apparel",
-        "Plastics & Rubber",
-        "Chemicals & Fertilizers",
-        "Building Materials (Cement, Glass, Ceramics)",
-        "Automobile & Auto Parts",
-        "Electronics & Electrical Equipment",
-        "Metallurgy & Steel",
-        "Paper & Packaging"
-    ],
+  "Transportation and Logistics": [
+    "Road Transport – Passenger & Freight",
+    "Rail Transport & Metro Systems",
+    "Air Transport – Airlines, Cargo, Charter Services",
+    "Maritime Transport – Shipping, Ports, Ferries",
+    "Warehousing & Cold Storage",
+    "Courier, Postal & Delivery Services",
+    "Logistics & Supply Chain Management",
+    "Ride-Hailing & Mobility Platforms",
+    "Electric Vehicles & Charging Infrastructure",
+    "Transport Infrastructure Development"
+  ],
 
-    "Furniture & Woodwork": [
-        "Household Furniture",
-        "Office Furniture",
-        "Luxury & Custom Furniture",
-        "Wood Products & Carpentry",
-        "Mattresses & Upholstery",
-        "Interior Design & Home Decor"
-    ],
+  "Information and Communication Technology": [
+    "Software Development & SaaS",
+    "Mobile Applications & Platforms",
+    "Web Development & Digital Services",
+    "Cloud Computing & Data Centers",
+    "Artificial Intelligence & Machine Learning",
+    "Cybersecurity Solutions & Services",
+    "Blockchain & Cryptocurrency Platforms",
+    "Telecommunications & Internet Service Providers",
+    "Hardware & Electronics Manufacturing",
+    "E-Commerce & Online Marketplaces",
+    "FinTech & Digital Payments",
+    "HealthTech & Telemedicine",
+    "EdTech & Online Learning",
+    "AgriTech Solutions",
+    "Smart Cities & IoT Applications",
+    "Gaming, AR/VR & Metaverse Platforms",
+    "Big Data Analytics & Business Intelligence"
+  ],
 
-    "Construction & Real Estate": [
-        "Residential Real Estate",
-        "Commercial Real Estate",
-        "Industrial Real Estate",
-        "Infrastructure Projects (Roads, Bridges, Railways)",
-        "Urban Development"
-    ],
+  "Financial Services": [
+    "Banking – Retail, Commercial, Investment",
+    "Microfinance & Cooperative Societies",
+    "Insurance – Life, Health, General",
+    "Pension Funds & Retirement Schemes",
+    "Capital Markets & Stock Exchanges",
+    "Venture Capital & Private Equity",
+    "FinTech & Digital Banking",
+    "Crowdfunding & Peer-to-Peer Lending",
+    "Wealth & Asset Management",
+    "Accounting, Auditing & Tax Advisory"
+  ],
 
-    "Petrochemicals": [
-        "Crude Oil Refining",
-        "Lubricants & Additives",
-        "Plastics & Synthetics",
-        "Petrochemical Products"
-    ],
+  "Healthcare and Life Sciences": [
+    "Hospitals & Clinics",
+    "Pharmaceutical Manufacturing & Distribution",
+    "Biotechnology & Genomics Research",
+    "Medical Devices & Equipment",
+    "Diagnostics & Laboratory Services",
+    "Health Insurance Providers",
+    "Telemedicine & Digital Health Platforms",
+    "Nursing Homes & Elderly Care",
+    "Public Health & Preventive Medicine",
+    "Nutrition, Fitness & Wellness Services",
+    "Mental Health & Counseling Services",
+    "Research & Development in Life Sciences"
+  ],
 
-    "Banking, Finance & Insurance": [
-        "Commercial Banking",
-        "Microfinance",
-        "Investment Banking",
-        "Fintech & Digital Payments",
-        "Pension Funds",
-        "Insurance (Life, Health, General)",
-        "Capital Markets & Securities"
-    ],
+  "Hospitality, Tourism and Leisure": [
+    "Hotels, Resorts & Guesthouses",
+    "Restaurants, Cafes & Catering",
+    "Travel Agencies & Tour Operators",
+    "Airlines & Aviation Services",
+    "Cruise Lines & Maritime Tourism",
+    "Theme Parks & Entertainment Centers",
+    "Sports & Recreation Facilities",
+    "Event Management & Conference Centers",
+    "Cultural Heritage & Museums",
+    "Eco-Tourism & Adventure Travel",
+    "Short-Stay Rentals & Sharing Economy Platforms"
+  ],
 
-    "Telecommunications": [
-        "Mobile Networks",
-        "Broadband & Internet Services",
-        "Satellite Communications",
-        "Data Centers & Cloud Hosting"
-    ],
+  "Retail and Wholesale Trade": [
+    "Supermarkets & Hypermarkets",
+    "Convenience Stores & Grocery Retailers",
+    "Wholesale Distribution & Trade",
+    "E-Commerce & Online Retail",
+    "Fashion & Apparel Retail",
+    "Electronics & Appliances Retail",
+    "Pharmaceutical & Health Retail",
+    "Automotive Dealerships & Parts Retail",
+    "Luxury Goods & Jewelry Stores",
+    "Home Improvement & Furniture Retail"
+  ],
 
-    "Information & Communication Technology (ICT)": [
-        "Software Development",
-        "IT Infrastructure & Networking",
-        "Cybersecurity",
-        "Artificial Intelligence & Machine Learning",
-        "Blockchain & Web3",
-        "Cloud Computing & SaaS",
-        "IT Consulting"
-    ],
+  "Creative Industries, Media and Entertainment": [
+    "Film Production & Distribution",
+    "Television & Broadcasting",
+    "Radio & Podcasting",
+    "Music Production, Recording & Streaming",
+    "Theater, Performing Arts & Cultural Events",
+    "Publishing – Books, Magazines, Digital Media",
+    "Advertising & Marketing Agencies",
+    "Public Relations & Communications",
+    "Digital Media & Content Creation",
+    "Social Media Influencers & Creator Economy",
+    "Esports & Competitive Gaming",
+    "Video Game Development & Publishing",
+    "Animation, CGI & Visual Effects (VFX)",
+    "Photography & Videography Services",
+    "Graphic Design & Branding Studios",
+    "Fashion & Apparel Design",
+    "Jewelry & Luxury Goods Design",
+    "Interior & Industrial Design",
+    "Virtual Reality (VR) & Augmented Reality (AR) Content",
+    "Metaverse Experiences & Digital Assets (NFTs)",
+    "Creative Hubs & Co-Working Studios",
+    "Talent Management & Artist Agencies"
+  ],
 
-    "Transport & Logistics": [
-        "Road Freight & Haulage",
-        "Maritime & Shipping",
-        "Aviation & Airlines",
-        "Rail Transport",
-        "Courier & Delivery Services",
-        "Warehousing & Supply Chain"
-    ],
+  "Household and Personal Services": [
+    "Domestic Cleaning & Housekeeping Services",
+    "Laundry & Dry-Cleaning Services",
+    "Catering & Personal Chefs",
+    "Childcare & Babysitting Services",
+    "Elderly Care & Assisted Living Support",
+    "Pet Care – Grooming, Boarding, Training, Veterinary Services",
+    "Personal Fitness Training & Wellness Coaching",
+    "Beauty Salons, Spas & Personal Grooming",
+    "Event Planning & Party Services",
+    "Wedding Planning & Coordination",
+    "Home Repair & Handyman Services",
+    "Gardening & Landscaping Services",
+    "Moving & Relocation Services",
+    "Personal Security & Private Guards",
+    "Concierge & Lifestyle Management Services",
+    "Gig Economy Platforms – On-Demand Household Services",
+    "Personal Finance & Life Coaching",
+    "Online Therapy & Mental Wellness Apps",
+    "Subscription Services – Meal Kits, Cleaning Supplies",
+    "Smart Home Installation & Maintenance Services"
+  ],
 
-    "Retail & Wholesale Trade": [
-        "E-commerce",
-        "Supermarkets & Consumer Goods",
-        "Wholesale Distribution",
-        "Luxury & Fashion Retail"
-    ],
+  "Environment, Energy and Climate Technologies": [
+    "Renewable Energy – Solar, Wind, Hydro, Geothermal, Biomass",
+    "Nuclear Energy & Advanced Nuclear Reactors",
+    "Oil & Gas – Exploration, Production, Refining, Distribution",
+    "Coal Mining & Thermal Power Generation",
+    "Electricity Transmission & Distribution Utilities",
+    "Energy Storage – Batteries, Supercapacitors, Grid Storage",
+    "Hydrogen Economy – Production, Storage, Fuel Cells",
+    "Electric Vehicle (EV) Batteries & Charging Infrastructure",
+    "Carbon Capture, Utilization & Storage (CCUS)",
+    "Carbon Trading & Offset Markets",
+    "Waste Management – Collection, Recycling, Landfills",
+    "E-Waste Recycling & Circular Economy Platforms",
+    "Water Supply, Desalination & Wastewater Treatment",
+    "Sustainable Agriculture & AgriTech for Climate Resilience",
+    "Environmental Consulting & Sustainability Advisory",
+    "Green Building Certification & Energy Efficiency Solutions",
+    "Air Quality Monitoring & Pollution Control",
+    "ClimateTech Startups – Mitigation & Adaptation",
+    "Smart Grids & Energy Management Systems",
+    "Biofuels & Synthetic Fuels",
+    "Environmental NGOs & Advocacy Groups",
+    "Disaster Risk Management & Climate Resilience Solutions"
+  ],
 
-    "Media, Entertainment & Creative Arts": [
-        "Film & Television",
-        "Music & Performing Arts",
-        "Sports & Esports",
-        "Advertising & Marketing",
-        "Publishing & Print Media",
-        "Digital Media & Content Creation"
-    ],
+  "Government, Defense and Security": [
+    "Public Administration & Civil Service",
+    "Local Government Authorities & Municipal Services",
+    "Law Enforcement – Police, Investigations, Forensics",
+    "Fire Services & Emergency Response",
+    "Defense Forces – Army, Navy, Air Force",
+    "Border Control & Immigration Services",
+    "Intelligence & National Security Agencies",
+    "Defense Contracting – Weapons, Vehicles, Systems",
+    "Cybersecurity & Cyber Defense Solutions",
+    "Homeland Security & Counterterrorism",
+    "Disaster Management & Emergency Preparedness",
+    "Correctional Facilities & Prison Management",
+    "Smart Governance & Digital Identity Systems",
+    "Public Procurement & Government Technology (GovTech)",
+    "Election Management & Voting Technology",
+    "Diplomatic Services & International Relations"
+  ],
 
-    "Healthcare & Life Sciences": [
-        "Pharmaceuticals",
-        "Hospitals & Clinics",
-        "Medical Equipment & Devices",
-        "Biotechnology",
-        "Health Insurance",
-        "Telemedicine & Digital Health"
-    ],
+  "Non-Governmental and Nonprofit Organizations": [
+    "Humanitarian Aid & Relief Organizations",
+    "Health & Medical NGOs – Vaccination, Disease Control",
+    "Education & Literacy NGOs",
+    "Poverty Alleviation & Social Inclusion Programs",
+    "Gender Equality & Women Empowerment Initiatives",
+    "Human Rights & Advocacy Organizations",
+    "Environmental & Climate Action NGOs",
+    "Animal Welfare & Wildlife Conservation",
+    "Community Development & Social Enterprises",
+    "Faith-Based Organizations & Charities",
+    "Foundations & Philanthropic Trusts",
+    "International Development Agencies",
+    "Youth Empowerment & Skills Development NGOs",
+    "Cultural Heritage Preservation Organizations",
+    "Disaster Relief & Refugee Support Services",
+    "Open Data, Transparency & Anti-Corruption NGOs"
+  ],
 
-    "Hospitality & Tourism": [
-        "Hotels & Resorts",
-        "Restaurants & Food Services",
-        "Travel Agencies",
-        "Ecotourism & Cultural Tourism",
-        "Events & Leisure"
-    ],
-
-    "Education": [
-        "Primary & Secondary Education",
-        "Universities & Higher Institutions",
-        "Vocational & Technical Training",
-        "EdTech & Online Learning"
-    ],
-
-    "Professional & Business Services": [
-        "Legal Services",
-        "Accounting & Auditing",
-        "Consulting",
-        "Human Resources & Recruitment",
-        "Engineering Services",
-        "Marketing & PR"
-    ],
-
-    "Nonprofit & NGOs": [
-        "Development Organizations",
-        "Charitable Foundations",
-        "International NGOs",
-        "Community-Based Organizations"
-    ],
-
-    "Government & Public Administration": [
-        "Federal & State Agencies",
-        "Local Government Authorities",
-        "Regulatory Bodies",
-        "Public Utilities"
-    ],
-
-    "Emerging Industries": [
-        "Renewable Energy",
-        "Agribusiness Technology",
-        "Creative Arts & Digital Economy",
-        "Space Technology",
-        "Green Economy & Sustainability",
-        "Smart Cities & IoT"
-    ]
+  "Education and Research": [
+    "Primary & Secondary Schools",
+    "Colleges & Universities",
+    "Vocational & Technical Training Institutes",
+    "Business Schools & Executive Education",
+    "STEM Education Platforms",
+    "EdTech Platforms – Online Courses, MOOCs, e-Learning",
+    "Online Tutoring & Skills Marketplaces",
+    "Corporate Training & Upskilling Providers",
+    "Language Schools & Learning Apps",
+    "Research Institutes – Public & Private",
+    "Think Tanks & Policy Research Centers",
+    "Scientific Research & Development (R&D) Labs",
+    "AI Research & Data Science Institutes",
+    "Biotechnology & Genomics Research Centers",
+    "Space & Aerospace Research Programs",
+    "Educational Content Publishing & Digital Libraries",
+    "Testing & Certification Bodies",
+    "Special Needs Education & Inclusive Learning Services",
+    "Education Consulting & Student Placement Services",
+    "Knowledge Management & Innovation Hubs"
+  ]
 }
