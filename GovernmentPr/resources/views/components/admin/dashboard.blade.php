@@ -7,6 +7,19 @@
                 height: 500px;
                 width: 100%;
             }
+            #recp_compliance_trend_chart {
+                position: relative;
+            }
+
+            #recp_compliance_trend_chart .chart-loader {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 10;
+                display: none;
+            }
+
         </style>
     @endsection
     @section('scripts')
@@ -212,31 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-
-<!-- Modal -->
-<div class="modal fade" id="companySectorModalJS" tabindex="-1" aria-labelledby="companySectorModalJSLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">All Sectors & Industries</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <ul id="sectorListJS" class="list-group"></ul>
-
-                <!-- Legend -->
-                <div id="sectorLegendJS" class="mt-3">
-                    <h6 class="fw-bold">Legend</h6>
-                    <div class="d-flex flex-wrap gap-3"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     const sectorListJS = document.getElementById('sectorListJS');
     const legendContainerJS = document.querySelector("#sectorLegendJS .d-flex");
@@ -396,6 +384,86 @@ document.addEventListener("DOMContentLoaded", function () {
     renderSectorsJS();
     fetchSectorCountsJS().then(() => updateSectorsWithCountsJS());
     </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let months = @json($recpTrendMonths);
+            let seriesData = @json($recpTrendData);
+
+            const chartContainer = document.querySelector("#recp_compliance_trend_chart");
+            const loader = chartContainer.querySelector(".chart-loader");
+
+            const chartOptions = {
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    stacked: false,
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800,
+                        animateGradually: { enabled: true, delay: 150 },
+                        dynamicAnimation: { enabled: true, speed: 500 }
+                    }
+                },
+                series: [
+                    { name: 'Compliant', data: seriesData.compliant },
+                    { name: 'Review', data: seriesData.review },
+                    { name: 'Non-Compliant', data: seriesData.non_compliant }
+                ],
+                xaxis: { categories: months },
+                yaxis: { title: { text: 'Number of Companies' } },
+                colors: ['#28a745', '#ffc107', '#dc3545'],
+                tooltip: { shared: true, intersect: false },
+                stroke: { curve: 'smooth' },
+                legend: { position: 'top' }
+            };
+
+            const chart = new ApexCharts(chartContainer, chartOptions);
+            chart.render();
+
+            const dropdownItems = document.querySelectorAll(".recp-period");
+            const dropdownButton = document.querySelector(".dropdown-toggle");
+
+            dropdownItems.forEach(item => {
+                item.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const monthsCount = parseInt(this.getAttribute("data-months"));
+
+                    // Update active class
+                    dropdownItems.forEach(el => el.classList.remove("active"));
+                    this.classList.add("active");
+
+                    // Update button label
+                    dropdownButton.innerHTML = `<i class="icofont-calendar fs-5 me-1"></i>${this.textContent} <i class="las la-angle-down ms-1"></i>`;
+
+                    // Show loader
+                    loader.style.display = "block";
+
+                    // Fetch updated data from backend
+                    fetch(`/admin/recp-trend-data?months=${monthsCount}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            chart.updateOptions({
+                                xaxis: { categories: data.months },
+                                series: [
+                                    { name: 'Compliant', data: data.compliant },
+                                    { name: 'Review', data: data.review },
+                                    { name: 'Non-Compliant', data: data.non_compliant }
+                                ]
+                            }, true, true);
+
+                            // Hide loader
+                            loader.style.display = "none";
+                        })
+                        .catch(err => {
+                            console.error("Error fetching RECP trend:", err);
+                            loader.style.display = "none";
+                        });
+                });
+            });
+        });
+    </script>
 
     @endsection
     @section('modals')
@@ -536,16 +604,24 @@ document.addEventListener("DOMContentLoaded", function () {
                                         Last 12 Months<i class="las la-angle-down ms-1"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Last 3 Months</a>
-                                        <a class="dropdown-item" href="#">Last 6 Months</a>
-                                        <a class="dropdown-item" href="#">Last 12 Months</a>
+                                        <a class="dropdown-item recp-period" href="#" data-months="3">Last 3 Months</a>
+                                        <a class="dropdown-item recp-period" href="#" data-months="6">Last 6 Months</a>
+                                        <a class="dropdown-item recp-period" href="#" data-months="12">Last 12 Months</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body pt-0">
-                        <div id="recp_compliance_trend_chart" class="apex-charts"></div>
+                        <div id="recp_compliance_trend_chart" class="apex-charts position-relative">
+                            <!-- Loader overlay -->
+                            <div class="chart-loader position-absolute top-50 start-50 translate-middle" style="z-index:10;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <p class="mt-3 text-muted fs-13">
                             This chart shows the monthly compliance trend for Resource Efficient and Cleaner Production (R.E.C.P).
                         </p>

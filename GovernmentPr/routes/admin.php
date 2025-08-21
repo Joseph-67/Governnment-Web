@@ -88,6 +88,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
+        Route::get('/admin/recp-trend-data', 'recpTrendData')->name('admin.recp-trend-data');
     });
 
 

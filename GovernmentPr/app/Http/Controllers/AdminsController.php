@@ -175,7 +175,6 @@ class AdminsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-
     public function display_dashboard() {
         $data['activeCompanyCount'] = $this->countActiveCompanies();
         $data['newCompanies'] = $this->newCompaniesByWeek();
@@ -187,12 +186,85 @@ class AdminsController extends Controller
         $data['pendingCompaniesThisWeek'] = $this->PendingCompaniesOnRECPThisWeek();
         $data['recpCompanies'] = $this->RECPCompanies();
         $data['activeAdmins'] = $this->fetchAdmins();
-        $data['activeUsers']=$this->fetchUsers();
+        $data['activeUsers'] = $this->fetchUsers();
 
+        // Last 12 months
+        $months = collect(range(0, 11))->map(function($i) {
+            return now()->subMonths($i)->format('M Y');
+        })->reverse();
 
-        // dd($data);
+        // Initialize data arrays
+        $trendData = [
+            'compliant' => [],
+            'review' => [],
+            'non_compliant' => []
+        ];
+
+        foreach ($months as $month) {
+            $monthNum = date('m', strtotime($month));
+            $yearNum = date('Y', strtotime($month));
+
+            $trendData['compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'approved')
+                ->count();
+
+            $trendData['review'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'pending')
+                ->count();
+
+            $trendData['non_compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'disapproved')
+                ->count();
+        }
+
+        $data['recpTrendData'] = $trendData;
+        $data['recpTrendMonths'] = $months;
+
         return view('components.admin.dashboard', $data);
     }
+
+    public function recpTrendData(Request $request)
+    {
+        $monthsCount = (int) $request->get('months', 12); // default 12 months
+
+        // Generate month labels
+        $months = collect(range(0, $monthsCount - 1))
+            ->map(fn($i) => now()->subMonths($i)->format('M Y'))
+            ->reverse();
+
+        // Initialize trend arrays
+        $trendData = [
+            'compliant' => [],
+            'review' => [],
+            'non_compliant' => []
+        ];
+
+        foreach ($months as $month) {
+            $monthNum = date('m', strtotime($month));
+
+            $trendData['compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'approved')->count();
+
+            $trendData['review'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'pending')->count();
+
+            $trendData['non_compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'disapproved')->count();
+        }
+
+        return response()->json([
+            'months' => $months,
+            'compliant' => $trendData['compliant'],
+            'review' => $trendData['review'],
+            'non_compliant' => $trendData['non_compliant']
+        ]);
+    }
+
+
+
     public function show(Admins $admins)
     {
         //
