@@ -213,33 +213,216 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-
-    @endsection
-    @section('modals')
-        <!-- Modal -->
-        <div class="modal fade" id="companySectorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+<!-- Modal -->
+<div class="modal fade" id="companySectorModalJS" tabindex="-1" aria-labelledby="companySectorModalJSLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Companies Sector</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">All Sectors & Industries</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Here you can view the details of companies by sector.</p>
-                <ul class="list-group">
+                <ul id="sectorListJS" class="list-group"></ul>
 
-                </ul>
-                <p class="mt-3">This modal provides an overview of the number of companies in each sector. You can click on a sector to view more details.</p>
-                <p class="text-muted">Note: The data is dynamically generated based on the current company records.</p>
+                <!-- Legend -->
+                <div id="sectorLegendJS" class="mt-3">
+                    <h6 class="fw-bold">Legend</h6>
+                    <div class="d-flex flex-wrap gap-3"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
-            </div>
             </div>
         </div>
+    </div>
+</div>
+
+<script>
+    const sectorListJS = document.getElementById('sectorListJS');
+    const legendContainerJS = document.querySelector("#sectorLegendJS .d-flex");
+    const baseColorsJS = ['#0d6efd','#198754','#ffc107','#dc3545','#0dcaf0','#6c757d'];
+
+    // Generate sectors from industries object, each industry will store its count
+    let allSectorsJS = Object.keys(industries).map((key, idx) => ({
+        name: key,
+        industries: industries[key].map(ind => ({ name: ind, count: 0 })),
+        baseColor: baseColorsJS[idx % baseColorsJS.length],
+        totalCount: 0
+    }));
+
+    // Fetch counts per industry and calculate sector total
+    function fetchSectorCountsJS() {
+        const fetchPromises = [];
+        allSectorsJS.forEach(sector => {
+            sector.industries.forEach(industryObj => {
+                const industry = industryObj.name;
+                const promise = fetch(`/admin/count/companies/${industry.toLowerCase()}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        industryObj.count = data.company_count || 0;
+                        sector.totalCount += industryObj.count;
+                    })
+                    .catch(err => console.error(`Error fetching ${industry}:`, err));
+                fetchPromises.push(promise);
+            });
+        });
+        return Promise.all(fetchPromises);
+    }
+
+    // Adjust color intensity based on fraction
+    function adjustColorIntensity(hexColor, fraction) {
+        const r = parseInt(hexColor.substring(1,3),16);
+        const g = parseInt(hexColor.substring(3,5),16);
+        const b = parseInt(hexColor.substring(5,7),16);
+        const factor = 0.4 + 0.6 * fraction;
+        return `rgb(${Math.min(255,Math.floor(r*factor))},${Math.min(255,Math.floor(g*factor))},${Math.min(255,Math.floor(b*factor))})`;
+    }
+
+    // Render sectors with spinners
+    function renderSectorsJS() {
+        sectorListJS.innerHTML = '';
+        legendContainerJS.innerHTML = '';
+
+        allSectorsJS.forEach(sector => {
+            // --- Sector List Item ---
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+
+            // Header
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'd-flex justify-content-between align-items-center sectorHeaderJS';
+            headerDiv.setAttribute('data-sector', sector.name.toLowerCase());
+            headerDiv.style.cursor = 'pointer';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = sector.name;
+
+            const badge = document.createElement('span');
+            badge.className = 'badge rounded-pill d-flex align-items-center justify-content-center';
+            badge.style.width = '50px';
+            badge.style.height = '25px';
+            badge.innerHTML = `<div class="spinner-border spinner-border-sm text-light" role="status"></div>`;
+
+            headerDiv.appendChild(nameSpan);
+            headerDiv.appendChild(badge);
+
+            // Progress bar with spinner
+            const progressDiv = document.createElement('div');
+            progressDiv.className = 'progress mt-1';
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.style.width = '100%';
+            progressBar.innerHTML = `<div class="spinner-border spinner-border-sm text-light" role="status"></div>`;
+            progressDiv.appendChild(progressBar);
+
+            // Collapsible industries with spinners
+            const ul = document.createElement('ul');
+            ul.className = 'list-group mt-2 collapse';
+            sector.industries.forEach(industryObj => {
+                const indLi = document.createElement('li');
+                indLi.className = 'list-group-item d-flex justify-content-between align-items-center small';
+                indLi.textContent = industryObj.name;
+
+                const indBadge = document.createElement('span');
+                indBadge.className = 'badge rounded-pill d-flex align-items-center justify-content-center';
+                indBadge.style.width = '40px';
+                indBadge.style.height = '20px';
+                indBadge.innerHTML = `<div class="spinner-border spinner-border-sm text-light" role="status"></div>`;
+
+                indLi.appendChild(indBadge);
+                ul.appendChild(indLi);
+            });
+
+            li.appendChild(headerDiv);
+            li.appendChild(progressDiv);
+            li.appendChild(ul);
+            sectorListJS.appendChild(li);
+
+            // --- Add legend item ---
+            const legendDiv = document.createElement('div');
+            legendDiv.className = 'd-flex align-items-center gap-2 px-2 py-1 rounded';
+            legendDiv.style.backgroundColor = sector.baseColor;
+            legendDiv.style.color = '#fff';
+            legendDiv.textContent = sector.name;
+            legendContainerJS.appendChild(legendDiv);
+        });
+
+        attachInteractionsJS();
+    }
+
+    // Update the modal with actual counts after fetching
+    function updateSectorsWithCountsJS() {
+        const maxCount = Math.max(...allSectorsJS.map(s => s.totalCount), 1);
+
+        allSectorsJS.forEach(sector => {
+            const li = sectorListJS.querySelector(`.sectorHeaderJS[data-sector="${sector.name.toLowerCase()}"]`).parentElement;
+            const badge = li.querySelector('.badge');
+            badge.textContent = sector.totalCount;
+
+            const progressBar = li.querySelector('.progress-bar');
+            const widthPercent = (sector.totalCount / maxCount) * 100;
+            progressBar.style.width = widthPercent + '%';
+            progressBar.style.backgroundColor = adjustColorIntensity(sector.baseColor, widthPercent/100);
+            progressBar.textContent = sector.totalCount;
+            progressBar.setAttribute('data-bs-toggle','tooltip');
+            progressBar.setAttribute('data-bs-placement','top');
+            progressBar.setAttribute('title', `${sector.totalCount} companies (${widthPercent.toFixed(1)}%)`);
+
+            // Update industry badges
+            const ul = li.querySelector('ul');
+            sector.industries.forEach((industryObj, idx) => {
+                const indBadge = ul.children[idx].querySelector('.badge');
+                indBadge.textContent = industryObj.count;
+                indBadge.style.backgroundColor = adjustColorIntensity(sector.baseColor, industryObj.count / maxCount);
+            });
+        });
+
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
+    }
+
+    // Interactions: toggle collapse on header
+    function attachInteractionsJS() {
+        document.querySelectorAll(".sectorHeaderJS").forEach(header => {
+            header.addEventListener('click', function() {
+                const ul = this.nextElementSibling.nextElementSibling; // skip progress bar
+                ul.classList.toggle('collapse');
+            });
+        });
+    }
+
+    // Initialize
+    renderSectorsJS();
+    fetchSectorCountsJS().then(() => updateSectorsWithCountsJS());
+    </script>
+
+    @endsection
+    @section('modals')
+<!-- Modal -->
+<div class="modal fade" id="companySectorModalJS" tabindex="-1" aria-labelledby="companySectorModalJSLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">All Sectors</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="sectorListJS" class="list-group"></ul>
+
+                <!-- Legend -->
+                <div id="sectorLegendJS" class="mt-3">
+                    <h6 class="fw-bold">Legend</h6>
+                    <div class="d-flex flex-wrap gap-3"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="clearSectorJS" class="btn btn-outline-danger">Clear Selection</button>
+            </div>
         </div>
+    </div>
+</div>
     @endsection
     <div class="container-xxl">
         <div class="row justify-content-center">
@@ -379,7 +562,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div id="companies_by_sector_chart" class="apex-charts mb-3"></div>
                         <ul class="list-group list-group-flush" id="companies-sector">
                         </ul>
-                        <button type="button" class="btn btn-outline-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#companySectorModal">View Details</button>
+                        <button type="button" class="btn btn-outline-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#companySectorModalJS">View Details</button>
                     </div>
                 </div>
             </div>

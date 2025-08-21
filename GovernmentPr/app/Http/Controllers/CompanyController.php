@@ -1094,7 +1094,31 @@ public function store_water_usage_log(Request $request) {
 }
 //end water usage logs
     
-    
+    public function updateStatus(Request $request, \App\Models\Company $company)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,pending,disapproved',
+        ]);
+
+        $company->status = $request->status;
+        $company->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateEfficiency(Request $request, \App\Models\Company $company)
+    {
+        $request->validate([
+            'efficiency' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $company->efficiency = $request->efficiency;
+        $company->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
     public function edit(Company $company)
     {
         //

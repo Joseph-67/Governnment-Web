@@ -133,7 +133,7 @@ class CompanyUsers extends Model
         {
             // return $query->where('status', 'active');
         }
-           public function isOnline(): bool
+    public function isOnline(): bool
     {
         return Cache::has('user-is-online-' . $this->id);
     }
@@ -142,4 +142,51 @@ class CompanyUsers extends Model
     {
         return Cache::get('user-last-seen-' . $this->id);
     }
+
+    public static function getCompaniesWithEfficiencyForUser($userId)
+    {
+        return self::with(['company', 'companyRecp'])
+            ->where('user_id', $userId)
+            ->get()
+            ->map(function ($companyUser) {
+                // Assuming efficiency is stored in the 'efficiency' column of recp table
+                $efficiency = optional($companyUser->companyRecp)->efficiency ?? 0;
+                return [
+                    'company_id' => $companyUser->company_id,
+                    'company_name' => optional($companyUser->company)->company_name,
+                    'efficiency' => $efficiency,
+                    'status' => optional($companyUser->companyRecp)->status ?? 'N/A',
+                    'last_audited' => optional($companyUser->companyRecp)->updated_at ?? null,
+                ];
+            });
+    }
+
+    public static function getCompaniesWithWasteReductionForUser($userId)
+{
+    return self::with(['company'])
+        ->where('user_id', $userId)
+        ->get()
+        ->map(function ($companyUser) {
+            $companyId = $companyUser->company_id;
+
+            // Total waste reduced for this company
+            $totalWasteReduced = \App\Models\WasteReduction::getTotalWasteReducedByCompany($companyId);
+
+            // Latest month’s waste reduction (optional, for trend tracking)
+            $latest = \App\Models\WasteReduction::where('company_id', $companyId)
+                ->orderByDesc('month')
+                ->first();
+
+            return [
+                'company_name'      => optional($companyUser->company)->company_name,
+                'total_waste'       => $totalWasteReduced,
+                'latest_month'      => optional($latest)->month,
+                'latest_waste'      => optional($latest)->waste_reduced ?? 0,
+                'status'            => 'audited', // You can still use companyRecp if relevant
+                'last_audited'      => optional($latest)->created_at ?? null,
+            ];
+        });
+}
+
+
 }

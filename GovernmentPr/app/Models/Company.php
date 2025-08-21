@@ -176,6 +176,10 @@ class Company extends Model
         ->pluck('state');
 }
 
-    
+    public function wasteReductions()
+{
+    return $this->hasMany(WasteReduction::class, 'company_id', 'company_id');
+}
+
 
 }

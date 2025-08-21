@@ -395,6 +395,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
         Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
         Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/companies/{company}/update-status', 'updateStatus')->name('update-company-status');
+        Route::post('/companies/{company}/update-efficiency', 'updateEfficiency');
         Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::post('/company/add-question', 'store_question')->name('company.add-question');
         Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
