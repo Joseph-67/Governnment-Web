@@ -92,11 +92,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
 
-    // permissions
     Route::controller(PermissionsController::class)->group(function() {
         Route::get('/permissions', 'index')->name('admin.permissions');
         Route::post('/permission', 'store')->name('admin.store-permission');
+        Route::post('/permissions/{id}', 'update')->name('admin.update-permission'); // <- used by data-url
     });
+
+
 
 
 
@@ -112,11 +114,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/roles', 'manage')->name('admin.roles');
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
+        Route::post('/update-role', 'update')->name('admin.update.role');
+        Route::delete('/admin/roles/{id}', 'destroy')->name('admin.delete.role');
         Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
         Route::post('/settings/revoke_role_has_permission', 'revoke_role_permission')->name('admin.revoke.permission-role');
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
         Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
+    
 
     // settings
     Route::controller(generalSetting::class)->group(function() {
@@ -128,7 +133,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(GuardsController::class)->group(function() {
         Route::get('/guards', 'index')->name('admin.guards');
         Route::post('/guard', 'store')->name('admin.store-guard');
-    }); 
+        Route::post('/guard/{guard_id}', 'update')->name('admin.update-guard'); // <- used by data-url
+    });
 
     //Pages
     Route::controller(PagesController::class)->group(function() {

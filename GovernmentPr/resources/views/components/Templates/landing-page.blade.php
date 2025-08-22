@@ -1,0 +1,949 @@
+@extends('components.layouts.app')
+@section('PageTitle', 'Home')
+@section('pageContent')
+@section('styles')
+      <style>
+         .tp-funfact-2-item {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            padding: 40px 20px 30px 20px;
+            transition: box-shadow 0.3s;
+            border-bottom: 6px solid #1e7e34; /* brand green */
+         }
+         .tp-funfact-2-item:hover {
+            box-shadow: 0 8px 32px rgba(30,126,52,0.15);
+            border-bottom: 6px solid #ffc107; /* brand yellow on hover */
+         }
+         .tp-funfact-2-icon span {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e7e34 60%, #ffc107 100%);
+            color: #fff;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            font-size: 2.2rem;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 12px rgba(30,126,52,0.12);
+         }
+         .tp-funfact-2-content h4 {
+            color: #1e7e34;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+         }
+         .tp-funfact-2-content span {
+            color: #222;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+        /* service area */
+         /* Uniform card size for service cards */
+         .tp-service-item {
+            min-height: 370px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-sizing: border-box;
+         }
+         .tp-service-icon {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+         .tp-service-content {
+            flex: 1 1 auto;
+         }
+         .tp-service-title-sm {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+         }
+         .tp-service-link {
+            margin-top: auto;
+         }
+         @media (max-width: 991.98px) {
+            .tp-service-item {
+               min-height: 340px;
+            }
+         }
+         @media (max-width: 767.98px) {
+            .tp-service-item {
+               min-height: 300px;
+            }
+         }
+         /* end service area */
+         /* blog area */
+         /* Uniform card size for blog cards */
+         .tp-blog__item {
+            height: 420px;
+            min-height: 420px;
+            max-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+         }
+         .tp-blog__item:hover {
+            box-shadow: 0 8px 24px rgba(30,126,52,0.13);
+         }
+         .tp-blog__thumb {
+            height: 200px;
+            min-height: 200px;
+            max-height: 200px;
+            overflow: hidden;
+         }
+         .tp-blog__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+         }
+         .tp-blog__content-wrap {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 18px 18px 18px;
+         }
+         .tp-blog__title-sm {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+         }
+         .tp-blog__link {
+            margin-top: auto;
+         }
+         @media (max-width: 991.98px) {
+            .tp-blog__item {
+               height: 380px;
+               min-height: 380px;
+               max-height: 380px;
+            }
+            .tp-blog__thumb {
+               height: 170px;
+               min-height: 170px;
+               max-height: 170px;
+            }
+         }
+         @media (max-width: 767.98px) {
+            .tp-blog__item {
+               height: 340px;
+               min-height: 340px;
+               max-height: 340px;
+            }
+            .tp-blog__thumb {
+               height: 130px;
+               min-height: 130px;
+               max-height: 130px;
+            }
+         }
+         /* end blog area */
+      </style>
+<style>
+   /* Slider Title Responsive Font Size */
+   .tp-slider-title {
+      font-size: 2rem;
+   }
+   @media (min-width: 768px) {
+      .tp-slider-title {
+         font-size: 3rem;
+      }
+   }
+   @media (min-width: 1200px) {
+      .tp-slider-title {
+         font-size: 4rem;
+      }
+   }
+
+   /* Slider Image and Content */
+   .tp-slider-img {
+      background-size: cover;
+      background-position: center;
+   }
+   /* .tp-slider-content-wrap {
+      text-align: center;
+   } */
+
+   /* Responsive Video Box */
+   @media (max-width: 767px) {
+      .tp-slider-video-box {
+         flex-direction: column;
+         align-items: center;
+      }
+      .tp-slider-btn {
+         margin-bottom: 15px;
+      }
+   }
+
+   /* Partner Section Styles */
+   .partner-section {
+      padding: 60px 20px;
+      text-align: center;
+   }
+   .partner-section h4.tp-section-title {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #222;
+   }
+   .slider-container {
+      overflow: hidden;
+      /* width: 100%; */
+      /* max-width: 1000px; */
+      margin: 0 auto;
+      height: 180px;
+   }
+   .slider-track {
+      display: flex;
+      animation: partner-slide 20s linear infinite;
+   }
+   .slider-track .card {
+      /* width: 260px; */
+      height: 180px;
+      margin: 0 15px;
+      border-radius: 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+   .slider-track .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+   }
+   .slider-track img {
+      height: 140px;
+      object-fit: contain;
+      width: 100%;
+   }
+   @keyframes partner-slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+   }
+
+</style>
+@endsection
+@section('scripts')
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      const metaContent = document.querySelector('.tp-slider-meta-content span');
+
+      function updateTemperatureAndTime() {
+         // Simulate temperature (replace with real API if needed)
+         const temperature = Math.floor(Math.random() * 36) + 15; // 15°C to 50°C
+         const now = new Date();
+         const hours = now.getHours().toString().padStart(2, '0');
+         const minutes = now.getMinutes().toString().padStart(2, '0');
+         const localTime = `${hours}:${minutes} Local Time`;
+
+         if (metaContent) {
+            metaContent.innerHTML = `${temperature}°C<br>${localTime}`;
+         }
+      }
+
+      updateTemperatureAndTime();
+      setInterval(updateTemperatureAndTime, 60000);
+   });
+</script>
+@endsection
+<main>
+   {{-- HERO AREA --}}
+   <section class="tp-slider-area">
+      <div class="tp-slider-wrapper p-relative">
+         {{-- Meta Info --}}
+         <div class="tp-slider-meta-box d-none d-md-block">
+            <div class="tp-slider-meta d-flex align-items-center">
+               <div class="tp-slider-meta-icon">
+                  <i class="flaticon-sun"></i>
+               </div>
+               <div class="tp-slider-meta-content">
+                  <span>30°C<br>12:14 Local Time</span>
+               </div>
+            </div>
+         </div>
+         {{-- Arrows --}}
+         <div class="tp-slider-arrow-box">
+            <button class="slider-prev"><i class="fa-regular fa-arrow-left"></i></button>
+            <button class="slider-next"><i class="fa-regular fa-arrow-right"></i></button>
+         </div>
+         {{-- Decoration --}}
+         <div class="tp-slider-shape-5">
+            <img src="{{ asset('MainAssets/img/slider/slider-new1.png') }}" alt="Slider Image">
+         </div>
+         {{-- Swiper Container --}}
+         <div class="swiper-container tp-slider-active">
+            <div class="swiper-wrapper">
+               @php
+                  $slides = [
+                     [
+                        'bg' => 'slider-1.jpg',
+                        'subtitle' => '🌍 Welcome to the NGN IEE-RECP Project',
+                        'title' => "Driving Nigeria’s Industrial Sustainability through Innovation and Efficiency.",
+                        'video' => false,
+                     ],
+                     [
+                        'bg' => 'slider-2.jpg',
+                        'subtitle' => '🔧🌱⚙️ OUR MISSION',
+                        'title' => "Fostering sustainable growth through RECP and innovation.",
+                        'video' => true,
+                     ],
+                     [
+                        'bg' => 'slider-3.jpg',
+                        'subtitle' => '🌍💡 OUR VISION',
+                        'title' => "A sustainable Nigeria powered by RECP principles.",
+                        'video' => true,
+                     ],
+                     [
+                        'bg' => 'slider-4.jpg',
+                        'subtitle' => '🎯⚡♻️ OUR GOAL',
+                        'title' => "To empower communities through sustainable development initiatives and innovative solutions.",
+                        'video' => true,
+                     ],
+                  ];
+               @endphp
+               @foreach($slides as $slide)
+                  <div class="swiper-slide">
+                     <div class="tp-slider-bg d-flex justify-content-center align-items-center p-relative fix">
+                        <div class="tp-slider-img" style="background-image: url('{{ asset('MainAssets/img/slider/' . $slide['bg']) }}');"></div>
+                        <div class="tp-slider-shape-1 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-1.png') }}" alt=""></div>
+                        <div class="tp-slider-shape-2 z-index-2"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-3.png') }}" alt=""></div>
+                        <div class="tp-slider-shape-3 z-index-1"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-2.png') }}" alt=""></div>
+                        <div class="container">
+                           <div class="row">
+                              <div class="col-xl-9 col-lg-10 col-md-12">
+                                 <div class="tp-slider-content-wrap p-relative z-index-2">
+                                    <div class="tp-slider-shape-4"><img src="{{ asset('MainAssets/img/slider/slider-shape-1-4.png') }}" alt=""></div>
+                                    <div class="tp-slider-title-box p-relative">
+                                       <span class="tp-slider-subtitle text-uppercase">{{ $slide['subtitle'] }}</span>
+                                       <h4 class="tp-slider-title" style="font-size: 2.5rem;">{{ $slide['title'] }}</h4>
+                                    </div>
+                                    <div class="tp-slider-video-box d-flex align-items-center">
+                                       <div class="tp-slider-btn">
+                                          <a class="tp-btn-xl mr-30" href="about.html">Discover More</a>
+                                       </div>
+                                       @if($slide['video'])
+                                          <div class="tp-slider-video d-flex align-items-center">
+                                             <a class="popup-video video-animation" href="https://www.youtube.com/watch?v=yqb1gONBlEQ" target="_blank" rel="noopener noreferrer">
+                                                <i class="fa-sharp fa-light fa-play"></i>
+                                             </a>
+                                             <span>Watch Our <br> Showcase</span>
+                                          </div>
+                                       @endif
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               @endforeach
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- HERO AREA END --}}
+
+   {{-- FEATURE AREA --}}
+{{-- ABOUT THE PROJECT SECTION --}}
+<section id="about-project" class="tp-about-area pt-130 pb-110 p-relative z-index grey-bg-2">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <div class="card" style="background-color: #f0f8ff;"> {{-- Unique background color --}}
+               <div class="card-body">
+                  <h4 class="card-title">ABOUT THE PROJECT</h4>
+                  <p class="card-text">The NGN IEE-RECP Project is a national initiative aimed at transforming Nigeria’s industrial landscape through Resource Efficiency and Cleaner Production (RECP) and Industrial Energy Efficiency (IEE). With a focus on sustainability, innovation, and inclusive growth, we are empowering industries to reduce waste, optimize resource use, and improve environmental performance.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6">
+            <div class="card" style="background-color: #f0f8ff;"> {{-- Unique background color --}}
+               <div class="card-body">
+                        <h4 class="card-title">💡 Our Mission</h4>
+                        <p class="card-text">To accelerate the adoption of cleaner, efficient, and innovative technologies in Nigeria’s industrial sector—enhancing productivity, reducing environmental impact, and supporting sustainable development goals (SDGs).</p>
+                     </div>
+               </div>
+         </div>
+   </section>
+   {{-- ABOUT THE PROJECT SECTION END --}}
+   <section id="feature-one-page" class="tp-feature-area pt-130 pb-110 p-relative z-index grey-bg-2">
+      <div class="tp-feature-shape-1 d-none d-xxl-block">
+         <img src="{{asset('MainAssets/img/feature/ab-shape-2.png')}}" alt="">
+      </div>
+      <div class="tp-feature-shape-2">
+         <img src="{{asset('MainAssets/img/feature/ab-bg.png')}}" alt="">
+      </div>
+      <div class="container">
+         <div class="row row-cols-xl-5 row-cols-lg-3 justify-content-center justify-content-xl-start">
+            @php
+               $features = [
+                    ['icon' => 'fas fa-chart-line', 'title' => 'RESOURCE EFFICIENCY'],
+                    ['icon' => 'fas fa-industry', 'title' => 'CLEANER PRODUCTION'],
+                    ['icon' => 'fas fa-bolt', 'title' => 'ENERGY OPTIMIZATION'],
+                    ['icon' => 'fas fa-lightbulb', 'title' => 'INNOVATION IN CLEAN TECHNOLOGIES'],
+                    ['icon' => 'fas fa-user-graduate', 'title' => 'CAPACITY BUILDING'],
+               ];
+            @endphp
+            @foreach($features as $i => $feature)
+               <div class="col col-sm-6 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".{{ 3 + $i * 2 }}s">
+                  <div class="tp-feature-item mb-30 text-center">
+                     <div class="tp-feature-icon">
+                        <i class="{{ $feature['icon'] }}"></i>
+                     </div>
+                     <div class="tp-feature-content">
+                        <h4 class="tp-feature-title-sm">{{ $feature['title'] }}</h4>
+                     </div>
+                  </div>
+               </div>
+               
+            @endforeach
+         </div>
+      </div>
+   </section>
+   {{-- FEATURE AREA END --}}
+
+   {{-- ABOUT AREA --}}
+   <section id="about-one-page" class="tp-about-area fix pt-120">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-10">
+               <div class="tp-about-title-box mb-45">
+                  <h4 class="tp-section-subtitle">OUR MANDATE</h4>
+               </div>
+            </div>
+         </div>
+         <div class="tp-about-right-wrap pb-120 p-relative">
+            <div class="tp-about-shape d-none d-xl-block">
+               <img src="{{asset('MainAssets/img/about/ab-shape-1.png')}}" alt="">
+            </div>
+            <div class="tp-about-right-img d-none d-xl-block wow tpfadeRight" data-wow-duration=".9s" data-wow-delay=".3s">
+               <img src="{{asset('MainAssets/img/about/banner.png')}}" alt="">
+            </div>
+            <div class="row">
+               <div class="col-xl-3 col-lg-4 col-md-12">
+                  <div class="tp-about-feature-box">
+                     <h4 class="tp-about-feature-title">Why RECP Matters</h4>
+                     <div class="tp-about-feature-list">
+                        <ul>
+                           <li><a href="#">🌱Sustainable Growth</a></li>
+                           <li><a href="#">⚡Energy Access</a></li>
+                           <li><a href="#">💰Cost Saving</a></li>
+                           <li><a href="#">🌍Climate Action</a></li>
+                           <li><a href="#">👷Workplace Safety</a></li>
+                        </ul>
+                     </div>
+                     <div class="tp-about-feature-btn">
+                        <a class="tp-btn-purple" href="{{ asset('MainAssets/pdf/INSIDE RECOMMEDATION.pdf') }}" target="_blank" rel="noopener">KNOW MORE</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xl-6 col-lg-8 col-md-12">
+                  <div class="tp-about-content-wrap p-relative">
+                     <div class="tp-about-text">
+                        <h4 class="tp-about-title">Resource Efficiency and Cleaner Production (RECP)</h4>
+                        <p>Resource Efficiency and Cleaner Production (RECP) is a key strategy for promoting sustainable industrial development in Nigeria. As the country seeks to reduce environmental impact while boosting economic growth, RECP offers practical solutions to minimize waste, optimize resource use, and encourage cleaner technologies across industries.</p>
+                     </div>
+                     <div class="tp-about-city-info d-flex align-items-center">
+                        <i class="flaticon-smart-city me-2"></i>
+                        <span class="me-2">Target Locations:</span>
+                        <h4 class="mb-0">Lagos, Ogun, Kano, Kaduna, Aba, Warri, Onitsha, Port Harcourt, Calabar.</h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- ABOUT AREA END --}}
+
+   @php
+      $partners = [
+         ['url' => 'https://www.unido.org/', 'img' => 'logo2.png', 'name' => 'UNIDO'],
+         ['url' => 'https://www.thegef.org/', 'img' => 'logo3.png', 'name' => 'GEF'],
+         ['url' => 'https://www.manufacturersnigeria.org/', 'img' => 'logo1.png', 'name' => 'MAN'],
+      ];
+   @endphp
+   <!-- brand area start -->
+   <div class="tp-brand-area pb-120">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-brand-title-box mb-60 text-center">
+                  <i class="flaticon-spark"></i>
+                  <span class="tp-section-subtitle-2">CHECK OUR PARTNERS AND SUPPORTERS</span>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-brand-slider-wrapper">
+                  <div class="swiper-container tp-brand-slider-active">
+                     <div class="swiper-wrapper">
+                     @foreach($partners as $partner)
+                        <div class="swiper-slide">
+                           <a href="{{ $partner['url'] }}" target="_blank" rel="noopener" class="tp-brand-item text-center d-block">
+                              <img src="{{ asset('MainAssets/img/logo/' . $partner['img']) }}" alt="{{ $partner['name'] }} logo" style="height: 100px; width: 100px; object-fit: contain;">
+                           </a>
+                        </div>
+                     @endforeach
+                     @foreach($partners as $partner)
+                        <div class="swiper-slide">
+                           <a href="{{ $partner['url'] }}" target="_blank" rel="noopener" class="tp-brand-item text-center d-block">
+                              <img src="{{ asset('MainAssets/img/logo/' . $partner['img']) }}" alt="{{ $partner['name'] }} logo" style="height: 100px; width: 100px; object-fit: contain;">
+                           </a>
+                        </div>
+                     @endforeach
+                     
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- brand area end -->
+
+   {{-- SERVICE AREA --}}
+   <section id="service-one-page" class="tp-service-area p-relative theme-bg-2 pt-120 pb-90">
+      
+      <div class="container custom-container">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-service-title-box text-center mb-70">
+                  <span class="tp-section-subtitle">EXPLORE OUR SECTORS</span>
+                  <h4 class="tp-section-title text-white">Industries prioritized by the project</h4>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            @php
+               $sectors = [
+                  [
+                     'icon' => 'fas fa-tools', // Updated icon for Building Materials
+                     'title' => 'Building Materials',
+                     'desc' => 'Producers of cement, bricks, and tiles with high energy and material use.',
+                  ],
+                  [
+                     'icon' => 'fas fa-industry', // Updated icon for Iron & Steel
+                     'title' => 'Iron & Steel',
+                     'desc' => 'Heavy industries focused on smelting, rolling, and metal fabrication.',
+                  ],
+                  [
+                     'icon' => 'fas fa-carrot', // Updated icon for Food Processing & Agriculture
+                     'title' => 'Food Processing & Agriculture',
+                     'desc' => 'Agro-industries transforming raw food into packaged goods.',
+                  ],
+                  [
+                     'icon' => 'fas fa-concierge-bell', // Updated icon for General Services
+                     'title' => 'General Services',
+                     'desc' => 'Provides essential support functions to ensure smooth operations within an organization.',
+                  ],
+               ];
+            @endphp
+            @foreach($sectors as $i => $sector)
+               <div class="col-xl-3 col-lg-4 col-md-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".{{ 3 + $i * 2 }}s">
+                  <div class="tp-service-item p-relative">
+                     <div class="tp-service-shape">
+                        <img src="{{asset('MainAssets/img/service/sv-item-shape.png')}}" alt="">
+                     </div>
+                     <div class="tp-service-icon">
+                        <i class="{{ $sector['icon'] }}"></i>
+                     </div>
+                     <div class="tp-service-content">
+                        <h4 class="tp-service-title-sm"><a href="service-details.html">{{ $sector['title'] }}</a></h4>
+                        <p>{{ $sector['desc'] }}</p>
+                     </div>
+                     <div class="tp-service-link">
+                        <a href="#">Read More <i class="fa-light fa-arrow-right"></i></a>
+                     </div>
+                  </div>
+               </div>
+            @endforeach
+         </div>
+      </div>
+   </section>
+   {{-- SERVICE AREA END --}}
+
+   {{-- EVENT AREA --}}
+   <section class="tp-event-area pt-120 pb-90 p-relative grey-bg-2">
+      <div class="container">
+         <div class="tp-event-title-wrap mb-40">
+            <div class="row justify-content-center">
+               <div class="col-xl-8">
+                  <div class="tp-event-title-box text-center">
+                     <span class="tp-section-subtitle">Latest events</span>
+                     <h4 class="tp-section-title">Our ministerial activities</h4>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            @php
+               $events = [
+                  ['img' => 'WhatsApp Image 2025-05-01 at 15.06.32.jpeg', 'title' => 'Training Or workshop'],
+                  ['img' => 'IMG-20250423-WA0102.jpg', 'title' => 'Training or workshop'],
+                  ['img' => 'WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg', 'title' => 'Training Or Workshop'],
+               ];
+            @endphp
+            @foreach($events as $event)
+               <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+                  <div class="tp-event-item text-center">
+                     <div class="tp-event-thumb fix">
+                        <img src="{{asset('MainAssets/img/home/' . $event['img'])}}" height="200px" alt="">
+                     </div>
+                     <div class="tp-event-content-wrap">
+                        <div class="tp-event-content">
+                           <h4 class="tp-event-title-sm"><a href="#">{{ $event['title'] }}</a></h4>
+                        </div>
+                        <div class="tp-event-link">
+                           <a href="#">Read More</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            @endforeach
+         </div>
+      </div>
+   </section>
+   {{-- EVENT AREA END --}}
+
+   {{-- FUNFACT AREA --}}
+   <section class="tp-funfact-2-area tp-funfact-2-bg pt-120 pb-90 p-relative" data-background="{{asset('MainAssets/img/funfact/funfact-bg.jpg')}}">
+
+      <div class="container">
+         <div class="row">
+            @php
+               $funfacts = [
+                  ['icon' => 'flaticon-foundation', 'end' => 820, 'suffix' => '+', 'label' => 'Years of Foundation'],
+                    ['icon' => 'flaticon-landscape', 'end' => \App\Models\Company::totalStates(), 'suffix' => '', 'label' => 'Number Of States'],
+                    ['icon' => 'flaticon-factory', 'end' => \App\Models\Company::totalActiveCompanies(), 'suffix' => '', 'label' => 'Number of Companies'],
+                  ['icon' => 'flaticon-windrose', 'end' => 920, 'suffix' => '+', 'label' => 'Successful Rating'],
+               ];
+            @endphp
+            @foreach($funfacts as $i => $fact)
+               <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".{{ 3 + $i * 2 }}s">
+                  <div class="tp-funfact-2-item z-index text-center">
+                     <div class="tp-funfact-2-icon p-relative">
+                        <span><i class="{{ $fact['icon'] }}"></i></span>
+                     </div>
+                     <div class="tp-funfact-2-content">
+                        <h4><em data-purecounter-duration="1" data-purecounter-end="{{ $fact['end'] }}" class="purecounter">0</em>{{ $fact['suffix'] }}</h4>
+                        <span>{{ $fact['label'] }}</span>
+                     </div>
+                  </div>
+               </div>
+            @endforeach
+         </div>
+      </div>
+   </section>
+   {{-- FUNFACT AREA END --}}
+
+   {{-- PROJECT AREA --}}
+   <section class="tp-project-area pt-120 fix">
+      <div class="container">
+         <div class="tp-project-top-wrap mb-40">
+            <div class="row align-items-end">
+               <div class="col-xl-7 col-lg-6">
+                  <div class="tp-project-title-box">
+                     <span class="tp-section-subtitle">Latest events</span>
+                     <h4 class="tp-section-title">Explore Our Latest Events</h4>
+                  </div>
+               </div>
+               <div class="col-xl-5 col-lg-6">
+                  <div class="tp-project-right-text">
+                     <p>We focus on protecting the environment, promoting sustainability, and addressing climate change.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="container-fluid">
+         <div class="col-xl-12">
+            <div class="tp-project-slider-wrap">
+               <div class="swiper-container tp-project-slider-active">
+                  <div class="swiper-wrapper">
+                     @php
+                        $projectImgs = [
+                           'WhatsApp Image 2025-05-01 at 15.06.32.jpeg',
+                           'WhatsApp Image 2025-05-01 at 15.06.35.jpeg',
+                           'WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg',
+                           'IMG-20250423-WA0102.jpg',
+                           'IMG-20250423-WA0101.jpg',
+                           'IMG-20250423-WA0096.jpg',
+                        ];
+                     @endphp
+                     @foreach($projectImgs as $img)
+                        <div class="swiper-slide">
+                           <div class="tp-project-item p-relative">
+                              <div class="tp-project-thumb fix">
+                                 <img src="{{asset('MainAssets/img/home/' . $img)}}" alt="">
+                              </div>
+                              <div class="tp-project-content-wrap d-flex align-items-center justify-content-between">
+                                 <div class="tp-project-content">
+                                    <span>RECP ON CARBON</span>
+                                    <h4 class="tp-project-title-sm"><a href="#">ABUJA</a></h4>
+                                 </div>
+                                 <div class="tp-project-icon">
+                                    <a href="#"><i class="fa-regular fa-arrow-right"></i></a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     @endforeach
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- PROJECT AREA END --}}
+
+   {{-- ONLINE SERVICE AREA --}}
+   <section class="tp-online-area fix p-relative pt-120 pb-90">
+      <div class="tp-online-right-shape">
+         <img src="{{asset('MainAssets/img/event/event-right-bg.png')}}" alt="">
+      </div>
+      <div class="container">
+         <div class="row justify-content-center">
+            <div class="col-xl-8">
+               <div class="tp-online-title-box text-center mb-50">
+                  <h4 class="tp-section-title">Ministerial Initiatives</h4>
+               </div>
+            </div>
+         </div>
+         <div class="row gx-0 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+            <div class="col-xl-6 col-lg-6 col-md-12 mb-30">
+               <div class="tp-online-list-box theme-bg">
+                  <ul>
+                     <li><a href="#">Environmental Impact Assessment<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Environmentally Sound Management & PCBS<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Ogoni Cleanup<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Green Bonds<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Clean & Green Initiative<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Great Green Wall Programme<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  </ul>
+               </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 mb-30">
+               <div class="tp-online-list-box background-style-2 theme-bg-2">
+                  <ul>
+                     <li><a href="#">Erosion & Watershed Management Project<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Clean Energy Initiative<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Public Service Identy<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">National Planning Frame<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Apply for Business License<span><i class="flaticon-right-arrow"></i></span></a></li>
+                     <li><a href="#">Professional License<span><i class="flaticon-right-arrow"></i></span></a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- ONLINE SERVICE AREA END --}}
+
+   {{-- VIDEO AREA --}}
+   <section class="tp-video-area tp-video-space fix p-relative">
+      <div class="tp-video-shape-1 d-none d-xl-block">
+         <img src="{{asset('MainAssets/img/video/shape-1-1.png')}}" alt="">
+      </div>
+      <div class="tp-video-shape-2 d-none d-xl-block">
+         <img src="{{asset('MainAssets/img/video/shape-1-2.png')}}" alt="">
+      </div>
+      <div class="tp-video-shape-3 d-none d-xl-block">
+         <img src="{{asset('MainAssets/img/video/shape-1-3.png')}}" alt="">
+      </div>
+      <div class="tp-video-shape-4 d-none d-xl-block">
+         <img src="{{asset('MainAssets/img/video/shape-1-4.png')}}" alt="">
+      </div>
+      <div class="tp-video-bg jarallax" data-background="{{asset('MainAssets/img/video/bg-1-1.jpg')}}"></div>
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-video-content text-center">
+                  <div class="tp-video-content-icon-box">
+                     <a class="popup-video video-animation-2" href="https://www.youtube.com/watch?v=yqb1gONBlEQ"><i class="flaticon-play"></i></a>
+                  </div>
+                  <h6 class="tp-video-content-title" style="font-size: 2rem;">We Help You to Solve Your Business Problems And Maximize Profit </h6>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- VIDEO AREA END --}}
+
+   <!-- {{-- TESTIMONIAL AREA --}}
+   <section class="tp-testimonial-area theme-bg-2 pt-120 pb-120 z-index">
+      <div class="container">
+         <div class="row justify-content-center">
+            <div class="col-xl-8">
+               <div class="tp-testimonial-title-box mb-50 text-center">
+                  <span class="tp-section-subtitle">our testimonials</span>
+                  <h4 class="tp-section-title text-white">Some Clients Feedback</h4>
+               </div>
+            </div>
+         </div>
+         <div class="tp-testimonial-img-wrap p-relative">
+            <div class="tp-testimonial-arrow-box">
+               <button class="testi-prev"><i class="fa-solid fa-arrow-left"></i></button>
+               <button class="testi-next"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="tp-testimonial-img-1 d-none d-xl-block">
+               <img src="{{asset('MainAssets/img/testimonial/testi-1.jpg')}}" alt="">
+            </div>
+            <div class="tp-testimonial-img-2 d-none d-xl-block">
+               <img src="{{asset('MainAssets/img/testimonial/testi-2.jpg')}}" alt="">
+            </div>
+            <div class="row justify-content-center">
+               <div class="col-xl-9">
+                  <div class="tp-testimonial-bg p-relative">
+                     <div class="tp-testimonial-bg-shape">
+                        <img src="{{asset('MainAssets/img/testimonial/testi-bg-shape.png')}}" alt="">
+                     </div>
+                     <div class="swiper-container tp-testimonial-slider-actve">
+                        <div class="swiper-wrapper">
+                           @for($i = 0; $i < 2; $i++)
+                              <div class="swiper-slide">
+                                 <div class="tp-testimonial-item">
+                                    <div class="tp-testimonial-avatar">
+                                       <img src="{{asset('MainAssets/img/avata/avata-3.png')}}" alt="">
+                                    </div>
+                                    <div class="tp-testimonial-content">
+                                       <p>“Because a city story is never complete there
+                                          is always something new and to discover.
+                                          An environment spent at estene”</p>
+                                    </div>
+                                    <div class="tp-testimonial-avatar-info">
+                                       <span>Mayor</span>
+                                       <h4 class="tp-testimonial-title-sm">Tasha Baily</h4>
+                                    </div>
+                                 </div>
+                              </div>
+                           @endfor
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   {{-- TESTIMONIAL AREA END --}} -->
+
+   {{-- BLOG AREA --}}
+   <section id="blog-one-page" class="tp-blog-area pt-100 pb-90">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="tp-blog-section-title text-center mb-55">
+                  <span class="tp-section-subtitle">our latest blogs</span>
+                  <h4 class="tp-section-title">Latest News & Blog <br>From Articles</h4>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            @php
+               $blogs = [
+                  [
+                     'img' => 'WhatsApp Image 2025-05-01 at 15.06.32.jpeg',
+                     'title' => 'ENVIRONMENT MINISTER CALLS ON NGOS',
+                  ],
+                  [
+                     'img' => 'WhatsApp Image 2025-05-01 at 15.06.35.jpeg',
+                     'title' => 'ENVIRONMENT MINISTER ASSURES WOMEN OF GOVERNMENT SUPPORT',
+                  ],
+                  [
+                     'img' => 'WhatsApp Image 2025-05-01 at 15.06.37 (1).jpeg',
+                     'title' => 'PRESENTATION OF REPORT',
+                  ],
+               ];
+            @endphp
+            @foreach($blogs as $blog)
+               <div class="col-xl-4 col-lg-4 col-md-6 mb-30 d-flex">
+                  <div class="tp-blog__item w-100">
+                     <div class="tp-blog__thumb p-relative fix">
+                        <a href="#"><img class="w-100" src="{{asset('MainAssets/img/home/' . $blog['img'])}}" alt=""></a>
+                     </div>
+                     <div class="tp-blog__content-wrap">
+                        <h5 class="tp-blog__title-sm"><a href="blog-details.html">{{ $blog['title'] }}</a></h5>
+                        <div class="tp-blog__link">
+                           <a href="#">Read More <i class="fa-regular fa-arrow-right-long"></i></a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            @endforeach
+         </div>
+      </div>
+   </section>
+   {{-- BLOG AREA END --}}
+{{-- GET INVOLVED SECTION --}}
+   <section id="get-involved" class="tp-get-involved-area pt-100 pb-90">
+      <div class="container">
+         <div class="row">
+            <div class="col-xl-12 text-center">
+               <h2 class="tp-section-title">🤝 Get Involved</h2>
+               <h4 class="tp-section-subtitle">Join Nigeria’s Journey to Industrial Sustainability</h4>
+               <p>Are you a business owner, engineer, policymaker, academic, or clean-tech innovator? The NGN IEE-RECP Project invites you to become part of a nationwide movement to transform Nigeria’s industrial future.</p>
+            </div>
+         </div>
+         <div class="row mt-4">
+            <div class="col-md-4">
+               <h5>For Industrial Enterprises</h5>
+               <p><strong>Improve efficiency. Cut costs. Stay competitive.</strong><br>Join our RECP/IEE assessments, access technical support, and adopt clean technologies to reduce waste, energy use, and emissions in your production processes.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Register Your Facility]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Academics & Researchers</h5>
+                        <p><strong>Shape the future of sustainable industrial innovation.</strong><br>Collaborate on research, curriculum development, and capacity-building programs in cleaner production and industrial energy efficiency.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Partner with Us]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Technical Experts & Auditors</h5>
+                        <p><strong>Become a certified RECP/IEE expert.</strong><br>Get trained and certified to deliver resource and energy assessments for industries across Nigeria.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Apply for Certification]</a>
+                     </div>
+                  </div>
+                  <div class="row mt-4">
+                     <div class="col-md-4">
+                        <h5>For Policymakers & Agencies</h5>
+                        <p><strong>Drive policy change through evidence-based practices.</strong><br>Support the integration of RECP/IEE into national strategies for climate action, green economy, and industrial competitiveness.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Collaborate with the Project]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>For Innovators & Solution Providers</h5>
+                        <p><strong>Scale your clean tech solutions.</strong><br>Showcase and pilot your innovations in materials efficiency, renewable energy, waste recovery, and industrial automation.</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Submit Your Innovation]</a>
+                     </div>
+                     <div class="col-md-4">
+                        <h5>Have questions or proposals?</h5>
+                        <p>We’d love to hear from you!</p>
+                        <a href="#" class="btn btn-primary" style="background-color: #008751; color: white;">[Contact Us]</a>
+         </div>
+      </div>
+      <div class="row mt-4">
+         <div class="col-md-12 text-center">
+            <a href="#" class="btn btn-secondary">[Join the Network]</a>
+            <a href="#" class="btn btn-secondary">[Become an Auditor]</a>
+            <a href="#" class="btn btn-secondary">[Access Training]</a>
+         </div>
+      </div>
+   </div>
+</section>
+{{-- GET INVOLVED SECTION END --}}
+</main>
+@endsection

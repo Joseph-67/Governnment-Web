@@ -40,17 +40,65 @@
                     </thead>
                     <tbody>
                         @forelse($permissions as $permission)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $permission->name }}</td>
-                                <td><span class="badge bg-secondary">{{ $permission->guard_name }}</span></td>
+                            <tr  id="permission-row-{{ $permission->id }}" data-permission-row="{{ $permission->id }}">
+                                <td class="row-index">{{ $loop->iteration }}</td>
+                                <td class="permissionName">{{ $permission->name }}</td>
+                                <td><span class="badge bg-secondary permissionGuard">{{ $permission->guard_name }}</span></td>
                                 <td>{{ $permission->created_at?->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <!-- Edit -->
-                                    <a href="" 
-                                       class="btn btn-sm btn-outline-primary me-2">
+                                    <!-- Edit -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPermissionModal{{ $permission->id }}">
                                         <i class="fas fa-edit"></i> Edit
-                                    </a>
+                                    </button>
+
+                                    <!-- Edit Permission Modal -->
+                <div class="modal fade" id="editPermissionModal{{ $permission->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content rounded-3 shadow">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-semibold">Edit Permission</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form class="edit-permission-form"
+                            data-id="{{ $permission->id }}"
+                            data-url="{{ route('admin.update-permission', $permission->id) }}">
+                        @csrf
+                        <div class="modal-body">
+                                                    <div class="alert editPermissionAlert d-none"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Permission Name</label>
+                            <input type="text" name="name" class="form-control" value="{{ $permission->name }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Guard</label>
+                            <select name="guard_name" class="form-select">
+                            @foreach($guards as $guard)
+                                <option value="{{ $guard->title }}" {{ $permission->guard_name == $guard->title ? 'selected' : '' }}>
+                                {{ $guard->title }}
+                                </option>
+                            @endforeach
+                            </select>
+                        </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Permission</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+
+
                                     <!-- Delete -->
                                     <form action="" 
                                           method="POST" class="d-inline">
@@ -112,4 +160,106 @@
             </div>
         </div>
     </div>
+    @section('scripts')
+       <script>
+async function fetch_cycle(keyArea, url, method = "POST", formData = null) {
+  const headers = {
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
+  };
+
+  const opts = { method, headers, credentials: "same-origin" };
+
+  if (formData) {
+    // ensure CSRF token is present (from @csrf in the form)
+    if (!formData.has("_token")) {
+      // fallback if form lost the token; you can inject it server-side into a JS var if you prefer
+      formData.append("_token", "{{ csrf_token() }}");
+    }
+    opts.body = formData;
+  }
+
+  const res = await fetch(url, opts);
+
+  // Try JSON first; if it fails, read as text so we can show something useful
+  let data, text;
+  try {
+    data = await res.json();
+  } catch (_) {
+    try { text = await res.text(); } catch (_) {}
+  }
+
+  if (!res.ok) {
+    const msg = (data && (data.error || data.message)) || text || `${res.status} ${res.statusText}`;
+    const err = { status: res.status, message: msg, errors: data && data.errors ? data.errors : null };
+    console.error(`${keyArea} ❌`, err);
+    throw err;
+  }
+
+  console.log(`${keyArea} ✅`, data);
+  return data;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Single delegated handler for all edit permission forms
+  document.addEventListener("submit", function (e) {
+    const form = e.target.closest(".edit-permission-form");
+    if (!form) return;
+
+    e.preventDefault();
+
+    const id       = form.dataset.id;
+    const url      = form.dataset.url; // reliable route URL from Blade
+    const formData = new FormData(form);
+    const alertBox = form.querySelector(".editPermissionAlert");
+
+    if (alertBox) alertBox.classList.add("d-none");
+
+    fetch_cycle("--Update Permission", url, "POST", formData)
+      .then(result => {
+        // Show success
+        if (alertBox) {
+          alertBox.classList.remove("d-none", "alert-danger");
+          alertBox.classList.add("alert", "alert-success");
+          alertBox.textContent = result.message || "Permission updated successfully ✅";
+        }
+
+        // Update the row live
+        const row = document.getElementById(`permission-row-${id}`);
+        if (row) {
+          const name  = formData.get("name");
+          const guard = formData.get("guard_name");
+          const nameCell  = row.querySelector(".permissionName");
+          const guardCell = row.querySelector(".permissionGuard");
+          if (nameCell)  nameCell.textContent = name;
+          if (guardCell) guardCell.textContent = guard;
+        }
+
+        // Close the modal after a short delay
+        setTimeout(() => {
+          const modalEl = form.closest(".modal");
+          if (modalEl) {
+            const instance = bootstrap.Modal.getInstance(modalEl);
+            if (instance) instance.hide();
+          }
+        }, 800);
+      })
+      .catch(err => {
+        // Show detailed error in the modal
+        if (alertBox) {
+          alertBox.classList.remove("d-none", "alert-success");
+          alertBox.classList.add("alert", "alert-danger");
+
+          if (err.errors) {
+            alertBox.innerHTML = Object.values(err.errors).flat().join("<br>");
+          } else {
+            alertBox.textContent = err.message || "Something went wrong ❌";
+          }
+        }
+      });
+  });
+});
+</script>
+
+    @endsection
 </x-layouts.admin-app>

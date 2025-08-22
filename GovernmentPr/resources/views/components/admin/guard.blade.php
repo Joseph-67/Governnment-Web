@@ -36,21 +36,65 @@
                     </thead>
                     <tbody>
                         @forelse($guards as $guard)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td class="fw-semibold">{{ $guard->title }}</td>
+                            <tr id="guard-row-{{ $guard->guard_id }}">
+                                <td class="row-index">{{ $loop->iteration }}</td>
+                                <td class="fw-semibold guardName">{{ $guard->title }}</td>
                                 <td>
-                                    <span class="badge {{ $guard->status ? 'bg-success' : 'bg-danger' }}">
+                                    <span class="badge {{ $guard->status ? 'bg-success' : 'bg-danger' }} guardStatus">
                                         {{ $guard->status ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
                                 <td>{{ $guard->created_at?->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <!-- Edit -->
-                                    <a href="" 
-                                       class="btn btn-sm btn-outline-primary me-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editGuardModal{{ $guard->guard_id }}">
                                         <i class="fas fa-edit"></i> Edit
-                                    </a>
+                                    </button>
+
+                                    <!-- Edit Guard Modal -->
+                                    <div class="modal fade" id="editGuardModal{{ $guard->guard_id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-3 shadow">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title fw-semibold">Edit Guard</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <form class="edit-guard-form"
+                                        data-id="{{ $guard->guard_id }}"
+                                        data-url="/admin/guard/{{ $guard->guard_id }}">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <!-- Alert on top -->
+                                            <div class="alert editGuardAlert d-none mb-3"></div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Guard Name</label>
+                                                <input type="text" name="title" class="form-control" value="{{ $guard->title }}" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Status</label>
+                                                <select name="status" class="form-select">
+                                                    <option value="1" {{ $guard->status ? 'selected' : '' }}>Active</option>
+                                                    <option value="0" {{ !$guard->status ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update Guard</button>
+                                        </div>
+                                    </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Delete -->
                                     <form action="" 
                                           method="POST" class="d-inline">
@@ -106,4 +150,57 @@
             </div>
         </div>
     </div>
+    @section('scripts')
+    <script>
+      document.querySelectorAll('.edit-guard-form').forEach(form => {
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const id = form.dataset.id;
+        const url = form.dataset.url;
+        const alertBox = form.querySelector('.editGuardAlert');
+        alertBox.classList.add('d-none');
+
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST', // keep POST
+                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': formData.get('_token') },
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                // Show success message on top
+                alertBox.classList.remove('d-none', 'alert-danger');
+                alertBox.classList.add('alert', 'alert-success');
+                alertBox.textContent = data.message || 'Guard updated successfully ✅';
+
+                // Update table row live
+                const row = document.querySelector(`#guard-row-${id}`);
+                if (row) {
+                    row.querySelector('.guardName').textContent = formData.get('title');
+                    const statusBadge = row.querySelector('.guardStatus');
+                    statusBadge.textContent = formData.get('status') == 1 ? 'Active' : 'Inactive';
+                    statusBadge.className = formData.get('status') == 1 ? 'badge bg-success guardStatus' : 'badge bg-danger guardStatus';
+                }
+
+                // Close modal after short delay
+                setTimeout(() => bootstrap.Modal.getInstance(form.closest('.modal')).hide(), 800);
+            } else {
+                throw data;
+            }
+        } catch (err) {
+            alertBox.classList.remove('d-none', 'alert-success');
+            alertBox.classList.add('alert', 'alert-danger');
+            alertBox.textContent = err.message || err.error || 'Something went wrong ❌';
+        }
+    });
+});
+
+
+    </script>
+    @endsection
 </x-layouts.admin-app>
