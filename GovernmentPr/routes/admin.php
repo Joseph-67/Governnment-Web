@@ -29,6 +29,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OperationTypeController;
 use App\Http\Controllers\OperationCategoryController;
 use App\Http\Controllers\CMS\PagesController;
+use App\Http\Controllers\CMS\PageController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
@@ -131,7 +132,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     }); 
 
     //Pages
-    Route::controller(PagesController::class)->group(function() {
+    Route::controller(PageController::class)->group(function() {
         Route::get ('/pages', 'index')->name('admin.pages.index');
         Route::get ('/create-page', 'create')->name('admin.pages.create');
         Route::post ('/store-page', 'store')->name('admin.pages.store');

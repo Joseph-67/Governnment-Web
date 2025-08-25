@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CMS;
+use App\Http\Controllers\Controller;
 
 use App\Models\Page;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class PageController extends Controller
     public function index()
     {
         $pages = Page::latest()->paginate(15);
-        return view('admin.pages.index', compact('pages'));
+        return view('components.CMS.pages/index', compact('pages'));
     }
 
     /**
@@ -22,7 +23,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.create');
+        return view('components.CMS.pages.create');
     }
 
     /**
@@ -97,7 +98,7 @@ class PageController extends Controller
             'title'       => 'required|string|max:255',
             'slug'        => 'nullable|string|max:255|unique:pages,slug,' . $pageId,
             'excerpt'     => 'nullable|string|max:500',
-            'body'        => 'nullable|string',
+            'body'        => 'nullable|string|min:10',
 
             // Media
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',

@@ -273,7 +273,7 @@
                                 <div id="editor-container">
                                     <div id="editor">{!! old('content') !!}</div>
                                 </div>
-                                <input type="hidden" name="content" id="body">
+                                <input type="hidden" name="body" id="body">
                             </div>
                         </div>
                     </div>
@@ -775,15 +775,15 @@
             const tabIcon = document.getElementById('tabIcon');
 
             const tabIcons = {
-'#seoTab': '📝',
-'#mediaTab': '🖼️',
-'#layoutTab': '🎨',
-'#componentsTab': '⚙️',
-'#scriptsTab': '💻',
-'#settingsTab': '🛠️',
-'#accessTab': '🔒',
-'#analyticsTab': '📊'
-};
+                '#seoTab': '📝',
+                '#mediaTab': '🖼️',
+                '#layoutTab': '🎨',
+                '#componentsTab': '⚙️',
+                '#scriptsTab': '💻',
+                '#settingsTab': '🛠️',
+                '#accessTab': '🔒',
+                '#analyticsTab': '📊'
+            };
 
             tabLinks.forEach(link => {
                 link.addEventListener('shown.bs.tab', function (event) {
@@ -893,13 +893,20 @@
         });
 
 
-// --- Visibility password toggle ---
-(function(){
-const visibility = document.getElementById('visibility');
-const password = document.getElementById('visibilityPassword');
-function sync(){ password.disabled = visibility.value !== 'password'; }
-visibility.addEventListener('change', sync); sync();
-})();
+        // --- Visibility password toggle ---
+        (function () {
+            const visibility = document.getElementById('visibility');
+            const password = document.getElementById('visibilityPassword');
+            function sync() { password.disabled = visibility.value !== 'password'; }
+            visibility.addEventListener('change', sync); sync();
+        })();
+
+        // On form submit, set hidden input with Quill HTML
+        document.querySelector('#pageForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.querySelector('input[name="body"]').value = quill.root.innerHTML;
+            this.submit();
+        });
 
     </script>
     @endsection
