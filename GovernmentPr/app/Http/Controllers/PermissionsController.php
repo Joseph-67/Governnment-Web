@@ -63,6 +63,43 @@ public function store(Request $request)
     }
 }
 
+public function update(Request $request, $id)
+{
+    try {
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:20',
+                Rule::unique('permissions', 'name')
+                    ->where(fn($q) => $q->where('guard_name', $request->guard_name))
+                    ->ignore($id),
+            ],
+            'guard_name' => ['required', 'string', 'min:3', 'max:20']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $permission = Permission::findOrFail($id);
+        $permission->update([
+            'name'       => $request->name,
+            'guard_name' => $request->guard_name,
+        ]);
+
+        return response()->json([
+            'success'    => true,
+            'message'    => "Permission \"{$permission->name}\" updated successfully.",
+            'permission' => $permission,
+        ]);
+    } catch (\Illuminate\Database\QueryException $e) {
+        return response()->json(['error' => 'Database error: '.$e->getMessage()], 500);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Something went wrong: '.$e->getMessage()], 500);
+    }
+}
 
 
 }

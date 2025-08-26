@@ -193,9 +193,54 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+     public function update(Request $request)
     {
-        //
+        try {
+            $id = $request->id;
+
+            $validator = Validator::make($request->all(), [
+                'name' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:20',
+                    Rule::unique('roles', 'name')->ignore($id)->where(function ($query) use ($request) {
+                        return $query->where('guard_name', $request->guard_name);
+                    }),
+                ],
+                'guard_name' => ['required', 'string', 'min:3', 'max:20']
+            ]);
+
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'errors' => $validator->errors()
+                    ], 422);
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $role = Role::findOrFail($id);
+            $role->name = $request->name;
+            $role->guard_name = $request->guard_name;
+            $role->save();
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => "{$role->name} role updated successfully."
+                ]);
+            }
+
+            return back()->with(['success' => "{$role->name} role updated successfully."]);
+
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with(['error' => 'Something went wrong: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -204,8 +249,10 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+
+   public function destroy($id)
+{
+    
+}
+
 }

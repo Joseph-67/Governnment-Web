@@ -1,0 +1,163 @@
+@extends('components.layouts.app')
+@section('PageTitle', 'Mandate')
+
+@section('pageContent')
+<main>
+
+<!-- breadcrumb area start -->
+<div class="breadcrumb__area breadcrumb__overlay breadcrumb__height p-relative fix"
+   data-background="{{asset('MainAssets/img/department/landscape-2.webp')}}">
+   <div class="container">
+      <div class="row">
+         <div class="col-xxl-12">
+            <div class="breadcrumb__content z-index text-center">
+               <h3 class="breadcrumb__title">MANDATE</h3>
+               <div class="breadcrumb__list">
+                  <span><a href="index.html">Home</a></span>
+                  <span class="dvdr"><i class="fa fa-angle-right"></i></span>
+                  <span>Mandate</span>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- breadcrumb area end -->
+
+<!-- postbox area start -->
+<section class="postbox__area pt-120 pb-90">
+   <div class="container">
+      <div class="row">
+         <div class="col-xxl-8 col-xl-8 col-lg-8">
+            <div class="postbox__wrapper">
+               <article class="postbox__item format-image mb-50 transition-3">
+                 
+                     <div class="postbox__text">
+                        <p>Nigeria is a sovereign country located in West Africa Sub-region with a population estimate of 206,630,269 (September 2020 est.). Nigeria is made up of 36 States and the Federal Capital Territory, which is in Abuja. Nigeria is an industrial giant in Africa and needs all avenues to make its industrialization highly sustainable. Hence, the support for Resource Efficiency Cleaner Production (RECP) concepts in Nigeria is a high priority, for several reasons.</p>
+
+                        <ul>
+                           <li>First, most of the investment in capital endowment is rapidly taking place; this is a critical time to ensure that RECP concepts are disseminated rapidly. Any delay in the application of this concept will lead to the creation of a technology base that is highly consuming of natural resources. This will critically increase industrial impacts on the environment, due to intensified exploitation of these resources and because of an increase in the quantities of waste released into the natural environment. This will also put a deterrent on the industrial development of the country, by increasing more than is necessary the costs of purchasing the raw materials and energy necessary to feed this development.</li>
+                           <li>Second, by creating a base of cleaner technologies that will foster economic growth, to improve efficiency and economic investments, while discouraging non-friendly technologies. This will also institute effective environmental mainstreaming which, therefore, will be a broader affair than prevailing narrower approaches.</li>
+                        </ul>
+
+                        <p>Nigeria in her effort to domicile the international principles of RECP has developed a National Framework on RECP, with the goal to implement RECP at all levels of society for sustainability. This calls for the establishment of a network of institutions and individuals, who can act as catalysts and promoters of the concept. Furthermore, Resource Efficiency Cleaner Production strategies would thereby be integrated in various policies such as:</p>
+
+                        <ul>
+                           <li>Environmental policies.</li>
+                           <li>Industrial policies.</li>
+                           <li>Resource pricing policies.</li>
+                           <li>Trade policies.</li>
+                           <li>Fiscal policies.</li>
+                           <li>Educational policies.</li>
+                           <li>Technology development policies.</li>
+                        </ul>
+
+                        <p>Nigeria has been in the vanguard of economic systems that tackle global environmental challenges like climate change, biodiversity loss, waste, and pollution.</p>
+
+                        <p>With the understanding of the benefits of a circular economy, the Nigerian Circular Economy Road Map not only aligns with strategic global and continental objectives of a green and sustainable future but importantly provides the direction for a just and inclusive transition to a circular economy with a timespan until 2033. The efficient use of resources, such as water, chemicals, energy, materials, and Cleaner Production encourages secularity of economy.</p>
+
+                        <div class="postbox__comment mb-80">
+                           <!-- <h3 class="postbox__comment-title"></h3> -->
+                           <ul>
+                              <li>
+                                 <div class="postbox__comment-box p-relative">
+                                    <div class="postbox__comment-info d-flex align-items-center">
+                                       <div class="postbox__comment-avater mr-40">
+                                          <!-- <img src="assets/img/avata/avata-3.png" alt=""> -->
+                                       </div>
+                                       <div class="postbox__comment-name p-relative">
+                                          <h5>VISION</h5>
+                                          <div class="postbox__comment-text">
+                                             <p>To build a sustainable, industrialized Nigeria that minimizes environmental impact through the adoption of Resource Efficiency and Cleaner Production (RECP) strategies.</p>
+                                          </div>
+                                          <div class="postbox__comment-reply">
+                                             <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
+                                                </svg></span>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </li>
+                              <li>
+                                 <div class="postbox__comment-box p-relative">
+                                    <div class="postbox__comment-info d-flex align-items-center">
+                                       <div class="postbox__comment-avater mr-40">
+                                          <!-- <img src="assets/img/avata/avata-4.png" alt=""> -->
+                                       </div>
+                                       <div class="postbox__comment-name p-relative">
+                                       <h5>MISSION</h5>
+                                    <div class="postbox__comment-text">
+                                       <p>To institutionalize RECP principles across all sectors by integrating them into national policies, educational frameworks, and technology development.</p>
+                                    </div>
+                                          <div class="postbox__comment-reply">
+                                             <span><svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6.54688 10.2031L12.7969 16.4531C13.9688 17.625 16 16.8047 16 15.125V12.3516C20.6094 12.5469 20.7266 13.5625 20.0625 15.8672C19.5547 17.5469 21.4688 18.9141 22.9141 17.9375C24.9062 16.5703 26 14.8516 26 12.3516C26 6.76562 21 5.67188 16 5.47656V2.66406C16 0.984375 13.9688 0.164062 12.7969 1.33594L6.54688 7.58594C5.80469 8.28906 5.80469 9.5 6.54688 10.2031ZM7.875 8.875L14.125 2.625V7.3125C18.8125 7.3125 24.125 7.58594 24.125 12.3516C24.125 14.5391 22.9922 15.6328 21.8594 16.375C23.4609 11.0625 19.4766 10.4375 14.125 10.4375V15.125L7.875 8.875ZM1.54688 7.58594C0.804688 8.28906 0.804688 9.5 1.54688 10.2031L7.79688 16.4531C8.57812 17.2734 9.75 17.1562 10.4531 16.4531L2.875 8.875L10.4531 1.33594C9.75 0.632812 8.57812 0.515625 7.79688 1.33594L1.54688 7.58594Z" fill="#121416"></path>
+                                                </svg></span>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </li>
+                             
+                           </ul>
+                        </div>
+                        <div class="postbox__list">
+                           <h3 class="postbox__list-title">MANDATES</h3>
+                           <div class="row">
+                              <div class="col-xl-7 col-lg-12">
+                                 <div class="postbox__list-content">
+                                    <ul>
+                                       <li>
+                                          <span>
+                                             <svg width="14" height="14" viewBox="0 0 16 15" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                   d="M15.794 2.17595C14.426 3.42395 13.094 4.87595 11.798 6.53195C10.67 7.95995 9.656 9.42395 8.756 10.924C7.94 12.268 7.346 13.42 6.974 14.38C6.962 14.416 6.938 14.446 6.902 14.47C6.866 14.506 6.824 14.524 6.776 14.524C6.764 14.536 6.752 14.542 6.74 14.542C6.656 14.542 6.596 14.518 6.56 14.47L0.134 7.93595C0.122 7.92395 0.278 7.76795 0.602 7.46795C0.926 7.15595 1.244 6.87395 1.556 6.62195C1.904 6.33395 2.09 6.20195 2.114 6.22595L5.642 8.99795C6.674 7.78595 7.832 6.58595 9.116 5.39795C11.048 3.62195 13.04 2.10995 15.092 0.861953C15.128 0.861953 15.266 1.02995 15.506 1.36595L15.866 1.88795C15.878 1.93595 15.878 1.98995 15.866 2.04995C15.854 2.09795 15.83 2.13995 15.794 2.17595Z"
+                                                   fill="currentColor">
+                                                </path>
+                                             </svg>
+                                          </span> 
+                                          To accelerate the adoption of Industrial Energy Efficiency (IEE) practices across small, medium, and large-scale enterprises to enhance productivity and reduce energy consumption in Nigeria’s industrial sector.
+
+
+                                       </li>
+                                       <li>
+                                          <span class="active"><svg width="14" height="14" viewBox="0 0 16 15"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                   d="M15.794 2.17595C14.426 3.42395 13.094 4.87595 11.798 6.53195C10.67 7.95995 9.656 9.42395 8.756 10.924C7.94 12.268 7.346 13.42 6.974 14.38C6.962 14.416 6.938 14.446 6.902 14.47C6.866 14.506 6.824 14.524 6.776 14.524C6.764 14.536 6.752 14.542 6.74 14.542C6.656 14.542 6.596 14.518 6.56 14.47L0.134 7.93595C0.122 7.92395 0.278 7.76795 0.602 7.46795C0.926 7.15595 1.244 6.87395 1.556 6.62195C1.904 6.33395 2.09 6.20195 2.114 6.22595L5.642 8.99795C6.674 7.78595 7.832 6.58595 9.116 5.39795C11.048 3.62195 13.04 2.10995 15.092 0.861953C15.128 0.861953 15.266 1.02995 15.506 1.36595L15.866 1.88795C15.878 1.93595 15.878 1.98995 15.866 2.04995C15.854 2.09795 15.83 2.13995 15.794 2.17595Z"
+                                                   fill="currentColor">
+                                                </path>
+                                             </svg>
+                                          </span> To improve environmental performance of industrial enterprises by promoting Resource Efficiency and Cleaner Production (RECP) best practices and innovative approaches.
+                                       </li>
+
+                                      
+                                    </ul>
+                                 </div>
+                              </div>
+                              <div class="col-xl-5 col-lg-12">
+                                 <div class="posbox__list-img">
+                                    <img src="assets/img/blog/blog-list-img.jpg" alt="">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        
+                     </div>
+                  </div>
+               </article>
+    
+               
+               
+     
+      </div>
+   </div>
+</section>
+<!-- postbox area end -->
+
+
+</main>
+
+@endsection
