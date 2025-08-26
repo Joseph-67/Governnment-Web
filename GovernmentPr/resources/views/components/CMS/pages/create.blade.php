@@ -2,6 +2,9 @@
     @section('styles')
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.css" rel="stylesheet" />
+    <link href="{{asset('adminAssets/libs/uppy/uppy.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
     <style>
         /* --- General Font & Colors --- */
@@ -494,7 +497,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
-                                    <input type="file" class="form-control" name="gallery[]" accept="image/*" multiple>
+                                    <div id="drag-drop-area"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Hero Background</label>
@@ -564,72 +567,172 @@
                         <div class="tab-pane fade" id="componentsTab" role="tabpanel">
                             <div class="card card-body p-4">
                                 <h5 class="fw-semibold mb-3">Page Components</h5>
+
+                                {{-- 🔹 Slider / Carousel --}}
                                 <div class="row g-3">
                                     <div class="col-md-4">
                                         <label class="form-label">Enable Slider / Carousel</label>
                                         <select class="form-select" name="enable_slider">
-                                            <option value="0" @selected(old('enable_slider')==='0' )>No</option>
-                                            <option value="1" @selected(old('enable_slider')==='1' )>Yes</option>
+                                            <option value="0" @selected(old('enable_slider')==='0')>No</option>
+                                            <option value="1" @selected(old('enable_slider')==='1')>Yes</option>
                                         </select>
                                     </div>
                                     <div class="col-md-8">
-                                        <label class="form-label">Reusable Components (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                            name="reusable_components"
-                                            placeholder='[{"type":"testimonial","content":"..."}]'>{{ old('reusable_components') }}</textarea>
+                                <!-- 🔹 Image Slider Manager -->
+                                <div class="row g-3 mb-3">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <label class="form-label fw-semibold">Image Slider</label>
+                                        
+                                            <!-- Add Slide Button -->
+                                            <button type="button" class="btn btn-sm btn-primary mb-3" id="addSlideBtn">
+                                                + Add Slide
+                                            </button>
+                                        </div>
+                                        <!-- Slides Container -->
+                                        <div id="slidesContainer" class="d-flex flex-column gap-3">
+                                            {{-- Existing slides (if editing an existing page) --}}
+                                            @if(old('slider_images'))
+                                                @foreach(json_decode(old('slider_images'), true) as $index => $slide)
+                                                    <div class="card p-3 slide-item">
+                                                        <div class="row g-2 align-items-center">
+                                                            <div class="col-md-2">
+                                                                <input type="file" class="form-control" name="slides[{{ $index }}][image]">
+                                                                @if(isset($slide['image']))
+                                                                    <small class="text-muted d-block mt-1">Current: {{ $slide['image'] }}</small>
+                                                                @endif
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="text" class="form-control" name="slides[{{ $index }}][title]" placeholder="Title" value="{{ $slide['title'] ?? '' }}">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="text" class="form-control" name="slides[{{ $index }}][caption]" placeholder="Caption" value="{{ $slide['caption'] ?? '' }}">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="url" class="form-control" name="slides[{{ $index }}][media_link]" placeholder="Media Link (optional)" value="{{ $slide['media_link'] ?? '' }}">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="text" class="form-control" name="slides[{{ $index }}][link]" placeholder="Link (optional)" value="{{ $slide['link'] ?? '' }}">
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="number" class="form-control" name="slides[{{ $index }}][order]" placeholder="Order" value="{{ $slide['order'] ?? $index }}">
+                                                            </div>
+                                                            <div class="col-md-1 text-end">
+                                                                <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Hidden JSON field (final payload) -->
+                                <input type="hidden" name="slider_images" id="sliderImagesInput">
+                                    </div>
+                                </div>
+
+                                {{-- 🔹 Reusable Components --}}
                                 <div class="row g-3 mt-1">
-                                    <div class="col-lg-6">
+                                    <div class="col-12">
+                                        <label class="form-label">Reusable Components (JSON)</label>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="reusable_components"
+                                                placeholder='[{"type":"testimonial","content":"..."}]'>{{ old('reusable_components') }}</textarea>
+                                    </div>
+                                </div>
+
+                                {{-- 🔹 Contact Form --}}
+                                <div class="row g-3 mt-1">
+                                    <div class="col-lg-4">
                                         <label class="form-label">Enable Contact Form</label>
                                         <select class="form-select" name="contact_form_enabled">
-                                            <option value="0" @selected(old('contact_form_enabled')==='0' )>No</option>
-                                            <option value="1" @selected(old('contact_form_enabled')==='1' )>Yes</option>
+                                            <option value="0" @selected(old('contact_form_enabled')==='0')>No</option>
+                                            <option value="1" @selected(old('contact_form_enabled')==='1')>Yes</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <label class="form-label">Recipient Email</label>
                                         <input type="email" class="form-control" name="contact_form_email"
                                             value="{{ old('contact_form_email') }}">
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <label class="form-label">Form Subject</label>
                                         <input type="text" class="form-control" name="contact_form_subject"
                                             value="{{ old('contact_form_subject') }}">
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-12">
                                         <label class="form-label">Custom Fields (JSON)</label>
                                         <textarea class="form-control font-monospace" rows="3"
-                                            name="contact_form_fields"
-                                            placeholder='[{"label":"Name","type":"text"}]'>{{ old('contact_form_fields') }}</textarea>
+                                                name="contact_form_fields"
+                                                placeholder='[{"label":"Name","type":"text"}]'>{{ old('contact_form_fields') }}</textarea>
                                     </div>
                                 </div>
+
+                                {{-- 🔹 Newsletter Signup --}}
                                 <div class="row g-3 mt-1">
                                     <div class="col-lg-6">
                                         <label class="form-label">Newsletter Signup</label>
                                         <select class="form-select" name="newsletter_enabled">
-                                            <option value="0" @selected(old('newsletter_enabled')==='0' )>No</option>
-                                            <option value="1" @selected(old('newsletter_enabled')==='1' )>Yes</option>
+                                            <option value="0" @selected(old('newsletter_enabled')==='0')>No</option>
+                                            <option value="1" @selected(old('newsletter_enabled')==='1')>Yes</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-6">
-                                        <label class="form-label">Polls / Surveys (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3" name="polls_surveys"
-                                            placeholder='[{"question":"...","options":["a","b"]}]'>{{ old('polls_surveys') }}</textarea>
+                                        <label class="form-label">Integration Provider</label>
+                                        <input type="text" class="form-control" name="newsletter_provider"
+                                            placeholder="e.g. Mailchimp, SendGrid"
+                                            value="{{ old('newsletter_provider') }}">
                                     </div>
                                 </div>
+
+                                {{-- 🔹 Polls / Surveys --}}
+                                <div class="row g-3 mt-1">
+                                    <div class="col-12">
+                                        <label class="form-label">Polls / Surveys (JSON)</label>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="polls_surveys"
+                                                placeholder='[{"question":"...","options":["a","b"]}]'>{{ old('polls_surveys') }}</textarea>
+                                    </div>
+                                </div>
+
+                                {{-- 🔹 Dynamic Tables --}}
                                 <div class="row g-3 mt-1">
                                     <div class="col-12">
                                         <label class="form-label">Dynamic Tables / Grids (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3" name="dynamic_tables"
-                                            placeholder='[{"columns":["Name","Email"],"rows":[...]}]'>{{ old('dynamic_tables') }}</textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Conditional Display Logic (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3" name="conditional_logic"
-                                            placeholder='[{"component":"hero","condition":{"role":"admin"}}]'>{{ old('conditional_logic') }}</textarea>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="dynamic_tables"
+                                                placeholder='[{"columns":["Name","Email"],"rows":[...]}]'>{{ old('dynamic_tables') }}</textarea>
                                     </div>
                                 </div>
+
+                                {{-- 🔹 Conditional Logic --}}
+                                <div class="row g-3 mt-1">
+                                    <div class="col-12">
+                                        <label class="form-label">Conditional Display Logic (JSON)</label>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="conditional_logic"
+                                                placeholder='[{"component":"hero","condition":{"role":"admin"}}]'>{{ old('conditional_logic') }}</textarea>
+                                    </div>
+                                </div>
+
+                                {{-- 🔹 Extra Components (future-proofing) --}}
+                                <div class="row g-3 mt-1">
+                                    <div class="col-lg-6">
+                                        <label class="form-label">Embed Code (HTML/JS)</label>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="embed_code"
+                                                placeholder="<script>...</script>">{{ old('embed_code') }}</textarea>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label">Custom CSS</label>
+                                        <textarea class="form-control font-monospace" rows="3"
+                                                name="custom_css"
+                                                placeholder=".hero { background:red; }">{{ old('custom_css') }}</textarea>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -766,7 +869,8 @@
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-
+    <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
+    <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
     <script>
         // Tab subtitle with icons
         document.addEventListener('DOMContentLoaded', function () {
@@ -909,6 +1013,73 @@
         });
 
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let slidesContainer = document.getElementById("slidesContainer");
+        let addSlideBtn = document.getElementById("addSlideBtn");
+        let sliderInput = document.getElementById("sliderImagesInput");
+
+        // Add new slide
+        addSlideBtn.addEventListener("click", function () {
+            let index = slidesContainer.children.length;
+            let slide = document.createElement("div");
+            slide.classList.add("card", "p-3", "slide-item", "mb-2");
+            slide.innerHTML = `
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-2">
+                        <input type="file" class="form-control" name="slides[${index}][image]">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)">
+                    </div>
+                    <div class="col-md-1">
+                        <input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}">
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
+                    </div>
+                </div>
+            `;
+            slidesContainer.appendChild(slide);
+
+            // Bind remove
+            slide.querySelector(".removeSlideBtn").addEventListener("click", function () {
+                slide.remove();
+            });
+        });
+
+        // Remove slide button (for pre-rendered slides)
+        slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                btn.closest(".slide-item").remove();
+            });
+        });
+
+        // On form submit → compile into JSON
+        document.querySelector("#pageForm").addEventListener("submit", function () {
+            let slides = [];
+            slidesContainer.querySelectorAll(".slide-item").forEach((el, idx) => {
+                let caption = el.querySelector(`input[name^="slides"][name$="[caption]"]`)?.value || "";
+                let link = el.querySelector(`input[name^="slides"][name$="[link]"]`)?.value || "";
+                let order = el.querySelector(`input[name^="slides"][name$="[order]"]`)?.value || idx;
+                // file input is handled by backend, just store filename placeholder
+                slides.push({ caption, link, order });
+            });
+            sliderInput.value = JSON.stringify(slides);
+        });
+    });
+    </script>
+
+
     @endsection
 
 </x-layouts.admin-app>
