@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Media;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class PageController extends Controller
 {
@@ -170,5 +176,83 @@ class PageController extends Controller
         }
 
         return $validated;
+    }
+
+    /**
+     * Upload media files (AJAX).
+     */
+    public function uploadMedia(Request $request)
+    {
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'media' => 'required|file|mimes:jpg,jpeg,png,webp,gif,svg,mp4,mp3,pdf,doc,docx,xls,xlsx|max:204800',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            $file = $request->file('media');
+
+            // Determine category
+            $mime = $file->getMimeType();
+            if (str_starts_with($mime, 'image/')) {
+                $category = 'image';
+                $folder = 'pages/media/images';
+            } elseif (str_starts_with($mime, 'video/')) {
+                $category = 'video';
+                $folder = 'pages/media/videos';
+            } elseif (str_starts_with($mime, 'audio/')) {
+                $category = 'audio';
+                $folder = 'pages/media/audio';
+            } elseif (
+                in_array($file->extension(), ['pdf','doc','docx','xls','xlsx'])
+            ) {
+                $category = 'document';
+                $folder = 'pages/media/documents';
+            } else {
+                $category = 'other';
+                $folder = 'pages/media/others';
+            }
+
+            // Unique filename
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $path = $file->storeAs($folder, $filename, 'public');
+            $url = asset('storage/' . $path);
+
+            // Save media record
+            $media = Media::create([
+                'original_name' => $file->getClientOriginalName(),
+                'path'          => $path,
+                'url'           => $url,
+                'mime_type'     => $mime,
+                'size'          => $file->getSize(),
+                'category'      => $category,
+                'uploaded_by'   => Auth::id(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'media'   => [
+                    'id'            => $media->id,
+                    'original_name' => $media->original_name,
+                    'url'           => $media->url,
+                    'mime_type'     => $media->mime_type,
+                    'size'          => $media->size,
+                    'category'      => $media->category,
+                    'created_at'    => $media->created_at,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Upload failed: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

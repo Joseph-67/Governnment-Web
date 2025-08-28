@@ -497,8 +497,12 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
-                                    <div id="drag-drop-area"></div>
+                                    <div id="drag-drop-area" class="border rounded p-3"></div>
+
+                                    <!-- Hidden input to store uploaded file metadata -->
+                                    <input type="hidden" name="gallery_images" id="gallery_images" value="[]">
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label">Hero Background</label>
                                     <input type="file" class="form-control" name="hero_bg" accept="image/*,video/*">
@@ -870,7 +874,55 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
-    <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script>
+
+    <script>
+        const galleryInput = document.getElementById("gallery_images");
+
+        const uppy = new Uppy.Uppy({
+            restrictions: {
+                maxNumberOfFiles: 10,
+                allowedFileTypes: ["image/*"]
+            },
+            autoProceed: false   // ✅ wait until user clicks upload
+        })
+        .use(Uppy.Dashboard, {
+            inline: true,
+            target: "#drag-drop-area",
+            proudlyDisplayPoweredByUppy: false,
+            showProgressDetails: true,
+        })
+        .use(Uppy.XHRUpload, {
+            endpoint: "{{ route('admin.pages.uploadMedia') }}",
+            fieldName: "media",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+        });
+
+        let uploadedFiles = [];
+
+        // Handle Upload button click
+        document.getElementById("upload-btn").addEventListener("click", () => {
+            uppy.upload().then((result) => {
+                if (result.failed.length === 0) {
+                    uploadedFiles = result.successful.map(file => {
+                        return {
+                            name: file.name,
+                            url: file.response.body.url, // From Laravel response
+                            type: file.type
+                        };
+                    });
+
+                    // Store in hidden input
+                    galleryInput.value = JSON.stringify(uploadedFiles);
+                    console.log("Uploaded:", galleryInput.value);
+
+                    alert("All files uploaded successfully!");
+                } else {
+                    alert("Some files failed to upload.");
+                }
+            });
+        });
+    </script>
+    <!-- <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script> -->
     <script>
         // Tab subtitle with icons
         document.addEventListener('DOMContentLoaded', function () {

@@ -147,6 +147,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put ('/update-page/{id}', 'update')->name('admin.pages.update');
         Route::delete ('/delete-page/{id}', 'destroy')->name('admin.pages.delete');
         Route::post('/upload-image', 'uploadImage')->name('admin.upload.image');
+        Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
     }); 
 
     //Posts

@@ -11,16 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('waste_reductions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('company_id');
-            $table->string('month'); // e.g. "2025-08" (Year-Month format)
-            $table->decimal('waste_reduced', 10, 2)->default(0); // tons reduced
-            $table->timestamps();
+        if (!Schema::hasTable('waste_reductions')) {
+            Schema::create('waste_reductions', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('company_id');
+                $table->string('month'); // e.g. "2025-08" (Year-Month format)
+                $table->decimal('waste_reduced', 10, 2)->default(0); // tons reduced
+                $table->timestamps();
 
-            // Foreign key to companies
-            $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
-        });
+                // Foreign key to companies
+                $table->foreign('company_id')
+                    ->references('company_id') // or 'company_id' if that's the PK
+                    ->on('companies')
+                    ->onDelete('cascade');
+            });
+        }
     }
 
     /**
