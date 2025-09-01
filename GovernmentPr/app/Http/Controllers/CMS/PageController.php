@@ -4,6 +4,9 @@ namespace App\Http\Controllers\CMS;
 use App\Http\Controllers\Controller;
 
 use App\Models\Page;
+use App\Models\Admins;
+use App\Models\CmsCategory;
+use App\Models\CmsTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Media;
@@ -20,7 +23,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        $pages = Page::latest()->paginate(15);
+        $data['pages'] = Page::latest()->paginate(15);
         return view('components.CMS.pages/index', compact('pages'));
     }
 
@@ -29,8 +32,56 @@ class PageController extends Controller
      */
     public function create()
     {
-        return view('components.CMS.pages.create');
+        $data['parents'] = Page::all();
+        $data['categories'] = CmsCategory::all();
+        $data['tags'] = CmsTag::all();
+
+        return view('components.CMS.pages.create', $data);
     }
+
+    public function searchAuthor(Request $request)
+    {
+        $search = $request->get('search');
+
+        $users = Admins::where(function($query) use ($search) {
+                $query->where('first_name', 'like', "%{$search}%")
+                    ->where('last_name', 'like', "%{$search}%")
+                    ->where('other_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->select('id', 'first_name', 'last_name' ,'other_name', 'email', 'profile_photo_path as profilePic')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['users' => $users]);
+    }
+
+    public function searchCategory(Request $request)
+    {
+        $search = $request->get('search', '');
+
+        $categories = CmsCategory::where('name', 'like', "%{$search}%")
+            ->select('category_id as id', 'name')
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'categories' => $categories
+        ]);
+    }
+
+    public function searchTag(Request $request)
+    {
+        $search = $request->get('search', '');
+        $tags = CmsTag::where('name', 'like', "%{$search}%")
+            ->select('tag_id as id', 'name')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['items' => $tags]);
+    }
+
+
 
     /**
      * Store a new page.
@@ -238,7 +289,7 @@ class PageController extends Controller
             return response()->json([
                 'success' => true,
                 'media'   => [
-                    'id'            => $media->id,
+                    'id'            => $media->media_id,
                     'original_name' => $media->original_name,
                     'url'           => $media->url,
                     'mime_type'     => $media->mime_type,

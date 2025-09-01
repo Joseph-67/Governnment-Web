@@ -148,6 +148,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::delete ('/delete-page/{id}', 'destroy')->name('admin.pages.delete');
         Route::post('/upload-image', 'uploadImage')->name('admin.upload.image');
         Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
+        Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
+        Route::get('/search-category', 'searchCategory')->name('admin.search-category');
+        Route::get('/admin/search-tag', 'searchTag');
     }); 
 
     //Posts

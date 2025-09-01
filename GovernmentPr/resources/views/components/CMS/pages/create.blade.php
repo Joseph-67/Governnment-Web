@@ -225,6 +225,156 @@
             gap: 0.5rem;
         }
     </style>
+    <style>
+        /* Container */
+        .author-tag-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid #d1d5db; /* gray-300 */
+        border-radius: 8px;
+        background-color: #ffffff;
+        position: relative;
+        min-height: 50px;
+        cursor: text;
+        }
+
+        /* Input field */
+        .author-tag-input input.form-control {
+        flex: 1;
+        min-width: 160px;
+        border: none;
+        }
+
+        /* Tag (selected author) */
+        .author-tag-input .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #e0f2fe; /* sky-100 */
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        }
+
+        .author-tag-input .tag span {
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 6px;
+        color: #475569; /* slate-600 */
+        transition: color 0.2s ease;
+        }
+
+        .author-tag-input .tag span:hover {
+        color: #ef4444; /* red-500 */
+        }
+
+        /* Suggestions Dropdown */
+        .suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 220px;
+        overflow-y: auto;
+        background: #ffffff;
+        /* border: 1px solid #d1d5db; */
+        border-radius: 8px;
+        margin-top: 4px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Each suggestion */
+        .suggestions .suggestion {
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color 0.2s ease;
+        }
+
+        .suggestions .suggestion:hover {
+        background-color: #f1f5f9; /* slate-100 */
+        }
+
+        /* Suggestion text */
+        .suggestions .suggestion strong {
+        font-size: 15px;
+        color: #1d4ed8; /* blue-700 */
+        }
+
+        .suggestions .suggestion span {
+        font-size: 13px;
+        color: #64748b; /* slate-500 */
+        }
+
+        /* Scrollbar styling */
+        .suggestions::-webkit-scrollbar {
+        width: 6px;
+        }
+        .suggestions::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+        }
+        /* ===========================
+        CATEGORY TAGGING COMPONENT
+        =========================== */
+
+        /* Container */
+        .tag-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid #d1d5db; /* gray-300 */
+        border-radius: 8px;
+        background-color: #ffffff;
+        position: relative;
+        min-height: 50px; 
+        cursor: text;
+        }
+
+        /* Input field */
+        .tag-input input.form-control {
+        flex: 1;
+        min-width: 140px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        padding: 6px 8px;
+        background: transparent;
+        }
+
+        /* Tag (selected category) */
+        .tag-input .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #dcfce7; /* green-100 */
+        color: #166534; /* green-800 */
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        }
+
+        .tag-input .tag span {
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 6px;
+        color: #475569; /* slate-600 */
+        transition: color 0.2s ease;
+        }
+
+        .tag-input .tag span:hover {
+        color: #ef4444; /* red-500 */
+        }
+
+    </style>
 
     @endsection
 
@@ -336,31 +486,25 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="authorId" class="form-label">Author</label>
-                                <select class="form-select" name="author_id" id="authorId">
-                                    @foreach(($authors ?? []) as $author)
-                                    <option value="{{ $author->id }}" {{ old('author_id')==$author->id ? 'selected' : ''
-                                        }}>{{ $author->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div id="author-tag-input" class="author-tag-input"></div>
+                                <input type="hidden" name="author_id" id="author_id">
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label" for="categoryIds">Categories</label>
-                                <select class="form-select" name="category_ids[]" id="categoryIds" multiple>
-                                    @foreach(($categories ?? []) as $cat)
-                                    <option value="{{ $cat->id }}" @selected(collect(old('category_ids', []))->
-                                        contains($cat->id))>{{ $cat->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div id="category-tag-input">
+                                    <div class="tag-input"></div>
+                                </div>
+                                <input type="hidden" name="category_ids" id="categoryIds" />
                             </div>
+
                             <div class="col-md-12">
                                 <label class="form-label" for="tagIds">Tags</label>
-                                <select class="form-select" name="tag_ids[]" id="tagIds" multiple>
-                                    @foreach(($tags ?? []) as $tag)
-                                    <option value="{{ $tag->id }}" @selected(collect(old('tag_ids', []))->
-                                        contains($tag->id))>{{ $tag->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div id="tag-tag-input">
+                                    <div class="tag-input"></div>
+                                </div>
+                                <input type="hidden" name="tag_ids" id="tagIds" />
                             </div>
+
                             <div class="col-md-12">
                                 <label class="form-label" for="revisionNotes">Revision Notes</label>
                                 <textarea class="form-control" name="revision_notes" id="revisionNotes" rows="2"
@@ -874,7 +1018,237 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
+    <script>
+        class TaggingComponent {
+        constructor(containerId, hiddenInputId, endpoint) {
+            this.container = document.getElementById(containerId);
+            this.tagInput = this.container.querySelector('.tag-input');
+            this.tags = [];
+            this.itemMap = {};
 
+            this.endpoint = endpoint;
+            this.hiddenInput = document.getElementById(hiddenInputId);
+
+            this.renderInputField();
+            this.renderSuggestions();
+        }
+
+        renderInputField() {
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Search...';
+            inputField.className = 'form-control';
+            inputField.addEventListener('input', (e) => this.fetchItems(e.target.value.trim()));
+            inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const name = e.target.value.trim();
+                if (this.itemMap[name]) {
+                this.addTag(this.itemMap[name], name);
+                }
+            }
+            });
+            this.tagInput.appendChild(inputField);
+            this.inputField = inputField;
+        }
+
+        renderSuggestions() {
+            const suggestionsDiv = document.createElement('div');
+            suggestionsDiv.className = 'suggestions';
+            this.tagInput.appendChild(suggestionsDiv);
+            this.suggestionsDiv = suggestionsDiv;
+        }
+
+        async fetchItems(query) {
+            if (!query) {
+            this.suggestionsDiv.innerHTML = '';
+            return;
+            }
+            try {
+            const response = await fetch(`${this.endpoint}?search=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            this.showSuggestions(data.items || data.categories || data.tags || []);
+            } catch (error) {
+            console.error("Failed to fetch:", error);
+            }
+        }
+
+        showSuggestions(items) {
+            const filtered = items.filter(c => !this.tags.includes(c.id));
+            this.suggestionsDiv.innerHTML = '';
+            filtered.forEach(c => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'suggestion';
+            suggestionElement.innerHTML = `
+                <div style="padding: 6px; cursor: pointer;">
+                <strong style="color: #1d4ed8;">${c.name}</strong>
+                </div>
+            `;
+            suggestionElement.addEventListener('click', () => this.addTag(c.id, c.name));
+            this.suggestionsDiv.appendChild(suggestionElement);
+
+            this.itemMap[c.name] = c.id;
+            });
+        }
+
+        addTag(itemId, itemName) {
+            if (itemId && !this.tags.includes(itemId)) {
+            this.tags.push(itemId);
+            this.renderTags();
+            this.inputField.value = '';
+            this.suggestionsDiv.innerHTML = '';
+            this.syncHiddenInput();
+            }
+        }
+
+        removeTag(itemId) {
+            this.tags = this.tags.filter(id => id !== itemId);
+            this.renderTags();
+            this.syncHiddenInput();
+        }
+
+        renderTags() {
+            this.tagInput.innerHTML = '';
+            this.tags.forEach(itemId => {
+            const itemName = Object.keys(this.itemMap).find(name => this.itemMap[name] === itemId);
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+            tagElement.innerHTML = `${itemName} <span>&times;</span>`;
+            tagElement.querySelector('span').addEventListener('click', () => this.removeTag(itemId));
+            this.tagInput.appendChild(tagElement);
+            });
+            this.tagInput.appendChild(this.inputField);
+            this.tagInput.appendChild(this.suggestionsDiv);
+        }
+
+        syncHiddenInput() {
+            this.hiddenInput.value = this.tags.join(',');
+        }
+        }
+
+        // ✅ Initialize
+        let categoryTagging = new TaggingComponent(
+        'category-tag-input',
+        'categoryIds',
+        `{{ url('/admin/search-category') }}`
+        );
+
+        let tagTagging = new TaggingComponent(
+        'tag-tag-input',
+        'tagIds',
+        `{{ url('/admin/search-tag') }}`
+        );
+    </script>
+
+
+    <script>
+        class AuthorTaggingComponent {
+        constructor(containerId, TagInput, hiddenInputId) {
+            this.container = document.getElementById(containerId);
+            this.tagInput = this.container.querySelector(`.${TagInput}`) || this.container;
+            this.tags = [];
+            this.userMap = {}; // Maps user names to ids
+            this.hiddenInput = document.getElementById(hiddenInputId);
+
+            this.renderInputField();
+            this.renderSuggestions();
+        }
+
+        renderInputField() {
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Select an author...';
+            inputField.className = 'form-control';
+            inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
+            inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const name = e.target.value.trim();
+                if (this.userMap[name]) {
+                this.addTag(this.userMap[name], name);
+                }
+            }
+            });
+            this.tagInput.appendChild(inputField);
+            this.inputField = inputField;
+        }
+
+        renderSuggestions() {
+            const suggestionsDiv = document.createElement('div');
+            suggestionsDiv.className = 'suggestions';
+            this.tagInput.appendChild(suggestionsDiv);
+            this.suggestionsDiv = suggestionsDiv;
+        }
+
+        async fetchUsers(query) {
+            if (!query) {
+            this.suggestionsDiv.innerHTML = '';
+            return;
+            }
+            try {
+            const response = await fetch(`{{ url('/admin/search-author') }}?search=${encodeURIComponent(query)}`);
+            const users = await response.json();
+            this.showSuggestions(users.users || []);
+            } catch (error) {
+            console.error("Failed to fetch authors:", error);
+            }
+        }
+
+        showSuggestions(users) {
+            this.suggestionsDiv.innerHTML = '';
+            users.forEach(user => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'suggestion';
+            suggestionElement.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${user.profilePic}" alt="${user.first_name} ${user.last_name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+                <div>
+                    <strong style="font-size: 15px; color: #1d4ed8;">${user.first_name} ${user.last_name}${user.other_name ? ' ' + user.other_name : ''}</strong><br>
+                    <span style="font-size: 13px; color: #64748b;">${user.email}</span>
+                </div>
+                </div>
+            `;
+            suggestionElement.addEventListener('click', () => this.addTag(user.id, user.email));
+            this.suggestionsDiv.appendChild(suggestionElement);
+
+            this.userMap[user.email] = user.id;
+            });
+        }
+
+        addTag(userId, userName) {
+            // Only allow one author
+            this.tags = [userId];
+            this.hiddenInput.value = userId; // ✅ Store in hidden input
+            this.renderTags(userName);
+            this.inputField.value = '';
+            this.suggestionsDiv.innerHTML = '';
+        }
+
+        removeTag() {
+            this.tags = [];
+            this.hiddenInput.value = '';
+            this.renderTags();
+        }
+
+        renderTags(userName = null) {
+            this.tagInput.innerHTML = '';
+            if (this.tags.length > 0 && userName) {
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+            tagElement.innerHTML = `${userName} <span>&times;</span>`;
+            tagElement.querySelector('span').addEventListener('click', () => this.removeTag());
+            this.tagInput.appendChild(tagElement);
+            }
+            this.tagInput.appendChild(this.inputField);
+            this.tagInput.appendChild(this.suggestionsDiv);
+        }
+        }
+
+        // ✅ Instantiate Author Tagging
+        let authorTagging = new AuthorTaggingComponent('author-tag-input', 'author-tag-input', 'author_id');
+
+    </script>
+    <!-- Uppy File Upload -->
     <script>
         const galleryInput = document.getElementById("gallery_images");
 
@@ -890,6 +1264,7 @@
             target: "#drag-drop-area",
             proudlyDisplayPoweredByUppy: false,
             showProgressDetails: true,
+            hideProgressAfterFinish: true,
         })
         .use(Uppy.XHRUpload, {
             endpoint: "{{ route('admin.pages.uploadMedia') }}",
@@ -899,27 +1274,26 @@
 
         let uploadedFiles = [];
 
-        // Handle Upload button click
-        document.getElementById("upload-btn").addEventListener("click", () => {
-            uppy.upload().then((result) => {
-                if (result.failed.length === 0) {
-                    uploadedFiles = result.successful.map(file => {
-                        return {
-                            name: file.name,
-                            url: file.response.body.url, // From Laravel response
-                            type: file.type
-                        };
-                    });
+        // On successful upload
+        uppy.on("upload-success", (file, response) => {
+            const res = response.body;
+            console.log('--Resp: ', res);
+            
+            if (res && res.media.url) {
+                uploadedFiles.push({ name: res.media.original_name, path: res.media.url, id: res.media.id });
+                galleryInput.value = JSON.stringify(uploadedFiles);
+            }
 
-                    // Store in hidden input
-                    galleryInput.value = JSON.stringify(uploadedFiles);
-                    console.log("Uploaded:", galleryInput.value);
-
-                    alert("All files uploaded successfully!");
-                } else {
-                    alert("Some files failed to upload.");
-                }
-            });
+        });
+        // On file removal
+        uppy.on("file-removed", (file) => {
+            uploadedFiles = uploadedFiles.filter(f => f.name !== file.name);
+            galleryInput.value = JSON.stringify(uploadedFiles);
+        });
+        // On upload error
+        uppy.on("upload-error", (file, error, response) => {
+            console.error('Error uploading file:', file.name, error);
+            alert(`Error uploading ${file.name}: ${error}`);
         });
     </script>
     <!-- <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script> -->
