@@ -150,7 +150,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
         Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
         Route::get('/search-category', 'searchCategory')->name('admin.search-category');
-        Route::get('/admin/search-tag', 'searchTag');
+        Route::get('/search-cms-tag', 'searchTag');
     }); 
 
     //Posts

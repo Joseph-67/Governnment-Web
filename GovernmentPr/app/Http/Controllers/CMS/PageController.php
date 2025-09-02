@@ -72,13 +72,14 @@ class PageController extends Controller
 
     public function searchTag(Request $request)
     {
+        // dd($request->all());
         $search = $request->get('search', '');
         $tags = CmsTag::where('name', 'like', "%{$search}%")
             ->select('tag_id as id', 'name')
             ->limit(10)
             ->get();
 
-        return response()->json(['items' => $tags]);
+        return response()->json(['tags' => $tags]);
     }
 
 

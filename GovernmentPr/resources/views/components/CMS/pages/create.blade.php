@@ -456,7 +456,7 @@
                                 <input type="datetime-local" class="form-control" name="expire_at" id="expireAt"
                                     value="{{ old('expire_at') }}">
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="visibility" class="form-label">Visibility</label>
                                 <select class="form-select" name="visibility" id="visibility">
                                     <option value="public" {{ old('visibility')==='public' ? 'selected' : '' }}>Public
@@ -467,7 +467,7 @@
                                         Password Protected</option>
                                 </select>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="visibilityPassword" class="form-label">Password (if protected)</label>
                                 <input type="text" class="form-control" name="visibility_password"
                                     id="visibilityPassword" placeholder="Enter password"
@@ -489,7 +489,7 @@
                                 <div id="author-tag-input" class="author-tag-input"></div>
                                 <input type="hidden" name="author_id" id="author_id">
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label class="form-label" for="categoryIds">Categories</label>
                                 <div id="category-tag-input">
                                     <div class="tag-input"></div>
@@ -497,7 +497,7 @@
                                 <input type="hidden" name="category_ids" id="categoryIds" />
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label class="form-label" for="tagIds">Tags</label>
                                 <div id="tag-tag-input">
                                     <div class="tag-input"></div>
@@ -1040,13 +1040,13 @@
             inputField.className = 'form-control';
             inputField.addEventListener('input', (e) => this.fetchItems(e.target.value.trim()));
             inputField.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ',') {
-                e.preventDefault();
-                const name = e.target.value.trim();
-                if (this.itemMap[name]) {
-                this.addTag(this.itemMap[name], name);
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const name = e.target.value.trim();
+                    if (this.itemMap[name]) {
+                        this.addTag(this.itemMap[name], name);
+                    }
                 }
-            }
             });
             this.tagInput.appendChild(inputField);
             this.inputField = inputField;
@@ -1067,6 +1067,7 @@
             try {
             const response = await fetch(`${this.endpoint}?search=${encodeURIComponent(query)}`);
             const data = await response.json();
+            console.log('--Data: ', data);
             this.showSuggestions(data.items || data.categories || data.tags || []);
             } catch (error) {
             console.error("Failed to fetch:", error);
@@ -1136,7 +1137,7 @@
         let tagTagging = new TaggingComponent(
         'tag-tag-input',
         'tagIds',
-        `{{ url('/admin/search-tag') }}`
+        `{{ url('/admin/search-cms-tag') }}`
         );
     </script>
 
