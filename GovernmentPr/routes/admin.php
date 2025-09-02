@@ -151,6 +151,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
         Route::get('/search-category', 'searchCategory')->name('admin.search-category');
         Route::get('/search-cms-tag', 'searchTag');
+        Route::get('/search-cms-role','searchRole')->name('admin.search-cms-role');
     }); 
 
     //Posts

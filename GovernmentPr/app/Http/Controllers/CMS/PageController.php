@@ -82,6 +82,17 @@ class PageController extends Controller
         return response()->json(['tags' => $tags]);
     }
 
+    public function searchRole(Request $request)
+    {
+        $search = $request->get('search', '');
+        $roles = \Spatie\Permission\Models\Role::where('guard_name', 'web')
+            ->where('name', 'like', "%{$search}%")
+            ->select('id', 'name')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['roles' => $roles]);
+    }
 
 
     /**

@@ -918,12 +918,10 @@
                                 <div class="row g-3">
                                     <div class="col-lg-4">
                                         <label class="form-label">Visible to Roles</label>
-                                        <select class="form-select" name="visible_roles[]" multiple>
-                                            @foreach(($roles ?? []) as $r)
-                                            <option value="{{ $r->name }}" @selected(collect(old('visible_roles', []))->
-                                                contains($r->name))>{{ $r->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div id="roles-tag-input">
+                                            <div class="tag-input"></div>
+                                        </div>
+                                        <input type="hidden" name="role_ids" id="roleIds" />
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="form-label">Device Visibility</label>
@@ -1068,7 +1066,7 @@
             const response = await fetch(`${this.endpoint}?search=${encodeURIComponent(query)}`);
             const data = await response.json();
             console.log('--Data: ', data);
-            this.showSuggestions(data.items || data.categories || data.tags || []);
+            this.showSuggestions(data.items || data.categories || data.tags || data.roles || []);
             } catch (error) {
             console.error("Failed to fetch:", error);
             }
@@ -1138,6 +1136,12 @@
         'tag-tag-input',
         'tagIds',
         `{{ url('/admin/search-cms-tag') }}`
+        );
+
+        let roleTagging = new TaggingComponent(
+        'roles-tag-input',
+        'roleIds',
+        `{{ url('/admin/search-cms-role') }}`
         );
     </script>
 
