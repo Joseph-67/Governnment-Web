@@ -392,7 +392,7 @@
             <!-- End Action Buttons Top -->
         </div>
 
-        <form method="POST" action="{{ route('admin.pages.store') }}" id="pageForm">
+        <form class="space-y-6">
             @csrf
             <div class="row g-4">
                 <!-- Left Column -->
@@ -405,7 +405,6 @@
                                 <input type="text" class="form-control" name="title" id="pageTitle"
                                     value="{{ old('title') }}" placeholder="e.g. About Us">
                             </div>
-
                             <div class="col-md-8">
                                 <label for="pageSlug" class="form-label">Slug / URL</label>
                                 <input type="text" class="form-control" name="slug" id="pageSlug"
@@ -496,7 +495,6 @@
                                 </div>
                                 <input type="hidden" name="category_ids" id="categoryIds" />
                             </div>
-
                             <div class="col-md-6">
                                 <label class="form-label" for="tagIds">Tags</label>
                                 <div id="tag-tag-input">
@@ -504,7 +502,6 @@
                                 </div>
                                 <input type="hidden" name="tag_ids" id="tagIds" />
                             </div>
-
                             <div class="col-md-12">
                                 <label class="form-label" for="revisionNotes">Revision Notes</label>
                                 <textarea class="form-control" name="revision_notes" id="revisionNotes" rows="2"
@@ -630,7 +627,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Media -->
                         <div class="tab-pane fade" id="mediaTab" role="tabpanel">
                             <div class="card card-body p-4">
@@ -642,18 +638,15 @@
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
                                     <div id="drag-drop-area" class="border rounded p-3"></div>
-
                                     <!-- Hidden input to store uploaded file metadata -->
                                     <input type="hidden" name="gallery_images" id="gallery_images" value="[]">
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label">Hero Background</label>
                                     <input type="file" class="form-control" name="hero_bg" accept="image/*,video/*">
                                 </div>
                             </div>
                         </div>
-
                         <!-- Layout -->
                         <div class="tab-pane fade" id="layoutTab" role="tabpanel">
                             <div class="card card-body p-4">
@@ -710,12 +703,10 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Components -->
                         <div class="tab-pane fade" id="componentsTab" role="tabpanel">
                             <div class="card card-body p-4">
                                 <h5 class="fw-semibold mb-3">Page Components</h5>
-
                                 {{-- 🔹 Slider / Carousel --}}
                                 <div class="row g-3">
                                     <div class="col-md-4">
@@ -725,7 +716,7 @@
                                             <option value="1" @selected(old('enable_slider')==='1')>Yes</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-8">
+                                <div class="col-md-8">
                                 <!-- 🔹 Image Slider Manager -->
                                 <div class="row g-3 mb-3">
                                     <div class="col-12">
@@ -1016,6 +1007,7 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         class TaggingComponent {
         constructor(containerId, hiddenInputId, endpoint) {
@@ -1144,8 +1136,6 @@
         `{{ url('/admin/search-cms-role') }}`
         );
     </script>
-
-
     <script>
         class AuthorTaggingComponent {
         constructor(containerId, TagInput, hiddenInputId) {
@@ -1337,6 +1327,7 @@
             });
         });
     </script>
+    <!-- Quill Editor -->
     <script>
         // Register modules
         Quill.register('modules/imageResize', window.ImageResize.default || window.ImageResize);
@@ -1437,77 +1428,103 @@
         })();
 
         // On form submit, set hidden input with Quill HTML
-        document.querySelector('#pageForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            document.querySelector('input[name="body"]').value = quill.root.innerHTML;
-            this.submit();
-        });
+        document.querySelector('#pageForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // stop normal submission
 
+            // put Quill HTML into hidden input
+            document.querySelector('input[name="body"]').value = quill.root.innerHTML;
+
+            let form = e.target;
+            let formData = new FormData(form);
+
+            try {
+                let response = await fetch(form.action, {
+                    method: form.method,
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error("Network error");
+
+                let result = await response.json();
+
+                // ✅ success popup
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Saved!',
+                    text: result.message || 'Page saved successfully.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+            } catch (err) {
+                console.error("Error:", err);
+
+                // ❌ error popup
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong. Please try again!',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
     </script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let slidesContainer = document.getElementById("slidesContainer");
-        let addSlideBtn = document.getElementById("addSlideBtn");
-        let sliderInput = document.getElementById("sliderImagesInput");
+        document.addEventListener("DOMContentLoaded", function () {
+            let slidesContainer = document.getElementById("slidesContainer");
+            let addSlideBtn = document.getElementById("addSlideBtn");
+            let sliderInput = document.getElementById("sliderImagesInput");
 
-        // Add new slide
-        addSlideBtn.addEventListener("click", function () {
-            let index = slidesContainer.children.length;
-            let slide = document.createElement("div");
-            slide.classList.add("card", "p-3", "slide-item", "mb-2");
-            slide.innerHTML = `
-                <div class="row g-2 align-items-center">
-                    <div class="col-md-2">
-                        <input type="file" class="form-control" name="slides[${index}][image]">
+            // Add new slide
+            addSlideBtn.addEventListener("click", function () {
+                let index = slidesContainer.children.length;
+                let slide = document.createElement("div");
+                slide.classList.add("card", "p-3", "slide-item", "mb-2");
+                slide.innerHTML = `
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-2">
+                            <input type="file" class="form-control" name="slides[${index}][image]">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)">
+                        </div>
+                        <div class="col-md-1">
+                            <input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}">
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)">
-                    </div>
-                    <div class="col-md-1">
-                        <input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}">
-                    </div>
-                    <div class="col-md-1 text-end">
-                        <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
-                    </div>
-                </div>
-            `;
-            slidesContainer.appendChild(slide);
+                `;
+                slidesContainer.appendChild(slide);
 
-            // Bind remove
-            slide.querySelector(".removeSlideBtn").addEventListener("click", function () {
-                slide.remove();
+                // Bind remove
+                slide.querySelector(".removeSlideBtn").addEventListener("click", function () {
+                    slide.remove();
+                });
             });
-        });
 
-        // Remove slide button (for pre-rendered slides)
-        slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                btn.closest(".slide-item").remove();
+            // Remove slide button (for pre-rendered slides)
+            slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    btn.closest(".slide-item").remove();
+                });
             });
-        });
 
-        // On form submit → compile into JSON
-        document.querySelector("#pageForm").addEventListener("submit", function () {
-            let slides = [];
-            slidesContainer.querySelectorAll(".slide-item").forEach((el, idx) => {
-                let caption = el.querySelector(`input[name^="slides"][name$="[caption]"]`)?.value || "";
-                let link = el.querySelector(`input[name^="slides"][name$="[link]"]`)?.value || "";
-                let order = el.querySelector(`input[name^="slides"][name$="[order]"]`)?.value || idx;
-                // file input is handled by backend, just store filename placeholder
-                slides.push({ caption, link, order });
-            });
-            sliderInput.value = JSON.stringify(slides);
+
         });
-    });
     </script>
 
 

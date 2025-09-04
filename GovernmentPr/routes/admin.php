@@ -70,7 +70,7 @@ use App\Http\Controllers\Workflow\TaskScheduleMetricsController;
 use App\Http\Controllers\Workflow\RecurrenceRuleController;
 use App\Http\Controllers\Workflow\TaskEmployeeController;
 
-// Guest Admin Routes
+// Guest Admin Routes ['guest', 'admin']
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
         Route::get('/login', 'create_login')->name('admin.login');
