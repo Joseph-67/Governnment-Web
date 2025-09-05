@@ -168,24 +168,45 @@ class PageController extends Controller
         return Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
             'slug'        => 'nullable|string|max:255|unique:pages,slug,' . $pageId,
+            'menu_order'   => 'nullable|integer|min:0',
             'excerpt'     => 'nullable|string|max:500',
             'body'        => 'nullable|string|min:10',
 
+            'status'      => 'required|in:draft,published,archived',
+
             // Media
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'hero_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'gallery'        => 'nullable|array',
-            'image_slider'   => 'nullable|array',
+            'gallery_images' => 'nullable|json',
+            'hero_bg'        => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,webm,ogg|max:10240',
+
+            //hero & layout
+            'hero_title'        => 'nullable|string|max:255',
+            'hero_subtitle'     => 'nullable|string|max:255',
+            'hero_button_text'  => 'nullable|string|max:100',
+            'hero_button_url'   => 'nullable|url|max:255',
+
+            //template
+            'template'      => 'nullable',
+            'layout_style'  => 'nullable',
+            'sidebar_widgets' => 'nullable|json',
+            'footer_widgets'  => 'nullable|json',
 
             // SEO
-            'seo_title'       => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string|max:500',
-            'seo_keywords'    => 'nullable|string',
-            'og_title'        => 'nullable|string|max:255',
-            'og_description'  => 'nullable|string|max:500',
-            'twitter_title'   => 'nullable|string|max:255',
+            'meta_title'       => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'keywords'         => 'nullable|string|max:500',
+            'canonical_url'    => 'nullable|url|max:255',
+            'robots_index'     => 'nullable|in:index,noindex',
+            'robots_follow'    => 'nullable|in:follow,nofollow',
+
+            //Open Graph
+            'og_title'         => 'nullable|string|max:255',
+            'og_description'   => 'nullable|string|max:500',
+            'og_image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'twitter_title'    => 'nullable|string|max:255',
             'twitter_description' => 'nullable|string|max:500',
-            'robots'          => 'nullable|string|max:50',
+            'twitter_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'custom_meta'      => 'nullable|json',
 
             // Layout & components
             'layout'        => 'nullable|string|max:100',
@@ -207,8 +228,9 @@ class PageController extends Controller
 
             // Access & visibility
             'visibility'    => 'nullable|string|max:50',
-            'password'      => 'nullable|string|max:255',
+            'visibility_password'      => 'nullable|string|max:255',
             'access_roles'  => 'nullable|json',
+            'parent_id'    => 'nullable|integer',
 
             // Scheduling
             'publish_at'    => 'nullable|date',
@@ -217,13 +239,46 @@ class PageController extends Controller
             // Metadata
             'author_id'     => 'nullable|integer|exists:users,id',
             'categories'    => 'nullable|json',
+            'category_ids'  => 'nullable|array',
+            'category_ids.*'=> 'integer',
             'tags'          => 'nullable|json',
-            'revision_note' => 'nullable|string|max:500',
+            'tag_ids'       => 'nullable|array',
+            'tag_ids.*'     => 'integer',
+            'revision_notes' => 'nullable|string|max:500',
 
             // Analytics & A/B testing
             'analytics'     => 'nullable|json',
             'ab_test'       => 'nullable|json',
             'goals'         => 'nullable|json',
+
+            // --- Extended fields for advanced builder ---
+            // Components tab
+            'enable_slider'         => 'nullable|boolean',
+            'slider_images'         => 'nullable|json',
+            'reusable_components'   => 'nullable|json',
+            'contact_form_enabled'  => 'nullable|boolean',
+            'contact_form_email'    => 'nullable|email',
+            'contact_form_subject'  => 'nullable|string|max:255',
+            'contact_form_fields'   => 'nullable|json',
+            'newsletter_enabled'    => 'nullable|boolean',
+            'newsletter_provider'   => 'nullable|string|max:100',
+            'polls_surveys'         => 'nullable|json',
+            'dynamic_tables'        => 'nullable|json',
+            'conditional_logic'     => 'nullable|json',
+            'embed_code'            => 'nullable|string',
+            // Access tab
+            'role_ids'              => 'nullable|array',
+            'role_ids.*'            => 'integer',
+            'device_visibility'     => 'nullable|array',
+            'device_visibility.*'   => 'in:desktop,tablet,mobile',
+            'geo_rules'             => 'nullable|json',
+            // Analytics tab
+            'tracking_code'         => 'nullable|string',
+            'ab_variants'           => 'nullable|json',
+            'conversion_goals'      => 'nullable|json',
+            // Settings tab
+            'template_alt'          => 'nullable|string|max:100',
+        
         ]);
 
 
