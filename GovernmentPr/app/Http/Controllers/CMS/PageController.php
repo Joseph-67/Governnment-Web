@@ -102,10 +102,12 @@ class PageController extends Controller
     {
         $validated = $this->validateRequest($request);
 
-        // Slug auto-generation
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(6);
+        if ($validated->fails()){
+            return response()->json(['status'=> 'error', 'errors'=>$validated->errors()], 422);
         }
+
+        // Auto-generate slug if empty
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
 
         // Handle file uploads
         $validated = $this->handleUploads($request, $validated);
@@ -163,7 +165,7 @@ class PageController extends Controller
      */
     protected function validateRequest(Request $request, $pageId = null)
     {
-        return $request->validate([
+        return Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
             'slug'        => 'nullable|string|max:255|unique:pages,slug,' . $pageId,
             'excerpt'     => 'nullable|string|max:500',
@@ -223,6 +225,8 @@ class PageController extends Controller
             'ab_test'       => 'nullable|json',
             'goals'         => 'nullable|json',
         ]);
+
+
     }
 
     /**

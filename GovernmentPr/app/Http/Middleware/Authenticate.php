@@ -19,7 +19,7 @@ class Authenticate extends Middleware
                 // return route('admin.login');
                 return $next($request);
             }
-            return route('admin.login')->with('error', 'You must be logged in as admin to access this page.');
+            return route('admin.login');
         }
     }
 }

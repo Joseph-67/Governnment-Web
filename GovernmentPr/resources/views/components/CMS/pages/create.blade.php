@@ -392,7 +392,7 @@
             <!-- End Action Buttons Top -->
         </div>
 
-        <form class="space-y-6">
+        <form class="space-y-6" id="pageForm">
             @csrf
             <div class="row g-4">
                 <!-- Left Column -->
@@ -1429,40 +1429,55 @@
 
         // On form submit, set hidden input with Quill HTML
         document.querySelector('#pageForm').addEventListener('submit', async function (e) {
-            e.preventDefault(); // stop normal submission
+            e.preventDefault();
 
-            // put Quill HTML into hidden input
+            // Set Quill HTML to hidden input
             document.querySelector('input[name="body"]').value = quill.root.innerHTML;
 
-            let form = e.target;
-            let formData = new FormData(form);
+            const form = e.target;
+            const formData = new FormData(form);
 
             try {
-                let response = await fetch(form.action, {
-                    method: form.method,
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                    },
-                    body: formData
+                const res = await fetch("{{ route('admin.pages.store') }}", {
+                    method: "POST",
+                    body: formData,
+                    headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" }
                 });
 
-                if (!response.ok) throw new Error("Network error");
+                const data = await res.json();
 
-                let result = await response.json();
-
-                // ✅ success popup
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Saved!',
-                    text: result.message || 'Page saved successfully.',
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved!',
+                        text: 'Page has been saved successfully.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "{{ route('admin.pages.index') }}";
+                    });
+                } else if (data.status === 'error') {
+                    let errorMsg = '';
+                    if (data.errors) {
+                        errorMsg = Object.values(data.errors).flat().join('\n');
+                    } else {
+                        errorMsg = data.message || 'Failed to save page.';
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMsg,
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Unexpected response. Please try again.',
+                        confirmButtonText: 'OK'
+                    });
+                }
             } catch (err) {
                 console.error("Error:", err);
-
-                // ❌ error popup
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
