@@ -165,17 +165,29 @@ class PageController extends Controller
      */
     protected function validateRequest(Request $request, $pageId = null)
     {
-        return Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
             'slug'        => 'nullable|string|max:255|unique:pages,slug,' . $pageId,
-            'menu_order'   => 'nullable|integer|min:0',
+            'menu_order'   => [
+                'nullable',
+                'integer',
+                'min:0',
+                Rule::unique('pages', 'menu_order')->ignore($pageId)->where(function ($query) use ($request, $pageId) {
+                    // Ensure uniqueness only among siblings (same parent)
+                    $parentId = $request->input('parent_id');
+                    $query->where('parent_id', $parentId);
+                    if ($pageId) {
+                        $query->where('id', '!=', $pageId);
+                    }
+                }),
+            ],
             'excerpt'     => 'nullable|string|max:500',
-            'body'        => 'nullable|string|min:10',
+            'body'        => 'required|string|min:10',
 
             'status'      => 'required|in:draft,published,archived',
 
             // Media
-            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'featured_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery_images' => 'nullable|json',
             'hero_bg'        => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,webm,ogg|max:10240',
 
@@ -281,23 +293,91 @@ class PageController extends Controller
         
         ]);
 
-
+        return $validator;
     }
 
     /**
      * Handle file uploads for images.
      */
-    protected function handleUploads(Request $request, array $validated)
+
+
+    private function handleUploads(Request $request, array &$data, ?Page $existing = null)
     {
-        if ($request->hasFile('featured_image')) {
-            $validated['featured_image'] = $request->file('featured_image')->store('pages/featured', 'public');
+        // Config for single file fields
+        $map = [
+            'featured_image' => 'pages/featured',
+            'hero_bg'        => 'pages/hero',
+            'og_image'       => 'pages/seo',
+            'twitter_image'  => 'pages/seo',
+        ];
+
+        foreach ($map as $input => $dir) {
+            if ($request->hasFile($input)) {
+                // Delete old file if replacing
+                if ($existing && $existing->$input) {
+                    Storage::disk('public')->delete($existing->$input);
+                }
+
+                // Use unique filename to avoid conflicts
+                $file = $request->file($input);
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $data[$input] = $file->storeAs($dir, $filename, 'public');
+            } else {
+                // Preserve old value if not replaced
+                if ($existing && $existing->$input && !isset($data[$input])) {
+                    $data[$input] = $existing->$input;
+                }
+            }
         }
 
-        if ($request->hasFile('hero_image')) {
-            $validated['hero_image'] = $request->file('hero_image')->store('pages/hero', 'public');
+        // Slides: images + metadata
+        $slides = $request->input('slides', []);
+        $files  = $request->file('slides', []);
+        $builtSlides = [];
+
+        foreach ($slides as $idx => $slide) {
+            $row = [
+                'title'      => $slide['title'] ?? null,
+                'caption'    => $slide['caption'] ?? null,
+                'media_link' => $slide['media_link'] ?? null,
+                'link'       => $slide['link'] ?? null,
+                'order'      => isset($slide['order']) ? (int)$slide['order'] : $idx,
+                'image'      => null,
+            ];
+
+            // Handle new upload or keep old image
+            if (isset($files[$idx]['image']) && $files[$idx]['image']) {
+                if ($existing && is_array($existing->slider_images)) {
+                    $prev = $existing->slider_images[$idx]['image'] ?? null;
+                    if ($prev) {
+                        Storage::disk('public')->delete($prev);
+                    }
+                }
+                $row['image'] = $files[$idx]['image']->store('pages/slides', 'public');
+            } else {
+                if ($existing && is_array($existing->slider_images)) {
+                    $row['image'] = $existing->slider_images[$idx]['image'] ?? null;
+                }
+            }
+
+            // Skip if completely empty
+            if ($row['image'] || $row['title'] || $row['caption'] || $row['link']) {
+                $builtSlides[] = $row;
+            }
         }
 
-        return $validated;
+        if (!empty($builtSlides)) {
+            usort($builtSlides, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
+            $data['slider_images'] = $builtSlides;
+            $data['enable_slider'] = true;
+        }
+
+        // Gallery: fallback to existing if none sent
+        if (!isset($data['gallery_images']) || !is_array($data['gallery_images'])) {
+            if ($existing) {
+                $data['gallery_images'] = $existing->gallery_images;
+            }
+        }
     }
 
     /**

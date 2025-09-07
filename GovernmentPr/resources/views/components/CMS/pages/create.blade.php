@@ -5,7 +5,7 @@
     <link href="{{asset('adminAssets/libs/uppy/uppy.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         /* --- General Font & Colors --- */
         body,
@@ -1008,6 +1008,7 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         class TaggingComponent {
         constructor(containerId, hiddenInputId, endpoint) {
@@ -1456,18 +1457,25 @@
                         window.location.href = "{{ route('admin.pages.index') }}";
                     });
                 } else if (data.status === 'error') {
+                    console.log(data.errors);
+                
                     let errorMsg = '';
+
+                    // Combine all errors into one string
                     if (data.errors) {
-                        errorMsg = Object.values(data.errors).flat().join('\n');
+                        errorMsg = Object.values(data.errors).flat().join("\n");
                     } else {
-                        errorMsg = data.message || 'Failed to save page.';
+                        errorMsg = data.message || "Failed to save page.";
                     }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
+
+                    Toastify({
                         text: errorMsg,
-                        confirmButtonText: 'OK'
-                    });
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#F44336",
+                        stopOnFocus: true
+                    }).showToast();
                 } else {
                     Swal.fire({
                         icon: 'error',
