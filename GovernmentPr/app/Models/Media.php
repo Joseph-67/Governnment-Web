@@ -16,6 +16,7 @@ class Media extends Model
         'mime_type',
         'size',
         'category',
-        'uploaded_by',
+        'guard',
+        'uploaded_by'
     ];
 }

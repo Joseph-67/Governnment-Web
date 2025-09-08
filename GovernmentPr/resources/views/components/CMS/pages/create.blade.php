@@ -1,4 +1,5 @@
 <x-layouts.admin-app>
+    @section('PageTitle', 'Page Builder')
     @section('styles')
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.css" rel="stylesheet" />
@@ -392,7 +393,7 @@
             <!-- End Action Buttons Top -->
         </div>
 
-        <form class="space-y-6" id="pageForm">
+        <form class="space-y-6" id="pageForm" novalidate>
             @csrf
             <div class="row g-4">
                 <!-- Left Column -->

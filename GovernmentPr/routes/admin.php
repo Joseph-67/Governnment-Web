@@ -26,6 +26,7 @@ use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\CMS\MediaController;
 use App\Http\Controllers\OperationTypeController;
 use App\Http\Controllers\OperationCategoryController;
 use App\Http\Controllers\CMS\PagesController;
@@ -99,10 +100,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/permissions/{id}', 'update')->name('admin.update-permission'); // <- used by data-url
     });
 
-
-
-
-
     //users
     Route::controller(UsersManagementController::class)->group(function(){
         Route::get('/users-management', 'index')->name('admin.users-management');
@@ -135,6 +132,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/guards', 'index')->name('admin.guards');
         Route::post('/guard', 'store')->name('admin.store-guard');
         Route::post('/guard/{guard_id}', 'update')->name('admin.update-guard'); // <- used by data-url
+    });
+
+    // Media
+    Route::controller(MediaController::class)->group(function() {
+        Route::get('/media', 'index')->name('admin.media');
+        Route::post('/media/upload', 'upload')->name('admin.media.upload');
+        Route::get('/media/{id}', 'show')->name('admin.media.show');
+        Route::put('/media/{id}', 'update')->name('admin.media.update');
+        Route::delete('/media/{id}', 'destroy')->name('admin.media.delete');
+        Route::post('/media/bulk-delete', [MediaController::class, 'bulkDelete'])->name('media.bulkDelete');
     });
 
     //Pages

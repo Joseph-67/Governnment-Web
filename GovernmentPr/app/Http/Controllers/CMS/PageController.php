@@ -100,22 +100,28 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $this->validateRequest($request);
-
-        if ($validated->fails()){
-            return response()->json(['status'=> 'error', 'errors'=>$validated->errors()], 422);
+        $validator = $this->validateRequest($request);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
-        // Auto-generate slug if empty
-        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
+        $data = $validator->validated();
 
-        // Handle file uploads
-        $validated = $this->handleUploads($request, $validated);
+        // Generate slug if not provided
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']) . '-' . uniqid();
 
-        $page = Page::create($validated);
+        // Handle uploads
+        $data = $this->handleUploads($request, $data);
 
-        return redirect()->route('pages.index')->with('success', 'Page created successfully!');
+        // Build associative array for DB insert
+        $pageData = $this->buildPageData($data);
+
+        // Save page
+        $page = Page::create($pageData);
+
+        return response()->json(['status' => 'success', 'message' => 'Page created successfully!', 'page' => $page], 201);
     }
+
 
     /**
      * Show single page.
@@ -138,15 +144,24 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
-        $validated = $this->validateRequest($request, $page->id);
-
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(6);
+        $validator = $this->validateRequest($request);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
-        $validated = $this->handleUploads($request, $validated);
+        $data = $validator->validated();
 
-        $page->update($validated);
+        // Keep old slug if not provided
+        $data['slug'] = $data['slug'] ?? $page->slug;
+
+        // Handle uploads (replace old files if new ones are uploaded)
+        $data = $this->handleUploads($request, $data, $page);
+
+        // Build associative array for DB update
+        $pageData = $this->buildPageData($data);
+
+        // Update page
+        $page->update($pageData);
 
         return redirect()->route('pages.index')->with('success', 'Page updated successfully!');
     }
@@ -163,139 +178,59 @@ class PageController extends Controller
     /**
      * Validation rules for pages.
      */
-    protected function validateRequest(Request $request, $pageId = null)
+    private function validateRequest(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        return Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
-            'slug'        => 'nullable|string|max:255|unique:pages,slug,' . $pageId,
-            'menu_order'   => [
-                'nullable',
-                'integer',
-                'min:0',
-                Rule::unique('pages', 'menu_order')->ignore($pageId)->where(function ($query) use ($request, $pageId) {
-                    // Ensure uniqueness only among siblings (same parent)
-                    $parentId = $request->input('parent_id');
-                    $query->where('parent_id', $parentId);
-                    if ($pageId) {
-                        $query->where('id', '!=', $pageId);
-                    }
-                }),
-            ],
-            'excerpt'     => 'nullable|string|max:500',
-            'body'        => 'required|string|min:10',
-
-            'status'      => 'required|in:draft,published,archived',
+            'slug'        => 'nullable|string|max:255|unique:pages,slug',
+            'excerpt'     => 'nullable|string',
+            'body'        => 'nullable|string',
 
             // Media
-            'featured_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'gallery_images' => 'nullable|json',
-            'hero_bg'        => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,webm,ogg|max:10240',
-
-            //hero & layout
-            'hero_title'        => 'nullable|string|max:255',
-            'hero_subtitle'     => 'nullable|string|max:255',
-            'hero_button_text'  => 'nullable|string|max:100',
-            'hero_button_url'   => 'nullable|url|max:255',
-
-            //template
-            'template'      => 'nullable',
-            'layout_style'  => 'nullable',
-            'sidebar_widgets' => 'nullable|json',
-            'footer_widgets'  => 'nullable|json',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'hero_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_slider.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'gallery.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
             // SEO
-            'meta_title'       => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'keywords'         => 'nullable|string|max:500',
-            'canonical_url'    => 'nullable|url|max:255',
-            'robots_index'     => 'nullable|in:index,noindex',
-            'robots_follow'    => 'nullable|in:follow,nofollow',
+            'seo_title'       => 'nullable|string|max:255',
+            'seo_description' => 'nullable|string',
+            'seo_keywords'    => 'nullable|string',
+            'og_title'        => 'nullable|string|max:255',
+            'og_description'  => 'nullable|string',
+            'og_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'twitter_title'   => 'nullable|string|max:255',
+            'twitter_description' => 'nullable|string',
+            'twitter_image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'canonical_url'   => 'nullable|url',
+            'robots'          => 'nullable|string|max:50',
 
-            //Open Graph
-            'og_title'         => 'nullable|string|max:255',
-            'og_description'   => 'nullable|string|max:500',
-            'og_image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'twitter_title'    => 'nullable|string|max:255',
-            'twitter_description' => 'nullable|string|max:500',
-            'twitter_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'custom_meta'      => 'nullable|json',
+            // Customization
+            'custom_css'      => 'nullable|string',
+            'custom_js'       => 'nullable|string',
+            'custom_head'     => 'nullable|string',
+            'custom_body'     => 'nullable|string',
 
-            // Layout & components
-            'layout'        => 'nullable|string|max:100',
-            'widgets'       => 'nullable|json',
-            'components'    => 'nullable|json',
-
-            // Extra features
-            'forms'         => 'nullable|json',
-            'newsletter'    => 'nullable|json',
-            'polls'         => 'nullable|json',
-            'dynamic_tables'=> 'nullable|json',
-            'conditional_logic' => 'nullable|json',
-
-            // Custom code
-            'custom_css'    => 'nullable|string',
-            'custom_js'     => 'nullable|string',
-            'custom_head'   => 'nullable|string',
-            'custom_body'   => 'nullable|string',
-
-            // Access & visibility
-            'visibility'    => 'nullable|string|max:50',
-            'visibility_password'      => 'nullable|string|max:255',
-            'access_roles'  => 'nullable|json',
-            'parent_id'    => 'nullable|integer',
-
-            // Scheduling
-            'publish_at'    => 'nullable|date',
-            'expire_at'     => 'nullable|date|after_or_equal:publish_at',
+            // Access & scheduling
+            'is_private'      => 'nullable|boolean',
+            'password'        => 'nullable|string',
+            'visibility_roles'=> 'nullable|string',
+            'published_at'    => 'nullable|date',
+            'expires_at'      => 'nullable|date',
+            'status'          => 'nullable|string|in:draft,published,archived',
 
             // Metadata
-            'author_id'     => 'nullable|integer|exists:users,id',
-            'categories'    => 'nullable|json',
-            'category_ids'  => 'nullable|array',
-            'category_ids.*'=> 'integer',
-            'tags'          => 'nullable|json',
-            'tag_ids'       => 'nullable|array',
-            'tag_ids.*'     => 'integer',
-            'revision_notes' => 'nullable|string|max:500',
+            'author_id'       => 'nullable|exists:admins,id',
+            'categories'      => 'nullable|string',
+            'tags'            => 'nullable|string',
+            'revision_notes'  => 'nullable|string',
 
-            // Analytics & A/B testing
-            'analytics'     => 'nullable|json',
-            'ab_test'       => 'nullable|json',
-            'goals'         => 'nullable|json',
-
-            // --- Extended fields for advanced builder ---
-            // Components tab
-            'enable_slider'         => 'nullable|boolean',
-            'slider_images'         => 'nullable|json',
-            'reusable_components'   => 'nullable|json',
-            'contact_form_enabled'  => 'nullable|boolean',
-            'contact_form_email'    => 'nullable|email',
-            'contact_form_subject'  => 'nullable|string|max:255',
-            'contact_form_fields'   => 'nullable|json',
-            'newsletter_enabled'    => 'nullable|boolean',
-            'newsletter_provider'   => 'nullable|string|max:100',
-            'polls_surveys'         => 'nullable|json',
-            'dynamic_tables'        => 'nullable|json',
-            'conditional_logic'     => 'nullable|json',
-            'embed_code'            => 'nullable|string',
-            // Access tab
-            'role_ids'              => 'nullable|array',
-            'role_ids.*'            => 'integer',
-            'device_visibility'     => 'nullable|array',
-            'device_visibility.*'   => 'in:desktop,tablet,mobile',
-            'geo_rules'             => 'nullable|json',
-            // Analytics tab
-            'tracking_code'         => 'nullable|string',
-            'ab_variants'           => 'nullable|json',
-            'conversion_goals'      => 'nullable|json',
-            // Settings tab
-            'template_alt'          => 'nullable|string|max:100',
-        
+            // Analytics
+            'analytics'       => 'nullable|json',
+            'ab_tests'        => 'nullable|json',
+            'goals'           => 'nullable|json',
         ]);
-
-        return $validator;
     }
-
     /**
      * Handle file uploads for images.
      */
@@ -456,5 +391,59 @@ class PageController extends Controller
                 'message' => 'Upload failed: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+        private function buildPageData(array $data)
+    {
+        return [
+            'title'               => $data['title'] ?? null,
+            'slug'                => $data['slug'] ?? null,
+            'excerpt'             => $data['excerpt'] ?? null,
+            'body'                => $data['body'] ?? null,
+
+            // Media
+            'featured_image'       => $data['featured_image'] ?? null,
+            'hero_image'           => $data['hero_image'] ?? null,
+            'image_slider'         => $data['image_slider'] ?? null,
+            'gallery'              => $data['gallery'] ?? null,
+
+            // SEO
+            'seo_title'            => $data['seo_title'] ?? null,
+            'seo_description'      => $data['seo_description'] ?? null,
+            'seo_keywords'         => $data['seo_keywords'] ?? null,
+            'og_title'             => $data['og_title'] ?? null,
+            'og_description'       => $data['og_description'] ?? null,
+            'og_image'             => $data['og_image'] ?? null,
+            'twitter_title'        => $data['twitter_title'] ?? null,
+            'twitter_description'  => $data['twitter_description'] ?? null,
+            'twitter_image'        => $data['twitter_image'] ?? null,
+            'canonical_url'        => $data['canonical_url'] ?? null,
+            'robots'               => $data['robots'] ?? null,
+
+            // Customization
+            'custom_css'           => $data['custom_css'] ?? null,
+            'custom_js'            => $data['custom_js'] ?? null,
+            'custom_head'          => $data['custom_head'] ?? null,
+            'custom_body'          => $data['custom_body'] ?? null,
+
+            // Access & scheduling
+            'is_private'           => $data['is_private'] ?? 0,
+            'password'             => $data['password'] ?? null,
+            'visibility_roles'     => $data['visibility_roles'] ?? null,
+            'published_at'         => $data['published_at'] ?? null,
+            'expires_at'           => $data['expires_at'] ?? null,
+            'status'               => $data['status'] ?? 'draft',
+
+            // Metadata
+            'author_id'            => $data['author_id'] ?? auth()->id(),
+            'categories'           => $data['categories'] ?? null,
+            'tags'                 => $data['tags'] ?? null,
+            'revision_notes'       => $data['revision_notes'] ?? null,
+
+            // Analytics
+            'analytics'            => $data['analytics'] ?? null,
+            'ab_tests'             => $data['ab_tests'] ?? null,
+            'goals'                => $data['goals'] ?? null,
+        ];
     }
 }

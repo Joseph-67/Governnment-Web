@@ -12,15 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('media', function (Blueprint $table) {
-            $table->id('media_id');
-            $table->string('original_name');
-            $table->string('path');
-            $table->string('url');
-            $table->string('mime_type');
-            $table->bigInteger('size');
-            $table->string('category'); // image, video, audio, document, other
-            $table->unsignedBigInteger('uploaded_by')->nullable(); // optional if you want user tracking
-            $table->timestamps();
+            $table->bigIncrements('media_id'); // Primary key
+            $table->string('original_name');   // Original file name
+            $table->string('path');            // File storage path
+            $table->string('url');             // Accessible URL
+            $table->string('mime_type', 100);  // File type (e.g., image/png)
+            $table->unsignedBigInteger('size'); // File size in bytes
+            $table->string('category')->nullable(); // Optional category
+            $table->string('guard')->nullable();
+            $table->unsignedBigInteger('uploaded_by')->nullable(); // Foreign key to users table
+            
+            $table->timestamps(); // created_at & updated_at
+
+            // Add foreign key if uploaded_by links to users table
+            $table->foreign('uploaded_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 
