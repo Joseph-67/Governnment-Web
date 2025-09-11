@@ -56,6 +56,21 @@ return [
             'throw' => false,
         ],
 
+        'dropbox' => [
+            'driver' => 'dropbox',
+            'authorization_token' => env('DROPBOX_TOKEN'),
+            'app' => env('DROPBOX_APP'), // Optional: Dropbox App name or ID
+            'root' => env('DROPBOX_ROOT', ''), // Optional: Dropbox root folder
+            'app_secret' => env('DROPBOX_APP_SECRET'),
+            'app_key' => env('DROPBOX_APP_KEY'),
+            'throw' => false,
+        ],
+
+        'onedrive' => [
+            'driver'  => 'msgraph',
+            'driveId' => env('MSGRAPH_DRIVE_ID'),
+        ],
+
     ],
 
     /*

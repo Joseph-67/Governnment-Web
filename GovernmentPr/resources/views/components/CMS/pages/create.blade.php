@@ -1550,8 +1550,6 @@
 
         });
     </script>
-
-
     @endsection
 
 </x-layouts.admin-app>
