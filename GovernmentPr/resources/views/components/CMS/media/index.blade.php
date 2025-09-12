@@ -8,8 +8,6 @@
     <!-- Uppy File Upload -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            
-            
             const uploadSection = document.getElementById("upload-section");
             const cancelUpload = document.getElementById("cancelUpload");
             const fileUploadInput = document.getElementById("file_upload");
@@ -19,10 +17,10 @@
 
             // Dynamic endpoints for each upload type
             const uploadEndpoints = {
-                server: "/upload",
-                dropbox: "/upload-dropbox",
-                google: "/upload-google",
-                onedrive: "/upload-onedrive"
+                server: "{{ route('admin.media.uploadServer') }}",
+                dropbox: "{{ route('admin.media.uploadDropbox') }}",
+                google: "{{ route('admin.media.uploadGoogle') }}",
+                onedrive: "{{ route('admin.media.uploadOneDrive') }}"
             };
 
             // Nice labels for the footer
@@ -53,7 +51,7 @@
 
             let uploadPlugin = uppy.use(Uppy.XHRUpload, {
                 endpoint: uploadEndpoints.server,
-                fieldName: 'files[]',
+                fieldName: 'file',
                 formData: true,
                 headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
             });
@@ -91,27 +89,127 @@
                 console.log('Uploaded files:', result.successful);
             });
         });
-
     </script>
-    <!-- <script>
-        // Show Upload Section
-        document.getElementById('displayUpload').addEventListener('click', function() {
-            document.getElementById('upload-section').classList.remove('d-none');
-        });
-        // Show Upload Section
-        document.getElementById('showUpload').addEventListener('click', function() {
-            document.getElementById('upload-section').classList.remove('d-none');
+    <script>
+        // Add Category
+        document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            fetch("{{ route('admin.media.categories.store') }}", {
+                method: "POST",
+                headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                
+                if (data.success) {
+                    addCategoryToUI(data.category);
+                    this.reset();
+                }
+            });
         });
 
-        // Hide Upload Section
-        document.getElementById('cancelUpload').addEventListener('click', function() {
-            document.getElementById('upload-section').classList.add('d-none');
+        // Delete Category
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.delete-category')) {
+                let id = e.target.closest('.delete-category').dataset.id;
+                fetch(`/media/categories/${id}`, {
+                    method: "DELETE",
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`tab-${id}`)?.remove();
+                        document.querySelector(`#uploadCategory option[value="${id}"]`)?.remove();
+                        e.target.closest('li').remove();
+                    }
+                });
+            }
         });
 
-    </script> -->
+        function addCategoryToUI(category) {
+            // Add to Tabs
+            console.log('Adding category to UI:', category);
+            
+            let tab = document.createElement('li');
+            tab.className = 'nav-item';
+            tab.id = `tab-${category.category_id}`;
+            tab.innerHTML = `<a class="nav-link fw-semibold py-2" data-bs-toggle="tab" href="#category-${category.category_id}" role="tab">
+                                <i class="fa-regular fa-folder-open me-1"></i> ${category.name}
+                            </a>`;
+                            console.log(tab);
+                            
+            document.getElementById('categoryTabs').appendChild(tab);
+
+            // Add to Dropdown
+            let option = document.createElement('option');
+            option.value = category.category_id;
+            option.textContent = category.name;
+            document.getElementById('uploadCategory').appendChild(option);
+
+            // Add to Modal List
+            let li = document.createElement('li');
+            li.classList.add('list-group-item','d-flex','justify-content-between','align-items-center');
+            li.innerHTML = `${category.name} <button class="btn btn-sm btn-danger delete-category" data-id="${category.category_id}"><i class="fa fa-trash"></i></button>`;
+            document.getElementById('categoryList').appendChild(li);
+        }
+    </script>
+@endsection
+@section('modals')
+<div class="modal fade" id="mediaCategoryModal" tabindex="-1" aria-labelledby="mediaCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Manage Media Categories</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Add New Category -->
+                    <div class="col-md-5 border-end">
+                        <h6>Add Category</h6>
+                        <form id="addCategoryForm">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="e.g., Images, Documents" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add</button>
+                        </form>
+                    </div>
+
+                    <!-- Category List -->
+                    <div class="col-md-7">
+                        <h6>Existing Categories</h6>
+                        <ul class="list-group" id="categoryList">
+                            @foreach($categories as $category)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $category->name }}
+                                    <button class="btn btn-sm btn-danger delete-category" data-id="{{ $category->category_id }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 <div class="container-xxl">
-    
+    <!-- Manage Categories Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold">Media Library</h4>
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#mediaCategoryModal">
+            <i class="fa fa-folder-plus me-1"></i> Manage Categories
+        </button>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-3">
             <div class="card">
@@ -260,6 +358,14 @@
                 <p id="uploadDesc" class="text-muted mb-3 small">
                     Drag & drop your files here or click below to select. Supports images, videos, documents, and archives.
                 </p>
+                
+                <!-- Select Category -->
+                <select name="category_id" id="uploadCategory" class="form-select mb-3">
+                    <option value="">Select Category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->category_id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
 
                 <!-- Uppy Dashboard -->
                 <div id="uppyDashboard" class="p-2"></div>
@@ -294,7 +400,7 @@
                     </div>
                 </div>
 
-                <ul class="nav nav-tabs my-4" role="tablist">
+                <ul class="nav nav-tabs my-4" role="tablist" id="categoryTabs">
                     <li class="nav-item">
                         <a class="nav-link fw-semibold active py-2" data-bs-toggle="tab" href="#documents" role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i> Documents <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
                     </li>

@@ -564,7 +564,7 @@
                     <a class="nav-link" href="{{ route('CMS.posts') }}">Posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.media') }}">Media</a>
+                    <a class="nav-link" href="{{ route('admin.media.index') }}">Media</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('CMS.event') }}">Events & News</a>

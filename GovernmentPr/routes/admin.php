@@ -27,6 +27,7 @@ use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\CMS\MediaController;
+use App\Http\Controllers\MediaCategoryController;
 use App\Http\Controllers\OperationTypeController;
 use App\Http\Controllers\OperationCategoryController;
 use App\Http\Controllers\CMS\PagesController;
@@ -136,13 +137,23 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Media
     Route::controller(MediaController::class)->group(function() {
-        Route::get('/media', 'index')->name('admin.media');
-        Route::post('/media/upload', 'upload')->name('admin.media.upload');
-        Route::get('/media/{id}', 'show')->name('admin.media.show');
-        Route::put('/media/{id}', 'update')->name('admin.media.update');
-        Route::delete('/media/{id}', 'destroy')->name('admin.media.delete');
-        Route::post('/media/bulk-delete', [MediaController::class, 'bulkDelete'])->name('media.bulkDelete');
+        Route::get('/media', 'index')->name('admin.media.index');
+        Route::post('/media', 'store')->name('admin.media.store');
+        Route::get('/media/{media}', 'show')->name('admin.media.show');
+        Route::get('/media/{media}/edit', 'edit')->name('admin.media.edit');
+        Route::put('/media/{media}', 'update')->name('admin.media.update');
+        Route::delete('/media/{media}', 'destroy')->name('admin.media.destroy');
+        Route::post('/media/upload-server', 'uploadToServer')->name('admin.media.uploadServer');
+        Route::post('/media/upload-dropbox', 'uploadToDropbox')->name('admin.media.uploadDropbox');
+        Route::post('/media/upload-google', 'uploadToGoogleDrive')->name('admin.media.uploadGoogle');
+        Route::post('/media/upload-onedrive', 'uploadToOneDrive')->name('admin.media.uploadOneDrive');
     });
+
+    Route::prefix('media/categories')->name('admin.media.categories.')->group(function() {
+        Route::post('/', [MediaCategoryController::class, 'store'])->name('store');
+        Route::delete('/{id}', [MediaCategoryController::class, 'destroy'])->name('destroy');
+    });
+
 
     //Pages
     Route::controller(PageController::class)->group(function() {
