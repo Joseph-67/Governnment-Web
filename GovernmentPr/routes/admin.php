@@ -138,12 +138,13 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Media
     Route::controller(MediaController::class)->group(function() {
         Route::get('/media', 'index')->name('admin.media.index');
+        Route::get('/media/files/{categoryId}', 'getFiles')->name('media.files');
         Route::post('/media', 'store')->name('admin.media.store');
         Route::get('/media/{media}', 'show')->name('admin.media.show');
         Route::get('/media/{media}/edit', 'edit')->name('admin.media.edit');
         Route::put('/media/{media}', 'update')->name('admin.media.update');
         Route::delete('/media/{media}', 'destroy')->name('admin.media.destroy');
-        Route::post('/media/upload-server', 'uploadToServer')->name('admin.media.uploadServer');
+        Route::post('/media/upload-server', 'store')->name('admin.media.uploadServer');
         Route::post('/media/upload-dropbox', 'uploadToDropbox')->name('admin.media.uploadDropbox');
         Route::post('/media/upload-google', 'uploadToGoogleDrive')->name('admin.media.uploadGoogle');
         Route::post('/media/upload-onedrive', 'uploadToOneDrive')->name('admin.media.uploadOneDrive');

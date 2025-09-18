@@ -30,16 +30,26 @@ class MediaCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), ['name' => 'required|string|max:255|unique:media_categories,name']);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:media_categories,name',
+            'icon' => 'nullable|string|max:255'
+        ]);
+
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors()->all()
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
-        $category = MediaCategory::create(['name' => $request->name]);
-        return response()->json(['success' => true, 'category' => $category]);
+        try {
+            $category = MediaCategory::create([
+            'name' => $request->name,
+            'icon' => $request->icon ?? ''
+            ]);
+
+            return response()->json(['success' => true, 'category' => $category, 'message' => 'Category created successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
+
 
     /**
      * Display the specified resource.

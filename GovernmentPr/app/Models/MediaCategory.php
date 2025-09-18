@@ -13,7 +13,7 @@ class MediaCategory extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'icon'
     ];
 
     // A category has many media files

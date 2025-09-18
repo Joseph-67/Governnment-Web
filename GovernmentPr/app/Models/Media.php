@@ -15,7 +15,7 @@ class Media extends Model
         'url',
         'mime_type',
         'size',
-        'category',
+        'category_id',
         'guard',
         'uploaded_by'
     ];

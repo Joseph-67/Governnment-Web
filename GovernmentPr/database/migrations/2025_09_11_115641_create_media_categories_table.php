@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('media_categories', function (Blueprint $table) {
             $table->id('category_id');        // Primary key
             $table->string('name')->unique(); // Category name (e.g., Images, Documents, Videos)
-            $table->string('description')->nullable(); // Optional description
+            $table->string('icon')->nullable(); // Optional icon for the category
             $table->timestamps();             // created_at & updated_at
         });
 
