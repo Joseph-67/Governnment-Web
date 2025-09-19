@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Top Used Materials</h5>
+                                    <ul class="list-group">
+                                    @forelse($topMaterials as $material)
+                                        <li class="list-group-item">
+                                            {{ $material->material->material ?? 'Unknown Material' }} - {{ $material->total_used }} units
+                                        </li>
+                                    @empty
+                                        <li class="list-group-item text-muted">No usage data available</li>
+                                    @endforelse
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>             
+</body>
+</html>
