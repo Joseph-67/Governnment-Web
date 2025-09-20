@@ -378,7 +378,51 @@
     </style>
 
     @endsection
+    @section('modals')
+    <div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Media Library</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
+                <div class="modal-body">
+                    <!-- Search Bar -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <input type="text" id="mediaSearch" class="form-control w-50" placeholder="Search media...">
+                    </div>
+
+                    <!-- Media Grid -->
+                    <div class="row g-2" id="media-library">
+                        <!-- Loaded via AJAX -->
+                         @foreach($media as $item)
+                            <div class="col-3">
+                                <img src="{{ asset('storage/'.$item->path) }}"
+                                    data-url="{{ asset('storage/'.$item->path) }}"
+                                    class="img-fluid border media-item selectable"
+                                    style="cursor:pointer;">
+                            </div>
+                        @endforeach
+
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0" id="mediaPagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="selectMediaBtn">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection
     <div class="container-xxl">
         <!-- Page Title + Actions -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -632,21 +676,59 @@
                         <div class="tab-pane fade" id="mediaTab" role="tabpanel">
                             <div class="card card-body p-4">
                                 <h5 class="fw-semibold mb-3">Media Management</h5>
+
+                                <!-- Featured Image -->
                                 <div class="mb-3">
                                     <label class="form-label">Featured Image</label>
-                                    <input type="file" class="form-control" name="featured_image" accept="image/*">
+                                    <div class="input-group">
+                                        <input type="text" id="featured_image" name="featured_image" class="form-control" readonly>
+                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#mediaModal" 
+                                                data-input="featured_image" 
+                                                data-preview="featured_preview" 
+                                                data-multiple="false">
+                                            Select Image
+                                        </button>
+                                    </div>
+                                    <div id="featured_preview" class="mt-2"></div>
                                 </div>
+
+                                <!-- Gallery -->
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
-                                    <div id="drag-drop-area" class="border rounded p-3"></div>
-                                    <!-- Hidden input to store uploaded file metadata -->
-                                    <input type="hidden" name="gallery_images" id="gallery_images" value="[]">
+                                    <div class="input-group">
+                                        <input type="text" id="gallery_images" name="gallery_images" class="form-control" readonly>
+                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#mediaModal" 
+                                                data-input="gallery_images" 
+                                                data-preview="gallery_preview" 
+                                                data-multiple="true">
+                                            Select Images
+                                        </button>
+                                    </div>
+                                    <div id="gallery_preview" class="d-flex flex-wrap mt-2"></div>
                                 </div>
+
+                                <!-- Hero Background -->
                                 <div class="mb-3">
                                     <label class="form-label">Hero Background</label>
-                                    <input type="file" class="form-control" name="hero_bg" accept="image/*,video/*">
+                                    <div class="input-group">
+                                        <input type="text" id="hero_bg" name="hero_bg" class="form-control" readonly>
+                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#mediaModal" 
+                                                data-input="hero_bg" 
+                                                data-preview="hero_preview" 
+                                                data-multiple="false">
+                                            Select Media
+                                        </button>
+                                    </div>
+                                    <div id="hero_preview" class="mt-2"></div>
                                 </div>
                             </div>
+
                         </div>
                         <!-- Layout -->
                         <div class="tab-pane fade" id="layoutTab" role="tabpanel">
@@ -717,59 +799,59 @@
                                             <option value="1" @selected(old('enable_slider')==='1')>Yes</option>
                                         </select>
                                     </div>
-                                <div class="col-md-8">
-                                <!-- 🔹 Image Slider Manager -->
-                                <div class="row g-3 mb-3">
-                                    <div class="col-12">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <label class="form-label fw-semibold">Image Slider</label>
-                                        
-                                            <!-- Add Slide Button -->
-                                            <button type="button" class="btn btn-sm btn-primary mb-3" id="addSlideBtn">
-                                                + Add Slide
-                                            </button>
+                                    <div class="col-md-8">
+                                    <!-- 🔹 Image Slider Manager -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-12">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <label class="form-label fw-semibold">Image Slider</label>
+                                                
+                                                    <!-- Add Slide Button -->
+                                                    <button type="button" class="btn btn-sm btn-primary mb-3" id="addSlideBtn">
+                                                        + Add Slide
+                                                    </button>
+                                                </div>
+                                                <!-- Slides Container -->
+                                                <div id="slidesContainer" class="d-flex flex-column gap-3">
+                                                    {{-- Existing slides (if editing an existing page) --}}
+                                                    @if(old('slider_images'))
+                                                        @foreach(json_decode(old('slider_images'), true) as $index => $slide)
+                                                            <div class="card p-3 slide-item">
+                                                                <div class="row g-2 align-items-center">
+                                                                    <div class="col-md-2">
+                                                                        <input type="file" class="form-control" name="slides[{{ $index }}][image]">
+                                                                        @if(isset($slide['image']))
+                                                                            <small class="text-muted d-block mt-1">Current: {{ $slide['image'] }}</small>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][title]" placeholder="Title" value="{{ $slide['title'] ?? '' }}">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][caption]" placeholder="Caption" value="{{ $slide['caption'] ?? '' }}">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="url" class="form-control" name="slides[{{ $index }}][media_link]" placeholder="Media Link (optional)" value="{{ $slide['media_link'] ?? '' }}">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][link]" placeholder="Link (optional)" value="{{ $slide['link'] ?? '' }}">
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <input type="number" class="form-control" name="slides[{{ $index }}][order]" placeholder="Order" value="{{ $slide['order'] ?? $index }}">
+                                                                    </div>
+                                                                    <div class="col-md-1 text-end">
+                                                                        <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- Slides Container -->
-                                        <div id="slidesContainer" class="d-flex flex-column gap-3">
-                                            {{-- Existing slides (if editing an existing page) --}}
-                                            @if(old('slider_images'))
-                                                @foreach(json_decode(old('slider_images'), true) as $index => $slide)
-                                                    <div class="card p-3 slide-item">
-                                                        <div class="row g-2 align-items-center">
-                                                            <div class="col-md-2">
-                                                                <input type="file" class="form-control" name="slides[{{ $index }}][image]">
-                                                                @if(isset($slide['image']))
-                                                                    <small class="text-muted d-block mt-1">Current: {{ $slide['image'] }}</small>
-                                                                @endif
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <input type="text" class="form-control" name="slides[{{ $index }}][title]" placeholder="Title" value="{{ $slide['title'] ?? '' }}">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <input type="text" class="form-control" name="slides[{{ $index }}][caption]" placeholder="Caption" value="{{ $slide['caption'] ?? '' }}">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <input type="url" class="form-control" name="slides[{{ $index }}][media_link]" placeholder="Media Link (optional)" value="{{ $slide['media_link'] ?? '' }}">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <input type="text" class="form-control" name="slides[{{ $index }}][link]" placeholder="Link (optional)" value="{{ $slide['link'] ?? '' }}">
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <input type="number" class="form-control" name="slides[{{ $index }}][order]" placeholder="Order" value="{{ $slide['order'] ?? $index }}">
-                                                            </div>
-                                                            <div class="col-md-1 text-end">
-                                                                <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- Hidden JSON field (final payload) -->
-                                <input type="hidden" name="slider_images" id="sliderImagesInput">
+                                        <!-- Hidden JSON field (final payload) -->
+                                        <input type="hidden" name="slider_images" id="sliderImagesInput">
                                     </div>
                                 </div>
 
@@ -1501,44 +1583,63 @@
             let slidesContainer = document.getElementById("slidesContainer");
             let addSlideBtn = document.getElementById("addSlideBtn");
             let sliderInput = document.getElementById("sliderImagesInput");
-
             // Add new slide
             addSlideBtn.addEventListener("click", function () {
                 let index = slidesContainer.children.length;
                 let slide = document.createElement("div");
                 slide.classList.add("card", "p-3", "slide-item", "mb-2");
                 slide.innerHTML = `
-                    <div class="row g-2 align-items-center">
-                        <div class="col-md-2">
-                            <input type="file" class="form-control" name="slides[${index}][image]">
+                    <div class="row g-2 align-items-start justify-content-center">
+                        <!-- Media Picker -->
+                        <div class="col-3">
+                            <div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="slides[${index}][image]" id="slide_image_${index}" readonly>
+                                    <button type="button" 
+                                            class="btn btn-outline-secondary select-media-btn" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#mediaModal" 
+                                            data-input="slide_image_${index}" 
+                                            data-preview="slide_preview_${index}">
+                                        Add Image
+                                    </button>
+                                </div>
+                                <div id="slide_preview_${index}" class="mt-2"></div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title">
+
+                        <!-- Other Fields -->
+                        <div class="col">
+                            <div class = "input-group"><input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title"></div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)">
                         </div>
-                        <div class="col-md-1">
+                        <div class="col">
                             <input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}">
                         </div>
-                        <div class="col-md-1 text-end">
+                        <div class="col text-end">
                             <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
                         </div>
                     </div>
                 `;
                 slidesContainer.appendChild(slide);
 
-                // Bind remove
+                // Bind remove button
                 slide.querySelector(".removeSlideBtn").addEventListener("click", function () {
                     slide.remove();
                 });
+
+                // Re-bind media picker events for new button
+                bindMediaPickerEvents();
             });
+
 
             // Remove slide button (for pre-rendered slides)
             slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
@@ -1550,6 +1651,85 @@
 
         });
     </script>
+
+    <script>
+        let selectedInput = null;
+        let selectedPreview = null;
+        let allowMultiple = false;
+        let selectedFiles = [];
+
+        function loadMedia(page = 1, search = '') {
+            fetch(`{{ url('/pages/fetch') }}?page=${page}&search=${search}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('media-library').innerHTML = data.data;
+                    document.getElementById('mediaPagination').innerHTML = data.pagination;
+                    bindMediaSelection();
+                });
+        }
+
+        function bindMediaSelection() {
+            document.querySelectorAll('.media-item').forEach(img => {
+                img.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    if (allowMultiple) {
+                        if (selectedFiles.includes(url)) {
+                            selectedFiles = selectedFiles.filter(item => item !== url);
+                            this.classList.remove('border-primary');
+                        } else {
+                            selectedFiles.push(url);
+                            this.classList.add('border-primary');
+                        }
+                    } else {
+                        document.querySelectorAll('.media-item').forEach(i => i.classList.remove('border-primary'));
+                        selectedFiles = [url];
+                        this.classList.add('border-primary');
+                    }
+                });
+            });
+        }
+
+        document.getElementById('selectMediaBtn').addEventListener('click', function() {
+            if (!selectedInput || !selectedPreview) return;
+
+            const inputField = document.getElementById(selectedInput);
+            const previewContainer = document.getElementById(selectedPreview);
+
+            if (allowMultiple) {
+                inputField.value = JSON.stringify(selectedFiles);
+                previewContainer.innerHTML = selectedFiles.map(url => `<img src="${url}" class="img-fluid me-2 mb-2 rounded" style="max-width:100px;">`).join('');
+            } else {
+                inputField.value = selectedFiles[0] || "";
+                previewContainer.innerHTML = selectedFiles[0] ? `<img src="${selectedFiles[0]}" class="img-fluid rounded mt-2" style="max-width:150px;">` : "";
+            }
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
+            modal.hide();
+        });
+
+        document.querySelectorAll(".select-media-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                selectedInput = this.getAttribute("data-input");
+                selectedPreview = this.getAttribute("data-preview");
+                allowMultiple = this.getAttribute("data-multiple") === "true";
+                selectedFiles = [];
+                loadMedia();
+            });
+        });
+
+        document.getElementById('mediaSearch').addEventListener('keyup', function() {
+            loadMedia(1, this.value);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#mediaPagination a')) {
+                e.preventDefault();
+                let page = new URL(e.target.closest('a').href).searchParams.get('page');
+                loadMedia(page);
+            }
+        });
+    </script>
+
     @endsection
 
 </x-layouts.admin-app>

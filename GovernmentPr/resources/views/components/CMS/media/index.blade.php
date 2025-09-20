@@ -28,9 +28,9 @@
             const uploadTitle = document.getElementById("uploadTitle");
             const uploadDesc = document.getElementById("uploadDesc");
             const uploadTargetLabel = document.getElementById("uploadTargetLabel");
-            const uploadCategory = document.getElementById("uploadCategory"); // Select element for category
-            
-            // Endpoints for each upload type
+            const uploadCategory = document.getElementById("uploadCategory");
+
+            // Upload endpoints for each storage type
             const uploadEndpoints = {
                 server: "{{ route('admin.media.uploadServer') }}",
                 dropbox: "{{ route('admin.media.uploadDropbox') }}",
@@ -38,7 +38,7 @@
                 onedrive: "{{ route('admin.media.uploadOneDrive') }}"
             };
 
-            // Labels for the footer
+            // Friendly labels for each endpoint
             const endpointLabels = {
                 server: "Server Storage",
                 dropbox: "Dropbox Cloud",
@@ -46,7 +46,7 @@
                 onedrive: "OneDrive"
             };
 
-            // Keep track of meta manually
+            // Track upload meta data
             let uploadMeta = {
                 upload_type: "",
                 category_id: ""
@@ -55,14 +55,14 @@
             // Uppy instance
             let uppy = new Uppy.Uppy({
                 restrictions: {
-                    maxFileSize: 5 * 1024 * 1024 * 1024 * 1024,
+                    maxFileSize: 5 * 1024 * 1024 * 1024, // 5 GB
                     maxNumberOfFiles: 200,
                     allowedFileTypes: ['image/*', 'video/*', 'audio/*', 'application/pdf', 'application/zip']
                 },
-                autoProceed: false
+                autoProceed: false // Wait until user clicks upload
             });
 
-            // Dashboard UI
+            // Uppy Dashboard
             uppy.use(Uppy.Dashboard, {
                 inline: true,
                 target: '#uppyDashboard',
@@ -73,40 +73,37 @@
 
             // XHR Upload plugin
             let uploadPlugin = uppy.use(Uppy.XHRUpload, {
-                endpoint: uploadEndpoints.server,
-                fieldName: 'file',
+                endpoint: uploadEndpoints.server, // default endpoint
+                fieldName: 'files[]',
                 formData: true,
                 headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
                 bundle: true
             });
 
-            // Show upload section & dynamically change endpoint + metadata
+            // Handle upload button clicks
             document.querySelectorAll(".upload-trigger").forEach(item => {
                 item.addEventListener("click", function (e) {
                     e.preventDefault();
                     const type = this.getAttribute("data-type");
 
-                    // Update UI labels
+                    // Update UI text
                     uploadTitle.innerText = `Upload to ${type.charAt(0).toUpperCase() + type.slice(1)}`;
                     uploadDesc.innerText = `Drag & drop or click below to upload files to ${type}.`;
                     uploadTargetLabel.innerText = endpointLabels[type];
 
-                    console.log("Category id: ", uploadCategory.value);
-                    // Set initial meta for uploads
-                    // Update meta
+                    // Store selected type
                     uploadMeta.upload_type = type;
                     uploadMeta.category_id = uploadCategory.value || "";
 
-                    // Apply meta to Uppy
+                    // Apply meta
                     uppy.setMeta(uploadMeta);
-
 
                     // Change upload endpoint dynamically
                     uploadPlugin.setOptions({
                         endpoint: uploadEndpoints[type]
                     });
 
-                    // Show section
+                    // Show upload section
                     uploadSection.classList.remove("d-none");
                 });
             });
@@ -117,18 +114,35 @@
                 uppy.setMeta(uploadMeta);
             });
 
-            // Close upload section
+            // Ensure meta is always updated before upload starts
+            uppy.on('upload', () => {
+                uppy.setMeta({
+                    upload_type: uploadMeta.upload_type,
+                    category_id: uploadMeta.category_id
+                });
+            });
+
+            // Handle successful uploads (multiple uploads allowed)
+            uppy.on('complete', (result) => {
+                console.log('Uploaded files:', result.successful);
+                fileUploadInput.value = JSON.stringify(result.successful.map(f => f.response.body));
+                // Keep dashboard open for multiple uploads, don't reset automatically
+            });
+
+            // Handle errors
+            uppy.on('error', (error) => {
+                console.error('General error:', error);
+            });
+            uppy.on('upload-error', (file, error, response) => {
+                console.error(`Error uploading ${file.name}:`, error);
+            });
+
+            // Cancel button resets dashboard manually
             cancelUpload.addEventListener("click", () => {
+                uppy.reset(); // Clear files manually
                 uploadSection.classList.add("d-none");
             });
-
-            // Handle upload complete
-            uppy.on('complete', (result) => {
-                fileUploadInput.value = JSON.stringify(result.successful.map(f => f.response.body));
-                console.log('Uploaded files:', result.successful);
-            });
         });
-
     </script>
     <script>
         // Add Category
@@ -346,135 +360,51 @@
         </button>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="text-muted fs-16 dropdown-toggle p-1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View Detail</a>
-                            <a class="dropdown-item" href="#">Clear All</a>
-                            <a class="dropdown-item" href="#">Delete</a>
+        @foreach($storages as $storage)
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Dropdown -->
+                        <div class="dropdown float-end">
+                            <a href="#" class="text-muted fs-16 dropdown-toggle p-1" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#">View Detail</a>
+                                <a class="dropdown-item" href="#">Clear All</a>
+                                <a class="dropdown-item" href="#">Delete</a>
+                            </div>
                         </div>
-                    </div>   
-                    <img src="{{ asset('adminAssets/images/logos/lang-logo/gdrive.png') }}" class="me-2 align-self-center thumb-xl" alt="...">
-                    <h5 class="fw-semibold mt-3 fs-14">Google Drive</h5>
-                    <div class="d-flex justify-content-between my-2">
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">34 </span>Files</p>
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">500 </span>GB</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 text-truncate"> 
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-secondary-subtle w-100" style="height:5px;" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-secondary" style="width: 38%"></div>
-                                </div> 
-                                <small class="flex-shrink-1 ms-1">38%</small>
-                            </div>                                                                                    
-                        </div><!--end media body-->
-                    </div><!--end media-->
-                </div><!--end card-body--> 
-            </div><!--end card--> 
-        </div> <!--end col--> 
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="text-muted fs-16 dropdown-toggle p-1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View Detail</a>
-                            <a class="dropdown-item" href="#">Clear All</a>
-                            <a class="dropdown-item" href="#">Delete</a>
+
+                        <!-- Icon -->
+                        <img src="{{ asset($storage['icon']) }}" class="me-2 align-self-center thumb-xl" alt="{{ $storage['name'] }}">
+
+                        <!-- Title -->
+                        <h5 class="fw-semibold mt-3 fs-14">{{ $storage['name'] }}</h5>
+
+                        <!-- Files and Capacity -->
+                        <div class="d-flex justify-content-between my-2">
+                            <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">{{ $storage['files'] }}</span> Files</p>
+                            <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">{{ $storage['capacity'] }}</span> GB</p>
                         </div>
-                    </div>   
-                    <img src="{{ asset('adminAssets/images/logos/lang-logo/dropbox.png') }}" class="me-2 align-self-center thumb-xl" alt="...">
-                    <h5 class="fw-semibold mt-3 fs-14">Dropbox</h5>
-                    <div class="d-flex justify-content-between my-2">
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">68 </span>Files</p>
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">500 </span>GB</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 text-truncate"> 
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-secondary-subtle w-100" style="height:5px;" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-secondary" style="width: 15%"></div>
-                                </div> 
-                                <small class="flex-shrink-1 ms-1">15%</small>
-                            </div>                                                                                    
-                        </div><!--end media body-->
-                    </div><!--end media-->
-                </div><!--end card-body--> 
-            </div><!--end card--> 
-        </div> <!--end col-->
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="text-muted fs-16 dropdown-toggle p-1 " data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View Detail</a>
-                            <a class="dropdown-item" href="#">Clear All</a>
-                            <a class="dropdown-item" href="#">Delete</a>
+
+                        <!-- Progress Bar -->
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 text-truncate">
+                                <div class="d-flex align-items-center">
+                                    <div class="progress bg-secondary-subtle w-100" style="height:5px;">
+                                        <div class="progress-bar bg-secondary" style="width: {{ number_format($storage['percentage'], 0) }}%"></div>
+                                    </div>
+                                    <small class="flex-shrink-1 ms-1">{{ number_format($storage['percentage'], 0) }}%</small>
+                                </div>
+                            </div>
                         </div>
-                    </div>   
-                    <img src="{{ asset('adminAssets/images/logos/lang-logo/onedrive.png') }}" class="me-2 align-self-center thumb-xl" alt="...">
-                    <h5 class="fw-semibold mt-3 fs-14">Onedrive</h5>
-                    <div class="d-flex justify-content-between my-2">
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">192 </span>Files</p>
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">500 </span>GB</p>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 text-truncate"> 
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-secondary-subtle w-100" style="height:5px;" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-secondary" style="width: 48%"></div>
-                                </div> 
-                                <small class="flex-shrink-1 ms-1">48%</small>
-                            </div>                                                                                    
-                        </div><!--end media body-->
-                    </div><!--end media-->
-                </div><!--end card-body--> 
-            </div><!--end card--> 
-        </div> <!--end col-->
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="text-muted fs-16 dropdown-toggle p-1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View Detail</a>
-                            <a class="dropdown-item" href="#">Clear All</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>   
-                    <img src="{{ asset('adminAssets/images/logos/lang-logo/server.png') }}" class="me-2 align-self-center thumb-xl" alt="...">
-                    <h5 class="fw-semibold mt-3 fs-14">Server</h5>
-                    <div class="d-flex justify-content-between my-2">
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">81 </span>Files</p>
-                        <p class="text-muted mb-0 fs-13 fw-semibold"><span class="text-dark">500 </span>GB</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 text-truncate"> 
-                            <div class="d-flex align-items-center">
-                                <div class="progress bg-secondary-subtle w-100" style="height:5px;" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-secondary" style="width: 76%"></div>
-                                </div> 
-                                <small class="flex-shrink-1 ms-1">76%</small>
-                            </div>                                                                                    
-                        </div><!--end media body-->
-                    </div><!--end media-->
-                </div><!--end card-body--> 
-            </div><!--end card--> 
-        </div> <!--end col-->                                                                              
-    </div><!--end row-->
+                </div>
+            </div>
+        @endforeach
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-12">
             <div id="upload-section" class="card border-0 shadow-sm rounded-4 p-4 w-100 mb-4 d-none position-relative">
@@ -576,7 +506,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Name</th>
-                                                <th class="text-end">Date</th>
+                                                <th class="text-end">Last Modified</th>
                                                 <th class="text-end">Size</th>
                                                 <th class="text-end">Action</th>
                                             </tr>
@@ -588,10 +518,12 @@
                                                         <div class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                             <i class="fa-solid fa-file-{{ $file->type ?? 'pdf' }} fs-18 align-self-center mb-0 text-blue"></i>
                                                         </div>
-                                                        <a href="{{ Storage::url($file->path) }}" target="_blank" class="text-body">{{ $file->name }}</a>
+                                                        <a href="{{ Storage::url($file->path) }}" target="_blank" class="text-body">{{ $file->original_name }}</a>
                                                     </td>
                                                     <td class="text-end">{{ $file->updated_at->format('d M Y') }}</td>
-                                                    <td class="text-end">{{ number_format($file->size / 1048576, 1) }} MB</td>
+                                                    <td class="text-end">
+                                                        {{ formatFileSize($file->size) }}
+                                                    </td>
                                                     <td class="text-end">
                                                         <a href="{{ Storage::url($file->path) }}"><i class="las la-download text-secondary fs-18"></i></a>
                                                         <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>

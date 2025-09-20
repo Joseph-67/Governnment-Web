@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('url');                    // Accessible URL
             $table->string('mime_type', 100);         // File type (e.g., image/png)
             $table->unsignedBigInteger('size');       // File size in bytes
+            $table->string('storage_source')->nullable(); // Foreign key to storage_sources table
 
             // category_id references media_categories table
             $table->unsignedBigInteger('category_id')->nullable(); 

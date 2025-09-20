@@ -18,13 +18,31 @@ use Illuminate\Validation\Rule;
 
 class PageController extends Controller
 {
+    public function fetchMedia(Request $request)
+    {
+        dd($request->all());
+        $query = Media::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        $media = $query->latest()->paginate(12); // 12 per page
+
+        return response()->json([
+            'data' => view('components.CMS.media.items', compact('media'))->render(),
+            'pagination' => (string) $media->links('vendor.pagination.bootstrap-4')
+        ]);
+    }
+
+
     /**
      * Display a listing of pages.
      */
     public function index()
     {
         $data['pages'] = Page::latest()->paginate(15);
-        return view('components.CMS.pages/index', compact('pages'));
+        return view('components.CMS.pages/index', $data);
     }
 
     /**
@@ -35,7 +53,11 @@ class PageController extends Controller
         $data['parents'] = Page::all();
         $data['categories'] = CmsCategory::all();
         $data['tags'] = CmsTag::all();
+        $imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
+        $data['media'] = Media::whereIn('mime_type', $imageMimeTypes)->get();
 
+
+        // dd($data['media']);
         return view('components.CMS.pages.create', $data);
     }
 
