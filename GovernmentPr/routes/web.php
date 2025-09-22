@@ -9,6 +9,7 @@ use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUsersController;
 use App\Http\Controllers\EmailApp;
+use App\Http\Controllers\IndividualCompanyReportController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\PagesController;
@@ -71,6 +72,11 @@ Route::middleware([
 
     // Email application
     Route::get('/email-app', [EmailApp::class, 'index'])->name('view-email-app');
+    
+    //individual company reports
+    Route::controller(IndividualCompanyReportController::class)->group(function() {
+        Route::get('/individual-company-report', 'index')->name('individual-company-report');
+    });
     
     // Stock Trading
     Route::get('/stock-trading', [StockTradingController::class, 'index'])->name('view-stock-trading');

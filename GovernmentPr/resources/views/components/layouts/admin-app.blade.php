@@ -438,6 +438,12 @@
                                     </li><!--end nav-item-->
                                     @endif
 
+                                    @if(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('individual-company-report') }}">Inventory Reporting Analytics</a>
+                                    </li>
+                                    @endif
+
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="#sidebarReportingAnalytics" data-bs-toggle="collapse" role="button"
