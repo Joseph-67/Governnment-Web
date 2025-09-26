@@ -75,8 +75,9 @@ Route::middleware([
     
     //individual company reports
     Route::controller(IndividualCompanyReportController::class)->group(function() {
-        Route::get('/individual-company-report', 'index')->name('individual-company-report');
-    });
+    Route::get('/individual-company-report/{user}', 'index')->name('individual-company-report');
+});
+
     
     // Stock Trading
     Route::get('/stock-trading', [StockTradingController::class, 'index'])->name('view-stock-trading');
