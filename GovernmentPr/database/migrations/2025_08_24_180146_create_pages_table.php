@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id('page_id');
-            
+
             // Basic content
             $table->string('title');
             $table->string('slug')->unique();
@@ -34,6 +31,10 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('pages')->nullOnDelete();
             $table->foreignId('author_id')->nullable()->constrained('users')->nullOnDelete();
 
+            // tags & categories
+            $table->json('tags')->nullable();
+            $table->json('categories')->nullable();
+
             // SEO
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
@@ -41,7 +42,7 @@ return new class extends Migration
             $table->string('canonical_url')->nullable();
             $table->enum('robots_index', ['index', 'noindex'])->default('index');
             $table->enum('robots_follow', ['follow', 'nofollow'])->default('follow');
-            $table->json('custom_meta')->nullable(); // JSON meta
+            $table->json('custom_meta')->nullable();
 
             // Open Graph & Twitter
             $table->string('og_title')->nullable();
@@ -53,7 +54,7 @@ return new class extends Migration
 
             // Media
             $table->string('featured_image')->nullable();
-            $table->json('gallery_images')->nullable(); // JSON array
+            $table->json('gallery_images')->nullable();
             $table->string('hero_bg')->nullable();
 
             // Layout
@@ -68,7 +69,7 @@ return new class extends Migration
 
             // Components
             $table->boolean('enable_slider')->default(false);
-            $table->json('slider_images')->nullable(); // JSON slides
+            $table->json('slider_images')->nullable();
             $table->json('reusable_components')->nullable();
             $table->boolean('contact_form_enabled')->default(false);
             $table->string('contact_form_email')->nullable();
@@ -88,9 +89,9 @@ return new class extends Migration
             $table->longText('custom_body')->nullable();
 
             // Access Control
-            $table->json('visible_roles')->nullable();       // roles allowed
-            $table->json('device_visibility')->nullable();   // desktop/tablet/mobile
-            $table->json('geo_rules')->nullable();           // JSON allow/deny
+            $table->json('visible_roles')->nullable();
+            $table->json('device_visibility')->nullable();
+            $table->json('geo_rules')->nullable();
 
             // Analytics
             $table->longText('tracking_code')->nullable();
@@ -104,12 +105,10 @@ return new class extends Migration
             // Meta
             $table->text('revision_notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pages');

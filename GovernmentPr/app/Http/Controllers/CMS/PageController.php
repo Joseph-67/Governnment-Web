@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\CMS;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\Admins;
 use App\Models\CmsCategory;
@@ -15,34 +15,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-
 class PageController extends Controller
 {
-    public function fetchMedia(Request $request)
-    {
-        dd($request->all());
-        $query = Media::query();
-
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-
-        $media = $query->latest()->paginate(12); // 12 per page
-
-        return response()->json([
-            'data' => view('components.CMS.media.items', compact('media'))->render(),
-            'pagination' => (string) $media->links('vendor.pagination.bootstrap-4')
-        ]);
-    }
-
-
     /**
      * Display a listing of pages.
      */
     public function index()
     {
-        $data['pages'] = Page::latest()->paginate(15);
-        return view('components.CMS.pages/index', $data);
+        $pages = Page::latest()->paginate(15);
+        return view('components.CMS.pages.index', compact('pages'));
     }
 
     /**
@@ -60,6 +41,74 @@ class PageController extends Controller
         // dd($data['media']);
         return view('components.CMS.pages.create', $data);
     }
+
+    /**
+     * Store a new page.
+     */
+    public function store(Request $request)
+    {
+        // dd($request);
+        $validator = $this->validateRequest($request);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        $data = $validator->validated();
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']) . '-' . uniqid();
+        $page = Page::create($this->mapPageData($data));
+
+        return response()->json(['status' => 'success', 'message' => 'Page created successfully!', 'page' => $page], 201);
+    }
+
+    /**
+     * Show single page.
+     */
+    public function show(Page $page)
+    {
+        return view('components.CMS.pages.show', compact('page'));
+    }
+
+    /**
+     * Edit page form.
+     */
+    public function edit(Page $page)
+    {
+        $parents = Page::where('page_id', '!=', $page->page_id)->get();
+        return view('components.CMS.pages.edit', compact('page', 'parents'));
+    }
+
+    /**
+     * Update a page.
+     */
+    public function update(Request $request, Page $page)
+    {
+        $validator = $this->validateRequest($request, $page->page_id);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        $data = $validator->validated();
+        $data['slug'] = $data['slug'] ?? $page->slug;
+
+        $page->update($this->mapPageData($data));
+
+        return response()->json(['status' => 'success', 'message' => 'Page updated successfully!', 'page' => $page]);
+    }
+
+    /**
+     * Delete a page.
+     */
+    public function destroy(Page $page)
+    {
+        $page->delete();
+        return redirect()->route('pages.index')->with('success', 'Page deleted successfully!');
+    }
+
+    /**
+     * Search authors for dropdown.
+     */
 
     public function searchAuthor(Request $request)
     {
@@ -118,354 +167,188 @@ class PageController extends Controller
 
 
     /**
-     * Store a new page.
+     * Validation rules.
      */
-    public function store(Request $request)
-    {
-        $validator = $this->validateRequest($request);
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
-        }
-
-        $data = $validator->validated();
-
-        // Generate slug if not provided
-        $data['slug'] = $data['slug'] ?? Str::slug($data['title']) . '-' . uniqid();
-
-        // Handle uploads
-        $data = $this->handleUploads($request, $data);
-
-        // Build associative array for DB insert
-        $pageData = $this->buildPageData($data);
-
-        // Save page
-        $page = Page::create($pageData);
-
-        return response()->json(['status' => 'success', 'message' => 'Page created successfully!', 'page' => $page], 201);
-    }
-
-
-    /**
-     * Show single page.
-     */
-    public function show(Page $page)
-    {
-        return view('admin.pages.show', compact('page'));
-    }
-
-    /**
-     * Edit page form.
-     */
-    public function edit(Page $page)
-    {
-        return view('admin.pages.edit', compact('page'));
-    }
-
-    /**
-     * Update a page.
-     */
-    public function update(Request $request, Page $page)
-    {
-        $validator = $this->validateRequest($request);
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
-        }
-
-        $data = $validator->validated();
-
-        // Keep old slug if not provided
-        $data['slug'] = $data['slug'] ?? $page->slug;
-
-        // Handle uploads (replace old files if new ones are uploaded)
-        $data = $this->handleUploads($request, $data, $page);
-
-        // Build associative array for DB update
-        $pageData = $this->buildPageData($data);
-
-        // Update page
-        $page->update($pageData);
-
-        return redirect()->route('pages.index')->with('success', 'Page updated successfully!');
-    }
-
-    /**
-     * Delete a page.
-     */
-    public function destroy(Page $page)
-    {
-        $page->delete();
-        return redirect()->route('pages.index')->with('success', 'Page deleted successfully!');
-    }
-
-    /**
-     * Validation rules for pages.
-     */
-    private function validateRequest(Request $request)
+    private function validateRequest(Request $request, $ignoreId = null)
     {
         return Validator::make($request->all(), [
-            'title'       => 'required|string|max:255',
-            'slug'        => 'nullable|string|max:255|unique:pages,slug',
-            'excerpt'     => 'nullable|string',
-            'body'        => 'nullable|string',
+            'title'        => 'required|string|max:255',
+            'slug'         => 'nullable|string|max:255|unique:pages,slug,' . $ignoreId . ',page_id',
+            'menu_order'   => 'nullable|integer',
+            'excerpt'      => 'nullable|string',
+            'body'         => 'nullable|string',
 
-            // Media
-            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'hero_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image_slider.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'gallery.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            // visibility & status
+            'visibility'          => ['required', Rule::in(['public', 'private', 'password'])],
+            'visibility_password' => 'nullable|required_if:visibility,password|string|max:255',
+            'status'              => ['nullable', Rule::in(['draft', 'pending', 'published'])],
+
+            // Scheduling
+            'publish_at'   => 'nullable|date',
+            'expire_at'    => 'nullable|date',
+
+            // relationships
+            'parent_id'    => 'nullable|exists:pages,page_id',
+            'author_id'    => 'nullable|exists:admins,id',
+
+            // tags & categories
+            'tags'         => 'nullable|array',
+            'tags.*'       => 'nullable|exists:cms_tags,tag_id',
+            'categories'   => 'nullable|array',
+            'categories.*' => 'nullable|exists:cms_categories,category_id',
+
+            // Meta
+            'revision_notes' => 'nullable|string',
 
             // SEO
-            'seo_title'       => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string',
-            'seo_keywords'    => 'nullable|string',
+            'meta_title'       => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'keywords'         => 'nullable|string',
+            'canonical_url'    => 'nullable|url',
+            'robots_index'     => 'nullable|in:index,noindex',
+            'robots_follow'    => 'nullable|in:follow,nofollow',
+            'custom_meta'      => 'nullable|json',
             'og_title'        => 'nullable|string|max:255',
             'og_description'  => 'nullable|string',
-            'og_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'og_image'        => 'nullable|string',
             'twitter_title'   => 'nullable|string|max:255',
             'twitter_description' => 'nullable|string',
-            'twitter_image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'canonical_url'   => 'nullable|url',
-            'robots'          => 'nullable|string|max:50',
+            'twitter_image'   => 'nullable|string',
+
+
+            // Media URLs only
+            'featured_image'   => 'nullable|string',
+            'gallery_images'   => 'nullable|array',
+            'gallery_images.*' => 'nullable|string',
+            'hero_bg'          => 'nullable|string',
+
+            // Hero section
+            'hero_title'       => 'nullable|string|max:255',
+            'hero_subtitle'    => 'nullable|string|max:500',
+            'hero_button_text' => 'nullable|string|max:100',
+            'hero_button_url'  => 'nullable|url',
+
+            // Components & layout
+            'template'            => 'nullable|string|max:255',
+            'layout'              => 'nullable|string|max:255',
+            'sidebar_widgets'   => 'nullable|array',
+            'sidebar_widgets.*' => 'nullable|string|max:255',
+            'footer_widgets'   => 'nullable|array',
+            'footer_widgets.*' => 'nullable|string|max:255',
+            'enable_slider'        => 'nullable|boolean',
+            'slider_images'        => 'nullable|array',
+            'slider_images.*.image'=> 'nullable|string',
+            'slider_images.*.caption'=> 'nullable|string|max:255',
+            'slider_images.*.link'   => 'nullable|url',
+            'reusable_components'  => 'nullable|array',
+            'contact_form_enabled' => 'nullable|boolean',
+            'contact_form_email'  => 'nullable|email',
+            'contact_form_subject' => 'nullable|string|max:255',
+            'contact_form_success_message' => 'nullable|string|max:255',
+            'contact_form_fields'   =>  'nullable|array',
+
+            'newsletter_enabled'   => 'nullable|boolean',
+            'newsletter_provider'   =>  'nullable|string',
+
+            // survey and polls
+            'polls_surveys'   => 'nullable|array',
+            'polls_surveys.*' => 'nullable|integer',
+            'dynamic_tables'   => 'nullable|array',
+            'dynamic_tables.*.table_id' => 'nullable|integer',
+
+            // Access control
+            'visible_roles'     => 'nullable|array',
+            'device_visibility' => 'nullable|array',
+            'geo_rules'         => 'nullable|array',
 
             // Customization
-            'custom_css'      => 'nullable|string',
-            'custom_js'       => 'nullable|string',
-            'custom_head'     => 'nullable|string',
-            'custom_body'     => 'nullable|string',
-
-            // Access & scheduling
-            'is_private'      => 'nullable|boolean',
-            'password'        => 'nullable|string',
-            'visibility_roles'=> 'nullable|string',
-            'published_at'    => 'nullable|date',
-            'expires_at'      => 'nullable|date',
-            'status'          => 'nullable|string|in:draft,published,archived',
-
-            // Metadata
-            'author_id'       => 'nullable|exists:admins,id',
-            'categories'      => 'nullable|string',
-            'tags'            => 'nullable|string',
-            'revision_notes'  => 'nullable|string',
+            'embed_code'    => 'nullable|string',
+            'custom_css'    => 'nullable|string',
+            'custom_js'     => 'nullable|string',
+            'custom_head'   => 'nullable|string',
+            'custom_body'   => 'nullable|string',
 
             // Analytics
-            'analytics'       => 'nullable|json',
-            'ab_tests'        => 'nullable|json',
-            'goals'           => 'nullable|json',
+            'tracking_code'     => 'nullable|string',
+            'ab_variants'       => 'nullable|array',
+            'conversion_goals'  => 'nullable|array'
         ]);
-    }
-    /**
-     * Handle file uploads for images.
-     */
-
-
-    private function handleUploads(Request $request, array &$data, ?Page $existing = null)
-    {
-        // Config for single file fields
-        $map = [
-            'featured_image' => 'pages/featured',
-            'hero_bg'        => 'pages/hero',
-            'og_image'       => 'pages/seo',
-            'twitter_image'  => 'pages/seo',
-        ];
-
-        foreach ($map as $input => $dir) {
-            if ($request->hasFile($input)) {
-                // Delete old file if replacing
-                if ($existing && $existing->$input) {
-                    Storage::disk('public')->delete($existing->$input);
-                }
-
-                // Use unique filename to avoid conflicts
-                $file = $request->file($input);
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $data[$input] = $file->storeAs($dir, $filename, 'public');
-            } else {
-                // Preserve old value if not replaced
-                if ($existing && $existing->$input && !isset($data[$input])) {
-                    $data[$input] = $existing->$input;
-                }
-            }
-        }
-
-        // Slides: images + metadata
-        $slides = $request->input('slides', []);
-        $files  = $request->file('slides', []);
-        $builtSlides = [];
-
-        foreach ($slides as $idx => $slide) {
-            $row = [
-                'title'      => $slide['title'] ?? null,
-                'caption'    => $slide['caption'] ?? null,
-                'media_link' => $slide['media_link'] ?? null,
-                'link'       => $slide['link'] ?? null,
-                'order'      => isset($slide['order']) ? (int)$slide['order'] : $idx,
-                'image'      => null,
-            ];
-
-            // Handle new upload or keep old image
-            if (isset($files[$idx]['image']) && $files[$idx]['image']) {
-                if ($existing && is_array($existing->slider_images)) {
-                    $prev = $existing->slider_images[$idx]['image'] ?? null;
-                    if ($prev) {
-                        Storage::disk('public')->delete($prev);
-                    }
-                }
-                $row['image'] = $files[$idx]['image']->store('pages/slides', 'public');
-            } else {
-                if ($existing && is_array($existing->slider_images)) {
-                    $row['image'] = $existing->slider_images[$idx]['image'] ?? null;
-                }
-            }
-
-            // Skip if completely empty
-            if ($row['image'] || $row['title'] || $row['caption'] || $row['link']) {
-                $builtSlides[] = $row;
-            }
-        }
-
-        if (!empty($builtSlides)) {
-            usort($builtSlides, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
-            $data['slider_images'] = $builtSlides;
-            $data['enable_slider'] = true;
-        }
-
-        // Gallery: fallback to existing if none sent
-        if (!isset($data['gallery_images']) || !is_array($data['gallery_images'])) {
-            if ($existing) {
-                $data['gallery_images'] = $existing->gallery_images;
-            }
-        }
     }
 
     /**
-     * Upload media files (AJAX).
+     * Map data to DB fields.
      */
-    public function uploadMedia(Request $request)
+    private function mapPageData(array $data)
     {
-        // dd($request->all());
-        $validator = Validator::make($request->all(), [
-            'media' => 'required|file|mimes:jpg,jpeg,png,webp,gif,svg,mp4,mp3,pdf,doc,docx,xls,xlsx|max:204800',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-            'success' => false,
-            'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        try {
-            $file = $request->file('media');
-
-            // Determine category
-            $mime = $file->getMimeType();
-            if (str_starts_with($mime, 'image/')) {
-                $category = 'image';
-                $folder = 'pages/media/images';
-            } elseif (str_starts_with($mime, 'video/')) {
-                $category = 'video';
-                $folder = 'pages/media/videos';
-            } elseif (str_starts_with($mime, 'audio/')) {
-                $category = 'audio';
-                $folder = 'pages/media/audio';
-            } elseif (
-                in_array($file->extension(), ['pdf','doc','docx','xls','xlsx'])
-            ) {
-                $category = 'document';
-                $folder = 'pages/media/documents';
-            } else {
-                $category = 'other';
-                $folder = 'pages/media/others';
-            }
-
-            // Unique filename
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $path = $file->storeAs($folder, $filename, 'public');
-            $url = asset('storage/' . $path);
-
-            // Save media record
-            $media = Media::create([
-                'original_name' => $file->getClientOriginalName(),
-                'path'          => $path,
-                'url'           => $url,
-                'mime_type'     => $mime,
-                'size'          => $file->getSize(),
-                'category'      => $category,
-                'uploaded_by'   => Auth::id(),
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'media'   => [
-                    'id'            => $media->media_id,
-                    'original_name' => $media->original_name,
-                    'url'           => $media->url,
-                    'mime_type'     => $media->mime_type,
-                    'size'          => $media->size,
-                    'category'      => $media->category,
-                    'created_at'    => $media->created_at,
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Upload failed: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-
-        private function buildPageData(array $data)
-    {
+        // dd($data);
         return [
             'title'               => $data['title'] ?? null,
             'slug'                => $data['slug'] ?? null,
             'excerpt'             => $data['excerpt'] ?? null,
             'body'                => $data['body'] ?? null,
 
-            // Media
-            'featured_image'       => $data['featured_image'] ?? null,
-            'hero_image'           => $data['hero_image'] ?? null,
-            'image_slider'         => $data['image_slider'] ?? null,
-            'gallery'              => $data['gallery'] ?? null,
+            // Scheduling
+            'publish_at'          => $data['publish_at'] ?? null,
+            'expire_at'           => $data['expire_at'] ?? null,
+
+            // visibility & status
+            'visibility'          => $data['visibility'],
+            'visibility_password' => $data['visibility_password'] ?? null,
+            'status'              => $data['status'] ?? 'draft',
+
+            // relationships
+            'parent_id'           => $data['parent_id'] ?? null,
+            'author_id'           => $data['author_id'] ?? Auth::id(),
+            
+            // tags & categories
+            'tags'                => $data['tags'] ?? [],
+            'categories'          => $data['categories'] ?? [],
 
             // SEO
-            'seo_title'            => $data['seo_title'] ?? null,
-            'seo_description'      => $data['seo_description'] ?? null,
-            'seo_keywords'         => $data['seo_keywords'] ?? null,
-            'og_title'             => $data['og_title'] ?? null,
-            'og_description'       => $data['og_description'] ?? null,
-            'og_image'             => $data['og_image'] ?? null,
-            'twitter_title'        => $data['twitter_title'] ?? null,
-            'twitter_description'  => $data['twitter_description'] ?? null,
-            'twitter_image'        => $data['twitter_image'] ?? null,
-            'canonical_url'        => $data['canonical_url'] ?? null,
-            'robots'               => $data['robots'] ?? null,
+            'meta_title'          => $data['meta_title'] ?? null,
+            'meta_description'    => $data['meta_description'] ?? null,
+            'keywords'            => $data['keywords'] ?? null,
+            'canonical_url'       => $data['canonical_url'] ?? null,
+            'robots_index'        => $data['robots_index'] ?? 'index',
+            'robots_follow'       => $data['robots_follow'] ?? 'follow',
+            'custom_meta'         => $data['custom_meta'] ?? null,
+
+            // Media
+            'featured_image'      => $data['featured_image'] ?? null,
+            'gallery_images'      => $data['gallery_images'] ?? [],
+            'hero_bg'             => $data['hero_bg'] ?? null,
+
+            // Hero
+            'hero_title'          => $data['hero_title'] ?? null,
+            'hero_subtitle'       => $data['hero_subtitle'] ?? null,
+            'hero_button_text'    => $data['hero_button_text'] ?? null,
+            'hero_button_url'     => $data['hero_button_url'] ?? null,
+
+            // Components
+            'enable_slider'       => $data['enable_slider'] ?? false,
+            'slider_images'       => $data['slider_images'] ?? [],
+            'reusable_components' => $data['reusable_components'] ?? [],
+            'contact_form_enabled'=> $data['contact_form_enabled'] ?? false,
+            'newsletter_enabled'  => $data['newsletter_enabled'] ?? false,
+
+            // Access
+            'visible_roles'       => $data['visible_roles'] ?? [],
+            'device_visibility'   => $data['device_visibility'] ?? [],
+            'geo_rules'           => $data['geo_rules'] ?? [],
 
             // Customization
-            'custom_css'           => $data['custom_css'] ?? null,
-            'custom_js'            => $data['custom_js'] ?? null,
-            'custom_head'          => $data['custom_head'] ?? null,
-            'custom_body'          => $data['custom_body'] ?? null,
-
-            // Access & scheduling
-            'is_private'           => $data['is_private'] ?? 0,
-            'password'             => $data['password'] ?? null,
-            'visibility_roles'     => $data['visibility_roles'] ?? null,
-            'published_at'         => $data['published_at'] ?? null,
-            'expires_at'           => $data['expires_at'] ?? null,
-            'status'               => $data['status'] ?? 'draft',
-
-            // Metadata
-            'author_id'            => $data['author_id'] ?? auth()->id(),
-            'categories'           => $data['categories'] ?? null,
-            'tags'                 => $data['tags'] ?? null,
-            'revision_notes'       => $data['revision_notes'] ?? null,
+            'custom_css'          => $data['custom_css'] ?? null,
+            'custom_js'           => $data['custom_js'] ?? null,
+            'custom_head'         => $data['custom_head'] ?? null,
+            'custom_body'         => $data['custom_body'] ?? null,
 
             // Analytics
-            'analytics'            => $data['analytics'] ?? null,
-            'ab_tests'             => $data['ab_tests'] ?? null,
-            'goals'                => $data['goals'] ?? null,
+            'tracking_code'       => $data['tracking_code'] ?? null,
+            'ab_variants'         => $data['ab_variants'] ?? [],
+            'conversion_goals'    => $data['conversion_goals'] ?? [],
+
+            // Meta
+            'revision_notes'      => $data['revision_notes'] ?? null,
         ];
     }
 }

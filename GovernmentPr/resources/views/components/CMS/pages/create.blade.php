@@ -490,15 +490,17 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="publishAt">Schedule Publish</label>
-                                <input type="datetime-local" class="form-control" name="publish_at" id="publishAt"
-                                    value="{{ old('publish_at') }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="expireAt">Expiry / Auto-Unpublish</label>
-                                <input type="datetime-local" class="form-control" name="expire_at" id="expireAt"
-                                    value="{{ old('expire_at') }}">
+                            <div class="row g-3" id="schedulingRow">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="publishAt">Schedule Publish</label>
+                                    <input type="datetime-local" class="form-control" name="publish_at" id="publishAt"
+                                        value="{{ old('publish_at') }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="expireAt">Expiry / Auto-Unpublish</label>
+                                    <input type="datetime-local" class="form-control" name="expire_at" id="expireAt"
+                                        value="{{ old('expire_at') }}">
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="visibility" class="form-label">Visibility</label>
@@ -523,8 +525,9 @@
                                 <select class="form-select" name="parent_id" id="parentPage">
                                     <option value="">— None —</option>
                                     @foreach(($parents ?? []) as $p)
-                                    <option value="{{ $p->id }}" {{ old('parent_id')==$p->id ? 'selected' : '' }}>{{
-                                        $p->title }}</option>
+                                    <option value="{{ $p->page_id }}" {{ old('parent_id')==$p->page_id ? 'selected' : '' }}>{{
+                                        $p->title }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -640,7 +643,19 @@
                                     <div class="col-lg-6"><input type="text" class="form-control" name="og_description"
                                             placeholder="OG Description" value="{{ old('og_description') }}"></div>
                                     <div class="col-lg-6">
-                                        <input type="file" class="form-control" name="og_image" accept="image/*">
+                                        <label class="form-label">Open Graph Image</label>
+                                        <div class="input-group">
+                                            <input type="text" id="og_image" name="og_image" class="form-control" readonly>
+                                            <button type="button" class="btn btn-outline-secondary select-media-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#mediaModal"
+                                                    data-input="og_image"
+                                                    data-preview="og_image_preview"
+                                                    data-multiple="false">
+                                                Select Image
+                                            </button>
+                                        </div>
+                                        <div id="og_image_preview" class="mt-2"></div>
                                     </div>
                                 </div>
                                 <h5 class="mt-4">Twitter Card</h5>
@@ -651,7 +666,19 @@
                                             name="twitter_description" placeholder="Twitter Description"
                                             value="{{ old('twitter_description') }}"></div>
                                     <div class="col-lg-6">
-                                        <input type="file" class="form-control" name="twitter_image" accept="image/*">
+                                        <label class="form-label">Twitter Image</label>
+                                        <div class="input-group">
+                                            <input type="text" id="twitter_image" name="twitter_image" class="form-control" readonly>
+                                            <button type="button" class="btn btn-outline-secondary select-media-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#mediaModal"
+                                                    data-input="twitter_image"
+                                                    data-preview="twitter_image_preview"
+                                                    data-multiple="false">
+                                                Select Image
+                                            </button>
+                                        </div>
+                                        <div id="twitter_image_preview" class="mt-2"></div>
                                     </div>
                                 </div>
 
@@ -698,7 +725,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
                                     <div class="input-group">
-                                        <input type="text" id="gallery_images" name="gallery_images" class="form-control" readonly>
+                                        <input type="text" id="gallery_images" name="gallery_images[]" class="form-control" readonly>
                                         <button type="button" class="btn btn-outline-secondary select-media-btn" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#mediaModal" 
@@ -799,7 +826,7 @@
                                             <option value="1" @selected(old('enable_slider')==='1')>Yes</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 d-none" id="slider-component">
                                     <!-- 🔹 Image Slider Manager -->
                                         <div class="row g-3 mb-3">
                                             <div class="col-12">
@@ -874,15 +901,20 @@
                                             <option value="1" @selected(old('contact_form_enabled')==='1')>Yes</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <label class="form-label">Recipient Email</label>
                                         <input type="email" class="form-control" name="contact_form_email"
                                             value="{{ old('contact_form_email') }}">
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <label class="form-label">Form Subject</label>
                                         <input type="text" class="form-control" name="contact_form_subject"
                                             value="{{ old('contact_form_subject') }}">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="form-label">Form Success Message</label>
+                                        <input type="text" class="form-control" name="contact_form_success_message"
+                                            value="{{ old('contact_form_success_message') }}">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Custom Fields (JSON)</label>
@@ -962,11 +994,6 @@
                         <div class="tab-pane fade" id="scriptsTab" role="tabpanel">
                             <div class="card card-body">
                                 <h5 class="fw-semibold mb-3">Custom Code</h5>
-                                <div class="mb-3">
-                                    <label class="form-label">Custom CSS</label>
-                                    <textarea class="form-control font-monospace" rows="5"
-                                        name="custom_css">{{ old('custom_css') }}</textarea>
-                                </div>
                                 <div class="mb-3">
                                     <label class="form-label">Custom JS</label>
                                     <textarea class="form-control font-monospace" rows="5"
@@ -1092,6 +1119,7 @@
     <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Tagging Component -->
     <script>
         class TaggingComponent {
         constructor(containerId, hiddenInputId, endpoint) {
@@ -1220,6 +1248,7 @@
         `{{ url('/admin/search-cms-role') }}`
         );
     </script>
+    <!-- Author Tagging Component -->
     <script>
         class AuthorTaggingComponent {
         constructor(containerId, TagInput, hiddenInputId) {
@@ -1326,54 +1355,6 @@
         // ✅ Instantiate Author Tagging
         let authorTagging = new AuthorTaggingComponent('author-tag-input', 'author-tag-input', 'author_id');
 
-    </script>
-    <!-- Uppy File Upload -->
-    <script>
-        const galleryInput = document.getElementById("gallery_images");
-
-        const uppy = new Uppy.Uppy({
-            restrictions: {
-                maxNumberOfFiles: 10,
-                allowedFileTypes: ["image/*"]
-            },
-            autoProceed: false   // ✅ wait until user clicks upload
-        })
-        .use(Uppy.Dashboard, {
-            inline: true,
-            target: "#drag-drop-area",
-            proudlyDisplayPoweredByUppy: false,
-            showProgressDetails: true,
-            hideProgressAfterFinish: true,
-        })
-        .use(Uppy.XHRUpload, {
-            endpoint: "{{ route('admin.pages.uploadMedia') }}",
-            fieldName: "media",
-            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
-        });
-
-        let uploadedFiles = [];
-
-        // On successful upload
-        uppy.on("upload-success", (file, response) => {
-            const res = response.body;
-            console.log('--Resp: ', res);
-            
-            if (res && res.media.url) {
-                uploadedFiles.push({ name: res.media.original_name, path: res.media.url, id: res.media.id });
-                galleryInput.value = JSON.stringify(uploadedFiles);
-            }
-
-        });
-        // On file removal
-        uppy.on("file-removed", (file) => {
-            uploadedFiles = uploadedFiles.filter(f => f.name !== file.name);
-            galleryInput.value = JSON.stringify(uploadedFiles);
-        });
-        // On upload error
-        uppy.on("upload-error", (file, error, response) => {
-            console.error('Error uploading file:', file.name, error);
-            alert(`Error uploading ${file.name}: ${error}`);
-        });
     </script>
     <!-- <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script> -->
     <script>
@@ -1510,7 +1491,8 @@
             function sync() { password.disabled = visibility.value !== 'password'; }
             visibility.addEventListener('change', sync); sync();
         })();
-
+    </script>
+    <script>
         // On form submit, set hidden input with Quill HTML
         document.querySelector('#pageForm').addEventListener('submit', async function (e) {
             e.preventDefault();
@@ -1578,158 +1560,157 @@
             }
         });
     </script>
+    <!-- Slider Component Logic -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let slidesContainer = document.getElementById("slidesContainer");
-            let addSlideBtn = document.getElementById("addSlideBtn");
-            let sliderInput = document.getElementById("sliderImagesInput");
-            // Add new slide
-            addSlideBtn.addEventListener("click", function () {
-                let index = slidesContainer.children.length;
-                let slide = document.createElement("div");
-                slide.classList.add("card", "p-3", "slide-item", "mb-2");
-                slide.innerHTML = `
-                    <div class="row g-2 align-items-start justify-content-center">
-                        <!-- Media Picker -->
-                        <div class="col-3">
-                            <div>
+            document.addEventListener("DOMContentLoaded", function () {
+                let sliderComponent = document.getElementById('slider-component');
+                let selectSlider = document.querySelector("select[name='enable_slider']");
+
+                if (selectSlider && sliderComponent) {
+                    selectSlider.addEventListener("change", function () {
+                        if (selectSlider.value === "1") { 
+                            // or whatever value enables slider
+                            sliderComponent.classList.remove("d-none");
+                        } else {
+                            sliderComponent.classList.add("d-none");
+                        }
+                    });
+                }
+
+
+                const slidesContainer = document.getElementById("slidesContainer");
+                const addSlideBtn = document.getElementById("addSlideBtn");
+
+                // Add new slide
+                addSlideBtn.addEventListener("click", function () {
+                    const index = slidesContainer.children.length;
+                    const slide = document.createElement("div");
+                    slide.className = "card p-3 slide-item mb-2";
+                    slide.innerHTML = `
+                        <div class="row g-2 align-items-start justify-content-center">
+                            <div class="col-3">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="slides[${index}][image]" id="slide_image_${index}" readonly>
-                                    <button type="button" 
-                                            class="btn btn-outline-secondary select-media-btn" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#mediaModal" 
-                                            data-input="slide_image_${index}" 
-                                            data-preview="slide_preview_${index}">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary select-media-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#mediaModal"
+                                        data-input="slide_image_${index}"
+                                        data-preview="slide_preview_${index}"
+                                        data-multiple="false">
                                         Add Image
                                     </button>
                                 </div>
                                 <div id="slide_preview_${index}" class="mt-2"></div>
                             </div>
+                            <div class="col"><input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title"></div>
+                            <div class="col"><input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption"></div>
+                            <div class="col"><input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)"></div>
+                            <div class="col"><input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)"></div>
+                            <div class="col"><input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}"></div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
+                            </div>
                         </div>
+                    `;
+                    slidesContainer.appendChild(slide);
 
-                        <!-- Other Fields -->
-                        <div class="col">
-                            <div class = "input-group"><input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title"></div>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption">
-                        </div>
-                        <div class="col">
-                            <input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)">
-                        </div>
-                        <div class="col">
-                            <input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}">
-                        </div>
-                        <div class="col text-end">
-                            <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
-                        </div>
-                    </div>
-                `;
-                slidesContainer.appendChild(slide);
+                    // Bind remove button
+                    slide.querySelector(".removeSlideBtn").addEventListener("click", () => {
+                        slide.remove();
+                    });
 
-                // Bind remove button
-                slide.querySelector(".removeSlideBtn").addEventListener("click", function () {
-                    slide.remove();
+                    // Re-bind media picker events for new slide
+                    if (window.bindMediaPickerEvents) window.bindMediaPickerEvents();
                 });
 
-                // Re-bind media picker events for new button
-                bindMediaPickerEvents();
-            });
-
-
-            // Remove slide button (for pre-rendered slides)
-            slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
-                btn.addEventListener("click", function () {
-                    btn.closest(".slide-item").remove();
+                // Bind remove buttons for initial slides
+                slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        btn.closest(".slide-item").remove();
+                    });
                 });
             });
-
-
-        });
     </script>
-
+    <!-- Media Picker Logic -->
     <script>
-        let selectedInput = null;
-        let selectedPreview = null;
-        let allowMultiple = false;
-        let selectedFiles = [];
+        document.addEventListener("DOMContentLoaded", function () {
+            let selectedInput = null;
+            let selectedPreview = null;
+            let selectedFiles = [];
+            let allowMultiple = false;
 
-        function loadMedia(page = 1, search = '') {
-            fetch(`{{ url('/pages/fetch') }}?page=${page}&search=${search}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('media-library').innerHTML = data.data;
-                    document.getElementById('mediaPagination').innerHTML = data.pagination;
-                    bindMediaSelection();
-                });
-        }
-
-        function bindMediaSelection() {
-            document.querySelectorAll('.media-item').forEach(img => {
-                img.addEventListener('click', function() {
-                    const url = this.getAttribute('data-url');
-                    if (allowMultiple) {
-                        if (selectedFiles.includes(url)) {
-                            selectedFiles = selectedFiles.filter(item => item !== url);
-                            this.classList.remove('border-primary');
-                        } else {
-                            selectedFiles.push(url);
-                            this.classList.add('border-primary');
-                        }
-                    } else {
-                        document.querySelectorAll('.media-item').forEach(i => i.classList.remove('border-primary'));
-                        selectedFiles = [url];
-                        this.classList.add('border-primary');
-                    }
-                });
-            });
-        }
-
-        document.getElementById('selectMediaBtn').addEventListener('click', function() {
-            if (!selectedInput || !selectedPreview) return;
-
-            const inputField = document.getElementById(selectedInput);
-            const previewContainer = document.getElementById(selectedPreview);
-
-            if (allowMultiple) {
-                inputField.value = JSON.stringify(selectedFiles);
-                previewContainer.innerHTML = selectedFiles.map(url => `<img src="${url}" class="img-fluid me-2 mb-2 rounded" style="max-width:100px;">`).join('');
-            } else {
-                inputField.value = selectedFiles[0] || "";
-                previewContainer.innerHTML = selectedFiles[0] ? `<img src="${selectedFiles[0]}" class="img-fluid rounded mt-2" style="max-width:150px;">` : "";
-            }
-
-            const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
-            modal.hide();
-        });
-
-        document.querySelectorAll(".select-media-btn").forEach(button => {
-            button.addEventListener("click", function() {
+            // Handle "Add Image" button clicks
+            function handleMediaButtonClick() {
                 selectedInput = this.getAttribute("data-input");
                 selectedPreview = this.getAttribute("data-preview");
                 allowMultiple = this.getAttribute("data-multiple") === "true";
                 selectedFiles = [];
-                loadMedia();
-            });
-        });
-
-        document.getElementById('mediaSearch').addEventListener('keyup', function() {
-            loadMedia(1, this.value);
-        });
-
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('#mediaPagination a')) {
-                e.preventDefault();
-                let page = new URL(e.target.closest('a').href).searchParams.get('page');
-                loadMedia(page);
+                document.querySelectorAll(".media-item").forEach(img => img.classList.remove("border-primary"));
             }
+
+            // Bind click events for Add Image buttons
+            function bindMediaPickerEvents() {
+                document.querySelectorAll(".select-media-btn").forEach(button => {
+                    console.log("--Button: ", button);
+                    
+                    button.removeEventListener("click", handleMediaButtonClick);
+                    button.addEventListener("click", handleMediaButtonClick);
+                });
+            }
+
+            // When modal opens, bind click events for images again
+            document.getElementById("mediaModal").addEventListener("shown.bs.modal", function () {
+                document.querySelectorAll(".media-item").forEach(item => {
+                    item.onclick = function () {
+                        let url = this.getAttribute("data-url");
+
+                        if (!allowMultiple) {
+                            selectedFiles = [url];
+                            document.querySelectorAll(".media-item").forEach(i => i.classList.remove("border-primary"));
+                            this.classList.add("border-primary");
+                        } else {
+                            if (selectedFiles.includes(url)) {
+                                selectedFiles = selectedFiles.filter(f => f !== url);
+                                this.classList.remove("border-primary");
+                            } else {
+                                selectedFiles.push(url);
+                                this.classList.add("border-primary");
+                            }
+                        }
+                    };
+                });
+            });
+
+            // Handle select button click
+            document.getElementById("selectMediaBtn").addEventListener("click", function () {
+                
+                console.log("Select Input: ", selectedInput, "Selected Preview: ", selectedPreview);
+                
+                if (!selectedInput || !selectedPreview || selectedFiles.length === 0) return;
+                console.log('--Selected Files: ', selectedFiles);
+                let inputEl = document.getElementById(selectedInput);
+                let previewEl = document.getElementById(selectedPreview);
+
+                if (!allowMultiple) {
+                    inputEl.value = selectedFiles[0];
+                    previewEl.innerHTML = `<img src="${selectedFiles[0]}" class="img-fluid rounded" style="max-width:150px;">`;
+                } else {
+                    inputEl.value = JSON.stringify(selectedFiles);
+                    previewEl.innerHTML = selectedFiles.map(url => `<img src="${url}" class="img-fluid rounded m-1" style="max-width:100px;">`).join("");
+                }
+
+                // Close modal
+                let modal = bootstrap.Modal.getInstance(document.getElementById("mediaModal"));
+                modal.hide();
+            });
+
+            // Initial binding for pre-existing Add Image buttons
+            bindMediaPickerEvents();
+
+            // Expose binding for dynamically added slides
+            window.bindMediaPickerEvents = bindMediaPickerEvents;
         });
     </script>
-
     @endsection
-
 </x-layouts.admin-app>
