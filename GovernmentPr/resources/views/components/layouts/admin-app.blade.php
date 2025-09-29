@@ -437,6 +437,13 @@
                                         <a class="nav-link" href="{{ route('view-real-time-updates') }}">Real-Time Update</a>
                                     </li><!--end nav-item-->
                                     @endif
+                                    @if(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                   <a class="nav-link" href="{{ route('individual-company-report', encrypt(Auth::id())) }}">
+                                            Inventory Reporting Analytics
+                                    </a>
+                                    </li><!--end nav-item-->
+                                    @endif
 
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">

@@ -521,7 +521,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
     });
-
+    
     // Inventory Forecasting
     Route::controller(InventoryForecastingController::class)->group(function() {
         Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
