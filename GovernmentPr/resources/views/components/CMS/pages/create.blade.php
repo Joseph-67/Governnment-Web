@@ -1,417 +1,471 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Page Builder')
+
     @section('styles')
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.css" rel="stylesheet" />
-    <link href="{{asset('adminAssets/libs/uppy/uppy.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('adminAssets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('adminAssets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <style>
-        /* --- General Font & Colors --- */
-        body,
-        input,
-        textarea,
-        select,
-        button {
-            font-family: 'Inter', 'Roboto', sans-serif;
-            color: #212529;
-            /* background-color: #f8f9fa; */
-        }
+        <!-- External links and assets -->
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.css" rel="stylesheet" />
+        <link href="{{ asset('adminAssets/libs/uppy/uppy.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('adminAssets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('adminAssets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-        /* --- Cards --- */
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            /* padding: 1.5rem; */
-            margin-bottom: 1.5rem;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            /* background-color: #fff; */
-        }
+        <!-- Inline CSS (consider extracting to file) -->
+        <style>
+            /* --- General Font & Colors --- */
+            body,
+            input,
+            textarea,
+            select,
+            button {
+                font-family: 'Inter', 'Roboto', sans-serif;
+                color: #212529;
+                /* background-color: #f8f9fa; */
+            }
 
-        .card:hover {
-            /* transform: translateY(-3px); */
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        }
+            /* --- Cards --- */
+            .card {
+                border: none;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                /* padding: 1.5rem; */
+                margin-bottom: 1.5rem;
+                transition: transform 0.25s ease, box-shadow 0.25s ease;
+                /* background-color: #fff; */
+            }
 
-        /* --- Quill Editor --- */
-        #editor-container {
-            border: 1px solid #ddd;
+            .card:hover {
+                /* transform: translateY(-3px); */
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            }
+
+            /* --- Quill Editor --- */
+            #editor-container {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                min-height: 200px;
+                max-height: 600px;
+                overflow-y: auto;
+                /* background-color: #fff; */
+            }
+
+            .ql-toolbar {
+                border: none;
+                background: #f9f9f9;
+                border-bottom: 1px solid #ddd;
+                border-radius: 8px 8px 0 0;
+                padding: 4px 8px;
+            }
+
+            .ql-toolbar button {
+                border: none;
+                background: transparent;
+                padding: 4px 6px;
+                border-radius: 4px;
+                transition: background-color 0.2s ease;
+            }
+
+            .ql-toolbar button:hover {
+                background-color: #e8f0fe;
+                /* Gmail-like hover */
+            }
+
+            .ql-toolbar .ql-formats {
+                margin-right: 8px;
+            }
+
+            #editor {
+                padding: 12px;
+                flex: 1;
+                min-height: 200px;
+                outline: none;
+            }
+
+            /* --- Fullscreen Editor --- */
+            /* Fullscreen editor */
+            .ql-fullscreen {
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1050;
+                /* background: #fff; */
+                padding: 1rem;
+            }
+
+            /* Fullscreen */
+            .ql-fullscreen {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                z-index: 1050 !important;
+                background: #fff;
+                overflow: auto;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .ql-fullscreen .ql-toolbar {
+                position: sticky;
+                top: 0;
+                z-index: 1060;
+                background: #fff;
+            }
+
+            /* --- Tabs --- */
+            .nav-tabs {
+                border-bottom: none;
+                margin-bottom: 1rem;
+            }
+
+            .nav-tabs .nav-link {
+                border: none;
+                font-weight: 500;
+                color: #6c757d;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 0.75rem 1rem;
+                transition: color 0.2s ease, border-bottom 0.2s ease;
+            }
+
+            .nav-tabs .nav-link.active {
+                color: #0d6efd;
+                border-bottom: 2px solid #0d6efd;
+                background-color: transparent;
+            }
+
+            /* --- Tab Subtitles --- */
+            .tab-subtitle {
+                font-size: 0.95rem;
+                color: #6c757d;
+                margin-top: -0.25rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                transition: color 0.2s ease, font-weight 0.2s ease, opacity 0.25s ease;
+            }
+
+            .tab-subtitle span#tabIcon {
+                font-size: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .tab-subtitle.active {
+                color: #0d6efd;
+                font-weight: 500;
+            }
+
+            /* --- Form Inputs --- */
+            .form-control,
+            .form-select {
+                border-radius: 8px;
+                border: 1px solid #CED4DA;
+                padding: 0.5rem 0.75rem;
+                transition: border-color 0.25s ease, box-shadow 0.25s ease;
+            }
+
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+            }
+
+            /* --- Buttons --- */
+            .btn-primary,
+            .btn-warning,
+            .btn-danger {
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-weight: 500;
+                transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            }
+
+            .btn-primary:hover,
+            .btn-warning:hover,
+            .btn-danger:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            /* --- SEO Preview Box --- */
+            .preview-seo {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-top: 0.5rem;
+            }
+
+            /* --- Responsive Row Padding --- */
+            .row.g-0>.col-lg-7,
+            .row.g-0>.col-lg-5 {
+                padding: 1.5rem;
+            }
+
+            /* --- Action Buttons & Heading Row --- */
+            .header-actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .header-actions h1 {
+                margin: 0;
+                font-size: 1.75rem;
+                font-weight: 600;
+            }
+
+            .header-actions .btn-group {
+                display: flex;
+                gap: 0.5rem;
+            }
+        </style>
+        <style>
+            /* Container */
+            .author-tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px;
+            border: 1px solid #d1d5db; /* gray-300 */
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            min-height: 200px;
-            max-height: 600px;
-            overflow-y: auto;
-            /* background-color: #fff; */
-        }
+            background-color: #ffffff;
+            position: relative;
+            min-height: 50px;
+            cursor: text;
+            }
 
-        .ql-toolbar {
-            border: none;
-            background: #f9f9f9;
-            border-bottom: 1px solid #ddd;
-            border-radius: 8px 8px 0 0;
-            padding: 4px 8px;
-        }
-
-        .ql-toolbar button {
-            border: none;
-            background: transparent;
-            padding: 4px 6px;
-            border-radius: 4px;
-            transition: background-color 0.2s ease;
-        }
-
-        .ql-toolbar button:hover {
-            background-color: #e8f0fe;
-            /* Gmail-like hover */
-        }
-
-        .ql-toolbar .ql-formats {
-            margin-right: 8px;
-        }
-
-        #editor {
-            padding: 12px;
+            /* Input field */
+            .author-tag-input input.form-control {
             flex: 1;
-            min-height: 200px;
-            outline: none;
-        }
-
-        /* --- Fullscreen Editor --- */
-        /* Fullscreen editor */
-        .ql-fullscreen {
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1050;
-            /* background: #fff; */
-            padding: 1rem;
-        }
-
-        /* Fullscreen */
-        .ql-fullscreen {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: 1050 !important;
-            background: #fff;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-        }
-
-        .ql-fullscreen .ql-toolbar {
-            position: sticky;
-            top: 0;
-            z-index: 1060;
-            background: #fff;
-        }
-
-        /* --- Tabs --- */
-        .nav-tabs {
-            border-bottom: none;
-            margin-bottom: 1rem;
-        }
-
-        .nav-tabs .nav-link {
+            min-width: 160px;
             border: none;
-            font-weight: 500;
-            color: #6c757d;
-            display: flex;
+            }
+
+            /* Tag (selected author) */
+            .author-tag-input .tag {
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 0.75rem 1rem;
-            transition: color 0.2s ease, border-bottom 0.2s ease;
-        }
+            background-color: #e0f2fe; /* sky-100 */
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            }
 
-        .nav-tabs .nav-link.active {
-            color: #0d6efd;
-            border-bottom: 2px solid #0d6efd;
-            background-color: transparent;
-        }
+            .author-tag-input .tag span {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 6px;
+            color: #475569; /* slate-600 */
+            transition: color 0.2s ease;
+            }
 
-        /* --- Tab Subtitles --- */
-        .tab-subtitle {
-            font-size: 0.95rem;
-            color: #6c757d;
-            margin-top: -0.25rem;
-            margin-bottom: 1.5rem;
+            .author-tag-input .tag span:hover {
+            color: #ef4444; /* red-500 */
+            }
+
+            /* Suggestions Dropdown */
+            .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
+            background: #ffffff;
+            /* border: 1px solid #d1d5db; */
+            border-radius: 8px;
+            margin-top: 4px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            /* Each suggestion */
+            .suggestions .suggestion {
+            padding: 10px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            transition: color 0.2s ease, font-weight 0.2s ease, opacity 0.25s ease;
-        }
+            gap: 12px;
+            transition: background-color 0.2s ease;
+            }
 
-        .tab-subtitle span#tabIcon {
-            font-size: 1rem;
-            margin-right: 0.5rem;
-        }
+            .suggestions .suggestion:hover {
+            background-color: #f1f5f9; /* slate-100 */
+            }
 
-        .tab-subtitle.active {
-            color: #0d6efd;
-            font-weight: 500;
-        }
+            /* Suggestion text */
+            .suggestions .suggestion strong {
+            font-size: 15px;
+            color: #1d4ed8; /* blue-700 */
+            }
 
-        /* --- Form Inputs --- */
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            border: 1px solid #CED4DA;
-            padding: 0.5rem 0.75rem;
-            transition: border-color 0.25s ease, box-shadow 0.25s ease;
-        }
+            .suggestions .suggestion span {
+            font-size: 13px;
+            color: #64748b; /* slate-500 */
+            }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
-        }
+            /* Scrollbar styling */
+            .suggestions::-webkit-scrollbar {
+            width: 6px;
+            }
+            .suggestions::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            }
+            /* ===========================
+            CATEGORY TAGGING COMPONENT
+            =========================== */
 
-        /* --- Buttons --- */
-        .btn-primary,
-        .btn-warning,
-        .btn-danger {
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-        }
-
-        .btn-primary:hover,
-        .btn-warning:hover,
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* --- SEO Preview Box --- */
-        .preview-seo {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        /* --- Responsive Row Padding --- */
-        .row.g-0>.col-lg-7,
-        .row.g-0>.col-lg-5 {
-            padding: 1.5rem;
-        }
-
-        /* --- Action Buttons & Heading Row --- */
-        .header-actions {
+            /* Container */
+            .tag-input {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 8px;
+            background-color: #ffffff;
+            position: relative;
+            min-height: 50px; 
+            cursor: text;
+            }
 
-        .header-actions h1 {
-            margin: 0;
-            font-size: 1.75rem;
+            /* Input field */
+            .tag-input input.form-control {
+            flex: 1;
+            min-width: 140px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 6px 8px;
+            background: transparent;
+            }
+
+            /* Tag (selected category) */
+            .tag-input .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #dcfce7; /* green-100 */
+            color: #166534; /* green-800 */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 600;
-        }
+            }
 
-        .header-actions .btn-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-    </style>
-    <style>
-        /* Container */
-        .author-tag-input {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 8px;
-        border: 1px solid #d1d5db; /* gray-300 */
-        border-radius: 8px;
-        background-color: #ffffff;
-        position: relative;
-        min-height: 50px;
-        cursor: text;
-        }
+            .tag-input .tag span {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 6px;
+            color: #475569; /* slate-600 */
+            transition: color 0.2s ease;
+            }
 
-        /* Input field */
-        .author-tag-input input.form-control {
-        flex: 1;
-        min-width: 160px;
-        border: none;
-        }
+            .tag-input .tag span:hover {
+            color: #ef4444; /* red-500 */
+            }
 
-        /* Tag (selected author) */
-        .author-tag-input .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background-color: #e0f2fe; /* sky-100 */
-        padding: 6px 10px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-        }
-
-        .author-tag-input .tag span {
-        cursor: pointer;
-        font-weight: bold;
-        margin-left: 6px;
-        color: #475569; /* slate-600 */
-        transition: color 0.2s ease;
-        }
-
-        .author-tag-input .tag span:hover {
-        color: #ef4444; /* red-500 */
-        }
-
-        /* Suggestions Dropdown */
-        .suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        max-height: 220px;
-        overflow-y: auto;
-        background: #ffffff;
-        /* border: 1px solid #d1d5db; */
-        border-radius: 8px;
-        margin-top: 4px;
-        z-index: 9999;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Each suggestion */
-        .suggestions .suggestion {
-        padding: 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: background-color 0.2s ease;
-        }
-
-        .suggestions .suggestion:hover {
-        background-color: #f1f5f9; /* slate-100 */
-        }
-
-        /* Suggestion text */
-        .suggestions .suggestion strong {
-        font-size: 15px;
-        color: #1d4ed8; /* blue-700 */
-        }
-
-        .suggestions .suggestion span {
-        font-size: 13px;
-        color: #64748b; /* slate-500 */
-        }
-
-        /* Scrollbar styling */
-        .suggestions::-webkit-scrollbar {
-        width: 6px;
-        }
-        .suggestions::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-        }
-        /* ===========================
-        CATEGORY TAGGING COMPONENT
-        =========================== */
-
-        /* Container */
-        .tag-input {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 8px;
-        border: 1px solid #d1d5db; /* gray-300 */
-        border-radius: 8px;
-        background-color: #ffffff;
-        position: relative;
-        min-height: 50px; 
-        cursor: text;
-        }
-
-        /* Input field */
-        .tag-input input.form-control {
-        flex: 1;
-        min-width: 140px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        padding: 6px 8px;
-        background: transparent;
-        }
-
-        /* Tag (selected category) */
-        .tag-input .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background-color: #dcfce7; /* green-100 */
-        color: #166534; /* green-800 */
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        }
-
-        .tag-input .tag span {
-        cursor: pointer;
-        font-weight: bold;
-        margin-left: 6px;
-        color: #475569; /* slate-600 */
-        transition: color 0.2s ease;
-        }
-
-        .tag-input .tag span:hover {
-        color: #ef4444; /* red-500 */
-        }
-
-    </style>
+            /* Media Item Styles */
+            .media-item {
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .media-item:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            .media-item.selected {
+                border-color: #0d6efd !important;
+                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            }
+            .media-card {
+                background: #fff;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                padding: 0.5rem;
+                text-align: center;
+            }
+            .media-card small {
+                display: block;
+                font-size: 0.8rem;
+                color: #6c757d;
+            }
+            #media-loading {
+                text-align: center;
+                padding: 2rem;
+            }
+            #uppy-upload {
+                min-height: 200px;
+                border: 2px dashed #ced4da;
+                border-radius: 8px;
+                padding: 2rem;
+                text-align: center;
+            }
+        </style>
 
     @endsection
     @section('modals')
-    <div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Media Library</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="mediaModalLabel">Media Library</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-                    <!-- Search Bar -->
-                    <div class="d-flex justify-content-between mb-3">
-                        <input type="text" id="mediaSearch" class="form-control w-50" placeholder="Search media...">
-                    </div>
+                    <!-- Tabs for Library and Upload -->
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="library-tab" data-bs-toggle="tab" href="#library-content" role="tab">Library</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="upload-tab" data-bs-toggle="tab" href="#upload-content" role="tab">Upload</a>
+                        </li>
+                    </ul>
 
-                    <!-- Media Grid -->
-                    <div class="row g-2" id="media-library">
-                        <!-- Loaded via AJAX -->
-                         @foreach($media as $item)
-                            <div class="col-3">
-                                <img src="{{ asset('storage/'.$item->path) }}"
-                                    data-url="{{ asset('storage/'.$item->path) }}"
-                                    class="img-fluid border media-item selectable"
-                                    style="cursor:pointer;">
+                    <div class="tab-content">
+                        <!-- Library Tab -->
+                        <div class="tab-pane fade show active" id="library-content" role="tabpanel">
+                            <!-- Search Bar -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <input type="text" id="mediaSearch" class="form-control w-50" placeholder="Search media..." aria-label="Search media">
                             </div>
-                        @endforeach
 
-                    </div>
+                            <!-- Media Grid -->
+                            <div class="row g-2" id="media-library">
+                                <!-- Loaded via AJAX -->
+                            </div>
+                            <div id="media-loading" class="d-none">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <span>Loading media...</span>
+                            </div>
 
-                    <!-- Pagination -->
-                    <div class="d-flex justify-content-center mt-3">
-                        <nav>
-                            <ul class="pagination pagination-sm mb-0" id="mediaPagination"></ul>
-                        </nav>
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-center mt-3">
+                                <nav aria-label="Media pagination">
+                                    <ul class="pagination pagination-sm mb-0" id="mediaPagination"></ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <!-- Upload Tab -->
+                        <div class="tab-pane fade" id="upload-content" role="tabpanel">
+                            <div id="uppy-upload"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -437,7 +491,7 @@
             <!-- End Action Buttons Top -->
         </div>
 
-        <form class="space-y-6" id="pageForm" novalidate>
+        <form class="space-y-6" id="pageForm" method="POST" action="{{ route('admin.pages.store') }}" novalidate>
             @csrf
             <div class="row g-4">
                 <!-- Left Column -->
@@ -448,12 +502,12 @@
                             <div class="col-md-12">
                                 <label for="pageTitle" class="form-label">Page Title</label>
                                 <input type="text" class="form-control" name="title" id="pageTitle"
-                                    value="{{ old('title') }}" placeholder="e.g. About Us">
+                                    value="{{ old('title') }}" placeholder="e.g. About Us" required aria-required="true">
                             </div>
                             <div class="col-md-8">
                                 <label for="pageSlug" class="form-label">Slug / URL</label>
                                 <input type="text" class="form-control" name="slug" id="pageSlug"
-                                    value="{{ old('slug') }}" placeholder="about-us">
+                                    value="{{ old('slug') }}" placeholder="about-us" required aria-required="true">
                             </div>
                             <div class="col-md-4">
                                 <label for="menuOrder" class="form-label">Order / Position</label>
@@ -562,7 +616,7 @@
                 <!-- Tabs Section -->
                 <div class="col-12">
                     <!-- Tabs -->
-                    <ul class="nav nav-tabs mb-2" id="pageTab" role="tablist">
+                    <ul class="nav nav-tabs mb-2" id="pageTab" role="tablist" aria-label="Page settings tabs">
                         <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#seoTab"
                                 data-description="Manage SEO titles, meta descriptions, and keywords.">🔍 SEO</a></li>
                         <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mediaTab"
@@ -725,7 +779,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Gallery</label>
                                     <div class="input-group">
-                                        <input type="text" id="gallery_images" name="gallery_images[]" class="form-control" readonly>
+                                        <input type="text" id="gallery_images" name="gallery_images" class="form-control" readonly>
                                         <button type="button" class="btn btn-outline-secondary select-media-btn" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#mediaModal" 
@@ -1305,29 +1359,30 @@
         showSuggestions(users) {
             this.suggestionsDiv.innerHTML = '';
             users.forEach(user => {
+            const fullName = `${user.first_name} ${user.last_name}${user.other_name ? ' ' + user.other_name : ''}`;
             const suggestionElement = document.createElement('div');
             suggestionElement.className = 'suggestion';
             suggestionElement.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="${user.profilePic}" alt="${user.first_name} ${user.last_name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
-                <div>
-                    <strong style="font-size: 15px; color: #1d4ed8;">${user.first_name} ${user.last_name}${user.other_name ? ' ' + user.other_name : ''}</strong><br>
-                    <span style="font-size: 13px; color: #64748b;">${user.email}</span>
-                </div>
+                    <img src="${user.profilePic}" alt="${fullName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+                    <div>
+                        <strong style="font-size: 15px; color: #1d4ed8;">${fullName}</strong><br>
+                        <span style="font-size: 13px; color: #64748b;">${user.email}</span>
+                    </div>
                 </div>
             `;
-            suggestionElement.addEventListener('click', () => this.addTag(user.id, user.email));
+            suggestionElement.addEventListener('click', () => this.addTag(user.id, fullName));
             this.suggestionsDiv.appendChild(suggestionElement);
 
-            this.userMap[user.email] = user.id;
+            this.userMap[fullName] = user.id;
             });
         }
 
-        addTag(userId, userName) {
+        addTag(userId, fullName) {
             // Only allow one author
             this.tags = [userId];
             this.hiddenInput.value = userId; // ✅ Store in hidden input
-            this.renderTags(userName);
+            this.renderTags(fullName);
             this.inputField.value = '';
             this.suggestionsDiv.innerHTML = '';
         }
@@ -1338,12 +1393,12 @@
             this.renderTags();
         }
 
-        renderTags(userName = null) {
+        renderTags(fullName = null) {
             this.tagInput.innerHTML = '';
-            if (this.tags.length > 0 && userName) {
+            if (this.tags.length > 0 && fullName) {
             const tagElement = document.createElement('div');
             tagElement.className = 'tag';
-            tagElement.innerHTML = `${userName} <span>&times;</span>`;
+            tagElement.innerHTML = `${fullName} <span>&times;</span>`;
             tagElement.querySelector('span').addEventListener('click', () => this.removeTag());
             this.tagInput.appendChild(tagElement);
             }
@@ -1370,9 +1425,9 @@
                 '#layoutTab': '🎨',
                 '#componentsTab': '⚙️',
                 '#scriptsTab': '💻',
-                '#settingsTab': '🛠️',
                 '#accessTab': '🔒',
-                '#analyticsTab': '📊'
+                '#analyticsTab': '📊',
+                '#settingsTab': '⚡'
             };
 
             tabLinks.forEach(link => {
@@ -1496,6 +1551,19 @@
         // On form submit, set hidden input with Quill HTML
         document.querySelector('#pageForm').addEventListener('submit', async function (e) {
             e.preventDefault();
+
+            // Client-side validation
+            if (!this.checkValidity()) {
+                Toastify({
+                    text: 'Please fill all required fields',
+                    duration: 5000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#F44336",
+                    stopOnFocus: true
+                }).showToast();
+                return;
+            }
 
             // Set Quill HTML to hidden input
             document.querySelector('input[name="body"]').value = quill.root.innerHTML;
@@ -1659,8 +1727,7 @@
                 });
             }
 
-            // When modal opens, bind click events for images again
-            document.getElementById("mediaModal").addEventListener("shown.bs.modal", function () {
+            function bindMediaItemClicks() {
                 document.querySelectorAll(".media-item").forEach(item => {
                     item.onclick = function () {
                         let url = this.getAttribute("data-url");
@@ -1680,6 +1747,11 @@
                         }
                     };
                 });
+            }
+
+            // When modal opens, bind click events for images again
+            document.getElementById("mediaModal").addEventListener("shown.bs.modal", function () {
+                bindMediaItemClicks();
             });
 
             // Handle select button click
@@ -1710,6 +1782,114 @@
 
             // Expose binding for dynamically added slides
             window.bindMediaPickerEvents = bindMediaPickerEvents;
+        });
+    </script>
+    <!-- Media AJAX Loading -->
+    <script>
+        let currentPage = 1;
+        const mediaLibrary = document.getElementById('media-library');
+        const mediaSearch = document.getElementById('mediaSearch');
+        const mediaPagination = document.getElementById('mediaPagination');
+        const mediaLoading = document.getElementById('media-loading');
+
+        function loadMedia(search = '', page = 1) {
+            mediaLoading.classList.remove('d-none');
+            mediaLibrary.innerHTML = '';
+            fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    
+                    mediaLoading.classList.add('d-none');
+                    data.media.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'col-3';
+                        div.innerHTML = `
+                            <div class="media-card">
+                                <embed src="{{ asset('storage/') }}/${item.path}" data-url="{{ asset('storage/') }}/${item.path}" class="img-fluid border media-item selectable" style="cursor:pointer;" loading="lazy" type="${ item.mime_type ?? 'application/octet-stream' }">
+                                <small>${item.original_name || 'Untitled'}</small>
+                            </div>
+                        `;
+                        mediaLibrary.appendChild(div);
+                    });
+
+                    // Populate pagination
+                    mediaPagination.innerHTML = '';
+                    data.links.forEach(link => {
+                        const li = document.createElement('li');
+                        li.className = `page-item ${link.active ? 'active' : ''} ${link.url ? '' : 'disabled'}`;
+                        const a = document.createElement('a');
+                        a.className = 'page-link';
+                        a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
+                        if (link.url) {
+                            a.href = '#';
+                            a.onclick = (e) => {
+                                e.preventDefault();
+                                const url = new URL(link.url);
+                                const newPage = url.searchParams.get('page');
+                                loadMedia(mediaSearch.value, newPage);
+                            };
+                        }
+                        li.appendChild(a);
+                        mediaPagination.appendChild(li);
+                    });
+
+                    // Re-bind image click events after load
+                    bindMediaItemClicks();
+                })
+                .catch(err => {
+                    mediaLoading.classList.add('d-none');
+                    console.error('Media load error:', err);
+                    Toastify({
+                        text: 'Failed to load media. Please try again.',
+                        backgroundColor: "#F44336"
+                    }).showToast();
+                });
+        }
+
+        // Initial load when modal opens
+        document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
+
+        // Search with debounce
+        let searchTimeout;
+        mediaSearch.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
+        });
+    </script>
+    <!-- Uppy Upload -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const uppy = new Uppy.Uppy({
+                autoProceed: false,
+                allowMultipleUploads: true,
+                restrictions: {
+                    allowedFileTypes: ['image/*', 'video/*'] // Adjust as needed
+                }
+            })
+            .use(Uppy.Dashboard, {
+                target: '#uppy-upload',
+                inline: true,
+                height: 300,
+                proudlyDisplayPoweredByUppy: false
+            })
+            .use(Uppy.XHRUpload, {
+                endpoint: '{{ route("admin.media.store") }}', // Assume a route for upload
+                formData: true,
+                fieldName: 'file'
+            });
+
+            uppy.on('complete', (result) => {
+                if (result.successful.length > 0) {
+                    Toastify({
+                        text: 'Files uploaded successfully!',
+                        backgroundColor: "#28a745"
+                    }).showToast();
+                    // Switch to library tab and reload media
+                    document.getElementById('library-tab').click();
+                    loadMedia();
+                }
+            });
         });
     </script>
     @endsection

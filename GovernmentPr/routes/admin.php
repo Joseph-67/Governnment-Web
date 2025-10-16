@@ -138,6 +138,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     // Media
     Route::controller(MediaController::class)->group(function() {
         Route::get('/media', 'index')->name('admin.media.index');
+        Route::get('/media-search', 'search')->name('admin.media.search');
         Route::get('/media/files/{categoryId}', 'getFiles')->name('media.files');
         Route::post('/media', 'store')->name('admin.media.store');
         Route::get('/media/{media}', 'show')->name('admin.media.show');

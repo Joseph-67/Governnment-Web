@@ -145,4 +145,17 @@ class MediaController extends Controller
         return redirect()->route('cms.media.index')
             ->with('success', 'Media file deleted successfully!');
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search', '');
+        $media = Media::when($search, function ($query, $search) {
+            return $query->where('original_name', 'like', "%$search%");
+        })->paginate(20);
+
+        return response()->json([
+            'media' => $media->items(),
+            'links' => $media->links(),
+        ]);
+    }
 }
