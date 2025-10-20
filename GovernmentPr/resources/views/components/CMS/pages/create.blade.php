@@ -1532,8 +1532,11 @@
         document.querySelector('#pageForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
+            console.log(this);
+            
             // Client-side validation
             if (!this.checkValidity()) {
+                this.reportValidity(); // shows native browser validation messages
                 Toastify({
                     text: 'Please fill all required fields',
                     duration: 5000,
@@ -1560,7 +1563,7 @@
 
                 const data = await res.json();
 
-                if (data.success) {
+                if (data.status === 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: 'Saved!',
@@ -1874,21 +1877,20 @@
         document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
     </script>
     <!-- Media Selection -->
-     <script>
-window.bindMediaPickerEvents = function() {
-    document.querySelectorAll('.select-media-btn').forEach(btn => {
-        btn.onclick = function() {
-            activeInputId = btn.dataset.input;
-            activePreviewId = btn.dataset.preview;
-            allowMultiple = btn.dataset.multiple === 'true';
-            selectedMedia = [];
-            document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-            loadMedia(); // reload media library
+    <script>
+        window.bindMediaPickerEvents = function() {
+            document.querySelectorAll('.select-media-btn').forEach(btn => {
+                btn.onclick = function() {
+                    activeInputId = btn.dataset.input;
+                    activePreviewId = btn.dataset.preview;
+                    allowMultiple = btn.dataset.multiple === 'true';
+                    selectedMedia = [];
+                    document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
+                    loadMedia(); // reload media library
+                };
+            });
         };
-    });
-};
-</script>
-
+    </script>
     <!-- Uppy Upload -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {

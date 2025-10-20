@@ -22,9 +22,16 @@ class PageController extends Controller
      */
     public function index()
     {
-        $pages = Page::latest()->paginate(15);
-        return view('components.CMS.pages.index', compact('pages'));
+        $pages = \App\Models\Page::latest()->get();
+
+        return view('components.CMS.pages.index', [
+            'pages'       => $pages,
+            'title'       => 'Pages Management',
+            'description' => 'Manage, edit, and delete existing pages.',
+            'keywords'    => 'pages, cms, content management',
+        ]);
     }
+
 
     /**
      * Show form for creating a page.
@@ -72,9 +79,9 @@ class PageController extends Controller
     /**
      * Edit page form.
      */
-    public function edit(Page $page)
+    public function edit($page)
     {
-        $parents = Page::where('page_id', '!=', $page->page_id)->get();
+        $parents = Page::where('page_id', '!=', $page)->get();
         return view('components.CMS.pages.edit', compact('page', 'parents'));
     }
 
