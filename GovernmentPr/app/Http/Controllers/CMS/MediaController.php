@@ -151,11 +151,11 @@ class MediaController extends Controller
         $search = $request->input('search', '');
         $media = Media::when($search, function ($query, $search) {
             return $query->where('original_name', 'like', "%$search%");
-        })->paginate(20);
+        })->paginate(10);
 
         return response()->json([
             'media' => $media->items(),
-            'links' => $media->links(),
+            'links' => $media->linkCollection(),
         ]);
     }
 }

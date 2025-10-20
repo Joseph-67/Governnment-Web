@@ -415,67 +415,47 @@
                 text-align: center;
             }
         </style>
+        <style>
+            .media-card.selected {
+                border: 2px solid #007bff !important;
+                background-color: rgba(0, 123, 255, 0.05);
+                box-shadow: 0 0 10px rgba(0,123,255,0.3);
+                transform: scale(1.02);
+                transition: all 0.2s;
+            }
 
+            .pagination .page-item.active .page-link {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+            }
+
+        </style>
     @endsection
     @section('modals')
-    <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mediaModalLabel">Media Library</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- Tabs for Library and Upload -->
-                    <ul class="nav nav-tabs mb-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="library-tab" data-bs-toggle="tab" href="#library-content" role="tab">Library</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="upload-tab" data-bs-toggle="tab" href="#upload-content" role="tab">Upload</a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <!-- Library Tab -->
-                        <div class="tab-pane fade show active" id="library-content" role="tabpanel">
-                            <!-- Search Bar -->
-                            <div class="d-flex justify-content-between mb-3">
-                                <input type="text" id="mediaSearch" class="form-control w-50" placeholder="Search media..." aria-label="Search media">
-                            </div>
-
-                            <!-- Media Grid -->
-                            <div class="row g-2" id="media-library">
-                                <!-- Loaded via AJAX -->
-                            </div>
-                            <div id="media-loading" class="d-none">
-                                <div class="spinner-border text-primary" role="status"></div>
-                                <span>Loading media...</span>
-                            </div>
-
-                            <!-- Pagination -->
-                            <div class="d-flex justify-content-center mt-3">
-                                <nav aria-label="Media pagination">
-                                    <ul class="pagination pagination-sm mb-0" id="mediaPagination"></ul>
-                                </nav>
-                            </div>
-                        </div>
-
-                        <!-- Upload Tab -->
-                        <div class="tab-pane fade" id="upload-content" role="tabpanel">
-                            <div id="uppy-upload"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="selectMediaBtn">Select</button>
-                </div>
-            </div>
+<div class="modal fade" id="mediaModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Media Library</h5>
+        <input type="text" id="mediaSearch" class="form-control w-50 ms-auto" placeholder="Search media...">
+      </div>
+      <div class="modal-body">
+        <div id="media-loading" class="text-center d-none mb-3">
+          <div class="spinner-border text-primary"></div>
         </div>
+        <div class="row" id="media-library"></div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <ul class="pagination mb-0" id="mediaPagination"></ul>
+        <button id="insertMediaBtn" class="btn btn-primary">Insert Selected</button>
+      </div>
     </div>
+  </div>
+</div>
+
+
+
     @endsection
     <div class="container-xxl">
         <!-- Page Title + Actions -->
@@ -1701,162 +1681,202 @@
             });
     </script>
     <!-- Media Picker Logic -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let selectedInput = null;
-            let selectedPreview = null;
-            let selectedFiles = [];
-            let allowMultiple = false;
 
-            // Handle "Add Image" button clicks
-            function handleMediaButtonClick() {
-                selectedInput = this.getAttribute("data-input");
-                selectedPreview = this.getAttribute("data-preview");
-                allowMultiple = this.getAttribute("data-multiple") === "true";
-                selectedFiles = [];
-                document.querySelectorAll(".media-item").forEach(img => img.classList.remove("border-primary"));
-            }
 
-            // Bind click events for Add Image buttons
-            function bindMediaPickerEvents() {
-                document.querySelectorAll(".select-media-btn").forEach(button => {
-                    console.log("--Button: ", button);
-                    
-                    button.removeEventListener("click", handleMediaButtonClick);
-                    button.addEventListener("click", handleMediaButtonClick);
-                });
-            }
+    <!-- Media Selection -->
+<script>
+    let currentPage = 1;
+    let selectedMedia = [];
+    let activeInputId = null;
+    let activePreviewId = null;
+    let allowMultiple = false;
 
-            function bindMediaItemClicks() {
-                document.querySelectorAll(".media-item").forEach(item => {
-                    item.onclick = function () {
-                        let url = this.getAttribute("data-url");
+    const mediaLibrary = document.getElementById('media-library');
+    const mediaSearch = document.getElementById('mediaSearch');
+    const mediaPagination = document.getElementById('mediaPagination');
+    const mediaLoading = document.getElementById('media-loading');
+    const mediaInsertBtn = document.getElementById('insertMediaBtn');
 
-                        if (!allowMultiple) {
-                            selectedFiles = [url];
-                            document.querySelectorAll(".media-item").forEach(i => i.classList.remove("border-primary"));
-                            this.classList.add("border-primary");
-                        } else {
-                            if (selectedFiles.includes(url)) {
-                                selectedFiles = selectedFiles.filter(f => f !== url);
-                                this.classList.remove("border-primary");
-                            } else {
-                                selectedFiles.push(url);
-                                this.classList.add("border-primary");
-                            }
-                        }
-                    };
-                });
-            }
+    // ==========================
+    // LOAD MEDIA (with pagination)
+    // ==========================
+    function loadMedia(search = '', page = 1) {
+        mediaLoading.classList.remove('d-none');
+        mediaLibrary.innerHTML = '';
+        mediaPagination.innerHTML = '';
 
-            // When modal opens, bind click events for images again
-            document.getElementById("mediaModal").addEventListener("shown.bs.modal", function () {
-                bindMediaItemClicks();
-            });
+        fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
+            .then(res => res.json())
+            .then(data => {
+                mediaLoading.classList.add('d-none');
+                mediaLibrary.innerHTML = '';
 
-            // Handle select button click
-            document.getElementById("selectMediaBtn").addEventListener("click", function () {
-                
-                console.log("Select Input: ", selectedInput, "Selected Preview: ", selectedPreview);
-                
-                if (!selectedInput || !selectedPreview || selectedFiles.length === 0) return;
-                console.log('--Selected Files: ', selectedFiles);
-                let inputEl = document.getElementById(selectedInput);
-                let previewEl = document.getElementById(selectedPreview);
-
-                if (!allowMultiple) {
-                    inputEl.value = selectedFiles[0];
-                    previewEl.innerHTML = `<img src="${selectedFiles[0]}" class="img-fluid rounded" style="max-width:150px;">`;
-                } else {
-                    inputEl.value = JSON.stringify(selectedFiles);
-                    previewEl.innerHTML = selectedFiles.map(url => `<img src="${url}" class="img-fluid rounded m-1" style="max-width:100px;">`).join("");
+                if (!data.media || data.media.length === 0) {
+                    mediaLibrary.innerHTML = '<p class="text-center text-muted">No media found.</p>';
+                    return;
                 }
 
-                // Close modal
-                let modal = bootstrap.Modal.getInstance(document.getElementById("mediaModal"));
-                modal.hide();
-            });
-
-            // Initial binding for pre-existing Add Image buttons
-            bindMediaPickerEvents();
-
-            // Expose binding for dynamically added slides
-            window.bindMediaPickerEvents = bindMediaPickerEvents;
-        });
-    </script>
-    <!-- Media AJAX Loading -->
-    <script>
-        let currentPage = 1;
-        const mediaLibrary = document.getElementById('media-library');
-        const mediaSearch = document.getElementById('mediaSearch');
-        const mediaPagination = document.getElementById('mediaPagination');
-        const mediaLoading = document.getElementById('media-loading');
-
-        function loadMedia(search = '', page = 1) {
-            mediaLoading.classList.remove('d-none');
-            mediaLibrary.innerHTML = '';
-            fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    
-                    mediaLoading.classList.add('d-none');
-                    data.media.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'col-3';
-                        div.innerHTML = `
-                            <div class="media-card">
-                                <embed src="{{ asset('storage/') }}/${item.path}" data-url="{{ asset('storage/') }}/${item.path}" class="img-fluid border media-item selectable" style="cursor:pointer;" loading="lazy" type="${ item.mime_type ?? 'application/octet-stream' }">
-                                <small>${item.original_name || 'Untitled'}</small>
-                            </div>
-                        `;
-                        mediaLibrary.appendChild(div);
-                    });
-
-                    // Populate pagination
-                    mediaPagination.innerHTML = '';
-                    data.links.forEach(link => {
-                        const li = document.createElement('li');
-                        li.className = `page-item ${link.active ? 'active' : ''} ${link.url ? '' : 'disabled'}`;
-                        const a = document.createElement('a');
-                        a.className = 'page-link';
-                        a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
-                        if (link.url) {
-                            a.href = '#';
-                            a.onclick = (e) => {
-                                e.preventDefault();
-                                const url = new URL(link.url);
-                                const newPage = url.searchParams.get('page');
-                                loadMedia(mediaSearch.value, newPage);
-                            };
-                        }
-                        li.appendChild(a);
-                        mediaPagination.appendChild(li);
-                    });
-
-                    // Re-bind image click events after load
-                    bindMediaItemClicks();
-                })
-                .catch(err => {
-                    mediaLoading.classList.add('d-none');
-                    console.error('Media load error:', err);
-                    Toastify({
-                        text: 'Failed to load media. Please try again.',
-                        backgroundColor: "#F44336"
-                    }).showToast();
+                // Render media cards
+                data.media.forEach(item => {
+                    const mediaUrl = `{{ asset('storage/') }}/${item.path}`;
+                    const div = document.createElement('div');
+                    div.className = 'col-3 mb-3';
+                    div.innerHTML = `
+                        <div class="media-card border rounded p-2 text-center selectable" 
+                             data-url="${mediaUrl}" 
+                             data-name="${item.original_name || 'Untitled'}"
+                             style="cursor:pointer;">
+                             
+                            ${item.mime_type.startsWith('image/') 
+                                ? `<img src="${mediaUrl}" class="img-fluid media-item" loading="lazy">`
+                                : `<embed src="${mediaUrl}" class="img-fluid media-item" type="${item.mime_type}" loading="lazy">`}
+                            
+                            <small class="d-block mt-1 text-truncate">${item.original_name || 'Untitled'}</small>
+                        </div>
+                    `;
+                    mediaLibrary.appendChild(div);
                 });
+
+                // ✅ Render Pagination Links
+                renderPagination(data.links, search);
+
+                // Enable click events
+                bindMediaItemClicks();
+            })
+            .catch(err => {
+                mediaLoading.classList.add('d-none');
+                console.error('Media load error:', err);
+                Toastify({
+                    text: 'Failed to load media. Please try again.',
+                    backgroundColor: "#F44336"
+                }).showToast();
+            });
+    }
+
+    // ==========================
+    // RENDER PAGINATION
+    // ==========================
+    function renderPagination(links, search) {
+        mediaPagination.innerHTML = '';
+
+        if (!links || links.length <= 3) return; // skip if no pagination needed
+
+        const ul = document.createElement('ul');
+        ul.className = 'pagination justify-content-center';
+
+        links.forEach(link => {
+            const li = document.createElement('li');
+            li.className = `page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}`;
+            const a = document.createElement('a');
+            a.className = 'page-link';
+            a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
+            
+            if (link.url) {
+                a.href = '#';
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const url = new URL(link.url);
+                    const newPage = url.searchParams.get('page') || 1;
+                    currentPage = newPage;
+                    loadMedia(search, newPage);
+                });
+            }
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        mediaPagination.appendChild(ul);
+    }
+
+    // ==========================
+    // HANDLE ITEM SELECTION
+    // ==========================
+    function bindMediaItemClicks() {
+        document.querySelectorAll('.media-card').forEach(card => {
+            const url = card.dataset.url;
+
+            card.addEventListener('click', () => {
+                if (allowMultiple) {
+                    if (selectedMedia.includes(url)) {
+                        selectedMedia = selectedMedia.filter(u => u !== url);
+                        card.classList.remove('selected');
+                    } else {
+                        selectedMedia.push(url);
+                        card.classList.add('selected');
+                    }
+                } else {
+                    document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
+                    selectedMedia = [url];
+                    card.classList.add('selected');
+                }
+            });
+        });
+    }
+
+    // ==========================
+    // INSERT SELECTED MEDIA
+    // ==========================
+    mediaInsertBtn.addEventListener('click', () => {
+        if (selectedMedia.length === 0) {
+            Toastify({
+                text: 'Please select at least one item.',
+                backgroundColor: "#FFC107"
+            }).showToast();
+            return;
         }
 
-        // Initial load when modal opens
-        document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
+        if (!activeInputId) return;
 
-        // Search with debounce
-        let searchTimeout;
-        mediaSearch.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
+        const inputField = document.getElementById(activeInputId);
+        const previewContainer = document.getElementById(activePreviewId);
+
+        inputField.value = allowMultiple ? selectedMedia.join(',') : selectedMedia[0];
+
+        if (previewContainer) {
+            previewContainer.innerHTML = '';
+            selectedMedia.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'img-thumbnail m-1';
+                img.style.width = '120px';
+                previewContainer.appendChild(img);
+            });
+        }
+
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
+        modal.hide();
+    });
+
+    // ==========================
+    // HANDLE "SELECT MEDIA" BUTTONS
+    // ==========================
+    document.querySelectorAll('.select-media-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeInputId = btn.dataset.input;
+            activePreviewId = btn.dataset.preview;
+            allowMultiple = btn.dataset.multiple === 'true';
+            selectedMedia = [];
+            document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
+            loadMedia();
         });
-    </script>
+    });
+
+    // ==========================
+    // SEARCH WITH DEBOUNCE
+    // ==========================
+    let searchTimeout;
+    mediaSearch.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
+    });
+
+    // INITIAL LOAD ON MODAL SHOW
+    document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
+</script>
+
+
     <!-- Uppy Upload -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
