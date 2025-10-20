@@ -1680,202 +1680,214 @@
                 });
             });
     </script>
-    <!-- Media Picker Logic -->
-
-
+    <!-- Slider Component Logic -->
     <!-- Media Selection -->
-<script>
-    let currentPage = 1;
-    let selectedMedia = [];
-    let activeInputId = null;
-    let activePreviewId = null;
-    let allowMultiple = false;
+    <script>
+        let currentPage = 1;
+        let selectedMedia = [];
+        let activeInputId = null;
+        let activePreviewId = null;
+        let allowMultiple = false;
 
-    const mediaLibrary = document.getElementById('media-library');
-    const mediaSearch = document.getElementById('mediaSearch');
-    const mediaPagination = document.getElementById('mediaPagination');
-    const mediaLoading = document.getElementById('media-loading');
-    const mediaInsertBtn = document.getElementById('insertMediaBtn');
+        const mediaLibrary = document.getElementById('media-library');
+        const mediaSearch = document.getElementById('mediaSearch');
+        const mediaPagination = document.getElementById('mediaPagination');
+        const mediaLoading = document.getElementById('media-loading');
+        const mediaInsertBtn = document.getElementById('insertMediaBtn');
 
-    // ==========================
-    // LOAD MEDIA (with pagination)
-    // ==========================
-    function loadMedia(search = '', page = 1) {
-        mediaLoading.classList.remove('d-none');
-        mediaLibrary.innerHTML = '';
-        mediaPagination.innerHTML = '';
+        // ==========================
+        // LOAD MEDIA (with pagination)
+        // ==========================
+        function loadMedia(search = '', page = 1) {
+            mediaLoading.classList.remove('d-none');
+            mediaLibrary.innerHTML = '';
+            mediaPagination.innerHTML = '';
 
-        fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
-            .then(res => res.json())
-            .then(data => {
-                mediaLoading.classList.add('d-none');
-                mediaLibrary.innerHTML = '';
+            fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
+                .then(res => res.json())
+                .then(data => {
+                    mediaLoading.classList.add('d-none');
+                    mediaLibrary.innerHTML = '';
 
-                if (!data.media || data.media.length === 0) {
-                    mediaLibrary.innerHTML = '<p class="text-center text-muted">No media found.</p>';
-                    return;
+                    if (!data.media || data.media.length === 0) {
+                        mediaLibrary.innerHTML = '<p class="text-center text-muted">No media found.</p>';
+                        return;
+                    }
+
+                    // Render media cards
+                    data.media.forEach(item => {
+                        const mediaUrl = `{{ asset('storage/') }}/${item.path}`;
+                        const div = document.createElement('div');
+                        div.className = 'col-3 mb-3';
+                        div.innerHTML = `
+                            <div class="media-card border rounded p-2 text-center selectable" 
+                                data-url="${mediaUrl}" 
+                                data-name="${item.original_name || 'Untitled'}"
+                                style="cursor:pointer;">
+                                
+                                ${item.mime_type.startsWith('image/') 
+                                    ? `<img src="${mediaUrl}" class="img-fluid media-item" loading="lazy">`
+                                    : `<embed src="${mediaUrl}" class="img-fluid media-item" type="${item.mime_type}" loading="lazy">`}
+                                
+                                <small class="d-block mt-1 text-truncate">${item.original_name || 'Untitled'}</small>
+                            </div>
+                        `;
+                        mediaLibrary.appendChild(div);
+                    });
+
+                    // ✅ Render Pagination Links
+                    renderPagination(data.links, search);
+
+                    // Enable click events
+                    bindMediaItemClicks();
+                })
+                .catch(err => {
+                    mediaLoading.classList.add('d-none');
+                    console.error('Media load error:', err);
+                    Toastify({
+                        text: 'Failed to load media. Please try again.',
+                        backgroundColor: "#F44336"
+                    }).showToast();
+                });
+        }
+
+        // ==========================
+        // RENDER PAGINATION
+        // ==========================
+        function renderPagination(links, search) {
+            mediaPagination.innerHTML = '';
+
+            if (!links || links.length <= 3) return; // skip if no pagination needed
+
+            const ul = document.createElement('ul');
+            ul.className = 'pagination justify-content-center';
+
+            links.forEach(link => {
+                const li = document.createElement('li');
+                li.className = `page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}`;
+                const a = document.createElement('a');
+                a.className = 'page-link';
+                a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
+                
+                if (link.url) {
+                    a.href = '#';
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const url = new URL(link.url);
+                        const newPage = url.searchParams.get('page') || 1;
+                        currentPage = newPage;
+                        loadMedia(search, newPage);
+                    });
                 }
 
-                // Render media cards
-                data.media.forEach(item => {
-                    const mediaUrl = `{{ asset('storage/') }}/${item.path}`;
-                    const div = document.createElement('div');
-                    div.className = 'col-3 mb-3';
-                    div.innerHTML = `
-                        <div class="media-card border rounded p-2 text-center selectable" 
-                             data-url="${mediaUrl}" 
-                             data-name="${item.original_name || 'Untitled'}"
-                             style="cursor:pointer;">
-                             
-                            ${item.mime_type.startsWith('image/') 
-                                ? `<img src="${mediaUrl}" class="img-fluid media-item" loading="lazy">`
-                                : `<embed src="${mediaUrl}" class="img-fluid media-item" type="${item.mime_type}" loading="lazy">`}
-                            
-                            <small class="d-block mt-1 text-truncate">${item.original_name || 'Untitled'}</small>
-                        </div>
-                    `;
-                    mediaLibrary.appendChild(div);
-                });
-
-                // ✅ Render Pagination Links
-                renderPagination(data.links, search);
-
-                // Enable click events
-                bindMediaItemClicks();
-            })
-            .catch(err => {
-                mediaLoading.classList.add('d-none');
-                console.error('Media load error:', err);
-                Toastify({
-                    text: 'Failed to load media. Please try again.',
-                    backgroundColor: "#F44336"
-                }).showToast();
+                li.appendChild(a);
+                ul.appendChild(li);
             });
-    }
 
-    // ==========================
-    // RENDER PAGINATION
-    // ==========================
-    function renderPagination(links, search) {
-        mediaPagination.innerHTML = '';
+            mediaPagination.appendChild(ul);
+        }
 
-        if (!links || links.length <= 3) return; // skip if no pagination needed
+        // ==========================
+        // HANDLE ITEM SELECTION
+        // ==========================
+        function bindMediaItemClicks() {
+            document.querySelectorAll('.media-card').forEach(card => {
+                const url = card.dataset.url;
 
-        const ul = document.createElement('ul');
-        ul.className = 'pagination justify-content-center';
+                card.addEventListener('click', () => {
+                    if (allowMultiple) {
+                        if (selectedMedia.includes(url)) {
+                            selectedMedia = selectedMedia.filter(u => u !== url);
+                            card.classList.remove('selected');
+                        } else {
+                            selectedMedia.push(url);
+                            card.classList.add('selected');
+                        }
+                    } else {
+                        document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
+                        selectedMedia = [url];
+                        card.classList.add('selected');
+                    }
+                });
+            });
+        }
 
-        links.forEach(link => {
-            const li = document.createElement('li');
-            li.className = `page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}`;
-            const a = document.createElement('a');
-            a.className = 'page-link';
-            a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
-            
-            if (link.url) {
-                a.href = '#';
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const url = new URL(link.url);
-                    const newPage = url.searchParams.get('page') || 1;
-                    currentPage = newPage;
-                    loadMedia(search, newPage);
+        // ==========================
+        // INSERT SELECTED MEDIA
+        // ==========================
+        mediaInsertBtn.addEventListener('click', () => {
+            if (selectedMedia.length === 0) {
+                Toastify({
+                    text: 'Please select at least one item.',
+                    backgroundColor: "#FFC107"
+                }).showToast();
+                return;
+            }
+
+            if (!activeInputId) return;
+
+            const inputField = document.getElementById(activeInputId);
+            const previewContainer = document.getElementById(activePreviewId);
+
+            inputField.value = allowMultiple ? selectedMedia.join(',') : selectedMedia[0];
+
+            if (previewContainer) {
+                previewContainer.innerHTML = '';
+                selectedMedia.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'img-thumbnail m-1';
+                    img.style.width = '120px';
+                    previewContainer.appendChild(img);
                 });
             }
 
-            li.appendChild(a);
-            ul.appendChild(li);
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
+            modal.hide();
         });
 
-        mediaPagination.appendChild(ul);
-    }
-
-    // ==========================
-    // HANDLE ITEM SELECTION
-    // ==========================
-    function bindMediaItemClicks() {
-        document.querySelectorAll('.media-card').forEach(card => {
-            const url = card.dataset.url;
-
-            card.addEventListener('click', () => {
-                if (allowMultiple) {
-                    if (selectedMedia.includes(url)) {
-                        selectedMedia = selectedMedia.filter(u => u !== url);
-                        card.classList.remove('selected');
-                    } else {
-                        selectedMedia.push(url);
-                        card.classList.add('selected');
-                    }
-                } else {
-                    document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-                    selectedMedia = [url];
-                    card.classList.add('selected');
-                }
+        // ==========================
+        // HANDLE "SELECT MEDIA" BUTTONS
+        // ==========================
+        document.querySelectorAll('.select-media-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeInputId = btn.dataset.input;
+                activePreviewId = btn.dataset.preview;
+                allowMultiple = btn.dataset.multiple === 'true';
+                selectedMedia = [];
+                document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
+                loadMedia();
             });
         });
-    }
 
-    // ==========================
-    // INSERT SELECTED MEDIA
-    // ==========================
-    mediaInsertBtn.addEventListener('click', () => {
-        if (selectedMedia.length === 0) {
-            Toastify({
-                text: 'Please select at least one item.',
-                backgroundColor: "#FFC107"
-            }).showToast();
-            return;
-        }
+        // ==========================
+        // SEARCH WITH DEBOUNCE
+        // ==========================
+        let searchTimeout;
+        mediaSearch.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
+        });
 
-        if (!activeInputId) return;
-
-        const inputField = document.getElementById(activeInputId);
-        const previewContainer = document.getElementById(activePreviewId);
-
-        inputField.value = allowMultiple ? selectedMedia.join(',') : selectedMedia[0];
-
-        if (previewContainer) {
-            previewContainer.innerHTML = '';
-            selectedMedia.forEach(url => {
-                const img = document.createElement('img');
-                img.src = url;
-                img.className = 'img-thumbnail m-1';
-                img.style.width = '120px';
-                previewContainer.appendChild(img);
-            });
-        }
-
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
-        modal.hide();
-    });
-
-    // ==========================
-    // HANDLE "SELECT MEDIA" BUTTONS
-    // ==========================
+        // INITIAL LOAD ON MODAL SHOW
+        document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
+    </script>
+    <!-- Media Selection -->
+     <script>
+window.bindMediaPickerEvents = function() {
     document.querySelectorAll('.select-media-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = function() {
             activeInputId = btn.dataset.input;
             activePreviewId = btn.dataset.preview;
             allowMultiple = btn.dataset.multiple === 'true';
             selectedMedia = [];
             document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-            loadMedia();
-        });
+            loadMedia(); // reload media library
+        };
     });
-
-    // ==========================
-    // SEARCH WITH DEBOUNCE
-    // ==========================
-    let searchTimeout;
-    mediaSearch.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
-    });
-
-    // INITIAL LOAD ON MODAL SHOW
-    document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
+};
 </script>
-
 
     <!-- Uppy Upload -->
     <script>
