@@ -74,7 +74,9 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        return view('components.CMS.pages.show', compact('page'));
+        $page = Page::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        $view = view()->exists("templates.$page->template") ? "templates.$page->template" : "templates.default";
+        return view($view, compact('page'));
     }
 
     /**
@@ -359,4 +361,12 @@ class PageController extends Controller
             'revision_notes'      => $data['revision_notes'] ?? null,
         ];
     }
+
+    public function preview(Page $page)
+    {
+        $template = $page->template ?? 'default';
+        $view = view()->exists("templates.$template") ? "templates.$template" : "templates.default";
+        return view($view, compact('page'));
+    }
+
 }
