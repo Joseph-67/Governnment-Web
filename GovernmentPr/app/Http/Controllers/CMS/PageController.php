@@ -24,7 +24,8 @@ class PageController extends Controller
     {
         $pages = \App\Models\Page::latest()->get();
 
-        return view('components.CMS.pages.index', [
+        return view('components.CMS.pages.index', 
+        [
             'pages'       => $pages,
             'title'       => 'Pages Management',
             'description' => 'Manage, edit, and delete existing pages.',
@@ -179,7 +180,7 @@ class PageController extends Controller
     private function validateRequest(Request $request, $ignoreId = null)
     {
         return Validator::make($request->all(), [
-            'title'        => 'required|string|max:255',
+            'title'        => 'required|string|max:255|unique:pages,title,' . $ignoreId . ',page_id',
             'slug'         => 'nullable|string|max:255|unique:pages,slug,' . $ignoreId . ',page_id',
             'menu_order'   => 'nullable|integer',
             'excerpt'      => 'nullable|string',

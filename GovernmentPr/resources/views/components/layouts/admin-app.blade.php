@@ -565,7 +565,7 @@
         <div class="collapse" id="sidebarAdvancedUI">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('CMS.CMS') }}">Pages</a>
+                    <a class="nav-link" href="{{ route('admin.pages.index') }}">Pages</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('CMS.posts') }}">Posts</a>

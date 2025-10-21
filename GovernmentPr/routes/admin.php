@@ -596,11 +596,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/metadata/activities/{metadataId}', 'getActivitiesByMetadata');
     });
 
-    // Pages
-    Route::controller(PagesController::class)->group(function() {
-        Route::get ('/CMS', 'index')->name('CMS.CMS');
-    });
-
     // Permissions
     Route::controller(PermissionsController::class)->group(function() {
         Route::post('/permission', 'store')->name('admin.store-permission');
