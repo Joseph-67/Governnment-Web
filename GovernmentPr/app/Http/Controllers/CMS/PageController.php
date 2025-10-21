@@ -369,4 +369,14 @@ class PageController extends Controller
         return view($view, compact('page'));
     }
 
+    public function getTemplate()  {
+        return [
+            'default' => 'Default Template',
+            'landing' => 'Landing Page Template',
+            'contact' => 'Contact Page',
+            'about'   => 'About Page',
+            'faq'     => 'FAQ Page'
+        ];
+    }
+
 }
