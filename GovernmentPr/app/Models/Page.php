@@ -18,6 +18,7 @@ class Page extends Model
     protected $fillable = [
         'title',
         'slug',
+        'menu_order',
         'excerpt',
         'body',
 
@@ -53,9 +54,9 @@ class Page extends Model
 
         // Media
         'featured_image',
-        'hero_image',
+        'hero_bg',
         'image_slider',
-        'gallery',
+        'gallery_images',
 
         // Layout Section
         'hero_title',
@@ -66,6 +67,7 @@ class Page extends Model
         'layout_style',
         'sidebar_widgets',
         'footer_widgets',
+        'enable_slider',
 
         // Customization
         'custom_css',

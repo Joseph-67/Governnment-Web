@@ -243,7 +243,7 @@ class PageController extends Controller
 
             // Components & layout
             'template'            => 'nullable|string|max:255',
-            'layout'              => 'nullable|string|max:255',
+            'layout_style'        => 'nullable|string|max:255',
             'sidebar_widgets'   => 'nullable|array',
             'sidebar_widgets.*' => 'nullable|string|max:255',
             'footer_widgets'   => 'nullable|array',
@@ -293,10 +293,10 @@ class PageController extends Controller
      */
     private function mapPageData(array $data)
     {
-        // dd($data);
-        return [
+         return [
             'title'               => $data['title'] ?? null,
             'slug'                => $data['slug'] ?? null,
+            'menu_order'          => $data['menu_order']?? null,
             'excerpt'             => $data['excerpt'] ?? null,
             'body'                => $data['body'] ?? null,
 
@@ -326,6 +326,16 @@ class PageController extends Controller
             'robots_follow'       => $data['robots_follow'] ?? 'follow',
             'custom_meta'         => $data['custom_meta'] ?? null,
 
+            // open graph
+            'og_title'            => $data['og_title']?? null,
+            'og_description'      => $data['og_description']?? null,
+            'og_image'            => $data['og_image'] ?? null,
+            
+            // twitter
+            'twitter_title'       => $data['twitter_title'] ?? null,
+            'twitter_description' => $data['twitter_description'] ?? null,
+            'twitter_image'       => $data['twitter_image'] ?? null,
+
             // Media
             'featured_image'      => $data['featured_image'] ?? null,
             'gallery_images'      => $data['gallery_images'] ?? [],
@@ -337,12 +347,22 @@ class PageController extends Controller
             'hero_button_text'    => $data['hero_button_text'] ?? null,
             'hero_button_url'     => $data['hero_button_url'] ?? null,
 
+            // Layout & Template
+            'template'            => $data['template'] ?? 'default',
+            'layout_style'        => $data['layout_style'] ?? 'full-width',
+            'sidebar_widgets'     => $data['sidebar_widgets'] ?? [],
+            'footer_widgets'      => $data['footer_widgets'] ?? [],
+
             // Components
             'enable_slider'       => $data['enable_slider'] ?? false,
             'slider_images'       => $data['slider_images'] ?? [],
             'reusable_components' => $data['reusable_components'] ?? [],
             'contact_form_enabled'=> $data['contact_form_enabled'] ?? false,
+            'contact_form_email'  => $data['contact_form_email'] ?? null,
+            'contact_form_subject'=> $data['contact_form_subject'] ?? null,
+            'contact_form_field'  => $data['contact_form_field'] ?? [],
             'newsletter_enabled'  => $data['newsletter_enabled'] ?? false,
+            'newsletter_provider' => $data['newsletter_provider'] ?? null,
 
             // Access
             'visible_roles'       => $data['visible_roles'] ?? [],
