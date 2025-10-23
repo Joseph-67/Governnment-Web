@@ -314,8 +314,8 @@ class PageController extends Controller
             'author_id'           => $data['author_id'] ?? Auth::id(),
             
             // tags & categories
-            'tags'                => $data['tags'] ?? [],
-            'categories'          => $data['categories'] ?? [],
+            'tags'                => $data['tags'] ?? json_encode([]),
+            'categories'          => $data['categories'] ?? json_encode([]),
 
             // SEO
             'meta_title'          => $data['meta_title'] ?? null,
@@ -338,7 +338,7 @@ class PageController extends Controller
 
             // Media
             'featured_image'      => $data['featured_image'] ?? null,
-            'gallery_images'      => $data['gallery_images'] ?? [],
+            'gallery_images'      => $data['gallery_images'] ?? json_encode([]),
             'hero_bg'             => $data['hero_bg'] ?? null,
 
             // Hero
@@ -350,13 +350,13 @@ class PageController extends Controller
             // Layout & Template
             'template'            => $data['template'] ?? 'default',
             'layout_style'        => $data['layout_style'] ?? 'full-width',
-            'sidebar_widgets'     => $data['sidebar_widgets'] ?? [],
-            'footer_widgets'      => $data['footer_widgets'] ?? [],
+            'sidebar_widgets'     => $data['sidebar_widgets'] ?? json_encode([]),
+            'footer_widgets'      => $data['footer_widgets'] ?? json_encode([]),
 
             // Components
             'enable_slider'       => $data['enable_slider'] ?? false,
-            'slider_images'       => $data['slider_images'] ?? [],
-            'reusable_components' => $data['reusable_components'] ?? [],
+            'slider_images'       => $data['slider_images'] ?? json_encode([]),
+            'reusable_components' => $data['reusable_components'] ?? json_encode([]),
             'contact_form_enabled'=> $data['contact_form_enabled'] ?? false,
             'contact_form_email'  => $data['contact_form_email'] ?? false,
             'contact_form_subject' => $data['contact_form_subject'] ?? false,
@@ -365,13 +365,13 @@ class PageController extends Controller
             'newsletter_provider' => $data['newsletter_provider'] ?? false,
 
             // Access
-            'visible_roles'       => $data['visible_roles'] ?? [],
-            'device_visibility'   => $data['device_visibility'] ?? [],
-            'polls_surveys'       => $data['polls_surveys'] ?? [],
-            'dynamic_tables'      => $data['dynamic_tables'] ?? [],
-            'geo_rules'           => $data['geo_rules'] ?? [],
-            'conditional_logic'   => $data['conditional_logic'] ?? [],
-            'embed_code'          => $data['embed_code'] ?? [],
+            'visible_roles'       => $data['visible_roles'] ?? json_encode([]),
+            'device_visibility'   => $data['device_visibility'] ?? json_encode([]),
+            'polls_surveys'       => $data['polls_surveys'] ?? json_encode([]),
+            'dynamic_tables'      => $data['dynamic_tables'] ?? json_encode([]),
+            'geo_rules'           => $data['geo_rules'] ?? json_encode([]),
+            'conditional_logic'   => $data['conditional_logic'] ?? json_encode([]),
+            'embed_code'          => $data['embed_code'] ?? json_encode([]),
 
             // Customization
             'custom_css'          => $data['custom_css'] ?? null,
@@ -381,10 +381,10 @@ class PageController extends Controller
 
             // Analytics
             'tracking_code'       => $data['tracking_code'] ?? null,
-            'ab_variants'         => $data['ab_variants'] ?? [],
-            'conversion_goals'    => $data['conversion_goals'] ?? [],
-            'layout'              => $data['layout'] ?? [],
-            'template_alt'        => $data['template_alt'] ?? [],
+            'ab_variants'         => $data['ab_variants'] ?? json_encode([]),
+            'conversion_goals'    => $data['conversion_goals'] ?? json_encode([]),
+            'layout'              => $data['layout'] ?? json_encode([]),
+            'template_alt'        => $data['template_alt'] ?? json_encode([]),
             // Meta
             'revision_notes'      => $data['revision_notes'] ?? null,
         ];
