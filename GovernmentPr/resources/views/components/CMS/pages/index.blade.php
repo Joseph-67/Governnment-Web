@@ -45,7 +45,8 @@
                                                 <td>{{ $page->slug }}</td>
                                                 <td>Published</td>
                                                 <td>Admin</td>
-                                                <td>{{ $page->updated_at->diffForHumans() }}</td>
+                                                <td>{{ $page?->updated_at?->diffForHumans()?? 'Not updated yet.' }}</td>
+
                                                 <td>
                                                     <a href="{{ route('admin.pages.edit', ['page' => $page->page_id]) }}" class="btn btn-sm btn-info">Edit</a>
                                                     <button 

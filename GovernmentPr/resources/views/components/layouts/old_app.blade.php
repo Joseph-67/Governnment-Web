@@ -144,7 +144,7 @@
                </li>
                <li>
                   <i class="fal fa-phone-alt"></i>
-                  <a href="tel:+2349160173332">+234 916 017 3332</a>
+                  <a href="tel:+48555223224">+48 555 223 224</a>
                </li>
             </ul>
          </div>
@@ -221,39 +221,39 @@
                   <div class="tp-header-menu">
                      <nav class="tp-main-menu-content">
                         <ul>
-                            @foreach($groupedPages->get(null, collect()) as $page)
-                                <li class="{{ $groupedPages->has($page->page_id) ? 'has-dropdown' : '' }}">
-                                    <a href="{{ route('page.show', $page->slug) }}">
-                                        {{ strtoupper($page->title) }}
-                                    </a>
-
-                                    {{-- Render children if this page has any --}}
-                                    @if($groupedPages->has($page->page_id))
-                                        <ul class="tp-submenu submenu">
-                                            @foreach($groupedPages->get($page->page_id, collect()) as $childPage)
-                                                <li class="{{ $groupedPages->has($childPage->page_id) ? 'has-dropdown' : '' }}">
-                                                    <a href="{{ route('page.show', $childPage->slug) }}">
-                                                        {{ strtoupper($childPage->title) }}
-                                                    </a>
-
-                                                    {{-- Optional recursive level (grandchildren) --}}
-                                                    @if($groupedPages->has($childPage->page_id))
-                                                        <ul class="tp-submenu submenu">
-                                                            @foreach($groupedPages->get($childPage->page_id, collect()) as $grandChildPage)
-                                                                <li>
-                                                                    <a href="{{ route('page.show', $grandChildPage->slug) }}">
-                                                                        {{ strtoupper($grandChildPage->title) }}
-                                                                    </a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @endif
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </li>
-                            @endforeach
+                           <li class="has-dropdown"><a href="{{ route('home') }}">HOME</a></li>
+                           <li class="has-dropdown">
+                              <a href="#">ABOUT US</a>
+                              <ul class="tp-submenu submenu">
+                                 <li><a href="{{ route('mandate') }}">MANDATE</a></li>
+                                 <li><a href="{{ route('organisation') }}">ORGANIZATION</a></li>
+                                 <li><a href="#">LEADERSHIP</a></li>
+                                 <li><a href="#">CAREER</a></li>
+                              </ul>
+                           </li>
+                           <li class="has-dropdown">
+                              <a href="#">DEPARTMENTS</a>
+                              <ul class="tp-submenu submenu">
+                                 <li><a href="#">AUDIT</a></li>
+                                 <li><a href="#">CLIMATE CHANGE</a></li>
+                              </ul>
+                           </li>
+                           <li class="has-dropdown">
+                              <a href="#">INITIATIVES</a>
+                              <ul class="tp-submenu submenu">
+                                 <li><a href="#">ACRSEAL</a></li>
+                                 <li><a href="#">CLEAN AND GREEN INITIATIVE</a></li>
+                              </ul>
+                           </li>
+                           <li class="has-dropdown">
+                              <a href="#">MORE</a>
+                              <ul class="tp-submenu submenu">
+                                 <li class="has-dropdown"><a href="#">EVENTS & NEWS</a></li>
+                                 <li class="has-dropdown"><a href="#">AGENCIES</a></li>
+                                 <li class="has-dropdown"><a href="#">MEDIA & FOLLOWING</a></li>
+                              </ul>
+                           </li>
+                           <li><a href="{{ route('contact-us') }}">CONTACT</a></li>
                         </ul>
                      </nav>
                   </div>
@@ -390,7 +390,7 @@
                         <p class="mb-40" style="color: {{ $footerTextColor }};">
                            We focus on innovative strategies that emphasize the use of environmental re-engineering as a veritable tool for job creation, poverty eradication, food security, sustainable economic development and general improvement in the livelihood of Nigerians.
                         </p>
-                        <a class="tp-btn white-anim" href="{{ route('page.show', 'mandate') }}" style="background-color: {{ $accentColor }}; color: {{ $brandColor }};">KNOW MORE</a>
+                        <a class="tp-btn white-anim" href="{{ route('mandate') }}" style="background-color: {{ $accentColor }}; color: {{ $brandColor }};">KNOW MORE</a>
                      </div>
                   </div>
                </div>
@@ -399,11 +399,11 @@
                      <h4 class="tp-footer-widget-title" style="color: {{ $footerTextColor }};">Useful Links</h4>
                      <div class="tp-footer-widget-menu">
                         <ul>
-                           <li><a href="{{ route('page.show', 'about-us') }}" style="color: {{ $footerTextColor }};">About us</a></li>
-                           <li><a href="{{ route('page.show', 'team') }}" style="color: {{ $footerTextColor }};">Our Team</a></li>
-                           <li><a href="{{ route('page.show', 'events') }}" style="color: {{ $footerTextColor }};">Upcoming Events</a></li>
-                           <li><a href="{{ route('page.show', 'news') }}" style="color: {{ $footerTextColor }};">Latest News</a></li>
-                           <li><a href="{{ route('page.show', 'contact-us') }}" style="color: {{ $footerTextColor }};">Contact Us</a></li>
+                           <li><a href="{{ route('mandate') }}" style="color: {{ $footerTextColor }};">About us</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Our Team</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Upcoming Events</a></li>
+                           <li><a href="#" style="color: {{ $footerTextColor }};">Latest News</a></li>
+                           <li><a href="{{ route('contact-us') }}" style="color: {{ $footerTextColor }};">Contact Us</a></li>
                         </ul>
                      </div>
                   </div>

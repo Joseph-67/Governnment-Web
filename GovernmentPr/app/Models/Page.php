@@ -23,8 +23,8 @@ class Page extends Model
 
         // Status & scheduling
         'status',
-        'published_at',
-        'expires_at',
+        'publish_at',
+        'expire_at',
 
         // Visibility & access
         'visibility',
@@ -104,8 +104,8 @@ class Page extends Model
         'footer_widgets'   => 'array',
 
         // Dates
-        'published_at'     => 'datetime',
-        'expires_at'       => 'datetime',
+        'publish_at'     => 'datetime',
+        'expire_at'       => 'datetime',
 
         // Booleans
         // 'is_private'       => 'boolean',

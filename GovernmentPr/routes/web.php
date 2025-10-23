@@ -13,6 +13,7 @@ use App\Http\Controllers\IndividualCompanyReportController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CMS\PageController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EmailIntegration;
@@ -35,12 +36,7 @@ Route::middleware('guest:web')->group(function(){
     Route::get('/', function () {
         return redirect('home');
     });
-    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
-    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
-    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
-    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
-    Route::get('/mandate', [mandateController::class, 'displayMandate'])->name('mandate');    
-    Route::get('/contact-us', [ContactUsController::class, 'displayContact'])->name('contact-us');    
+    Route::get('/{slug}', [PageController::class, 'show'])->middleware('page.available')->name('page.show');   
 });
 
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller
 {
@@ -56,6 +57,7 @@ class PageController extends Controller
     public function store(Request $request)
     {
         // dd($request);
+        Cache::forget('global_active_pages');
         $validator = $this->validateRequest($request);
 
         if ($validator->fails()) {
@@ -72,10 +74,11 @@ class PageController extends Controller
     /**
      * Show single page.
      */
-    public function show(Page $page)
+    public function show($slug)
     {
-        $page = Page::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        $view = view()->exists("templates.$page->template") ? "templates.$page->template" : "templates.default";
+        $page = Page::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        // dd($page);
+        $view = view()->exists("components.templates.$page->template") ? "components.templates.$page->template" : "components.templates.default";
         return view($view, compact('page'));
     }
 
@@ -191,11 +194,11 @@ class PageController extends Controller
             // visibility & status
             'visibility'          => ['required', Rule::in(['public', 'private', 'password'])],
             'visibility_password' => 'nullable|required_if:visibility,password|string|max:255',
-            'status'              => ['nullable', Rule::in(['draft', 'pending', 'published'])],
+            'status'              => ['required', Rule::in(['draft', 'pending', 'published'])],
 
             // Scheduling
-            'publish_at'   => 'nullable|date',
-            'expire_at'    => 'nullable|date',
+            'publish_at'  => 'nullable|date|after_or_equal:today',
+            'expire_at'   => 'nullable|date|after_or_equal:publish_at',
 
             // relationships
             'parent_id'    => 'nullable|exists:pages,page_id',
