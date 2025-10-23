@@ -358,16 +358,20 @@ class PageController extends Controller
             'slider_images'       => $data['slider_images'] ?? [],
             'reusable_components' => $data['reusable_components'] ?? [],
             'contact_form_enabled'=> $data['contact_form_enabled'] ?? false,
-            'contact_form_email'  => $data['contact_form_email'] ?? null,
-            'contact_form_subject'=> $data['contact_form_subject'] ?? null,
-            'contact_form_field'  => $data['contact_form_field'] ?? [],
+            'contact_form_email'  => $data['contact_form_email'] ?? false,
+            'contact_form_subject' => $data['contact_form_subject'] ?? false,
+            'contact_form_fields'   => $data['contact_form_fields'] ?? false,
             'newsletter_enabled'  => $data['newsletter_enabled'] ?? false,
-            'newsletter_provider' => $data['newsletter_provider'] ?? null,
+            'newsletter_provider' => $data['newsletter_provider'] ?? false,
 
             // Access
             'visible_roles'       => $data['visible_roles'] ?? [],
             'device_visibility'   => $data['device_visibility'] ?? [],
+            'polls_surveys'       => $data['polls_surveys'] ?? [],
+            'dynamic_tables'      => $data['dynamic_tables'] ?? [],
             'geo_rules'           => $data['geo_rules'] ?? [],
+            'conditional_logic'   => $data['conditional_logic'] ?? [],
+            'embed_code'          => $data['embed_code'] ?? [],
 
             // Customization
             'custom_css'          => $data['custom_css'] ?? null,
@@ -379,7 +383,8 @@ class PageController extends Controller
             'tracking_code'       => $data['tracking_code'] ?? null,
             'ab_variants'         => $data['ab_variants'] ?? [],
             'conversion_goals'    => $data['conversion_goals'] ?? [],
-
+            'layout'              => $data['layout'] ?? [],
+            'template_alt'        => $data['template_alt'] ?? [],
             // Meta
             'revision_notes'      => $data['revision_notes'] ?? null,
         ];

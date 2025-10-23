@@ -31,6 +31,9 @@ class Page extends Model
         'visibility',
         'visibility_password',
         'visibility_roles',
+        'visible_roles',
+        'device_visibility',
+        'geo_rules',
 
         // Relationships
         'parent_id',
@@ -52,22 +55,42 @@ class Page extends Model
         'twitter_description',
         'twitter_image',
 
-        // Media
+        // Media & sliders
         'featured_image',
         'hero_bg',
         'image_slider',
         'gallery_images',
+        'enable_slider',
+        'slider_images',
+        'reusable_components',
 
         // Layout Section
+        'hero_bg',
         'hero_title',
         'hero_subtitle',
         'hero_button_text',
         'hero_button_url',
         'template',
+        'template_alt',
         'layout_style',
+        'layout',
         'sidebar_widgets',
         'footer_widgets',
         'enable_slider',
+
+        // Contact / Forms / Newsletter
+        'contact_form_enabled',
+        'contact_form_email',
+        'contact_form_subject',
+        'contact_form_fields',
+        'newsletter_enabled',
+        'newsletter_provider',
+
+        // Interactions & dynamic content
+        'polls_surveys',
+        'dynamic_tables',
+        'conditional_logic',
+        'embed_code',
 
         // Customization
         'custom_css',
@@ -83,42 +106,67 @@ class Page extends Model
         // Analytics & A/B Testing
         'analytics',
         'ab_tests',
+        'ab_variants',
         'goals',
+        'conversion_goals',
+        'tracking_code',
     ];
 
     protected $casts = [
         // JSON fields
-        'image_slider'     => 'array',
-        'gallery'          => 'array',
-        'custom_css'  => 'string',
-        'custom_js'   => 'string',
-        'custom_head' => 'string',
-        'custom_body' => 'string',
+        'image_slider'        => 'array',
+        'gallery_images'      => 'array',
+        'slider_images'       => 'array',
+        'reusable_components' => 'array',
+        'contact_form_fields' => 'array',
+        'visibility_roles'    => 'array',
+        'visible_roles'       => 'array',
+        'categories'          => 'array',
+        'tags'                => 'array',
+        'revision_notes'      => 'array',
+        'analytics'           => 'array',
+        'ab_tests'            => 'array',
+        'ab_variants'         => 'array',
+        'goals'               => 'array',
+        'conversion_goals'    => 'array',
+        'sidebar_widgets'     => 'array',
+        'footer_widgets'      => 'array',
+        'polls_surveys'       => 'array',
+        'dynamic_tables'      => 'array',
+        'conditional_logic'   => 'array',
+        'device_visibility'   => 'array',
+        'geo_rules'           => 'array',
 
-        'visibility_roles' => 'array',
-        'categories'       => 'array',
-        'tags'             => 'array',
-        'revision_notes'   => 'array',
-        'analytics'        => 'array',
-        'ab_tests'         => 'array',
-        'goals'            => 'array',
-        'sidebar_widgets'  => 'array',
-        'footer_widgets'   => 'array',
+        // Long text / HTML embeds
+        'embed_code'          => 'string',
+        'tracking_code'       => 'string',
+        'custom_css'          => 'string',
+        'custom_js'           => 'string',
+        'custom_head'         => 'string',
+        'custom_body'         => 'string',
 
         // Dates
-        'publish_at'     => 'datetime',
-        'expire_at'       => 'datetime',
+        'publish_at'        => 'datetime',
+        'expire_at'          => 'datetime',
+        'created_at'          => 'datetime',
+        'updated_at'          => 'datetime',
+        'deleted_at'          => 'datetime',
 
-        // Booleans
-        // 'is_private'       => 'boolean',
+        // Booleans / tinyint flags
+        'enable_slider'       => 'boolean',
+        'contact_form_enabled'=> 'boolean',
+        'newsletter_enabled'  => 'boolean',
     ];
 
     protected $attributes = [
         'status' => 'draft',
-        // 'is_private' => false,
-        
         'template' => 'fullwidth',
         'layout_style' => 'default',
+        'layout' => 'default',
+        'template_alt' => 'default',
+        'enable_slider' => false,
+        'contact_form_enabled' => false,
+        'newsletter_enabled' => false,
     ];
 
     /*
