@@ -433,29 +433,26 @@
         </style>
     @endsection
     @section('modals')
-<div class="modal fade" id="mediaModal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5>Media Library</h5>
-        <input type="text" id="mediaSearch" class="form-control w-50 ms-auto" placeholder="Search media...">
-      </div>
-      <div class="modal-body">
-        <div id="media-loading" class="text-center d-none mb-3">
-          <div class="spinner-border text-primary"></div>
+        <div class="modal fade" id="mediaModal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Media Library</h5>
+                    <input type="text" id="mediaSearch" class="form-control w-50 ms-auto" placeholder="Search media...">
+                </div>
+                <div class="modal-body">
+                    <div id="media-loading" class="text-center d-none mb-3">
+                    <div class="spinner-border text-primary"></div>
+                    </div>
+                    <div class="row" id="media-library"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <ul class="pagination mb-0" id="mediaPagination"></ul>
+                    <button id="insertMediaBtn" class="btn btn-primary">Insert Selected</button>
+                </div>
+                </div>
+            </div>
         </div>
-        <div class="row" id="media-library"></div>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <ul class="pagination mb-0" id="mediaPagination"></ul>
-        <button id="insertMediaBtn" class="btn btn-primary">Insert Selected</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
     @endsection
     <div class="container-xxl">
         <!-- Page Title + Actions -->

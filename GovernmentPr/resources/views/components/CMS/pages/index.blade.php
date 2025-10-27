@@ -48,6 +48,7 @@
                                                 <td>{{ $page?->updated_at?->diffForHumans()?? 'Not updated yet.' }}</td>
 
                                                 <td>
+                                                    <a href="{{ route('admin.pages.show', $page->slug) }}" class="btn btn-sm btn-primary">View</a>
                                                     <a href="{{ route('admin.pages.edit', ['page' => $page->page_id]) }}" class="btn btn-sm btn-info">Edit</a>
                                                     <button 
                                                         class="btn btn-sm btn-danger delete-btn" 

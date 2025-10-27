@@ -34,4 +34,8 @@ class CompanyDepartment extends Model
         return $this->hasMany(CompanyEmployees::class, 'EmployeeID', 'ManagerIDs');
     }
 
+    public function employees()  {
+        return $this->hasMany(CompanyEmployees::class, 'DepartmentID', 'DepartmentID');
+    }
+
 }

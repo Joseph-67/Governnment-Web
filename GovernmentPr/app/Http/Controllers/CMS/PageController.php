@@ -87,8 +87,10 @@ class PageController extends Controller
      */
     public function edit($page)
     {
-        $parents = Page::where('page_id', '!=', $page)->get();
-        return view('components.CMS.pages.edit', compact('page', 'parents'));
+        $data['allPages'] = Page::get();
+        $data['page'] = Page::where('page_id', '!=', $page)->first();
+        // dd($parents);
+        return view('components.CMS.pages.edit', $data);
     }
 
     /**

@@ -1,43 +1,39 @@
 <x-layouts.admin-app>
-    @section('PageTitle', 'Waste Management & Categories')
+    @section('PageTitle', 'Waste Management')
 
     @section('styles')
-        <!-- Icons / DataTables / Toastify -->
+        <!-- Icons, DataTables and Toastify -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="{{ asset('adminAssets/css/toastify.css') }}">
 
         <style>
-            :root{
-                --primary-500: #0072ff;
-                --accent-500: #00c6ff;
+            :root {
+                --primary: #0072ff;
+                --accent: #00c6ff;
                 --muted: #6c757d;
                 --card-radius: 14px;
             }
 
-            /* Page background */
-            body {
-                background: linear-gradient(180deg, #f6fbff 0%, #eef9ff 100%);
-                min-height: 100vh;
-            }
 
-            /* Header */
-            .wm-header {
-                background: linear-gradient(90deg, var(--accent-500), var(--primary-500));
-                border-radius: var(--card-radius);
+            .wm-hero {
+                background: linear-gradient(90deg, var(--accent), var(--primary));
                 color: #fff;
+                border-radius: var(--card-radius);
                 padding: 1.6rem;
                 position: relative;
                 overflow: hidden;
+                margin-bottom: 1.5rem;
             }
-            .wm-header .hero-ill {
+
+            .wm-hero .illustration {
                 position: absolute;
-                right: 0;
-                top: 0;
-                height: 100%;
+                right: 1rem;
+                /* top: 0;
+                bottom: 0; */
                 width: 320px;
-                opacity: 0.16;
-                background: url('https://images.unsplash.com/photo-1581579185735-8b6b38d0e3b0?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a09c9b6a1c6b31acebb0d2f6e0b69c8') center/cover no-repeat;
+                background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b3f5b6e5a1bbd9ad3f2db9e1e0f1c77') center/cover no-repeat;
+                opacity: 0.18;
             }
 
             .card-wm {
@@ -45,91 +41,38 @@
                 border-radius: var(--card-radius);
                 box-shadow: 0 10px 30px rgba(12, 32, 85, 0.06);
                 overflow: hidden;
-                transition: transform .15s ease, box-shadow .15s ease;
             }
-            .card-wm:hover{
-                transform: translateY(-6px);
-                box-shadow: 0 16px 40px rgba(12,32,85,0.08);
-            }
+            .nav-wm .nav-link { border-radius: 10px; padding: .5rem .9rem; color: var(--primary); }
+            .nav-wm .nav-link.active { background: linear-gradient(90deg,var(--accent),var(--primary)); color: #fff; box-shadow: 0 8px 18px rgba(0,114,255,0.12); }
 
-            /* Tabs */
-            .nav-wm .nav-link {
-                border-radius: 10px;
-                padding: .7rem 1rem;
-                color: var(--primary-500);
-                margin-right: .5rem;
-            }
-            .nav-wm .nav-link.active {
-                background: linear-gradient(90deg,var(--accent-500),var(--primary-500));
-                color: #fff;
-                box-shadow: 0 8px 18px rgba(0,114,255,0.12);
-            }
+            .empty-state { text-align:center; padding: 2rem; color: var(--muted); }
+            .empty-state img { max-width: 220px; opacity: .96; }
 
-            /* Empty state */
-            .empty-state {
-                text-align: center;
-                padding: 2.2rem;
-                color: var(--muted);
-            }
-            .empty-state img { max-width: 220px; opacity: .92; }
+            .fab { position: fixed; right: 20px; bottom: 20px; z-index: 2000; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; background: linear-gradient(90deg,var(--accent),var(--primary)); color:#fff; box-shadow:0 10px 30px rgba(0,114,255,0.18); border:none; }
 
-            /* FAB for mobile */
-            .fab {
-                position: fixed;
-                right: 20px;
-                bottom: 20px;
-                z-index: 2000;
-                width: 56px;
-                height: 56px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: linear-gradient(90deg,var(--accent-500),var(--primary-500));
-                color: #fff;
-                box-shadow: 0 10px 30px rgba(0,114,255,0.18);
-                border: none;
-            }
-            .fab:focus { outline: 3px solid rgba(0,114,255,0.18); }
-
-            /* Toggle dark */
-            .dark-mode {
-                --bg: #0b1220;
-                --panel: #0f1724;
-                --muted: #9aa4b2;
-                color-scheme: dark;
-            }
-
-            /* Responsive tweaks */
-            @media (max-width: 768px) {
-                .wm-header { padding: 1.2rem; }
-                .wm-header .hero-ill { display: none; }
-                .nav-wm .nav-link { padding: .55rem .8rem; font-size: .95rem; }
-            }
-
-            /* Table focus */
-            table.dataTable tbody tr:focus-within,
-            table.dataTable tbody tr:hover {
-                background: rgba(0,114,255,0.03);
-            }
-
-            /* Modal polished */
-            .modal-content { border-radius: 12px; overflow: hidden; }
-            .btn-gradient {
-                background: linear-gradient(90deg,var(--accent-500),var(--primary-500));
-                color: #fff;
-                border: none;
-            }
+            .btn-gradient { background: linear-gradient(90deg,var(--accent),var(--primary)); color: #fff; border: none; }
             .btn-outline-muted { border: 1px solid #e6eef8; color: var(--muted); background: transparent; }
+
+            /* responsive */
+            @media (max-width: 768px) {
+                .wm-hero .illustration { display: none; }
+                #globalSearch { display: none; }
+            }
+
+            /* DataTable hover */
+            table.dataTable tbody tr:hover { background: rgba(0,114,255,0.03); }
+
+            /* Modal */
+            .modal-content { border-radius: 12px; overflow: hidden; }
         </style>
     @endsection
 
     {{-- PAGE CONTENT --}}
     <div class="container py-4">
-        <div class="wm-header mb-4 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+        <div class="wm-hero d-flex align-items-center justify-content-between gap-3 flex-wrap">
             <div>
                 <h2 class="mb-1 fw-bold"><i class="bi bi-recycle me-2"></i> Waste Management</h2>
-                <p class="mb-0 opacity-85">Manage waste categories and individual waste items — track quantities, units and categories in one place.</p>
+                <p class="mb-0 opacity-85">Manage categories and waste items in one place — track quantities, assign categories, and keep your records tidy.</p>
             </div>
 
             <div class="d-flex align-items-center gap-2">
@@ -137,10 +80,11 @@
                     <input class="form-check-input" type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
                     <label class="form-check-label text-white ms-2" for="darkModeToggle">Dark</label>
                 </div>
-                <button class="btn btn-outline-light btn-sm" id="helpBtn"><i class="bi bi-question-circle me-1"></i> Help</button>
+
+                <button class="btn btn-light btn-sm" id="helpBtn"><i class="bi bi-question-circle me-1"></i> Help</button>
             </div>
 
-            <div class="hero-ill" aria-hidden="true"></div>
+            <div class="illustration" aria-hidden="true"></div>
         </div>
 
         <div class="card card-wm p-3">
@@ -167,7 +111,7 @@
             </div>
 
             <div class="tab-content" id="wmTabContent">
-                {{-- WASTE ITEMS TAB --}}
+                {{-- ITEMS TAB --}}
                 <div class="tab-pane fade show active" id="items" role="tabpanel" aria-labelledby="items-tab">
                     <div class="table-responsive">
                         <table id="tbl-waste-items" class="table table-hover align-middle w-100">
@@ -184,7 +128,7 @@
                         </table>
 
                         <div class="empty-state d-none" id="emptyItems">
-                            <img src="https://undraw.co/illustrations/undraw_waste.svg" alt="No waste items">
+                            <img src="{{ asset('adminAssets/images/illustrate/addItem.svg') }}" alt="No waste items">
                             <h5 class="mt-3">No waste items yet</h5>
                             <p>Create waste items to start tracking materials and quantities.</p>
                             <button class="btn btn-gradient" id="addItemEmpty">Add Waste Item</button>
@@ -198,7 +142,7 @@
                         <table id="tbl-waste-categories" class="table table-hover align-middle w-100">
                             <thead>
                                 <tr>
-                                    <th>Category Name</th>
+                                    <th>Category</th>
                                     <th>Description</th>
                                     <th class="text-center">Subcategories</th>
                                     <th class="text-end">Actions</th>
@@ -208,7 +152,7 @@
                         </table>
 
                         <div class="empty-state d-none" id="emptyCategories">
-                            <img src="https://undraw.co/illustrations/undraw_folder.svg" alt="No categories">
+                            <img src="{{ asset('adminAssets/images/illustrate/addFolder.svg') }}" alt="No categories">
                             <h5 class="mt-3">No categories found</h5>
                             <p>Add categories to organize waste items more effectively.</p>
                             <button class="btn btn-gradient" id="addCategoryEmpty">Add Category</button>
@@ -218,25 +162,24 @@
             </div>
         </div>
 
-        <footer class="mt-4 text-center text-muted">
-            ♻️ Built for sustainable operations · Waste Management System • {{ date('Y') }}
-        </footer>
+        <footer class="mt-4 text-center text-muted">♻️ Built for sustainable operations · Waste Management System • {{ date('Y') }}</footer>
     </div>
 
     {{-- MODALS --}}
     @section('modals')
-        <!-- Add / Edit Waste Item Modal -->
+        <!-- Waste Item Modal -->
         <div class="modal fade" id="modalWasteItem" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-white">
-                        <h5 class="modal-title" id="modalWasteItemTitle"><i class="bi bi-box-seam me-2"></i> <span>Add Waste Item</span></h5>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalWasteItemTitle"><i class="bi bi-box-seam me-2"></i><span>Add Waste Item</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <form id="formWasteItem" class="needs-validation" novalidate>
                         @csrf
                         <input type="hidden" name="waste_id" id="waste_item_id">
+
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -257,7 +200,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                                    <label class="form-label">Quantity per unit <span class="text-danger">*</span></label>
                                     <input type="number" min="0" step="any" name="quantity" id="waste_item_quantity" class="form-control" required>
                                     <div class="invalid-feedback">Enter quantity.</div>
                                 </div>
@@ -265,7 +208,7 @@
                                 <div class="col-md-4">
                                     <label class="form-label">Unit <span class="text-danger">*</span></label>
                                     <input type="text" name="unit" id="waste_item_unit" class="form-control" placeholder="e.g. kg" required>
-                                    <div class="invalid-feedback">Specify a unit.</div>
+                                    <div class="invalid-feedback">Unit required.</div>
                                 </div>
 
                                 <div class="col-md-4">
@@ -294,22 +237,23 @@
             </div>
         </div>
 
-        <!-- Add / Edit Category Modal -->
+        <!-- Category Modal -->
         <div class="modal fade" id="modalCategory" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-white">
-                        <h5 class="modal-title"><i class="bi bi-list-ul me-2"></i> <span id="modalCategoryTitle">Add Category</span></h5>
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="bi bi-list-ul me-2"></i><span id="modalCategoryTitle">Add Category</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <form id="formCategory" class="needs-validation" novalidate>
                         @csrf
                         <input type="hidden" name="category_id" id="category_id">
+
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Category Name <span class="text-danger">*</span></label>
-                                <input type="text" name="category_name" id="category_name" class="form-control" required>
+                                <input type="text" name="waste_category_name" id="category_name" class="form-control" required>
                                 <div class="invalid-feedback">Category name required.</div>
                             </div>
 
@@ -337,24 +281,15 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            // ROUTE NAMES ASSUMPTION:
-            // GET list:       route('admin.get-waste-items') -> returns { data: [...] }
-            // GET categories: route('admin.get-waste-categories') -> returns { data: [...] }
-            // POST store item: route('admin.store-waste-item')
-            // POST store category: route('admin.store-waste-category')
-            // GET edit item: /admin/edit-waste-item/{id}
-            // GET edit category: /admin/edit-waste-category/{id}
-            // DELETE item: /admin/delete-waste-item/{id}
-            // DELETE category: /admin/delete-waste-category/{id}
 
             let itemsTable, categoriesTable;
 
             document.addEventListener('DOMContentLoaded', () => {
-                // DARK MODE TOGGLE (persisted)
+                // dark mode persistence
                 const darkToggle = document.getElementById('darkModeToggle');
                 const savedDark = localStorage.getItem('wm_dark') === '1';
                 if (savedDark) document.documentElement.classList.add('dark-mode'), darkToggle.checked = true;
-                darkToggle.addEventListener('change', e => {
+                darkToggle.addEventListener('change', (e) => {
                     if (e.target.checked) {
                         document.documentElement.classList.add('dark-mode');
                         localStorage.setItem('wm_dark', '1');
@@ -383,7 +318,7 @@
                                         <button class="btn btn-sm btn-outline-primary" onclick="openEditItem(${id})" aria-label="Edit ${row.name}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteItem(${id}, '${row.name}')" aria-label="Delete ${row.name}">
+                                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteItem(${id}, '${escapeHtml(row.name)}')" aria-label="Delete ${row.name}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>`;
@@ -413,7 +348,7 @@
                                         <button class="btn btn-sm btn-outline-primary" onclick="openEditCategory(${id})" aria-label="Edit ${row.name}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteCategory(${id}, '${row.name}')" aria-label="Delete ${row.name}">
+                                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteCategory(${id}, '${escapeHtml(row.name)}')" aria-label="Delete ${row.name}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>`;
@@ -426,20 +361,20 @@
                     }
                 });
 
-                // Global search wired to both tables
-                $('#globalSearch').on('input', function(){
+                // Global search
+                $('#globalSearch').on('input', function() {
                     itemsTable.search(this.value).draw();
                     categoriesTable.search(this.value).draw();
                 });
 
-                // Open Add modal depending on active tab
+                // Add button behavior depends on active tab
                 document.getElementById('openAddBtn').addEventListener('click', () => {
                     const activeTab = document.querySelector('.nav-wm .nav-link.active').id;
                     if (activeTab === 'categories-tab') openAddCategory();
                     else openAddItem();
                 });
 
-                // Small-screen FAB opens the active add
+                // FAB for mobile quick-add
                 const fab = document.createElement('button');
                 fab.className = 'fab d-md-none';
                 fab.innerHTML = '<i class="bi bi-plus-lg"></i>';
@@ -459,7 +394,7 @@
                 document.getElementById('formWasteItem').addEventListener('submit', submitItemForm);
                 document.getElementById('formCategory').addEventListener('submit', submitCategoryForm);
 
-                // Basic bootstrap validation styling
+                // Bootstrap validation shim
                 Array.from(document.querySelectorAll('.needs-validation')).forEach(form => {
                     form.addEventListener('submit', ev => {
                         if (!form.checkValidity()) {
@@ -470,22 +405,14 @@
                     }, false);
                 });
 
-                // Help button
+                // Help dialog
                 document.getElementById('helpBtn').addEventListener('click', () => {
                     Swal.fire({
                         title: 'Waste Management Help',
-                        html: '<p class="text-start">Use the <strong>Waste Items</strong> tab to manage individual waste records. Use <strong>Categories</strong> to group items logically (e.g. Recyclables, Organic).</p><ul class="text-start"><li>Add items quickly with the <em>Add</em> button or FAB.</li><li>Edit and delete with the action buttons.</li><li>Use the search box to filter both tables.</li></ul>',
+                        html: '<p class="text-start">Use <strong>Waste Items</strong> for individual items (quantity, unit). Use <strong>Categories</strong> to group items (e.g. Recyclables, Organic).</p><ul class="text-start"><li>Click <em>Add</em> or use the FAB.</li><li>Edit and Delete from the actions column.</li><li>Search using the top search box.</li></ul>',
                         icon: 'info',
                         width: 600
                     });
-                });
-
-                // Support keyboard access: open Add with Ctrl+N
-                document.addEventListener('keydown', (e)=>{
-                   if (e.ctrlKey && e.key.toLowerCase()==='n') {
-                       document.getElementById('openAddBtn').click();
-                       e.preventDefault();
-                   }
                 });
             });
 
@@ -500,7 +427,12 @@
                 Toastify({ text: msg, duration: 3000, backgroundColor: success ? "#28a745" : "#dc3545" }).showToast();
             }
 
-            /* ---------- Items CRUD ---------- */
+            function escapeHtml(text) {
+                if (!text) return '';
+                return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
+
+            /* ---------- ITEMS CRUD ---------- */
             function openAddItem() {
                 document.getElementById('modalWasteItemTitle').innerText = 'Add Waste Item';
                 document.getElementById('submitWasteItemBtn').innerHTML = '<i class="bi bi-save me-1"></i> Save Item';
@@ -514,6 +446,7 @@
                     const res = await fetch(`/admin/edit-waste-item/${id}`);
                     const { success, data } = await res.json();
                     if (!success) return showToast('Failed to load item', false);
+
                     document.getElementById('modalWasteItemTitle').innerText = 'Edit Waste Item';
                     document.getElementById('submitWasteItemBtn').innerHTML = '<i class="bi bi-save me-1"></i> Update Item';
 
@@ -540,17 +473,16 @@
                 const id = formData.get('waste_id');
                 const isUpdate = !!id;
                 const url = isUpdate ? `/admin/update-waste-item/${id}` : "{{ route('admin.store-waste-item') }}";
-                const method = isUpdate ? 'POST' : 'POST'; // change to PUT if your backend requires it
-
+                // your backend may accept POST for both store/update or PUT for update.
                 try {
                     const res = await fetch(url, {
-                        method,
+                        method: 'POST',
                         headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
                         body: formData
                     });
                     const data = await res.json();
                     if (res.ok && data.success) {
-                        showToast(data.message || (isUpdate ? 'Updated' : 'Saved'));
+                        showToast(data.message || (isUpdate ? 'Item updated' : 'Item created'));
                         itemsTable.ajax.reload();
                         new bootstrap.Modal(document.getElementById('modalWasteItem')).hide();
                     } else {
@@ -587,7 +519,7 @@
                 });
             }
 
-            /* ---------- Categories CRUD ---------- */
+            /* ---------- CATEGORIES CRUD ---------- */
             function openAddCategory() {
                 document.getElementById('modalCategoryTitle').innerText = 'Add Category';
                 document.getElementById('formCategory').reset();
@@ -621,7 +553,6 @@
                 const id = formData.get('category_id');
                 const isUpdate = !!id;
                 const url = isUpdate ? `/admin/update-waste-category/${id}` : "{{ route('admin.store-waste-category') }}";
-
                 try {
                     const res = await fetch(url, {
                         method: 'POST',
@@ -632,7 +563,7 @@
                     if (res.ok && data.success) {
                         showToast(data.message || (isUpdate ? 'Category updated' : 'Category created'));
                         categoriesTable.ajax.reload();
-                        itemsTable.ajax.reload(); // in case category name changes
+                        itemsTable.ajax.reload(); // sync names if needed
                         new bootstrap.Modal(document.getElementById('modalCategory')).hide();
                     } else {
                         showToast(data.message || 'Save failed', false);
@@ -645,7 +576,7 @@
             function confirmDeleteCategory(id, name) {
                 Swal.fire({
                     title: `Delete category "${name}"?`,
-                    text: 'All linked subcategories/items might be affected.',
+                    text: 'All linked items might be affected.',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, delete',

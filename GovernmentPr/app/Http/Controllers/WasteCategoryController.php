@@ -29,6 +29,28 @@ class WasteCategoryController extends Controller
         return view("components.apps.waste_category", $data);
     }
 
+    public function fetchCategories()
+    {
+        $categories = WasteCategory::withCount('subCategories')
+            ->orderBy('waste_category_name')
+            ->get()
+            ->map(function($cat) {
+                    return [
+                        'waste_category_id' => $cat->waste_category_id,
+                        'name' => $cat->waste_category_name,
+                        'description' => $cat->waste_category_description,
+                        'sub_count' => $cat->subcategories_count,
+                    ];
+                });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Categories fetched successfully.',
+            'data' => $categories
+        ]);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

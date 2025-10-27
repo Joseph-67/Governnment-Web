@@ -114,7 +114,6 @@ class CompanyController extends WaterStockMovementController
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
         // Fetch operations
 
-
         // Fetch calendar years
         $data['calendar_years'] = CalendarYear::where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
         $data['active_calendar_years'] = CalendarYear::active()->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
@@ -140,11 +139,26 @@ class CompanyController extends WaterStockMovementController
         $data['production_logs'] = ProductionLog::with(['company', 'companyOperation', 'calendarYear'])->where('company_id', $companyID)->get();
         $data['quality_controls_record'] = QualityControl::where('company_id', $companyID)->get();
         // fetch company departments
-        $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
+        $data['company_departments'] = CompanyDepartment::withCount(['employees'])->where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs'])
+        ->map(function($dept) {
+            return [
+                'DepartmentID' => $dept->DepartmentID,
+                'DepartmentName' => $dept->DepartmentName,
+                'ManagerIDs' => $dept->ManagerIDs,
+                'employee_count' => $dept->employees_count,
+            ];
+        });
         //fetch company workflows
         $data['company_workflows'] = CompanyWorkflow::where('company_id', $companyID)->get(['workflow_id', 'workflow_name']);
         //fetch all states
-        $data['regions']= Company::getAllRegions();
+        $data['regions'] = Company::getAllRegions();
+        $data['incomes'] = [];
+        $data['expenses'] = [];
+        $data['trainings'] = [];
+        $data['performances'] = [];
+        $data['welfarePrograms'] = [];
+
+
         return view('components.apps.companyProfile', $data);
     }   
     /**

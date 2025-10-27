@@ -1,217 +1,1094 @@
 <x-layouts.admin-app>
     @section('PageTitle', 'Company Profile')
-    <div class="container-xxl">
-        <!-- Header -->
-        <div class="profile-header text-center py-5">
-            <h1 class="display-4 fw-bold">Company Profile</h1>
-            <p class="">Your company's information at a glance</p>
-        </div>
-        <div class="row justify-content-center mt-3">
-            <div class="col-md-12 nav-tabs-custom text-center">
-                <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium active" data-bs-toggle="tab" href="#overview" role="tab"
-                            aria-selected="true"><i class="la la-info-circle d-block"></i>Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#policy" role="tab"
-                            aria-selected="false"><i class="la la-file-alt d-block"></i>Policies & Objectives</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#recp" role="tab"
-                            aria-selected="false"><i class="la la-chart-line d-block"></i>R.E.C.P</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#inventory" role="tab"
-                            aria-selected="false"><i class="la la-box d-block"></i>Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#hrms" role="tab"
-                            aria-selected="false"><i class="la la-users d-block"></i>HRMS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#operations" role="tab"
-                            aria-selected="false"><i class="la la-cogs d-block"></i>Operations Management</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#product-management" role="tab"
-                            aria-selected="false"><i class="la la-box-open d-block"></i>Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#settings" role="tab"
-                            aria-selected="false"><i class="la la-cog d-block"></i>General Settings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" data-bs-toggle="tab" href="#contact" role="tab"
-                            aria-selected="false"><i class="la la-user d-block"></i>Contact Personnel Details</a>
-                    </li>
-                </ul>
-                <!-- Tab panes -->
+
+    @section('styles')
+    
+    <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
+    <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
+    <style>
+        .tag-input {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 1px solid #ccc; */
+            padding: 5px;
+            /* border-radius: 8px; */
+            cursor: text;
+            position: relative;
+        }
+
+        .tag-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+            background-color: #e0e7ff;
+            color: #1d4ed8;
+            border-radius: 16px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        .tag span {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .tag span:hover {
+            color: #dc2626;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            /* border: 1px solid #ccc; */
+            border-radius: 4px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .TagSuggestion {
+            padding: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .TagSuggestion:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .suggestion img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .suggestion:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Profile card */
+        .profile-card {
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        }
+
+        .profile-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        }
+
+        .profile-card .profile-info {
+        padding: 15px;
+        }
+
+        .profile-card .profile-info h2 {
+        margin: 10px 0 5px;
+        font-size: 18px;
+        }
+
+        .profile-card .profile-info p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+        }
+        /* Profile card */
+        .taggable-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .supervisor-tag-input {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 1px solid #ccc; */
+            /* padding: 5px; */
+            border-radius: 8px;
+            cursor: text;
+            position: relative;
+            /* background-color: #fff; */
+        }
+
+        .supervisor-tag-input input {
+            /* border: none;
+            outline: none; */
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .manager-tag-input {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 1px solid #ccc; */
+            /* padding: 5px; */
+            border-radius: 8px;
+            cursor: text;
+            position: relative;
+            /* background-color: #fff; */
+        }
+
+        .manager-tag-input input {
+            /* border: none;
+            outline: none; */
+            flex: 1;
+            min-width: 100px;
+        }
+    </style>
+    <style>
+        /* Tag Input Wrapper */
+        .tag-inline-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            /* gap: 4px;
+            padding: 4px 8px; */
+            background: #fff;
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            /* min-height: 38px; */
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .tag-inline-container:focus-within {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+            border-color: #86b7fe;
+        }
+
+        /* Tag Styling */
+        .task-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 12px 4px 10px;
+            border-radius: 1rem;
+            font-size: 14px;
+            margin: 2px 2px 2px 0;
+            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
+            font-weight: 500;
+            cursor: default;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .task-tag:hover {
+            background: #0b5ed7;
+            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
+            transform: translateY(-1px) scale(1.04);
+        }
+        .task-tag span {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+        .task-tag span:hover {
+            opacity: 1;
+            color: #f87171;
+        }
+
+        /* Input Styling */
+        #task-tag-input {
+            flex-grow: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            color: #212529;
+            margin: 2px 0;
+        }
+        #task-tag-input::placeholder {
+            color: #adb5bd;
+            opacity: 1;
+        }
+
+        /* Suggestions Dropdown */
+        #task-suggestions {
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 20;
+            position: absolute;
+            /* left: 0;
+            right: 0;
+            min-width: 180px; */
+        }
+
+        .task-suggestion {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 15px;
+            color: #212529;
+            background: transparent;
+            transition: background 0.18s, color 0.18s;
+        }
+        .task-suggestion:last-child {
+            border-bottom: none;
+        }
+        .task-suggestion:hover,
+        .task-suggestion.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        /* Scrollbar Styling */
+        #task-suggestions::-webkit-scrollbar {
+            width: 8px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
+        }
+    </style>
+    <style>
+        /* Tag Input Wrapper */
+        .tag-inline-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            /* gap: 4px;
+            padding: 4px 8px; */
+            background: #fff;
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            /* min-height: 38px; */
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .tag-inline-container:focus-within {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+            border-color: #86b7fe;
+        }
+
+        /* Tag Styling */
+        .task-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #0d6efd;
+            color: #fff;
+            padding: 4px 12px 4px 10px;
+            border-radius: 1rem;
+            font-size: 14px;
+            margin: 2px 2px 2px 0;
+            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
+            font-weight: 500;
+            cursor: default;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .task-tag:hover {
+            background: #0b5ed7;
+            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
+            transform: translateY(-1px) scale(1.04);
+        }
+        .task-tag span {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+        .task-tag span:hover {
+            opacity: 1;
+            color: #f87171;
+        }
+
+        /* Input Styling */
+        #task-tag-input {
+            flex-grow: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            color: #212529;
+            margin: 2px 0;
+        }
+
+        #task-tag-input::placeholder {
+            color: #adb5bd;
+            opacity: 1;
+        }
+
+        /* Suggestions Dropdown */
+        #task-suggestions {
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 20;
+            position: absolute;
+            /* left: 0;
+            right: 0;
+            min-width: 180px; */
+        }
+
+        .task-suggestion {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 15px;
+            color: #212529;
+            background: transparent;
+            transition: background 0.18s, color 0.18s;
+        }
+        .task-suggestion:last-child {
+            border-bottom: none;
+        }
+        .task-suggestion:hover,
+        .task-suggestion.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        /* Scrollbar Styling */
+        #task-suggestions::-webkit-scrollbar {
+            width: 8px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 10px;
+        }
+        #task-suggestions::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
+        }
+    </style>
+    <style>
+        .tagify {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(white, .8);
+        }
+
+        :root {
+            --tagify-dd-item-pad: .5em .7em;
+        }
+
+        .tagify__dropdown.users-list .tagify__dropdown__item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0 1em;
+            grid-template-areas: "avatar name"
+                "avatar email";
+        }
+
+        .tagify__dropdown.users-list header.tagify__dropdown__item {
+            grid-template-areas: "add remove-tags"
+                "remaning .";
+        }
+
+        .tagify__dropdown.users-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+            transform: scale(1.2);
+        }
+
+        .tagify__dropdown.users-list .tagify__dropdown__item__avatar-wrap {
+            grid-area: avatar;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #EEE;
+            transition: .1s ease-out;
+        }
+
+        .tagify__dropdown.users-list img {
+            width: 100%;
+            vertical-align: top;
+        }
+
+        .tagify__dropdown.users-list header.tagify__dropdown__item>div,
+        .tagify__dropdown.users-list .tagify__dropdown__item strong {
+            grid-area: name;
+            width: 100%;
+            align-self: center;
+        }
+
+        .tagify__dropdown.users-list span {
+            grid-area: email;
+            width: 100%;
+            font-size: .9em;
+            opacity: .6;
+        }
+
+        .tagify__dropdown.users-list .tagify__dropdown__item__addAll {
+            border-bottom: 1px solid #DDD;
+            gap: 0;
+        }
+
+        .tagify__dropdown.users-list .remove-all-tags {
+            grid-area: remove-tags;
+            justify-self: self-end;
+            font-size: .8em;
+            padding: .2em .3em;
+            border-radius: 3px;
+            user-select: none;
+        }
+
+        .tagify__dropdown.users-list .remove-all-tags:hover {
+            color: white;
+            background: salmon;
+        }
+
+
+        /* Tags items */
+        .tagify__tag {
+            white-space: nowrap;
+        }
+
+        .tagify__tag img {
+            width: 100%;
+            vertical-align: top;
+            pointer-events: none;
+        }
+
+        .tagify__tag:hover .tagify__tag__avatar-wrap {
+            transform: scale(1.6) translateX(-10%);
+        }
+
+        .tagify__tag .tagify__tag__avatar-wrap {
+            width: 16px;
+            height: 16px;
+            white-space: normal;
+            border-radius: 50%;
+            background: silver;
+            margin-right: 5px;
+            transition: .12s ease-out;
+        }
+
+        .users-list .tagify__dropdown__itemsGroup:empty {
+            display: none;
+        }
+
+        .users-list .tagify__dropdown__itemsGroup::before {
+            content: attr(data-title);
+            display: inline-block;
+            font-size: .9em;
+            padding: 4px 6px;
+            margin: var(--tagify-dd-item-pad);
+            font-style: italic;
+            border-radius: 4px;
+            background: #00ce8d;
+            color: white;
+            font-weight: 600;
+        }
+
+        .users-list .tagify__dropdown__itemsGroup:not(:first-of-type) {
+            border-top: 1px solid #DDD;
+        }
+    </style>
+    <style>
+        /* Loader style */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        .profile-header {
+            background: linear-gradient(to right, #4e73df, #1cc88a);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .fancy-card {
+            /* border: 1px solid #dee2e6; */
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .fancy-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .fancy-card .card-header {
+            /* background-color: #f8f9fa; */
+            /* font-weight: 600; */
+            /* border-bottom: 1px solid #dee2e6; */
+        }
+
+        .offcanvas {
+            border-top-left-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            border-radius: 0.5rem;
+        }
+
+        .btn-danger {
+            border-radius: 0.5rem;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(90deg, #007bff, #22c55e); /* Updated gradient colors for primary */
+            color: #ffffff; /* Ensures text is visible on the gradient */
+        }
+
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+     <style>
+        #production-process-form-container .card {
+            border-radius: 1rem;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+            background: #f8fafc;
+        }
+        #production-process-form-container .card-header {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
+        }
+        #production-process-form-container .btn-close,
+        #production-process-form-container .btn[aria-label="Cancel"] {
+            opacity: 0.8;
+            background: none !important;
+            box-shadow: none;
+            outline: none;
+            color: #333;
+            font-size: 2rem;
+        }
+        #production-process-form-container .btn-close:hover,
+        #production-process-form-container .btn[aria-label="Cancel"]:hover {
+            opacity: 1;
+            color: #0ea5e9;
+        }
+        #production-process-form-container .card-body {
+            background: #f8fafc;
+        }
+        #production-process-form-container label {
+            font-weight: 500;
+            color: #0ea5e9;
+        }
+        #production-process-form-container .form-control,
+        #production-process-form-container .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid #b6e0fe;
+            background: #fff;
+        }
+        #production-process-form-container .btn-info {
+            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(14,165,233,0.10);
+        }
+        #production-process-form-container .btn-secondary {
+            border-radius: 0.5rem;
+        }
+        @media (min-width: 992px) {
+            #productionProcessModal .modal-dialog {
+                max-width: 1000px;
+            }
+        }
+    </style>
+    <style>
+        :root {
+            --primary: #0072ff;
+            --accent: #00c6ff;
+            --muted: #6c757d;
+            --radius: 14px;
+            --bg-light: #f8f9fa;
+            --bg-dark: #1a1a2f;
+            --card-bg: #ffffff;
+        }
+
+        /* Hero Section */
+        .wm-hero {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border-radius: var(--radius);
+            padding: 2rem;
+            position: relative;
+            color: #fff;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .wm-hero .illustration {
+            position: absolute;
+            right: 2rem;
+            bottom: 0;
+            z-index: -0;
+            width: 260px;
+            height: 160px;
+            background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.15;
+        }
+
+        .wm-hero .company-meta h2 {
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .wm-hero small.badge {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Navigation Tabs */
+        .nav-wm {
+            /* background: var(--card-bg); */
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem;
+        }
+
+        .nav-wm .nav-link {
+            border-radius: 10px;
+            color: var(--muted);
+            transition: all 0.25s ease;
+        }
+
+        .nav-wm .nav-link.active {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(0, 114, 255, 0.18);
+        }
+
+        /* Cards */
+        .info-card {
+            border: none;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-card .card-header {
+            background: rgba(0, 114, 255, 0.08);
+            font-weight: 600;
+            border-bottom: none;
+            color: var(--primary);
+        }
+
+        .info-card .card-body p {
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading {
+            font-weight: 600;
+            margin: 1rem 0;
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+            padding-left: 0.6rem;
+        }
+
+        .policy-item:hover, .objective-item:hover {
+            background: #f0f7ff;
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .policy-item .form-check-input:checked,
+        .objective-item .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #0072ff !important;
+            color: #fff !important;
+            box-shadow: 0 2px 6px rgba(0, 114, 255, 0.3);
+        }
+
+        .accordion-button:focus {
+            box-shadow: none !important;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f3faff !important;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0072ff;
+            color: #fff;
+        }
+
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .wm-hero .illustration {
+                display: none;
+            }
+        }
+    </style>
+    @endsection
+
+    <div class="container-fluid py-3">
+
+        <!-- Hero Header -->
+        <div class="wm-hero d-flex align-items-center justify-content-between flex-wrap">
+            <div class="d-flex align-items-center gap-3">
+                <img src="{{ asset($company->logo ?? 'images/default-logo.png') }}" alt="Company Logo"
+                    class="rounded-circle border border-light" style="width: 80px; height: 80px; object-fit: cover;">
+
+                <div class="company-meta">
+                    <h2>{{ $company->company_name ?? 'Company Name' }}</h2>
+                    <p class="mb-1">{{ $company->industry ?? 'Industry Not Set' }}</p>
+                    <small class="badge">{{ $company->status ?? 'Active' }}</small>
+                </div>
             </div>
-            <div class="tab-content">
-                <!-- Overview -->
-                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Company Name</h5>
-                                    <p class="card-text">{{ $company->company_name }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Founded</h5>
-                                    <p class="card-text">{{
-                                        \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Industry</h5>
-                                    <p class="card-text">{{ $company->industry }} </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Headquarters</h5>
-                                    <p class="card-text">{{ $company->address }}, {{ $company->city }}, {{
-                                        $company->state }}, {{
-                                        $company->country }}</p>
-                                </div>
+
+            <a href="" class="btn btn-light btn-sm">
+                <i class="la la-edit me-1"></i> Edit Profile
+            </a>
+
+            <div class="illustration"></div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills nav-wm mb-4 bg-light flex-wrap justify-content-center" id="profileTabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#overview" role="tab"><i class="la la-info-circle me-1"></i> Overview</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#policy" role="tab"><i class="la la-file-alt me-1"></i> Policies</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#recp" role="tab"><i class="la la-chart-line me-1"></i> R.E.C.P</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#finance" role="tab"><i class="la la-dollar-sign me-1"></i> Finance</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#hr" role="tab"><i class="la la-users me-1"></i> HR</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#inventory" role="tab"><i class="la la-box me-1"></i> Inventory</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#operations" role="tab"><i class="la la-cogs me-1"></i> Operations</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab"><i class="la la-cog me-1"></i> Settings</a></li>
+        </ul>
+
+        <!-- Tab Contents -->
+        <div class="tab-content">
+            <!-- Overview -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <h5 class="section-heading">Company Overview</h5>
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Basic Information</div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ $company->company_name ?? 'N/A' }}</p>
+                                <p><strong>Industry:</strong> {{ $company->industry ?? 'N/A' }}</p>
+                                <p><strong>Founded:</strong>
+                                    {{ $company->date_of_establishment ? \Carbon\Carbon::parse($company->date_of_establishment)->format('F j, Y') : 'N/A' }}
+                                </p>
+                                <p><strong>Employees:</strong> {{ $company->number_of_employees ?? 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Contact Details</h5>
-                                    <p class="card-text">Phone: {{ $company->primary_phone_number }}, {{
-                                        $company->secondary_phone_number }}</p>
-                                    <p class="card-text">Email: {{ $company->email }}</p>
-                                    <p class="card-text">Website: <a href="{{ $company->website_url }}">{{
-                                            $company->website_url }}</a></p>
-                                    <p class="card-text">ZIP Code: {{ $company->zip_code }}</p>
-                                    <p class="card-text">Longitude: {{ $company->longitude }}</p>
-                                    <p class="card-text">Latitude: {{ $company->latitude }}</p>
-                                    <p class="card-text">MGRS: {{ $company->mgrs }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Environmental Manager</h5>
-                                    <p class="card-text">Name: {{ $company->operations_manager }}</p>
-                                    <p class="card-text">Phone: (123) 555-7890</p>
-                                    <p class="card-text">Email: jane.doe@abccorp.com</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Contact Person</h5>
-                                    <p class="card-text">Name: {{ $company->contact_person_full_name }}</p>
-                                    <p class="card-text">Phone: {{ $company->contact_person_contact_number }}</p>
-                                    <p class="card-text">Position: {{ $company->contact_person_position }}</p>
-                                    <p class="card-text">Email: john.smith@abccorp.com</p>
-                                </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Headquarters</div>
+                            <div class="card-body">
+                                <p>{{ $company->address ?? 'Address not set' }}</p>
+                                <p>{{ $company->city }}, {{ $company->state }}</p>
+                                <p>{{ $company->country }}</p>
+                                <p><strong>ZIP:</strong> {{ $company->zip_code ?? 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Number of Employees</h5>
-                                    <p class="card-text">{{ $company->number_of_employees }}</p>
-                                </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Contact</div>
+                            <div class="card-body">
+                                <p><strong>Email:</strong> {{ $company->email ?? 'N/A' }}</p>
+                                <p><strong>Phone:</strong> {{ $company->primary_phone_number ?? 'N/A' }}</p>
+                                <p><strong>Website:</strong>
+                                    <a href="{{ $company->website_url }}" target="_blank">{{ $company->website_url }}</a>
+                                </p>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Industry Process Used</h5>
-                                    <p class="card-text">This company primarily utilizes processes such as {{
-                                        $company->industry_process }}.</p>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Location Data</div>
+                            <div class="card-body">
+                                <p><strong>Latitude:</strong> {{ $company->latitude ?? 'N/A' }}</p>
+                                <p><strong>Longitude:</strong> {{ $company->longitude ?? 'N/A' }}</p>
+                                <p><strong>MGRS:</strong> {{ $company->mgrs ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Primary Contact</div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ $company->contact_person_full_name ?? 'N/A' }}</p>
+                                <p><strong>Position:</strong> {{ $company->contact_person_position ?? 'N/A' }}</p>
+                                <p><strong>Phone:</strong> {{ $company->contact_person_contact_number ?? 'N/A' }}</p>
+                                <p><strong>Email:</strong> {{ $company->contact_person_email ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card info-card">
+                            <div class="card-header">Operations Manager</div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ $company->operations_manager ?? 'N/A' }}</p>
+                                <p><strong>Email:</strong> {{ $company->operations_email ?? 'N/A' }}</p>
+                                <p><strong>Phone:</strong> {{ $company->operations_phone ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Other tabs placeholder -->
+             <!-- Policy -->
+            <div class="tab-pane fade" id="policy" role="tabpanel">
+                <div class="row">
+                    <!-- Company Policies -->
+                    <div class="col-12 mb-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between">
+                                <h4 class="card-title fw-semibold mb-0 text-primary">
+                                    <i class="la la-file-alt me-2 text-primary"></i>Company Policies
+                                </h4>
+                            </div>
+                            <div class="card-body pt-3">
+                                @if($policies->count() > 0)
+                                    <div class="row">
+                                        @foreach($policies as $policy)
+                                            <div class="col-md-4 col-sm-6 mb-3">
+                                                <div class="policy-item p-3 border rounded-3 shadow-sm d-flex align-items-center justify-content-between"
+                                                    style="transition: all 0.3s ease;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <i class="la la-balance-scale text-accent fs-4"></i>
+                                                        <label class="form-check-label fw-medium mb-0" for="policy-{{ $policy->policy_id }}">
+                                                            {{ ucfirst($policy->title) }}
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input ms-2" type="checkbox" role="switch"
+                                                            id="policy-{{ $policy->policy_id }}"
+                                                            value="{{ $policy->policy_id }}"
+                                                            onchange="ChangePolicy(this, '{{ $company->company_id }}', '{{ $policy->policy_id }}')"
+                                                            name="policy[]"
+                                                            {{ in_array($policy->policy_id, array_column($company_policies->toArray(), 'policy_id')) ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No company policies defined yet.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Objectives -->
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between">
+                                <h4 class="card-title fw-semibold mb-0 text-primary">
+                                    <i class="la la-bullseye me-2 text-primary"></i>Company Objectives
+                                </h4>
+                            </div>
+                            <div class="card-body pt-3">
+                                @if($objectives->count() > 0)
+                                    <div class="row">
+                                        @foreach($objectives as $objective)
+                                            <div class="col-md-4 col-sm-6 mb-3">
+                                                <div class="objective-item p-3 border rounded-3 shadow-sm d-flex align-items-center justify-content-between"
+                                                    style="transition: all 0.3s ease;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <i class="la la-check-circle text-success fs-4"></i>
+                                                        <label class="form-check-label fw-medium mb-0" for="objective-{{ $objective->objective_id }}">
+                                                            {{ ucfirst($objective->name) }}
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        <input class="form-check-input ms-2" type="checkbox" role="switch"
+                                                            id="objective-{{ $objective->objective_id }}"
+                                                            value="{{ $objective->objective_id }}"
+                                                            onchange="ChangeObjective(this, '{{ $company->company_id }}', '{{ $objective->objective_id }}')"
+                                                            name="objective[]"
+                                                            {{ in_array($objective->objective_id, array_column($company_objectives->toArray(), 'objective_id')) ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No company objectives defined yet.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Policy -->
+             <!-- RECP -->
+            <div class="tab-pane fade" id="recp" role="tabpanel">
+                <div class="recp-section">
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between">
+                            <h4 class="card-title fw-semibold text-primary mb-0">
+                                <i class="la la-recycle me-2 text-primary"></i>Resource Efficiency & Cleaner Production (R.E.C.P)
+                            </h4>
+                            <a href="#" class="btn btn-sm btn-gradient">
+                                <i class="la la-plus me-1"></i> Add Initiative
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="text-muted">
+                                This section helps track your company’s progress toward sustainable and cleaner production goals — 
+                                monitoring resource consumption, waste reduction, and environmental efficiency.
+                            </p>
+
+                            <!-- RECP Metrics -->
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-4">
+                                    <div class="card card-wm p-3 text-center border-0 shadow-sm">
+                                        <i class="la la-tint fs-1 text-primary mb-2"></i>
+                                        <h6 class="fw-semibold">Water Efficiency</h6>
+                                        <p class="text-muted small mb-1">Usage per production cycle</p>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" style="width: 72%;"></div>
+                                        </div>
+                                        <small class="text-success fw-medium mt-1 d-block">72% Efficiency</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-wm p-3 text-center border-0 shadow-sm">
+                                        <i class="la la-bolt fs-1 text-warning mb-2"></i>
+                                        <h6 class="fw-semibold">Energy Efficiency</h6>
+                                        <p class="text-muted small mb-1">kWh saved this quarter</p>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-warning" style="width: 64%;"></div>
+                                        </div>
+                                        <small class="text-success fw-medium mt-1 d-block">64% Target Achieved</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-wm p-3 text-center border-0 shadow-sm">
+                                        <i class="la la-cubes fs-1 text-success mb-2"></i>
+                                        <h6 class="fw-semibold">Material Utilization</h6>
+                                        <p class="text-muted small mb-1">Recycled vs. new materials</p>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" style="width: 81%;"></div>
+                                        </div>
+                                        <small class="text-success fw-medium mt-1 d-block">81% Reuse Rate</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Initiatives -->
+                            <div class="mt-5">
+                                <h5 class="fw-semibold mb-3">Recent R.E.C.P Initiatives</h5>
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Initiative</th>
+                                                <th>Category</th>
+                                                <th>Status</th>
+                                                <th>Impact</th>
+                                                <th>Date Implemented</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Water Recycling System</td>
+                                                <td>Water Efficiency</td>
+                                                <td><span class="badge bg-success">Ongoing</span></td>
+                                                <td>Reduced water usage by 30%</td>
+                                                <td>Mar 2025</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-sm btn-outline-primary"><i class="la la-eye"></i></a>
+                                                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="la la-pencil"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Solar Power Integration</td>
+                                                <td>Energy Efficiency</td>
+                                                <td><span class="badge bg-info">Completed</span></td>
+                                                <td>Cut energy cost by 25%</td>
+                                                <td>Jan 2025</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-sm btn-outline-primary"><i class="la la-eye"></i></a>
+                                                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="la la-pencil"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="empty-state mt-4" style="display:none;">
+                                    <img src="{{ asset('images/empty-state.svg') }}" alt="No initiatives">
+                                    <p class="mt-2 text-muted">No R.E.C.P initiatives added yet.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="policy" role="tabpanel">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Company Policies</h4>
-                                </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <!-- Policy -->
-                            <div class="row">
-                                @foreach($policies as $policy)
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="policy-{{ $policy->policy_id }}"
-                                                value="{{ $policy->policy_id }}"
-                                                onchange="ChangePolicy(this, '{{ $company->company_id }}', '{{ $policy->policy_id }}')"
-                                                name="policy[]"
-                                                {{ (in_array($policy->policy_id, array_column($company_policies->toArray(), 'policy_id'))) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="policy-{{ $policy->policy_id }}">
-                                                {{ ucfirst($policy->title) }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <!-- End Policy -->
-                        </div><!--end card-body-->
-                    </div><!--end card-->
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h4 class="card-title">Company Objectives</h4>
-                                </div><!--end col-->
-                            </div> <!--end row-->
-                        </div><!--end card-header-->
-                        <div class="card-body pt-0">
-                            <!-- objective -->
-                            <div class="row">
-                                @foreach($objectives as $objective)
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="objective-{{ $objective->objective_id }}"
-                                                value="{{ $objective->objective_id }}"
-                                                onchange="ChangeObjective(this, '{{ $company->company_id }}', '{{ $objective->objective_id }}')"
-                                                name="objective[]"
-                                                {{ in_array($objective->objective_id, array_column($company_objectives->toArray(), 'objective_id')) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="objective-{{ $objective->objective_id }}">
-                                                {{ ucfirst($objective->name) }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <!-- End Policy -->
-                        </div><!--end card-body-->
-                    </div><!--end card-->
-                </div>
-                <div class="tab-pane" id="recp" role="tabpanel">
+                <div>
                     <h4 class="">General Knowledge of Nigeria IEE RECP Concept/Benefit</h4>
                     <p class="subtitle">In Nigeria, Industrial Energy Efficiency (IEE) and Resource Efficiency
                         and Cleaner Production (RECP) focus on optimizing energy and resource use while minimizing
@@ -1106,189 +1983,387 @@
                         <!-- End RECP Approval and Disapproval Section -->
                     @endif
                 </div>
-                <!-- End Waste Management -->
-                <!-- HRMS Tab -->
-                <div class="tab-pane fade" id="hrms" role="tabpanel" aria-labelledby="hrms-tab">
-                    <h3>Human Resource Management System (HRMS)</h3>
-                    <div class="accordion my-3" id="hrmsAccordion">
-                        <!-- Department Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="departmentHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#departmentCollapse" aria-expanded="false" aria-controls="departmentCollapse">
-                                    <i class="las la-building me-2" style="font-size: 1.5rem;"></i> <span>Department Management</span>
-                                </button>
-                            </h2>
-                            <div id="departmentCollapse" class="accordion-collapse collapse" aria-labelledby="departmentHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="department-form">
-                                        <div class="card shadow-sm border-0 mb-4">
-                                            <div class="card-header bg-gradient-primary text-white">
-                                                <h5 class="mb-0"><i class="las la-building me-2"></i> Add New Department</h5>
-                                            </div>
+            </div>
+             <!-- RECP -->
+            <div class="tab-pane fade" id="finance" role="tabpanel" aria-labelledby="finance-tab">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-gradient-primary text-white py-3 d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold"><i class="las la-wallet me-2"></i>Finance Management</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Finance Tabs Navigation -->
+                        <ul class="nav nav-pills mb-4 justify-content-center flex-wrap" id="financeTabs" role="tablist">
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="nav-link active" id="fin-overview-tab" data-bs-toggle="tab"
+                                    data-bs-target="#fin-overview" type="button" role="tab" aria-controls="fin-overview"
+                                    aria-selected="true"><i class="las la-chart-line me-1"></i> Overview</button>
+                            </li>
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="nav-link" id="fin-income-tab" data-bs-toggle="tab"
+                                    data-bs-target="#fin-income" type="button" role="tab" aria-controls="fin-income"
+                                    aria-selected="false"><i class="las la-money-bill-wave me-1"></i> Income</button>
+                            </li>
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="nav-link" id="fin-expense-tab" data-bs-toggle="tab"
+                                    data-bs-target="#fin-expense" type="button" role="tab" aria-controls="fin-expense"
+                                    aria-selected="false"><i class="las la-receipt me-1"></i> Expenses</button>
+                            </li>
+                            <li class="nav-item m-1" role="presentation">
+                                <button class="nav-link" id="fin-budget-tab" data-bs-toggle="tab"
+                                    data-bs-target="#fin-budget" type="button" role="tab" aria-controls="fin-budget"
+                                    aria-selected="false"><i class="las la-coins me-1"></i> Budgets</button>
+                            </li>
+                        </ul>
+
+                        <!-- Finance Tab Content -->
+                        <div class="tab-content" id="financeTabsContent">
+                            <!-- =================== OVERVIEW =================== -->
+                            <div class="tab-pane fade show active" id="fin-overview" role="tabpanel" aria-labelledby="fin-overview-tab">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <div class="card text-center shadow-sm border-0">
                                             <div class="card-body">
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3 align-items-end">
-                                                    <div class="col-md-6">
-                                                        <label for="department_name" class="form-label fw-bold">Department Name</label>
-                                                        <input type="text" class="form-control border-primary" id="department_name" name="department_name" required placeholder="Enter department name">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="taggable-container " id="manager-tag-input-1">
-                                                            <label for="manager" class="form-label fw-bold">Department Head / Manager</label>
-                                                            <div class="manager-tag-input-1 manager-tag-input border-primary bg-light">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3 text-end">
-                                                        <button type="submit" class="btn btn-primary px-4 py-2">
-                                                            <i class="las la-plus"></i> Add Department
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                <h6 class="text-muted mb-1">Total Revenue</h6>
+                                                <h4 class="fw-bold text-success">₦{{ number_format($totalRevenue ?? 0, 2) }}</h4>
                                             </div>
                                         </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-hover table-bordered rounded shadow-sm align-middle w-100" id="tbl-departments">
-                                            <thead class="table-primary text-center">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card text-center shadow-sm border-0">
+                                            <div class="card-body">
+                                                <h6 class="text-muted mb-1">Total Expenses</h6>
+                                                <h4 class="fw-bold text-danger">₦{{ number_format($totalExpense ?? 0, 2) }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card text-center shadow-sm border-0">
+                                            <div class="card-body">
+                                                <h6 class="text-muted mb-1">Profit / Loss</h6>
+                                                @php $profit = ($totalRevenue ?? 0) - ($totalExpense ?? 0); @endphp
+                                                <h4 class="fw-bold {{ $profit >= 0 ? 'text-success' : 'text-danger' }}">
+                                                    ₦{{ number_format($profit, 2) }}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card text-center shadow-sm border-0">
+                                            <div class="card-body">
+                                                <h6 class="text-muted mb-1">Active Budgets</h6>
+                                                <h4 class="fw-bold text-primary">{{ $activeBudgets ?? 0 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <canvas id="financeChart" height="100"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- =================== INCOME =================== -->
+                            <div class="tab-pane fade" id="fin-income" role="tabpanel" aria-labelledby="fin-income-tab">
+                                <form method="POST" action="" class="card shadow-sm border-0 mb-3">
+                                    @csrf
+                                    <div class="card-header bg-light fw-semibold">
+                                        <i class="las la-plus-circle me-1"></i> Record New Income
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Source</label>
+                                                <input type="text" name="source" class="form-control" placeholder="Sales, Investment, etc.">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Amount (₦)</label>
+                                                <input type="number" name="amount" step="0.01" class="form-control" placeholder="0.00">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Date</label>
+                                                <input type="date" name="date" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="text-end mt-3">
+                                            <button class="btn btn-primary btn-sm px-3"><i class="las la-save me-1"></i> Save Income</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Source</th>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($incomes as $income)
                                                 <tr>
-                                                    <th style="width: 35%;">Department Name</th>
-                                                    <th style="width: 45%;">Department Head / Manager</th>
-                                                    <th style="width: 20%;" class="text-end">Action</th>
+                                                    <td>{{ $income->source }}</td>
+                                                    <td>₦{{ number_format($income->amount, 2) }}</td>
+                                                    <td>{{ $income->date->format('d M Y') }}</td>
+                                                    <td class="text-end">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="las la-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="las la-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- =================== EXPENSES =================== -->
+                            <div class="tab-pane fade" id="fin-expense" role="tabpanel" aria-labelledby="fin-expense-tab">
+                                <form method="POST" action="" class="card shadow-sm border-0 mb-3">
+                                    @csrf
+                                    <div class="card-header bg-light fw-semibold">
+                                        <i class="las la-plus me-1"></i> Record Expense
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Category</label>
+                                                <input type="text" name="category" class="form-control" placeholder="Utilities, Rent, etc.">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Amount (₦)</label>
+                                                <input type="number" name="amount" step="0.01" class="form-control">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-semibold">Date</label>
+                                                <input type="date" name="date" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="text-end mt-3">
+                                            <button class="btn btn-primary btn-sm px-3"><i class="las la-save me-1"></i> Save Expense</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($expenses as $expense)
+                                                <tr>
+                                                    <td>{{ $expense->category }}</td>
+                                                    <td>₦{{ number_format($expense->amount, 2) }}</td>
+                                                    <td>{{ $expense->date->format('d M Y') }}</td>
+                                                    <td class="text-end">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="las la-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="las la-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- =================== BUDGETS =================== -->
+                            <div class="tab-pane fade" id="fin-budget" role="tabpanel" aria-labelledby="fin-budget-tab">
+                                <div class="alert alert-info">
+                                    Budget planning, allocation and monitoring tools will appear here.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- HRMS -->
+            <div class="tab-pane fade" id="hr" role="tabpanel">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Human Resources</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- HR Sub Tabs -->
+                        <ul class="nav nav-tabs mb-3" id="hrSubTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="hr-overview-tab" data-bs-toggle="tab" data-bs-target="#hr-overview" type="button" role="tab">
+                                    <i class="bi bi-speedometer2"></i> Overview
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="department-tab" data-bs-toggle="tab" data-bs-target="#department" type="button" role="tab">
+                                    <i class="bi bi-person-plus"></i> Departments & Recruitment
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab">
+                                    <i class="bi bi-people"></i> Employees
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="training-tab" data-bs-toggle="tab" data-bs-target="#training" type="button" role="tab">
+                                    <i class="bi bi-mortarboard"></i> Training & Development
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="performance-tab" data-bs-toggle="tab" data-bs-target="#performance" type="button" role="tab">
+                                    <i class="bi bi-bar-chart"></i> Performance
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="welfare-tab" data-bs-toggle="tab" data-bs-target="#welfare" type="button" role="tab">
+                                    <i class="bi bi-heart"></i> Welfare
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="hrSubTabContent">
+                            <div class="tab-pane fade" id="hr-overview" role="tabpanel" aria-labelledby="hr-overview-tab">
+                                <h5 class="section-heading mb-3">HR Overview</h5>
+                                <p>Summary of HR activities, employee statistics, and key performance indicators.</p>
+                            </div>
+                            <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="department-tab">
+                                <h5 class="section-heading mb-3">Departments & Recruitment</h5>
+                                <p class="text-muted">Manage company departments, job postings, and recruitment processes.</p>
+
+                                <!-- Inner Tabs -->
+                                <ul class="nav nav-tabs" id="departmentRecruitmentTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="departments-subtab" data-bs-toggle="tab"
+                                            data-bs-target="#departments" type="button" role="tab" aria-controls="departments"
+                                            aria-selected="true">
+                                            <i class="bi bi-diagram-3"></i> Departments
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="recruitment-subtab" data-bs-toggle="tab"
+                                            data-bs-target="#recruitment" type="button" role="tab" aria-controls="recruitment"
+                                            aria-selected="false">
+                                            <i class="bi bi-person-badge"></i> Recruitment
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <!-- Inner Tab Content -->
+                                <div class="tab-content mt-3" id="departmentRecruitmentTabsContent">
+                                    <!-- Departments Tab -->
+                                    <div class="tab-pane fade show active" id="departments" role="tabpanel"
+                                        aria-labelledby="departments-subtab">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="mb-0">Departments</h6>
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                                                <i class="la la-plus-circle"></i> Add Department
+                                            </button>
+                                        </div>
+
+                                        <table class="table table-hover table-stripped rounded shadow-sm align-middle w-100" id="tbl-departments">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Manager</th>
+                                                    <th>Employees</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Department rows will be dynamically populated here -->
+                                                <tr>
+                                                    <td>Human Resources</td>
+                                                    <td>Mary Johnson</td>
+                                                    <td>12</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>IT Department</td>
+                                                    <td>John Doe</td>
+                                                    <td>20</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="empty-state d-none" id="emptyItems">
+                                            <img src="{{ asset('adminAssets/images/illustrate/addItem.svg') }}" alt="No waste items">
+                                            <h5 class="mt-3">No waste items yet</h5>
+                                            <p>Create waste items to start tracking materials and quantities.</p>
+                                            <button class="btn btn-gradient" id="addItemEmpty">Add Waste Item</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Recruitment Tab -->
+                                    <div class="tab-pane fade" id="recruitment" role="tabpanel"
+                                        aria-labelledby="recruitment-subtab">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="mb-0">Job Postings</h6>
+                                            <button class="btn btn-sm btn-primary">
+                                                <i class="bi bi-plus-circle"></i> Add Job Posting
+                                            </button>
+                                        </div>
+
+                                        <table class="table table-striped table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Job Title</th>
+                                                    <th>Department</th>
+                                                    <th>Status</th>
+                                                    <th>Applicants</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Software Engineer</td>
+                                                    <td>IT Department</td>
+                                                    <td><span class="badge bg-info">Open</span></td>
+                                                    <td>15</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>HR Assistant</td>
+                                                    <td>Human Resources</td>
+                                                    <td><span class="badge bg-secondary">Closed</span></td>
+                                                    <td>22</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Employees Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="employeesHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#employeesCollapse" aria-expanded="false" aria-controls="employeesCollapse">
-                                    <i class="las la-user-friends me-2" style="font-size: 1.5rem;"></i> Employees Management
-                                </button>
-                            </h2>
-                            <div id="employeesCollapse" class="accordion-collapse collapse" aria-labelledby="employeesHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="employee-form" enctype="multipart/form-data" class="card shadow-sm border-0 mb-4">
-                                        @csrf
-                                        <div class="card-header bg-gradient-primary text-white">
-                                            <h5 class="mb-0"><i class="las la-user-plus me-2"></i> Add New Employee</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                            <div class="row g-3">
-                                                <div class="col-md-3">
-                                                    <label for="employee_number" class="form-label fw-bold">Employee Number</label>
-                                                    <input type="text" class="form-control" id="employee_number" name="employee_number" required placeholder="e.g. EMP12345">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_first_name" class="form-label fw-bold">First Name</label>
-                                                    <input type="text" class="form-control" id="employee_first_name" name="employee_first_name" required placeholder="First Name">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_last_name" class="form-label fw-bold">Last Name</label>
-                                                    <input type="text" class="form-control" id="employee_last_name" name="employee_last_name" required placeholder="Last Name">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_email" class="form-label fw-bold">Email</label>
-                                                    <input type="email" class="form-control" id="employee_email" name="employee_email" required placeholder="example@company.com">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_phone" class="form-label fw-bold">Phone Number</label>
-                                                    <input type="tel" class="form-control" id="employee_phone" name="employee_phone" placeholder="+234 800 000 0000">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_dob" class="form-label">Date of Birth</label>
-                                                    <input type="date" class="form-control" id="employee_dob" name="employee_dob">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_gender" class="form-label">Gender</label>
-                                                    <select class="form-select" id="employee_gender" name="employee_gender">
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_job_title" class="form-label">Job Title</label>
-                                                    <input type="text" class="form-control" id="employee_job_title" name="employee_job_title">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_department" class="form-label">Department</label>
-                                                    <select class="form-select" id="employee_department" name="employee_department">
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($company_departments as $department)
-                                                            <option value="{{ $department->DepartmentID }}">{{ $department->DepartmentName }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="taggable-container " id="manager-tag-input-2">
-                                                        <label for="manager" class="form-label fw-bold">Manager</label>
-                                                        <div class="manager-tag-input-2 manager-tag-input border-primary bg-light">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_hire_date" class="form-label">Hire Date</label>
-                                                    <input type="date" class="form-control" id="employee_hire_date" name="employee_hire_date">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="employee_status" class="form-label">Status</label>
-                                                    <select class="form-select" id="employee_status" name="employee_status">
-                                                        <option value="active" selected>Active</option>
-                                                        <option value="inactive">Inactive</option>
-                                                        <option value="on_leave">On Leave</option>
-                                                        <option value="terminated">Terminated</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="employee_address" class="form-label">Address</label>
-                                                    <input type="text" class="form-control" id="employee_address" name="employee_address">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="employee_city" class="form-label">City</label>
-                                                    <input type="text" class="form-control" id="employee_city" name="employee_city">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="employee_state" class="form-label">State</label>
-                                                    <input type="text" class="form-control" id="employee_state" name="employee_state">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="employee_zip" class="form-label">Zip Code</label>
-                                                    <input type="text" class="form-control" id="employee_zip" name="employee_zip">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="employee_country" class="form-label">Country</label>
-                                                    <input type="text" class="form-control" id="employee_country" name="employee_country">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="employee_emergency_contact" class="form-label">Emergency Contact</label>
-                                                    <input type="text" class="form-control" id="employee_emergency_contact" name="employee_emergency_contact">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="employee_emergency_phone" class="form-label">Emergency Phone</label>
-                                                    <input type="text" class="form-control" id="employee_emergency_phone" name="employee_emergency_phone">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="employee_profile_picture" class="form-label">Profile Picture</label>
-                                                    <input type="file" class="form-control" id="employee_profile_picture" name="employee_profile_picture" accept="image/*">
-                                                </div>
-                                                <div class="col-12 mt-2 text-end">
-                                                    <button type="submit" class="btn btn-primary btn-sm">Add Employee</button>
-                                                </div>
+
+                            <!-- Employees Tab -->
+                            <div class="tab-pane fade show active" id="employees" role="tabpanel" aria-labelledby="employees-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="">
+                                                <h5 class="section-heading mb-3">Employee Management</h5>
+                                                <p>Overview of all employees, departments, and job roles.</p>
                                             </div>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                                                <i class="las la-user-plus me-1"></i> Add Employee
+                                            </button>
                                         </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
                                         <table class="table table-striped mb-0" id="tbl-employees">
                                             <thead class="table-light">
                                                 <tr>
@@ -1304,4284 +2379,237 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Attendance Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="attendanceHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#attendanceCollapse" aria-expanded="false" aria-controls="attendanceCollapse">
-                                    Attendance Management
-                                </button>
-                            </h2>
-                            <div id="attendanceCollapse" class="accordion-collapse collapse" aria-labelledby="attendanceHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="attendance-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="attendance_employee" class="form-label">Employee</label>
-                                                <select class="form-select" id="attendance_employee" name="attendance_employee">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
+
+                            <!-- Training Tab -->
+                            <div class="tab-pane fade" id="training" role="tabpanel" aria-labelledby="training-tab">
+                                <h5 class="section-heading mb-3">Training & Development</h5>
+                                <ul class="list-group">
+                                    @foreach($trainings as $training)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>{{ $training->title }}</strong> <br>
+                                                <small>{{ $training->description }}</small>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for="attendance_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="attendance_date" name="attendance_date" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="attendance_status" class="form-label">Status</label>
-                                                <select class="form-select" id="attendance_status" name="attendance_status">
-                                                    <option value="present">Present</option>
-                                                    <option value="absent">Absent</option>
-                                                    <option value="leave">On Leave</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Mark Attendance</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-attendance">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Employee</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                            <span class="badge bg-success">{{ \Carbon\Carbon::parse($training->date)->format('M Y') }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        </div>
-                        <!-- Payroll Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="payrollHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#payrollCollapse" aria-expanded="false" aria-controls="payrollCollapse">
-                                    Payroll Management
-                                </button>
-                            </h2>
-                            <div id="payrollCollapse" class="accordion-collapse collapse" aria-labelledby="payrollHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="payroll-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="payroll_employee" class="form-label">Employee</label>
-                                                <select class="form-select" id="payroll_employee" name="payroll_employee">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="payroll_month" class="form-label">Month</label>
-                                                <input type="month" class="form-control" id="payroll_month" name="payroll_month" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="payroll_amount" class="form-label">Amount</label>
-                                                <input type="number" class="form-control" id="payroll_amount" name="payroll_amount" min="0" required>
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Process Payroll</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-payroll">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Employee</th>
-                                                    <th>Month</th>
-                                                    <th>Amount</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Recruitment Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="recruitmentHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#recruitmentCollapse" aria-expanded="false" aria-controls="recruitmentCollapse">
-                                    Recruitment Management
-                                </button>
-                            </h2>
-                            <div id="recruitmentCollapse" class="accordion-collapse collapse" aria-labelledby="recruitmentHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="recruitment-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="candidate_name" class="form-label">Candidate Name</label>
-                                                <input type="text" class="form-control" id="candidate_name" name="candidate_name" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="candidate_position" class="form-label">Position</label>
-                                                <input type="text" class="form-control" id="candidate_position" name="candidate_position" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="candidate_status" class="form-label">Status</label>
-                                                <select class="form-select" id="candidate_status" name="candidate_status">
-                                                    <option value="applied">Applied</option>
-                                                    <option value="interview">Interview</option>
-                                                    <option value="hired">Hired</option>
-                                                    <option value="rejected">Rejected</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Add Candidate</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-recruitment">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Leave Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="leaveHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#leaveCollapse" aria-expanded="false" aria-controls="leaveCollapse">
-                                    Leave Management
-                                </button>
-                            </h2>
-                            <div id="leaveCollapse" class="accordion-collapse collapse" aria-labelledby="leaveHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="leave-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="leave_employee" class="form-label">Employee</label>
-                                                <select class="form-select" id="leave_employee" name="leave_employee">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="leave_type" class="form-label">Leave Type</label>
-                                                <select class="form-select" id="leave_type" name="leave_type">
-                                                    <option value="annual">Annual</option>
-                                                    <option value="sick">Sick</option>
-                                                    <option value="casual">Casual</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="leave_dates" class="form-label">Dates</label>
-                                                <input type="text" class="form-control" id="leave_dates" name="leave_dates" placeholder="e.g. 2024-06-01 to 2024-06-10">
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Apply Leave</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-leave">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Employee</th>
-                                                    <th>Type</th>
-                                                    <th>Dates</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Performance Review -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="performanceHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#performanceCollapse" aria-expanded="false" aria-controls="performanceCollapse">
-                                    Performance Review
-                                </button>
-                            </h2>
-                            <div id="performanceCollapse" class="accordion-collapse collapse" aria-labelledby="performanceHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="performance-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="review_employee" class="form-label">Employee</label>
-                                                <select class="form-select" id="review_employee" name="review_employee">
-                                                    <option value="" selected disabled>Choose...</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="review_period" class="form-label">Review Period</label>
-                                                <input type="text" class="form-control" id="review_period" name="review_period" placeholder="e.g. Q1 2024">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="review_score" class="form-label">Score</label>
-                                                <input type="number" class="form-control" id="review_score" name="review_score" min="0" max="100">
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-performance">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Employee</th>
-                                                    <th>Period</th>
-                                                    <th>Score</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- User Roles Management -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="rolesHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#rolesCollapse" aria-expanded="false" aria-controls="rolesCollapse">
-                                    User Roles Management
-                                </button>
-                            </h2>
-                            <div id="rolesCollapse" class="accordion-collapse collapse" aria-labelledby="rolesHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="role-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <label for="role_name" class="form-label">Role Name</label>
-                                                <input type="text" class="form-control" id="role_name" name="role_name" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="role_description" class="form-label">Description</label>
-                                                <input type="text" class="form-control" id="role_description" name="role_description">
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Add Role</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-roles">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Training & Development -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="trainingHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#trainingCollapse" aria-expanded="false" aria-controls="trainingCollapse">
-                                    Training & Development
-                                </button>
-                            </h2>
-                            <div id="trainingCollapse" class="accordion-collapse collapse" aria-labelledby="trainingHeading">
-                                <div class="accordion-body">
-                                    <form action="" method="post" id="training-form">
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label for="training_title" class="form-label">Training Title</label>
-                                                <input type="text" class="form-control" id="training_title" name="training_title" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="training_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="training_date" name="training_date" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="training_employees" class="form-label">Employees</label>
-                                                <select class="form-select" id="training_employees" name="training_employees[]" multiple>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary btn-sm">Add Training</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped mb-0" id="tbl-training">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Title</th>
-                                                    <th>Date</th>
-                                                    <th>Employees</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End HRMS Tab -->
-                <!-- Inventory Management -->
-                <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
-                    <h3>Inventory Management</h3>
-                    <div class="accordion my-3" id="inventoryAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="waterHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#waterCollapse" aria-expanded="false" aria-controls="waterCollapse">
-                                    Water Inventory
-                                </button>
-                            </h2>
-                            <div id="waterCollapse" class="accordion-collapse collapse" aria-labelledby="waterHeading">
-                                <div class="accordion-body">
-                                    <!-- Water inventory -->
-                                    <!-- water inventory -->
-                                    <div class="card shadow-sm">
-                                        <div class="card-body py-3">
-                                            <form action="" method="post">
-                                                <input type="hidden" class="form-control" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <div class="row g-2">
-                                                    @foreach($waterQuestions as $question)
-                                                    <!-- question  -->
-                                                    <div class="col-md-6">
-                                                        <!-- form check -->
-                                                        <div class="form-check">
-                                                            <input class="form-check-input"
-                                                                onchange="ChangeQuestionResult(this, '{{$company->company_id}}', `{{ $question->questionId }}`)"
-                                                                type="checkbox" value="{{ $question->questionId }}"
-                                                                name="{{ $question->label }}"
-                                                                id="flexCheckIndeterminate_{{ $question->questionId }}"
-                                                                {{(in_array($question->questionId,
-                                                            array_column($CompanyWaterQuestions->toArray(),
-                                                            'questionID')))? "checked": ""}}
-                                                            >
-                                                            <label class="form-check-label"
-                                                                for="flexCheckIndeterminate">
-                                                                {{ $question->question }}
-                                                            </label>
-                                                        </div>
-                                                        <!-- form check -->
-                                                    </div>
-                                                    <!-- question ends -->
-                                                    @endforeach
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
 
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                            <form action="" method="post">
-                                                <input type="hidden" class="form-control" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <label for="">Indicate the water conservations opportunity that is
-                                                    applicable or
-                                                    beneficial to your process</label>
-                                                <div class="row g-2 mt-2">
-                                                    @foreach($WaterConservationMethod as $method)
-                                                    <!-- question  -->
-                                                    <div class="col-md-6">
-                                                        <!-- form check -->
-                                                        <div class="form-check">
-                                                            <input class="form-check-input"
-                                                                onchange="ChangeWaterConservationOpportunity(this, '{{$company->company_id}}', `{{ $method->WaterConservationMethodId }}`)"
-                                                                type="checkbox"
-                                                                value="{{ $method->WaterConservationMethodId }}"
-                                                                name="{{ $method->label }}"
-                                                                id="flexCheckIndeterminate_{{ $method->WaterConservationMethodId }}"
-                                                                {{(in_array($method->WaterConservationMethodId,
-                                                            array_column($companyWaterConservationMethod->toArray(),
-                                                            'waterConservationMethod_id')))? "checked": ""}}
-                                                            >
-                                                            <label class="form-check-label"
-                                                                for="flexCheckIndeterminate">
-                                                                {{ $method->method }}
-                                                            </label>
-                                                        </div>
-                                                        <!-- form check -->
-                                                    </div>
-                                                    <!-- question ends -->
-                                                    @endforeach
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                            <form action="" method="post">
-                                                <input type="hidden" class="form-control" name="company_id"
-                                                    value="{{ $company->company_id }}">
-                                                <label for="">Select the water source used in your
-                                                    Organization</label>
-                                                <div class="row g-2 mt-2">
-                                                    @foreach($WaterSources as $sources)
-                                                    <!-- question  -->
-                                                    <div class="col-md-6">
-                                                        <!-- form check -->
-                                                        <div class="form-check">
-                                                            <input class="form-check-input"
-                                                                onchange="ChangeWaterSources(this, '{{$company->company_id}}', `{{ $sources->WaterSourcesId }}`)"
-                                                                type="checkbox" value="{{ $sources->WaterSourcesId }}"
-                                                                name="{{ $sources->label }}"
-                                                                id="flexCheckIndeterminate_{{ $sources->WaterSourcesId }}"
-                                                                {{(in_array($sources->WaterSourcesId,
-                                                            array_column($companyWaterSources->toArray(),
-                                                            'WaterSources_id')))? "checked": ""}}
-                                                            >
-                                                            <label class="form-check-label"
-                                                                for="flexCheckIndeterminate">
-                                                                {{ $sources->sources }}
-                                                            </label>
-                                                        </div>
-                                                        <!-- form check -->
-                                                    </div>
-                                                    <!-- question ends -->
-                                                    @endforeach
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- Water Sources Details -->
-                                   <div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Water Sources Information</h4>
-        <button type="button" class="btn-close" aria-label="Close"></button>
-    </div>
-
-    <div class="card-body pt-3">
-        <form action="" method="post" id="waterSourceForm"> <!-- Moved ID here -->
-            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-            <div class="row g-3">
-                <!-- Water Source -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="water_source" class="form-label">Select Water Source</label>
-                        <select name="water_source" id="water_source" class="form-select">
-                            <option value="" selected disabled>Choose...</option>
-                            @foreach($companyWaterSources as $source)
-                                <option value="{{ $source->waterSource->WaterSourcesId }}">{{ $source->waterSource->sources }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Location -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
-                    </div>
-                </div>
-
-                <!-- Capacity of Water -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="capacity" class="form-label">Water Capacity (Liters)</label>
-                        <div class="input-group">
-                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                            <input type="number" class="form-control" min="0" name="capacity" value="0">
-                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Save Button -->
-                <div class="col-12 mt-3 text-end">
-                    <button type="submit" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-                                    <!-- Water Sources Management Table -->
-                                    <div class="card shadow-sm mt-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Water Sources Management</h4>
-                                            <a href="#" class="btn btn-primary btn-sm" id="add-water-source-trigger">Add Water Source</a>
-                                        </div> <!-- end card-header -->
-
-                                        <div class="card-body pt-3">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped mb-0" id="tbl-water-sources-management">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Water Source</th>
-                                                            <th>Location</th>
-                                                            <th>Capacity (Liters)</th>
-                                                            <th class="text-end">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                @foreach($companyWaterSources as $source)
-                                                <tr>
-                                                    <td>{{ $source->waterSource->sources }}</td>
-                                                    <td>{{ $source->location }}</td>
-                                                    <td>{{ $source->capacity }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
-                                                            <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                                    </tbody>
-                                                </table><!--end /table-->
-                                            </div><!--end /tableresponsive-->
-                                        </div> <!-- end card-body -->
-                                    </div>
-                                    <!-- End Water Sources Management Table -->
-
-                                    <!-- Water Check-In Card -->
-                                    <div class="card shadow-sm border-0 d-none" style="background-color: #e0f7fa;" id="water-checkin-card"> <!-- Light cyan background for water check-in -->
-                                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"> <!-- Info color for water check-in header -->
-                                            <h4 class="card-title mb-0">Water Check-In</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body pt-3" id="waterCheckinForm">
-                                            <form action="" method="post" id="water-checkin-form">
-                                            <input type="hidden" value="{{ $company->company_id }}" name="company_id">
-                                            <div class="row g-3">
-                                                <!-- Water Source -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="water_source" class="form-label">Water Source</label>
-                                                        <select name="water_source" id="water_source" class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                            @foreach($companyWaterSources as $source)
-                                                                <option value="{{ $source->CompanyWaterSourcesID }}">{{ $source->waterSource->sources }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Volume -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="volume" class="form-label">Volume of Water in Litres</label>
-                                                        <input type="number" class="form-control" min="0" name="volume" value="0" placeholder="Enter volume">
-                                                    </div>
-                                                </div>
-                                                <!-- Calendar Year -->
-                                                <div class="col-md-4">
-                                                    <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
-                                                        <option value="" selected disabled>Select Calendar Year</option>
-                                                    </select>
-                                                </div>
-                                                <!-- Date -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="date" class="form-label">Date</label>
-                                                        <input type="date" class="form-control" name="date">
-                                                    </div>
-                                                </div>
-                                                <!-- Remark -->
-                                                <div class="col-md-4 col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="remark" class="form-label">Remark</label>
-                                                        <input type="text" class="form-control" name="remark" placeholder="Enter remark">
-                                                    </div>
-                                                </div>
-                                                <!-- Save Button -->
-                                                <div class="col-12 text-end mt-3">
-                                                    <button type="submit" class="btn btn-info" id="btn-submit-water-checkin">Check-In</button>
-                                                </div>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- End Water Check-In Card -->
-                                    <div class="row">
-                                        <!-- Water Usage Logs Card -->
-                                        <div class="col-md-6 d-none" id="water-usage-logs-card">
-                                            <div class="card shadow-sm border-0" style="background-color: #f0f8ff;"> <!-- Light blue background for water usage -->
-                                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                    <h4 class="card-title mb-0">Water Usage Logs</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                                </div> <!-- end card-header -->
-
-                                                <div class="card-body pt-3" id="waterUsageLogsForm">
-                                                    <form action="" method="post" id="water-usage-form">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <!-- Quantity Used -->
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="quantity_used" class="form-label">Volume Used (in Litres)</label>
-                                                                <input type="number" class="form-control" min="0" name="volume_used" id="quantity_used" placeholder="Enter quantity used">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Calendar Year -->
-                                                         <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="" class="form-label">Calendar Year</label>
-                                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
-                                                                    <option value="" selected disabled>Select Calendar Year</option>
-                                                                    @foreach($calendar_years as $calendar)
-                                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                         </div>
-                                                        <!-- Date -->
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="date" class="form-label">Date</label>
-                                                                <input type="date" class="form-control" name="date" id="date">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Purpose -->
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="purpose" class="form-label">Purpose</label>
-                                                                <input type="text" class="form-control" name="purpose" id="purpose" placeholder="Enter purpose of water usage">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Save Button -->
-                                                        <div class="col-12 text-end mt-3">
-                                                            <button type="submit" class="btn btn-primary">Save</button>
-                                                        </div>
-                                                    </div>
-                                                    </form>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                        </div>
-                                        <!-- End Water Usage Logs Card -->
-
-                                        <!-- Water Recycling Logs Card -->
-                                        <div class="col-md-6 d-none" id="water-recycling-logs-card">
-                                            <div class="card shadow-sm border-0" style="background-color: #e6ffe6;"> <!-- Light green background for water recycling -->
-                                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                                                    <h4 class="card-title mb-0">Water Recycling Logs</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                                </div> <!-- end card-header -->
-                                                <div class="card-body pt-3" id="waterRecyclingLogsForm">
-                                                    <form action="" method="post" id="water-recycling-form">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <!-- Quantity Recycled -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="quantity_recycled" class="form-label">Quantity Recycled</label>
-                                                                <input type="number" class="form-control" min="0" name="quantity_recycled" id="quantity_recycled" placeholder="Enter quantity">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Calendar Year -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                                <select class="form-select" id="calendar_year" name="calendar_year" required>
-                                                                    <option value="" selected disabled>Select Calendar Year</option>
-                                                                    @foreach($calendar_years as $calendar)
-                                                                        <option value="{{ $calendar->calendar_year_id }}">{{ $calendar->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Recycling Date -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="recycling_date" class="form-label">Recycling Date</label>
-                                                                <input type="date" class="form-control" name="recycling_date" id="recycling_date">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Method -->
-                                                        <div class="col-md-4 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="method" class="form-label">Recycling Method</label>
-                                                                <input type="text" class="form-control" name="method" id="method" placeholder="Enter recycling method">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Remark -->
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for="remark" class="form-label">Remark</label>
-                                                                <input type="text" class="form-control" name="remark" id="remark" placeholder="Enter your remark here">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Save Button -->
-                                                        <div class="col-12 text-end mt-3">
-                                                            <button type="submit" class="btn btn-success">Save Recycling Log</button>
-                                                        </div>
-                                                    </div>
-                                                    </form>
-                                                </div> <!-- end card-body -->
-                                            </div>
-                                        </div>
-                                        <!-- End Water Recycling Logs Card -->
-                                    </div>
-
-                                    <!-- Water Management Table -->
-                                    <div class="card shadow-sm mt-4">
-                                        <div class="card-header ">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <h4 class="card-title mb-0">Water Management Records</h4>
-                                                <div class="">
-                                                    <div class="btn-group d-flex flex-wrap" role="group" aria-label="Water Management Actions">
-                                                        <a href="#water-checkin-form" id="water-checkin-trigger" class="btn btn-primary btn-sm flex-fill mb-2">
-                                                            <i class="iconoir-plus"></i> Check In
-                                                        </a>
-                                                        <a href="#waterUsageLogsForm" id="water-usage-log-trigger" class="btn btn-secondary btn-sm flex-fill mb-2">
-                                                            <i class="iconoir-plus"></i> Usage Log
-                                                        </a>
-                                                        <a href="#waterRecyclingLogsForm" id="water-recycling-log-trigger" class="btn btn-success btn-sm flex-fill mb-2">
-                                                            <i class="iconoir-plus"></i> Recycling Log
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div><!--end row-->
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped mb-0" id="tbl-water-management">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Movement Type</th>
-                                                            <th>Water Source</th>
-                                                            <th>Volume (Litres)</th>
-                                                            <th>Calendar Year</th>
-                                                            <th>Date</th>
-                                                            <th>Remark</th>
-                                                            <th class="text-end">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @if($water_stock_movements->isEmpty())
-                                                            <tr>
-                                                                <td colspan="7" class="text-center">No records found.</td>
-                                                            </tr>
-                                                        @endif
-                                                    @foreach($water_stock_movements as $record)
-                                                        <tr>
-                                                            <td class="text-capitalize">{{ $record->movement_type }}
-                                                            @if ($record->movement_type == 'in')
-                                                                <i class="fas fa-caret-up text-success font-16"></i>
-                                                            @elseif ($record->movement_type == 'out')
-                                                                <i class="fas fa-caret-down text-danger font-16"></i>
-                                                            @elseif ($record->movement_type == 'recycling')
-                                                                <i class="fas fa-recycle text-info font-16"></i>
-                                                            @elseif ($record->movement_type == 'usage')
-                                                                <i class="fas fa-tint text-primary font-16"></i>
-                                                            @endif
-                                                        </td>
-                                                            <td>{{ $record->companyWaterSources->waterSource->sources ?? 'N/A' }}</td>
-                                                            <td>{{ $record->volume }}</td>
-                                                            <td>{{ $record->calendarYear->name }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($record->movement_date)->format('d M Y') }}</td>
-                                                            <td>{{ $record->remark }}</td>
-                                                            <td class="text-end">
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button class="btn btn-outline-primary btn-sm me-2">Edit</button>
-                                                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="table-responsive mt-4">
-                                                <table class="table table-striped mb-0" id="tbl-water-management-records">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Water Balance</td>
-                                                            <td>Total Water Inflow: {{ $availableWaterInflowBalance }} Liters</td>
-                                                            <td>Total Water Outflow: {{ $availableWaterOutflowBalance }} Liters</td>
-                                                            <td>Total Water Recycled: {{ $availableWaterRecycleBalance }} Liters</td>
-                                                            <td>Total Balance: {{ $availableWaterBalance }} Liters</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-outline-primary btn-sm">View Details</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Quality Control Log Form -->
-                                    <div class="card shadow-sm border-0 d-none" style="background-color: #fff3cd;" id="quality-control-log-card"> <!-- Light yellow background for quality control -->
-                                        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Quality Control Logs</h4>
-                                            <button type="button" class="btn-close" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body pt-0" >
-                                            <form action="" method="post" id="qualityControlLogForm">
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="test_date" class="col-form-label">Test Date</label>
-                                                            <input type="date" class="form-control" name="test_date" id="test_date" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="parameter_tested" class="col-form-label">Parameter Tested</label>
-                                                            <input type="text" class="form-control" name="parameter_tested" id="parameter_tested" placeholder="Enter parameter tested" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="ph_level" class="col-form-label">pH Level</label>
-                                                            <input type="number" class="form-control" name="ph_level" id="ph_level" step="0.01" placeholder="Enter pH level" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="turbidity" class="col-form-label">Turbidity (NTU)</label>
-                                                            <input type="number" class="form-control" name="turbidity" id="turbidity" step="0.01" placeholder="Enter turbidity level" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="contaminants" class="col-form-label">Contaminants</label>
-                                                            <input type="text" class="form-control" name="contaminants_detected" id="contaminants" placeholder="Enter contaminants" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="result" class="col-form-label">Result</label>
-                                                            <input type="text" class="form-control" name="result" id="result" placeholder="Enter result" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="deviation_detected" class="form-label">Deviation Detected</label>
-                                                            <textarea class="form-control" id="deviation_detected" name="deviation_detected" rows="3" placeholder="Enter deviation detected"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="corrective_action" class="form-label">Corrective Action</label>
-                                                            <textarea class="form-control" id="corrective_action" name="corrective_action" rows="3" placeholder="Enter corrective action"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3">
-                                                        <button type="submit" class="btn btn-warning text-dark">Save</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- End Quality Control Log Form -->
-
-                                    <!-- Quality Control Management Table -->
-                                    <div class="card shadow-sm mt-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Quality Control Management Records</h4>
-                                            <button type="button" class="btn btn-warning btn-sm" id="add-quality-control-record">
-                                                <i class="iconoir-plus"></i> Add Record
-                                            </button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover table-bordered mb-0" id="tbl-quality-control-management">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Test Date</th>
-                                                            <th>Parameter Tested</th>
-                                                            <th>Result</th>
-                                                            <th>Deviation Detected</th>
-                                                            <th>Corrective Action</th>
-                                                            <th class="text-center">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- Dynamic rows will be appended here -->
-                                                        @foreach($water_quality_logs as $quality)
-                                                        <tr>
-                                                            <td>{{  $quality->test_date}}</td>
-                                                            <td>{{ $quality->parameter_tested }}</td>
-                                                            <td>{{ $quality->test_results }}</td>
-                                                            <td>{{ $quality->deviation_detected }}</td>
-                                                            <td>{{ $quality->corrective_actions }}</td>
-                                                            <td class="text-center">
-                                                                <button class="btn btn-outline-primary btn-sm me-2" onclick="editQualityControlLog({{ $quality->id }})">Edit</button>
-                                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteQualityControlLog({{ $quality->id }})">Delete</button>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Quality Control Management Table -->
-                                    <!-- Water inventory -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="chemicalHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#chemicalCollapse" aria-expanded="false"
-                                    aria-controls="chemicalCollapse">
-                                    Chemical Inventory
-                                </button>
-                            </h2>
-                            <div id="chemicalCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="chemicalHeading">
-                                <div class="accordion-body">
-                                    <!-- chemical -->
-                                    <div class="card shadow-sm border-0 d-none" style="background-color: #e8f5e9;" id="add-chemical-form-card"> <!-- Light green background for form -->
-                                        <div class="card-header bg-success text-white"> <!-- Green header for form -->
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <h4 class="card-title mb-0">Add New Chemical</h4>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body pt-3">
-                                            <form action="" method="post" id="chemical-form" class="">
-                                                <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3 align-items-end">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="chemical" class="form-label fw-bold">Chemical</label>
-                                                            <select name="chemical" id="chemical" class="form-select border-primary">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                @foreach($approved_chemicals as $chemical)
-                                                                <option value="{{ $chemical->chemical_id }}">{{ $chemical->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="unit_of_measurement" class="form-label fw-bold">Unit of Measurement</label>
-                                                            <input type="text" class="form-control border-primary" name="unit_of_measurement" placeholder="Unit of Measurement">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="threshold" class="form-label fw-bold">Threshold</label>
-                                                            <input type="number" class="form-control border-primary" name="threshold" placeholder="Minimum Stock Threshold" min="0">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end">
-                                                        <button type="button" class="btn btn-success px-4 py-2" id="btn-submit-chemical">
-                                                            <i class="las la-save"></i> Save
-                                                            <span class="loader" id="loader"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card shadow-sm border-0 mt-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">
-                                                Chemical Inventory Management
-                                            </h4>
-                                            <button type="button" class="btn btn-primary btn-sm" id="add-chemical-button">
-                                                <i class="iconoir-plus"></i> Add Chemical
-                                            </button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive" id="tbl-company-chemical">
-                                                <table class="table table-hover table-striped mb-0 " id="datatable_1">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th scope="col">Chemical</th>
-                                                            <th scope="col">Unit of Measurement</th>
-                                                            <th scope="col">Status</th>
-                                                            <th scope="col" class="text-end">Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        
-                                                        @forelse($company_chemicals as $chemical)
-                                                        <tr>
-                                                            <td class="align-middle">
-                                                                <strong>{{ $chemical->chemical->name }}</strong> 
-                                                                <small>({!! $chemical->chemical->formula !!})</small>
-                                                            </td>
-                                                            <td class="align-middle">{{ $chemical->unit }}</td>
-                                                            <td class="align-middle">
-                                                                <span class="badge rounded-pill" style="background-color: 
-                                                                    {{ $chemical->status == 'active' ? '#28a745' : ($chemical->status == 'inactive' ? '#dc3545' : '#ffc107') }}; color: white;">
-                                                                    {{ ucfirst($chemical->status) }}
-                                                                </span>
-                                                            </td>
-                                                            <td class="align-middle text-end">
-                                                                <div class="dropdown">
-                                                                    <a class="dropdown-toggle text-muted" href="#" role="button" id="chemicalActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <i class="las la-ellipsis-v fs-20"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chemicalActionsDropdown">
-                                                                        <li>
-                                                                            <a class="dropdown-item text-primary" href="{{ route('admin.view-chemical', ['chemical' => $chemical->company_chemical_id]) }}">
-                                                                                <i class="las la-eye"></i> View Details
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-warning" href="#">
-                                                                                <i class="las la-edit"></i> Update Chemical
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-danger" href="#">
-                                                                                <i class="las la-trash"></i> Delete Chemical
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <hr class="dropdown-divider">
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-info" href="#">
-                                                                                <i class="las la-dollar-sign"></i> Setup Price
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckInChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
-                                                                                <i class="las la-arrow-circle-down"></i> Check In
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOutChemical("{{ $chemical->company_chemical_id }}", "{{ $chemical->chemical_id }}", "{{ $chemical->company_id }}", "{{ $chemical->chemical->name }}")'>
-                                                                                <i class="las la-arrow-circle-up"></i> Check Out
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-secondary" href="#">
-                                                                                <i class="las la-tools"></i> Make Adjustment
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        @empty
-                                                        <tr>
-                                                            <td colspan="4" class="text-center text-muted">No chemicals found in the inventory.</td>
-                                                        </tr>
-                                                        @endforelse
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!-- chemical -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="materialHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#materialCollapse" aria-expanded="false"
-                                    aria-controls="materialCollapse">
-                                    Material Inventory
-                                </button>
-                            </h2>
-                            <div id="materialCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="materialHeading">
-                                <div class="accordion-body">
-                                    <!-- Material Inventory -->
-                                    <div class="card shadow-sm border-0 d-none" style="background-color: #f0f8ff;" id="add-material-form-card"> <!-- Light blue background for material section -->
-                                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center"> <!-- Info color for material header -->
-                                            <h4 class="card-title mb-0">Material Registration</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="" method="post">
-                                                <input type="hidden" class="form-control" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <!-- Material -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="material" class="form-label">Material</label>
-                                                            <select name="material" id="material" class="form-select">
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                @foreach($materials as $material)
-                                                                <option value="{{ $material->materialID }}">{{ $material->material }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Serial Number -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="serial_number" class="form-label">Serial Number (If any)</label>
-                                                            <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Unit of Measurement -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="unit_of_measurement" class="form-label">Unit of Measurement</label>
-                                                            <input type="text" class="form-control" id="unit_of_measurement" name="unit_of_measurement" placeholder="Unit of Measurement">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Threshold -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="threshold" class="form-label">Threshold</label>
-                                                            <input type="number" class="form-control" id="threshold" name="threshold" placeholder="Minimum Stock Threshold" min="0">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Save Button -->
-                                                    <div class="col-12 mt-3 text-end">
-                                                        <button type="button" class="btn btn-info px-4 py-2" id="btn-submit-material">
-                                                            <i class="las la-save"></i> Save
-                                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinner"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="card shadow-sm">
-                                        <div class="card-header">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <h4 class="card-title">Material Inventory Management</h4>
-                                                </div><!--end col-->
-                                                <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm" id="add-material-button">
-                                                        <i class="iconoir-plus"></i> Add Material
-                                                    </button>
-                                                </div><!--end col-auto-->
-                                            </div> <!--end row-->
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive" id="tbl-company-material">
-                                                <table class="table table-hover table-striped mb-0" id="datatable_2">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th scope="col">Material</th>
-                                                            <th scope="col">Serial No.</th>
-                                                            <th scope="col">Unit of Measurement</th>
-                                                            <th scope="col">Material Status</th>
-                                                            <th scope="col" class="text-end">Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @forelse($companyMaterials as $material)
-                                                        <tr>
-                                                            <td class="align-middle">{{ $material->material }}</td>
-                                                            <td class="align-middle">{{ $material->serial_number }}</td>
-                                                            <td class="align-middle">{{ $material->unit_of_measure }}</td>
-                                                            <td class="align-middle">
-                                                                <span class="badge rounded-pill" style="background-color: 
-                                                                    {{ $material->company_material_status == 'active' ? '#28a745' : '#dc3545' }}; color: white;">
-                                                                    {{ ucfirst($material->company_material_status) }}
-                                                                </span>
-                                                            </td>
-                                                            <td class="align-middle text-end">
-                                                                <div class="dropdown">
-                                                                    <a class="dropdown-toggle text-muted" href="#" role="button" id="materialActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <i class="las la-ellipsis-v fs-20"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="materialActionsDropdown">
-                                                                        <li>
-                                                                            <a class="dropdown-item text-primary" href="{{ route('admin.view-material', ['material'=> $material->companyMaterialId]) }}">
-                                                                                <i class="las la-eye"></i> View Details
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-warning" href="#">
-                                                                                <i class="las la-edit"></i> Update Material
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-danger" href="#">
-                                                                                <i class="las la-trash"></i> Delete Material
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <hr class="dropdown-divider">
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-info" href="#" onclick='triggerMaterialPrice("{{ $material->companyMaterialId }}")'>
-                                                                                <i class="las la-dollar-sign"></i> Setup Price
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-success" href="#" onclick='triggerCheckIn("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
-                                                                                <i class="las la-arrow-circle-down"></i> Check In
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-danger" href="#" onclick='triggerCheckOut("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
-                                                                                <i class="las la-arrow-circle-up"></i> Check Out
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item text-secondary" href="#" onclick='triggerAdjustment("{{ $material->companyMaterialId }}", "{{ $material->materialID }}", "{{ $material->companyID }}", "{{ $material->material }}")'>
-                                                                                <i class="las la-tools"></i> Make Adjustment
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        @empty
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">No materials found in the inventory.</td>
-                                                        </tr>
-                                                        @endforelse
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Material Inventory -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Operations Management -->
-                <div class="tab-pane p-3" id="operations" role="tabpanel">
-                    <div class="accordion" id="operationsAccordion">
-                        <!-- Company Workflow Management Accordion Item -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="workflowManagementHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#workflowManagementCollapse" aria-expanded="false"
-                                    aria-controls="workflowManagementCollapse">
-                                    <i class="las la-project-diagram me-2" style="font-size: 1.5rem;"></i> Organization Workflow Management
-                                </button>
-                            </h2>
-                            <div id="workflowManagementCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="workflowManagementHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Workflow Management Form -->
-                                    <form action="" id="workflow-management-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="workflow_name" class="form-label">Workflow Name</label>
-                                                <input type="text" class="form-control" id="workflow_name" name="workflow_name" placeholder="Enter workflow name" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="workflow_description" class="form-label">Description</label>
-                                                <input type="text" class="form-control" id="workflow_description" name="workflow_description" placeholder="Enter description">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="workflow_status" class="form-label">Status</label>
-                                                <select class="form-select" id="workflow_status" name="workflow_status" required>
-                                                    <option value="" selected disabled>Select status</option>
-                                                    <option value="active">Active</option>
-                                                    <option value="inactive">Inactive</option>
-                                                    <option value="archived">Archived</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 text-end mt-3">
-                                                <button type="submit" class="btn btn-primary">Save Workflow</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <!-- Workflow Management Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0 w-100" id="tbl-workflow-management">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Workflow Name</th>
-                                                    <th>Description</th>
-                                                    <th>Owner</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="operationTypeHeading">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#operationTypeCollapse" aria-expanded="false"
-                                aria-controls="operationTypeCollapse">
-                                <i class="las la-cogs me-2" style="font-size: 1.5rem;"></i> Operation Type Management
-                            </button>
-                        </h2>
-                        <div id="operationTypeCollapse" class="accordion-collapse collapse"
-                            aria-labelledby="operationTypeHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-md-6 closeable-card d-none" id="operation-type-card">
-                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
-                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title mb-0">New Operation Type Setup</h4>
-                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="" method="post" id="company_operation_type_form" class="pt-2">
-                                                    @csrf
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    
-                                                    <div class="row g-3">
-                                                        <div class="col-md-6">
-                                                            <label for="name" class="form-label fw-bold text-primary">Name</label>
-                                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter operation type name" required>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                                            <input type="number" class="form-control" id="sequence" name="sequence_order" placeholder="Enter sequence order">
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="mt-4 text-end">
-                                                        <button type="submit" class="btn btn-primary px-4 py-2">Submit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-type-card">
-                                        <!-- Edit Operation Type Card -->
-                                        <div class="card shadow-sm border-0"  style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
-                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title mb-0">Edit Operation Type</h4>
-                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="" method="post" id="edit_operation_type_form" class="pt-2">
-                                                    @csrf
-                                                    <input type="hidden" name="operation_type_id" id="operation_type_id">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    
-                                                    <div class="row g-3">
-                                                        <div class="col-md-6">
-                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
-                                                            <input type="text" class="form-control" id="edit_operation_type_name" name="operation_type_name" placeholder="Enter operation type name" required>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="edit_sequence" class="form-label fw-bold text-primary">Sequence</label>
-                                                            <input type="number" class="form-control" id="edit_operation_type_sequence" name="operation_type_sequence_order" placeholder="Enter sequence order">
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
-                                                            <textarea class="form-control" id="edit_operation_type_description" name="operation_type_description" rows="3" placeholder="Enter description"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="mt-4 text-end">
-                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="row mb-3 align-items-center">
-                                            <div class="col">
-                                                <h4 class="text-primary mb-0">Operation Types</h4>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-type">
-                                                    <i class="iconoir-plus"></i> Set Up Operation Type
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- Spinner -->
-                                        <div id="loading-spinner" class="spinner-border text-primary d-none" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-types">
-                                                <thead class="table-primary text-center">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th>Sequence Order</th>
-                                                        <th class="text-end">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                        <div id="message-container" class="mt-3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="operationCategoryHeading">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#operationCategoryCollapse" aria-expanded="false"
-                                aria-controls="operationCategoryCollapse">
-                                <i class="las la-layer-group me-2" style="font-size: 1.5rem;"></i> Operation Category Management
-                            </button>
-                        </h2>
-                        <div id="operationCategoryCollapse" class="accordion-collapse collapse"
-                            aria-labelledby="operationCategoryHeading" data-bs-parent="#operationsAccordion">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-md-6 closeable-card d-none" id="operation-category-card">
-                                        <div class="card shadow-sm border-0" style="background-color: #e3f2fd;"> <!-- Light blue background for operation category -->
-                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title mb-0">Add New Operation Category</h4>
-                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="" method="post" id="operation_category_form" class="pt-2">
-                                                    @csrf
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-3">
-                                                        <div class="col-md-12">
-                                                            <label for="category_name" class="form-label fw-bold text-primary">Category Name</label>
-                                                            <input type="text" class="form-control" id="category_name" name="name" placeholder="Enter category name" required>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <label for="category_description" class="form-label fw-bold text-primary">Description</label>
-                                                            <textarea class="form-control" id="category_description" name="description" rows="3" placeholder="Enter description"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-4 text-end">
-                                                        <button type="submit" class="btn btn-primary px-4 py-2">
-                                                            <i class="las la-save"></i> Save
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 closeable-card d-none" id="edit-operation-category-card">
-                                        <!-- Edit Operation Category Card -->
-                                        <div class="card shadow-sm border-0" style="background-color: #f8f9fa;"> <!-- Light gray background for the card -->
-                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title mb-0">Edit Operation Category</h4>
-                                                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="" method="post" id="edit_operation_category_form" class="pt-2">
-                                                    @csrf
-                                                    <input type="hidden" name="operation_category_id" id="operation_category_id">
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    
-                                                    <div class="row g-3">
-                                                        <div class="col-md-12">
-                                                            <label for="edit_name" class="form-label fw-bold text-primary">Name</label>
-                                                            <input type="text" class="form-control" id="edit_operation_category_name" name="operation_category_name" placeholder="Enter category name" required>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <label for="edit_description" class="form-label fw-bold text-primary">Description</label>
-                                                            <textarea class="form-control" id="edit_operation_category_description" name="operation_category_description" rows="3" placeholder="Enter description"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="mt-4 text-end">
-                                                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-12">
-                                        <div class="row mb-3 align-items-center">
-                                            <div class="col">
-                                                <h4 class="text-primary mb-0">Operation Categories</h4>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="button" class="btn btn-primary btn-sm" id="setup-operation-category">
-                                                    <i class="iconoir-plus"></i> Add Operation Category
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- Spinner -->
-                                        <div id="loading-spinner-category" class="spinner-border text-primary d-none" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-bordered w-100" id="tbl-operation-categories">
-                                                <thead class="table-primary text-center">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th class="text-end">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                            <h2 class="accordion-header" id="operationsLogHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#operationsLogCollapse" aria-expanded="false"
-                                    aria-controls="operationsLogCollapse">
-                                    <i class="las la-book me-2" style="font-size: 1.5rem;"></i> Operations Log Management
-                                </button>
-                            </h2>
-                            <div id="operationsLogCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="operationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-md-12 closeable-card d-none" id="operation-log-card">
-                                            <div class="card shadow-lg border-0 rounded-3" style="background-color: #e3f2fd;"> <!-- Light blue background for the card -->
-                                                <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center rounded-top">
-                                                    <h4 class="card-title mb-0">Operations Management Form</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.closeable-card').classList.add('d-none');"></button>
-                                                </div>
-                                                <div class="card-body p-4">
-                                                    <form action="" method="post" id="operations-form">
-                                                        @csrf
-                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                        <div class="row g-3 d-flex align-items-end">
-                                                            <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2">Operation Details</h5>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="operation_name" class="form-label fw-bold text-primary">Operation Name <span class="text-danger">*</span></label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_name" name="operation_name" placeholder="Enter operation name" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="description" class="form-label fw-bold text-primary">Description</label>
-                                                                    <textarea class="form-control border-primary" id="description" name="description" placeholder="Provide a brief description" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="operation_code" class="form-label fw-bold text-primary">Operation Code</label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_code" name="operation_code" placeholder="Enter operation code">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="operation_category" class="form-label fw-bold text-primary">Operation Category <span class="text-danger">*</span></label>
-                                                                    <select class="form-select border-primary operation-category" id="operation_category" name="operation_category" required>
-                                                                        <option value="" selected disabled>Select category</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="operation_type" class="form-label fw-bold text-primary">Operation Type <span class="text-danger">*</span></label>
-                                                                    <select class="form-select border-primary operation-type" id="operation_type" name="operation_type" required>
-                                                                        <option value="" selected disabled>Select type</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="calendar_year" class="form-label fw-bold text-primary">Calendar Year</label>
-                                                                    <select class="form-select border-primary calendar-year" id="calendar_year" name="calendar_year" required>
-                                                                        <option value="" selected disabled>Select year</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="start_date" class="form-label fw-bold text-primary">Start Date</label>
-                                                                    <input type="date" class="form-control border-primary" id="start_date" name="start_date" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="end_date" class="form-label fw-bold text-primary">End Date</label>
-                                                                    <input type="date" class="form-control border-primary" id="end_date" name="end_date" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="operation_status" class="form-label fw-bold text-primary">Operation Status</label>
-                                                                    <select class="form-select border-primary" id="operation_status" name="operation_status" required>
-                                                                        <option value="" selected disabled>Select status</option>
-                                                                        <option value="active">Active</option>
-                                                                        <option value="inactive">Inactive</option>
-                                                                        <option value="completed">Completed</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Cost Details -->
-                                                            <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Cost Details</h5>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="labour_cost" class="form-label fw-bold text-primary">Labour Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="labour_cost" name="labour_cost" placeholder="Enter labour cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="overhead_cost" class="form-label fw-bold text-primary">Overhead Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="overhead_cost" name="overhead_cost" placeholder="Enter overhead cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="maintenance_cost" class="form-label fw-bold text-primary">Maintenance Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="maintenance_cost" name="maintenance_cost" placeholder="Enter maintenance cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="depreciation_cost" class="form-label fw-bold text-primary">Depreciation Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="depreciation_cost" name="depreciation_cost" placeholder="Enter depreciation cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="supervision_cost" class="form-label fw-bold text-primary">Supervision & Administration Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="supervision_cost" name="supervision_cost" placeholder="Enter supervision cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="variable_cost" class="form-label fw-bold text-primary">Variable Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="variable_cost" name="variable_cost" placeholder="Enter variable cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="fixed_cost" class="form-label fw-bold text-primary">Fixed Cost</label>
-                                                                    <input type="number" class="form-control border-primary" id="fixed_cost" name="fixed_cost" placeholder="Enter fixed cost" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <!-- Materials and Chemicals Section -->
-                                                             <div class="row flex-start">
-                                                                <div class="col-12">
-                                                                    <h5 class="text-primary border-bottom pb-2 mt-4">Materials and Chemicals</h5>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="material-quantity-used-container-operation-log col-md-12">
-                                                                        <div class="row g-2 align-items-end mb-3">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="expected_material" class="form-label fw-bold text-primary">Material Needed</label>
-                                                                                    <select class="form-select border-primary material-select" id="expected_material" name="material_used[0][material_id]">
-                                                                                        <option value="" selected disabled>Select Material</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                    <input type="number" class="form-control border-primary" id="expected_quantity" name="material_used[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                    <input type="text" class="form-control border-primary" id="unit_quantity" name="material_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
-                                                                                    <input type="number" class="form-control border-primary" id="unit_cost" name="material_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-12 text-start">
-                                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-material-quantity-operation">Add More</button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="chemical-quantity-container-operation-log col-md-12">
-                                                                        <div class="row g-2 align-items-end mb-3">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="chemical_used" class="form-label fw-bold text-primary">Chemical Needed</label>
-                                                                                    <select class="form-select border-primary chemical-select" id="chemical_used" name="chemical_used[0][chemical_id]">
-                                                                                        <option value="" selected disabled>Select Chemical</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="chemical_quantity" class="form-label fw-bold text-primary">Quantity</label>
-                                                                                    <input type="number" class="form-control border-primary" id="chemical_quantity" name="chemical_used[0][quantity]" placeholder="Enter Quantity Used" min="0">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="unit_quantity" class="form-label fw-bold text-primary">Unit Quantity</label>
-                                                                                    <input type="text" class="form-control border-primary" id="unit_quantity" name="chemical_used[0][unit_quantity]" placeholder="Enter Unit Quantity">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="unit_cost" class="form-label fw-bold text-primary">Unit Cost (₦)</label>
-                                                                                    <input type="number" class="form-control border-primary" id="unit_cost" name="chemical_used[0][unit_cost]" placeholder="Enter Unit Cost" min="0">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-12 text-start">
-                                                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-quantity-operation">Add More</button>
-                                                                    </div>
-                                                                </div>
-                                                             </div>
-                                                            <!-- Products and Wastes Section -->
-                                                             <div class="row flex-start">
-                                                             <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Products and Wastes</h5>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="operation-log-product-quantity-container col-md-12">
-                                                                    <div class="row g-2 align-items-end mb-3">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_product" class="form-label fw-bold text-primary">Expected Product</label>
-                                                                                <select class="form-select border-primary product-select" id="expected_product" name="product_produced[0][product_id]" required>
-                                                                                    <option value="" selected disabled>Select Product</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_quantity_produced_for_goods" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity_produced_for_goods" name="product_produced[0][quantity]" placeholder="Enter Expected Quantity Produced" min="0" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 text-start">
-                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-product-quantity-operation">Add More</button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="operation-log-waste-quantity-container col-md-12">
-                                                                    <div class="row g-2 align-items-end mb-3">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_waste" class="form-label fw-bold text-primary">Expected Waste</label>
-                                                                                <select class="form-select border-primary waste-select" id="expected_waste" name="waste_generated[0][waste_id]">
-                                                                                    <option value="" selected disabled>Select Waste</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="expected_quantity" class="form-label fw-bold text-primary">Expected Quantity</label>
-                                                                                <input type="number" class="form-control border-primary" id="expected_quantity" name="waste_generated[0][quantity]" placeholder="Enter Expected Quantity" min="0">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 text-start">
-                                                                    <button type="button" class="btn btn-outline-primary btn-sm add-more-operation-log-waste-quantity-operation">Add More</button>
-                                                                </div>
-                                                            </div>
-                                                             </div>
-                                                            <!-- Operation Metrics -->
-                                                            <div class="col-12">
-                                                                <h5 class="text-primary border-bottom pb-2 mt-4">Operation Metrics</h5>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="total_operation_cost" class="form-label fw-bold text-primary">Total Operation Cost (₦)</label>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-text">₦</span>
-                                                                        <input type="number" class="form-control border-primary" id="total_operation_cost" name="total_operation_cost" placeholder="Enter total operation cost" min="0">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="operation_unit_cost" class="form-label fw-bold text-primary">Operation Unit Cost (₦)</label>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-text">₦</span>
-                                                                        <input type="number" class="form-control border-primary" id="operation_unit_cost" name="operation_unit_cost" placeholder="Enter operation unit cost" min="0">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="operation_unit_time" class="form-label fw-bold text-primary">Operation Unit Time (e.g., hours, minutes)</label>
-                                                                    <input type="text" class="form-control border-primary" id="operation_unit_time" name="operation_unit_time" placeholder="Enter operation unit time (e.g., hours, minutes)">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="expected_water_usage_per_operation" class="form-label fw-bold text-primary">Expected Water Usage Per Operation (Liters)</label>
-                                                                    <input type="number" class="form-control border-primary" id="expected_water_usage_per_operation" name="expected_water_usage_per_operation" placeholder="Enter expected water usage per operation" min="0">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 mt-4 text-end">
-                                                                <button type="submit" class="btn btn-primary px-4 py-2">Save Operation</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col">
-                                                    <h4 class="text-primary mb-0">Operations Log Overview</h4>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm" id="btn-setup-operation-log">
-                                                        <i class="iconoir-plus"></i> Add Operation Log
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div id="alert-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
-                                            <div class="table-responsive mt-4">
-                                                <table class="table table-hover table-bordered w-100" id="tbl-operations-log">
-                                                    <thead class="table-primary text-center">
-                                                        <tr>
-                                                            <th scope="col" class="col-width-20">Operation Name</th>
-                                                            <th scope="col" class="col-width-10">Operation Code</th>
-                                                            <th scope="col" class="col-width-15">Operation Type</th>
-                                                            <th scope="col" class="col-width-15">Operation Category</th>
-                                                            <th scope="col" class="col-width-10">Operation Unit Cost</th>
-                                                            <th scope="col" class="col-width-15">Calendar Year</th>
-                                                            <th scope="col" class="col-width-15">Start Date</th>
-                                                            <th scope="col" class="col-width-15">End Date</th>
-                                                            <th scope="col" class="col-width-10">Operation Status</th>
-                                                            <th scope="col" class="text-end col-width-10">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- Dynamic rows will go here -->
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="annualOperationsLogHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#annualOperationsLogCollapse" aria-expanded="false"
-                                    aria-controls="annualOperationsLogCollapse">
-                                    <i class="las la-calendar-alt me-3" style="font-size: 1.5rem;"></i> Annual Operations Log Overview
-                                </button>
-                            </h2>
-                            <div id="annualOperationsLogCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="annualOperationsLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Annual Operations Log Form -->
-                                    <div class="card shadow-sm border-0" style="background-color: #f5f5dc;" id="annual-operations-log-card">
-                                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">Annual Operations Metadata</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close"
-                                                onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="" method="post" id="annual-operations-log-form">
-                                                @csrf
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label for="operation_name" class="form-label">Operation Name</label>
-                                                        <input type="text" name="operation_name" class="form-control" placeholder="Enter operation name" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                        <select class="form-select calendar-year" name="calendar_year" required>
-                                                            <option value="" selected disabled>Select Calendar Year</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="operations_per_year" class="form-label">Expected Operations Per Year</label>
-                                                        <input type="number" class="form-control" name="operations_per_year" min="0" placeholder="Enter expected operations">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="taggable-container" id="manager-tag-input-4">
-                                                            <label for="preparedBy" class="form-label fw-bold">Prepared By</label>
-                                                            <div class="manager-tag-input-4 manager-tag-input"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="status" class="form-label">Status</label>
-                                                        <select class="form-select" name="status" required>
-                                                            <option value="" selected disabled>Select Status</option>
-                                                            <option value="Draft">Draft</option>
-                                                            <option value="Published">Publish</option>
-                                                            <option value="Archived">Archived</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-12 text-end mt-3">
-                                                        <button type="submit" class="btn btn-secondary">Save Annual Operation Log</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!-- Annual Operations Log Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0 w-100" id="tbl-annual-operations-metadata-log">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Operation Name</th>
-                                                    <th>Calendar Year</th>
-                                                    <th>Expected Operations per Year</th>
-                                                    <th>Prepared By</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="equipmentTypeHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#equipmentTypeCollapse" aria-expanded="false"
-                                    aria-controls="equipmentTypeCollapse">
-                                    <i class="las la-tools me-2"></i> Equipment Types
-                                </button>
-                            </h2>
-                            <div id="equipmentTypeCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="equipmentTypeHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Equipment Type Form -->
-                                    <form action="" method="post" id="equipment_type_form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="equipment_type_name" class="form-label">Equipment Type
-                                                        Name</label>
-                                                    <input type="text" class="form-control" id="equipment_type_name"
-                                                        name="equipment_type_name"
-                                                        placeholder="Enter equipment type name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="equipment_type_description"
-                                                        class="form-label">Description</label>
-                                                    <textarea class="form-control" id="equipment_type_description"
-                                                        name="equipment_type_description"
-                                                        placeholder="Enter description" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Equipment
-                                                    Type</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                    <!-- Equipment Type Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-equipment-types">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Equipment Type Name</th>
-                                                    <th>Description</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($active_equipment_types as $type)
-                                                <tr>
-                                                    <td>{{ $type->name }}</td>
-                                                    <td>{{ $type->description }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="industrialEquipmentLogHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#industrialEquipmentLogCollapse" aria-expanded="false"
-                                    aria-controls="industrialEquipmentLogCollapse">
-                                    <i class="las la-industry me-2"></i> Industrial Equipment Log
-                                </button>
-                            </h2>
-                            <div id="industrialEquipmentLogCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="industrialEquipmentLogHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Industrial Equipment Log Form -->
-                                    <form action="" method="post" id="industrial-equipment-log-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="equipment_name" class="form-label">Equipment Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="equipment_name"
-                                                        name="equipment_name" placeholder="Enter equipment name"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="equipment_code" class="form-label">Equipment Code <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="equipment_code" name="equipment_code" placeholder="Enter equipment code" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="equipment_type" class="form-label">Equipment Type <span class="text-danger">*</span></label>
-                                                    <select class="form-select" id="equipment_type"
-                                                        name="equipment_type" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($active_equipment_types as $type)
-                                                        <option value="{{ $type->equipment_type_id }}">{{ $type->name }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_model" class="form-label">Model</label>
-                                                    <input type="text" class="form-control" id="equipment_model" name="equipment_model" placeholder="Enter equipment model">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_serial_number" class="form-label">Serial Number</label>
-                                                    <input type="text" class="form-control" id="equipment_serial_number" name="equipment_serial_number" placeholder="Enter serial number">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_brand" class="form-label">Equipment Brand</label>
-                                                    <input type="text" class="form-control" id="equipment_brand" name="equipment_brand" placeholder="Enter brand">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_capacity" class="form-label">Capacity</label>
-                                                    <input type="text" class="form-control" id="equipment_capacity"
-                                                        name="equipment_capacity" placeholder="Enter equipment capacity">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_location" class="form-label">Location <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="equipment_location" name="equipment_location" placeholder="Enter equipment location" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_condition" class="form-label">Condition</label>
-                                                    <select class="form-select" id="equipment_condition"
-                                                        name="equipment_condition">
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="New">New</option>
-                                                        <option value="Good">Good</option>
-                                                        <option value="Fair">Fair</option>
-                                                        <option value="Poor">Poor</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="equipment_status" class="form-label">Equipment Status <span class="text-danger">*</span></label>
-                                                    <select class="form-select" id="equipment_status"
-                                                        name="equipment_status" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Operational">Operational</option>
-                                                        <option value="Under Maintenance">Under Maintenance</option>
-                                                        <option value="Out of Service">Out of Service</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="purchase_date" class="form-label">Purchase Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="purchase_date"
-                                                        name="purchase_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Equipment</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <!-- Industrial Equipment Log Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-equipment-logs">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Equipment Name</th>
-                                                    <th>Type</th>
-                                                    <th>Capacity</th>
-                                                    <th>Status</th>
-                                                    <th>Purchase Date</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($industrial_equipments as $equipment)
-                                                    <tr>
-                                                        <td>{{ $equipment->equipment_name }}</td>
-                                                        <td>{{ $equipment->equipmentType->name }}</td>
-                                                        <td>{{ $equipment->equipment_capacity }}</td>
-                                                        <td>
-                                                            @php
-                                                                $statusClasses = [
-                                                                    'Operational' => 'bg-success',
-                                                                    'Under Maintenance' => 'bg-warning',
-                                                                    'Out of Service' => 'bg-danger',
-                                                                ];
-                                                            @endphp
-                                                            <span class="badge {{ $statusClasses[$equipment->equipment_status] ?? 'bg-secondary' }}">
-                                                                {{ $equipment->equipment_status }}
-                                                            </span>
-                                                        </td>
-                                                        <td>{{ $equipment->purchase_date }}</td>
-                                                        <td class="text-end">
-                                                            <div class="d-flex justify-content-end">
-                                                                <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="wasteItemHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#wasteItemCollapse" aria-expanded="false"
-                                    aria-controls="wasteItemCollapse">
-                                    <i class="las la-trash-alt me-2"></i> Waste Items
-                                </button>
-                            </h2>
-                            <div id="wasteItemCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="wasteItemHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Waste Item Form -->
-                                    <form action="" method="post" id="waste-item-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="waste_item_name" class="form-label">Waste Item
-                                                        Name</label>
-                                                    <input type="text" class="form-control" id="waste_item_name"
-                                                        name="waste_item_name" placeholder="Enter waste item name"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="waste_item_type" class="form-label">Waste Item
-                                                        Type</label>
-                                                    <select class="form-select" id="waste_item_type"
-                                                        name="waste_item_type" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Hazardous">Hazardous</option>
-                                                        <option value="Non-Hazardous">Non-Hazardous</option>
-                                                        <option value="Recyclable">Recyclable</option>
-                                                        <option value="Organic">Organic</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="waste_item_unit" class="form-label">Unit</label>
-                                                    <input type="text" class="form-control" id="waste_item_unit"
-                                                        name="waste_item_unit"
-                                                        placeholder="Enter unit (e.g., kg, liters)" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="button" class="btn btn-primary" id="submit-waste-item">
-                                                    Add Waste Item
-                                                    <span class="spinner-border spinner-border-sm d-none" role="status"
-                                                        aria-hidden="true"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                    <!-- Waste Item Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-waste-items">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Waste Item Name</th>
-                                                    <th>Type</th>
-                                                    <th>Unit</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($waste_items as $item)
-                                                <tr>
-                                                    <td>{{ $item->waste_name }}</td>
-                                                    <td>{{ $item->waste_type }}</td>
-                                                    <td>{{ $item->unit }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="wasteDisposalTrackingHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#wasteDisposalTrackingCollapse" aria-expanded="false"
-                                    aria-controls="wasteDisposalTrackingCollapse">
-                                    <i class="las la-recycle me-2"></i> Waste Disposal Tracking
-                                </button>
-                            </h2>
-                            <div id="wasteDisposalTrackingCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="wasteDisposalTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Waste Disposal Tracking Form -->
-                                    <form action="" method="post" id="waste-disposal-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="waste_type" class="form-label">Waste Type</label>
-                                                    <select class="form-select" id="waste_type" name="waste_type"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Hazardous">Hazardous</option>
-                                                        <option value="Non-Hazardous">Non-Hazardous</option>
-                                                        <option value="Recyclable">Recyclable</option>
-                                                        <option value="Organic">Organic</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="operation_status" class="form-label">Operation</label>
-                                                    <select class="form-select" id="operation_status"
-                                                        name="operation" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="waste_item" class="form-label">Waste Item</label>
-                                                    <select class="form-select" id="waste_item" name="waste_item" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        @foreach($waste_items as $item)
-                                                            <option value="{{ $item->company_waste_id }}">{{ $item->waste_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="quantity_disposed" class="form-label">Quantity
-                                                        Disposed</label>
-                                                    <input type="number" class="form-control" id="quantity_disposed"
-                                                        name="quantity_disposed" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="disposal_method" class="form-label">Disposal
-                                                        Method</label>
-                                                    <select class="form-select" id="disposal_method" name="disposal_method" required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                        <option value="Landfill">Landfill</option>
-                                                        <option value="Recycling">Recycling</option>
-                                                        <option value="Incineration">Incineration</option>
-                                                        <option value="Composting">Composting</option>
-                                                        <option value="Waste Symbiosis">Waste Symbiosis</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                    <select class="form-select calendar-year" id="calendar_year" name="calendar_year"
-                                                        required>
-                                                        <option value="" selected disabled>Choose...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="mb-3">
-                                                    <label for="disposal_date" class="form-label">Disposal
-                                                        Date</label>
-                                                    <input type="date" class="form-control" id="disposal_date"
-                                                        name="disposal_date" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-                                    <!-- water disposal table -->
-                        
-                                <div class="table-responsive mt-4">
-                                    <table class="table table-striped mb-0" id="tbl-waste-disposal">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Waste Type</th>
-                                                <th>Quantity Disposed</th>
-                                                <th>Disposal Method</th>
-                                                <th>Disposal Date</th>
-                                                <th>Operation</th>
-                                                <th>Calendar Year</th>
-                                                <th class="text-end">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                        @foreach($waste_disposals as $disposal)
+                            <!-- Performance Tab -->
+                            <div class="tab-pane fade" id="performance" role="tabpanel" aria-labelledby="performance-tab">
+                                <h5 class="section-heading mb-3">Performance Appraisal</h5>
+                                <table class="table table-hover">
+                                    <thead class="table-light">
                                         <tr>
-                                            <td>{{ $disposal->waste_type }}</td>
-                                            <td>{{ $disposal->quantity }}</td>
-                                            <td>{{ $disposal->disposal_method }}</td>
-                                            <td>{{ $disposal->disposal_date }}</td>
-                                            <td>{{ $disposal->operation->operation_name ?? 'N/A' }}</td>
-                                            <td>{{ $disposal->calendarYear->name ?? 'N/A' }}</td>
-                                            <td class="text-end">
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                                </div>
-                                            </td>
+                                            <th>Employee</th>
+                                            <th>Score</th>
+                                            <th>Period</th>
+                                            <th>Remarks</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($performances as $perf)
+                                            <tr>
+                                                <td>{{ $perf->employee->name }}</td>
+                                                <td><span class="badge bg-info">{{ $perf->score }}%</span></td>
+                                                <td>{{ $perf->period }}</td>
+                                                <td>{{ $perf->remarks }}</td>
+                                            </tr>
                                         @endforeach
-                                             
-                                        </tbody>
-                                    </table>
-                                </div>
-                            
-                        <!-- end water disposal table -->
-                                </div>
-                                
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                        <!-- iot device -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="iotDeviceHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#iotDeviceCollapse" aria-expanded="false" aria-controls="iotDeviceCollapse">
-                                    <i class="las la-microchip me-2"></i> IoT Device Management
-                                </button>
-                            </h2>
-                            <div id="iotDeviceCollapse" class="accordion-collapse collapse" aria-labelledby="iotDeviceHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- IoT Device Form -->
-                                    <form action="" method="post" id="iot-device-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="device_name" class="form-label">Device Name</label>
-                                                    <input type="text" class="form-control" id="device_name" name="device_name" placeholder="Enter device name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="device_type" class="form-label">Device Location</label>
-                                                    <input type="text" class="form-control" id="device_location" name="device_location" placeholder="Enter device location" required>
-                                                </div>
-                                            </div>
-                                         
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="last_maintenance_date" class="form-label">Last Maintenance Date</label>
-                                                    <input type="date" class="form-control" id="last_maintenance_date" name="last_maintenance_date" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-                                        </div>
-                                    </form>
 
-                                    <!-- IoT Device Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-iot-devices">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Device Name</th>
-                                                
-                                                    <th>Device Location</th>
-                                                    <th>Status</th>
-                                                    
-                                                 
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                               
-                                              
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end iot device -->
-                         <!-- production batch tracking -->
-                        <!-- Batch Tracking Accordion Item -->
-                        <div class="accordion-item"> 
-                            <h2 class="accordion-header" id="batchTrackingHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#batchTrackingCollapse" aria-expanded="false" aria-controls="batchTrackingCollapse">
-                                    <span class="me-2">
-                                        <i class="las la-box" style="font-size: 1.8rem;"></i>
-                                    </span>
-                                    Batch Production Management
-                                </button>
-                            </h2>
-                            <div id="batchTrackingCollapse" class="accordion-collapse collapse" aria-labelledby="batchTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <div class="row mb-3 align-items-center">
-                                        <div class="col">
-                                            <h4 class="text-primary mb-0">Batch Production Tracking Table</h4>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-primary btn-sm" id="btn-setup-batch-production"
-                                                onclick="toggleBatchTrackingForm()">
-                                                <i class="iconoir-plus"></i> New Batch
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Batch Tracking Form (hidden by default) -->
-                                    <div id="batch-tracking-form-container" class="d-none position-relative">
-                                        <div class="card shadow-lg border-0" style="background: linear-gradient(90deg, #f7b42c 0%, #fc575e 100%); border-radius: 1rem;">
-                                            <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: none;">
-                                                <h4 class="card-title mb-0 fw-bold">
-                                                    <i class="las la-box me-2"></i> Batch Production Management Form
-                                                </h4>
-                                                <button type="button" class="btn-close btn-close-white btn-lg" aria-label="Close" style="font-size:2rem;" onclick="document.getElementById('batch-tracking-form-container').classList.add('d-none');"></button>
+                            <!-- Welfare Tab -->
+                            <div class="tab-pane fade" id="welfare" role="tabpanel" aria-labelledby="welfare-tab">
+                                <h5 class="section-heading mb-3">Employee Welfare</h5>
+                                <div class="list-group">
+                                    @foreach($welfarePrograms as $program)
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">{{ $program->title }}</h6>
+                                                <small class="text-muted">{{ \Carbon\Carbon::parse($program->created_at)->diffForHumans() }}</small>
                                             </div>
-                                            <div class="card-body">
-                                                <form action="" method="post" id="batch-tracking-form">
-                                                    @csrf
-                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                    <div class="row g-4">
-                                                        <!-- Batch Name -->
-                                                        <div class="col-md-6">
-                                                            <label for="batch_name" class="form-label text-white fw-semibold">Batch Name</label>
-                                                            <input type="text" class="form-control border-0 shadow-sm" id="batch_name" name="batch_name" placeholder="Enter batch name">
-                                                        </div>
-                                                        <!-- Production Date -->
-                                                        <div class="col-md-6">
-                                                            <label for="start_date" class="form-label text-white fw-semibold">Production Date</label>
-                                                            <div class="input-group" id="DateRange">
-                                                                <input type="date" class="form-control border-0 shadow-sm" name="start_date" placeholder="Start" aria-label="StartDate">
-                                                                <span class="input-group-text bg-white border-0">to</span>
-                                                                <input type="date" class="form-control border-0 shadow-sm" name="end_date" placeholder="End" aria-label="EndDate">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Product -->
-                                                        <div class="col-md-6">
-                                                            <label for="product" class="form-label text-white fw-semibold">Product</label>
-                                                            <select class="form-select border-0 shadow-sm" id="product" name="product">
-                                                                <option value="" selected disabled>Select Product</option>
-                                                                @foreach($products as $product)
-                                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <!-- Quantity -->
-                                                        <div class="col-md-6">
-                                                            <label for="quantity" class="form-label text-white fw-semibold">Total Quantity</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="quantity" name="total_quantity" placeholder="Enter quantity" min="0">
-                                                        </div>
-                                                        <!-- Defective Quantity -->
-                                                        <div class="col-md-6">
-                                                            <label for="defective_quantity" class="form-label text-white fw-semibold">Total Quantity Defective</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="defective_quantity" name="defective_quantity" placeholder="Enter defective quantity" min="0">
-                                                        </div>
-                                                        <!-- Yield Percentage -->
-                                                        <div class="col-md-6">
-                                                            <label for="yield_percentage" class="form-label text-white fw-semibold">Yield Percentage</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="yield_percentage" name="yield_percentage" placeholder="Enter yield percentage" min="0" max="100" step="0.01">
-                                                        </div>
-                                                        @if(auth('admin')->check())
-                                                            <input type="hidden" name="created_by" value="{{ auth('admin')->user()->id }}">
-                                                        @elseif(auth('web')->check())
-                                                            <input type="hidden" name="created_by" value="{{ auth('web')->user()->id }}">
-                                                        @endif
-                                                        <!-- Geolocation -->
-                                                        <div class="col-md-6">
-                                                            <label for="geolocation" class="form-label text-white fw-semibold">Geolocation</label>
-                                                            <input type="text" class="form-control border-0 shadow-sm" id="geolocation" name="geolocation" placeholder="Enter geolocation coordinates (e.g., latitude, longitude)">
-                                                        </div>
-                                                        <!-- IoT Device ID -->
-                                                        <div class="col-md-6">
-                                                            <label for="iot_device_id" class="form-label text-white fw-semibold">IoT Device</label>
-                                                            <select class="form-select border-0 shadow-sm" id="iot_device_id" name="iot_device">
-                                                                <option value="" selected disabled>Select IoT Device</option>
-                                                                @php
-                                                                    $iotDevices = \App\Models\IotDevice::all();
-                                                                @endphp
-                                                                @foreach($iotDevices as $device)
-                                                                    <option value="{{ $device->iot_device_id }}">{{ $device->device_name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <!-- Predicted Defect Rate -->
-                                                        <div class="col-md-6">
-                                                            <label for="predicted_defect_rate" class="form-label text-white fw-semibold">Predicted Defect Rate (%)</label>
-                                                            <input type="number" class="form-control border-0 shadow-sm" id="predicted_defect_rate" name="predicted_defect_rate" placeholder="Enter predicted defect rate" min="0" max="100" step="0.01">
-                                                        </div>
-                                                      
-                                                        <!-- Submit Button -->
-                                                        <div class="col-md-12 mt-3 text-end">
-                                                            <button type="submit" class="btn btn-light fw-bold px-4 py-2 shadow-sm">Save Batch</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Spinner before table -->
-                                    <div id="batch-tracking-spinner" class="d-none text-center my-4">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Batch Tracking Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0 w-100" id="tbl-batch-tracking">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Batch Name</th>
-                                                    <th>Product</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                    <!-- Batch Tracking Table End -->
-                                         <!-- Production Process Modal -->
-                                    <div class="modal fade" id="productionProcessModal" tabindex="-1" aria-labelledby="productionProcessModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-info text-white">
-                                                    <h5 class="modal-title" id="productionProcessModalLabel">Production Process</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Button to show the form -->
-                                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                                        <h6 class="mb-0">Manage Production Process</h6>
-                                                        <button type="button" class="btn btn-info btn-sm" id="show-production-process-form">
-                                                            <i class="iconoir-plus"></i> Add Production Process
-                                                        </button>
-                                                    </div>
-                                                    <!-- Table of production processes -->
-                                                    <div id="production-process-table-container">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-striped mb-0 w-100" id="tbl-production-process">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th>Workflow</th>
-                                                                        <th>Start Date</th>
-                                                                        <th>End Date</th>
-                                                                        <th>Status</th>
-                                                                        <th>Remarks</th>
-                                                                        <th class="text-end">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <!-- Dynamic rows go here -->
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Production Process Form (hidden by default) -->
-                                                    <div id="production-process-form-container" class="d-none mt-4">
-                                                        <div class="card shadow border-0" style="max-width:900px;margin:auto;">
-                                                            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center rounded-top">
-                                                                <span class="fw-bold"><i class="las la-industry"></i> Add Production Process</span>
-                                                                <!-- Close icon as a visible cancel button (no background, just icon) -->
-                                                                <button type="button" class="btn p-0 border-0" aria-label="Cancel" id="close-production-process-form" style="font-size:2rem; background:none; box-shadow:none; color:#333;">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <form id="production-process-form" method="post">
-                                                                    @csrf
-                                                                    <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                                    <input type="hidden" id="batch_id" name="batch_id">
-                                                                    <div class="row g-3">
-                                                                        <div class="col-md-6">
-                                                                            <label for="workflow" class="form-label">Workflow</label>
-                                                                            <select class="form-select" id="workflow" name="workflow" required>
-                                                                                <option value="" selected disabled>Select Workflow</option>
-                                                                                @foreach($company_workflows as $workflow)
-                                                                                    <option value="{{ $workflow->workflow_id }}">{{ $workflow->workflow_name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label for="process_date_range" class="form-label">Start Date / End Date</label>
-                                                                            <div class="input-group" id="process_date_range">
-                                                                                <input type="date" class="form-control" id="process_start_date" name="process_start_date" placeholder="Start Date" required>
-                                                                                <span class="input-group-text">to</span>
-                                                                                <input type="date" class="form-control" id="process_end_date" name="process_end_date" placeholder="End Date" required>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label for="process_status" class="form-label">Status</label>
-                                                                            <select class="form-select" id="process_status" name="process_status" required>
-                                                                                <option value="" selected disabled>Select Status</option>
-                                                                                <option value="Pending">Pending</option>
-                                                                                <option value="In Progress">In Progress</option>
-                                                                                <option value="Completed">Completed</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label for="remarks" class="form-label">Remarks</label>
-                                                                            <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes about this process"></textarea>
-                                                                        </div>
-                                                                        <div class="col-12 mt-3 text-end">
-                                                                            <button type="submit" class="btn btn-info">Save Production Process</button>
-                                                                            <button type="button" class="btn btn-secondary ms-2" id="cancel-production-process-form">Cancel</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End Production Process Form -->
-                                                    
-                                                    
-                                                   
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                               
-                                              <!-- Edit Production Process Modal -->
-<!-- Edit Production Process Modal -->
-<div class="modal fade" id="editProductionProcessModal" tabindex="-1" aria-labelledby="editProductionProcessModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg mt-5"> <!-- Added mt-5 to bring it down -->
-        <div class="modal-content shadow-lg rounded-4">
-            <form id="edit-production-process-form" method="post">
-                @csrf
-                <input type="hidden" name="process_id" id="edit_process_id">
-                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-
-                <div class="modal-header bg-info text-white rounded-top-4">
-                    <h5 class="modal-title" id="editProductionProcessModalLabel">Edit Production Process</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="edit_workflow" class="form-label">Workflow</label>
-                            <select class="form-select" id="edit_workflow" name="workflow" >
-                                <option value="" selected disabled>Select Workflow</option>
-                                @foreach($company_workflows as $workflow)
-                                    <option value="{{ $workflow->workflow_id }}">{{ $workflow->workflow_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="edit_process_date_range" class="form-label">Start Date / End Date</label>
-                            <div class="input-group" id="edit_process_date_range">
-                                <input type="date" class="form-control" id="edit_process_start_date" name="process_start_date" required>
-                                <span class="input-group-text">to</span>
-                                <input type="date" class="form-control" id="edit_process_end_date" name="process_end_date" required>
-                            </div>
-                        </div>
-                       
-                        <div class="col-md-6">
-                            <label for="edit_process_status" class="form-label">Status</label>
-                            <select class="form-select" id="edit_process_status" name="process_status" required>
-                                <option value="" selected disabled>Select Status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Completed">Completed</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="edit_remarks" class="form-label">Remarks</label>
-                            <textarea class="form-control" id="edit_remarks" name="remarks" rows="3" placeholder="Enter any remarks or notes"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-info text-white">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-                                                    <!-- End Edit Production Process Modal -->
-                                               
-
-                                    
-                                </div>
-                            </div>
-                        </div>
-                         <!-- end production batch tracking -->
-                
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="productionTrackingHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productionTrackingCollapse" aria-expanded="false"
-                                    aria-controls="productionTrackingCollapse">
-                                    <i class="las la-industry me-2"></i> Production Log
-                                </button>
-                            </h2>
-                            <div id="productionTrackingCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="productionTrackingHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body">
-                                    <!-- Production Tracking Form -->
-                                    <form action="" method="post" id="production-log-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-3">
-                                            <!-- Production Title -->
-                                            <div class="col-md-6">
-                                                <label for="production_title" class="form-label">Production Title</label>
-                                                <input type="text" class="form-control" id="production_title" name="production_title" placeholder="Enter production title" required>
-                                            </div>
-
-                                            <!-- Operation Name -->
-                                            <div class="col-md-6">
-                                                <label for="operation_name_select" class="form-label">Operation</label>
-                                                <select class="form-select" id="operation_name_select" name="operation_name" required>
-                                                    <option value="" selected disabled>Choose...</option>
-                                                    
-                                                </select>
-                                            </div>
-
-                                            <!-- Material Used -->
-                                            <div class="material-quantity-used-container-production-log col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-3">
-                                                        <label for="material_used" class="form-label">Used Material</label>
-                                                        <select class="form-select" id="material_used" name="material_used[0][material_id]" required>
-                                                            <option value="" selected disabled>Select Material</option>
-                                                            @foreach($companyMaterials as $material)
-                                                                <option value="{{ $material->companyMaterialId }}">{{ $material->material }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="quantity_used" class="form-label">Used Quantity</label>
-                                                        <input type="number" min="0" class="form-control" id="quantity_used" name="material_used[0][quantity]" placeholder="Enter quantity used" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-material-used-production-log">Add More</button>
-                                            </div>
-
-                                            <!-- Chemical Used -->
-                                            <div class="chemical-quantity-container-production-log col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-3">
-                                                        <label for="chemical_name" class="form-label">Used Chemical</label>
-                                                        <select class="form-select" id="chemical_name" name="chemical_used[0][chemical_id]" required>
-                                                            <option value="" selected disabled>Select Chemical</option>
-                                                            @foreach($approved_company_chemicals as $chemical)
-                                                                <option value="{{ $chemical->company_chemical_id }}">{{ $chemical->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="chemical_volume" class="form-label">Used Volume (Liters)</label>
-                                                        <input type="number" min="0" class="form-control" id="chemical_volume" name="chemical_used[0][volume]" placeholder="Enter volume" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-chemical-used-production-log">Add More</button>
-                                            </div>
-
-                                            <!-- Water Usage -->
-                                            <div class="col-md-3">
-                                                <label for="amount_of_water_used" class="form-label">Volume of Water Used (Liters)</label>
-                                                <input type="number" class="form-control" id="amount_of_water_used" min="0" name="amount_of_water_used" placeholder="Enter amount of water used" required>
-                                            </div>
-
-                                            <!-- Calendar Year -->
-                                            <div class="col-md-3">
-                                                <label for="calendar_year" class="form-label">Calendar Year</label>
-                                                <select class="form-select calendar-year" id="calendar_year" name="calendar_year" required>
-                                                    <option value="" selected disabled>Select Calendar Year</option>
-                                                </select>
-                                            </div>
-
-                                            <!-- Production Date -->
-                                            <div class="col-md-3">
-                                                <label for="production_date" class="form-label">Production Date</label>
-                                                <input type="date" class="form-control" id="production_date" name="production_date" required>
-                                            </div>
-
-                                            <!-- Production Status -->
-                                            <div class="col-md-3">
-                                                <label for="production_status" class="form-label">Production Status</label>
-                                                <select class="form-select" id="production_status" name="production_status" required>
-                                                    <option value="" selected disabled>Select Status</option>
-                                                    <option value="ongoing">Ongoing</option>
-                                                    <option value="completed">Completed</option>
-                                                    <option value="halted">Halted</option>
-                                                    <option value="failed">Failed</option>
-                                                </select>
-                                            </div>
-
-                                            <!-- Product Produced -->
-                                            <div class="product-quantity-container-production-log col-md-12">
-                                                <div class="row g-2 align-items-end mb-3">
-                                                    <div class="col-md-3">
-                                                        <label for="product_name" class="form-label">Produced Product</label>
-                                                        <select class="form-select" id="product_name" name="product_produced[0][product_id]" required>
-                                                            <option value="" selected disabled>Select Product</option>
-                                                            @foreach($active_products as $product)
-                                                                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="quantity_produced" class="form-label">Quantity Produced</label>
-                                                        <input type="number" min="0" class="form-control" id="quantity_produced" name="product_produced[0][quantity]" placeholder="Enter quantity produced" required>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="quantity_defected" class="form-label">Quantity Defected</label>
-                                                        <input type="number" min="0" class="form-control" id="quantity_defected" name="product_produced[0][quantity_defected]" placeholder="Enter quantity defected" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-start">
-                                                <button type="button" class="btn btn-outline-primary btn-sm add-more-product-production-log">Add More</button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <div class="col-md-12 mt-3">
-                                            <button type="submit" class="btn btn-primary">Submit Production Log</button>
-                                        </div>
-                                    </form>
-                                    <!-- Production Log Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-production-log">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Production Title</th>
-                                                    <th>Operation Name</th>
-                                                    <th>Materials Used</th>
-                                                    <th>Chemicals Used</th>
-                                                    <th>Water Used (Liters)</th>
-                                                    <th>Products Produced</th>
-                                                    <th>Production Date</th>
-                                                    <th>Status</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($production_logs as $log)
-                                                <tr>
-                                                    <td>{{ $log->production_title }}</td>
-                                                    <td>{{ $log->operation->operation_name ?? 'N/A' }}</td>
-                                                    <td>
-                                                        {{ $log->material->material_name ?? 'N/A' }} ({{ $log->quantity_used }})
-                                                    </td>
-                                                    <td>
-                                                        {{ $log->chemical->name ?? 'N/A' }} ({{ $chemical->volume_used }} Liters)
-                                                    </td>
-                                                    <td>{{ $log->amount_of_water_used }} Liters</td>
-                                                    <td>
-                                                    @foreach($log->product_log_data as $product)
-                                                        {{ $log->product->name ?? 'N/A' }} ({{ $product->quantity_produced ?? "N/A" }} Produced, {{ $product->quantity_defected ?? "N/A" }} Defected)
-                                                    @endforeach
-                                                    </td>
-                                                    <td>{{ \Carbon\Carbon::parse($log->production_date)->format('d M Y') }}</td>
-                                                    <td>
-                                                        <span class="badge bg-{{ $log->production_status == 'completed' ? 'success' : ($log->production_status == 'ongoing' ? 'primary' : 'danger') }}">
-                                                            {{ ucfirst($log->production_status) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end gap-2">
-                                                            <button class="btn btn-outline-primary btn-sm" onclick="editProductionLog({{ $log->id }})">Edit</button>
-                                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionLog({{ $log->id }})">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="qualityControlHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#qualityControlCollapse" aria-expanded="false" aria-controls="qualityControlCollapse">
-                                    <i class="las la-check-circle me-2"></i> Quality Control
-                                </button>
-                            </h2>
-                            <div id="qualityControlCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="qualityControlHeading" data-bs-parent="#operationsAccordion">
-                                <div class="accordion-body ">
-                                    <!-- Quality Control Form -->
-                                    <form action="" method="post" id="quality-control-form">
-                                        @csrf
-                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                        <div class="row g-2">
-                                            
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="quality_metric" class="form-label">Quality Metric</label>
-                                                    <input type="text" class="form-control" id="quality_metric" name="quality_metric"
-                                                        placeholder="Enter quality metric" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="acceptable_range" class="form-label">Acceptable Range</label>
-                                                    <input type="text" class="form-control" id="acceptable_range" name="acceptable_range"
-                                                        placeholder="Enter acceptable range" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="measurement_frequency" class="form-label">Measurement Frequency</label>
-                                                    <input type="text" class="form-control" id="measurement_frequency"
-                                                        name="measurement_frequency" placeholder="Enter measurement frequency" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="responsible_person" class="form-label">Responsible Person</label>
-                                                    <input type="text" class="form-control" id="responsible_person" name="responsible_person"
-                                                        placeholder="Enter responsible person" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <button type="submit" class="btn btn-primary">Add Quality Control Metric</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                    <!-- Quality Control Table -->
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-quality-control">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Quality Metric</th>
-                                                    <th>Acceptable Range</th>
-                                                    <th>Measurement Frequency</th>
-                                                    <th>Responsible Person</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($quality_controls_record as $control)
-                                                <tr>
-                                                    <td>{{ $control->quality_metric }}</td>
-                                                    <td>{{ $control->acceptable_range }}</td>
-                                                    <td>{{ $control->measurement_frequency }}</td>
-                                                    <td>{{ $control->responsible_person }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            <p class="mb-1">{{ $program->description }}</p>
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Operations Management -->
-                <!-- Product Management -->
-                <div class="tab-pane fade" id="product-management" role="tabpanel">
-                    <h3>Product Management</h3>
-                    <div class="accordion my-3" id="productManagementAccordion">
-                        <!-- Add New Product -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="productCategoryHeading">
-                                <button class="accordion-button  collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productCategoryCollapse" aria-expanded="false"
-                                    aria-controls="productCategoryCollapse">
-                                    Product Categories
-                                </button>
-                            </h2>
-                            <div id="productCategoryCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="productCategoryHeading">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="card shadow-sm border-0 mt-4">
-                                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                                    <h4 class="card-title mb-0">Add New Product Category</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="text-muted">Use this form to add a new product category. Provide a name and description for the category to help organize your products effectively.</p>
-                                                    <form action="" method="post" id="add-product-category-form">
-                                                        @csrf
-                                                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="category_name">Category Name</label>
-                                                                    <input type="text" class="form-control" id="category_name"
-                                                                        name="category_name" placeholder="Enter category name" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="category_description">Description</label>
-                                                                    <textarea class="form-control" id="category_description"
-                                                                        name="category_description"
-                                                                        placeholder="Enter category description" rows="3"
-                                                                        required></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 mt-3">
-                                                                <button type="submit" class="btn btn-primary">Add Category</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card shadow-sm border-0 mt-4  d-none">
-                                                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                                                    <h4 class="card-title mb-0">Edit Product Category</h4>
-                                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="text-muted">Use this form to edit an existing product category. You can update the category name and description as needed.</p>
-                                                    <form action="" method="post" id="edit-product-category-form">
-                                                        @csrf
-                                                        <input type="hidden" name="category_id" id="category_id">
-                                                        <div class="row g-2">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="edit_category_name">Category Name</label>
-                                                                    <input type="text" class="form-control" id="edit_category_name" name="category_name" placeholder="Enter category name" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="edit_category_description">Description</label>
-                                                                    <textarea class="form-control" id="edit_category_description" name="category_description" placeholder="Enter category description" rows="3" required></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 mt-3">
-                                                                <button type="submit" class="btn btn-primary">Update Category</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="table-responsive mt-4">
-                                        <table class="table table-striped mb-0" id="tbl-product-categories">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Category Name</th>
-                                                    <th>Description</th>
-                                                    <th class="text-end">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($product_categories as $category)
-                                                <tr>
-                                                    <td>{{ $category->name }}</td>
-                                                    <td>{{ $category->description }}</td>
-                                                    <td class="text-end">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product List -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="productListHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#productListCollapse" aria-expanded="false" aria-controls="productListCollapse">
-                                    Product Management
-                                </button>
-                            </h2>
-                            <div id="productListCollapse" class="accordion-collapse collapse" aria-labelledby="productListHeading">
-                                <div class="accordion-body">
-                                    <div class="card shadow-sm border-0 d-none" style="background-color: #f9fbe7;" id="new_product_setup_card"> <!-- Light greenish-yellow background for product setup -->
-                                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title mb-0">New Product Setup</h4>
-                                            <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="this.closest('.card').classList.add('d-none');"></button>
-                                        </div>
-                                        <div class="card-body pt-3">
-                                            <form action="" method="post" id="add-product-form">
-                                                @csrf
-                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                                <div class="row g-3">
-                                                    <!-- Product Name -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="product_name" class="form-label">Product Name</label>
-                                                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Product Category -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="product_category" class="form-label">Category</label>
-                                                            <select class="form-select" id="product_category" name="product_category" required>
-                                                                <option value="" selected disabled>Choose...</option>
-                                                                @foreach($active_product_categories as $category)
-                                                                    <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Quantity Per Unit -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="product_quantity_per_unit" class="form-label">Quantity Per Unit</label>
-                                                            <input type="number" class="form-control" id="product_quantity_per_unit" name="product_quantity_per_unit" placeholder="Enter quantity per unit" min="1" required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Product Unit -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="product_unit" class="form-label">Unit</label>
-                                                            <input type="text" class="form-control" id="product_unit" name="product_unit" placeholder="Enter product unit" required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Product Price -->
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-label" for="product_price">Price</label>
-                                                            <div class="input-group">
-                                                                <!-- Currency dropdown with a fixed width -->
-                                                                <select class="form-select flex-shrink-1" style="max-width: 120px;" id="currency" name="currency"
-                                                                    aria-label="Select currency" required>
-                                                                    <option value="USD">USD</option>
-                                                                    <option value="EUR">EUR</option>
-                                                                    <option value="GBP">GBP</option>
-                                                                    <option value="NGN" selected>NGN</option>
-                                                                </select>
-                                                                <!-- Price input field taking the remaining space -->
-                                                                <input type="number" class="form-control" id="product_price" name="product_price"
-                                                                    placeholder="Enter product price in NGN" aria-label="Product price" min="0" step="0.01" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Save Button -->
-                                                    <div class="col-12 text-end mt-3">
-                                                        <button type="submit" class="btn btn-success">Save Product</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mb-4 align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="product_category_filter" class="form-label fw-bold text-primary">Filter by Category</label>
-                                            <select class="form-select shadow-sm" id="product_category_filter" name="product_category_filter">
-                                                <option value="" selected>All Categories</option>
-                                                @foreach($active_product_categories as $category)
-                                                <option value="{{ $category->product_category_id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 text-end">
-                                            <button type="button" class="btn btn-outline-primary shadow-sm me-2" id="export-products">
-                                                <i class="las la-file-export me-1"></i> Export Products
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary shadow-sm" id="btn-setup-products">
-                                                <i class="las la-cogs me-1"></i> Setup a Product
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-bordered rounded shadow-sm" id="tbl-products">
-                                            <thead class="table-primary">
-                                                <tr>
-                                                    <th class="text-center">Product Name</th>
-                                                    <th class="text-center">Category</th>
-                                                    <th class="text-center">Unit Price</th>
-                                                    <th class="text-center">Quantity per unit</th>
-                                                    <th>Unit</th>
-                                                    <th class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Placeholder for dynamic content -->
-                                                <tr id="no-products">
-                                                    <td colspan="5" class="text-center text-muted">No products available</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end product list -->
-                    </div>
-                </div>
-                <!-- General Settings -->
-                <div class="tab-pane p-3" id="settings" role="tabpanel">
-                    <!-- Company Profile Setup Accordion -->
-                    <div class="accordion mb-4" id="companyProfileAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="companyProfileHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#companyProfileCollapse" aria-expanded="true"
-                                    aria-controls="companyProfileCollapse">
-                                    <i class="las la-user-cog me-2"></i> Company Account Setup
-                                </button>
-                            </h2>
-                            <div id="companyProfileCollapse" class="accordion-collapse collapse show"
-                                aria-labelledby="companyProfileHeading" data-bs-parent="#companyProfileAccordion">
-                                <div class="accordion-body">
-                                    <!-- Company Information Section -->
-                                    <div class="card fancy-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Company's Personal Information</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="general-settings" action="{{route('update-company-details')}}"
-                                                method="post">
-                                                @csrf
-                                                <input type="hidden" name="company_id"
-                                                    value="{{ $company->company_id }}">
-
-                                                <div class="mb-3">
-                                                    <label for="company_name" class="form-label">Company Name</label>
-                                                    <input type="text" class="form-control" id="company_name"
-                                                        name="company_name" value="{{ $company->company_name }}"
-                                                        placeholder="Company name">
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="industry" class="form-label">Industry</label>
-                                                        <select name="industry" id="industry" class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="industry_process_used" class="form-label">Industrial
-                                                            Process
-                                                            Used</label>
-                                                        <select id="industry-process" name="industry_process_used"
-                                                            class="form-select">
-                                                            <option value="" selected disabled>Choose...</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="email" class="form-label">Email</label>
-                                                        <input type="email" class="form-control" id="email" name="email"
-                                                            value="{{ $company->email }}"
-                                                            placeholder="Example: company@domain.com">
-                                                    </div>
-
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="website_address" class="form-label">Website
-                                                            Address</label>
-                                                        <input type="url" class="form-control" id="website_address"
-                                                            name="website_address" value="{{ $company->website_url }}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="mobile_code_primary">Primary Phone
-                                                                Number</label>
-                                                            <div class="">
-                                                                <input id="mobile_code_primary" type="tel"
-                                                                    class="form-control">
-                                                                <input type="hidden" name="primary_phone_number">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="mobile_code_secondary">Secondary Phone
-                                                                Number</label>
-                                                            <div class="">
-                                                                <input id="mobile_code_secondary" type="tel"
-                                                                    class="form-control">
-                                                                <input type="hidden" name="secondary_phone_number">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="number_of_employees" class="form-label">Number Of
-                                                            Employees</label>
-                                                        <input type="number" class="form-control"
-                                                            id="number_of_employees" name="number_of_employees"
-                                                            value="{{ $company->number_of_employees }}">
-                                                    </div>
-
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="date_of_establishment" class="form-label">Date of
-                                                            Establishment</label>
-                                                        <input type="date" class="form-control"
-                                                            id="date_of_establishment" name="date_of_establishment"
-                                                            value="{{ $company->date_of_establishment }}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary" id="btn-general-settings">Save</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!-- Company Location Section -->
-                                    <div class="card fancy-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Company's Location</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="{{route('update-company-location')}}" method="post"
-                                                id="location_settings">
-                                                <input type="hidden" name="company_id"
-                                                    value="{{ $company->company_id }}">
-
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="">Country</label>
-                                                            <select name="country" id="" class="form-select countries"
-                                                                id="countryId">
-                                                                <option value="" selected disabled> Choose... </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="">State</label>
-                                                            <select id="" class="form-select states"
-                                                                onchange="toggleLGA(this);" id="stateId" name="state">
-                                                                <option value="" selected disabled> Choose... </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4 mt-2">
-                                                        <div class="form-group">
-                                                            <label for="">City</label>
-                                                            <select id="lga" class="form-select select-lga cities"
-                                                                id="cityId" name="city">
-                                                                <option value="" selected disabled> Choose... </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="address" class="form-label">Address</label>
-                                                    <input type="text" class="form-control" id="address" name="address"
-                                                        value="{{ $company->address }}">
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="zip_code" class="form-label">ZIP Code</label>
-                                                        <input type="text" class="form-control" id="zip_code"
-                                                            name="zip_code" value="{{ $company->zip_code }}">
-                                                    </div>
-
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="longitude" class="form-label">Longitude</label>
-                                                        <input type="text" class="form-control" id="longitude"
-                                                            name="longitude" value="{{ $company->longitude }}">
-                                                    </div>
-
-                                                    <div class="col-md-4 mb-3">
-                                                        <label for="latitude" class="form-label">Latitude</label>
-                                                        <input type="text" class="form-control" id="latitude"
-                                                            name="latitude" value="{{ $company->latitude }}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary" id="btn-location-settings">Save Location</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!-- Other Settings Section -->
-                                    <div class="card fancy-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Other Settings</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="share_info"
-                                                    name="is_sharable" value="active">
-                                                <label class="form-check-label" for="share_info">Share information with
-                                                    other
-                                                    companies?</label>
-                                            </div>
-
-                                            <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input" type="checkbox" id="activate_company"
-                                                    data-company-id="{{ $company->company_id }}" {{ $company->status ===
-                                                'active' ?
-                                                'checked' : '' }}>
-                                                <label class="form-check-label" for="activate_company">Activate or
-                                                    Deactivate
-                                                    Company</label>
-                                            </div>
-
-                                            <!-- Add this button wherever you want the Appearance settings to be triggered -->
-                                            <div class="text-start">
-                                                <button type="button" class="btn btn-danger">Delete Company</button>
-                                                <button class="btn btn-secondary" type="button"
-                                                    data-bs-toggle="offcanvas" data-bs-target="#Appearance"
-                                                    aria-controls="Appearance">
-                                                    Appearance Settings
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Calendar Year Setup Accordion -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="calendarYearHeading">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#calendarYearCollapse" aria-expanded="false"
-                                    aria-controls="calendarYearCollapse">
-                                    Company Calendar Setup
-                                </button>
-                            </h2>
-                            <div id="calendarYearCollapse" class="accordion-collapse collapse"
-                                aria-labelledby="calendarYearHeading" data-bs-parent="#companyProfileAccordion">
-                                <div class="accordion-body">
-                                    <!-- Calendar Year Section -->
-                                    <div class="card fancy-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Calendar Year Setup</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="" method="post" id="calendar_year_form">
-                                                @csrf
-                                                <input type="hidden" name="company_id"
-                                                    value="{{ $company->company_id }}">
-
-                                                <div class="row g-2">
-                                                    <div class="col-md-6">
-                                                        <label for="calendar_name" class="form-label">Calendar
-                                                            Name</label>
-                                                        <input type="text" class="form-control" id="calendar_name"
-                                                            name="calendar_name" required>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="start_date" class="form-label">Start Date</label>
-                                                        <input type="date" class="form-control" id="start_date"
-                                                            name="start_date" required>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label for="end_date" class="form-label">End Date</label>
-                                                        <input type="date" class="form-control" id="end_date"
-                                                            name="end_date" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end mt-3">
-                                                    <button type="submit" class="btn btn-primary">Save Calendar
-                                                        Year</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="card fancy-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Company Calendar</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive" id="calendar_year_table">
-                                                <table class="table table-striped mb-0">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Calendar Title</th>
-                                                            <th>Start Date</th>
-                                                            <th>End Date</th>
-                                                            <th class="text-end">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach($calendar_years as $calendar)
-                                                        <tr>
-                                                            <td>{{ $calendar->name }}</td>
-                                                            <td>{{ $calendar->start_date }}</td>
-                                                            <td>{{ $calendar->end_date }}</td>
-                                                            <td class="text-end">
-                                                                <button class="btn btn-sm btn-primary"
-                                                                    onclick="editCalendar('{{ $calendar->calendar_year_id }}')">Edit</button>
-                                                                <button class="btn btn-sm btn-danger"
-                                                                    onclick="deleteCalendar('{{ $calendar->calendar_year_id }}')">Delete</button>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Appearance Settings Section -->
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance"
-                        aria-labelledby="AppearanceLabel">
-                        <div class="offcanvas-header border-bottom">
-                            <h5 class="offcanvas-title" id="AppearanceLabel">Appearance</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <h6>Account Settings</h6>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="auto_updates">
-                                <label class="form-check-label" for="auto_updates">Auto Updates</label>
-                            </div>
-
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="location_permission" checked>
-                                <label class="form-check-label" for="location_permission">Location
-                                    Permission</label>
-                            </div>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="show_offline_contacts">
-                                <label class="form-check-label" for="show_offline_contacts">Show Offline
-                                    Contacts</label>
-                            </div>
-
-                            <h6 class="mt-3">General Settings</h6>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="show_online">
-                                <label class="form-check-label" for="show_online">Show Me Online</label>
-                            </div>
-
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="status_visible" checked>
-                                <label class="form-check-label" for="status_visible">Status Visible to All</label>
-                            </div>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="notifications_popup">
-                                <label class="form-check-label" for="notifications_popup">Notifications
-                                    Popup</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- General Settings -->
-                <!-- contact personel details  -->
-                <!-- Contact Details -->
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="card-title mb-0">Contact Details</h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{route('update-company-contact')}}" method="post" id="contact_settings">
-                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control"
-                                            placeholder="Full Name Of Enviromental Operations Specialist or Manager"
-                                            name="enviromental_operations_manager"
-                                            value="{{ $company->operations_manager }}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control"
-                                            placeholder="Full Name Of Contact Person" name="contact_person_name"
-                                            value="{{$company->contact_person_full_name}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <input type="text" class="form-control"
-                                            placeholder="Office Position of Contact Person"
-                                            name="contact_person_position"
-                                            value="{{$company->contact_person_position}}">
-                                    </div>
-                                    <div class="col-md-6 mt-2">
-                                        <div class="form-group">
-                                            <label for="">Contact Personnel Phone Number</label>
-                                            <div class="">
-                                                <input id="mobile_code_contact" type="tel" class="form-control"
-                                                    placeholder="">
-                                                <input type="hidden" name="contact_person_phone_number">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mt-2">
-                                        <button type="button" class="btn btn-primary" id="btn_contact_settings">Save
-                                            Contact</button>
-                                        <span class="loader" id="loader"></span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- end contact personel details  -->
             </div>
+
+
+             <!--  -->
+            <div class="tab-pane fade" id="inventory" role="tabpanel">...</div>
+            <div class="tab-pane fade" id="operations" role="tabpanel">...</div>
+            <div class="tab-pane fade" id="settings" role="tabpanel">...</div>
         </div>
     </div>
-    <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="materialPriceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+
+    @section('modals')
+    <!-- Add your modal content here if needed -->
+    <!-- add department -->
+    
+    <!-- 🧱 Add Department Modal -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Setup Price </h5>
+                    <h5 id="addDepartmentModalLabel" class="modal-title">Add New Department</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="material_price_id">
-                    <div class="row g-2">
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Per Unit</label>
-                                <input type="number" value="1" min="0" class="form-control"
-                                    placeholder="Unit of Measurement" name="unit">
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Price -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Price of Disposal in Naira(₦).</label>
-                                <input type="number" min="0" class="form-control" placeholder="Price" name="price">
-                            </div>
-                        </div>
-                        <!-- end Price -->
-                        <!-- Price -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Price -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-material-price">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-
-    <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkInModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> Check In Item </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="checkIn_material_id">
-                    <input type="hidden" name="material_id">
-                    <input type="hidden" name="company_id">
-                    <div class="row g-2">
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkIn_material_name">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Date -->
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Quantity/Volume</label>
-                                <div class="input-group qty-icons">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
-                                        style="pointer-events: none;">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Remark</label>
-                                <input type="text" class="form-control" name="remark">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-in">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-
-    <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Check Out Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="checkOut_material_id">
-                    <input type="hidden" name="material_id">
-                    <input type="hidden" name="company_id">
-                    <div class="row g-2">
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkOut_material_name">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Date -->
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Quantity/Volume</label>
-                                <div class="input-group qty-icons">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
-                                        style="pointer-events: none;">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Remark</label>
-                                <input type="text" class="form-control" name="remark">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-
-    <!-- modal -->
-    <div class="modal fade" tabindex="-1" id="adjustmentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Make Adjustment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="adjustment_material_id">
-                    <input type="hidden" name="material_id">
-                    <input type="hidden" name="company_id">
-                    <div class="row g-2">
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Material</label>
-                                <input type="text" class="form-control" readonly name="checkOut_material_name">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Date -->
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Change in Quantity/Volume</label>
-                                <div class="input-group qty-icons">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" name="quantity" value="0"
-                                        style="pointer-events: none;">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Material name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Remark</label>
-                                <input type="text" class="form-control" name="remark">
-                            </div>
-                        </div>
-                        <!-- Material name -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-    <!-- checkin chemical modal -->
-    <div class="modal fade" tabindex="-1" id="checkInChemicalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Check In Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="checkIn_chemical_id">
-                    <input type="hidden" name="chemical_id">
-                    <input type="hidden" name="company_id">
-
-                    <div class="row g-2">
-                        <!-- Chemical name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly name="checkIn_chemical_name">
-                            </div>
-                        </div>
-                        <!-- Chemical name -->
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Date -->
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Quantity/Volume</label>
-                                <div class="input-group qty-icons">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Remark -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Remark</label>
-                                <input type="text" class="form-control" name="remark">
-                            </div>
-                        </div>
-                        <!-- Remark -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-in-chemical">
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" id="loader"></span>
-                        Save changes
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end modal -->
-    <!-- checkout modal -->
-    <div class="modal fade" tabindex="-1" id="checkOutChemicalModal" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Check Out Chemical</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="checkOut_chemical_id">
-                    <input type="hidden" name="chemical_id">
-                    <input type="hidden" name="company_id">
-                    <div class="row g-2">
-                        <!-- Chemical name -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Chemical</label>
-                                <input type="text" class="form-control" readonly name="checkOut_chemical_name">
-                            </div>
-                        </div>
-                        <!-- Chemical name -->
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Date</label>
-                                <input type="date" min="0" class="form-control" name="date">
-                            </div>
-                        </div>
-                        <!-- end Date -->
-                        <!-- Unit of measurement -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Quantity/Volume</label>
-                                <div class="input-group qty-icons">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                                    <input type="number" class="form-control" min="0" name="quantity" value="0"
-                                        style="pointer-events: none;">
-                                    <button class="btn btn-primary"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unit of measurement -->
-                        <!-- Remark -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="">Remark</label>
-                                <input type="text" class="form-control" name="remark">
-                            </div>
-                        </div>
-                        <!-- Remark -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-submit-check-out-chemical">Save
-                        changes</button>
-                    <span class="loader" id="loader"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- update operation log modal -->
-    <div class="modal fade" tabindex="-1" id="updateOperationModal" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <form method="post" id="operations-form-update">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Update Operation Log</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+                <form method="post" id="department-form" class="needs-validation" novalidate>
                     <div class="modal-body">
-                        <input type="hidden" name="operation_id">
-                        <input type="hidden" name="company_id">
-                        <div class="row g-2">
-                            <!-- Operation Name -->
+                        @csrf
+                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                        <div class="row g-3 align-items-staert">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Operation Name</label>
-                                    <input type="text" class="form-control" name="operation_name">
-                                </div>
+                                <label for="department_name" class="form-label fw-bold">Department Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control border-primary" id="department_name" name="department_name" required placeholder="Enter department name">
+                                <div class="invalid-feedback">Please enter a department name.</div>
                             </div>
-                            <!-- end Operation Name -->
-                            <!-- Operation Code -->
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Operation Code</label>
-                                    <input type="text" class="form-control" name="operation_code">
+                                <div class="taggable-container " id="manager-tag-input-1">
+                                    <label for="manager" class="form-label fw-bold">Department Head / Manager</label>
+                                    <div class="manager-tag-input-1 manager-tag-input border-primary bg-light">
+                                    </div>
                                 </div>
                             </div>
-                            <!-- end Operation Code -->
-                            <!-- Description -->
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="">Description</label>
-                                    <textarea class="form-control" name="description" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <!-- end Description -->
-
-                            <!-- Operation Type -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Operation Type</label>
-                                    <input type="text" class="form-control" name="operation_type">
-                                </div>
-                            </div>
-                            <!-- end Operation Type -->
-                            <!-- Operation Category -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Operation Category</label>
-                                    <input type="text" class="form-control" name="operation_category">
-                                </div>
-                            </div>
-                            <!-- end Operation Category -->
-                            <!-- Operation Unit -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Operation Unit</label>
-                                    <input type="text" class="form-control" name="operation_unit">
-                                </div>
-                            </div>
-                            <!-- end Operation Unit -->
-                            <!-- Operation Unit Price -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Operation Unit Price</label>
-                                    <input type="number" step="0.01" class="form-control" name="operation_unit_price">
-                                </div>
-                            </div>
-                            <!-- end Operation Unit Price -->
-                            <!-- Operation Unit Cost -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Operation Unit Cost</label>
-                                    <input type="number" step="0.01" class="form-control" name="operation_unit_cost">
-                                </div>
-                            </div>
-                            <!-- end Operation Unit Cost -->
-                            <!-- Operation Unit Time -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Operation Unit Time</label>
-                                    <input type="text" class="form-control" name="operation_unit_time">
-                                </div>
-                            </div>
-                            <!-- end Operation Unit Time -->
-                            <!-- Expected Waste Per Operation -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Expected Waste Per Operation</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="expected_waste_per_operation">
-                                </div>
-                            </div>
-                            <!-- end Expected Waste Per Operation -->
-                            <!-- Expected Water Usage Per Operation -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Expected Water Usage Per Operation</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="expected_water_usage_per_operation">
-                                </div>
-                            </div>
-                            <!-- end Expected Water Usage Per Operation -->
-                            <!-- Expected Unit Produced For Goods -->
-                            <div class="col-md-4">
-                                <div class="form-group
-                                ">
-                                    <label for="">Expected Unit Produced For Goods</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="expected_unit_produced_for_goods">
-                                </div>
-                            </div>
-                            <!-- end Expected Unit Produced For Goods -->
-                            <!-- Status -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Status</label>
-                                    <select class="form-select" name="status">
-                                        <option value="pending">Pending</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end Status -->
-                            <!-- Start Date -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="start_date">Start Date</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" required>
-                                </div>
-                            </div>
-                            <!-- End Start Date -->
-                            <!-- End Date -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="end_date">End Date</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" required>
-                                </div>
-                            </div>
-                            <!-- End End Date -->
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btn-submit-update-operation-log">Save
-                            changes</button>
-                        <span class="loader" id="loader"></span>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Department</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- end update operation log modal -->
-    @section('modals')
-    <!-- Add your modal content here if needed -->
+    <!-- add department -->
+     <!-- Add employees -->
+    <div class="modal" id="addEmployeeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" id="employee-form" enctype="multipart/form-data" class="card shadow-sm border-0 mb-4">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label for="employee_number" class="form-label fw-bold">Employee Number</label>
+                                <input type="text" class="form-control" id="employee_number" name="employee_number" required placeholder="e.g. EMP12345">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_first_name" class="form-label fw-bold">First Name</label>
+                                <input type="text" class="form-control" id="employee_first_name" name="employee_first_name" required placeholder="First Name">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_last_name" class="form-label fw-bold">Last Name</label>
+                                <input type="text" class="form-control" id="employee_last_name" name="employee_last_name" required placeholder="Last Name">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_email" class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" id="employee_email" name="employee_email" required placeholder="example@company.com">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_phone" class="form-label fw-bold">Phone Number</label>
+                                <input type="tel" class="form-control" id="employee_phone" name="employee_phone" placeholder="+234 800 000 0000">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_dob" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="employee_dob" name="employee_dob">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_gender" class="form-label">Gender</label>
+                                <select class="form-select" id="employee_gender" name="employee_gender">
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_job_title" class="form-label">Job Title</label>
+                                <input type="text" class="form-control" id="employee_job_title" name="employee_job_title">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_department" class="form-label">Department</label>
+                                <select class="form-select" id="employee_department" name="employee_department">
+                                    <option value="" selected disabled>Choose...</option>
+                                    @foreach($company_departments as $department)
+                                        <option value="{{ $department->DepartmentID }}">{{ $department->DepartmentName }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="taggable-container " id="manager-tag-input-2">
+                                    <label for="manager" class="form-label fw-bold">Manager</label>
+                                    <div class="manager-tag-input-2 manager-tag-input border-primary bg-light">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_hire_date" class="form-label">Hire Date</label>
+                                <input type="date" class="form-control" id="employee_hire_date" name="employee_hire_date">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_status" class="form-label">Status</label>
+                                <select class="form-select" id="employee_status" name="employee_status">
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="on_leave">On Leave</option>
+                                    <option value="terminated">Terminated</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="employee_address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="employee_address" name="employee_address">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="employee_city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="employee_city" name="employee_city">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="employee_state" class="form-label">State</label>
+                                <input type="text" class="form-control" id="employee_state" name="employee_state">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="employee_zip" class="form-label">Zip Code</label>
+                                <input type="text" class="form-control" id="employee_zip" name="employee_zip">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="employee_country" class="form-label">Country</label>
+                                <input type="text" class="form-control" id="employee_country" name="employee_country">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="employee_emergency_contact" class="form-label">Emergency Contact</label>
+                                <input type="text" class="form-control" id="employee_emergency_contact" name="employee_emergency_contact">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="employee_emergency_phone" class="form-label">Emergency Phone</label>
+                                <input type="text" class="form-control" id="employee_emergency_phone" name="employee_emergency_phone">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="employee_profile_picture" class="form-label">Profile Picture</label>
+                                <input type="file" class="form-control" id="employee_profile_picture" name="employee_profile_picture" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Employee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- workflow management -->
     <!-- Workflow Edit Form Modal -->
     <div class="modal fade" id="workflowEditModal" tabindex="-4" aria-labelledby="workflowEditModalLabel" aria-hidden="true">
@@ -5625,7 +2653,7 @@
     </div>
     <!-- End Workflow Edit Form Modal -->
     <!-- Stage Management Modal -->
-  <div class="modal fade" id="stageManagementModal" tabindex="-4" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
+    <div class="modal fade" id="stageManagementModal" tabindex="-4" aria-labelledby="stageManagementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="stage-management-form">
@@ -5867,7 +2895,7 @@
             </div>
         </div>
     </div>
-<!-- Edit Stage Task Modal -->
+    <!-- Edit Stage Task Modal -->
     <div class="modal fade" id="editStageTaskModal" tabindex="-2" aria-labelledby="editStageTaskModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 1200;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow-lg border-0 rounded-3">
@@ -6046,21 +3074,21 @@
                     </div>
                 </form>
                
-                        <div class="table-responsive">
-                            <table class="table table-striped mb-0 w-100" id="tbl-task-metrics">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Chemical Quantity</th>
-                                        <th>Material Quantity</th>
-                                        <th>Water Quantity (L)</th>
-                                        <th >Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Metrics rows will be dynamically loaded here -->
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0 w-100" id="tbl-task-metrics">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Chemical Quantity</th>
+                                <th>Material Quantity</th>
+                                <th>Water Quantity (L)</th>
+                                <th >Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Metrics rows will be dynamically loaded here -->
+                        </tbody>
+                    </table>
+                </div>
                     
             </div>
         </div>
@@ -6408,658 +3436,10 @@
             </div>
         </div>
     </div>
-    
      <!-- End annual operations Log -->
     @endsection
 
-    @section('styles')
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="{{ asset('adminAssets/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('adminAssets/css/dataTables.bootstrap5.min.css') }}">
-
-    <link href="{{asset('adminAssets/libs/simple-datatables/style.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('adminAssets/css/toastify.css')}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.33.0/tagify.min.css">
-    <link href="{{asset('adminAssets/libs/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('adminAssets/libs/vanillajs-datepicker/css/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('adminAssets/libs/mobius1-selectr/selectr.min.css')}}" rel="stylesheet" type="text/css" />
-    <style>
-        .tag-input {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            /* border: 1px solid #ccc; */
-            padding: 5px;
-            /* border-radius: 8px; */
-            cursor: text;
-            position: relative;
-        }
-
-        .tag-input input {
-            border: none;
-            outline: none;
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .tag {
-            display: flex;
-            align-items: center;
-            background-color: #e0e7ff;
-            color: #1d4ed8;
-            border-radius: 16px;
-            padding: 5px 10px;
-            margin: 5px;
-            font-size: 14px;
-        }
-
-        .tag span {
-            margin-left: 5px;
-            cursor: pointer;
-        }
-
-        .tag span:hover {
-            color: #dc2626;
-        }
-
-        .suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            /* border: 1px solid #ccc; */
-            border-radius: 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .TagSuggestion {
-            padding: 5px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-        .TagSuggestion:hover {
-            background-color: #f0f0f0;
-        }
-
-        .suggestion {
-            padding: 8px 10px;
-            cursor: pointer;
-        }
-
-        .suggestion img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-        }
-
-        .suggestion:hover {
-            background-color: #f3f4f6;
-        }
-
-        /* Profile card */
-        .profile-card {
-        width: 250px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        text-align: center;
-        }
-
-        .profile-card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        }
-
-        .profile-card .profile-info {
-        padding: 15px;
-        }
-
-        .profile-card .profile-info h2 {
-        margin: 10px 0 5px;
-        font-size: 18px;
-        }
-
-        .profile-card .profile-info p {
-        margin: 0;
-        color: #666;
-        font-size: 14px;
-        }
-        /* Profile card */
-        .taggable-container {
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .supervisor-tag-input {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            /* border: 1px solid #ccc; */
-            /* padding: 5px; */
-            border-radius: 8px;
-            cursor: text;
-            position: relative;
-            /* background-color: #fff; */
-        }
-
-        .supervisor-tag-input input {
-            /* border: none;
-            outline: none; */
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .manager-tag-input {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            /* border: 1px solid #ccc; */
-            /* padding: 5px; */
-            border-radius: 8px;
-            cursor: text;
-            position: relative;
-            /* background-color: #fff; */
-        }
-
-        .manager-tag-input input {
-            /* border: none;
-            outline: none; */
-            flex: 1;
-            min-width: 100px;
-        }
-    </style>
-    <style>
-        /* Tag Input Wrapper */
-        .tag-inline-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            /* gap: 4px;
-            padding: 4px 8px; */
-            background: #fff;
-            border-radius: 0.375rem;
-            border: 1px solid #ced4da;
-            /* min-height: 38px; */
-            position: relative;
-            transition: box-shadow 0.2s, border-color 0.2s;
-        }
-        .tag-inline-container:focus-within {
-            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
-            border-color: #86b7fe;
-        }
-
-        /* Tag Styling */
-        .task-tag {
-            display: inline-flex;
-            align-items: center;
-            background: #0d6efd;
-            color: #fff;
-            padding: 4px 12px 4px 10px;
-            border-radius: 1rem;
-            font-size: 14px;
-            margin: 2px 2px 2px 0;
-            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
-            font-weight: 500;
-            cursor: default;
-            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-        }
-        .task-tag:hover {
-            background: #0b5ed7;
-            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
-            transform: translateY(-1px) scale(1.04);
-        }
-        .task-tag span {
-            margin-left: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #fff;
-            opacity: 0.7;
-            transition: opacity 0.15s;
-        }
-        .task-tag span:hover {
-            opacity: 1;
-            color: #f87171;
-        }
-
-        /* Input Styling */
-        #task-tag-input {
-            flex-grow: 1;
-            min-width: 120px;
-            padding: 6px 10px;
-            border: none;
-            outline: none;
-            font-size: 15px;
-            background: transparent;
-            color: #212529;
-            margin: 2px 0;
-        }
-        #task-tag-input::placeholder {
-            color: #adb5bd;
-            opacity: 1;
-        }
-
-        /* Suggestions Dropdown */
-        #task-suggestions {
-            margin-top: 4px;
-            background: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
-            max-height: 220px;
-            overflow-y: auto;
-            z-index: 20;
-            position: absolute;
-            /* left: 0;
-            right: 0;
-            min-width: 180px; */
-        }
-
-        .task-suggestion {
-            padding: 8px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f3f4f6;
-            font-size: 15px;
-            color: #212529;
-            background: transparent;
-            transition: background 0.18s, color 0.18s;
-        }
-        .task-suggestion:last-child {
-            border-bottom: none;
-        }
-        .task-suggestion:hover,
-        .task-suggestion.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        /* Scrollbar Styling */
-        #task-suggestions::-webkit-scrollbar {
-            width: 8px;
-        }
-        #task-suggestions::-webkit-scrollbar-thumb {
-            background: #0d6efd;
-            border-radius: 10px;
-        }
-        #task-suggestions::-webkit-scrollbar-thumb:hover {
-            background: #0b5ed7;
-        }
-    </style>
-    <style>
-        /* Tag Input Wrapper */
-        .tag-inline-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            /* gap: 4px;
-            padding: 4px 8px; */
-            background: #fff;
-            border-radius: 0.375rem;
-            border: 1px solid #ced4da;
-            /* min-height: 38px; */
-            position: relative;
-            transition: box-shadow 0.2s, border-color 0.2s;
-        }
-        .tag-inline-container:focus-within {
-            box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
-            border-color: #86b7fe;
-        }
-
-        /* Tag Styling */
-        .task-tag {
-            display: inline-flex;
-            align-items: center;
-            background: #0d6efd;
-            color: #fff;
-            padding: 4px 12px 4px 10px;
-            border-radius: 1rem;
-            font-size: 14px;
-            margin: 2px 2px 2px 0;
-            box-shadow: 0 1px 2px rgba(13,110,253,0.08);
-            font-weight: 500;
-            cursor: default;
-            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-        }
-        .task-tag:hover {
-            background: #0b5ed7;
-            box-shadow: 0 2px 6px rgba(13,110,253,0.12);
-            transform: translateY(-1px) scale(1.04);
-        }
-        .task-tag span {
-            margin-left: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #fff;
-            opacity: 0.7;
-            transition: opacity 0.15s;
-        }
-        .task-tag span:hover {
-            opacity: 1;
-            color: #f87171;
-        }
-
-        /* Input Styling */
-        #task-tag-input {
-            flex-grow: 1;
-            min-width: 120px;
-            padding: 6px 10px;
-            border: none;
-            outline: none;
-            font-size: 15px;
-            background: transparent;
-            color: #212529;
-            margin: 2px 0;
-        }
-        #task-tag-input::placeholder {
-            color: #adb5bd;
-            opacity: 1;
-        }
-
-        /* Suggestions Dropdown */
-        #task-suggestions {
-            margin-top: 4px;
-            background: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            box-shadow: 0 4px 16px rgba(13,110,253,0.10);
-            max-height: 220px;
-            overflow-y: auto;
-            z-index: 20;
-            position: absolute;
-            /* left: 0;
-            right: 0;
-            min-width: 180px; */
-        }
-
-        .task-suggestion {
-            padding: 8px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f3f4f6;
-            font-size: 15px;
-            color: #212529;
-            background: transparent;
-            transition: background 0.18s, color 0.18s;
-        }
-        .task-suggestion:last-child {
-            border-bottom: none;
-        }
-        .task-suggestion:hover,
-        .task-suggestion.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        /* Scrollbar Styling */
-        #task-suggestions::-webkit-scrollbar {
-            width: 8px;
-        }
-        #task-suggestions::-webkit-scrollbar-thumb {
-            background: #0d6efd;
-            border-radius: 10px;
-        }
-        #task-suggestions::-webkit-scrollbar-thumb:hover {
-            background: #0b5ed7;
-        }
-
-
-    </style>
-    <style>
-        .tagify {
-            width: 100%;
-            max-width: 700px;
-            background: rgba(white, .8);
-        }
-
-        :root {
-            --tagify-dd-item-pad: .5em .7em;
-        }
-
-        .tagify__dropdown.users-list .tagify__dropdown__item {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0 1em;
-            grid-template-areas: "avatar name"
-                "avatar email";
-        }
-
-        .tagify__dropdown.users-list header.tagify__dropdown__item {
-            grid-template-areas: "add remove-tags"
-                "remaning .";
-        }
-
-        .tagify__dropdown.users-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
-            transform: scale(1.2);
-        }
-
-        .tagify__dropdown.users-list .tagify__dropdown__item__avatar-wrap {
-            grid-area: avatar;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #EEE;
-            transition: .1s ease-out;
-        }
-
-        .tagify__dropdown.users-list img {
-            width: 100%;
-            vertical-align: top;
-        }
-
-        .tagify__dropdown.users-list header.tagify__dropdown__item>div,
-        .tagify__dropdown.users-list .tagify__dropdown__item strong {
-            grid-area: name;
-            width: 100%;
-            align-self: center;
-        }
-
-        .tagify__dropdown.users-list span {
-            grid-area: email;
-            width: 100%;
-            font-size: .9em;
-            opacity: .6;
-        }
-
-        .tagify__dropdown.users-list .tagify__dropdown__item__addAll {
-            border-bottom: 1px solid #DDD;
-            gap: 0;
-        }
-
-        .tagify__dropdown.users-list .remove-all-tags {
-            grid-area: remove-tags;
-            justify-self: self-end;
-            font-size: .8em;
-            padding: .2em .3em;
-            border-radius: 3px;
-            user-select: none;
-        }
-
-        .tagify__dropdown.users-list .remove-all-tags:hover {
-            color: white;
-            background: salmon;
-        }
-
-
-        /* Tags items */
-        .tagify__tag {
-            white-space: nowrap;
-        }
-
-        .tagify__tag img {
-            width: 100%;
-            vertical-align: top;
-            pointer-events: none;
-        }
-
-
-        .tagify__tag:hover .tagify__tag__avatar-wrap {
-            transform: scale(1.6) translateX(-10%);
-        }
-
-        .tagify__tag .tagify__tag__avatar-wrap {
-            width: 16px;
-            height: 16px;
-            white-space: normal;
-            border-radius: 50%;
-            background: silver;
-            margin-right: 5px;
-            transition: .12s ease-out;
-        }
-
-        .users-list .tagify__dropdown__itemsGroup:empty {
-            display: none;
-        }
-
-        .users-list .tagify__dropdown__itemsGroup::before {
-            content: attr(data-title);
-            display: inline-block;
-            font-size: .9em;
-            padding: 4px 6px;
-            margin: var(--tagify-dd-item-pad);
-            font-style: italic;
-            border-radius: 4px;
-            background: #00ce8d;
-            color: white;
-            font-weight: 600;
-        }
-
-        .users-list .tagify__dropdown__itemsGroup:not(:first-of-type) {
-            border-top: 1px solid #DDD;
-        }
-    </style>
-    <style>
-        /* Loader style */
-        .loader {
-            display: none;
-            margin: 20px auto;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-
-        .profile-header {
-            background: linear-gradient(to right, #4e73df, #1cc88a);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .fancy-card {
-            /* border: 1px solid #dee2e6; */
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .fancy-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        .fancy-card .card-header {
-            /* background-color: #f8f9fa; */
-            /* font-weight: 600; */
-            /* border-bottom: 1px solid #dee2e6; */
-        }
-
-        .offcanvas {
-            border-top-left-radius: 1rem;
-            border-bottom-left-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary {
-            border-radius: 0.5rem;
-        }
-
-        .btn-danger {
-            border-radius: 0.5rem;
-        }
-
-        .bg-gradient-primary {
-            background: linear-gradient(90deg, #007bff, #22c55e); /* Updated gradient colors for primary */
-            color: #ffffff; /* Ensures text is visible on the gradient */
-        }
-
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-
-     <style>
-        #production-process-form-container .card {
-            border-radius: 1rem;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
-            background: #f8fafc;
-        }
-        #production-process-form-container .card-header {
-            border-top-left-radius: 1rem;
-            border-top-right-radius: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
-        }
-        #production-process-form-container .btn-close,
-        #production-process-form-container .btn[aria-label="Cancel"] {
-            opacity: 0.8;
-            background: none !important;
-            box-shadow: none;
-            outline: none;
-            color: #333;
-            font-size: 2rem;
-        }
-        #production-process-form-container .btn-close:hover,
-        #production-process-form-container .btn[aria-label="Cancel"]:hover {
-            opacity: 1;
-            color: #0ea5e9;
-        }
-        #production-process-form-container .card-body {
-            background: #f8fafc;
-        }
-        #production-process-form-container label {
-            font-weight: 500;
-            color: #0ea5e9;
-        }
-        #production-process-form-container .form-control,
-        #production-process-form-container .form-select {
-            border-radius: 0.5rem;
-            border: 1px solid #b6e0fe;
-            background: #fff;
-        }
-        #production-process-form-container .btn-info {
-            background: linear-gradient(90deg, #36b3e8 0%, #0ea5e9 100%);
-            border: none;
-            color: #fff;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(14,165,233,0.10);
-        }
-        #production-process-form-container .btn-secondary {
-            border-radius: 0.5rem;
-        }
-        @media (min-width: 992px) {
-            #productionProcessModal .modal-dialog {
-                max-width: 1000px;
-            }
-        }
-    </style>
-    @endsection
-
+    
     @section('scripts')
     <!-- DataTables and Bootstrap JavaScript -->
     <script src="{{ asset('adminAssets/js/jquery.dataTables.min.js') }}"></script>
@@ -7080,7 +3460,7 @@
     <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
     <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="{{ asset('adminAssets/js/app.js')}}"></script>
-        <script>
+    <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 
         const tagify = new Tagify(inputElm, {
@@ -11727,421 +8107,416 @@
 
     <!-- Batch tracking -->
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // --- Batch Tracking Table ---
-    const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        responsive: true,
-        destroy: true,
-        columnDefs: [{ orderable: false, targets: [5] }],
-        data: [],
-        columns: [
-            { data: 'batch_name', title: 'Batch Name' },
-            { data: 'product_name', title: 'Product Name' },
-            { data: 'start_date', title: 'Start Date' },
-            { data: 'end_date', title: 'End Date' },
-            {
-                data: 'status',
-                title: 'Status',
-                render: function (data, type) {
-                    if (type === 'display') {
-                        let badgeClass = 'secondary';
-                        let label = data || 'N/A';
-                        if (typeof data === 'string') {
-                            switch (data.toLowerCase()) {
-                                case 'completed': badgeClass = 'success'; break;
-                                case 'pending': badgeClass = 'warning'; break;
-                                case 'rejected': badgeClass = 'dark'; break;
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Batch Tracking Table ---
+            const batchTrackingTable = $('#tbl-batch-tracking').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                destroy: true,
+                columnDefs: [{ orderable: false, targets: [5] }],
+                data: [],
+                columns: [
+                    { data: 'batch_name', title: 'Batch Name' },
+                    { data: 'product_name', title: 'Product Name' },
+                    { data: 'start_date', title: 'Start Date' },
+                    { data: 'end_date', title: 'End Date' },
+                    {
+                        data: 'status',
+                        title: 'Status',
+                        render: function (data, type) {
+                            if (type === 'display') {
+                                let badgeClass = 'secondary';
+                                let label = data || 'N/A';
+                                if (typeof data === 'string') {
+                                    switch (data.toLowerCase()) {
+                                        case 'completed': badgeClass = 'success'; break;
+                                        case 'pending': badgeClass = 'warning'; break;
+                                        case 'rejected': badgeClass = 'dark'; break;
+                                    }
+                                }
+                                return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                             }
+                            return data;
                         }
-                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
-                    }
-                    return data;
-                }
-            },
-            {
-                data: null,
-                title: 'Actions',
-                render: function (data, type, row) {
-                    return `
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-info btn-sm setup-production-btn">
-                                <i class="fas fa-cogs"></i> Setup Production Process
-                            </button>
-                            <button class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                        </div>`;
-                }
-            }
-        ]
-    });
-
-    // --- Fetch Batch Tracking Data ---
-    document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
-        const companyId = "{{ json_encode($company->company_id) }}";
-        const url = `/admin/batch-tracking/company/${companyId}`;
-        const spinner = document.getElementById('loading-spinner');
-        showElement(spinner);
-
-        try {
-            const data = await fetchFieldInput(url);
-            if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
-                const batchTrackingData = data.production_batch_tracking.map(batch => ({
-                    batch_name: batch.batch_name || "N/A",
-                    product_name: batch.product?.name || "N/A",
-                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    status: batch.status || "N/A",
-                    batch_id: batch.batch_id || "N/A"
-                }));
-                batchTrackingTable.clear().rows.add(batchTrackingData).draw();
-            } else {
-                displayMessage('warning', 'No batch tracking data found or invalid data structure.');
-            }
-        } catch (error) {
-            console.error("Error fetching batch tracking data:", error);
-            displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
-        } finally {
-            hideElement(spinner);
-        }
-    });
-
-    // Make toggleBatchTrackingForm globally accessible
-    window.toggleBatchTrackingForm = function () {
-        const form = document.getElementById('batch-tracking-form-container');
-        form.classList.toggle('d-none');
-        if (!form.classList.contains('d-none')) {
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    // --- Add Batch Tracking ---
-    document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-batch-tracking') }}";
-        try {
-            const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
-            if (result.status === 'success') {
-                const batch = result.productionBatchTracking;
-                const newRow = {
-                    batch_name: batch.batch_name || "N/A",
-                    product_name: batch.product?.name || "N/A",
-                    start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
-                    status: batch.status || "N/A",
-                    batch_id: batch.batch_id || "N/A"
-                };
-                batchTrackingTable.row.add(newRow).draw(false);
-            }
-        } catch (error) {
-            console.error('Error storing batch tracking:', error);
-        }
-    });
-
-    // --- Setup Production Process Modal ---
-    $(document).on('click', '.setup-production-btn', function () {
-        const rowData = batchTrackingTable.row($(this).closest('tr')).data();
-        const batchId = rowData.batch_id || '';
-        const productionProcessForm = document.getElementById('production-process-form');
-        if (productionProcessForm) productionProcessForm.reset();
-        document.getElementById('batch_id').value = batchId;
-        showProductionProcessModal(batchId);
-    });
-
-    // --- Show/Hide Production Process Form/Table ---
-    function showProductionProcessTable() {
-        
-        document.getElementById('production-process-form-container').classList.add('d-none');
-        document.getElementById('production-process-table-container').classList.remove('d-none');
-    }
-    function showProductionProcessForm() {
-        document.getElementById('production-process-form-container').classList.remove('d-none');
-        document.getElementById('production-process-table-container').classList.add('d-none');
-    }
-    $('#productionProcessModal').on('show.bs.modal', showProductionProcessTable);
-    document.getElementById('show-production-process-form')?.addEventListener('click', showProductionProcessForm);
-    document.getElementById('cancel-production-process-form')?.addEventListener('click', showProductionProcessTable);
-    document.getElementById('close-production-process-form')?.addEventListener('click', showProductionProcessTable);
-
-    // --- Production Process Table ---
-    const productionProcessTable = $('#tbl-production-process').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        responsive: true,
-        destroy: true,
-        columnDefs: [{ orderable: false, targets: [5] }],
-        data: [],
-        columns: [
-            { data: 'workflow_name', title: 'Workflow' },
-            { data: 'start_date', title: 'Start Date' },
-            { data: 'end_date', title: 'End Date' },
-            { data: 'remarks', title: 'Remarks' },
-            {
-                data: 'status',
-                title: 'Status',
-                render: (data, type) => {
-                    if (type === 'display') {
-                        let badgeClass = 'secondary';
-                        let label = data || 'N/A';
-                        switch ((data || '').toLowerCase()) {
-                            case 'completed': badgeClass = 'success'; break;
-                            case 'pending': badgeClass = 'warning'; break;
-                            case 'rejected': badgeClass = 'dark'; break;
+                    },
+                    {
+                        data: null,
+                        title: 'Actions',
+                        render: function (data, type, row) {
+                            return `
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-info btn-sm setup-production-btn">
+                                        <i class="fas fa-cogs"></i> Setup Production Process
+                                    </button>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </div>`;
                         }
-                        return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
                     }
-                    return data;
-                }
-            },
-            {
-                data: null,
-                title: 'Actions',
-                render: (data, type, row) => `
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id})">Edit</button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id})">Delete</button>
-                    </div>
-                `
-            }
-        ]
-    });
-
-    // --- Fetch Production Process Table for Batch ---
-    window.showProductionProcessModal = function (batchId) {
-        const modalElement = document.getElementById('productionProcessModal');
-        if (!modalElement) return;
-        (async function populateProductionProcessTable() {
-            if (!batchId) return;
-            const url = `/admin/get-production-process/${batchId}`;
-            try {
-                const data = await fetchFieldInput(url);
-                if (data.status === "success" && Array.isArray(data.production_processes)) {
-                    const processes = data.production_processes.map(proc => ({
-                        workflow_name: (proc.workflow && proc.workflow.workflow_name) ? proc.workflow.workflow_name : 'N/A',
-                        start_date: proc.start_time ? (() => { const d = new Date(proc.start_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
-                        end_date: proc.end_time ? (() => { const d = new Date(proc.end_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
-                        remarks: proc.remarks || '',
-                        status: proc.status || 'N/A',
-                        process_id: proc.process_id || ''
-                    }));
-                    productionProcessTable.clear().rows.add(processes).draw();
-                } else {
-                    productionProcessTable.clear().draw();
-                }
-            } catch (error) {
-                console.error("Error fetching production process data:", error);
-                productionProcessTable.clear().draw();
-            } finally {
-                hideElement(document.getElementById('loading-spinner'));
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-            }
-        })();
-    };
-
-    // --- Production Process Form Submission ---
-    document.getElementById('production-process-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const url = "{{ route('admin.store-production-process') }}";
-        try {
-            const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
-            if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                const formatted = result.production_processes.map(proc => ({
-                    workflow_name: proc.workflow?.workflow_name || 'N/A',
-                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
-                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
-                    remarks: proc.remarks || '',
-                    status: proc.status || 'N/A',
-                    process_id: proc.process_id || ''
-                }));
-                productionProcessTable.clear().rows.add(formatted).draw();
-                // Hide form and show table
-                showProductionProcessTable();
-                // Optionally reset the form
-                this.reset();
-            }
-        } catch (error) {
-            console.error('Error storing production process:', error);
-        }
-    });
-
-    // Edit Production Process Modal Handler
-    window.editProductionProcess = async function(id) {
-        // Try to get the process data from the DataTable row
-        const row = $(`button[onclick="editProductionProcess(${id})"]`).closest('tr');
-        let process = productionProcessTable.row(row).data();
-
-        // If not found, fetch from backend
-        if (!process) {
-            try {
-                const response = await fetch(`/admin/production-process/${id}`);
-                if (response.ok) {
-                    process = await response.json();
-                } else {
-                    console.error('Failed to fetch production process:', response.statusText);
-                    return;
-                }
-            } catch (error) {
-                console.error('Failed to fetch production process:', error);
-                return;
-            }
-        }
-        if (!process) return;
-
-       
-
-        // Populate form fields
-        document.getElementById('edit_process_id').value = process.process_id || process.id || "";
-        document.getElementById('edit_process_start_date').value = formatDateForInput(process.start_time || process.start_date);
-        document.getElementById('edit_process_end_date').value = formatDateForInput(process.end_time || process.end_date);
-        document.getElementById('edit_process_status').value = process.status || "";
-        document.getElementById('edit_remarks').value = process.remarks || "";
-
-        // Populate workflow select
-        // Populate workflow select with the workflow directly from the DataTable row first, then fetch all others
-        const workflowSelect = document.getElementById('edit_workflow');
-        workflowSelect.innerHTML = '';
-
-        // Get workflow from the current row (prefer direct row data)
-        let currentWorkflowId = process.workflow_id || (process.workflow && (process.workflow.id || process.workflow.workflow_id)) || '';
-        let currentWorkflowName = process.workflow_name || (process.workflow && (process.workflow.name || process.workflow.workflow_name)) || 'Select Workflow';
-
-        // Add the workflow from the row as the first (selected) option
-        if (currentWorkflowId) {
-            workflowSelect.appendChild(new Option(currentWorkflowName, currentWorkflowId, true, true));
-        }
-
-        // Fetch all workflows for the company and add the rest (avoid duplicate)
-        try {
-            const companyId = "{{ json_encode($company->company_id) }}";
-            const url = `/admin/get-workflows/${companyId}`;
-            const data = await fetchFieldInput(url);
-
-            if (data.status === "success" && Array.isArray(data.workflows)) {
-            data.workflows.forEach(wf => {
-                const wfId = wf.workflow_id || wf.id;
-                // Avoid duplicate of the already-selected workflow
-                if (wfId != currentWorkflowId) {
-                workflowSelect.appendChild(new Option(wf.workflow_name || wf.name || '', wfId));
-                }
+                ]
             });
-            }
-        } catch (error) {
-            // fallback: just show the current workflow
-            if (currentWorkflowId) {
-            workflowSelect.innerHTML = `<option value="${currentWorkflowId}" selected>${currentWorkflowName}</option>`;
-            }
-        }
 
-        // Show the modal
-        new bootstrap.Modal(document.getElementById('editProductionProcessModal')).show();
+            // --- Fetch Batch Tracking Data ---
+            document.getElementById('batchTrackingCollapse').addEventListener('shown.bs.collapse', async () => {
+                const companyId = "{{ json_encode($company->company_id) }}";
+                const url = `/admin/batch-tracking/company/${companyId}`;
+                const spinner = document.getElementById('loading-spinner');
+                showElement(spinner);
 
-        // Helper function to format date as YYYY-MM-DD for input fields
-        function formatDateForInput(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            if (isNaN(date)) return '';
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-    };
-
-    // --- Update Production Process ---
-    const editForm = document.querySelector('#edit-production-process-form');
-if (editForm) {
-    editForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(editForm);
-        const processId = formData.get('process_id');
-
-        if (!processId) {
-            console.error('No process_id provided for update.');
-            return;
-        }
-
-        try {
-            const url = `/admin/production-process/${processId}`;
-            const result = await fetch_cycle('--Update Production Process', url, 'POST', formData);
-
-            if (result.status === 'success' && Array.isArray(result.production_processes)) {
-                const formatted = result.production_processes.map(proc => ({
-                    workflow_name: proc.workflow?.workflow_name || 'N/A',
-                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
-                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
-                    remarks: proc.remarks || '',
-                    status: proc.status || 'N/A',
-                    process_id: proc.process_id || ''
-                }));
-
-                productionProcessTable.clear().rows.add(formatted).draw();
-
-                // Hide modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editProductionProcessModal'));
-                if (modal) modal.hide();
-
-                // Optionally reset the form
-                editForm.reset();
-            } else {
-                console.error('Update failed:', result.errors || result.message);
-            }
-        } catch (error) {
-            console.error('Error updating production process:', error);
-        }
-    });
-}
-
-    
-    
-    
-    // --- Delete Production Process ---
-    window.deleteProductionProcess = function (processId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to delete this production process?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const url = `/admin/production-process/${processId}`;
                 try {
-                    const response = await fetch(url, {
-                        method: 'DELETE',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
-                    });
-                    const data = await response.json();
-                    if (data.status === 'success') {
-                        productionProcessTable.row($(`button[onclick="deleteProductionProcess(${processId})"]`).parents('tr')).remove().draw();
-                        Swal.fire('Deleted!', 'Production process has been deleted.', 'success');
+                    const data = await fetchFieldInput(url);
+                    if (data.status === "success" && Array.isArray(data.production_batch_tracking)) {
+                        const batchTrackingData = data.production_batch_tracking.map(batch => ({
+                            batch_name: batch.batch_name || "N/A",
+                            product_name: batch.product?.name || "N/A",
+                            start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            status: batch.status || "N/A",
+                            batch_id: batch.batch_id || "N/A"
+                        }));
+                        batchTrackingTable.clear().rows.add(batchTrackingData).draw();
                     } else {
-                        Swal.fire('Error!', data.message || 'Failed to delete production process.', 'error');
+                        displayMessage('warning', 'No batch tracking data found or invalid data structure.');
                     }
                 } catch (error) {
-                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                    console.error("Error fetching batch tracking data:", error);
+                    displayMessage('danger', 'An error occurred while fetching batch tracking data. Please try again.');
+                } finally {
+                    hideElement(spinner);
                 }
-            }
-        });
-    };
-});
-</script>
+            });
 
+            // Make toggleBatchTrackingForm globally accessible
+            window.toggleBatchTrackingForm = function () {
+                const form = document.getElementById('batch-tracking-form-container');
+                form.classList.toggle('d-none');
+                if (!form.classList.contains('d-none')) {
+                    form.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            // --- Add Batch Tracking ---
+            document.querySelector('#batch-tracking-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const url = "{{ route('admin.store-batch-tracking') }}";
+                try {
+                    const result = await fetch_cycle('--Store Batch Tracking', url, 'POST', formData);
+                    if (result.status === 'success') {
+                        const batch = result.productionBatchTracking;
+                        const newRow = {
+                            batch_name: batch.batch_name || "N/A",
+                            product_name: batch.product?.name || "N/A",
+                            start_date: batch.start_date ? new Date(batch.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            end_date: batch.end_date ? new Date(batch.end_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "N/A",
+                            status: batch.status || "N/A",
+                            batch_id: batch.batch_id || "N/A"
+                        };
+                        batchTrackingTable.row.add(newRow).draw(false);
+                    }
+                } catch (error) {
+                    console.error('Error storing batch tracking:', error);
+                }
+            });
+
+            // --- Setup Production Process Modal ---
+            $(document).on('click', '.setup-production-btn', function () {
+                const rowData = batchTrackingTable.row($(this).closest('tr')).data();
+                const batchId = rowData.batch_id || '';
+                const productionProcessForm = document.getElementById('production-process-form');
+                if (productionProcessForm) productionProcessForm.reset();
+                document.getElementById('batch_id').value = batchId;
+                showProductionProcessModal(batchId);
+            });
+
+            // --- Show/Hide Production Process Form/Table ---
+            function showProductionProcessTable() {
+                
+                document.getElementById('production-process-form-container').classList.add('d-none');
+                document.getElementById('production-process-table-container').classList.remove('d-none');
+            }
+            function showProductionProcessForm() {
+                document.getElementById('production-process-form-container').classList.remove('d-none');
+                document.getElementById('production-process-table-container').classList.add('d-none');
+            }
+            $('#productionProcessModal').on('show.bs.modal', showProductionProcessTable);
+            document.getElementById('show-production-process-form')?.addEventListener('click', showProductionProcessForm);
+            document.getElementById('cancel-production-process-form')?.addEventListener('click', showProductionProcessTable);
+            document.getElementById('close-production-process-form')?.addEventListener('click', showProductionProcessTable);
+
+            // --- Production Process Table ---
+            const productionProcessTable = $('#tbl-production-process').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                destroy: true,
+                columnDefs: [{ orderable: false, targets: [5] }],
+                data: [],
+                columns: [
+                    { data: 'workflow_name', title: 'Workflow' },
+                    { data: 'start_date', title: 'Start Date' },
+                    { data: 'end_date', title: 'End Date' },
+                    { data: 'remarks', title: 'Remarks' },
+                    {
+                        data: 'status',
+                        title: 'Status',
+                        render: (data, type) => {
+                            if (type === 'display') {
+                                let badgeClass = 'secondary';
+                                let label = data || 'N/A';
+                                switch ((data || '').toLowerCase()) {
+                                    case 'completed': badgeClass = 'success'; break;
+                                    case 'pending': badgeClass = 'warning'; break;
+                                    case 'rejected': badgeClass = 'dark'; break;
+                                }
+                                return `<span class="badge bg-${badgeClass}">${label.charAt(0).toUpperCase() + label.slice(1)}</span>`;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: null,
+                        title: 'Actions',
+                        render: (data, type, row) => `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editProductionProcess(${row.process_id})">Edit</button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteProductionProcess(${row.process_id})">Delete</button>
+                            </div>
+                        `
+                    }
+                ]
+            });
+
+            // --- Fetch Production Process Table for Batch ---
+            window.showProductionProcessModal = function (batchId) {
+                const modalElement = document.getElementById('productionProcessModal');
+                if (!modalElement) return;
+                (async function populateProductionProcessTable() {
+                    if (!batchId) return;
+                    const url = `/admin/get-production-process/${batchId}`;
+                    try {
+                        const data = await fetchFieldInput(url);
+                        if (data.status === "success" && Array.isArray(data.production_processes)) {
+                            const processes = data.production_processes.map(proc => ({
+                                workflow_name: (proc.workflow && proc.workflow.workflow_name) ? proc.workflow.workflow_name : 'N/A',
+                                start_date: proc.start_time ? (() => { const d = new Date(proc.start_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
+                                end_date: proc.end_time ? (() => { const d = new Date(proc.end_time); return isNaN(d) ? 'N/A' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : 'N/A',
+                                remarks: proc.remarks || '',
+                                status: proc.status || 'N/A',
+                                process_id: proc.process_id || ''
+                            }));
+                            productionProcessTable.clear().rows.add(processes).draw();
+                        } else {
+                            productionProcessTable.clear().draw();
+                        }
+                    } catch (error) {
+                        console.error("Error fetching production process data:", error);
+                        productionProcessTable.clear().draw();
+                    } finally {
+                        hideElement(document.getElementById('loading-spinner'));
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.show();
+                    }
+                })();
+            };
+
+            // --- Production Process Form Submission ---
+            document.getElementById('production-process-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const url = "{{ route('admin.store-production-process') }}";
+                try {
+                    const result = await fetch_cycle('--Store Production Process', url, 'POST', formData);
+                    if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                        const formatted = result.production_processes.map(proc => ({
+                            workflow_name: proc.workflow?.workflow_name || 'N/A',
+                            start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                            end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                            remarks: proc.remarks || '',
+                            status: proc.status || 'N/A',
+                            process_id: proc.process_id || ''
+                        }));
+                        productionProcessTable.clear().rows.add(formatted).draw();
+                        // Hide form and show table
+                        showProductionProcessTable();
+                        // Optionally reset the form
+                        this.reset();
+                    }
+                } catch (error) {
+                    console.error('Error storing production process:', error);
+                }
+            });
+
+            // Edit Production Process Modal Handler
+            window.editProductionProcess = async function(id) {
+                // Try to get the process data from the DataTable row
+                const row = $(`button[onclick="editProductionProcess(${id})"]`).closest('tr');
+                let process = productionProcessTable.row(row).data();
+
+                // If not found, fetch from backend
+                if (!process) {
+                    try {
+                        const response = await fetch(`/admin/production-process/${id}`);
+                        if (response.ok) {
+                            process = await response.json();
+                        } else {
+                            console.error('Failed to fetch production process:', response.statusText);
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Failed to fetch production process:', error);
+                        return;
+                    }
+                }
+                if (!process) return;
+
+            
+
+                // Populate form fields
+                document.getElementById('edit_process_id').value = process.process_id || process.id || "";
+                document.getElementById('edit_process_start_date').value = formatDateForInput(process.start_time || process.start_date);
+                document.getElementById('edit_process_end_date').value = formatDateForInput(process.end_time || process.end_date);
+                document.getElementById('edit_process_status').value = process.status || "";
+                document.getElementById('edit_remarks').value = process.remarks || "";
+
+                // Populate workflow select
+                // Populate workflow select with the workflow directly from the DataTable row first, then fetch all others
+                const workflowSelect = document.getElementById('edit_workflow');
+                workflowSelect.innerHTML = '';
+
+                // Get workflow from the current row (prefer direct row data)
+                let currentWorkflowId = process.workflow_id || (process.workflow && (process.workflow.id || process.workflow.workflow_id)) || '';
+                let currentWorkflowName = process.workflow_name || (process.workflow && (process.workflow.name || process.workflow.workflow_name)) || 'Select Workflow';
+
+                // Add the workflow from the row as the first (selected) option
+                if (currentWorkflowId) {
+                    workflowSelect.appendChild(new Option(currentWorkflowName, currentWorkflowId, true, true));
+                }
+
+                // Fetch all workflows for the company and add the rest (avoid duplicate)
+                try {
+                    const companyId = "{{ json_encode($company->company_id) }}";
+                    const url = `/admin/get-workflows/${companyId}`;
+                    const data = await fetchFieldInput(url);
+
+                    if (data.status === "success" && Array.isArray(data.workflows)) {
+                    data.workflows.forEach(wf => {
+                        const wfId = wf.workflow_id || wf.id;
+                        // Avoid duplicate of the already-selected workflow
+                        if (wfId != currentWorkflowId) {
+                        workflowSelect.appendChild(new Option(wf.workflow_name || wf.name || '', wfId));
+                        }
+                    });
+                    }
+                } catch (error) {
+                    // fallback: just show the current workflow
+                    if (currentWorkflowId) {
+                    workflowSelect.innerHTML = `<option value="${currentWorkflowId}" selected>${currentWorkflowName}</option>`;
+                    }
+                }
+
+                // Show the modal
+                new bootstrap.Modal(document.getElementById('editProductionProcessModal')).show();
+
+                // Helper function to format date as YYYY-MM-DD for input fields
+                function formatDateForInput(dateString) {
+                    if (!dateString) return '';
+                    const date = new Date(dateString);
+                    if (isNaN(date)) return '';
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                }
+            };
+
+            // --- Update Production Process ---
+            const editForm = document.querySelector('#edit-production-process-form');
+                if (editForm) {
+                    editForm.addEventListener('submit', async function (e) {
+                        e.preventDefault();
+
+                        const formData = new FormData(editForm);
+                        const processId = formData.get('process_id');
+
+                        if (!processId) {
+                            console.error('No process_id provided for update.');
+                            return;
+                        }
+
+                        try {
+                            const url = `/admin/production-process/${processId}`;
+                            const result = await fetch_cycle('--Update Production Process', url, 'POST', formData);
+
+                            if (result.status === 'success' && Array.isArray(result.production_processes)) {
+                                const formatted = result.production_processes.map(proc => ({
+                                    workflow_name: proc.workflow?.workflow_name || 'N/A',
+                                    start_date: proc.start_time ? new Date(proc.start_time).toLocaleDateString('en-GB') : 'N/A',
+                                    end_date: proc.end_time ? new Date(proc.end_time).toLocaleDateString('en-GB') : 'N/A',
+                                    remarks: proc.remarks || '',
+                                    status: proc.status || 'N/A',
+                                    process_id: proc.process_id || ''
+                                }));
+
+                                productionProcessTable.clear().rows.add(formatted).draw();
+
+                                // Hide modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('editProductionProcessModal'));
+                                if (modal) modal.hide();
+
+                                // Optionally reset the form
+                                editForm.reset();
+                            } else {
+                                console.error('Update failed:', result.errors || result.message);
+                            }
+                        } catch (error) {
+                            console.error('Error updating production process:', error);
+                        }
+                    });
+                }
+
+            // --- Delete Production Process ---
+            window.deleteProductionProcess = function (processId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to delete this production process?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const url = `/admin/production-process/${processId}`;
+                        try {
+                            const response = await fetch(url, {
+                                method: 'DELETE',
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                            });
+                            const data = await response.json();
+                            if (data.status === 'success') {
+                                productionProcessTable.row($(`button[onclick="deleteProductionProcess(${processId})"]`).parents('tr')).remove().draw();
+                                Swal.fire('Deleted!', 'Production process has been deleted.', 'success');
+                            } else {
+                                Swal.fire('Error!', data.message || 'Failed to delete production process.', 'error');
+                            }
+                        } catch (error) {
+                            Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                        }
+                    }
+                });
+            };
+        });
+    </script>
     <!-- end store production process -->
     <!-- End Batch tracking -->
-
     <script>
         /**
          * Toggle the visibility of the annual operation activity form card.
@@ -12301,286 +8676,304 @@ if (editForm) {
         });
     </script>
     <script>
-    /**
-     * TaggingComponent class for managing tagging functionality.
-     * - Handles user input for tagging.
-     * - Fetches user suggestions from the server.
-     * - Allows adding and removing tags.
-     */
-    class TaggingComponent {
-      constructor(containerId, TagInput) {
-        this.container = document.getElementById(containerId);
-        this.tagInput = this.container.querySelector(`.${TagInput}`);
-        this.tags = [];
-        this.userMap = {}; // Maps user names to ids
+        /**
+         * TaggingComponent class for managing tagging functionality.
+         * - Handles user input for tagging.
+         * - Fetches user suggestions from the server.
+         * - Allows adding and removing tags.
+         */
+        class TaggingComponent {
+        constructor(containerId, TagInput) {
+            this.container = document.getElementById(containerId);
+            this.tagInput = this.container.querySelector(`.${TagInput}`);
+            this.tags = [];
+            this.userMap = {}; // Maps user names to ids
 
-        this.renderInputField();
-        this.renderSuggestions();
-      }
+            this.renderInputField();
+            this.renderSuggestions();
+        }
 
-      renderInputField() {
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.placeholder = 'Tag someone...';
-        inputField.className = 'form-control';
-        inputField.classList.add('form-control');
-        inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
-        inputField.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ',') {
-            e.preventDefault();
-            const name = e.target.value.trim();
-            console.log("Adding tag:", name);
-            
-            if (this.userMap[name]) {
-                this.addTag(this.userMap[name], name);
+        renderInputField() {
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Tag someone...';
+            inputField.className = 'form-control';
+            inputField.classList.add('form-control');
+            inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
+            inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const name = e.target.value.trim();
+                console.log("Adding tag:", name);
+                
+                if (this.userMap[name]) {
+                    this.addTag(this.userMap[name], name);
+                }
             }
-          }
-        });
-        this.tagInput.appendChild(inputField);
-        this.inputField = inputField;
-      }
-
-      renderSuggestions() {
-        const suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'suggestions';
-        this.tagInput.appendChild(suggestionsDiv);
-        this.suggestionsDiv = suggestionsDiv;
-      }
-
-      async fetchUsers(query) {
-        if (!query) {
-          this.suggestionsDiv.innerHTML = '';
-          return;
+            });
+            this.tagInput.appendChild(inputField);
+            this.inputField = inputField;
         }
-        try {
-          const companyId = "{{ $company->company_id }}";
-          const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}&company_id=${encodeURIComponent(companyId)}`);
-          const users = await response.json();
-          console.log("Fetched users:", users);
-          this.showSuggestions(users.users || []);
-        } catch (error) {
-          console.error("Failed to fetch users:", error);
+
+        renderSuggestions() {
+            const suggestionsDiv = document.createElement('div');
+            suggestionsDiv.className = 'suggestions';
+            this.tagInput.appendChild(suggestionsDiv);
+            this.suggestionsDiv = suggestionsDiv;
         }
-      }
 
-      showSuggestions(users) {
-        const filteredUsers = users.filter(user => !this.tags.includes(user.name));
-        this.suggestionsDiv.innerHTML = '';
-        filteredUsers.forEach(user => {
-          const suggestionElement = document.createElement('div');
-          suggestionElement.className = 'suggestion';
-          suggestionElement.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <img src="${user.profilePic}" alt="${user.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
-              <div>
-                <strong style="font-size: 15px; color: #1d4ed8;">${user.name}</strong><br>
-                <span style="font-size: 13px; color: #64748b;">${user.role}</span><br>
-                <span style="font-size: 12px; color: #6366f1;">${user.email}</span>
-              </div>
-            </div>
-          `;
-          suggestionElement.addEventListener('click', () => this.addTag(user.id, user.name));
-          this.suggestionsDiv.appendChild(suggestionElement);
-          
-           // Update the user map
-            this.userMap[user.name] = user.id;
-        });
-      }
-
-      addTag(userId, userName) {
-        if (userId && !this.tags.includes(userId)) {
-            this.tags.push(userId);
-            this.renderTags();
-            this.inputField.value = '';
+        async fetchUsers(query) {
+            if (!query) {
             this.suggestionsDiv.innerHTML = '';
+            return;
+            }
+            try {
+            const companyId = "{{ $company->company_id }}";
+            const response = await fetch(`{{ url('/admin/search-employee') }}?search=${encodeURIComponent(query)}&company_id=${encodeURIComponent(companyId)}`);
+            const users = await response.json();
+            console.log("Fetched users:", users);
+            this.showSuggestions(users.users || []);
+            } catch (error) {
+            console.error("Failed to fetch users:", error);
+            }
         }
-      }
 
-      removeTag(userId) {
-        this.tags = this.tags.filter(id => id !== userId);
-        this.renderTags();
-      }
+        showSuggestions(users) {
+            const filteredUsers = users.filter(user => !this.tags.includes(user.name));
+            this.suggestionsDiv.innerHTML = '';
+            filteredUsers.forEach(user => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'suggestion';
+            suggestionElement.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${user.profilePic}" alt="${user.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+                <div>
+                    <strong style="font-size: 15px; color: #1d4ed8;">${user.name}</strong><br>
+                    <span style="font-size: 13px; color: #64748b;">${user.role}</span><br>
+                    <span style="font-size: 12px; color: #6366f1;">${user.email}</span>
+                </div>
+                </div>
+            `;
+            suggestionElement.addEventListener('click', () => this.addTag(user.id, user.name));
+            this.suggestionsDiv.appendChild(suggestionElement);
+            
+            // Update the user map
+                this.userMap[user.name] = user.id;
+            });
+        }
 
-      renderTags() {
-        this.tagInput.innerHTML = '';
-        this.tags.forEach(userId => {
-            const userName = Object.keys(this.userMap).find(name => this.userMap[name] === userId);
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.innerHTML = `${userName} <span>&times;</span>`;
-            tagElement.querySelector('span').addEventListener('click', () => this.removeTag(userId));
-            this.tagInput.appendChild(tagElement);
-        });
-        this.tagInput.appendChild(this.inputField);
-        this.tagInput.appendChild(this.suggestionsDiv);
-      }
-      // Get selected user IDs and names
-      getSelectedUserIds() {
-        return this.tags;
-      }
+        addTag(userId, userName) {
+            if (userId && !this.tags.includes(userId)) {
+                this.tags.push(userId);
+                this.renderTags();
+                this.inputField.value = '';
+                this.suggestionsDiv.innerHTML = '';
+            }
+        }
 
-      getSelectedUserNames() {
-        return this.tags.map(id => Object.keys(this.userMap).find(name => this.userMap[name] === id));
-      }
-    }
-    
-    let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
-    let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
-    let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
-    let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
-    let  manager_5 =  new TaggingComponent('manager-tag-input-5', 'manager-tag-input-5');
-    let  manager_6 =  new TaggingComponent('manager-tag-input-6', 'manager-tag-input-6');
-  </script>
-  <!-- Department -->
-   <script>
-    /**
-     * Handles the submission of the Department form.
-     * - Prevents default form submission.
-     * - Collects form data and selected manager IDs.
-     * - Sends data to the server using fetch_cycle for AJAX POST.
-     * - Handles success and error responses.
-     */
-    /**
-     * Department Management Script
-     * Handles the submission of the Department form and updates the department table.
-     * - Prevents default form submission.
-     * - Collects form data and selected manager IDs.
-     * - Sends data to the server using fetch_cycle for AJAX POST.
-     * - Handles success and error responses.
-     */
+        removeTag(userId) {
+            this.tags = this.tags.filter(id => id !== userId);
+            this.renderTags();
+        }
 
-    /**
-     * Department Management Script
-     * Handles the submission of the Department form and updates the department table.
-     * - Prevents default form submission.
-     * - Collects form data and selected manager IDs.
-     * - Sends data to the server using fetch_cycle for AJAX POST.
-     * - Handles success and error responses.
-     */
+        renderTags() {
+            this.tagInput.innerHTML = '';
+            this.tags.forEach(userId => {
+                const userName = Object.keys(this.userMap).find(name => this.userMap[name] === userId);
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `${userName} <span>&times;</span>`;
+                tagElement.querySelector('span').addEventListener('click', () => this.removeTag(userId));
+                this.tagInput.appendChild(tagElement);
+            });
+            this.tagInput.appendChild(this.inputField);
+            this.tagInput.appendChild(this.suggestionsDiv);
+        }
+        // Get selected user IDs and names
+        getSelectedUserIds() {
+            return this.tags;
+        }
 
-    let departmentsTable = $('#tbl-departments').DataTable({
-        paging: true,
-        searching: true,
-        ordering: false,
-        responsive: true,
-        columnDefs: [
-            { orderable: false, targets: [2] } // Disable sorting on the "Action" column
-        ],
-        data: [],
-        columns: [
-            { data: 'name', title: 'Department Name' },
-            {
-                data: 'managers',
-                title: 'Managers',
-                render: function(data, type, row) {
-                    if (Array.isArray(data) && data.length > 0) {
-                        return `
-                            <div class="d-flex flex-row flex-wrap gap-2">
-                                ${data.map(mgr => `
-                                    <div class="card shadow-sm mb-0" style="display:inline-block; min-width:220px; max-width:320px;">
-                                        <div class="card-body p-2">
-                                            <div class="d-flex align-items-center">
-                                                <img src="${mgr.profilePic || 'https://via.placeholder.com/32'}" alt="${mgr.name ?? mgr.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
-                                                <div>
-                                                    <div class="fw-bold">${mgr.name ?? mgr.full_name ?? 'N/A'}</div>
-                                                    <div class="small text-muted">${mgr.email ?? ''}</div>
-                                                    <div class="small text-secondary">${mgr.jobTitle ?? ''}</div>
+        getSelectedUserNames() {
+            return this.tags.map(id => Object.keys(this.userMap).find(name => this.userMap[name] === id));
+        }
+        }
+        
+        let  manager_1 =  new TaggingComponent('manager-tag-input-1', 'manager-tag-input-1');
+        let  manager_2 =  new TaggingComponent('manager-tag-input-2', 'manager-tag-input-2');
+        let  manager_3 =  new TaggingComponent('manager-tag-input-3', 'manager-tag-input-3');
+        let  manager_4 =  new TaggingComponent('manager-tag-input-4', 'manager-tag-input-4');
+        let  manager_5 =  new TaggingComponent('manager-tag-input-5', 'manager-tag-input-5');
+        let  manager_6 =  new TaggingComponent('manager-tag-input-6', 'manager-tag-input-6');
+    </script>
+    <!-- Department -->
+    <script>
+        /**
+         * Handles the submission of the Department form.
+         * - Prevents default form submission.
+         * - Collects form data and selected manager IDs.
+         * - Sends data to the server using fetch_cycle for AJAX POST.
+         * - Handles success and error responses.
+         */
+        /**
+         * Department Management Script
+         * Handles the submission of the Department form and updates the department table.
+         * - Prevents default form submission.
+         * - Collects form data and selected manager IDs.
+         * - Sends data to the server using fetch_cycle for AJAX POST.
+         * - Handles success and error responses.
+         */
+
+        /**
+         * Department Management Script
+         * Handles the submission of the Department form and updates the department table.
+         * - Prevents default form submission.
+         * - Collects form data and selected manager IDs.
+         * - Sends data to the server using fetch_cycle for AJAX POST.
+         * - Handles success and error responses.
+         */
+
+        let departmentsTable = $('#tbl-departments').DataTable({
+            paging: true,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [2] } // Disable sorting on the "Action" column
+            ],
+            data: [],
+            columns: [
+                { data: 'name', title: 'Name' },
+                {
+                    data: 'managers',
+                    title: 'Managers',
+                    render: function(data, type, row) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            return `
+                                <div class="d-flex flex-row flex-wrap gap-2">
+                                    ${data.map(mgr => `
+                                        <div class="card shadow-sm mb-0" style="display:inline-block; min-width:220px; max-width:320px;">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="${mgr.profilePic || 'https://via.placeholder.com/32'}" alt="${mgr.name ?? mgr.full_name ?? 'N/A'}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+                                                    <div>
+                                                        <div class="fw-bold">${mgr.name ?? mgr.full_name ?? 'N/A'}</div>
+                                                        <div class="small text-muted">${mgr.email ?? ''}</div>
+                                                        <div class="small text-secondary">${mgr.jobTitle ?? ''}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `).join('')}
+                                    `).join('')}
+                                </div>
+                            `;
+                        }
+                        return '<span class="text-muted">None</span>';
+                    }
+                },
+                { data: 'employee_count', title: 'Employees', defaultContent: '0' },
+                { data: 'status', title: 'Status' },
+                {
+                    data: null,
+                    title: 'Action',
+                    render: function(data, type, row) {
+                        return `
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editDepartment('${row.id}')">
+                                    <i class="las la-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteDepartment('${row.id}')">
+                                    <i class="las la-trash-alt"></i> Delete
+                                </button>
                             </div>
                         `;
-                    }
-                    return '<span class="text-muted">None</span>';
+                    },
+                    className: 'text-end'
                 }
-            },
-            {
-                data: null,
-                title: 'Action',
-                render: function(data, type, row) {
-                    return `
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-primary btn-sm" onclick="editDepartment('${row.id}')">
-                                <i class="las la-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteDepartment('${row.id}')">
-                                <i class="las la-trash-alt"></i> Delete
-                            </button>
-                        </div>
-                    `;
-                },
-                className: 'text-end'
-            }
-        ]
-    });
-    // Fetch and display departments when the accordion is expanded
-    document.getElementById('departmentCollapse').addEventListener('shown.bs.collapse', async () => {
-        console.log('====================================');
-        console.log('Fetching departments for company:', "{{ json_encode($company->company_id) }}");
-        console.log('====================================');
-        const companyId = "{{ json_encode($company->company_id) }}";
-        const url = `/admin/get-departments/${companyId}`;
-        const spinner = document.getElementById('loading-spinner');
-        showElement(spinner);
+            ]
+        });
+        // Fetch and display departments when the accordion is expanded
+        document.getElementById('departmentCollapse').addEventListener('shown.bs.collapse', async () => {
+            console.log('====================================');
+            console.log('Fetching departments for company:', "{{ json_encode($company->company_id) }}");
+            console.log('====================================');
+            const companyId = "{{ json_encode($company->company_id) }}";
+            const url = `/admin/get-departments/${companyId}`;
+            const spinner = document.getElementById('loading-spinner');
+            showElement(spinner);
 
-        try {
-            const data = await fetchFieldInput(url);
-            if (data.status === "success" && Array.isArray(data.departments)) {
-                const departments = data.departments.map(department => ({
-                    name: department.DepartmentName || "N/A",
-                    managers: department.managers || [],
-                    id: department.DepartmentID || "N/A"
-                }));
-                departmentsTable.clear().rows.add(departments).draw();
-            } else {
-                displayMessage('warning', 'No departments found or invalid data structure.');
-                departmentsTable.clear().draw();
+            try {
+                const data = await fetchFieldInput(url);
+                if (data.status === "success" && Array.isArray(data.departments)) {
+                    const departments = data.departments.map(department => ({
+                        name: department.DepartmentName || "N/A",
+                        managers: department.managers || [],
+                        id: department.DepartmentID || "N/A"
+                    }));
+                    departmentsTable.clear().rows.add(departments).draw();
+                } else {
+                    displayMessage('warning', 'No departments found or invalid data structure.');
+                    departmentsTable.clear().draw();
+                }
+            } catch (error) {
+                console.error("Error fetching departments:", error);
+                displayMessage('danger', 'An error occurred while fetching departments.');
+            } finally {
+                hideElement(spinner);
             }
-        } catch (error) {
-            console.error("Error fetching departments:", error);
-            displayMessage('danger', 'An error occurred while fetching departments.');
-        } finally {
-            hideElement(spinner);
-        }
-    });
+        });
 
-    // Handle department form submission
-    document.addEventListener('DOMContentLoaded', function () {
-        const departmentForm = document.getElementById('department-form');
-        if (departmentForm) {
-            departmentForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const formData = new FormData(departmentForm);
-                console.log('====================================');
-                console.log(manager_1.getSelectedUserIds());
-                console.log('====================================');
-                let manager = manager_1.getSelectedUserIds();
-                // Append manager IDs to the form data
-                manager.forEach(id => {
-                    formData.append('manager_ids[]', id);
+        // Bootstrap validation shim
+        Array.from(document.querySelectorAll('.needs-validation')).forEach(form => {
+            form.addEventListener('submit', ev => {
+                if (!form.checkValidity()) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+        // Handle department form submission
+        document.addEventListener('DOMContentLoaded', function () {
+            const departmentForm = document.getElementById('department-form');
+            console.log(departmentForm);
+            
+            if (departmentForm) {
+                departmentForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    console.log('submission working');
+                    return
+                    
+                    const formData = new FormData(departmentForm);
+                    console.log('====================================');
+                    console.log(manager_1.getSelectedUserIds());
+                    console.log('====================================');
+                    let manager = manager_1.getSelectedUserIds();
+                    // Append manager IDs to the form data
+                    manager.forEach(id => {
+                        formData.append('manager_ids[]', id);
+                    });
+                    // Append the company ID to the form data
+                    const url = "{{ route('admin.store-company-department') }}";
+
+                    try {
+                        const result = await fetch_cycle('--Store Department', url, 'POST', formData);
+                        if (result.status === 'success') {
+                            // Optionally update UI or show a success message
+                            console.log("Department stored successfully:", result.department);
+                        } else {
+                            // Handle validation errors
+                            console.error("Error storing department:", result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error storing department:', error);
+                    }
                 });
-                // Append the company ID to the form data
-                const url = "{{ route('admin.store-company-department') }}";
-
-                try {
-                    const result = await fetch_cycle('--Store Department', url, 'POST', formData);
-                    if (result.status === 'success') {
-                        // Optionally update UI or show a success message
-                        console.log("Department stored successfully:", result.department);
-                    } else {
-                        // Handle validation errors
-                        console.error("Error storing department:", result.message);
-                    }
-                } catch (error) {
-                    console.error('Error storing department:', error);
-                }
-            });
-        }
-    });
-   </script>
-  <!-- End Department -->
+            }
+        });
+    </script>
+    <!-- End Department -->
    <!-- Employee -->
     <script>
         // Handle employee form submission
@@ -14065,6 +10458,5 @@ $('#taskMetricsModal').on('shown.bs.modal', async function () {
     });
     </script>
     <!-- Recp form submission -->
-
     @endsection
 </x-layouts.admin-app>

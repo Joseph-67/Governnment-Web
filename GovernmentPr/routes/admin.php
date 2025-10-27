@@ -56,6 +56,7 @@ use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\WasteItemController;
+use App\Http\Controllers\WasteController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
@@ -768,7 +769,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-categories/{id}', 'show')->name('admin.show-waste-category');
         Route::put('/waste-categories/{id}', 'update')->name('admin.update-waste-category');
         Route::delete('/waste-categories/{id}', 'destroy')->name('admin.delete-waste-category');
+        Route::get('/get-waste-categories', 'fetchCategories')->name('admin.get-waste-categories');
     });
+
     // Waste Subcategory
     Route::controller(WasteSubCategoriesController::class)->group(function() {
         Route::get('/waste-subcategories', 'index')->name('admin.waste-subcategories');
@@ -788,6 +791,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-waste-items', 'data')->name('admin.get-waste-items');
 
     });
+
+    Route::controller(WasteController::class)->group(function() {
+        Route::get('/waste-report', 'index')->name('admin.waste-report');
+        Route::post('/waste-report/store', 'store')->name('admin.store-waste-report');
+        Route::get('/waste-report/{id}', 'show')->name('admin.show-waste-report');
+        Route::put('/waste-report/{id}', 'update')->name('admin.update-waste-report');
+        Route::delete('/waste-report/{id}', 'destroy')->name('admin.delete-waste-report');
+        Route::get('/get-waste-report-data/{selectedCompany}/{selectedYear}', 'create_report');
+        Route::get('/get-waste-items', 'getAll')->name('admin.get-waste-items');
+    });
+    Route::resource('waste', WasteController::class)->names('admin.waste');
 
     // Water Stock Movement
     Route::controller(WaterStockMovementController::class)->group(function() {
