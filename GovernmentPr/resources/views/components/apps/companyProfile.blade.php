@@ -2441,16 +2441,889 @@
                 </div>
             </div>
 
+            <div class="tab-pane fade" id="inventory" role="tabpanel">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light border-bottom-0">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <h4 class="card-title mb-0">
+                                <i class="la la-box text-primary me-2"></i>Inventory Management
+                            </h4>
 
-             <!--  -->
-            <div class="tab-pane fade" id="inventory" role="tabpanel">...</div>
-            <div class="tab-pane fade" id="operations" role="tabpanel">...</div>
+                            <ul class="nav nav-pills mt-2 mt-md-0" id="inventoryTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="inv-general-tab" data-bs-toggle="tab" href="#inv-general"
+                                        role="tab" aria-controls="inv-general" aria-selected="true">
+                                        <i class="la la-warehouse me-1"></i>General
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inv-chemical-tab" data-bs-toggle="tab" href="#inv-chemical"
+                                        role="tab" aria-controls="inv-chemical" aria-selected="false">
+                                        <i class="la la-flask me-1"></i>Chemicals
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inv-water-tab" data-bs-toggle="tab" href="#inv-water"
+                                        role="tab" aria-controls="inv-water" aria-selected="false">
+                                        <i class="la la-tint me-1"></i>Water
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inv-equipment-tab" data-bs-toggle="tab" href="#inv-equipment"
+                                        role="tab" aria-controls="inv-equipment" aria-selected="false">
+                                        <i class="la la-cogs me-1"></i>Equipment
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inv-raw-tab" data-bs-toggle="tab" href="#inv-raw"
+                                        role="tab" aria-controls="inv-raw" aria-selected="false">
+                                        <i class="la la-cube me-1"></i>Raw Materials
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#productsInventory" role="tab">
+                                        <i class="la la-box-open"></i> Products
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="tab-content" id="inventoryTabsContent">
+
+                            <!-- 🌐 GENERAL INVENTORY -->
+                            <div class="tab-pane fade show active" id="inv-general" role="tabpanel">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <div class="card bg-light text-center p-3">
+                                            <h6 class="text-muted">Total Items</h6>
+                                            <h3 class="fw-bold text-primary">0</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-light text-center p-3">
+                                            <h6 class="text-muted">Low Stock</h6>
+                                            <h3 class="fw-bold text-warning">{{ $lowStockCount ?? 0 }}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-light text-center p-3">
+                                            <h6 class="text-muted">Out of Stock</h6>
+                                            <h3 class="fw-bold text-danger">{{ $outOfStockCount ?? 0 }}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card bg-light text-center p-3">
+                                            <h6 class="text-muted">Active Categories</h6>
+                                            <h3 class="fw-bold text-success">{{ $activeCategories ?? 0 }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0"><i class="la la-list me-1 text-primary"></i>Inventory List</h5>
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addGeneralModal"><i class="la la-plus-circle me-1"></i>Add Item</button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover align-middle" id="generalTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item</th>
+                                                <th>Category</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Status</th>
+                                                <th>Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($generalItems as $item)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->category }}</td>
+                                                    <td>{{ $item->quantity }}</td>
+                                                    <td>{{ $item->unit }}</td>
+                                                    <td>
+                                                        @if($item->quantity == 0)
+                                                            <span class="badge bg-danger">Out of Stock</span>
+                                                        @elseif($item->quantity < 10)
+                                                            <span class="badge bg-warning">Low</span>
+                                                        @else
+                                                            <span class="badge bg-success">In Stock</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item->updated_at->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ⚗️ CHEMICAL INVENTORY -->
+                            <div class="tab-pane fade" id="inv-chemical" role="tabpanel">
+                                <div class="d-flex justify-content-between mb-3 align-items-center">
+                                    <h5><i class="la la-flask text-primary me-1"></i>Chemical Inventory</h5>
+                                    <button class="btn btn-sm btn-outline-primary"  data-bs-toggle="modal" data-bs-target="#addChemicalModal">
+                                        <i class="la la-plus-circle me-1"></i>Add Chemical</button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="chemicalTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Hazardous</th>
+                                                <th>Storage</th>
+                                                <th>Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($chemicalItems as $chem)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $chem->name }}</td>
+                                                    <td>{{ $chem->type }}</td>
+                                                    <td>{{ $chem->quantity }}</td>
+                                                    <td>{{ $chem->unit }}</td>
+                                                    <td>
+                                                        <span class="badge {{ $chem->is_hazardous ? 'bg-danger' : 'bg-success' }}">
+                                                            {{ $chem->is_hazardous ? 'Yes' : 'No' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ $chem->storage_location }}</td>
+                                                    <td>{{ $chem->updated_at->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 💧 WATER INVENTORY -->
+                            <div class="tab-pane fade" id="inv-water" role="tabpanel">
+                                <div class="d-flex justify-content-between mb-3 align-items-center">
+                                    <h5><i class="la la-tint text-primary me-1"></i>Water Usage</h5>
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addWaterModal"><i class="la la-plus-circle me-1"></i>Add Record</button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="waterTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Source</th>
+                                                <th>Usage (L)</th>
+                                                <th>Recycled (%)</th>
+                                                <th>Quality</th>
+                                                <th>Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($waterRecords as $w)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ ucfirst($w->source) }}</td>
+                                                    <td>{{ $w->usage }}</td>
+                                                    <td>{{ $w->recycled_percentage }}%</td>
+                                                    <td>{{ ucfirst($w->quality_level) }}</td>
+                                                    <td>{{ $w->updated_at->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ⚙️ EQUIPMENT -->
+                            <div class="tab-pane fade" id="inv-equipment" role="tabpanel">
+                                <div class="d-flex justify-content-between mb-3 align-items-center">
+                                    <h5><i class="la la-cogs text-primary me-1"></i>Equipment</h5>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="la la-plus-circle me-1"></i>Add Equipment</button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="equipmentTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Condition</th>
+                                                <th>Last Maintenance</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($equipmentList as $eq)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $eq->name }}</td>
+                                                    <td>{{ $eq->type }}</td>
+                                                    <td>{{ $eq->condition }}</td>
+                                                    <td>{{ $eq->last_maintenance->diffForHumans() }}</td>
+                                                    <td>
+                                                        <span class="badge {{ $eq->is_active ? 'bg-success' : 'bg-secondary' }}">
+                                                            {{ $eq->is_active ? 'Active' : 'Inactive' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 🧱 RAW MATERIALS -->
+                            <div class="tab-pane fade" id="inv-raw" role="tabpanel">
+                                <div class="d-flex justify-content-between mb-3 align-items-center">
+                                    <h5><i class="la la-cube text-primary me-1"></i>Raw Materials</h5>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="la la-plus-circle me-1"></i>Add Material</button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="rawTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Supplier</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Reorder Level</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($rawMaterials as $raw)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $raw->name }}</td>
+                                                    <td>{{ $raw->supplier }}</td>
+                                                    <td>{{ $raw->quantity }}</td>
+                                                    <td>{{ $raw->unit }}</td>
+                                                    <td>{{ $raw->reorder_level }}</td>
+                                                    <td>
+                                                        <span class="badge {{ $raw->quantity <= $raw->reorder_level ? 'bg-warning' : 'bg-success' }}">
+                                                            {{ $raw->quantity <= $raw->reorder_level ? 'Reorder' : 'Available' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Products -->
+                            <div class="tab-pane fade" id="productsInventory" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Product Name</th>
+                                                <th>SKU</th>
+                                                <th>Category</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Reorder Level</th>
+                                                <th>Last Batch Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($products as $product)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $product->name }}</td>
+                                                    <td>{{ $product->sku }}</td>
+                                                    <td>{{ $product->category }}</td>
+                                                    <td>{{ $product->quantity }}</td>
+                                                    <td>{{ $product->unit }}</td>
+                                                    <td>{{ $product->reorder_level }}</td>
+                                                    <td>{{ $product->last_batch_date ? \Carbon\Carbon::parse($product->last_batch_date)->format('M d, Y') : '—' }}</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="la la-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="la la-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="9" class="text-center text-muted">No product records found.</td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="operations" role="tabpanel" aria-labelledby="operations-tab">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-primary mb-0"><i class="la la-cogs me-2"></i>Operations Management</h5>
+                    <button class="btn btn-gradient btn-sm" data-bs-toggle="modal" data-bs-target="#addOperationModal">
+                        <i class="la la-plus me-1"></i> New Operation
+                    </button>
+                </div>
+
+                <div class="card card-wm mb-3">
+                    <div class="card-body">
+                        <ul class="nav nav-pills nav-wm mb-3" id="operationTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#annualPlan">Annual Plan</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#productionOps" role="tab" aria-selected="true">
+                                    <i class="la la-industry d-block"></i>Production
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#logisticsOps" role="tab" aria-selected="false">
+                                    <i class="la la-truck d-block"></i>Logistics
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#qualityOps" role="tab" aria-selected="false">
+                                    <i class="la la-check-circle d-block"></i>Quality Control
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#wasteOps" role="tab" aria-selected="false">
+                                    <i class="la la-recycle d-block"></i>Waste Tracking
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                                  <div class="tab-content mt-3">
+                                    <div class="tab-pane fade show active" id="annualPlan">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Year</th>
+                                                        <th>Objectives</th>
+                                                        <th>Key Activities</th>
+                                                        <th>Responsible Person</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($annualPlans as $plan)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $plan->year }}</td>
+                                                            <td>{{ $plan->objectives }}</td>
+                                                            <td>{{ $plan->key_activities }}</td>
+                                                            <td>{{ $plan->responsible_person }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{{ $plan->status == 'Completed' ? 'success' : 'warning' }}">
+                                                                    {{ $plan->status }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr><td colspan="6" class="text-center text-muted">No annual plans found.</td></tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                            <!-- Production -->
+                            <div class="tab-pane fade show active" id="productionOps" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5>Production Records</h5>
+                                    <select id="productionYearFilter" class="form-select w-auto">
+                                        <option value="">All Years</option>
+                                        @foreach(range(now()->year, now()->year - 5) as $year)
+                                            <option value="{{ $year }}">{{ $year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Batch Number</th>
+                                                <th>Product</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Quantity Produced</th>
+                                                <th>Supervisor</th>
+                                                <th>Status</th>
+                                                <th>Year</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($productions as $production)
+                                                @php $year = \Carbon\Carbon::parse($production->start_date)->format('Y'); @endphp
+                                                <tr data-year="{{ $year }}">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $production->batch->batch_number ?? 'N/A' }}</td>
+                                                    <td>{{ $production->batch->product->name ?? 'N/A' }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($production->start_date)->format('M d, Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($production->end_date)->format('M d, Y') }}</td>
+                                                    <td>{{ $production->quantity_produced }}</td>
+                                                    <td>{{ $production->supervisor }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ $production->status == 'Completed' ? 'success' : 'warning' }}">
+                                                            {{ $production->status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ $year }}</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="la la-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="la la-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="10" class="text-center text-muted">No production records found.</td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Logistics -->
+                            <div class="tab-pane fade" id="logisticsOps" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-bordered table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Vehicle</th>
+                                                <th>Driver</th>
+                                                <th>Destination</th>
+                                                <th>Status</th>
+                                                <th>Departure</th>
+                                                <th>Arrival</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($logistics as $log)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $log->vehicle_id }}</td>
+                                                    <td>{{ $log->driver_name }}</td>
+                                                    <td>{{ $log->destination }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ $log->status == 'Delivered' ? 'success' : 'warning' }}">
+                                                            {{ $log->status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($log->departure_time)->format('H:i A') }}</td>
+                                                    <td>{{ $log->arrival_time ? \Carbon\Carbon::parse($log->arrival_time)->format('H:i A') : '-' }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="7" class="text-center text-muted">No logistics records available.</td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Quality Control -->
+                            <div class="tab-pane fade" id="qualityOps" role="tabpanel">
+                                <ul class="nav nav-tabs mb-3" id="qualitySubTabs" role="tablist">
+                                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#qcRecords" role="tab">QC Records</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#batchManagement" role="tab">Batch Management</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <!-- QC Records -->
+                                    <div class="tab-pane fade show active" id="qcRecords" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table align-middle table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Batch</th>
+                                                        <th>Inspector</th>
+                                                        <th>Result</th>
+                                                        <th>Remarks</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($quality_checks as $qc)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $qc->batch_number }}</td>
+                                                            <td>{{ $qc->inspector }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{{ $qc->result == 'Pass' ? 'success' : 'danger' }}">{{ $qc->result }}</span>
+                                                            </td>
+                                                            <td>{{ $qc->remarks }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($qc->inspection_date)->format('M d, Y') }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr><td colspan="6" class="text-center text-muted">No quality data yet.</td></tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Batch Management -->
+                                    <div class="tab-pane fade" id="batchManagement" role="tabpanel">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5>Batch Management</h5>
+                                            <select id="batchYearFilter" class="form-select w-auto">
+                                                <option value="">All Years</option>
+                                                @foreach(range(now()->year, now()->year - 5) as $year)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Batch Number</th>
+                                                        <th>Product</th>
+                                                        <th>Production Date</th>
+                                                        <th>Expiry Date</th>
+                                                        <th>Quantity</th>
+                                                        <th>QC Status</th>
+                                                        <th>Supervisor</th>
+                                                        <th>Year</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($batches as $batch)
+                                                        <tr data-year="{{ \Carbon\Carbon::parse($batch->production_date)->format('Y') }}">
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $batch->batch_number }}</td>
+                                                            <td>{{ $batch->product->name ?? 'N/A' }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($batch->production_date)->format('M d, Y') }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($batch->expiry_date)->format('M d, Y') }}</td>
+                                                            <td>{{ $batch->quantity }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{{ $batch->qc_status == 'Pass' ? 'success' : 'danger' }}">
+                                                                    {{ $batch->qc_status }}
+                                                                </span>
+                                                            </td>
+                                                            <td>{{ $batch->supervisor }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($batch->production_date)->format('Y') }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr><td colspan="9" class="text-center text-muted">No batch records found.</td></tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Waste Tracking -->
+                            <div class="tab-pane fade" id="wasteOps" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-bordered table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Waste Type</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Handler</th>
+                                                <th>Disposal Method</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($wastes as $waste)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $waste->waste_type }}</td>
+                                                    <td>{{ $waste->quantity }}</td>
+                                                    <td>{{ $waste->unit }}</td>
+                                                    <td>{{ $waste->handler }}</td>
+                                                    <td>{{ $waste->disposal_method }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($waste->date)->format('M d, Y') }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="7" class="text-center text-muted">No waste records found.</td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="tab-pane fade" id="settings" role="tabpanel">...</div>
         </div>
     </div>
 
     @section('modals')
     <!-- Add your modal content here if needed -->
+    <!-- Add Chemical Modal -->
+    <div class="modal fade" id="addChemicalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Add Chemical</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="addChemicalForm">
+            @csrf
+            <input type="hidden" name="type" value="chemical">
+            <div class="modal-body">
+            <div class="mb-3"><label class="form-label">Name</label><input name="name" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label">Type</label><input name="type" class="form-control"></div>
+            <div class="row">
+                <div class="col-md-6 mb-3"><label>Quantity</label><input name="quantity" type="number" step="0.01" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label>Unit</label><input name="unit" class="form-control"></div>
+            </div>
+            <div class="mb-3"><label>Hazardous?</label>
+                <select name="is_hazardous" class="form-select">
+                <option value="0" selected>No</option>
+                <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="mb-3"><label>Storage Location</label><input name="storage_location" class="form-control"></div>
+            <div class="mb-3"><label>SDS URL</label><input name="sds_url" class="form-control" placeholder="https://..."></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary">Save Chemical</button></div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+    <!-- Edit Chemical Modal (reused, fill via AJAX) -->
+    <div class="modal fade" id="editChemicalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-secondary text-white">
+            <h5 class="modal-title">Edit Chemical</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editChemicalForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="type" value="chemical">
+            <input type="hidden" name="id" id="editChemicalId">
+            <div class="modal-body">
+            <!-- same fields as add -->
+            <div class="mb-3"><label class="form-label">Name</label><input id="editChemName" name="name" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label">Type</label><input id="editChemType" name="type" class="form-control"></div>
+            <div class="row">
+                <div class="col-md-6 mb-3"><label>Quantity</label><input id="editChemQty" name="quantity" type="number" step="0.01" class="form-control" required></div>
+                <div class="col-md-6 mb-3"><label>Unit</label><input id="editChemUnit" name="unit" class="form-control"></div>
+            </div>
+            <div class="mb-3"><label>Hazardous?</label>
+                <select id="editChemHaz" name="is_hazardous" class="form-select">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="mb-3"><label>Storage Location</label><input id="editChemStore" name="storage_location" class="form-control"></div>
+            <div class="mb-3"><label>SDS URL</label><input id="editChemSds" name="sds_url" class="form-control"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary">Save Changes</button></div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+<!-- --- Edit General Modal (for editing general items) --- -->
+<div class="modal fade" id="editGeneralModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title">Edit Item</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editGeneralForm">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="type" value="general">
+        <input type="hidden" name="id" id="editGeneralId">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Item Name</label>
+            <input id="editGeneralName" type="text" name="name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <input id="editGeneralCategory" type="text" name="category" class="form-control">
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Quantity</label>
+              <input id="editGeneralQty" type="number" name="quantity" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Unit</label>
+              <input id="editGeneralUnit" type="text" name="unit" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"><i class="la la-save me-1"></i> Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- --- Finish Add Water Modal (continued) --- -->
+<div class="modal fade" id="addWaterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Water Record</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="addWaterForm">
+        @csrf
+        <input type="hidden" name="type" value="water">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Source</label>
+            <input name="source" class="form-control" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Usage (L)</label>
+              <input name="usage" type="number" step="0.01" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Recycled (%)</label>
+              <input name="recycled_percentage" type="number" step="0.01" class="form-control" min="0" max="100">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quality Level</label>
+            <select name="quality_level" class="form-select">
+              <option value="" selected>Choose...</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="poor">Poor</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Test Date</label>
+            <input name="last_test_date" type="date" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary"><i class="la la-save me-1"></i> Save Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- --- Edit Water Modal --- -->
+<div class="modal fade" id="editWaterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title">Edit Water Record</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editWaterForm">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="type" value="water">
+        <input type="hidden" name="id" id="editWaterId">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Source</label>
+            <input id="editWaterSource" name="source" class="form-control" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Usage (L)</label>
+              <input id="editWaterUsage" name="usage" type="number" step="0.01" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Recycled (%)</label>
+              <input id="editWaterRecycled" name="recycled_percentage" type="number" step="0.01" class="form-control" min="0" max="100">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quality Level</label>
+            <select id="editWaterQuality" name="quality_level" class="form-select">
+              <option value="">Choose...</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="poor">Poor</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Test Date</label>
+            <input id="editWaterTestDate" name="last_test_date" type="date" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"><i class="la la-save me-1"></i> Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+    <!-- add general inventory item -->
+    <div class="modal fade" id="addGeneralModal" tabindex="-1" aria-labelledby="addGeneralModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="la la-plus-circle me-2"></i>Add New Item</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="addGeneralForm">
+                <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Item Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <input type="text" name="category" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" name="quantity" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                    <label class="form-label">Unit</label>
+                    <input type="text" name="unit" class="form-control" required>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-primary"><i class="la la-save me-1"></i> Save</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- end add general inventory item -->
+
+
     <!-- add department -->
     
     <!-- 🧱 Add Department Modal -->
@@ -3460,6 +4333,13 @@
     <script src="{{ asset('adminAssets/libs/imask/imask.min.js')}}"></script>
     <script src="{{ asset('adminAssets/js/pages/forms-advanced.js')}}"></script>
     <script src="{{ asset('adminAssets/js/app.js')}}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#generalTable, #chemicalTable, #waterTable, #equipmentTable, #rawTable').DataTable();
+        });
+    </script>
+
     <script>
         const inputElm = document.querySelector("input[name='prepared_by']");
 

@@ -1778,57 +1778,57 @@
                                     </div>
                                     <!-- Water Sources Details -->
                                    <div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Water Sources Information</h4>
-        <button type="button" class="btn-close" aria-label="Close"></button>
-    </div>
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h4 class="card-title mb-0">Water Sources Information</h4>
+                                            <button type="button" class="btn-close" aria-label="Close"></button>
+                                        </div>
 
-    <div class="card-body pt-3">
-        <form action="" method="post" id="waterSourceForm"> <!-- Moved ID here -->
-            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+                                        <div class="card-body pt-3">
+                                            <form action="" method="post" id="waterSourceForm"> <!-- Moved ID here -->
+                                                <input type="hidden" name="company_id" value="{{ $company->company_id }}">
 
-            <div class="row g-3">
-                <!-- Water Source -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="water_source" class="form-label">Select Water Source</label>
-                        <select name="water_source" id="water_source" class="form-select">
-                            <option value="" selected disabled>Choose...</option>
-                            @foreach($companyWaterSources as $source)
-                                <option value="{{ $source->waterSource->WaterSourcesId }}">{{ $source->waterSource->sources }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+                                                <div class="row g-3">
+                                                    <!-- Water Source -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="water_source" class="form-label">Select Water Source</label>
+                                                            <select name="water_source" id="water_source" class="form-select">
+                                                                <option value="" selected disabled>Choose...</option>
+                                                                @foreach($companyWaterSources as $source)
+                                                                    <option value="{{ $source->waterSource->WaterSourcesId }}">{{ $source->waterSource->sources }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
 
-                <!-- Location -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
-                    </div>
-                </div>
+                                                    <!-- Location -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="location" class="form-label">Location</label>
+                                                            <input type="text" id="location" class="form-control" name="location" placeholder="Enter location">
+                                                        </div>
+                                                    </div>
 
-                <!-- Capacity of Water -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="form-group">
-                        <label for="capacity" class="form-label">Water Capacity (Liters)</label>
-                        <div class="input-group">
-                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                            <input type="number" class="form-control" min="0" name="capacity" value="0">
-                            <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                        </div>
-                    </div>
-                </div>
+                                                    <!-- Capacity of Water -->
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="capacity" class="form-label">Water Capacity (Liters)</label>
+                                                            <div class="input-group">
+                                                                <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                                                                <input type="number" class="form-control" min="0" name="capacity" value="0">
+                                                                <button class="btn btn-outline-primary" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                <!-- Save Button -->
-                <div class="col-12 mt-3 text-end">
-                    <button type="submit" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                                                    <!-- Save Button -->
+                                                    <div class="col-12 mt-3 text-end">
+                                                        <button type="submit" class="btn btn-primary" id="btn-submit-water-source">Save Details</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
 
                                     <!-- Water Sources Management Table -->
                                     <div class="card shadow-sm mt-4">
