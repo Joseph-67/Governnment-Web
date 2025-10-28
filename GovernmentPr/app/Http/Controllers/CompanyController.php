@@ -172,6 +172,7 @@ class CompanyController extends WaterStockMovementController
         $data['quality_controls'] = [];
         $data['maintenances'] = [];
         $data['batches'] = [];
+        $data['annualPlans'] = [];
 
 
         return view('components.apps.companyProfile', $data);

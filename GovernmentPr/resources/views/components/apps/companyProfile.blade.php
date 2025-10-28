@@ -2781,10 +2781,13 @@
                     <div class="card-body">
                         <ul class="nav nav-pills nav-wm mb-3" id="operationTabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#annualPlan">Annual Plan</a>
+                                <a class="nav-link active" data-bs-toggle="tab" href="#annualPlan">
+                                    <i class="la la-calendar d-block"></i>
+                                    Annual Plan
+                                </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#productionOps" role="tab" aria-selected="true">
+                                <a class="nav-link" data-bs-toggle="tab" href="#productionOps" role="tab" aria-selected="true">
                                     <i class="la la-industry d-block"></i>Production
                                 </a>
                             </li>
@@ -2806,42 +2809,42 @@
                         </ul>
 
                         <div class="tab-content">
-                                  <div class="tab-content mt-3">
-                                    <div class="tab-pane fade show active" id="annualPlan">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered align-middle table-hover">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Year</th>
-                                                        <th>Objectives</th>
-                                                        <th>Key Activities</th>
-                                                        <th>Responsible Person</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @forelse($annualPlans as $plan)
-                                                        <tr>
-                                                            <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $plan->year }}</td>
-                                                            <td>{{ $plan->objectives }}</td>
-                                                            <td>{{ $plan->key_activities }}</td>
-                                                            <td>{{ $plan->responsible_person }}</td>
-                                                            <td>
-                                                                <span class="badge bg-{{ $plan->status == 'Completed' ? 'success' : 'warning' }}">
-                                                                    {{ $plan->status }}
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr><td colspan="6" class="text-center text-muted">No annual plans found.</td></tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
-                                        </div>
+                            <div class="tab-pane fade show active" id="annualPlan">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Year</th>
+                                                <th>Objectives</th>
+                                                <th>Key Activities</th>
+                                                <th>Responsible Person</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($annualPlans as $plan)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $plan->year }}</td>
+                                                    <td>{{ $plan->objectives }}</td>
+                                                    <td>{{ $plan->key_activities }}</td>
+                                                    <td>{{ $plan->responsible_person }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ $plan->status == 'Completed' ? 'success' : 'warning' }}">
+                                                            {{ $plan->status }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="6" class="text-center text-muted">No annual plans found.</td></tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <!-- Production -->
-                            <div class="tab-pane fade show active" id="productionOps" role="tabpanel">
+                            <div class="tab-pane fade" id="productionOps" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5>Production Records</h5>
                                     <select id="productionYearFilter" class="form-select w-auto">
@@ -3070,7 +3073,177 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="settings" role="tabpanel">...</div>
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="card card-wm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="la la-cog me-2"></i>General Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="companySettingsForm" method="POST" action="">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Company Name</label>
+                                    <input type="text" name="company_name" class="form-control" value="{{ $company->company_name }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Industry</label>
+                                    <input type="text" name="industry" class="form-control" value="{{ $company->industry }}">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <input type="email" name="email" class="form-control" value="{{ $company->email }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Website URL</label>
+                                    <input type="url" name="website_url" class="form-control" value="{{ $company->website_url }}">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Primary Phone</label>
+                                    <input type="text" name="primary_phone_number" class="form-control" value="{{ $company->primary_phone_number }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Secondary Phone</label>
+                                    <input type="text" name="secondary_phone_number" class="form-control" value="{{ $company->secondary_phone_number }}">
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Address</label>
+                                    <textarea name="address" class="form-control" rows="2">{{ $company->address }}</textarea>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">City</label>
+                                    <input type="text" name="city" class="form-control" value="{{ $company->city }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">State</label>
+                                    <input type="text" name="state" class="form-control" value="{{ $company->state }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Country</label>
+                                    <input type="text" name="country" class="form-control" value="{{ $company->country }}">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Time Zone</label>
+                                    <select name="time_zone" class="form-select">
+                                        @foreach(timezone_identifiers_list() as $tz)
+                                            <option value="{{ $tz }}" {{ $company->time_zone == $tz ? 'selected' : '' }}>{{ $tz }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Fiscal Year Start</label>
+                                    <input type="month" name="fiscal_year_start" class="form-control" value="{{ $company->fiscal_year_start }}">
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-gradient"><i class="la la-save me-1"></i> Save Settings</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card card-wm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="la la-sliders-h me-2"></i>Preferences</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferencesForm">
+                            <div class="row align-items-center g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Theme Mode</label>
+                                    <select class="form-select" name="theme_mode">
+                                        <option value="light">Light</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="auto">Auto</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Language</label>
+                                    <select class="form-select" name="language">
+                                        <option value="en">English</option>
+                                        <option value="fr">French</option>
+                                        <option value="es">Spanish</option>
+                                        <option value="de">German</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Data Display Format</label>
+                                    <select class="form-select" name="data_format">
+                                        <option value="metric">Metric (kg, m³)</option>
+                                        <option value="imperial">Imperial (lb, gal)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="card card-wm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="la la-bell me-2"></i>Notifications</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">Email Alerts</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications">
+                                    <label class="form-check-label" for="smsNotifications">SMS Alerts</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="slackNotifications">
+                                    <label class="form-check-label" for="slackNotifications">Slack/Teams Alerts</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integrations -->
+                <div class="card card-wm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="la la-plug me-2"></i>Integrations & Automation</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small">Connect external services or automate periodic tasks.</p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">API Key</label>
+                                <input type="text" class="form-control" value="{{ $company->api_key ?? '************' }}" readonly>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn btn-outline-muted btn-sm mt-4"><i class="la la-sync me-1"></i>Regenerate Key</button>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="autoSync" checked>
+                                    <label class="form-check-label" for="autoSync">Enable Automatic Data Sync (daily)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
