@@ -35,6 +35,8 @@ class CompanyEmployees extends Model
         'EmployeeNumber',
         'password',
         'LastLogin',
+        'is_delete',
+        'deleted_at'
     ];
 
     protected $hidden = [

@@ -470,7 +470,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Company Employee
     Route::controller(CompanyEmployeesController::class)->group(function() {
-        Route::get('/company-employees', 'index')->name('admin.company-employees');
+        Route::get('/company-employees/{company}', 'index')->name('admin.company-employees');
         Route::get('/search-employee', 'search')->name('admin.search-employee');
         Route::post('/company-employees/store', 'store')->name('admin.store-company-employee');
         Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');

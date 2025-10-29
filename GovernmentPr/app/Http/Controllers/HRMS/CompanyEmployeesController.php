@@ -14,11 +14,30 @@ class CompanyEmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($companyId)
     {
-        //
-        
+        try {
+            // Fetch employees belonging to this company
+            $employees = CompanyEmployees::with(['department', 'manager'])
+                ->where('CompanyID', $companyId)
+                ->where('is_delete', 0)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            // Always return JSON
+            return response()->json([
+                'status' => 'success',
+                'employees' => $employees
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
+
 
     /**
      * Search for company employees based on query parameters.

@@ -37,8 +37,10 @@ return new class extends Migration
             $table->string('ProfilePicture')->nullable();
             $table->string('EmployeeNumber', 30)->nullable();
             $table->string('password');
+            $table->boolean('is_delete')->default(0);
             $table->timestamp('LastLogin')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('CompanyID')->references('CompanyID')->on('companies')->onDelete('cascade');
             $table->foreign('DepartmentID')->references('DepartmentID')->on('company_departments')->onDelete('cascade');
