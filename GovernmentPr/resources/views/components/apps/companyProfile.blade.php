@@ -2548,8 +2548,9 @@
                             <div class="tab-pane fade" id="inv-chemical" role="tabpanel">
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <h5><i class="la la-flask text-primary me-1"></i>Chemical Inventory</h5>
-                                    <button class="btn btn-sm btn-outline-primary"  data-bs-toggle="modal" data-bs-target="#addChemicalModal">
-                                        <i class="la la-plus-circle me-1"></i>Add Chemical</button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="openChemicalModal('add')">
+                                        <i class="la la-plus-circle me-1"></i> Add Chemical
+                                    </button>
                                 </div>
 
                                 <div class="table-responsive">
@@ -4177,6 +4178,7 @@
      @include('components.apps.company.modals.process_modals')
      @include('components.apps.company.modals.department_modals')
      @include('components.apps.company.modals.employee_modals')
+     @include('components.apps.company.modals.chemical_modals')
 
 
 <!-- --- Edit General Modal (for editing general items) --- -->

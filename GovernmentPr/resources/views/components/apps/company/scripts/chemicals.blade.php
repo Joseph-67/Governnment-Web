@@ -1,253 +1,160 @@
-<!-- Enhanced Chemical Management Script with UI Feedback -->
 <script>
-(() => {
-    /*** Utility Functions ***/
-    const escapeHTML = (str = '') => str.replace(/[&<>"']/g, (m) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-    }[m]));
+    // Open modal dynamically
+    function openChemicalModal(operation, data = {}) {
+        const modal = document.querySelector('#chemicalModal');
+        const title = modal.querySelector('#chemicalModalTitle');
+        const body = modal.querySelector('#chemicalModalBody');
+        const form = modal.querySelector('#chemicalForm');
 
-    const showToast = (message, type = 'info') => {
-        const toastContainer = document.querySelector('#toast-container') || document.body;
-        const toast = document.createElement('div');
-        toast.className = `toast align-items-center text-bg-${type} border-0`;
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-        toast.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">${escapeHTML(message)}</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        form.reset();
+        form.classList.remove('was-validated');
+        form.operation.value = operation;
+
+        let html = '';
+
+        if (operation === 'add' || operation === 'edit') {
+            title.textContent = operation === 'add' ? 'Add Chemical' : 'Edit Chemical';
+            html = `
+            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Name</label>
+                    <select name="chemical" class="form-control" required value="${data.chemical || ''}">
+                    <option value="" disabled ${!data.chemical ? 'selected' : ''}>Select Chemical</option>
+                    @foreach($approved_chemicals as $chemical)
+                        <option value="{{ $chemical->chemical_id }}" ${data.chemical == '{{ $chemical->name }}' ? 'selected' : ''}>{{ $chemical->name }}</option>
+                    @endforeach
+                    </select>
+                    <div class="invalid-feedback">Please enter the chemical name.</div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Quantity/Unit</label>
+                    <input name="quantity" type="number" step="0.01" class="form-control" required value="${data.quantity || ''}">
+                    <div class="invalid-feedback">Please enter a quantity.</div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Unit</label>
+                    <input name="unit" class="form-control" value="${data.unit || ''}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Hazardous?</label>
+                    <select name="is_hazardous" class="form-select">
+                        <option value="0" ${data.is_hazardous == 0 ? 'selected' : ''}>No</option>
+                        <option value="1" ${data.is_hazardous == 1 ? 'selected' : ''}>Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Reorder Level</label>
+                    <input name="reorder_level" type="number" step="0.01" class="form-control" value="${data.threshold || ''}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Safety Stock</label>
+                    <input name="safety_stock" type="number" step="0.01" class="form-control" value="${data.max_threshold || ''}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Storage Location</label>
+                    <input name="storage_location" class="form-control" value="${data.storage_location || ''}">
+                </div>
             </div>
-        `;
-        toastContainer.appendChild(toast);
-        new bootstrap.Toast(toast, { delay: 3000 }).show();
-        toast.addEventListener('hidden.bs.toast', () => toast.remove());
-    };
-
-    const validateFields = (fields) => {
-        for (const { value, message } of fields) {
-            if (!value || !value.toString().trim()) {
-                showToast(message, 'danger');
-                return false;
-            }
-        }
-        return true;
-    };
-
-    const postData = async (url, formData) => {
-        const res = await fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
-        return await res.json();
-    };
-
-    const highlightRow = (tr, color = '#d4edda', duration = 1500) => {
-        tr.style.transition = 'background-color 0.5s';
-        const original = tr.style.backgroundColor;
-        tr.style.backgroundColor = color;
-        setTimeout(() => {
-            tr.style.backgroundColor = original || '';
-        }, duration);
-    };
-
-    const renderChemicalTable = (chemicals, highlightId = null) => {
-        const tbody = document.querySelector('#chemicalTable tbody');
-        if (!tbody) return;
-        tbody.innerHTML = chemicals.length
-            ? chemicals.map((chem, i) => `
-                <tr data-id="${chem.company_chemical_id}">
-                    <td>${i + 1}</td>
-                    <td>${escapeHTML(chem.name)}</td>
-                    <td>${escapeHTML(chem.type)}</td>
-                    <td>${escapeHTML(chem.quantity)}</td>
-                    <td>${escapeHTML(chem.unit)}</td>
-                    <td>
-                        <span class="badge bg-${chem.is_hazardous ? 'danger' : 'success'}">
-                            ${chem.is_hazardous ? 'Yes' : 'No'}
-                        </span>
-                    </td>
-                    <td>${escapeHTML(chem.storage_location)}</td>
-                    <td>${chem.updated_at}</td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"><i class="las la-ellipsis-v fs-20"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item btn-view" href="#">View</a></li>
-                                <li><a class="dropdown-item btn-update" href="#">Update</a></li>
-                                <li><a class="dropdown-item btn-delete" href="#">Delete <span class="action-loader d-none ms-2 spinner-border spinner-border-sm"></span></a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item btn-checkin" href="#">Check In <span class="action-loader d-none ms-2 spinner-border spinner-border-sm"></span></a></li>
-                                <li><a class="dropdown-item btn-checkout" href="#">Check Out <span class="action-loader d-none ms-2 spinner-border spinner-border-sm"></span></a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            `).join('')
-            : `<tr><td colspan="9" class="text-center">No chemicals found</td></tr>`;
-
-        if (highlightId) {
-            const row = tbody.querySelector(`tr[data-id="${highlightId}"]`);
-            if (row) highlightRow(row);
-        }
-    };
-
-    /*** Form Submission Functions ***/
-    const submitChemicalForm = async (formId, url, modalId) => {
-        const form = document.querySelector(formId);
-        const modalEl = document.querySelector(modalId);
-        const loader = modalEl.querySelector('.loader');
-        loader.style.display = 'inline-block';
-
-        if (!validateFields([
-            { value: form.querySelector('input[name="company_id"]').value, message: 'Company ID is required' },
-            { value: form.querySelector('select[name="chemical"]').value, message: 'Chemical selection is required' },
-            { value: form.querySelector('input[name="unit_of_measurement"]').value, message: 'Unit of measurement is required' }
-        ])) {
-            loader.style.display = 'none';
-            return;
+            `;
+            if (operation === 'edit') form.id.value = data.id || '';
         }
 
-        try {
-            const result = await postData(url, new FormData(form));
-            loader.style.display = 'none';
-            if (result.status === 'success') {
-                renderChemicalTable(result.company_chemical, form.querySelector('select[name="chemical"]').value);
-                showToast('Chemical saved successfully', 'success');
-                bootstrap.Modal.getInstance(modalEl)?.hide();
-            } else {
-                showToast(result.message || 'Failed to save chemical', 'danger');
-            }
-        } catch (err) {
-            console.error(err);
-            loader.style.display = 'none';
-            showToast('An error occurred', 'danger');
-        }
-    };
-
-    const submitCheckInOut = async (modalId, url) => {
-        const modal = document.querySelector(modalId);
-        const form = modal.querySelector('form');
-        const loader = modal.querySelector('.loader');
-        loader.style.display = 'inline-block';
-
-        if (!validateFields([
-            { value: form.querySelector('[name="quantity"]').value, message: 'Quantity is required' },
-            { value: form.querySelector('[name="date"]').value, message: 'Date is required' },
-            { value: form.querySelector('[name="chemical_id"]').value, message: 'Chemical ID is required' }
-        ])) {
-            loader.style.display = 'none';
-            return;
+        if (operation === 'checkin' || operation === 'checkout') {
+            title.textContent = operation === 'checkin' ? 'Check-In Chemical' : 'Check-Out Chemical';
+            html = `
+                <div class="mb-3">
+                    <label>Chemical Name</label>
+                    <input type="text" class="form-control" value="${data.name}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a quantity.</div>
+                </div>
+                <div class="mb-3">
+                    <label>Date</label>
+                    <input type="date" name="date" class="form-control" required value="${new Date().toISOString().slice(0,10)}">
+                    <div class="invalid-feedback">Please select a date.</div>
+                </div>
+            `;
+            form.chemical_id.value = data.id || '';
         }
 
-        try {
-            const result = await postData(url, new FormData(form));
-            loader.style.display = 'none';
-            if (result.status === 'success') {
-                renderChemicalTable(result.company_chemical, form.querySelector('[name="chemical_id"]').value);
-                showToast('Operation successful', 'success');
-                bootstrap.Modal.getInstance(modal)?.hide();
-            } else {
-                showToast(result.message || 'Operation failed', 'danger');
-            }
-        } catch (err) {
-            console.error(err);
-            loader.style.display = 'none';
-            showToast('An error occurred', 'danger');
-        }
-    };
-
-    const triggerModal = (modalId, fields = []) => {
-        const modal = document.querySelector(modalId);
-        fields.forEach(({ name, value }) => {
-            const input = modal.querySelector(`[name="${name}"]`);
-            if (input) input.value = value;
-        });
+        body.innerHTML = html;
         new bootstrap.Modal(modal).show();
-    };
+    }
 
-    /*** Event Listeners ***/
-    document.querySelector('#btn-submit-chemical')?.addEventListener('click', () => {
-        submitChemicalForm('#chemical-form', "{{ route('admin.store-company-chemical') }}", '#addChemicalModal');
-    });
+    // Get data from table row
+    function getChemicalData(element) {
+        const tr = element.closest('tr');
+        return {
+            id: tr.dataset.id,
+            name: tr.dataset.name,
+            type: tr.dataset.type,
+            quantity: tr.dataset.quantity,
+            unit: tr.dataset.unit,
+            is_hazardous: tr.dataset.is_hazardous,
+            storage_location: tr.dataset.storage_location,
+            sds_url: tr.dataset.sds_url
+        };
+    }
 
-    document.querySelector('#btn-submit-check-in-chemical')?.addEventListener('click', () => {
-        submitCheckInOut('#checkInChemicalModal', "{{ route('admin.save-company-chemical-check-in') }}");
-    });
+    // Submit form with AJAX + spinner + validation
+    document.querySelector('#chemicalForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
 
-    document.querySelector('#btn-submit-check-out-chemical')?.addEventListener('click', () => {
-        submitCheckInOut('#checkOutChemicalModal', "{{ route('admin.save-company-chemical-check-out') }}");
-    });
+        form.classList.remove('was-validated');
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            showToast('Please fill all required fields correctly', 'danger');
+            return;
+        }
 
-    document.querySelector('#chemicalTable tbody').addEventListener('click', async (e) => {
-        const tr = e.target.closest('tr');
-        if (!tr) return;
-        const chemicalId = tr.dataset.id;
+        const btn = document.querySelector('#chemicalSubmitBtn');
+        const btnText = document.querySelector('#chemicalBtnText');
+        const btnLoader = document.querySelector('#chemicalBtnLoader');
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline-block';
+        btn.disabled = true;
 
-        const loaderSpan = e.target.closest('.dropdown-item')?.querySelector('.action-loader');
-        if (loaderSpan) loaderSpan.classList.remove('d-none');
+        const operation = form.operation.value;
+        let url = '';
+        switch (operation) {
+            case 'add':
+                url = "{{ route('admin.store-company-chemical') }}"; break;
+            case 'edit':
+                url = `/save-company-chemical/${form.id.value}`; break;
+            case 'checkin':
+                url = "{{ route('admin.save-company-chemical-check-in') }}"; break;
+            case 'checkout':
+                url = "{{ route('admin.save-company-chemical-check-out') }}"; break;
+        }
 
         try {
-            // Update
-            if (e.target.closest('.btn-update')) {
-                triggerModal('#addChemicalModal', [
-                    { name: 'company_id', value: tr.dataset.companyId },
-                    { name: 'chemical', value: chemicalId },
-                    { name: 'unit_of_measurement', value: tr.children[4].textContent },
-                    { name: 'threshold', value: tr.dataset.threshold || '' }
-                ]);
-            }
+            const res = await fetch(url, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await res.json();
 
-            // Delete
-            if (e.target.closest('.btn-delete')) {
-                if (!confirm('Are you sure you want to delete this chemical?')) return;
-                const result = await postData(`{{ route('admin.delete-company-chemical', '') }}/${chemicalId}`, new FormData());
-                if (result.status === 'success') {
-                    tr.remove();
-                    showToast('Chemical deleted successfully', 'success');
-                } else {
-                    showToast(result.message || 'Delete failed', 'danger');
-                }
-            }
-
-            // Check-in
-            if (e.target.closest('.btn-checkin')) {
-                triggerCheckInChemical(chemicalId, chemicalId, tr.dataset.companyId, tr.children[1].textContent);
-            }
-
-            // Check-out
-            if (e.target.closest('.btn-checkout')) {
-                triggerCheckOutChemical(chemicalId, chemicalId, tr.dataset.companyId, tr.children[1].textContent);
+            if (data.status === 'success') {
+                renderChemicalTable(data.company_chemical, form.id.value || form.chemical_id.value);
+                showToast(`${operation.charAt(0).toUpperCase() + operation.slice(1)} successful`, 'success');
+                bootstrap.Modal.getInstance(document.querySelector('#chemicalModal')).hide();
+            } else {
+                showToast(data.message || 'Operation failed', 'danger');
             }
         } catch (err) {
             console.error(err);
             showToast('An error occurred', 'danger');
         } finally {
-            if (loaderSpan) loaderSpan.classList.add('d-none');
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+            btn.disabled = false;
         }
     });
 
-    window.triggerCheckInChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
-        triggerModal('#checkInChemicalModal', [
-            { name: 'checkIn_chemical_id', value: companyChemicalID },
-            { name: 'chemical_id', value: chemicalID },
-            { name: 'company_id', value: companyID },
-            { name: 'checkIn_chemical_name', value: chemicalName }
-        ]);
-    };
-
-    window.triggerCheckOutChemical = (companyChemicalID, chemicalID, companyID, chemicalName) => {
-        triggerModal('#checkOutChemicalModal', [
-            { name: 'checkOut_chemical_id', value: companyChemicalID },
-            { name: 'chemical_id', value: chemicalID },
-            { name: 'company_id', value: companyID },
-            { name: 'checkOut_chemical_name', value: chemicalName }
-        ]);
-    };
-})();
 </script>
