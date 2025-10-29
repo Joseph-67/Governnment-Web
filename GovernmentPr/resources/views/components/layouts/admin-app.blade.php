@@ -409,7 +409,8 @@
                                         <a class="nav-link" href="">Company</a>
                                     </li><!--end nav-item-->
                                     @endif
-                                  @if(Auth::guard('admin')->check())
+                                    @can('view-mail')  
+                                                                      @if(Auth::guard('admin')->check())
                                   <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
@@ -418,7 +419,7 @@
                                         <a class="nav-link" href="{{ route('view-email-app') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
                                     @endif
-                                    
+                                    @endcan                                  
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.stock-trading') }}">Transfer Logs</a>

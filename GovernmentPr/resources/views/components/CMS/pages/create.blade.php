@@ -817,6 +817,7 @@
                                             <option value="sidebar-right" @selected($tpl==='sidebar-right' )>Sidebar
                                                 Right</option>
                                             <option value="landing" @selected($tpl==='landing' )>Landing Page</option>
+                                            <option value="default" @selected($tpl==='default')>Default</option>
                                             <option value="blog" @selected($tpl==='blog' )>Blog Post</option>
                                             <option value="faq" @selected($tpl==='faq' )>FAQ Page</option>
                                         </select>
@@ -1829,7 +1830,7 @@
             const inputField = document.getElementById(activeInputId);
             const previewContainer = document.getElementById(activePreviewId);
 
-            inputField.value = allowMultiple ? selectedMedia.join(',') : selectedMedia[0];
+            inputField.value = allowMultiple ? JSON.stringify(selectedMedia) : selectedMedia[0];
 
             if (previewContainer) {
                 previewContainer.innerHTML = '';
@@ -1887,41 +1888,6 @@
                 };
             });
         };
-    </script>
-    <!-- Uppy Upload -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const uppy = new Uppy.Uppy({
-                autoProceed: false,
-                allowMultipleUploads: true,
-                restrictions: {
-                    allowedFileTypes: ['image/*', 'video/*'] // Adjust as needed
-                }
-            })
-            .use(Uppy.Dashboard, {
-                target: '#uppy-upload',
-                inline: true,
-                height: 300,
-                proudlyDisplayPoweredByUppy: false
-            })
-            .use(Uppy.XHRUpload, {
-                endpoint: '{{ route("admin.media.store") }}', // Assume a route for upload
-                formData: true,
-                fieldName: 'file'
-            });
-
-            uppy.on('complete', (result) => {
-                if (result.successful.length > 0) {
-                    Toastify({
-                        text: 'Files uploaded successfully!',
-                        backgroundColor: "#28a745"
-                    }).showToast();
-                    // Switch to library tab and reload media
-                    document.getElementById('library-tab').click();
-                    loadMedia();
-                }
-            });
-        });
     </script>
     @endsection
 </x-layouts.admin-app>

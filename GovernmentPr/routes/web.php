@@ -36,6 +36,8 @@ Route::middleware('guest:web')->group(function(){
     Route::get('/', function () {
         return redirect('home');
     });
+    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
+    Route::get('/contact-us', [ContactUsController::class, 'displayContact'])->name('contact-us');
     Route::get('/{slug}', [PageController::class, 'show'])->middleware('page.available')->name('page.show');   
 });
 

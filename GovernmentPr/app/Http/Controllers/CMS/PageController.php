@@ -77,9 +77,26 @@ class PageController extends Controller
     public function show($slug)
     {
         $page = Page::where('slug', $slug)->where('status', 'published')->firstOrFail();
-        // dd($page);
+        $sliderImages = json_decode($page->slider_images, true) ?? [];
+        
+        // Process slider images to get proper URLs
+        if (!empty($sliderImages)) {
+            foreach ($sliderImages as &$slide) {
+                if (!empty($slide['image'])) {
+                    // Check if it's a media ID or already a URL
+                    if (is_numeric($slide['image'])) {
+                        $media = Media::find($slide['image']);
+                        $slide['image'] = $media ? $media->url : asset('MainAssets/img/slider/default-slide.jpg');
+                    } elseif (!filter_var($slide['image'], FILTER_VALIDATE_URL)) {
+                        // If it's not a URL, assume it's a filename in the slider directory
+                        $slide['image'] = asset('MainAssets/img/slider/' . $slide['image']);
+                    }
+                }
+            }
+        }
+        
         $view = view()->exists("components.templates.$page->template") ? "components.templates.$page->template" : "components.templates.default";
-        return view($view, compact('page'));
+        return view($view, compact('page', 'sliderImages'));
     }
 
     /**
@@ -186,6 +203,11 @@ class PageController extends Controller
      */
     private function validateRequest(Request $request, $ignoreId = null)
     {
+        // dd($request->all());
+        if ($request->has('gallery_images') && is_string($request->gallery_images)) {
+            $data['gallery_images'] = json_decode($request->gallery_images, true);
+            $request->merge(['gallery_images' => $data['gallery_images']]);
+        }
         return Validator::make($request->all(), [
             'title'        => 'required|string|max:255|unique:pages,title,' . $ignoreId . ',page_id',
             'slug'         => 'nullable|string|max:255|unique:pages,slug,' . $ignoreId . ',page_id',
@@ -251,10 +273,13 @@ class PageController extends Controller
             'footer_widgets'   => 'nullable|array',
             'footer_widgets.*' => 'nullable|string|max:255',
             'enable_slider'        => 'nullable|boolean',
-            'slider_images'        => 'nullable|array',
-            'slider_images.*.image'=> 'nullable|string',
-            'slider_images.*.caption'=> 'nullable|string|max:255',
-            'slider_images.*.link'   => 'nullable|url',
+            'slides'        => 'nullable|array',
+            'slides.*.title'     => 'nullable|string|max:255',
+            'slides.*.image'=> 'nullable|string',
+            'slides.*.caption'=> 'nullable|string|max:255',
+            'slides.*.media_link'=> 'nullable|string|max:255',
+            'slides.*.link'   => 'nullable|url',
+            'slides.*.order'  => 'nullable|integer',
             'reusable_components'  => 'nullable|array',
             'contact_form_enabled' => 'nullable|boolean',
             'contact_form_email'  => 'nullable|email',
@@ -295,6 +320,7 @@ class PageController extends Controller
      */
     private function mapPageData(array $data)
     {
+        // dd($data);
          return [
             'title'               => $data['title'] ?? null,
             'slug'                => $data['slug'] ?? null,
@@ -316,8 +342,8 @@ class PageController extends Controller
             'author_id'           => $data['author_id'] ?? Auth::id(),
             
             // tags & categories
-            'tags'                => $data['tags'] ?? json_encode([]),
-            'categories'          => $data['categories'] ?? json_encode([]),
+            'tags'                => json_encode($data['tags'] ?? []),
+            'categories'          => json_encode($data['categories'] ?? []),
 
             // SEO
             'meta_title'          => $data['meta_title'] ?? null,
@@ -340,7 +366,7 @@ class PageController extends Controller
 
             // Media
             'featured_image'      => $data['featured_image'] ?? null,
-            'gallery_images'      => $data['gallery_images'] ?? json_encode([]),
+            'gallery_images'      => json_encode($data['gallery_images'] ?? []),
             'hero_bg'             => $data['hero_bg'] ?? null,
 
             // Hero
@@ -357,8 +383,8 @@ class PageController extends Controller
 
             // Components
             'enable_slider'       => $data['enable_slider'] ?? false,
-            'slider_images'       => $data['slider_images'] ?? json_encode([]),
-            'reusable_components' => $data['reusable_components'] ?? json_encode([]),
+            'slider_images'       => json_encode($data['slides'] ?? []),
+            'reusable_components' => json_encode($data['reusable_components'] ?? []),
             'contact_form_enabled'=> $data['contact_form_enabled'] ?? false,
             'contact_form_email'  => $data['contact_form_email'] ?? false,
             'contact_form_subject' => $data['contact_form_subject'] ?? false,
@@ -367,13 +393,13 @@ class PageController extends Controller
             'newsletter_provider' => $data['newsletter_provider'] ?? false,
 
             // Access
-            'visible_roles'       => $data['visible_roles'] ?? json_encode([]),
-            'device_visibility'   => $data['device_visibility'] ?? json_encode([]),
-            'polls_surveys'       => $data['polls_surveys'] ?? json_encode([]),
-            'dynamic_tables'      => $data['dynamic_tables'] ?? json_encode([]),
-            'geo_rules'           => $data['geo_rules'] ?? json_encode([]),
-            'conditional_logic'   => $data['conditional_logic'] ?? json_encode([]),
-            'embed_code'          => $data['embed_code'] ?? json_encode([]),
+            'visible_roles'       => json_encode($data['visible_roles'] ?? []),
+            'device_visibility'   => json_encode($data['device_visibility'] ?? []),
+            'polls_surveys'       => json_encode($data['polls_surveys'] ?? []),
+            'dynamic_tables'      => json_encode($data['dynamic_tables'] ?? []),
+            'geo_rules'           => json_encode($data['geo_rules'] ?? []),
+            'conditional_logic'   => json_encode($data['conditional_logic'] ?? []),
+            'embed_code'          => json_encode($data['embed_code'] ?? []),
 
             // Customization
             'custom_css'          => $data['custom_css'] ?? null,
@@ -383,10 +409,10 @@ class PageController extends Controller
 
             // Analytics
             'tracking_code'       => $data['tracking_code'] ?? null,
-            'ab_variants'         => $data['ab_variants'] ?? json_encode([]),
-            'conversion_goals'    => $data['conversion_goals'] ?? json_encode([]),
-            'layout'              => $data['layout'] ?? json_encode([]),
-            'template_alt'        => $data['template_alt'] ?? json_encode([]),
+            'ab_variants'         => json_encode($data['ab_variants'] ?? []),
+            'conversion_goals'    => json_encode($data['conversion_goals'] ?? []),
+            'layout'              => json_encode($data['layout'] ?? []),
+            'template_alt'        => json_encode($data['template_alt'] ?? []),
             // Meta
             'revision_notes'      => $data['revision_notes'] ?? null,
         ];
