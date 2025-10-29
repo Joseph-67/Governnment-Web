@@ -26,7 +26,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Department</button>
+                        <button type="submit" class="btn btn-primary" id="departmentSubmitBtn">Save Department</button>
                     </div>
                 </div>
             </form>
@@ -34,3 +34,4 @@
     </div>
 </div>
 <!-- add department -->
+ 
