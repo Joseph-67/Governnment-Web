@@ -1,5 +1,4 @@
 <script>
-            destroy: true,
 document.addEventListener('DOMContentLoaded', function () {
     let employeesLoaded = false;
     let employeeCache = [];
