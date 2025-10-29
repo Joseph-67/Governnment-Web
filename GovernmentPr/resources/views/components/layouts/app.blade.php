@@ -221,6 +221,7 @@
                   <div class="tp-header-menu">
                      <nav class="tp-main-menu-content">
                         <ul>
+                           <li class="has-dropdown"><a href="{{ route('home') }}">HOME</a></li>
                             @foreach($groupedPages->get(null, collect()) as $page)
                                 <li class="{{ $groupedPages->has($page->page_id) ? 'has-dropdown' : '' }}">
                                     <a href="{{ route('page.show', $page->slug) }}">
@@ -254,6 +255,7 @@
                                     @endif
                                 </li>
                             @endforeach
+                            <li><a href="{{ route('contact-us') }}">CONTACT</a></li>
                         </ul>
                      </nav>
                   </div>
