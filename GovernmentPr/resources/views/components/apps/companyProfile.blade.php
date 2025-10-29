@@ -4175,75 +4175,9 @@
      @include('components.apps.company.modals.waste_modals')
      @include('components.apps.company.modals.report')
      @include('components.apps.company.modals.process_modals')
+     @include('components.apps.company.modals.department_modals')
      @include('components.apps.company.modals.employee_modals')
-    <!-- Add Chemical Modal -->
-    <div class="modal fade" id="addChemicalModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-        <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Add Chemical</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <form id="addChemicalForm">
-            @csrf
-            <input type="hidden" name="type" value="chemical">
-            <div class="modal-body">
-            <div class="mb-3"><label class="form-label">Name</label><input name="name" class="form-control" required></div>
-            <div class="mb-3"><label class="form-label">Type</label><input name="type" class="form-control"></div>
-            <div class="row">
-                <div class="col-md-6 mb-3"><label>Quantity</label><input name="quantity" type="number" step="0.01" class="form-control" required></div>
-                <div class="col-md-6 mb-3"><label>Unit</label><input name="unit" class="form-control"></div>
-            </div>
-            <div class="mb-3"><label>Hazardous?</label>
-                <select name="is_hazardous" class="form-select">
-                <option value="0" selected>No</option>
-                <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="mb-3"><label>Storage Location</label><input name="storage_location" class="form-control"></div>
-            <div class="mb-3"><label>SDS URL</label><input name="sds_url" class="form-control" placeholder="https://..."></div>
-            </div>
-            <div class="modal-footer"><button class="btn btn-primary">Save Chemical</button></div>
-        </form>
-        </div>
-    </div>
-    </div>
 
-    <!-- Edit Chemical Modal (reused, fill via AJAX) -->
-    <div class="modal fade" id="editChemicalModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-        <div class="modal-header bg-secondary text-white">
-            <h5 class="modal-title">Edit Chemical</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <form id="editChemicalForm">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="type" value="chemical">
-            <input type="hidden" name="id" id="editChemicalId">
-            <div class="modal-body">
-            <!-- same fields as add -->
-            <div class="mb-3"><label class="form-label">Name</label><input id="editChemName" name="name" class="form-control" required></div>
-            <div class="mb-3"><label class="form-label">Type</label><input id="editChemType" name="type" class="form-control"></div>
-            <div class="row">
-                <div class="col-md-6 mb-3"><label>Quantity</label><input id="editChemQty" name="quantity" type="number" step="0.01" class="form-control" required></div>
-                <div class="col-md-6 mb-3"><label>Unit</label><input id="editChemUnit" name="unit" class="form-control"></div>
-            </div>
-            <div class="mb-3"><label>Hazardous?</label>
-                <select id="editChemHaz" name="is_hazardous" class="form-select">
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="mb-3"><label>Storage Location</label><input id="editChemStore" name="storage_location" class="form-control"></div>
-            <div class="mb-3"><label>SDS URL</label><input id="editChemSds" name="sds_url" class="form-control"></div>
-            </div>
-            <div class="modal-footer"><button class="btn btn-primary">Save Changes</button></div>
-        </form>
-        </div>
-    </div>
-    </div>
 
 <!-- --- Edit General Modal (for editing general items) --- -->
 <div class="modal fade" id="editGeneralModal" tabindex="-1" aria-hidden="true">
@@ -4425,43 +4359,7 @@
 
 
     <!-- add department -->
-    
-    <!-- 🧱 Add Department Modal -->
-    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="addDepartmentModalLabel" class="modal-title">Add New Department</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="post" id="department-form" class="needs-validation" novalidate>
-                    <div class="modal-body">
-                        @csrf
-                        <input type="hidden" name="company_id" value="{{ $company->company_id }}">
-                        <div class="row g-3 align-items-staert">
-                            <div class="col-md-6">
-                                <label for="department_name" class="form-label fw-bold">Department Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control border-primary" id="department_name" name="department_name" required placeholder="Enter department name">
-                                <div class="invalid-feedback">Please enter a department name.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="taggable-container " id="manager-tag-input-1">
-                                    <label for="manager" class="form-label fw-bold">Department Head / Manager</label>
-                                    <div class="manager-tag-input-1 manager-tag-input border-primary bg-light">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save Department</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- add department -->
+
      <!-- Add employees -->
 
     <!-- workflow management -->
@@ -5311,6 +5209,7 @@
     @include('components.apps.company.scripts.utils')
     @include('components.apps.company.scripts.departments')
     @include('components.apps.company.scripts.employee')
+    @include('components.apps.company.scripts.chemicals')
     <script>
         $(document).ready(function() {
             $('#generalTable, #chemicalTable, #waterTable, #equipmentTable, #rawTable').DataTable();

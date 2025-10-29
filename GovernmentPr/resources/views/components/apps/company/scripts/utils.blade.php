@@ -219,3 +219,57 @@
         }
     }
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ----------------------- LOAD DEPARTMENTS -----------------------
+    async function loadDepartments(selectSelector) {
+        console.log("Trigering the function");
+        
+        const companyId = "{{ $company->company_id ?? '' }}";
+        const url = `{{ route('admin.get-departments', ['companyId' => 'COMPANY_ID']) }}`.replace('COMPANY_ID', companyId);
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const result = await response.json();
+
+            if (result.status === 'success' && Array.isArray(result.departments)) {
+                const select = document.querySelector(selectSelector);
+                if (!select) return;
+
+                // Clear existing options
+                select.innerHTML = '<option value="" selected disabled>Choose...</option>';
+
+                // Populate departments
+                result.departments.forEach(dep => {
+                    const option = document.createElement('option');
+                    option.value = dep.DepartmentID;
+                    option.textContent = dep.DepartmentName;
+                    select.appendChild(option);
+                });
+            } else {
+                console.warn('No departments found or invalid response.');
+            }
+        } catch (error) {
+            console.error('Error loading departments:', error);
+        }
+    }
+
+    // ----------------------- POPULATE ON MODAL SHOW -----------------------
+    const addModal = document.getElementById('addEmployeeModal');
+    if (addModal) {
+        addModal.addEventListener('show.bs.modal', () => {
+            console.log('Employee modal opened');
+            
+            loadDepartments('#employee_department')
+        });
+    }
+
+    const editModal = document.getElementById('editEmployeeModal');
+    if (editModal) {
+        editModal.addEventListener('show.bs.modal', () => loadDepartments('#editEmployeeModal select[name="DepartmentID"]'));
+    }
+
+});
+</script>

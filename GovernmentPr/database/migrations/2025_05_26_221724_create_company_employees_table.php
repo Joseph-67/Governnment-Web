@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('Gender', ['Male', 'Female', 'Other'])->nullable();
             $table->string('JobTitle', 100)->nullable();
             $table->unsignedBigInteger('DepartmentID');
-            $table->json('ManagerIDs')->nullable();
+            // $table->json('ManagerIDs')->nullable();
             $table->date('HireDate')->nullable();
             $table->enum('Status', ['Active', 'Inactive', 'On Leave', 'Terminated'])->default('Active');
             $table->text('Address')->nullable();
