@@ -2194,32 +2194,32 @@
                         <ul class="nav nav-tabs mb-3" id="hrSubTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="hr-overview-tab" data-bs-toggle="tab" data-bs-target="#hr-overview" type="button" role="tab">
-                                    <i class="bi bi-speedometer2"></i> Overview
+                                    <i class="la la-tachometer-alt"></i> Overview
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="department-tab" data-bs-toggle="tab" data-bs-target="#department" type="button" role="tab">
-                                    <i class="bi bi-person-plus"></i> Departments & Recruitment
+                                    <i class="la la-user-plus"></i> Departments & Recruitment
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab">
-                                    <i class="bi bi-people"></i> Employees
+                                    <i class="la la-users"></i> Employees
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="training-tab" data-bs-toggle="tab" data-bs-target="#training" type="button" role="tab">
-                                    <i class="bi bi-mortarboard"></i> Training & Development
+                                    <i class="la la-graduation-cap"></i> Training & Development
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="performance-tab" data-bs-toggle="tab" data-bs-target="#performance" type="button" role="tab">
-                                    <i class="bi bi-bar-chart"></i> Performance
+                                    <i class="la la-chart-bar"></i> Performance
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="welfare-tab" data-bs-toggle="tab" data-bs-target="#welfare" type="button" role="tab">
-                                    <i class="bi bi-heart"></i> Welfare
+                                    <i class="la la-heart"></i> Welfare
                                 </button>
                             </li>
                         </ul>
