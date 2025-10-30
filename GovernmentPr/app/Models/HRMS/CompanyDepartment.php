@@ -14,6 +14,7 @@ class CompanyDepartment extends Model
         'DepartmentName',
         'ManagerIDs',
         'CompanyID',
+        'Status'
     ];
     protected $casts = [
         'ManagerIDs' => 'array', // Assuming ManagerIDs is stored as a JSON array
@@ -32,6 +33,10 @@ class CompanyDepartment extends Model
     public function managers()
     {
         return $this->hasMany(CompanyEmployees::class, 'EmployeeID', 'ManagerIDs');
+    }
+
+    public function employees()  {
+        return $this->hasMany(CompanyEmployees::class, 'DepartmentID', 'DepartmentID');
     }
 
 }

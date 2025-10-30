@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 02, 2025 at 06:31 AM
--- Server version: 5.7.36
--- PHP Version: 7.4.26
+-- Generation Time: Jul 29, 2025 at 12:13 PM
+-- Server version: 8.3.0
+-- PHP Version: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,7 +27,41 @@ SET time_zone = "+00:00";
 -- Table structure for table `companies`
 --
 
+DROP TABLE IF EXISTS `companies`;
+CREATE TABLE IF NOT EXISTS `companies` (
+  `company_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `industry` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `industry_process` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `primary_phone_number` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `secondary_phone_number` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zip_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mgrs` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_of_establishment` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `number_of_employees` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `operations_manager` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contact_person_full_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contact_person_position` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contact_person_contact_number` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_sharable` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`company_id`),
+  UNIQUE KEY `companies_company_name_unique` (`company_name`)
+) ENGINE=MyISAM AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `companies`
+--
 
 INSERT INTO `companies` (`company_id`, `company_name`, `industry`, `industry_process`, `email`, `primary_phone_number`, `secondary_phone_number`, `country`, `state`, `city`, `address`, `zip_code`, `longitude`, `latitude`, `mgrs`, `website_url`, `date_of_establishment`, `number_of_employees`, `operations_manager`, `contact_person_full_name`, `contact_person_position`, `contact_person_contact_number`, `is_sharable`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Afdin Petroleum lpg', 'Petrochemicals', '', 'Info@afdinlpg.com', '8025625555.0', NULL, 'Nigeria', 'Kano', 'Kano', '11 club road Kano', NULL, '4º12\'53.8\"N', '46º24\'22.5\"W', NULL, 'Www.Afdinlpg.com', '2001-01-01', '25.0', 'Lawal Dahiru Mangal', 'Anas Waziri', 'Plant Operations Manager', '8035780101.0', '', 'active', NULL, '2025-01-26 23:15:35'),
@@ -190,7 +224,14 @@ INSERT INTO `companies` (`company_id`, `company_name`, `industry`, `industry_pro
 (158, 'Woodworks furniture', 'Wood and Furniture', '', 'Woodwork@gmail.com', '8099086214.0', NULL, 'Nigeria', 'Rivers', NULL, '56 Ikwerre road, mgbuosimrri, port-harcourt', NULL, '6981667.0', '4826126.0', NULL, '', '2014-01-01', '70.0', '', 'Mr Ubaida', 'Manager', '8099086214.0', '', 'active', NULL, NULL),
 (159, 'Coteck furniture ltd', 'Wood and Furniture', '', 'coteckfurniture@gmail.com', '8088844684.0', NULL, 'Nigeria', 'Rivers', NULL, '11 Collyns owhonda street, eagle island, port-harcourt', NULL, '69811334.0', '4806162.0', NULL, '', '2014-01-01', '80.0', '', 'Chinasa Ezemonye', 'Manager', '8088844684.0', '', 'active', NULL, NULL);
 INSERT INTO `companies` (`company_id`, `company_name`, `industry`, `industry_process`, `email`, `primary_phone_number`, `secondary_phone_number`, `country`, `state`, `city`, `address`, `zip_code`, `longitude`, `latitude`, `mgrs`, `website_url`, `date_of_establishment`, `number_of_employees`, `operations_manager`, `contact_person_full_name`, `contact_person_position`, `contact_person_contact_number`, `is_sharable`, `status`, `created_at`, `updated_at`) VALUES
-(160, 'Oichu-lofu wood craft', 'Wood and Furniture', '', 'Oichulufowood@gmail.com', '7031596389.0', NULL, 'Nigeria', 'Rivers', NULL, '6 Peter Odili road, rainbow town, port-harcourt', NULL, '7038577.0', '4799607.0', NULL, '', '2014-01-01', '80.0', '', 'Godwin Ocho', 'Manager', '7035363539.0', '', 'active', NULL, NULL);
+(160, 'Oichu-lofu wood craft', 'Wood and Furniture', '', 'Oichulufowood@gmail.com', '7031596389.0', NULL, 'Nigeria', 'Rivers', NULL, '6 Peter Odili road, rainbow town, port-harcourt', NULL, '7038577.0', '4799607.0', NULL, '', '2014-01-01', '80.0', '', 'Godwin Ocho', 'Manager', '7035363539.0', '', 'active', NULL, NULL),
+(161, 'VIVA PLASTIC & METAL CO.LTD', 'Lubricants and Petrochemical Products', NULL, 'office@decent-polybag.com', '+2349029783729', '+2349029783729', 'Nigeria', 'Kano', 'Kano', 'km 18 hadejia road, gunduwawa, kano', NULL, '8.63136657', '12.00429107', NULL, NULL, '1998-01-01', '647', '[{\"value\":\"1\",\"name\":\"Aliyu Nabesu\",\"avatar\":\"https://ui-avatars.com/api/?name=Aliyu%20Nabesu\",\"email\":\"prepra@live.com\",\"role\":\"user\"}]', 'Aliyu Nabesu', 'Consultant', '+2349029783729', 'inactive', 'active', '2025-07-16 13:11:43', '2025-07-16 13:11:43'),
+(162, 'Salasar International Industries Limited', 'Renewable Energy', NULL, 'mai5h4nu@gmail.com', '+2348033895237', NULL, 'Nigeria', 'Kano', 'Kano', 'no 19 opp Nigerian Cable Industries shanada Kano.', NULL, '8.49230700', '11.95619250', NULL, NULL, '1997-01-01', '50', '[{\"value\":\"3\",\"name\":\"Sani Aliko\",\"avatar\":\"https://ui-avatars.com/api/?name=Sani%20Aliko\",\"email\":\"mai5h4nu@gmail.com\",\"role\":\"user\"}]', 'Sani Aliko Maishanu', 'General Manager Business Development', '+2348033895237', 'inactive', 'active', '2025-07-17 12:16:03', '2025-07-17 12:16:03'),
+(163, 'SALVIN-BSV INDUSTRIES LTD', 'Plastics and Packaging', NULL, 'bsvpersonnel@gmail.com', '+2347034557570', NULL, 'Nigeria', 'Kano', 'Kano', '373, challawa industrial estate kano.', NULL, '8.46967110', '11.89714580', NULL, 'https://salvin.com/https://salvin.com/', NULL, '420', '[{\"value\":\"4\",\"name\":\"M.A OYEDENU ADMIN\",\"avatar\":\"https://ui-avatars.com/api/?name=M.A%20OYEDENU%20ADMIN\",\"email\":\"bsvpersonnel@gmail.com\",\"role\":\"user\"}]', 'M.A Oyedenu', 'HR/ADMIN MANAGER', '+2347034557570', 'inactive', 'active', '2025-07-17 12:43:12', '2025-07-28 14:38:55'),
+(164, 'MARSHALL FOODS KANO FREE TRADE ZONE PANISALI', 'Food and Beverage Processing', NULL, NULL, '+2347012424773', NULL, 'Nigeria', 'Kano', 'Kano', 'kano free trade zone panisali', NULL, '8.54789690', '12.07050660', NULL, NULL, '1969-01-01', '56', NULL, 'Muhammed Musa', 'Production Manager', '+2347012424773', 'inactive', 'active', '2025-07-28 12:27:45', '2025-07-28 12:27:45'),
+(165, 'MAMUDA FOODS NIG LTD', 'Food and Beverage Processing', NULL, NULL, '+2348038788030', '+2348037126117', 'Nigeria', 'Kano', 'Kano', 'plot 59 & 61 challawa industrial estate, kano.', NULL, '8.47550090', '11.90156406', NULL, NULL, '2021-01-01', '3200', NULL, 'HRM MR David', 'HR MANAGER', '+2348037126117', 'inactive', 'active', '2025-07-28 13:30:17', '2025-07-28 13:30:17'),
+(166, 'Northern Nigeria Flour Mills PLC', 'Food and Beverage Processing', NULL, NULL, '+2347049214123', NULL, 'Nigeria', 'Kano', 'Kano', 'maimalan road, Bompaii Kano.', NULL, NULL, NULL, NULL, NULL, '1975-01-01', '108', NULL, 'Isah Eletu', 'Technical Manager', '+2347049214123', 'inactive', 'active', '2025-07-28 13:51:44', '2025-07-28 13:51:44'),
+(167, 'UNIQUE LEATHER FINISHING CO LTD', 'Textile and Garment Production', NULL, 'uniqueleather@yahoo.com', '+2347088708501', NULL, 'Nigeria', 'Kano', 'Kano', 'plot 55|62 phase 1, sharada ind\'l estate, Kano.', NULL, '8.51632240', '11.96607020', NULL, NULL, '1988-01-01', '382', NULL, 'Jubee Paulrat', 'Maintenance Manager', '+2349027526605', 'inactive', 'active', '2025-07-28 14:53:44', '2025-07-28 14:53:44');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

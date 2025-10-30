@@ -16,9 +16,10 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             if (auth()->guard('admin')->check()) {
-                return route('admin.login');
+                // return route('admin.login');
+                return $next($request);
             }
-            return route('login');
+            return route('admin.login');
         }
     }
 }

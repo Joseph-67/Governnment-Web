@@ -17,4 +17,8 @@ class WasteSubCategories extends Model
         'waste_category_id',
         'is_delete',
     ];
+
+    public function category()  {
+        return $this->belongsTo(WasteCategory::class, 'waste_category_id');
+    }
 }

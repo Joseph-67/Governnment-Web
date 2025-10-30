@@ -26,7 +26,7 @@ class CompanyMaterial extends Model
 
     public function material()
     {
-        return $this->belongsTo(Material::class, 'materialID');
+        return $this->belongsTo(Material::class, 'materialID', 'materialID');
     }
 
     public static function totalMaterials()
@@ -40,7 +40,7 @@ class CompanyMaterial extends Model
     }
     public function company()
     {
-        return $this->belongsTo(Company::class, 'companyID', 'companyID');
+        return $this->belongsTo(Company::class, 'companyID', 'company_id');
     }
     
 }

@@ -307,8 +307,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                             <th rowspan="2" class="w-450">It has been proven that the application of RECP methodologies provides several economic, environmental and social benefits</th>
                                             <th colspan="8" class="w-450">Gains from RECP methodologies</th>
                                             <th rowspan="2" class="w-450">Company's policy alignment with RECP strategy</th>
-                                            <th colspan="6" class="">Policy Areas</th>
-                                            <th colspan="9" class="">Objective Areas</th>
+                                            @if($policies)
+                                            <th colspan="{{ count($policies) }}" class="">Policy Areas</th>
+                                            @endif
+                                            @if($objectives)
+                                            <th colspan="{{ count($objectives) }}" class="">Objective Areas</th>
+                                            @endif
                                             <th rowspan="2" class="w-450">Good housekeeping measures usually consist of simple actions which can be implemented with little or no capital expenditure, it can also result in high savings of water, raw materials and finished products</th>
                                             <th colspan="5" class="w-450">Housekeeping Options</th>
                                             <th rowspan="2" class="w-450">This option describes a specific process intervention opportunity that best fit into your production process based on your local condition. However, this may not necessarily be and advantager for every industry within your sector. In making this critical desition, it is important to consider the following: Cost Benefit analysis, Improvements in product quality, Increase in overall yield. Please rate how best you understand your internal production process?</th>
@@ -367,22 +371,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                             <th class="">Increase in overall financial annual savings</th>
                                             <th class="">Improved customeer satisfaction</th>
                                             <th>Sustainability</th>
-                                            <th>Quality Policy</th>
-                                            <th>Environmental Policy</th>
-                                            <th>Health & Safety Policy</th>
-                                            <th>Human Resource Policy</th>
-                                            <th>Data Protection Policy</th>
-                                            <th>Cooperate Social Responsibility Policy</th>
-                                            <th>Business Growth</th>
-                                            <th>Customer Satisfaction</th>
-                                            <th>Material Optimization</th>
-                                            <th>Waste Minimization</th>
-                                            <th>Measurable & Timely Targets</th>
-                                            <th>Innovation</th>
-                                            <th>Sustainability</th>
-                                            <th>Employee Management</th>
-                                            <th>Market Expansion</th>
+                                            @foreach($policies as $policy)
+                                            <th>{{ $policy->title }}</th>
+                                            @endforeach
+                                            @foreach($objectives as $objective)
+                                            <th>{{ $objective->name}}</th>
+                                            @endforeach
                                             <th>Attitudinal change (negligence attitude).</th>
+
                                             <th>Good operating practices(personel practices, waste segregation etc.).</th>
                                             <th>Workers motivation.</th>
                                             <th>Improved Workplace management.</th>
@@ -530,52 +526,35 @@ document.addEventListener('DOMContentLoaded', function () {
                                                 @endforeach
                                                 <td>N/A</td>
                                                 <td>N/A</td>
-                                                @php
-                                                $company_policies = [
-                                                    'Quality Policy',
-                                                    'Environmental Policy',
-                                                    'Health & Safety Policy',
-                                                    'Human Resource Policy',
-                                                    'Data Protection Policy',
-                                                    'Cooperate Social Responsibility Policy'
-                                                    ];
-                                                $company_objectives = [
-                                                    'Business Growth',
-                                                    'Customer Satisfaction',
-                                                    'Material Optimization',
-                                                    'Waste Minimization',
-                                                    'Measurable & Timely Targets',
-                                                    'Innovation',
-                                                    'Sustainability',
-                                                    'Employee Management',
-                                                    'Market Expansion'
-                                                ];
-                                                @endphp
-                                                @foreach ($company_policies as $policy)
+                                                
+                                                @if($policies)
+                                                @foreach ($policies as $policy)
                                                     @php
                                                         // Fetch the policy value from the database
-                                                        $policyValue = DB::table('policies')
+                                                        $policyValue = DB::table('company_policies')
                                                                             ->where('companyID', $company->company_id)
-                                                                            ->where('policy_title', $policy)->first();
+                                                                            ->where('policy_id', $policy->policy_id)->first();
                                                     @endphp
 
                                                     <td>
                                                         {{ $policyValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
-                                                @foreach ($company_objectives as $objective)
+                                                @endif
+                                              @if($objectives)
+                                                  @foreach ($objectives as $objective)
                                                     @php
                                                         // Fetch the objective value from the database
                                                         $objectiveValue = DB::table('company_objectives')
                                                                             ->where('companyID', $company->company_id)
-                                                                            ->where('objective_title', $objective)->first();
+                                                                            ->where('objective_id', $objective->objective_id)->first();
                                                     @endphp
 
                                                     <td>
                                                         {{ $objectiveValue ? '✔️' : '❌' }}
                                                     </td>
                                                 @endforeach
-                                                <td>N/A</td>
+                                              @endif
                                                 @php
                                                 $attitudinal_changes = [
                                                     'Attitudinal change (negligence attitude).',

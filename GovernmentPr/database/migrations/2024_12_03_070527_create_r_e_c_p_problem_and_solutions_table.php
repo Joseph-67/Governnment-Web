@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('problemSolutionID');
             $table->unsignedBigInteger('companyID');
             $table->string('problem_title', 500);
-            $table->string('solution_title', 500);
+            $table->string('solution_title', 500)->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->foreign('companyID')
             ->references('company_id')

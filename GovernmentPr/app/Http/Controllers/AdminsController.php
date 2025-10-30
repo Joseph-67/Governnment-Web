@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admins;
+use App\Models\Company;
 use App\Models\User;
+use App\Models\CompanyUsers;
+use App\Models\recp;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -94,6 +97,10 @@ class AdminsController extends Controller
             'password' => $request->password,
         ], $request->remember)) {
             # code...
+            // Auth::guard('admin')->user()->update([
+            //     'last_login_at' => now(),
+            // ]);
+            
             $request->session()->regenerate();
             return redirect()->intended(route('admin.dashboard', ['admin' => 'admin']));
         }
@@ -107,10 +114,157 @@ class AdminsController extends Controller
      * @param  \App\Models\Admins  $admins
      * @return \Illuminate\Http\Response
      */
-
-    public function display_dashboard() {
-        return view('components.admin.dashboard');
+    private function countActiveCompanies()
+    {
+        $activeCompanyCount = Company::totalActiveCompanies();
+        return $activeCompanyCount;
     }
+
+    private function newCompaniesByWeek() {
+        $companyCount = Company::totalNewCompaniesThisWeek();
+        return $companyCount;
+    }
+
+    private function ActiveCompaniesOnRECP()  {
+        $recpApprovedCompanies = recp::totalRegisteredCompanies();
+        return $recpApprovedCompanies;
+    }
+
+
+    private function ActiveCompaniesOnRECPThisWeek()  {
+        $recpApprovedCompanies = recp::totalRegisteredCompaniesThisWeek();
+        return $recpApprovedCompanies;
+    }
+
+    private function DisapprovedCompaniesOnRECP()  {
+        $recpDisapprovedCompanies = recp::totalDisapprovedCompanies();
+        return $recpDisapprovedCompanies;
+    }
+
+    private function DisapprovedCompaniesOnRECPThisWeek()  {
+        $recpDisapprovedCompanies = recp::totalDisapprovedCompaniesThisWeek();
+        return $recpDisapprovedCompanies;
+    }
+
+    private function PendingCompaniesOnRecp() {
+        $recpPendingCompanies = recp::totalPendingCompanies();
+        return $recpPendingCompanies;
+    }
+
+    private function PendingCompaniesOnRECPThisWeek()  {
+        $recpPendingCompanies = recp::totalPendingCompaniesThisWeek();
+        return $recpPendingCompanies;
+    }
+
+    private function RECPCompanies() {
+        return recp::with('company')->paginate(5);
+    }
+
+    private function fetchAdmins()  {
+        $admins = Admins::activeAdmin()->get(['id', 'first_name', 'last_name', 'email', 'last_login_at', 'profile_photo_path', 'status', 'updated_at']);
+        return $admins;
+    }
+   private function fetchUsers()
+{
+    return CompanyUsers::with('user', 'company')->get(); // eager load user details
+}
+
+
+    /**
+     * Show the admin dashboard.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function display_dashboard() {
+        $data['activeCompanyCount'] = $this->countActiveCompanies();
+        $data['newCompanies'] = $this->newCompaniesByWeek();
+        $data['approvedCompanies'] = $this->ActiveCompaniesOnRECP();
+        $data['approvedCompaniesThisWeek'] = $this->ActiveCompaniesOnRECPThisWeek();
+        $data['disapprovedCompanies'] = $this->DisapprovedCompaniesOnRECP();
+        $data['disapprovedCompaniesThisWeek'] = $this->DisapprovedCompaniesOnRECPThisWeek();
+        $data['pendingCompanies'] = $this->PendingCompaniesOnRecp();
+        $data['pendingCompaniesThisWeek'] = $this->PendingCompaniesOnRECPThisWeek();
+        $data['recpCompanies'] = $this->RECPCompanies();
+        $data['activeAdmins'] = $this->fetchAdmins();
+        $data['activeUsers'] = $this->fetchUsers();
+
+        // Last 12 months
+        $months = collect(range(0, 11))->map(function($i) {
+            return now()->subMonths($i)->format('M Y');
+        })->reverse();
+
+        // Initialize data arrays
+        $trendData = [
+            'compliant' => [],
+            'review' => [],
+            'non_compliant' => []
+        ];
+
+        foreach ($months as $month) {
+            $monthNum = date('m', strtotime($month));
+            $yearNum = date('Y', strtotime($month));
+
+            $trendData['compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'approved')
+                ->count();
+
+            $trendData['review'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'pending')
+                ->count();
+
+            $trendData['non_compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->whereYear('created_at', $yearNum)
+                ->where('status', 'disapproved')
+                ->count();
+        }
+
+        $data['recpTrendData'] = $trendData;
+        $data['recpTrendMonths'] = $months;
+
+        return view('components.admin.dashboard', $data);
+    }
+
+    public function recpTrendData(Request $request)
+    {
+        $monthsCount = (int) $request->get('months', 12); // default 12 months
+
+        // Generate month labels
+        $months = collect(range(0, $monthsCount - 1))
+            ->map(fn($i) => now()->subMonths($i)->format('M Y'))
+            ->reverse();
+
+        // Initialize trend arrays
+        $trendData = [
+            'compliant' => [],
+            'review' => [],
+            'non_compliant' => []
+        ];
+
+        foreach ($months as $month) {
+            $monthNum = date('m', strtotime($month));
+
+            $trendData['compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'approved')->count();
+
+            $trendData['review'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'pending')->count();
+
+            $trendData['non_compliant'][] = recp::whereMonth('created_at', $monthNum)
+                ->where('status', 'disapproved')->count();
+        }
+
+        return response()->json([
+            'months' => $months,
+            'compliant' => $trendData['compliant'],
+            'review' => $trendData['review'],
+            'non_compliant' => $trendData['non_compliant']
+        ]);
+    }
+
+
+
     public function show(Admins $admins)
     {
         //

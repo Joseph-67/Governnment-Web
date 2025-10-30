@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('company_name')->unique();
             $table->string('industry');
             $table->string('industry_process')->nullable();
-            $table->string('email');
-            $table->string('primary_phone_number');
+            $table->string('email')->nullable();
+            $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();

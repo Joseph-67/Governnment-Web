@@ -9,9 +9,11 @@ use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUsersController;
 use App\Http\Controllers\EmailApp;
+use App\Http\Controllers\IndividualCompanyReportController;
 use App\Http\Controllers\StockTradingController;
 use App\Http\Controllers\RealTimeUpdateController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CMS\PageController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EmailIntegration;
@@ -27,19 +29,18 @@ use App\Http\Controllers\EmailIntegration;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
-|
+|   |--------------------------------------------------------------------------
 */
 
 Route::middleware('guest:web')->group(function(){
     Route::get('/', function () {
         return redirect('home');
     });
+    Route::get('/events', [EventController::class, 'publicEvents'])->name('public-events');
+    Route::get('/events/{slug}', [EventController::class, 'publicEventDetails'])->name('public-event-details');
     Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
-    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
-    Route::get('/home', [HomePageController::class, 'displayHome'])->name('home');
-    Route::get('/organisation', [organisationController::class, 'displayOrganisation'])->name('organisation');
-    Route::get('/mandate', [mandateController::class, 'displayMandate'])->name('mandate');    
-    Route::get('/contact-us', [ContactUsController::class, 'displayContact'])->name('contact-us');    
+    Route::get('/contact-us', [ContactUsController::class, 'displayContact'])->name('contact-us');
+    Route::get('/{slug}', [PageController::class, 'show'])->middleware('page.available')->name('page.show');   
 });
 
 
@@ -71,6 +72,12 @@ Route::middleware([
 
     // Email application
     Route::get('/email-app', [EmailApp::class, 'index'])->name('view-email-app');
+    
+    //individual company reports
+    Route::controller(IndividualCompanyReportController::class)->group(function() {
+    Route::get('/individual-company-report/{user}', 'index')->name('individual-company-report');
+});
+
     
     // Stock Trading
     Route::get('/stock-trading', [StockTradingController::class, 'index'])->name('view-stock-trading');

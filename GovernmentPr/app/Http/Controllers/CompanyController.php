@@ -43,6 +43,7 @@ use App\Models\Policies;
 use App\Models\EquipmentType;
 use App\Models\EquipmentLog;
 use App\Models\User;
+use App\Models\recp;
 use App\Models\WasteDisposal;
 use App\Models\WaterStockMovement;
 use App\Models\WaterQualityLogs;
@@ -67,6 +68,8 @@ class CompanyController extends WaterStockMovementController
         $data['company'] = Company::find($companyID);
 
         // Fetch related data
+        $data['policies'] = Policies::where('status', 'active')->get(['policy_id', 'title']);
+        $data['objectives']= Objectives::where('status', 'active')->get(['objective_id', 'name']);
         $data['company_policies'] = CompanyPolicy::where('companyID', $companyID)->get();
         $data['company_objectives'] = CompanyObjectives::where('companyID', $companyID)->get();
         $data['company_benefits'] = RECP_areas_of_benefit::active()->where('companyID', $companyID)->get();
@@ -80,6 +83,7 @@ class CompanyController extends WaterStockMovementController
         $data['company_hazarduous_material'] = RECP_harzardous_materials::active()->where('companyID', $companyID)->select('hazarduousMaterialID', 'material_title')->get();
         $data['company_unit_process'] = RECP_unit_of_process::active()->where('companyID', $companyID)->select('unitProcessID', 'unit_process_title')->get();
         $data['company_problems_and_solutions'] = RECP_problem_and_solution::active()->where('companyID', $companyID)->select('problemSolutionID', 'problem_title', 'solution_title')->get();
+        $data['recp_state'] = recp::where('company_id', $companyID)->first(['recp_id', 'status', 'remark']);
 
         // Fetch materials
         $data['materials'] = Material::active()->select('materialID', 'material')->get();
@@ -110,7 +114,6 @@ class CompanyController extends WaterStockMovementController
         $data['availableWaterRecycleBalance'] = $this->getTotalRecycle($companyID);
         // Fetch operations
 
-
         // Fetch calendar years
         $data['calendar_years'] = CalendarYear::where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
         $data['active_calendar_years'] = CalendarYear::active()->where('company_id', $companyID)->get(['calendar_year_id', 'name', 'start_date', 'end_date', 'is_active']);
@@ -136,9 +139,54 @@ class CompanyController extends WaterStockMovementController
         $data['production_logs'] = ProductionLog::with(['company', 'companyOperation', 'calendarYear'])->where('company_id', $companyID)->get();
         $data['quality_controls_record'] = QualityControl::where('company_id', $companyID)->get();
         // fetch company departments
-        $data['company_departments'] = CompanyDepartment::where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs']);
+        $data['company_departments'] = CompanyDepartment::withCount(['employees'])->where('CompanyID', $companyID)->get(['DepartmentID', 'DepartmentName', 'ManagerIDs'])
+        ->map(function($dept) {
+            return [
+                'DepartmentID' => $dept->DepartmentID,
+                'DepartmentName' => $dept->DepartmentName,
+                'ManagerIDs' => $dept->ManagerIDs,
+                'employee_count' => $dept->employees_count,
+            ];
+        });
         //fetch company workflows
         $data['company_workflows'] = CompanyWorkflow::where('company_id', $companyID)->get(['workflow_id', 'workflow_name']);
+        //fetch all states
+        $data['regions'] = Company::getAllRegions();
+        $data['incomes'] = [];
+        $data['expenses'] = [];
+        $data['trainings'] = [];
+        $data['performances'] = [];
+        $data['welfarePrograms'] = [];
+        $data['assets'] = [];
+        $data['equipmentList'] = [];
+        $data['stocks'] = [];
+        $data['generalItems'] = [];
+        $data['chemicalItems'] = [];
+        $data['waterRecords'] = [];
+        $data['rawMaterials'] = [];
+        $data['productions'] = [];
+        $data['logistics'] = [];
+        $data['quality_checks'] = [];
+        $data['wastes'] = [];
+        $data['operation_years'] = [];
+        $data['quality_controls'] = [];
+        $data['maintenances'] = [];
+        $data['batches'] = [];
+        $data['annualPlans'] = [];
+        $data['chemicalUsage'] = [];
+        $data['years'] = [];
+        $data['transportRecords'] = [];
+        $data['topVehicles'] = [];
+        $data['supplyChain'] = [];
+        $data['inspections'] = [];
+        $data['defects'] = [];
+        $data['actions'] = [];
+        $data['batchWastes'] = [];
+        $data['disposals'] = [];
+        $data['wasteCategories'] = [];
+        $data['wasteSubCategories'] = [];
+        $data['reportData'] = [];
+        $data['processes'] = [];
 
 
         return view('components.apps.companyProfile', $data);
@@ -399,6 +447,9 @@ class CompanyController extends WaterStockMovementController
         $data['all_water_conservation_methods'] = WaterConservationMethod::get(['WaterConservationMethodId', 'label', 'method']);
         $data['all_water_sources'] = WaterSources::get(['WaterSourcesId', 'sources']);
         $data['all_chemicals'] = Chemicals::get(['chemical_id', 'name']);
+        $data['policies'] = Policies::get(["policy_id", "title"]);
+        $data['objectives'] = Objectives::get(["objective_id", "name"]);
+
         $data['total_materials'] = Material::count();
         $data['total_water_sources'] = WaterSources::count();
         $data['total_water_questions'] = WaterQuestionaire::count();
@@ -474,7 +525,7 @@ class CompanyController extends WaterStockMovementController
             'company_name' => ['required', 'string', 'min:3', 'max:225'],
             'industry' => ['required', 'string', 'min:3', 'max:225'],
             'industry_process_used' => ['nullable', 'string', 'min:3', 'max:225'],
-            'email' => ['required', 'string', 'min:3', 'max:225'],
+            'email' => ['nullable', 'string', 'min:3', 'max:225'],
             'website_address' => ['nullable', 'url'],
             'primary_phone_number' => ['required', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
             'secondary_phone_number' => ['nullable', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
@@ -492,10 +543,10 @@ class CompanyController extends WaterStockMovementController
             'policy.*' => ['string'],
             'objective' => ['nullable', 'array'],
             'objective.*' => ['string'],
-            'enviromental_operations_manager' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_name' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_position' => ['required', 'string', 'min:3', 'max:225'],
-            'contact_person_phone_number' => ['required', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
+            'enviromental_operations_manager' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_name' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_position' => ['nullable', 'string', 'min:3', 'max:225'],
+            'contact_person_phone_number' => ['nullable', 'numeric', 'regex:/^(\+?[1-9][0-9]{1,14})$/', 'phone:*'],
             'is_sherable' => ['nullable', 'string']
         ]);
 
@@ -788,7 +839,7 @@ class CompanyController extends WaterStockMovementController
     public function add_company_policy(Request $request) {
         $validator =Validator::make($request->all(),[
             'company'   => ['required', 'numeric'],
-            'policy'    =>  ['required', Rule::unique('policies', 'policy_title')->where(function ($query) use ($request) {
+            'policy'    =>  ['required', Rule::unique('company_policies', 'policy_id')->where(function ($query) use ($request) {
                                 return $query->where('companyID', $request['company']);
                             }),]
         ]);
@@ -800,9 +851,9 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        Policy::create([
+        CompanyPolicy::create([
             'companyID'    =>  $request->company,
-            'policy_title'  =>  $request->policy
+            'policy_id'  =>  $request->policy
         ]);
         return response()->json([
             'status' => 'success',
@@ -823,7 +874,7 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        Policy::where('companyID', $request->company)->where('policy_title',$request->policy)->delete();
+        CompanyPolicy::where('companyID', $request->company)->where('policy_id',$request->policy)->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Policy removed successfully.',
@@ -834,7 +885,7 @@ class CompanyController extends WaterStockMovementController
     public function add_company_objective(Request $request) {
         $validator =Validator::make($request->all(),[
             'company'   => ['required', 'numeric'],
-            'objective'    =>  ['required', Rule::unique('company_objectives', 'objective_title')->where(function ($query) use ($request) {
+            'objective'    =>  ['required', Rule::unique('company_objectives', 'objective_id')->where(function ($query) use ($request) {
                                 return $query->where('companyID', $request['company']);
                             }),]
         ]);
@@ -848,7 +899,7 @@ class CompanyController extends WaterStockMovementController
         }
         CompanyObjectives::create([
             'companyID'    =>  $request->company,
-            'objective_title'  =>  $request->objective
+            'objective_id'  =>  $request->objective
         ]);
         return response()->json([
             'status' => 'success',
@@ -870,7 +921,7 @@ class CompanyController extends WaterStockMovementController
                 'errors'    => $validator->errors()
             ]);
         }
-        CompanyObjectives::where('companyID', $request->company)->where('objective_title',$request->objective)->delete();
+        CompanyObjectives::where('companyID', $request->company)->where('objective_id',$request->objective)->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Objective removed successfully.',
@@ -1070,13 +1121,48 @@ class CompanyController extends WaterStockMovementController
     }
     //end store water source
 
+    public function countCompaniesByIndustry($industry) {
+        $companyCount = Company::whereRaw('LOWER(industry) = ?', $industry)
+            ->where('status', 'active')
+            ->count();
+        return response()->json([
+            'status' => 'success',
+            'industry' => $industry,
+            'company_count' => $companyCount
+        ]);
+    }
+
 //    water usage logs
 public function store_water_usage_log(Request $request) {
    
 }
 //end water usage logs
     
-    
+    public function updateStatus(Request $request, \App\Models\Company $company)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,pending,disapproved',
+        ]);
+
+        $company->status = $request->status;
+        $company->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateEfficiency(Request $request, \App\Models\Company $company)
+    {
+        $request->validate([
+            'efficiency' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $company->efficiency = $request->efficiency;
+        $company->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
     public function edit(Company $company)
     {
         //

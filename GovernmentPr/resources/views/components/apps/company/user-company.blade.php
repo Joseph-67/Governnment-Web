@@ -49,17 +49,17 @@
                                 <tbody>
                                     @foreach($company_user as $key=> $company)
                                     <tr>
-                                        <td>{{$company->company->company_name}}</td>
-                                        <td>{{$company->company->email}}</td>
-                                        <td>{{$company->company->primary_phone_number}}</td>
-                                        <td>{{$company->company->country}}</td>
-                                        <td>{{$company->company->state}}</td>
+                                        <td>{{$company->company->company_name ?? 'N/A'}}</td>
+                                        <td>{{$company->company->email ?? 'N/A'}}</td>
+                                        <td>{{$company->company->primary_phone_number ?? 'N/A'}}</td>
+                                        <td>{{$company->company->country ?? 'N/A'}}</td>
+                                        <td>{{$company->company->state ?? 'N/A'}}</td>
                                         <td>
-                                            @php
-                                            $date = Carbon\Carbon::create($company->company->date_of_establishment);
-                                            echo $date->format('l, d F Y');
-                                            @endphp
-                                        </td>
+                                        @php
+                                            $dateString = optional($company->company)->date_of_establishment;
+                                            echo $dateString ? \Carbon\Carbon::create($dateString)->format('l, d F Y') : 'N/A';
+                                        @endphp
+                                    </td>
                                         <td>
                                             <div class="dropdown d-inline-block">
                                                 <a class="dropdown-toggle arrow-none" id="dLabel11"

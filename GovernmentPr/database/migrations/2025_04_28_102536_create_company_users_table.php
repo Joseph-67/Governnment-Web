@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id('company_user_id');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamp('last_login_at')->nullable(); 
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

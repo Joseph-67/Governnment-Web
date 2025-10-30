@@ -6,6 +6,10 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Support\Facades\Cache;
+use App\Listeners\ClearAdminOnlineStatus;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        Logout::class => [
+            ClearAdminOnlineStatus::class,
+        ],
     ];
 
     /**
@@ -28,6 +35,21 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        parent::boot();
+
+        \Event::listen(Login::class, function ($event) {
+            if ($event->user instanceof \App\Models\Admins) {
+                $event->user->update([
+                    'last_login_at' => now(),
+                ]);
+            }
+           if ($event->user instanceof \App\Models\CompanyUsers) {
+        $event->user->update([
+            'last_login_at' => now(),
+        ]);
+    }
+
+        });
     }
 
     /**

@@ -20,23 +20,28 @@ return new class extends Migration
             $table->string('other_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('last_login_at')->nullable();
             $table->string('password');
             $table->string('mobile_number')->nullable();
             $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
+            $table->foreignId('current_team_id')->nullable()->constrained()->onDelete('set null'); // Improved foreign key handling
             $table->string('profile_photo_path', 2048)->nullable();
             $table->enum('status', ['active', 'inactive']);
+            
             $table->timestamps();
         });
     }
+    
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('admins');
-    }
-};
+
+        /**
+         * Reverse the migrations.
+         *
+         * @return void
+         */
+        public function down()
+        {
+            Schema::dropIfExists('admins');
+        }
+        
+    };

@@ -56,11 +56,13 @@ class CompanyChemicalController extends ChemicalStockMovementController
     {
         $validatedData = Validator::make($request->all(), [
             'company_id' => 'required|integer',
-            'chemical_id' => ['required', 'integer',Rule::unique('company_chemicals', 'chemical_id')->where(function ($query) use ($request) {
+            'chemical' => ['required', 'integer',Rule::unique('company_chemicals', 'chemical_id')->where(function ($query) use ($request) {
                 return $query->where('company_id', $request['company_id']);
             })],
+            'quantiy_per_unit' => 'required|string',
             'unit_of_measurement' => 'required|string',
-            'threshold' => 'nullable',
+            'reorder_level' => 'nullable',
+            'safety_stock' => 'nullable',
         ],[
             'chemical_id.unique' => "Chemical has already been added."
         ]);
@@ -76,9 +78,12 @@ class CompanyChemicalController extends ChemicalStockMovementController
 
         $companyChemical = new CompanyChemical();
         $companyChemical->company_id = $request['company_id'];
-        $companyChemical->chemical_id = $request['chemical_id'];
+        $companyChemical->chemical_id = $request['chemical'];
+        $companyChemical->quantiy_per_unit = $request['quantiy_per_unit'];
         $companyChemical->unit = $request['unit_of_measurement'];
-        $companyChemical->threshold = $request['threshold'];
+        $companyChemical->minimum_threshold = $request['reorder_level'];
+        $companyChemical->maximum_threshold = $request['safety_stock'];
+        $companyChemical->storage_location = $request['storage_location'];
         $companyChemical->status = "active";
         $companyChemical->is_deleted = FALSE;
         $companyChemical->save();

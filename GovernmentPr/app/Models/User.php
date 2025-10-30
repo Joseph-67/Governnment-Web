@@ -34,6 +34,8 @@ class User extends Authenticatable
         'status'
     ];
 
+       
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,6 +47,13 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
+            public function company()
+        {
+            return $this->belongsTo(Company::class, 'company_id');
+        }
+
+
+
 
     /**
      * The attributes that should be cast.

@@ -26,9 +26,12 @@ use App\Http\Controllers\InventoryForecastingController;
 use App\Http\Controllers\IotDeviceController;
 use App\Http\Controllers\MapReport;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\CMS\MediaController;
+use App\Http\Controllers\MediaCategoryController;
 use App\Http\Controllers\OperationTypeController;
 use App\Http\Controllers\OperationCategoryController;
-use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CMS\PagesController;
+use App\Http\Controllers\CMS\PageController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductCategoryController;
@@ -53,6 +56,7 @@ use App\Http\Controllers\WaterQualityLogsController;
 use App\Http\Controllers\WaterStockMovementController;
 use App\Http\Controllers\WasteDisposalController;
 use App\Http\Controllers\WasteItemController;
+use App\Http\Controllers\WasteController;
 use App\Http\Controllers\ProductionReport;
 use App\Http\Controllers\WasteCategoryController;
 use App\Http\Controllers\WasteSubCategoriesController;
@@ -69,7 +73,7 @@ use App\Http\Controllers\Workflow\TaskScheduleMetricsController;
 use App\Http\Controllers\Workflow\RecurrenceRuleController;
 use App\Http\Controllers\Workflow\TaskEmployeeController;
 
-// Guest Admin Routes
+// Guest Admin Routes ['guest', 'admin']
 Route::prefix('admin')->middleware('guest:admin')->group(function(){
     Route::controller(AdminsController::class)->group(function () {
         Route::get('/login', 'create_login')->name('admin.login');
@@ -88,12 +92,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/dashboard', 'display_dashboard')->name('admin.dashboard');
         Route::get('/logout', 'destroy')->name('admin.logout');
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
+        Route::get('/admin/recp-trend-data', 'recpTrendData')->name('admin.recp-trend-data');
     });
 
 
-    // permissions
     Route::controller(PermissionsController::class)->group(function() {
+        Route::get('/permissions', 'index')->name('admin.permissions');
         Route::post('/permission', 'store')->name('admin.store-permission');
+        Route::post('/permissions/{id}', 'update')->name('admin.update-permission'); // <- used by data-url
     });
 
     //users
@@ -105,13 +111,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // roles
     Route::controller(RolesController::class)->group(function(){
+        Route::get('/roles', 'manage')->name('admin.roles');
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
+        Route::post('/update-role', 'update')->name('admin.update.role');
+        Route::delete('/admin/roles/{id}', 'destroy')->name('admin.delete.role');
         Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
         Route::post('/settings/revoke_role_has_permission', 'revoke_role_permission')->name('admin.revoke.permission-role');
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
         Route::post('/settings/fetch-role-permission', 'get_role_permission')->name('admin.fetch.role-permission');
     });
+    
 
     // settings
     Route::controller(generalSetting::class)->group(function() {
@@ -121,13 +131,53 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // Guards
     Route::controller(GuardsController::class)->group(function() {
+        Route::get('/guards', 'index')->name('admin.guards');
         Route::post('/guard', 'store')->name('admin.store-guard');
-    }); 
+        Route::post('/guard/{guard_id}', 'update')->name('admin.update-guard'); // <- used by data-url
+    });
+
+    // Media
+    Route::controller(MediaController::class)->group(function() {
+        Route::get('/media', 'index')->name('admin.media.index');
+        Route::get('/media-search', 'search')->name('admin.media.search');
+        Route::get('/media/files/{categoryId}', 'getFiles')->name('media.files');
+        Route::post('/media', 'store')->name('admin.media.store');
+        Route::get('/media/{media}', 'show')->name('admin.media.show');
+        Route::get('/media/{media}/edit', 'edit')->name('admin.media.edit');
+        Route::put('/media/{media}', 'update')->name('admin.media.update');
+        Route::delete('/media/{media}', 'destroy')->name('admin.media.destroy');
+        Route::post('/media/upload-server', 'store')->name('admin.media.uploadServer');
+        Route::post('/media/upload-dropbox', 'uploadToDropbox')->name('admin.media.uploadDropbox');
+        Route::post('/media/upload-google', 'uploadToGoogleDrive')->name('admin.media.uploadGoogle');
+        Route::post('/media/upload-onedrive', 'uploadToOneDrive')->name('admin.media.uploadOneDrive');
+    });
+
+    Route::prefix('media/categories')->name('admin.media.categories.')->group(function() {
+        Route::post('/', [MediaCategoryController::class, 'store'])->name('store');
+        Route::delete('/{id}', [MediaCategoryController::class, 'destroy'])->name('destroy');
+    });
+
 
     //Pages
-    Route::controller(PagesController::class)->group(function() {
-        Route::get ('/CMS', 'index')->name('CMS.CMS');
-    }); 
+    Route::controller(PageController::class)->group(function() {
+        // Route::get ('/pages', 'index')->name('admin.pages.index');
+        // Route::get ('/create-page', 'create')->name('admin.pages.create');
+        // Route::post ('/store-page', 'store')->name('admin.pages.store');
+        Route::post ('/preview-page', 'store')->name('admin.pages.preview');
+        // Route::get ('/edit-page/{id}', 'edit')->name('admin.pages.edit');
+        // Route::put ('/update-page/{id}', 'update')->name('admin.pages.update');
+        // Route::delete ('/delete-page/{id}', 'destroy')->name('admin.pages.delete');
+        Route::post('/upload-image', 'uploadImage')->name('admin.upload.image');
+        Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
+        Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
+        Route::get('/search-category', 'searchCategory')->name('admin.search-category');
+        Route::get('/search-cms-tag', 'searchTag');
+        Route::get('/search-cms-role','searchRole')->name('admin.search-cms-role');
+        Route::get('/pages/fetch', 'fetchMedia');
+    });
+
+    Route::resource('pages', PageController::class)->names('admin.pages');
+
 
     //Posts
     Route::controller(PostsController::class)->group(function() {
@@ -189,8 +239,20 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     }); 
 
     Route::controller(CompanyChemicalController::class)->group(function() {
+        // Add / Update chemical
         Route::post('/save-company-chemical', 'store_company_chemical')->name('admin.store-company-chemical');
+
+        // View chemical
         Route::get('/chemical-view/{chemical}', 'show')->name('admin.view-chemical');
+
+        // Delete chemical
+        Route::post('/delete-company-chemical/{chemical}', 'delete_company_chemical')->name('admin.delete-company-chemical');
+
+        // Check-in chemical
+        Route::post('/save-company-chemical-check-in', 'save_check_in')->name('admin.save-company-chemical-check-in');
+
+        // Check-out chemical
+        Route::post('/save-company-chemical-check-out', 'save_check_out')->name('admin.save-company-chemical-check-out');
     });
 
     // company users
@@ -383,6 +445,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/update', 'updateCompanyDetails')->name('update-company-details');
         Route::post('/company/update-location', 'updateCompanyLocation')->name('update-company-location');
         Route::post('/company/update-contact', 'updateCompanyContact')->name('update-company-contact');
+        Route::post('/companies/{company}/update-status', 'updateStatus')->name('update-company-status');
+        Route::post('/companies/{company}/update-efficiency', 'updateEfficiency');
         Route::post('/company/toggle-status', 'toggleStatus')->name('company.toggleStatus');
         Route::post('/company/add-question', 'store_question')->name('company.add-question');
         Route::post('/company/add-water-conservation-method', 'store_water_conservation_method')->name('company.add-water-conservation-method');
@@ -402,7 +466,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/save-company-recp', 'store_recp')->name('admin.store-company-recp');
         Route::post('/save-company', 'store')->name('admin.store-company');
         Route::get('/companies-data', 'getCompaniesData')->name('admin.companies-data');
-        Route::get('/companies-state/', [CompanyController::class, 'getCompaniesByState'])->name('admin.companies-state-query');
+        Route::get('/companies-state', [CompanyController::class, 'getCompaniesByState'])->name('admin.companies-state-query');
+        Route::get('/count/companies/{industry}', [CompanyController::class, 'countCompaniesByIndustry']);
     });
 
     // Company Department
@@ -411,18 +476,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-departments/{companyId}', 'getDepartmentsByCompany')->name('admin.get-departments');
         Route::post('/company-departments/store', 'store')->name('admin.store-company-department');
         Route::get('/company-departments/{id}', 'show')->name('admin.show-company-department');
-        Route::put('/company-departments/{id}', 'update')->name('admin.update-company-department');
+        Route::post('/company-departments/{id}/update', 'update')->name('admin.update-company-department');
         Route::delete('/company-departments/{id}', 'destroy')->name('admin.delete-company-department');
     });
-
     // Company Employee
     Route::controller(CompanyEmployeesController::class)->group(function() {
-        Route::get('/company-employees', 'index')->name('admin.company-employees');
+        Route::get('/company-employees/{company}', 'index')->name('admin.company-employees');
         Route::get('/search-employee', 'search')->name('admin.search-employee');
-        Route::post('/company-employees/store', 'store')->name('admin.store-company-employee');
+        Route::post('/company-employees/{company}/store', 'store')->name('admin.store-company-employee');
         Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
-        Route::put('/company-employees/{id}', 'update')->name('admin.update-company-employee');
-        Route::delete('/company-employees/{id}', 'destroy')->name('admin.delete-company-employee');
+        Route::post('/company-employees/{employee}', 'update')->name('admin.update-company-employee');
+        Route::delete('/company-employees/{employee}', 'destroy')->name('admin.delete-company-employee');
     });
 
     // Company Material
@@ -473,7 +537,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(GuardsController::class)->group(function() {
         Route::post('/guard', 'store')->name('admin.store-guard');
     });
-
+    
     // Inventory Forecasting
     Route::controller(InventoryForecastingController::class)->group(function() {
         Route::get('/inventory-forecasting', 'index')->name('admin.inventory-forecasting');
@@ -542,11 +606,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/activity/{id}', 'update')->name('admin.update-activity');
         Route::delete('/activity/{id}', 'destroy')->name('admin.delete-activity');
         Route::get('/metadata/activities/{metadataId}', 'getActivitiesByMetadata');
-    });
-
-    // Pages
-    Route::controller(PagesController::class)->group(function() {
-        Route::get ('/CMS', 'index')->name('CMS.CMS');
     });
 
     // Permissions
@@ -644,6 +703,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/add-unit-process', 'add_unit_process')->name('admin.add-unit-process');
         Route::post('/add-waste-disposal-method', 'add_waste_management_method')->name('admin.add-waste-disposal-method');
         Route::post('/add-waste-reduction-measure', 'add_waste_reduction_measure')->name('admin.add-waste-reduction-measure');
+        Route::post('/store-recp-status', 'store_recp_status')->name('admin.store-recp-status');
+        
         
         // Update
         Route::post('/update-hazarduous-material', 'update_hazarduous_material')->name('admin.update-hazarduous-material');
@@ -719,7 +780,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-categories/{id}', 'show')->name('admin.show-waste-category');
         Route::put('/waste-categories/{id}', 'update')->name('admin.update-waste-category');
         Route::delete('/waste-categories/{id}', 'destroy')->name('admin.delete-waste-category');
+        Route::get('/get-waste-categories', 'fetchCategories')->name('admin.get-waste-categories');
     });
+
     // Waste Subcategory
     Route::controller(WasteSubCategoriesController::class)->group(function() {
         Route::get('/waste-subcategories', 'index')->name('admin.waste-subcategories');
@@ -739,6 +802,17 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-waste-items', 'data')->name('admin.get-waste-items');
 
     });
+
+    Route::controller(WasteController::class)->group(function() {
+        Route::get('/waste-report', 'index')->name('admin.waste-report');
+        Route::post('/waste-report/store', 'store')->name('admin.store-waste-report');
+        Route::get('/waste-report/{id}', 'show')->name('admin.show-waste-report');
+        Route::put('/waste-report/{id}', 'update')->name('admin.update-waste-report');
+        Route::delete('/waste-report/{id}', 'destroy')->name('admin.delete-waste-report');
+        Route::get('/get-waste-report-data/{selectedCompany}/{selectedYear}', 'create_report');
+        Route::get('/get-waste-items', 'getAll')->name('admin.get-waste-items');
+    });
+    Route::resource('waste', WasteController::class)->names('admin.waste');
 
     // Water Stock Movement
     Route::controller(WaterStockMovementController::class)->group(function() {

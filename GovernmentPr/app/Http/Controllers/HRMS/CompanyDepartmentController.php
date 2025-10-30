@@ -67,6 +67,7 @@ class CompanyDepartmentController extends Controller
                 'DepartmentID' => $department->DepartmentID,
                 'DepartmentName' => $department->DepartmentName,
                 'managers' => $managers,
+                'status' => $department->Status,
             ];
             });
 
@@ -164,9 +165,60 @@ class CompanyDepartmentController extends Controller
      * @param  \App\Models\CompanyDepartment  $companyDepartment
      * @return \Illuminate\Http\Response
      */
-    public function show(CompanyDepartment $companyDepartment)
+    public function show($id)
     {
-        //
+        try {
+            $department = CompanyDepartment::findOrFail($id);
+            
+            // Get managers data
+            $managerIDs = $department->ManagerIDs 
+                ? (is_array($department->ManagerIDs) ? $department->ManagerIDs : json_decode($department->ManagerIDs, true)) 
+                : [];
+
+            $managers = !empty($managerIDs)
+                ? CompanyEmployees::whereIn('EmployeeID', $managerIDs)
+                ->get(['EmployeeID', 'FirstName', 'LastName', 'Email', 'JobTitle', 'ProfilePicture'])
+                ->map(function ($manager) {
+                    return [
+                        'id' => $manager->EmployeeID,
+                        'name' => trim($manager->FirstName . ' ' . $manager->LastName),
+                        'full_name' => trim($manager->FirstName . ' ' . $manager->LastName),
+                        'email' => $manager->Email,
+                        'jobTitle' => $manager->JobTitle,
+                        'profilePic' => $manager->ProfilePicture
+                            ? asset('storage/' . $manager->ProfilePicture)
+                            : asset('adminAssets/images/users/avatar-2.jpg'),
+                        // Additional fields that might be needed by the frontend
+                        'EmployeeID' => $manager->EmployeeID,
+                        'FirstName' => $manager->FirstName,
+                        'LastName' => $manager->LastName,
+                    ];
+                })
+                : collect();
+
+            return response()->json([
+                'status' => 'success',
+                'department' => [
+                    'DepartmentID' => $department->DepartmentID,
+                    'DepartmentName' => $department->DepartmentName,
+                    'CompanyID' => $department->CompanyID,
+                    'managers' => $managers->toArray(), // Convert to array
+                    'manager_ids' => $managerIDs, // Also return the raw IDs
+                    'status' => $department->Status,
+                ],
+                'debug' => [
+                    'raw_manager_ids' => $department->ManagerIDs,
+                    'parsed_manager_ids' => $managerIDs,
+                    'managers_count' => $managers->count(),
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => __('Department not found.'),
+                'error' => $e->getMessage()
+            ], 404);
+        }
     }
 
     /**
@@ -187,39 +239,52 @@ class CompanyDepartmentController extends Controller
      * @param  \App\Models\CompanyDepartment  $companyDepartment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CompanyDepartment $companyDepartment)
+    public function update(Request $request, $id)
     {
-        //
         try {
+            // Find the department
+            $companyDepartment = CompanyDepartment::findOrFail($id);
+            
             // Use Validator for validation
             $validator = Validator::make($request->all(), [
-                'department_id' => 'required|exists:company_departments,DepartmentID',
                 'department_name' => [
                     'required',
                     'string',
                     'max:255',
-                    Rule::unique('company_departments')->ignore($companyDepartment->DepartmentID)->where(function ($query) use ($request) {
-                        return $query->where('company_id', $request->input('company_id'));
-                    }),
+                    Rule::unique('company_departments', 'DepartmentName')
+                        ->ignore($companyDepartment->DepartmentID, 'DepartmentID')
+                        ->where(fn($query) => $query->where('CompanyID', $request->input('company_id'))),
                 ],
-                'manager_id' => 'nullable|exists:company_employees,EmployeeID',
-                'company_id' => 'required|exists:companies,CompanyID',
+                'manager_ids' => [
+                    'nullable',
+                    'array',
+                ],
+                'manager_ids.*' => [
+                    'exists:company_employees,EmployeeID',
+                ],
+                'company_id' => 'required|exists:companies,company_id',
+            ], [
+                'department_name.required' => __('Department name is required.'),
+                'department_name.unique' => __('The department name must be unique for the selected company.'),
+                'manager_ids.*.exists' => __('One or more selected managers do not exist.'),
+                'company_id.required' => __('Company ID is required.'),
+                'company_id.exists' => __('The selected company does not exist.'),
             ]);
+
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => 'error',
                     'errors' => $validator->errors()
                 ], 422);
             }
+
             // Update the department
             $validated = $validator->validated();
-            $companyDepartment = CompanyDepartment::find($companyDepartment->department_id);
             $companyDepartment->DepartmentName = $validated['department_name'];
-            $companyDepartment->ManagerID = $validated['manager_id'] ?? null;
+            $companyDepartment->ManagerIDs = isset($validated['manager_ids']) ? json_encode($validated['manager_ids']) : null;
             $companyDepartment->CompanyID = $validated['company_id'];
-            // Set other fields if needed
             $companyDepartment->save();
-            // Return a JSON response
+
             return response()->json([
                 'status' => 'success',
                 'message' => __('Department updated successfully.'),
@@ -240,8 +305,30 @@ class CompanyDepartmentController extends Controller
      * @param  \App\Models\CompanyDepartment  $companyDepartment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CompanyDepartment $companyDepartment)
-    {
-        //
+    public function destroy($id)
+{
+    try {
+        $department = CompanyDepartment::findOrFail($id);
+
+        $department->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => __('Department deleted successfully.')
+        ], 200);
+
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => __('Department not found.')
+        ], 404);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => __('An error occurred while deleting the department.'),
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 }

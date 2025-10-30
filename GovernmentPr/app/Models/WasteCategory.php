@@ -14,4 +14,13 @@ class WasteCategory extends Model
         'waste_category_name',
         'waste_category_description',
     ];
+
+    public function subCategories()  {
+        return $this->hasMany(WasteSubCategories::class, 'waste_category_id');
+    }
+
+    public function waste() {
+        return $this->hasMany(Waste::class, 'waste_category_id');
+    }
+
 }

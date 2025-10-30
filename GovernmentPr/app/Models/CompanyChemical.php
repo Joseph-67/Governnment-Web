@@ -12,8 +12,11 @@ class CompanyChemical extends Model
     protected $fillable=[
         'company_id',
         'chemical_id',
+        'quantiy_per_unit',
         'unit',
-        'threshold',
+        'minimum_threshold',
+        'maximum_threshold',
+        'storage_location',
         'status',
         'is_deleted',
         'created_at',

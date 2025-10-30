@@ -42,7 +42,10 @@ class Company extends Model
     {
         return $this->hasMany(Product::class, 'company_id', 'company_id');
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);    
+    }
     public function companyMaterials()
     {
         return $this->hasMany(CompanyMaterial::class, 'companyID', 'company_id');
@@ -143,5 +146,40 @@ class Company extends Model
     {
         return $this->hasMany(WaterPollutionUsage::class);
     }
+
+    public function companyRecp() {
+        return $this->hasOne(recp::class, 'company_id', 'company_id'); // Define the one-to-one relationship with the recp model
+    }
+
+    public static function totalActiveCompanies()
+    {
+        return self::where('status', 'active')->count(); // BEGIN: Count active companies
+    } // END:
+    public static function totalInactiveCompanies()
+    {
+        return self::where('status', 'inactive')->count(); // BEGIN: Count inactive companies
+    }
+    public static function totalNewCompaniesThisWeek()
+    {
+        return self::where('created_at', '>=', now()->startOfWeek())->count(); // BEGIN: Count new companies this week
+    } // END:
+    public static function totalStates()
+    {
+        return self::distinct('state')->count('state');
+    }
+    public static function getAllRegions()
+{
+    return self::select('state')
+        ->whereNotNull('state')
+        ->distinct()
+        ->orderBy('state')
+        ->pluck('state');
+}
+
+    public function wasteReductions()
+{
+    return $this->hasMany(WasteReduction::class, 'company_id', 'company_id');
+}
+
 
 }

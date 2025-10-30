@@ -8,6 +8,7 @@
     <meta content="Federal Ministry of Environment" name="description" />
     <meta content="" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{asset('MainAssets/img/logo/icon-100x100.png')}}" sizes="32x32">
 
@@ -409,7 +410,8 @@
                                         <a class="nav-link" href="">Company</a>
                                     </li><!--end nav-item-->
                                     @endif
-                                  @if(Auth::guard('admin')->check())
+                                    @can('view-mail')  
+                                                                      @if(Auth::guard('admin')->check())
                                   <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-email') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
@@ -418,7 +420,7 @@
                                         <a class="nav-link" href="{{ route('view-email-app') }}">Mailing & Notifications</a>
                                     </li><!--end nav-item-->
                                     @endif
-                                    
+                                    @endcan                                  
                                     @if(Auth::guard('admin')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.stock-trading') }}">Transfer Logs</a>
@@ -435,6 +437,13 @@
                                     @elseif(Auth::guard('web')->check())
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('view-real-time-updates') }}">Real-Time Update</a>
+                                    </li><!--end nav-item-->
+                                    @endif
+                                    @if(Auth::guard('web')->check())
+                                    <li class="nav-item">
+                                   <a class="nav-link" href="{{ route('individual-company-report', encrypt(Auth::id())) }}">
+                                            Inventory Reporting Analytics
+                                    </a>
                                     </li><!--end nav-item-->
                                     @endif
 
@@ -529,7 +538,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.waste-items') }}">
+        <a class="nav-link" href="{{ route('admin.waste.index') }}">
             <i class="iconoir-folder menu-icon"></i>
             <span>Waste Management</span>    
         </a>
@@ -558,13 +567,13 @@
         <div class="collapse" id="sidebarAdvancedUI">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('CMS.CMS') }}">Pages</a>
+                    <a class="nav-link" href="{{ route('admin.pages.index') }}">Pages</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('CMS.posts') }}">Posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="advanced-dragula.html">Media</a>
+                    <a class="nav-link" href="{{ route('admin.media.index') }}">Media</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('CMS.event') }}">Events & News</a>

@@ -6,14 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1|^8.2|^8.3",
+        "dcblogdev/laravel-microsoft-graph": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "*",
         "laravel/jetstream": "^3.0",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
+        "masbug/flysystem-google-drive-ext": "^2.4",
+        "microsoft/microsoft-graph": "^1.110",
         "monolog/monolog": "^3.0",
         "propaganistas/laravel-phone": "^5.1",
+        "spatie/flysystem-dropbox": "^3.0",
         "spatie/laravel-ignition": "*",
         "spatie/laravel-permission": "^6.10"
     },
@@ -30,7 +34,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files":[
+            "app/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
