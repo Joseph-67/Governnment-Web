@@ -167,6 +167,13 @@
                             <label class="form-label">Profile Picture</label>
                             <input type="file" class="form-control" name="ProfilePicture" accept="image/*">
                         </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Current Picture</label>
+                            <div id="currentProfilePicture" class="text-center">
+                                <img id="currentProfileImg" src="" alt="Current Profile" class="rounded-circle" width="60" height="60" style="object-fit: cover; display: none;">
+                                <p id="noProfilePicture" class="text-muted small">No picture</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

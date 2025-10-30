@@ -481,17 +481,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-departments/{companyId}', 'getDepartmentsByCompany')->name('admin.get-departments');
         Route::post('/company-departments/store', 'store')->name('admin.store-company-department');
         Route::get('/company-departments/{id}', 'show')->name('admin.show-company-department');
-        Route::put('/company-departments/{id}', 'update')->name('admin.update-company-department');
+        Route::post('/company-departments/{id}/update', 'update')->name('admin.update-company-department');
         Route::delete('/company-departments/{id}', 'destroy')->name('admin.delete-company-department');
     });
-
     // Company Employee
     Route::controller(CompanyEmployeesController::class)->group(function() {
         Route::get('/company-employees/{company}', 'index')->name('admin.company-employees');
         Route::get('/search-employee', 'search')->name('admin.search-employee');
         Route::post('/company-employees/{company}/store', 'store')->name('admin.store-company-employee');
         Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
-        Route::put('/company-employees/{employee}', 'update')->name('admin.update-company-employee');
+        Route::post('/company-employees/{employee}', 'update')->name('admin.update-company-employee');
         Route::delete('/company-employees/{employee}', 'destroy')->name('admin.delete-company-employee');
     });
 
