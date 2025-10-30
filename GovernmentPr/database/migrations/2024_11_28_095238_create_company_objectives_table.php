@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('company_objectives', function (Blueprint $table) {
             $table->id('companyobjectiveID');
             $table->unsignedBigInteger('companyID');
-            $table->unsignedBigInteger('objective_id')->unique();
+            $table->unsignedBigInteger('objective_id');
             $table->foreign('objective_id')
                   ->references('objective_id')
                   ->on('objectives')
