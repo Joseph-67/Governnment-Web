@@ -246,6 +246,14 @@ class CompanyEmployeesController extends Controller
             }
 
             $validator = \Validator::make($request->all(), [
+                'EmployeeNumber' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('company_employees', 'EmployeeNumber')
+                        ->where(fn($query) => $query->where('CompanyID', $employeeRecord->CompanyID))
+                        ->ignore($employee, 'EmployeeID'),
+                ],
                 'FirstName' => 'required|string|max:255',
                 'LastName' => 'required|string|max:255',
                 'Email' => [
@@ -255,11 +263,27 @@ class CompanyEmployeesController extends Controller
                         ->where(fn($query) => $query->where('CompanyID', $employeeRecord->CompanyID))
                         ->ignore($employee, 'EmployeeID'),
                 ],
+
+                'PhoneNumber' => 'nullable|string|max:20',
+                'DateOfBirth' => 'nullable|date',
+                'Gender' => 'nullable|in:Male,Female,Other',
+                'JobTitle' => 'nullable|string|max:255',
                 'DepartmentID' => 'required|integer|exists:company_departments,DepartmentID',
+                'manager' => 'nullable|array',
+                'manager.*' => 'exists:company_employees,EmployeeID',
                 'HireDate' => 'nullable|date',
                 'Status' => 'nullable|in:Active,Inactive,On Leave,Terminated',
+                'Address' => 'nullable|string|max:255',
+                'City' => 'nullable|string|max:100',
+                'State' => 'nullable|string|max:100',
+                'ZipCode' => 'nullable|string|max:20',
+                'Country' => 'nullable|string|max:100',
+                'EmergencyContact' => 'nullable|string|max:255',
+                'EmergencyPhone' => 'nullable|string|max:20',
                 'ProfilePicture' => 'nullable|image|max:2048',
             ], [
+                'EmployeeNumber.required' => __('Employee number is required.'),
+                'EmployeeNumber.unique' => __('The employee number must be unique within the company.'),
                 'FirstName.required' => __('First name is required.'),
                 'LastName.required' => __('Last name is required.'),
                 'Email.required' => __('Email address is required.'),
@@ -278,18 +302,24 @@ class CompanyEmployeesController extends Controller
             $validated = $validator->validated();
 
             $data = [
+                'EmployeeNumber' => $validated['EmployeeNumber'],
                 'FirstName' => $validated['FirstName'],
                 'LastName' => $validated['LastName'],
                 'Email' => $validated['Email'],
                 'DepartmentID' => $validated['DepartmentID'],
             ];
 
-            if (isset($validated['HireDate'])) {
-                $data['HireDate'] = $validated['HireDate'];
-            }
+            // Add optional fields if they exist in the request
+            $optionalFields = [
+                'PhoneNumber', 'DateOfBirth', 'Gender', 'JobTitle', 
+                'HireDate', 'Status', 'Address', 'City', 'State', 
+                'ZipCode', 'Country', 'EmergencyContact', 'EmergencyPhone'
+            ];
 
-            if (isset($validated['Status'])) {
-                $data['Status'] = $validated['Status'];
+            foreach ($optionalFields as $field) {
+                if ($request->has($field)) {
+                    $data[$field] = $request->input($field) ?: null;
+                }
             }
 
             if ($request->hasFile('ProfilePicture')) {
@@ -339,13 +369,13 @@ class CompanyEmployeesController extends Controller
                 ], 404);
             }
 
-            // Soft delete by setting is_delete to 1
-            $employeeRecord->update(['is_delete' => 1]);
-
-            // Optionally delete profile picture file
+            // Delete profile picture file before hard delete
             if ($employeeRecord->ProfilePicture && \Storage::disk('public')->exists($employeeRecord->ProfilePicture)) {
                 \Storage::disk('public')->delete($employeeRecord->ProfilePicture);
             }
+
+            // Hard delete - permanently remove from database
+            $employeeRecord->delete();
 
             return response()->json([
                 'status' => 'success',

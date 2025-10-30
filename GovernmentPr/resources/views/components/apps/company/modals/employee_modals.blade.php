@@ -129,6 +129,11 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-3">
+                            <label class="form-label fw-bold">Employee Number</label>
+                            <input type="text" class="form-control" name="EmployeeNumber" required>
+                            <div class="invalid-feedback">Employee number is required.</div>
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label fw-bold">First Name</label>
                             <input type="text" class="form-control" name="FirstName" required>
                             <div class="invalid-feedback">First name is required.</div>
@@ -144,6 +149,27 @@
                             <div class="invalid-feedback">Valid email is required.</div>
                         </div>
                         <div class="col-md-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" name="PhoneNumber">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" name="DateOfBirth">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select" name="Gender">
+                                <option value="" selected disabled>Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Job Title</label>
+                            <input type="text" class="form-control" name="JobTitle">
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Department</label>
                             <select class="form-select" name="DepartmentID" required>
                                 <option value="" selected disabled>Choose...</option>
@@ -151,22 +177,54 @@
                             <div class="invalid-feedback">Please select a department.</div>
                         </div>
                         <div class="col-md-3">
-                            <label for="">HireDate</label>
+                            <label class="form-label">Hire Date</label>
                             <input type="date" class="form-control" name="HireDate">
                         </div>
                         <div class="col-md-3">
-                            <label for="">Status</label>
+                            <label class="form-label">Status</label>
                             <select class="form-select" name="Status">
+                                <option value="" selected disabled>Choose...</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="On Leave">On Leave</option>
                                 <option value="Terminated">Terminated</option>
                             </select>
                         </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="Address">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" name="City">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" name="State">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Zip Code</label>
+                            <input type="text" class="form-control" name="ZipCode">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" name="Country">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Emergency Contact</label>
+                            <input type="text" class="form-control" name="EmergencyContact">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Emergency Phone</label>
+                            <input type="text" class="form-control" name="EmergencyPhone">
+                        </div>
+
                         <div class="col-md-4">
                             <label class="form-label">Profile Picture</label>
                             <input type="file" class="form-control" name="ProfilePicture" accept="image/*">
+                            <input type="hidden" name="existing_profile_picture" value="">
                         </div>
+
                         <div class="col-md-2">
                             <label class="form-label">Current Picture</label>
                             <div id="currentProfilePicture" class="text-center">

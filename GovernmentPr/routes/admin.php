@@ -158,15 +158,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
 
-    //Pages
+    //Pages - Resource routes handle CRUD operations
+    Route::resource('pages', PageController::class)->names('admin.pages');
+    
+    //Additional Page routes
     Route::controller(PageController::class)->group(function() {
-        // Route::get ('/pages', 'index')->name('admin.pages.index');
-        // Route::get ('/create-page', 'create')->name('admin.pages.create');
-        // Route::post ('/store-page', 'store')->name('admin.pages.store');
         Route::post ('/preview-page', 'store')->name('admin.pages.preview');
-        // Route::get ('/edit-page/{id}', 'edit')->name('admin.pages.edit');
-        // Route::put ('/update-page/{id}', 'update')->name('admin.pages.update');
-        // Route::delete ('/delete-page/{id}', 'destroy')->name('admin.pages.delete');
         Route::post('/upload-image', 'uploadImage')->name('admin.upload.image');
         Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
         Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
@@ -175,8 +172,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/search-cms-role','searchRole')->name('admin.search-cms-role');
         Route::get('/pages/fetch', 'fetchMedia');
     });
-
-    Route::resource('pages', PageController::class)->names('admin.pages');
 
 
     //Posts
