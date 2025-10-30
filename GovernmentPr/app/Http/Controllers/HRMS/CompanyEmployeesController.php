@@ -228,22 +228,136 @@ class CompanyEmployeesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CompanyEmployees  $companyEmployees
+     * @param  int  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CompanyEmployees $companyEmployees, $employee)
+    public function update(Request $request, $employee)
     {
-        //
+        try {
+            $employeeRecord = CompanyEmployees::where('EmployeeID', $employee)
+                ->where('is_delete', 0)
+                ->first();
+
+            if (!$employeeRecord) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => __('Employee not found.')
+                ], 404);
+            }
+
+            $validator = \Validator::make($request->all(), [
+                'FirstName' => 'required|string|max:255',
+                'LastName' => 'required|string|max:255',
+                'Email' => [
+                    'required',
+                    'email',
+                    Rule::unique('company_employees', 'Email')
+                        ->where(fn($query) => $query->where('CompanyID', $employeeRecord->CompanyID))
+                        ->ignore($employee, 'EmployeeID'),
+                ],
+                'DepartmentID' => 'required|integer|exists:company_departments,DepartmentID',
+                'HireDate' => 'nullable|date',
+                'Status' => 'nullable|in:Active,Inactive,On Leave,Terminated',
+                'ProfilePicture' => 'nullable|image|max:2048',
+            ], [
+                'FirstName.required' => __('First name is required.'),
+                'LastName.required' => __('Last name is required.'),
+                'Email.required' => __('Email address is required.'),
+                'Email.unique' => __('The email has already been taken within this company.'),
+                'DepartmentID.required' => __('Department is required.'),
+                'DepartmentID.exists' => __('The selected department does not exist.'),
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $validated = $validator->validated();
+
+            $data = [
+                'FirstName' => $validated['FirstName'],
+                'LastName' => $validated['LastName'],
+                'Email' => $validated['Email'],
+                'DepartmentID' => $validated['DepartmentID'],
+            ];
+
+            if (isset($validated['HireDate'])) {
+                $data['HireDate'] = $validated['HireDate'];
+            }
+
+            if (isset($validated['Status'])) {
+                $data['Status'] = $validated['Status'];
+            }
+
+            if ($request->hasFile('ProfilePicture')) {
+                // Delete old profile picture if exists
+                if ($employeeRecord->ProfilePicture && \Storage::disk('public')->exists($employeeRecord->ProfilePicture)) {
+                    \Storage::disk('public')->delete($employeeRecord->ProfilePicture);
+                }
+                
+                $path = $request->file('ProfilePicture')->store('profile_pictures', 'public');
+                $data['ProfilePicture'] = $path;
+            }
+
+            $employeeRecord->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => __('Employee updated successfully.'),
+                'employee' => $employeeRecord->fresh()
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => __('An error occurred while updating the employee.'),
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CompanyEmployees  $companyEmployees
+     * @param  int  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CompanyEmployees $companyEmployees)
+    public function destroy($employee)
     {
-        //
+        try {
+            $employeeRecord = CompanyEmployees::where('EmployeeID', $employee)
+                ->where('is_delete', 0)
+                ->first();
+
+            if (!$employeeRecord) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => __('Employee not found.')
+                ], 404);
+            }
+
+            // Soft delete by setting is_delete to 1
+            $employeeRecord->update(['is_delete' => 1]);
+
+            // Optionally delete profile picture file
+            if ($employeeRecord->ProfilePicture && \Storage::disk('public')->exists($employeeRecord->ProfilePicture)) {
+                \Storage::disk('public')->delete($employeeRecord->ProfilePicture);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => __('Employee deleted successfully.')
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => __('An error occurred while deleting the employee.'),
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

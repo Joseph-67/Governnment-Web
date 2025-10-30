@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.status === 'success' && Array.isArray(result.employees)) {
                 employeeCache = result.employees;
                 populateTable(employeeCache);
-                displayMessage('success', `Loaded ${employeeCache.length} employees successfully.`);
+                // displayMessage('success', `Loaded ${employeeCache.length} employees successfully.`);
+                displayMessage('success', 'Employees loaded successfully.');
+
             } else {
                 employeesTable.clear().draw();
                 displayMessage('warning', result.message || 'No employees found.');
@@ -192,17 +194,45 @@ document.addEventListener('DOMContentLoaded', function () {
         if (action === 'delete') confirmDelete(id);
     });
 
-    function openEditModal(employeeId) {
+    async function openEditModal(employeeId) {
         const employee = employeeCache.find(emp => emp.EmployeeID === employeeId);
         if (!employee) return displayMessage('danger', 'Employee not found.');
 
-        const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
+        // Populate form fields
         document.querySelector('#editEmployeeModal input[name="FirstName"]').value = employee.FirstName ?? '';
         document.querySelector('#editEmployeeModal input[name="LastName"]').value = employee.LastName ?? '';
         document.querySelector('#editEmployeeModal input[name="Email"]').value = employee.Email ?? '';
-        document.querySelector('#editEmployeeModal select[name="DepartmentID"]').value = employee.department?.DepartmentID ?? '';
+        document.querySelector('#editEmployeeModal input[name="HireDate"]').value = employee.HireDate ?? '';
+        document.querySelector('#editEmployeeModal select[name="Status"]').value = employee.Status ?? 'Active';
         document.querySelector('#editEmployeeModal input[name="EmployeeID"]').value = employeeId;
 
+        // Load departments with the selected department
+        const selectedDepartmentId = employee.department?.DepartmentID ?? '';
+        try {
+            await loadDepartments('#editEmployeeModal select[name="DepartmentID"]', selectedDepartmentId);
+        } catch (error) {
+            console.error('Error loading departments:', error);
+        }
+
+        // Handle profile picture preview
+        const currentImg = document.getElementById('currentProfileImg');
+        const noProfileText = document.getElementById('noProfilePicture');
+        
+        if (employee.ProfilePicture) {
+            const profilePicUrl = `{{ asset('storage/') }}/${employee.ProfilePicture}`;
+            currentImg.src = profilePicUrl;
+            currentImg.style.display = 'block';
+            noProfileText.style.display = 'none';
+        } else {
+            // Use avatar placeholder
+            const name = `${employee.FirstName ?? ''} ${employee.LastName ?? ''}`.trim() || 'Employee';
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D8ABC&color=fff&size=64`;
+            currentImg.src = avatarUrl;
+            currentImg.style.display = 'block';
+            noProfileText.style.display = 'none';
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
         modal.show();
     }
 
@@ -263,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ----------------------- LOAD DEPARTMENTS -----------------------
-    async function loadDepartments(selectSelector) {
+    async function loadDepartments(selectSelector, selectedValue = null) {
         const url = `{{ route('admin.company-departments', ['company' => 'COMPANY_ID']) }}`.replace('COMPANY_ID', "{{ $company->company_id ?? '' }}");
         try {
             const response = await fetch(url);
@@ -276,16 +306,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     const option = document.createElement('option');
                     option.value = dep.DepartmentID;
                     option.textContent = dep.DepartmentName;
+                    if (selectedValue && dep.DepartmentID == selectedValue) {
+                        option.selected = true;
+                    }
                     select.appendChild(option);
                 });
             }
+            return Promise.resolve();
         } catch (error) {
             console.error('Error loading departments:', error);
+            return Promise.reject(error);
         }
     }
 
     // Load departments on modal show
     document.getElementById('addEmployeeModal').addEventListener('show.bs.modal', () => loadDepartments('#employee_department'));
-    document.getElementById('editEmployeeModal').addEventListener('show.bs.modal', () => loadDepartments('#editEmployeeModal select[name="DepartmentID"]'));
 });
 </script>
