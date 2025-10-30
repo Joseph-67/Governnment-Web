@@ -253,6 +253,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
         // Check-out chemical
         Route::post('/save-company-chemical-check-out', 'save_check_out')->name('admin.save-company-chemical-check-out');
+
+        // get chemical item
+        Route::get('/admin/company-chemicals/{id}', 'getCompanyChemicals')->name('admin.get-company-chemicals');
+
+
     });
 
     // company users

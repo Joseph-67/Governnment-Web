@@ -19,22 +19,22 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Name</label>
-                    <select name="chemical" class="form-control" required value="${data.chemical || ''}">
-                    <option value="" disabled ${!data.chemical ? 'selected' : ''}>Select Chemical</option>
-                    @foreach($approved_chemicals as $chemical)
-                        <option value="{{ $chemical->chemical_id }}" ${data.chemical == '{{ $chemical->name }}' ? 'selected' : ''}>{{ $chemical->name }}</option>
-                    @endforeach
+                    <select name="chemical" class="form-control" required>
+                        <option value="" disabled ${!data.chemical ? 'selected' : ''}>Select Chemical</option>
+                        @foreach($approved_chemicals as $chemical)
+                            <option value="{{ $chemical->chemical_id }}" ${data.chemical == '{{ $chemical->name }}' ? 'selected' : ''}>{{ $chemical->name }}</option>
+                        @endforeach
                     </select>
-                    <div class="invalid-feedback">Please enter the chemical name.</div>
+                    <div class="invalid-feedback">Please select a chemical.</div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Quantity/Unit</label>
-                    <input name="quantity" type="number" step="0.01" class="form-control" required value="${data.quantity || ''}">
+                    <input name="quantity_per_unit" type="number" step="0.01" class="form-control" required value="${data.quantity || ''}">
                     <div class="invalid-feedback">Please enter a quantity.</div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Unit</label>
-                    <input name="unit" class="form-control" value="${data.unit || ''}">
+                    <input name="unit_of_measurement" class="form-control" value="${data.unit || ''}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Hazardous?</label>
@@ -144,17 +144,137 @@
                 renderChemicalTable(data.company_chemical, form.id.value || form.chemical_id.value);
                 showToast(`${operation.charAt(0).toUpperCase() + operation.slice(1)} successful`, 'success');
                 bootstrap.Modal.getInstance(document.querySelector('#chemicalModal')).hide();
-            } else {
+            } 
+            else if (data.status === 'error') {
+                // Clear previous validation errors
+                form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                form.querySelectorAll('.invalid-feedback.dynamic').forEach(el => el.remove());
+
+                if (data.errors) {
+                    Object.keys(data.errors).forEach(field => {
+                        console.log(data.errors[field][0]);
+                        showToast(data.errors[field][0], 'danger');
+                        const input = form.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('is-invalid');
+                            const feedback = document.createElement('div');
+                            feedback.className = 'invalid-feedback dynamic';
+                            feedback.textContent = data.errors[field][0];
+                            input.parentNode.appendChild(feedback);
+                        }
+                    });
+
+                    showToast(data.message || 'Validation failed. Please check highlighted fields.', 'danger');
+                } else {
+                    showToast(data.message || 'An unexpected error occurred.', 'danger');
+                }
+            } 
+            else {
                 showToast(data.message || 'Operation failed', 'danger');
             }
+
         } catch (err) {
             console.error(err);
-            showToast('An error occurred', 'danger');
+            showToast('A network or server error occurred', 'danger');
         } finally {
             btnText.style.display = 'inline';
             btnLoader.style.display = 'none';
             btn.disabled = false;
         }
     });
+</script>
+<script>
+    $(document).ready(function() {
+        const table = $('#chemicalTable').DataTable({
+            processing: true,
+            ajax: {
+                url: `{{ route('admin.get-company-chemicals', ['id' => $company->company_id]) }}`,
+                dataSrc: 'company_chemicals'
+            },
+            columns: [
+                { data: null, render: (data, type, row, meta) => meta.row + 1 },
+                { data: 'name' },
+                { data: 'type' },
+                { data: 'quantity' },
+                { data: 'unit' },
+                { data: 'reorder_level' },
+                { data: 'safety_level' },
+                { data: 'hazardous' },
+                { data: 'storage_location' },
+                { data: 'updated_at' },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: (data, type, row) => `
+                        <div class="dropdown text-center">
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="la la-cogs"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item viewChemicalBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-eye text-info"></i> View Details</a></li>
+                                <li><a class="dropdown-item checkinBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-arrow-down text-success"></i> Check-In</a></li>
+                                <li><a class="dropdown-item checkoutBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-arrow-up text-warning"></i> Check-Out</a></li>
+                                <li><a class="dropdown-item adjustBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-sync text-primary"></i> Adjustment</a></li>
+                                <li><a class="dropdown-item transferBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-exchange-alt text-secondary"></i> Transfer</a></li>
+                                <li><a class="dropdown-item disposeBtn" data-id="${row.company_chemical_id}">
+                                    <i class="la la-trash text-danger"></i> Disposal</a></li>
+                            </ul>
+                        </div>
+                    `
+                }
+            ],
+            responsive: true,
+        });
 
+        // 🔹 Action button handlers
+        $(document).on('click', '.checkinBtn', function() {
+            $('#checkInModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#checkInModal').modal('show');
+        });
+
+        $(document).on('click', '.checkoutBtn', function() {
+            $('#checkOutModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#checkOutModal').modal('show');
+        });
+
+        $(document).on('click', '.adjustBtn', function() {
+            $('#adjustModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#adjustModal').modal('show');
+        });
+
+        $(document).on('click', '.transferBtn', function() {
+            $('#transferModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#transferModal').modal('show');
+        });
+
+        $(document).on('click', '.disposeBtn', function() {
+            $('#disposeModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#disposeModal').modal('show');
+        });
+
+        // 🔹 Form submissions
+        $('form.inventoryActionForm').on('submit', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(res) {
+                    toastr.success(res.message || 'Action recorded successfully');
+                    $('.modal').modal('hide');
+                    table.ajax.reload();
+                },
+                error: function() {
+                    toastr.error('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
 </script>
