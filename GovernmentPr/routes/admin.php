@@ -409,13 +409,34 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/update-category/{id}', 'update')->name('admin.update-category');
     });
 
-    
-    // Chemical Stock Movement
-    Route::controller(ChemicalStockMovementController::class)->group(function(){
-        Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
-        Route::post('/company/chemical-setup/check-out', 'store_chemical_checkout')->name('admin.save-company-chemical-check-out');
-        Route::get('/chemical-stock-analysis', 'getChemicalStockAnalysis')->name('admin.chemical-stock-analysis');
+
+    // Chemical Stock Movement Routes
+    Route::controller(ChemicalStockMovementController::class)->group(function () {
+        // Chemical Check-In
+        Route::post('/company/chemical/check-in', 'store_chemical_checkin')
+            ->name('admin.save-company-chemical-check-in');
+
+        // Chemical Check-Out
+        Route::post('/company/chemical/check-out', 'store_chemical_checkout')
+            ->name('admin.save-company-chemical-check-out');
+
+        // Chemical Transfer
+        Route::post('/company/chemical/transfer', 'store_chemical_transfer')
+            ->name('admin.save-company-chemical-transfer');
+
+        // Chemical Adjustment
+        Route::post('/company/chemical/adjustment', 'store_chemical_adjustment')
+            ->name('admin.save-company-chemical-adjustment');
+
+        // Chemical Disposal
+        Route::post('/company/chemical/disposal', 'store_chemical_disposal')
+            ->name('admin.save-company-chemical-disposal');
+
+        // Chemical Stock Analysis
+        Route::get('/company/chemical/stock-analysis', 'getChemicalStockAnalysis')
+            ->name('admin.chemical-stock-analysis');
     });
+
 
     // Chemicals
     Route::controller(ChemicalsController::class)->group(function() {

@@ -43,7 +43,8 @@ class CompanyChemicalController extends ChemicalStockMovementController
                 ->get()
                 ->map(function ($chem) {
                     return [
-                        'id' => $chem->company_chemical_id,
+                        'company_chemical_id' => $chem->company_chemical_id,
+                        'chemical_id' => $chem->chemical_id,
                         'name' => optional($chem->chemical)->name ?? 'N/A',
                         'type' => optional($chem->chemical->chemicalCategory)->category_name ?? 'N/A',
                         'quantity' => $chem->quantity_per_unit ?? 0,

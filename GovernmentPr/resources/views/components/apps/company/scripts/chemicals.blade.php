@@ -214,48 +214,60 @@
                             <ul class="dropdown-menu dropdown-menu-end shadow">
                                 <li><a class="dropdown-item viewChemicalBtn" data-id="${row.company_chemical_id}">
                                     <i class="la la-eye text-info"></i> View Details</a></li>
-                                <li><a class="dropdown-item checkinBtn" data-id="${row.company_chemical_id}">
+                                <li><a class="dropdown-item chemicalCheckinBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-arrow-down text-success"></i> Check-In</a></li>
-                                <li><a class="dropdown-item checkoutBtn" data-id="${row.company_chemical_id}">
+                                <li><a class="dropdown-item chemicalCheckoutBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
                                     <i class="la la-arrow-up text-warning"></i> Check-Out</a></li>
-                                <li><a class="dropdown-item adjustBtn" data-id="${row.company_chemical_id}">
+                                <li><a class="dropdown-item chemicalAdjustBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
                                     <i class="la la-sync text-primary"></i> Adjustment</a></li>
-                                <li><a class="dropdown-item transferBtn" data-id="${row.company_chemical_id}">
+                                <li><a class="dropdown-item chemicalTransferBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
                                     <i class="la la-exchange-alt text-secondary"></i> Transfer</a></li>
-                                <li><a class="dropdown-item disposeBtn" data-id="${row.company_chemical_id}">
+                                <li><a class="dropdown-item chemicalDisposeBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
                                     <i class="la la-trash text-danger"></i> Disposal</a></li>
                             </ul>
                         </div>
                     `
-                }
+                },
+                { data: 'company_chemical_id', visible: false },
+                { data: 'chemical_id', visible: false },
             ],
             responsive: true,
         });
 
         // 🔹 Action button handlers
-        $(document).on('click', '.checkinBtn', function() {
-            $('#checkInModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#checkInModal').modal('show');
+        $(document).on('click', '.chemicalCheckinBtn', function() {
+            $('#chemicalCheckInModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#chemicalCheckInModal [name=chemical_id]').val($(this).data('chemical-id'));
+            $('#chemicalCheckInModal [name=chemical_name]').val($(this).data('name'));
+            $('#chemicalCheckInModal [name=unit]').val($(this).data('unit'));
+            $('#chemicalCheckInModal').modal('show');
         });
 
-        $(document).on('click', '.checkoutBtn', function() {
-            $('#checkOutModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#checkOutModal').modal('show');
+        $(document).on('click', '.chemicalCheckoutBtn', function() {
+            $('#chemicalCheckoutModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#chemicalCheckoutModal [name=chemical_name]').val($(this).data('name'));
+            $('#chemicalCheckoutModal [name=unit]').val($(this).data('unit'));
+            $('#chemicalCheckoutModal').modal('show');
         });
 
-        $(document).on('click', '.adjustBtn', function() {
-            $('#adjustModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#adjustModal').modal('show');
+        $(document).on('click', '.chemicalAdjustBtn', function() {
+            $('#chemicalAdjustmentModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#chemicalAdjustmentModal [name=chemical_name]').val($(this).data('name'));
+            $('#chemicalAdjustmentModal [name=unit]').val($(this).data('unit'));
+            $('#chemicalAdjustmentModal').modal('show');
         });
 
-        $(document).on('click', '.transferBtn', function() {
-            $('#transferModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#transferModal').modal('show');
+        $(document).on('click', '.chemicalTransferBtn', function() {
+            $('#chemicalTransferModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#chemicalTransferModal [name=chemical_name]').val($(this).data('name'));
+            $('#chemicalTransferModal [name=unit]').val($(this).data('unit'));
+            $('#chemicalTransferModal').modal('show');
         });
 
-        $(document).on('click', '.disposeBtn', function() {
-            $('#disposeModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#disposeModal').modal('show');
+        $(document).on('click', '.chemicalDisposeBtn', function() {
+            $('#chemicalDisposalModal [name=company_chemical_id]').val($(this).data('id'));
+            $('#chemicalDisposalModal [name=chemical_name]').val($(this).data('name'));
+            $('#chemicalDisposalModal').modal('show');
         });
 
         // 🔹 Form submissions
@@ -275,6 +287,424 @@
                     toastr.error('An error occurred. Please try again.');
                 }
             });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Auto-generate Batch Number
+        document.getElementById('generateBatchBtn').addEventListener('click', function () {
+            const chemicalId = document.getElementById('checkInChemicalName').value;
+            const date = new Date();
+            const ymd = `${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}`;
+            const rand = Math.floor(100 + Math.random() * 900);
+            const batchNo = `BCH-${chemicalId || 'GEN'}-${ymd}-${rand}`;
+            document.getElementById('batchNo').value = batchNo;
+        });
+
+        // Validate and Submit Check-in Form
+        const checkInForm = document.getElementById('chemicalCheckInForm');
+        checkInForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!checkInForm.checkValidity()) {
+                e.stopPropagation();
+                checkInForm.classList.add('was-validated');
+                return;
+            }
+
+            const formData = new FormData(checkInForm);
+
+            fetch(`{{ route('admin.save-company-chemical-check-in') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Check-In Successful',
+                        text: 'Chemical batch recorded successfully.'
+                    });
+                    $('#chemicalCheckInModal').modal('hide');
+                    $('#chemicalTable').DataTable().ajax.reload();
+                    checkInForm.reset();
+                    checkInForm.classList.remove('was-validated');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Something went wrong.'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Unable to process your request right now.'
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const checkoutChemical = document.getElementById('checkoutChemical');
+        const checkoutBatch = document.getElementById('checkoutBatch');
+        const availableQty = document.getElementById('availableQty');
+        const checkoutUnit = document.getElementById('checkoutUnit');
+        const checkoutQty = document.getElementById('checkoutQty');
+
+        // When a chemical is selected, load its batches
+        checkoutChemical.addEventListener('change', function () {
+            const chemicalId = this.value;
+
+            if (!chemicalId) return;
+
+            fetch(``)
+                .then(res => res.json())
+                .then(data => {
+                    checkoutBatch.innerHTML = `<option value="">Select Batch</option>`;
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        checkoutBatch.removeAttribute('disabled');
+                        data.batches.forEach(batch => {
+                            checkoutBatch.innerHTML += `
+                                <option value="${batch.batch_no}" data-qty="${batch.remaining_quantity}" data-unit="${batch.unit}">
+                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit}
+                                </option>`;
+                        });
+                    } else {
+                        checkoutBatch.setAttribute('disabled', true);
+                        Swal.fire('No Batches Found', 'This chemical currently has no available batches.', 'info');
+                    }
+                })
+                .catch(err => console.error(err));
+        });
+
+        // When a batch is selected, show available qty & unit
+        checkoutBatch.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            availableQty.value = selected.dataset.qty || '';
+            checkoutUnit.value = selected.dataset.unit || '';
+        });
+
+        // Validate quantity before submitting
+        checkoutQty.addEventListener('input', function () {
+            const maxQty = parseFloat(availableQty.value || 0);
+            if (parseFloat(this.value) > maxQty) {
+                this.setCustomValidity('Cannot exceed available quantity');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Submit checkout form
+        const checkoutForm = document.getElementById('chemicalCheckoutForm');
+        checkoutForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!checkoutForm.checkValidity()) {
+                e.stopPropagation();
+                checkoutForm.classList.add('was-validated');
+                return;
+            }
+
+            const formData = new FormData(checkoutForm);
+
+            fetch(``, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Checkout Recorded',
+                        text: 'Chemical checkout successfully recorded.'
+                    });
+                    $('#chemicalCheckoutModal').modal('hide');
+                    $('#chemicalTable').DataTable().ajax.reload();
+                    checkoutForm.reset();
+                    checkoutForm.classList.remove('was-validated');
+                } else {
+                    Swal.fire('Error', data.message || 'Unable to record checkout.', 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire('Server Error', 'Could not complete the request.', 'error');
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const adjustChemical = document.getElementById('adjustChemical');
+        const adjustBatch = document.getElementById('adjustBatch');
+        const adjustCurrentQty = document.getElementById('adjustCurrentQty');
+        const adjustUnit = document.getElementById('adjustUnit');
+        const adjustQuantity = document.getElementById('adjustQuantity');
+
+        // Load batches for selected chemical
+        adjustChemical.addEventListener('change', function () {
+            const chemicalId = this.value;
+            if (!chemicalId) return;
+
+            fetch(``)
+                .then(res => res.json())
+                .then(data => {
+                    adjustBatch.innerHTML = `<option value="">Select Batch</option>`;
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        adjustBatch.removeAttribute('disabled');
+                        data.batches.forEach(batch => {
+                            adjustBatch.innerHTML += `
+                                <option value="${batch.batch_no}" data-qty="${batch.remaining_quantity}" data-unit="${batch.unit}">
+                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit}
+                                </option>`;
+                        });
+                    } else {
+                        adjustBatch.setAttribute('disabled', true);
+                        Swal.fire('No Batches Found', 'This chemical currently has no active batches.', 'info');
+                    }
+                });
+        });
+
+        // Display current qty and unit when batch is selected
+        adjustBatch.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            adjustCurrentQty.value = selected.dataset.qty || '';
+            adjustUnit.value = selected.dataset.unit || '';
+        });
+
+        // Validate adjustment quantity for decrease
+        const adjustType = document.getElementById('adjustType');
+        adjustQuantity.addEventListener('input', function () {
+            const maxQty = parseFloat(adjustCurrentQty.value || 0);
+            const adjustVal = parseFloat(this.value || 0);
+            if (adjustType.value === 'decrease' && adjustVal > maxQty) {
+                this.setCustomValidity('Cannot decrease beyond available quantity');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Submit adjustment
+        const form = document.getElementById('chemicalAdjustmentForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!form.checkValidity()) {
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                return;
+            }
+
+            const formData = new FormData(form);
+            fetch(``, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Adjustment Successful', 'Inventory updated successfully.', 'success');
+                    $('#chemicalAdjustmentModal').modal('hide');
+                    $('#chemicalTable').DataTable().ajax.reload();
+                    form.reset();
+                    form.classList.remove('was-validated');
+                } else {
+                    Swal.fire('Error', data.message || 'Unable to complete adjustment.', 'error');
+                }
+            })
+            .catch(() => Swal.fire('Server Error', 'Unable to process request.', 'error'));
+        });
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const transferChemical = document.getElementById('transferChemical');
+    const transferBatch = document.getElementById('transferBatch');
+    const transferFromLocation = document.getElementById('transferFromLocation');
+    const transferUnit = document.getElementById('transferUnit');
+    const transferQuantity = document.getElementById('transferQuantity');
+
+    // Load batches for selected chemical
+    transferChemical.addEventListener('change', function () {
+        const chemicalId = this.value;
+        if (!chemicalId) return;
+
+        fetch(``)
+            .then(res => res.json())
+            .then(data => {
+                transferBatch.innerHTML = `<option value="">Select Batch</option>`;
+                if (data.status === 'success' && data.batches.length > 0) {
+                    transferBatch.removeAttribute('disabled');
+                    data.batches.forEach(batch => {
+                        transferBatch.innerHTML += `
+                            <option value="${batch.batch_no}" 
+                                    data-location="${batch.storage_location}" 
+                                    data-qty="${batch.remaining_quantity}" 
+                                    data-unit="${batch.unit}">
+                                ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit} (${batch.storage_location})
+                            </option>`;
+                    });
+                } else {
+                    transferBatch.setAttribute('disabled', true);
+                    Swal.fire('No Batches Found', 'This chemical has no active batches.', 'info');
+                }
+            });
+    });
+
+    // When batch is selected, show location and unit
+    transferBatch.addEventListener('change', function () {
+        const selected = this.options[this.selectedIndex];
+        transferFromLocation.value = selected.dataset.location || '';
+        transferUnit.value = selected.dataset.unit || '';
+        transferQuantity.max = selected.dataset.qty || 0;
+    });
+
+    // Validate transfer quantity
+    transferQuantity.addEventListener('input', function () {
+        const maxQty = parseFloat(this.max);
+        if (parseFloat(this.value) > maxQty) {
+            this.setCustomValidity('Cannot transfer more than available quantity');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    // Submit transfer form
+    const form = document.getElementById('chemicalTransferForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+
+        const formData = new FormData(form);
+        fetch(``, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire('Transfer Successful', 'Chemical transferred successfully.', 'success');
+                $('#chemicalTransferModal').modal('hide');
+                $('#chemicalTable').DataTable().ajax.reload();
+                form.reset();
+                form.classList.remove('was-validated');
+            } else {
+                Swal.fire('Error', data.message || 'Transfer failed.', 'error');
+            }
+        })
+        .catch(() => Swal.fire('Server Error', 'Unable to complete request.', 'error'));
+    });
+});
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const disposalChemical = document.getElementById('disposalChemical');
+        const disposalBatch = document.getElementById('disposalBatch');
+        const disposalLocation = document.getElementById('disposalLocation');
+        const disposalQuantity = document.getElementById('disposalQuantity');
+        const disposalUnit = document.getElementById('disposalUnit');
+
+        // Load batches for selected chemical
+        disposalChemical.addEventListener('change', function () {
+            const chemicalId = this.value;
+            if (!chemicalId) return;
+
+            fetch(``)
+                .then(res => res.json())
+                .then(data => {
+                    disposalBatch.innerHTML = `<option value="">Select Batch</option>`;
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        disposalBatch.removeAttribute('disabled');
+                        data.batches.forEach(batch => {
+                            disposalBatch.innerHTML += `
+                                <option value="${batch.batch_no}" 
+                                    data-location="${batch.storage_location}" 
+                                    data-qty="${batch.remaining_quantity}" 
+                                    data-unit="${batch.unit}">
+                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit} (${batch.storage_location})
+                                </option>`;
+                        });
+                    } else {
+                        disposalBatch.setAttribute('disabled', true);
+                        Swal.fire('No Batches Found', 'No available batches for this chemical.', 'info');
+                    }
+                });
+        });
+
+        // Auto-fill details on batch select
+        disposalBatch.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            disposalLocation.value = selected.dataset.location || '';
+            disposalUnit.value = selected.dataset.unit || '';
+            disposalQuantity.max = selected.dataset.qty || 0;
+        });
+
+        // Validate disposal quantity
+        disposalQuantity.addEventListener('input', function () {
+            const maxQty = parseFloat(this.max);
+            if (parseFloat(this.value) > maxQty) {
+                this.setCustomValidity('Cannot dispose more than available quantity');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Submit disposal
+        const form = document.getElementById('chemicalDisposalForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!form.checkValidity()) {
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                return;
+            }
+
+            const formData = new FormData(form);
+            fetch(``, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Disposal Recorded', 'Chemical successfully disposed.', 'success');
+                    $('#chemicalDisposalModal').modal('hide');
+                    $('#chemicalTable').DataTable().ajax.reload();
+                    form.reset();
+                    form.classList.remove('was-validated');
+                } else {
+                    Swal.fire('Error', data.message || 'Failed to record disposal.', 'error');
+                }
+            })
+            .catch(() => Swal.fire('Server Error', 'Unable to complete disposal.', 'error'));
         });
     });
 </script>
