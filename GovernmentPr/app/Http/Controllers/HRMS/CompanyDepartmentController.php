@@ -310,16 +310,6 @@ class CompanyDepartmentController extends Controller
     try {
         $department = CompanyDepartment::findOrFail($id);
 
-        // Check if employees belong to this department
-        $assignedCount = CompanyEmployees::where('department_id', $id)->count();
-        if ($assignedCount > 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => __('Cannot delete department because employees are assigned to it.'),
-                'assigned_employees' => $assignedCount
-            ], 409);
-        }
-
         $department->delete();
 
         return response()->json([
