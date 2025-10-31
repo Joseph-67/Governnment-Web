@@ -5,23 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Material;
 class CompanyMaterial extends Model
 {
     use HasFactory;
-    protected $primaryKey="companyMaterialId";
-    protected $fillable=[
+    protected $primaryKey = "companyMaterialId";
+    protected $fillable = [
         'companyID',
         'materialID',
-        'serial_number',
-        'unit_of_measure',
-        'threshold_quantity',
-        'status'
+        'quantity_per_unit',
+        'unit',
+        'minimum_threshold',
+        'maximum_threshold',
+        'storage_location',
+        'hazardous',
+        'status',
+        'is_deleted',
+        'created_at',
+        'updated_at'
     ];
 
-    public function stockMovements()
+    public function company()
     {
-        return $this->hasMany(stock_movement::class, 'companyMaterialId');
+        return $this->belongsTo(Company::class, 'companyID', 'company_id');
     }
 
     public function material()
@@ -29,18 +34,43 @@ class CompanyMaterial extends Model
         return $this->belongsTo(Material::class, 'materialID', 'materialID');
     }
 
-    public static function totalMaterials()
+    public function stockMovements()
     {
-        return self::where('status', 'active')->count();
+        return $this->hasMany(stock_movement::class, 'companyMaterialId');
     }
 
     public function scopeActive($query)
     {
-        return $query->where('status', true);
-    }
-    public function company()
-    {
-        return $this->belongsTo(Company::class, 'companyID', 'company_id');
+        return $query->where('status', 'active');
     }
     
+    public function scopeByCompany($query, $company_id)
+    {
+        return $query->where('companyID', $company_id);
+    }
+
+    public function scopeByMaterial($query, $material_id)
+    {
+        return $query->where('material_id', $material_id);
+    }
+
+    public function scopeByYear($query, $year)
+    {
+        return $query->whereYear('created_at', $year);
+    }
+
+    public function scopeByMonth($query, $month)
+    {
+        return $query->whereMonth('created_at', $month);
+    }
+
+    public function scopeByDate($query, $date)
+    {
+        return $query->whereDate('created_at', $date);
+    }
+
+    public function scopeTotalMaterials()
+    {
+        return $query->count();
+    }
 }

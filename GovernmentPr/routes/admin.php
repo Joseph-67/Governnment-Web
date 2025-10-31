@@ -255,6 +255,27 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     });
 
+    Route::controller(CompanyMaterialController::class)->group(function() {
+        // Add / Update material
+        Route::post('/save-company-material', 'store_company_material')->name('admin.store-company-material');
+
+        // View material
+        Route::get('/material-view/{material}', 'show')->name('admin.view-material');
+
+        // Delete material
+        Route::post('/delete-company-material/{material}', 'delete_company_material')->name('admin.delete-company-material');
+
+        // Check-in material
+        Route::post('/save-company-material-check-in', 'save_check_in')->name('admin.save-company-material-check-in');
+
+        // Check-out material
+        Route::post('/save-company-material-check-out', 'save_check_out')->name('admin.save-company-material-check-out');
+
+        // get material item
+        Route::get('/admin/company-materials/{id}', 'getCompanyMaterials')->name('admin.get-company-materials');
+
+    });
+
     // company users
     Route::controller(CompanyUsersController::class)->group(function(){
         Route::post('/assign-users/store', 'store')->name('admin.store-assign-users');
@@ -776,6 +797,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(StockMovementController::class)->group(function(){
         Route::post('/company/material-setup/check-in', 'store_checkin')->name('admin.save-company-material-check-in');
         Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
+        Route::get('/material-batches/{companyMaterialId}', 'getMaterialBatches')->name('admin.get-material-batches');
+        Route::get('/material-balance/{companyMaterialId}', 'getMaterialBalanceAPI')->name('admin.get-material-balance');
         Route::get('/material-stock-analysis', 'MaterialStockAnalysis')->name('admin.material-stock-analysis');
     });
 
