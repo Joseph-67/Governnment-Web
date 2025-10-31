@@ -8,10 +8,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admins extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     protected $guard = 'admin';
     protected $table = 'admins';

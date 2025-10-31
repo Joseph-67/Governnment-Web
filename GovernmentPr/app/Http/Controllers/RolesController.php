@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\guard;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role;
+
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 use DB;
 class RolesController extends Controller
 {
@@ -250,9 +252,43 @@ class RolesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-   public function destroy($id)
-{
-    
-}
+    public function destroy(Request $request)
+    {
+        // dd($request);
+         $id = $request->id;
+        try {
+            $role = Role::find($id);
+
+
+            // dd($role);
+            // Optional: Prevent deleting system roles
+            if (in_array(strtolower($role->name), ['admin', 'super-admin'])) {
+                return response()->json([
+                    'error' => 'You cannot delete this protected role.'
+                ], 403);
+            }
+
+            if($role){
+                $role->permissions()->detach();
+                // dd($role);
+                $role->delete();
+            }
+
+            return response()->json([
+                'success' => 'Role deleted successfully ✅',
+                'id' => $id
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Role not found ❌'
+            ], 404);
+        } catch (\Exception $e) {
+            \Log::error('Role Deletion Error:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'error' => 'An unexpected error occurred. Please try again later.'
+            ], 500);
+        }
+    }
+
 
 }

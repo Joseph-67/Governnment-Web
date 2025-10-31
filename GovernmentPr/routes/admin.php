@@ -115,7 +115,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/settings/role', 'index')->name('admin.display-roles');
         Route::post('/settings/role', 'store')->name('admin.store-role');
         Route::post('/update-role', 'update')->name('admin.update.role');
-        Route::delete('/admin/roles/{id}', 'destroy')->name('admin.delete.role');
+        Route::post('/admin/roles/delete', 'destroy')->name('admin.delete.role');
         Route::post('/settings/assign_role_has_permission', 'assign_role_permission')->name('admin.update.permission-role');
         Route::post('/settings/revoke_role_has_permission', 'revoke_role_permission')->name('admin.revoke.permission-role');
         Route::post('/settings/role-change', 'guard_change')->name('admin.guard-change');
@@ -837,7 +837,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-subcategories/{id}', 'show')->name('admin.show-waste-subcategory');
         Route::put('/waste-subcategories/{id}', 'update')->name('admin.update-waste-subcategory');
         Route::delete('/waste-subcategories/{id}', 'destroy')->name('admin.delete-waste-subcategory');
-        Route::get('/get-waste-subcategories/{value}', 'getWasteSubCategories');
+        Route::get('/get-waste-subcategories', 'getWasteSubCategories')->name('admin.get-waste-subcategories');
     });
     // Waste Management
     Route::controller(WasteItemController::class)->group(function() {
