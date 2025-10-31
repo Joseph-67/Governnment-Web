@@ -158,15 +158,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
 
-    //Pages
+    //Pages - Resource routes handle CRUD operations
+    Route::resource('pages', PageController::class)->names('admin.pages');
+    
+    //Additional Page routes
     Route::controller(PageController::class)->group(function() {
-        // Route::get ('/pages', 'index')->name('admin.pages.index');
-        // Route::get ('/create-page', 'create')->name('admin.pages.create');
-        // Route::post ('/store-page', 'store')->name('admin.pages.store');
         Route::post ('/preview-page', 'store')->name('admin.pages.preview');
-        // Route::get ('/edit-page/{id}', 'edit')->name('admin.pages.edit');
-        // Route::put ('/update-page/{id}', 'update')->name('admin.pages.update');
-        // Route::delete ('/delete-page/{id}', 'destroy')->name('admin.pages.delete');
         Route::post('/upload-image', 'uploadImage')->name('admin.upload.image');
         Route::post('/upload-media', 'uploadMedia')->name('admin.pages.uploadMedia');
         Route::get('/search-author', 'searchAuthor')->name('admin.search-author');
@@ -175,8 +172,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/search-cms-role','searchRole')->name('admin.search-cms-role');
         Route::get('/pages/fetch', 'fetchMedia');
     });
-
-    Route::resource('pages', PageController::class)->names('admin.pages');
 
 
     //Posts
@@ -253,6 +248,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
         // Check-out chemical
         Route::post('/save-company-chemical-check-out', 'save_check_out')->name('admin.save-company-chemical-check-out');
+
+        // get chemical item
+        Route::get('/admin/company-chemicals/{id}', 'getCompanyChemicals')->name('admin.get-company-chemicals');
+
+
     });
 
     // company users
@@ -404,13 +404,34 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/update-category/{id}', 'update')->name('admin.update-category');
     });
 
-    
-    // Chemical Stock Movement
-    Route::controller(ChemicalStockMovementController::class)->group(function(){
-        Route::post('/company/chemical-setup/check-in', 'store_chemical_checkin')->name('admin.save-company-chemical-check-in');
-        Route::post('/company/chemical-setup/check-out', 'store_chemical_checkout')->name('admin.save-company-chemical-check-out');
-        Route::get('/chemical-stock-analysis', 'getChemicalStockAnalysis')->name('admin.chemical-stock-analysis');
+
+    // Chemical Stock Movement Routes
+    Route::controller(ChemicalStockMovementController::class)->group(function () {
+        // Chemical Check-In
+        Route::post('/company/chemical/check-in', 'store_chemical_checkin')
+            ->name('admin.save-company-chemical-check-in');
+
+        // Chemical Check-Out
+        Route::post('/company/chemical/check-out', 'store_chemical_checkout')
+            ->name('admin.save-company-chemical-check-out');
+
+        // Chemical Transfer
+        Route::post('/company/chemical/transfer', 'store_chemical_transfer')
+            ->name('admin.save-company-chemical-transfer');
+
+        // Chemical Adjustment
+        Route::post('/company/chemical/adjustment', 'store_chemical_adjustment')
+            ->name('admin.save-company-chemical-adjustment');
+
+        // Chemical Disposal
+        Route::post('/company/chemical/disposal', 'store_chemical_disposal')
+            ->name('admin.save-company-chemical-disposal');
+
+        // Chemical Stock Analysis
+        Route::get('/company/chemical/stock-analysis', 'getChemicalStockAnalysis')
+            ->name('admin.chemical-stock-analysis');
     });
+
 
     // Chemicals
     Route::controller(ChemicalsController::class)->group(function() {
@@ -419,6 +440,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/chemicals/{id}', 'show')->name('admin.show-chemical');
         Route::put('/chemicals/{id}', 'update')->name('admin.update-chemical');
         Route::delete('/chemicals/{id}', 'destroy')->name('admin.delete-chemical');
+        Route::get('/company/{company_id}/chemical-batches', 'get_batches')->name('admin.get-chemical-batches');
     });
 
     Route::controller(CompanyChemicalController::class)->group(function() {
@@ -428,6 +450,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-chemicals/{value}', 'getCompanyChemicals');
         Route::post('/update-chemical-details', 'updateChemicalDetails')->name('admin.update-chemical-details');
         Route::delete('/delete-chemical/{id}', 'deleteChemical')->name('admin.delete-chemical');
+        Route::get('/company/{company_id}/chemical-batches', 'getBatches')->name('admin.get-chemical-batches');
+        Route::get('/company/{company_id}/batch-available-quantity', 'getBatchAvailableQuantity')->name('admin.get-batch-available-quantity');
     });
 
     // Company

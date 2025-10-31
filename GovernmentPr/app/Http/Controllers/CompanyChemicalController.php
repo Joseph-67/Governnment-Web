@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\ChemicalStockMovementController;
+use Carbon\Carbon;
 
 class CompanyChemicalController extends ChemicalStockMovementController
 {
@@ -31,19 +32,48 @@ class CompanyChemicalController extends ChemicalStockMovementController
         //
     }
 
-    public function getCompanyChemicals($value)
+    public function getCompanyChemicals($companyId)
     {
-        $companyChemical = CompanyChemical::where('company_chemicals.status', 'active')
-            ->where('company_id', $value)
-            ->where('is_deleted', false)
-            ->with(['company', 'chemical'])
-            ->select('chemical_id')
-            ->get();
-        return response()->json([
-            'status' => 'success',
-            'company_chemicals' => $companyChemical,
-        ], 200);
+        try {
+            // Fetch company chemicals with relationships
+            $companyChemicals = CompanyChemical::with(['chemical', 'company'])
+                ->active()
+                ->byCompany($companyId)
+                ->where('is_deleted', false)
+                ->get()
+                ->map(function ($chem) {
+                    return [
+                        'company_chemical_id' => $chem->company_chemical_id,
+                        'chemical_id' => $chem->chemical_id,
+                        'name' => optional($chem->chemical)->name ?? 'N/A',
+                        'type' => optional($chem->chemical->chemicalCategory)->category_name ?? 'N/A',
+                        'quantity' => $chem->quantity_per_unit ?? 0,
+                        'unit' => $chem->unit ?? '-',
+                        'reorder_level' => $chem->minimum_threshold ?? '-',
+                        'safety_level' => $chem->maximum_threshold ?? '-',
+                        'hazardous' => $chem->is_hazardous ? 
+                            '<span class="badge bg-danger">Yes</span>' : 
+                            '<span class="badge bg-success">No</span>',
+                        'storage_location' => $chem->storage_location ?? '-',
+                        'updated_at' => $chem->updated_at 
+                            ? Carbon::parse($chem->updated_at)->diffForHumans() 
+                            : '-',
+                    ];
+                });
+
+            return response()->json([
+                'status' => 'success',
+                'company_chemicals' => $companyChemicals,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to fetch company chemicals.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -59,8 +89,10 @@ class CompanyChemicalController extends ChemicalStockMovementController
             'chemical' => ['required', 'integer',Rule::unique('company_chemicals', 'chemical_id')->where(function ($query) use ($request) {
                 return $query->where('company_id', $request['company_id']);
             })],
-            'quantiy_per_unit' => 'required|string',
+            'quantity_per_unit' => 'required|string',
             'unit_of_measurement' => 'required|string',
+            'hazardous' => 'nullable|boolean',
+            'storage_location' => 'nullable|string',
             'reorder_level' => 'nullable',
             'safety_stock' => 'nullable',
         ],[
@@ -79,7 +111,7 @@ class CompanyChemicalController extends ChemicalStockMovementController
         $companyChemical = new CompanyChemical();
         $companyChemical->company_id = $request['company_id'];
         $companyChemical->chemical_id = $request['chemical'];
-        $companyChemical->quantiy_per_unit = $request['quantiy_per_unit'];
+        $companyChemical->quantity_per_unit = $request['quantity_per_unit'];
         $companyChemical->unit = $request['unit_of_measurement'];
         $companyChemical->minimum_threshold = $request['reorder_level'];
         $companyChemical->maximum_threshold = $request['safety_stock'];

@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id('company_chemical_id');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('chemical_id');
-            $table->decimal('quantiy_per_unit', 15, 2)->nullable();
+            $table->decimal('quantity_per_unit', 15, 2)->nullable();
             $table->string('unit')->nullable();
             $table->string('minimum_threshold')->nullable();
             $table->string('maximum_threshold')->nullable();
             $table->string('storage_location')->nullable();
+            $table->boolean('hazardous')->default(false);
             $table->enum('status', ['active', 'inactive', 'banned'])->default('active');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
