@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Schema;
+use App\Http\Controllers\StockMovementController;
 
 class CompanyMaterialController extends StockMovementController
 {
@@ -37,17 +39,44 @@ class CompanyMaterialController extends StockMovementController
         //
     }
 
-    public function getCompanyMaterials($value)
+    public function getCompanyMaterials($companyId)
     {
-        $companyMaterial = CompanyMaterial::where('company_materials.status', 'active')
-            ->where('companyID', $value)
-            ->with(['company', 'material'])
-            ->select('materialID')
-            ->get();
-        return response()->json([
-            'status' => 'success',
-            'company_materials' => $companyMaterial,
-        ], 200);
+        try {
+            // Fetch company materials with relationships
+            $companyMaterials = CompanyMaterial::with(['material', 'company'])
+                ->active()
+                ->byCompany($companyId)
+                ->get()
+                ->map(function ($mat) {
+                    return [
+                        'company_material_id' => $mat->companyMaterialId,
+                        'material_id' => $mat->materialID,
+                        'name' => optional($mat->material)->material ?? 'N/A',
+                        'quantity' => $mat->quantity_per_unit ?? $mat->threshold_quantity ?? 0,
+                        'unit' => $mat->unit ?? $mat->unit_of_measure ?? '-',
+                        'reorder_level' => $mat->minimum_threshold ?? $mat->threshold_quantity ?? '-',
+                        'safety_level' => $mat->maximum_threshold ?? '-',
+                        'hazardous' => ($mat->hazardous ?? false) ? 
+                            '<span class="badge bg-danger">Yes</span>' : 
+                            '<span class="badge bg-success">No</span>',
+                        'storage_location' => $mat->storage_location ?? '-',
+                        'updated_at' => $mat->updated_at 
+                            ? Carbon::parse($mat->updated_at)->diffForHumans() 
+                            : '-',
+                    ];
+                });
+
+            return response()->json([
+                'status' => 'success',
+                'company_materials' => $companyMaterials,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to fetch company materials.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
 
@@ -57,6 +86,103 @@ class CompanyMaterialController extends StockMovementController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
+    public function store_company_material(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), [
+            'company_id' => 'required|integer',
+            'material' => ['required', 'integer', Rule::unique('company_materials', 'materialID')->where(function ($query) use ($request) {
+                return $query->where('companyID', $request['company_id']);
+            })],
+            'quantity_per_unit' => 'required|string',
+            'unit_of_measurement' => 'required|string',
+            'hazardous' => 'nullable|boolean',
+            'storage_location' => 'nullable|string',
+            'reorder_level' => 'nullable',
+            'safety_stock' => 'nullable',
+        ], [
+            'material.unique' => "Material has already been added."
+        ]);
+
+        // Return validation errors if any
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation failed.',
+                'errors'  => $validatedData->errors(),
+            ], 422);
+        }
+
+        $companyMaterial = new CompanyMaterial();
+        $companyMaterial->companyID = $request['company_id'];
+        $companyMaterial->materialID = $request['material'];
+        
+        // Use new fields if they exist, otherwise use old fields
+        if (Schema::hasColumn('company_materials', 'quantity_per_unit')) {
+            $companyMaterial->quantity_per_unit = $request['quantity_per_unit'];
+            $companyMaterial->unit = $request['unit_of_measurement'];
+            $companyMaterial->minimum_threshold = $request['reorder_level'];
+            $companyMaterial->maximum_threshold = $request['safety_stock'];
+            $companyMaterial->storage_location = $request['storage_location'];
+            $companyMaterial->hazardous = $request['hazardous'] ?? false;
+        } else {
+            // Fallback to old fields
+            $companyMaterial->threshold_quantity = $request['quantity_per_unit'];
+            $companyMaterial->unit_of_measure = $request['unit_of_measurement'];
+            $companyMaterial->serial_number = $request['serial_number'] ?? null;
+        }
+        
+        $companyMaterial->status = "active";
+        $companyMaterial->save();
+
+        $company_materials = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
+            ->where('company_materials.status', 'active')
+            ->get(['company_materials.materialID as id', 'material', 'unit', 'company_materials.status as material_status', 'companyMaterialId']);
+        
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Material recorded successfully.',
+            'data'    => $company_materials
+        ]);
+    }
+
+    public function check_in_material(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), [
+            'company_id' => 'required|integer',
+            'material_id' => 'required|integer',
+        ]);
+
+        // Return validation errors if any
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation failed.',
+                'errors'  => $validatedData->errors(),
+            ], 422);
+        }
+
+        $companyMaterial = CompanyMaterial::where('companyID', $request['company_id'])
+            ->where('materialID', $request['material_id'])
+            ->first();
+
+        if (!$companyMaterial) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Material not found for the specified company.',
+            ], 404);
+        }
+
+        $companyMaterial->status = "active";
+        $companyMaterial->save();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Material checked in successfully.',
+            'data'    => $companyMaterial
+        ]);
+    }
+
     public function store(Request $request)
     {
         //
@@ -160,67 +286,48 @@ class CompanyMaterialController extends StockMovementController
      * @return \Illuminate\Http\Response
      */
     
-    public function show($id)
+    public function show($material)
     {
-        //
-       
-        // $id = decrypt($id);
-        // dd($id);
-        $data['companyMaterialID'] = $id;
-        $data['prices'] = MaterialPrice::where('companyMaterialId', $id)->latest('created_at')->first();
-        $data['price_history'] = MaterialPrice::where('companyMaterialId', $id)->get();
-        $data['company_material'] = CompanyMaterial::where('company_materials.companyMaterialId', $id)->first();
-        
-        // $data['material'] = CompanyMaterial::join('materials', 'materials.materialID', '=', 'company_materials.materialID')
-        // ->join('companies', 'company_materials.companyID', '=', 'companies.company_id')
-        // ->select('company_materials.materialID', 'material', 'description','company_materials.status', 'serial_number', 'unit_of_measure', 'company_name', 'industry', 'country', 'state')
-        // ->where('company_materials.companyMaterialId', $id)->first();
-        $data['availableMaterialBalance'] = $this->getMaterialBalance($id);
-        $data['availableMaterialInflowBalance'] = $this->getMaterialTotalCheckIn($id);
-        $data['availableMaterialOutflowBalance'] = $this->getMaterialTotalCheckOut($id);
-        $data['availableMaterialAdjustmentBalance'] = $this->getMaterialTotalAdjustment($id);
-
-        $data['stockMovement'] = stock_movement::join('materials', 'materials.materialID', '=', 'stock_movements.materialID')
-        ->where('companyMaterialId', $id)->get(['*', 'stock_movements.materialID as stk_move_material_id']);
-        // dd($id);
-        // $data['availableBalance'] = $this->getBalance($id['companyMaterialId']);
-        
-        return view('components.materials.view-material', $data)->with(['companyMaterialId' => $id]);
+        $stockMovementController = new StockMovementController();
+        $data['availableMaterialBalance'] = $stockMovementController->getMaterialBalance($material);
+        $data['availableMaterialInflowBalance'] = $stockMovementController->getMaterialTotalCheckIn($material);
+        $data['availableMaterialOutflowBalance'] = $stockMovementController->getMaterialTotalCheckOut($material);
+        $data['availableMaterialAdjustmentBalance'] = $stockMovementController->getMaterialTotalAdjustment($material);
+        $data['CompanyMaterial'] = CompanyMaterial::where('companyMaterialId', $material)->first();
+        $data['transactions'] = CompanyMaterial::where('companyMaterialId', $material)->get();
+        return view('components.materials.view-material', $data);
     }
-    public function getTotalCheckIn($companyMaterialId)
+    public function getMaterialTotalCheckIn($companyMaterialId)
     {
-        //
         $totalCheckIn = stock_movement::where('companyMaterialId', $companyMaterialId)
-        ->where('movement_type', 'in')->sum('quantity');
+            ->where('movement_type', 'in')->sum('quantity');
         return $totalCheckIn;
     }
 
-    public function getTotalTransfer($companyMaterialId)
+    public function getMaterialTotalTransfer($companyMaterialId)
     {
-        //
         $totalTransfer = stock_movement::where('companyMaterialId', $companyMaterialId)
-        ->where('movement_type', 'transfer')->sum('quantity');
+            ->where('movement_type', 'transfer')->sum('quantity');
         return $totalTransfer;
     }
 
-    public function getTotalAdjustment($companyMaterialId)
+    public function getMaterialTotalAdjustment($companyMaterialId)
     {
-        //
         $totalAdjustment = stock_movement::where('companyMaterialId', $companyMaterialId)
-        ->where('movement_type', 'adjustment')->sum('quantity');
+            ->where('movement_type', 'adjustment')->sum('quantity');
         return $totalAdjustment;
     }
 
-    public function getTotalCheckOut($companyMaterialId)
+    public function getMaterialTotalCheckOut($companyMaterialId)
     {
-        //
         $totalCheckOut = stock_movement::where('companyMaterialId', $companyMaterialId)
-        ->where('movement_type', 'out')->sum('quantity');
+            ->where('movement_type', 'out')->sum('quantity');
         return $totalCheckOut;
     }
 
-    public function getBalance($companyMaterialId) {
-        $balance = $this->getTotalCheckIn($companyMaterialId) - $this->getTotalTransfer($companyMaterialId) + $this->getTotalAdjustment($companyMaterialId) - $this->getTotalCheckOut($companyMaterialId);
+    public function getMaterialBalance($companyMaterialId) 
+    {
+        $balance = $this->getMaterialTotalCheckIn($companyMaterialId) - $this->getMaterialTotalTransfer($companyMaterialId) + $this->getMaterialTotalAdjustment($companyMaterialId) - $this->getMaterialTotalCheckOut($companyMaterialId);
         return $balance; 
     }
        
@@ -246,6 +353,121 @@ class CompanyMaterialController extends StockMovementController
     public function update(Request $request, CompanyMaterial $companyMaterial)
     {
         //
+    }
+
+    public function delete_company_material($material)
+    {
+        try {
+            $companyMaterial = CompanyMaterial::where('companyMaterialId', $material)->first();
+            
+            if (!$companyMaterial) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Material not found.',
+                ], 404);
+            }
+
+            $companyMaterial->status = 'inactive';
+            $companyMaterial->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material deleted successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to delete material.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function save_check_in(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), [
+            'company_material_id' => 'required|integer',
+            'quantity' => 'required|numeric|min:0.01',
+            'batch_no' => 'nullable|string',
+            'source' => 'nullable|string',
+            'date' => 'required|date',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validatedData->errors(),
+            ], 422);
+        }
+
+        try {
+            $stockMovement = new stock_movement();
+            $stockMovement->companyMaterialId = $request['company_material_id'];
+            $stockMovement->materialID = $request['material_id'];
+            $stockMovement->movement_type = 'in';
+            $stockMovement->quantity = $request['quantity'];
+            $stockMovement->batch_no = $request['batch_no'];
+            $stockMovement->source = $request['source'];
+            $stockMovement->movement_date = $request['date'];
+            $stockMovement->remarks = $request['remarks'];
+            $stockMovement->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material check-in recorded successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to record check-in.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function save_check_out(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), [
+            'company_material_id' => 'required|integer',
+            'quantity' => 'required|numeric|min:0.01',
+            'batch_no' => 'nullable|string',
+            'usage_reason' => 'required|string',
+            'checkout_date' => 'required|date',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed.',
+                'errors' => $validatedData->errors(),
+            ], 422);
+        }
+
+        try {
+            $stockMovement = new stock_movement();
+            $stockMovement->companyMaterialId = $request['company_material_id'];
+            $stockMovement->movement_type = 'out';
+            $stockMovement->quantity = $request['quantity'];
+            $stockMovement->batch_no = $request['batch_no'];
+            $stockMovement->usage_reason = $request['usage_reason'];
+            $stockMovement->movement_date = $request['checkout_date'];
+            $stockMovement->remarks = $request['remarks'];
+            $stockMovement->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Material check-out recorded successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to record check-out.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

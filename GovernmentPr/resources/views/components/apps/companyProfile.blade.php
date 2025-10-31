@@ -2667,38 +2667,29 @@
                             <div class="tab-pane fade" id="inv-raw" role="tabpanel">
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <h5><i class="la la-cube text-primary me-1"></i>Raw Materials</h5>
-                                    <button class="btn btn-sm btn-outline-primary"><i class="la la-plus-circle me-1"></i>Add Material</button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="openMaterialModal('add')">
+                                        <i class="la la-plus-circle me-1"></i> Add Material
+                                    </button>
                                 </div>
 
-                                <div class="table-responsive">
-                                    <table class="table table-striped" id="rawTable">
+                                <div class="table-responsive w-100" style="width: 100%;">
+                                    <table class="table table-striped w-100" id="materialTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th>#</th>
                                                 <th>Name</th>
-                                                <th>Supplier</th>
                                                 <th>Quantity</th>
                                                 <th>Unit</th>
                                                 <th>Reorder Level</th>
-                                                <th>Status</th>
+                                                <th>Safety Level</th>
+                                                <th>Hazardous</th>
+                                                <th>Storage</th>
+                                                <th>Updated</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($rawMaterials as $raw)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $raw->name }}</td>
-                                                    <td>{{ $raw->supplier }}</td>
-                                                    <td>{{ $raw->quantity }}</td>
-                                                    <td>{{ $raw->unit }}</td>
-                                                    <td>{{ $raw->reorder_level }}</td>
-                                                    <td>
-                                                        <span class="badge {{ $raw->quantity <= $raw->reorder_level ? 'bg-warning' : 'bg-success' }}">
-                                                            {{ $raw->quantity <= $raw->reorder_level ? 'Reorder' : 'Available' }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                            <!-- Data will be loaded via AJAX -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -4179,6 +4170,7 @@
      @include('components.apps.company.modals.department_modals')
      @include('components.apps.company.modals.employee_modals')
      @include('components.apps.company.modals.chemical_modals')
+     @include('components.apps.company.modals.material_modals')
 
 
 <!-- --- Edit General Modal (for editing general items) --- -->
@@ -5280,6 +5272,7 @@
     @include('components.apps.company.scripts.departments')
     @include('components.apps.company.scripts.employee')
     @include('components.apps.company.scripts.chemicals')
+    @include('components.apps.company.scripts.materials')
     <script>
         $(document).ready(function() {
             $('#generalTable, #chemicalTable, #waterTable, #equipmentTable, #rawTable').DataTable();
