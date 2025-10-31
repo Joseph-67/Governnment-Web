@@ -668,51 +668,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const transferUnit = document.getElementById('transferUnit');
     const transferQuantity = document.getElementById('transferQuantity');
 
-    // Load batches for selected chemical
-    transferChemical.addEventListener('change', function () {
-        const chemicalId = this.value;
-        if (!chemicalId) return;
-
-        fetch(``)
-            .then(res => res.json())
-            .then(data => {
-                transferBatch.innerHTML = `<option value="">Select Batch</option>`;
-                if (data.status === 'success' && data.batches.length > 0) {
-                    transferBatch.removeAttribute('disabled');
-                    data.batches.forEach(batch => {
-                        transferBatch.innerHTML += `
-                            <option value="${batch.batch_no}" 
-                                    data-location="${batch.storage_location}" 
-                                    data-qty="${batch.remaining_quantity}" 
-                                    data-unit="${batch.unit}">
-                                ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit} (${batch.storage_location})
-                            </option>`;
-                    });
-                } else {
-                    transferBatch.setAttribute('disabled', true);
-                    Swal.fire('No Batches Found', 'This chemical has no active batches.', 'info');
-                }
-            });
-    });
-
-    // When batch is selected, show location and unit
-    transferBatch.addEventListener('change', function () {
-        const selected = this.options[this.selectedIndex];
-        transferFromLocation.value = selected.dataset.location || '';
-        transferUnit.value = selected.dataset.unit || '';
-        transferQuantity.max = selected.dataset.qty || 0;
-    });
-
-    // Validate transfer quantity
-    transferQuantity.addEventListener('input', function () {
-        const maxQty = parseFloat(this.max);
-        if (parseFloat(this.value) > maxQty) {
-            this.setCustomValidity('Cannot transfer more than available quantity');
-        } else {
-            this.setCustomValidity('');
-        }
-    });
-
     // Submit transfer form
     const form = document.getElementById('chemicalTransferForm');
     form.addEventListener('submit', function (e) {
@@ -724,7 +679,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const formData = new FormData(form);
-        fetch(``, {
+        fetch(`{{ route('admin.save-company-chemical-transfer') }}`, {
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             body: formData
