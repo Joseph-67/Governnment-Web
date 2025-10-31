@@ -391,10 +391,53 @@
         });
 
         $(document).on('click', '.chemicalTransferBtn', function() {
-            $('#chemicalTransferModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#chemicalTransferModal [name=chemical_name]').val($(this).data('name'));
-            $('#chemicalTransferModal [name=unit]').val($(this).data('unit'));
-            $('#chemicalTransferModal').modal('show');
+            // $('#chemicalTransferModal [name=company_chemical_id]').val($(this).data('id'));
+            // $('#chemicalTransferModal [name=chemical_name]').val($(this).data('name'));
+            // $('#chemicalTransferModal [name=unit]').val($(this).data('unit'));
+            // $('#chemicalTransferModal').modal('show');
+            const modal = $('#chemicalTransferModal');
+            const companyId = {{ $company->company_id }};
+            
+            // Extract chemical data from button
+            const companyChemicalId = $(this).data('id');
+            const chemicalId = $(this).data('chemical-id');
+            const chemicalName = $(this).data('name');
+            const unit = $(this).data('unit');
+
+            // Populate modal fields
+            modal.find('[name=company_chemical_id]').val(companyChemicalId);
+            modal.find('[name=chemical_id]').val(chemicalId);
+            modal.find('#transferChemicalName').val(chemicalName);
+            modal.find('[name=unit]').val(unit);
+            modal.find('#chemicalTransferUnit').val(unit);
+            modal.find('#chemicalTransferQty').val('');
+            modal.find('#chemicalTransferBatch').html('<option value="">Loading batches...</option>');
+
+            // Show modal
+            modal.modal('show');
+
+            // Load batches dynamically
+            const batchSelect = modal.find('#chemicalTransferBatch');
+            const availableQtyField = modal.find('#chemicalTransferQty');
+            const transferUnit = modal.find('#chemicalUnit');
+            let batchData = {};
+
+            fetch(`{{ route('admin.get-chemical-batches', ['company_id' => '__CID__']) }}`
+                .replace('__CID__', companyId) + `?chemical_id=${companyChemicalId}`)
+                .then(res => res.json())
+                .then(data => {
+                    batchSelect.html('<option value="">Select Batch</option>');
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        data.batches.forEach(batch => {
+                            batchData[batch.batch_no] = batch;
+                            batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                        });
+                    } else {
+                        batchSelect.html('<option value="">No batches available</option>');
+                    }
+                })
+                .catch(err => console.error('Error loading batches:', err));
+
         });
 
         $(document).on('click', '.chemicalDisposeBtn', function() {

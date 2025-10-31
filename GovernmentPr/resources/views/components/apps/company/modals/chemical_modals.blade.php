@@ -299,14 +299,16 @@
                         <!-- Chemical -->
                         <div class="col-md-6">
                             <label class="form-label">Chemical</label>
-                            <input type="text" name="chemical_name" id="checkInChemicalName" class="form-control" readonly>
+                            <input type="text" name="chemical_name" id="transferChemicalName" class="form-control" readonly>
                             <input type="hidden" name="company_chemical_id">
+                            <input type="hidden" name="chemical_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
                         <!-- Batch -->
                         <div class="col-md-6">
                             <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="transferBatch" class="form-select" required disabled>
+                            <select name="batch_no" id="chemicalTransferBatch" class="form-select">
                                 <option value="">Select Batch</option>
                             </select>
                         </div>
@@ -314,7 +316,7 @@
                         <!-- From Location -->
                         <div class="col-md-6">
                             <label class="form-label">From Location</label>
-                            <input type="text" id="transferFromLocation" class="form-control" readonly placeholder="Auto-filled">
+                            <input type="text" id="transferFromLocation" class="form-control" name="" placeholder="Auto-filled">
                         </div>
 
                         <!-- To Location -->
