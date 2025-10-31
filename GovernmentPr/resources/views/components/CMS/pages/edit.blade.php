@@ -1,16 +1,11 @@
 <x-layouts.admin-app>
-    @section('PageTitle', 'Edit Page')
-
     @section('styles')
-        <!-- External links and assets -->
-        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.css" rel="stylesheet" />
-        <link href="{{ asset('adminAssets/libs/uppy/uppy.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('adminAssets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('adminAssets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
-        <!-- Inline CSS (consider extracting to file) -->
+        <link href="{{ asset('adminAssets/libs/quill/quill.snow.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('adminAssets/libs/quill/quill.bubble.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('adminAssets/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('adminAssets/libs/spectrum-colorpicker/spectrum.css') }}"
+            rel="stylesheet" type="text/css" />
+                <!-- Inline CSS (consider extracting to file) -->
         <style>
             /* --- General Font & Colors --- */
             body,
@@ -229,8 +224,8 @@
                 display: flex;
                 gap: 0.5rem;
             }
-        </style>    
-    <style>
+        </style>
+        <style>
             /* Container */
             .author-tag-input {
             display: flex;
@@ -432,1556 +427,237 @@
 
         </style>
     @endsection
-    @section('modals')
-        <div class="modal fade" id="mediaModal" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5>Media Library</h5>
-                    <input type="text" id="mediaSearch" class="form-control w-50 ms-auto" placeholder="Search media...">
-                </div>
-                <div class="modal-body">
-                    <div id="media-loading" class="text-center d-none mb-3">
-                    <div class="spinner-border text-primary"></div>
-                    </div>
-                    <div class="row" id="media-library"></div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <ul class="pagination mb-0" id="mediaPagination"></ul>
-                    <button id="insertMediaBtn" class="btn btn-primary">Insert Selected</button>
-                </div>
-                </div>
-            </div>
-        </div>
-    @endsection
+
+    {{-- ✅ Set dynamic page title for browser tab --}}
+    @section('PageTitle', $title ?? 'Edit Page')
+
     <div class="container-xxl">
-        <!-- Page Title + Actions -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">✏️ Edit Page</h2>
-
-            <!-- Action Buttons Top -->
-            <div class="d-flex gap-2">
-                <button type="submit" form="pageForm" class="btn btn-primary">💾 Update Page</button>
-                <button type="button" class="btn btn-warning" id="previewBtn">👁 Preview</button>
-                <a href="{{ route('admin.pages.index') }}" class="btn btn-danger">Cancel</a>
+        <!-- 🔹 Page Title + Actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h1 class="mb-0">✏️ Edit Page — <span class="text-primary">{{ $page->title }}</span></h1>
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" form="pageForm" class="btn btn-primary">
+                    💾 Update Page
+                </button>
+                <button type="button" id="previewBtn" class="btn btn-warning">
+                    👁 Preview
+                </button>
+                <a href="{{ route('admin.pages.index') }}" class="btn btn-danger">
+                    ❌ Cancel
+                </a>
             </div>
-            <!-- End Action Buttons Top -->
         </div>
 
-        <form class="space-y-6" id="pageForm" method="POST" action="{{ route('admin.pages.update', ['page' => $page->page_id]) }}" novalidate>
+        <form id="pageForm" method="POST" action="{{ route('admin.pages.update', ['page' => $page->page_id]) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
             <div class="row g-4">
-                <!-- Left Column -->
-                <div class="col-lg-7">
-                    <div class="card card-body">
-                        <h4 class="mb-3">Edit Content</h4>
-                        <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="pageTitle" class="form-label">Page Title</label>
-                                <input type="text" class="form-control" name="title" id="pageTitle"
-                                    value="{{ old('title', $page->title) }}" placeholder="e.g. About Us" required aria-required="true">
-                            </div>
-                            <div class="col-md-8">
-                                <label for="pageSlug" class="form-label">Slug / URL</label>
-                                <input type="text" class="form-control" name="slug" id="pageSlug"
-                                    value="{{ old('slug', $page->slug ?? '') }}" placeholder="about-us" required aria-required="true">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="menuOrder" class="form-label">Order / Position</label>
-                                <input type="number" class="form-control" name="menu_order" id="menuOrder"
-                                    value="{{ old('menu_order', $page->menu_order ?? 0) }}">
-                            </div>
-                            <div class="col-md-12">
-                                <label for="excerpt" class="form-label">Excerpt / Summary</label>
-                                <textarea class="form-control" name="excerpt" id="excerpt" rows="2"
-                                    placeholder="Short description for cards and previews">{{ old('excerpt', $page->excerpt) }}</textarea>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label">Page Content</label>
-                                <div id="editor-container">
-                                    <div id="editor">{!! old('content', $page->body) !!}</div>
+                <!-- 🔸 Left Column: Main Content -->
+                <div class="col-lg-8 col-md-12">
+                    <div class="grid gap-4">
+                        <!-- Page Content -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">📝 Page Content</div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Page Title</label>
+                                    <input type="text" name="title" class="form-control" value="{{ old('title', $page->title) }}" required>
                                 </div>
-                                <input type="hidden" name="body" id="body">
-                            </div>
-                        </div>
-                    </div>
-                </div>  
-              <!-- Right Column -->
-                <div class="col-lg-5">
-                    <div class="card card-body">
-                        <h4 class="mb-3">Page Settings</h4>
-                        <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="pageStatus" class="form-label">Status</label>
-                                <select class="form-select" name="status" id="pageStatus" required>
-                                    <option value="draft" {{ old('status', $page->status ?? 'draft')==='draft' ? 'selected' : '' }}>Draft</option>
-                                    <option value="published" {{ old('status', $page->status ?? 'draft')==='published' ? 'selected' : '' }}>
-                                        Published</option>
-                                    <option value="archived" {{ old('status', $page->status ?? 'draft')==='archived' ? 'selected' : '' }}>Archived
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="row g-3" id="schedulingRow">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="publishAt">Schedule Publish</label>
-                                    <input type="datetime-local" class="form-control" name="publish_at" id="publishAt"
-                                        value="{{ old('publish_at', optional($page->publish_at)->format('Y-m-d\TH:i')) }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="expireAt">Expiry / Auto-Unpublish</label>
-                                    <input type="datetime-local" class="form-control" name="expire_at" id="expireAt"
-                                        value="{{ old('expire_at', optional($page->expire_at)->format('Y-m-d\TH:i')) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="visibility" class="form-label">Visibility</label>
-                                <select class="form-select" name="visibility" id="visibility">
-                                    <option value="public" {{ old('visibility', $page->visibility)==='public' ? 'selected' : '' }}>Public
-                                    </option>
-                                    <option value="private" {{ old('visibility', $page->visibility)==='private' ? 'selected' : '' }}>
-                                        Private</option>
-                                    <option value="password" {{ old('visibility', $page->visibility)==='password' ? 'selected' : '' }}>
-                                        Password Protected</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="visibilityPassword" class="form-label">Password (if protected)</label>
-                                <input type="text" class="form-control" name="visibility_password"
-                                    id="visibilityPassword" placeholder="Enter password"
-                                    value="{{ old('visibility_password', $page->visibility_password) }}" {{ old('visibility', $page->visibility)==='password' ? ''
-                                    : 'disabled' }}>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="parentPage" class="form-label">Parent Page</label>
-                                <select class="form-select" name="parent_id" id="parentPage">
-                                    <option value="">— None —</option>
-                                    @foreach(($parents ?? []) as $p)
-                                        @if($p->page_id !== $page->page_id)
-                                            <option value="{{ $p->page_id }}" {{ old('parent_id', $page->parent_id)==$p->page_id ? 'selected' : '' }}>{{
-                                                $p->title }}
-                                            </option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="authorId" class="form-label">Author</label>
-                                <div id="author-tag-input" class="author-tag-input"></div>
-                                <input type="hidden" name="author_id" id="author_id" value="{{ old('author_id', $page->author_id) }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="categoryIds">Categories</label>
-                                <div id="category-tag-input">
-                                    <div class="tag-input"></div>
-                                </div>
-                                <input type="hidden" name="category_ids" id="categoryIds" value="{{ old('category_ids', is_array($page->category_ids) ? implode(',', $page->category_ids) : $page->category_ids) }}" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="tagIds">Tags</label>
-                                <div id="tag-tag-input">
-                                    <div class="tag-input"></div>
-                                </div>
-                                <input type="hidden" name="tag_ids" id="tagIds" value="{{ old('tag_ids', is_array($page->tag_ids) ? implode(',', $page->tag_ids) : $page->tag_ids) }}" />
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label" for="revisionNotes">Revision Notes</label>
-                                <textarea class="form-control" name="revision_notes" id="revisionNotes" rows="2"
-                                    placeholder="What changed in this version?">{{ old('revision_notes', $page->revision_notes) }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Tabs Section -->
-                <div class="col-12">
-                    <!-- Tabs -->
-                    <ul class="nav nav-tabs mb-2" id="pageTab" role="tablist" aria-label="Page settings tabs">
-                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#seoTab"
-                                data-description="Manage SEO titles, meta descriptions, and keywords.">🔍 SEO</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mediaTab"
-                                data-description="Upload featured images and gallery assets.">🖼 Media</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#layoutTab"
-                                data-description="Edit hero section and choose page layout.">🎨 Layout</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#componentsTab"
-                                data-description="Add reusable blocks and components.">⚙️ Components</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#scriptsTab"
-                                data-description="Insert custom CSS or JavaScript code.">💻 Custom Code</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#accessTab"
-                                data-description="Restrict by role, device, or location.">🔒 Access</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#analyticsTab"
-                                data-description="Per-page analytics and experiments.">📊 Analytics</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#settingsTab"
-                                data-description="Control page status, visibility, and scheduling.">⚡ Settings</a></li>
-                    </ul>
-
-                    <!-- Tab Subtitle -->
-                    <p id="tabDescription" class="tab-subtitle active">
-                        <span id="tabIcon">📝</span> Manage SEO titles, meta descriptions, and keywords.
-                    </p>
-
-
-                    <!-- Tab Content -->
-                    <div class="tab-content" id="pageTabContent">
-
-                        <!-- SEO -->
-                        <div class="tab-pane fade show active" id="seoTab" role="tabpanel">
-                            <div class="card card-body p-4">
-                                <h5 class="fw-semibold mb-3">SEO Settings</h5>
                                 <div class="row g-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="seoTitle">Meta Title</label>
-                                        <input type="text" class="form-control" id="seoTitle" name="meta_title"
-                                            placeholder="Enter SEO title" value="{{ old('meta_title', $page->meta_title) }}">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Slug</label>
+                                        <input type="text" name="slug" class="form-control" value="{{ old('slug', $page->slug) }}">
                                     </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="canonicalUrl">Canonical URL</label>
-                                        <input type="url" class="form-control" id="canonicalUrl" name="canonical_url"
-                                            value="{{ old('canonical_url', $page->canonical_url) }}" placeholder="https://example.com/page">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Menu Order</label>
+                                        <input type="number" name="menu_order" class="form-control" value="{{ old('menu_order', $page->menu_order) }}">
                                     </div>
-                                    <div class="col-lg-12">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label class="form-label fw-semibold">Excerpt</label>
+                                    <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $page->excerpt) }}</textarea>
+                                </div>
+
+                                <div class="mt-3">
+                                    <label class="form-label fw-semibold">Body</label>
+                                    <textarea name="body" class="form-control" rows="10">{{ old('body', $page->body) }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SEO & Meta -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">🔍 SEO & Metadata</div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Meta Title</label>
+                                        <input type="text" name="meta_title" class="form-control" value="{{ old('meta_title', $page->meta_title) }}">
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label">Meta Description</label>
-                                        <textarea class="form-control" id="seoDescription" name="meta_description"
-                                            rows="3"
-                                            placeholder="Enter SEO description">{{ old('meta_description', $page->meta_description) }}</textarea>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="keywords">Keywords</label>
-                                        <input type="text" class="form-control" id="keywords" name="keywords"
-                                            placeholder="keyword1, keyword2" value="{{ old('keywords', is_array($page->keywords) ? implode(',', $page->keywords) : $page->keywords) }}">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="form-label" for="robotsIndex">Robots: Indexing</label>
-                                        <select class="form-select" id="robotsIndex" name="robots_index">
-                                            @php($ri = old('robots_index', $page->robots_index ?? 'index'))
-                                            <option value="index" {{ $ri==='index' ? 'selected' : '' }}>index</option>
-                                            <option value="noindex" {{ $ri==='noindex' ? 'selected' : '' }}>noindex
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="form-label" for="robotsFollow">Robots: Following</label>
-                                        <select class="form-select" id="robotsFollow" name="robots_follow">
-                                            @php($rf = old('robots_follow', $page->robots_follow ?? 'follow'))
-                                            <option value="follow" {{ $rf==='follow' ? 'selected' : '' }}>follow
-                                            </option>
-                                            <option value="nofollow" {{ $rf==='nofollow' ? 'selected' : '' }}>nofollow
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <h5 class="mt-4">Open Graph (Social Media)</h5>
-                                <div class="row g-3">
-                                    <div class="col-lg-6"><input type="text" class="form-control" name="og_title"
-                                            placeholder="OG Title" value="{{ old('og_title', $page->og_title) }}"></div>
-                                    <div class="col-lg-6"><input type="text" class="form-control" name="og_description"
-                                            placeholder="OG Description" value="{{ old('og_description', $page->og_description) }}"></div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Open Graph Image</label>
-                                        <div class="input-group">
-                                            <input type="text" id="og_image" name="og_image" class="form-control" readonly value="{{ old('og_image', $page->og_image) }}">
-                                            <button type="button" class="btn btn-outline-secondary select-media-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#mediaModal"
-                                                    data-input="og_image"
-                                                    data-preview="og_image_preview"
-                                                    data-multiple="false">
-                                                Select Image
-                                            </button>
-                                        </div>
-                                        <div id="og_image_preview" class="mt-2">
-                                            @if($page->og_image)
-                                                <img src="{{ $page->og_image }}" class="img-thumbnail m-1" style="width: 120px;">
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 class="mt-4">Twitter Card</h5>
-                                <div class="row g-3">
-                                    <div class="col-lg-6"><input type="text" class="form-control" name="twitter_title"
-                                            placeholder="Twitter Title" value="{{ old('twitter_title', $page->twitter_title) }}"></div>
-                                    <div class="col-lg-6"><input type="text" class="form-control"
-                                            name="twitter_description" placeholder="Twitter Description"
-                                            value="{{ old('twitter_description', $page->twitter_description) }}"></div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Twitter Image</label>
-                                        <div class="input-group">
-                                            <input type="text" id="twitter_image" name="twitter_image" class="form-control" readonly value="{{ old('twitter_image', $page->twitter_image) }}">
-                                            <button type="button" class="btn btn-outline-secondary select-media-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#mediaModal"
-                                                    data-input="twitter_image"
-                                                    data-preview="twitter_image_preview"
-                                                    data-multiple="false">
-                                                Select Image
-                                            </button>
-                                        </div>
-                                        <div id="twitter_image_preview" class="mt-2">
-                                            @if($page->twitter_image)
-                                                <img src="{{ $page->twitter_image }}" class="img-thumbnail m-1" style="width: 120px;">
-                                            @endif
-                                        </div>
+                                        <input type="text" name="meta_description" class="form-control" value="{{ old('meta_description', $page->meta_description) }}">
                                     </div>
                                 </div>
 
-                                <div class="mt-4">
-                                    <label class="form-label">Custom Meta Attributes (JSON)</label>
-                                    <textarea class="form-control font-monospace" rows="3" name="custom_meta"
-                                        placeholder='[{"name":"robots","content":"noindex"}]'>{{ old('custom_meta', $page->custom_meta) }}</textarea>
+                                <div class="mt-3">
+                                    <label class="form-label">Keywords (comma-separated)</label>
+                                    <input type="text" name="keywords" class="form-control"
+                                        value="{{ old('keywords', is_array($page->keywords) ? implode(',', $page->keywords) : $page->keywords) }}">
                                 </div>
-                                <div class="alert alert-light border-0 shadow-sm mt-4">
-                                    <small class="text-muted">📊 Live Preview will show here (like Google search
-                                        snippet).</small>
-                                    <div class="mt-2">
-                                        <h6 id="seoPreviewTitle" class="text-primary">{{ $page->meta_title ?: $page->title }} | Site Name</h6>
-                                        <p id="seoPreviewDesc" class="text-muted">{{ $page->meta_description ?: 'Your meta description will appear here.' }}</p>
-                                        <span class="text-success" id="seoPreviewUrl">www.example.com/{{ $page->slug }}</span>
+
+                                <div class="row g-3 mt-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Canonical URL</label>
+                                        <input type="text" name="canonical_url" class="form-control" value="{{ old('canonical_url', $page->canonical_url) }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Index</label>
+                                        <select name="robots_index" class="form-select">
+                                            <option value="index" {{ $page->robots_index === 'index' ? 'selected' : '' }}>Index</option>
+                                            <option value="noindex" {{ $page->robots_index === 'noindex' ? 'selected' : '' }}>No Index</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Follow</label>
+                                        <select name="robots_follow" class="form-select">
+                                            <option value="follow" {{ $page->robots_follow === 'follow' ? 'selected' : '' }}>Follow</option>
+                                            <option value="nofollow" {{ $page->robots_follow === 'nofollow' ? 'selected' : '' }}>No Follow</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </div> 
-                       <!-- Media -->
-                        <div class="tab-pane fade" id="mediaTab" role="tabpanel">
-                            <div class="card card-body p-4">
-                                <h5 class="fw-semibold mb-3">Media Management</h5>
-
-                                <!-- Featured Image -->
-                                <div class="mb-3">
-                                    <label class="form-label">Featured Image</label>
-                                    <div class="input-group">
-                                        <input type="text" id="featured_image" name="featured_image" class="form-control" readonly value="{{ old('featured_image', $page->featured_image) }}">
-                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#mediaModal" 
-                                                data-input="featured_image" 
-                                                data-preview="featured_preview" 
-                                                data-multiple="false">
-                                            Select Image
-                                        </button>
-                                    </div>
-                                    <div id="featured_preview" class="mt-2">
-                                        @if($page->featured_image)
-                                            <img src="{{ $page->featured_image }}" class="img-thumbnail m-1" style="width: 120px;">
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Gallery -->
-                                <div class="mb-3">
-                                    <label class="form-label">Gallery</label>
-                                    <div class="input-group">
-                                        <input type="text" id="gallery_images" name="gallery_images" class="form-control" readonly value="{{ old('gallery_images', is_array($page->gallery_images) ? json_encode($page->gallery_images) : $page->gallery_images) }}">
-                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#mediaModal" 
-                                                data-input="gallery_images" 
-                                                data-preview="gallery_preview" 
-                                                data-multiple="true">
-                                            Select Images
-                                        </button>
-                                    </div>
-                                    <div id="gallery_preview" class="d-flex flex-wrap mt-2">
-                                        @if($page->gallery_images && is_array($page->gallery_images))
-                                            @foreach($page->gallery_images as $image)
-                                                <img src="{{ $image }}" class="img-thumbnail m-1" style="width: 120px;">
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Hero Background -->
-                                <div class="mb-3">
-                                    <label class="form-label">Hero Background</label>
-                                    <div class="input-group">
-                                        <input type="text" id="hero_bg" name="hero_bg" class="form-control" readonly value="{{ old('hero_bg', $page->hero_bg) }}">
-                                        <button type="button" class="btn btn-outline-secondary select-media-btn" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#mediaModal" 
-                                                data-input="hero_bg" 
-                                                data-preview="hero_preview" 
-                                                data-multiple="false">
-                                            Select Media
-                                        </button>
-                                    </div>
-                                    <div id="hero_preview" class="mt-2">
-                                        @if($page->hero_bg)
-                                            <img src="{{ $page->hero_bg }}" class="img-thumbnail m-1" style="width: 120px;">
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-                        <!-- Layout -->
-                        <div class="tab-pane fade" id="layoutTab" role="tabpanel">
-                            <div class="card card-body p-4">
-                                <h5 class="fw-semibold mb-3">Hero & Layout</h5>
+
+                        <!-- Template & Layout -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">🎨 Template & Layout</div>
+                            <div class="card-body">
                                 <div class="row g-3">
-                                    <div class="col-lg-6"><label class="form-label">Hero Title</label><input type="text"
-                                            class="form-control" name="hero_title" placeholder="Enter main heading"
-                                            value="{{ old('hero_title', $page->hero_title) }}"></div>
-                                    <div class="col-lg-6"><label class="form-label">Hero Subtitle</label><input
-                                            class="form-control" name="hero_subtitle" placeholder="Subtitle"
-                                            value="{{ old('hero_subtitle', $page->hero_subtitle) }}"></div>
-                                    <div class="col-lg-6"><label class="form-label">Hero Button Text</label><input
-                                            type="text" class="form-control" name="hero_button_text"
-                                            value="{{ old('hero_button_text', $page->hero_button_text) }}"></div>
-                                    <div class="col-lg-6"><label class="form-label">Hero Button URL</label><input
-                                            type="text" class="form-control" name="hero_button_url"
-                                            value="{{ old('hero_button_url', $page->hero_button_url) }}"></div>
-                                </div>
-                                <div class="row g-3 mt-2">
                                     <div class="col-md-6">
                                         <label class="form-label">Template</label>
-                                        <select class="form-select" name="template">
-                                            @php($tpl = old('template', $page->template ?? 'fullwidth'))
-                                            <option value="fullwidth" @selected($tpl==='fullwidth' )>Full Width</option>
-                                            <option value="sidebar-left" @selected($tpl==='sidebar-left' )>Sidebar Left
-                                            </option>
-                                            <option value="sidebar-right" @selected($tpl==='sidebar-right' )>Sidebar
-                                                Right</option>
-                                            <option value="landing" @selected($tpl==='landing' )>Landing Page</option>
-                                            <option value="default" @selected($tpl==='default')>Default</option>
-                                            <option value="blog" @selected($tpl==='blog' )>Blog Post</option>
-                                            <option value="faq" @selected($tpl==='faq' )>FAQ Page</option>
+                                        <select name="template" class="form-select">
+                                            <option value="default" {{ $page->template === 'default' ? 'selected' : '' }}>Default</option>
+                                            <option value="fullwidth" {{ $page->template === 'fullwidth' ? 'selected' : '' }}>Full Width</option>
+                                            <option value="sidebar" {{ $page->template === 'sidebar' ? 'selected' : '' }}>Sidebar</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Layout Style</label>
-                                        <select class="form-select" name="layout_style">
-                                            @php($ls = old('layout_style', $page->layout_style ?? 'default'))
-                                            <option value="default" @selected($ls==='default' )>Default</option>
-                                            <option value="boxed" @selected($ls==='boxed' )>Boxed</option>
-                                            <option value="fluid" @selected($ls==='fluid' )>Fluid</option>
-                                            <option value="grid" @selected($ls==='grid' )>Grid-based</option>
+                                        <select name="layout_style" class="form-select">
+                                            <option value="default" {{ $page->layout_style === 'default' ? 'selected' : '' }}>Default</option>
+                                            <option value="boxed" {{ $page->layout_style === 'boxed' ? 'selected' : '' }}>Boxed</option>
+                                            <option value="wide" {{ $page->layout_style === 'wide' ? 'selected' : '' }}>Wide</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="mt-3">
-                                    <label class="form-label">Sidebar Widgets (JSON)</label>
-                                    <textarea class="form-control font-monospace" rows="3" name="sidebar_widgets"
-                                        placeholder='["recent_posts","categories"]'>{{ old('sidebar_widgets', $page->sidebar_widgets) }}</textarea>
-                                </div>
-                                <div class="mt-3">
-                                    <label class="form-label">Footer Widgets (JSON)</label>
-                                    <textarea class="form-control font-monospace" rows="3" name="footer_widgets"
-                                        placeholder='["links","newsletter"]'>{{ old('footer_widgets', $page->footer_widgets) }}</textarea>
                                 </div>
                             </div>
-                        </div>     
-                   <!-- Components -->
-                        <div class="tab-pane fade" id="componentsTab" role="tabpanel">
-                            <div class="card card-body p-4">
-                                <h5 class="fw-semibold mb-3">Page Components</h5>
-                                {{-- 🔹 Slider / Carousel --}}
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label">Enable Slider / Carousel</label>
-                                        <select class="form-select" name="enable_slider">
-                                            <option value="0" @selected(old('enable_slider', $page->enable_slider)==='0' || !$page->enable_slider)>No</option>
-                                            <option value="1" @selected(old('enable_slider', $page->enable_slider)==='1' || $page->enable_slider)>Yes</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-8 {{ $page->enable_slider ? '' : 'd-none' }}" id="slider-component">
-                                    <!-- 🔹 Image Slider Manager -->
-                                        <div class="row g-3 mb-3">
-                                            <div class="col-12">
-                                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                                    <label class="form-label fw-semibold">Image Slider</label>
-                                                
-                                                    <!-- Add Slide Button -->
-                                                    <button type="button" class="btn btn-sm btn-primary mb-3" id="addSlideBtn">
-                                                        + Add Slide
-                                                    </button>
-                                                </div>
-                                                <!-- Slides Container -->
-                                                <div id="slidesContainer" class="d-flex flex-column gap-3">
-                                                    {{-- Existing slides (if editing an existing page) --}}
-                                                    @if($page->slider_images && is_array($page->slider_images))
-                                                        @foreach($page->slider_images as $index => $slide)
-                                                            <div class="card p-3 slide-item">
-                                                                <div class="row g-2 align-items-center">
-                                                                    <div class="col-md-2">
-                                                                        <div class="input-group">
-                                                                            <input type="text" class="form-control" name="slides[{{ $index }}][image]" id="slide_image_{{ $index }}" readonly value="{{ $slide['image'] ?? '' }}">
-                                                                            <button type="button"
-                                                                                class="btn btn-outline-secondary select-media-btn"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#mediaModal"
-                                                                                data-input="slide_image_{{ $index }}"
-                                                                                data-preview="slide_preview_{{ $index }}"
-                                                                                data-multiple="false">
-                                                                                Select
-                                                                            </button>
-                                                                        </div>
-                                                                        <div id="slide_preview_{{ $index }}" class="mt-2">
-                                                                            @if(isset($slide['image']))
-                                                                                <img src="{{ $slide['image'] }}" class="img-thumbnail" style="width: 80px;">
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-2">
-                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][title]" placeholder="Title" value="{{ $slide['title'] ?? '' }}">
-                                                                    </div>
-                                                                    <div class="col-md-2">
-                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][caption]" placeholder="Caption" value="{{ $slide['caption'] ?? '' }}">
-                                                                    </div>
-                                                                    <div class="col-md-2">
-                                                                        <input type="url" class="form-control" name="slides[{{ $index }}][media_link]" placeholder="Media Link (optional)" value="{{ $slide['media_link'] ?? '' }}">
-                                                                    </div>
-                                                                    <div class="col-md-2">
-                                                                        <input type="text" class="form-control" name="slides[{{ $index }}][link]" placeholder="Link (optional)" value="{{ $slide['link'] ?? '' }}">
-                                                                    </div>
-                                                                    <div class="col-md-1">
-                                                                        <input type="number" class="form-control" name="slides[{{ $index }}][order]" placeholder="Order" value="{{ $slide['order'] ?? $index }}">
-                                                                    </div>
-                                                                    <div class="col-md-1 text-end">
-                                                                        <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
-                                                </div>
-                                            </div>
+                        </div>
+
+                        <!-- Media -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">🖼 Media</div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Featured Image</label>
+                                    <input type="file" name="featured_image" class="form-control">
+                                    @if($page->featured_image)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $page->featured_image) }}" class="img-thumbnail rounded" width="160">
                                         </div>
-
-                                        <!-- Hidden JSON field (final payload) -->
-                                        <input type="hidden" name="slider_images" id="sliderImagesInput" value="{{ old('slider_images', is_array($page->slider_images) ? json_encode($page->slider_images) : $page->slider_images) }}">
-                                    </div>
+                                    @endif
                                 </div>
 
-                                {{-- 🔹 Reusable Components --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-12">
-                                        <label class="form-label">Reusable Components (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="reusable_components"
-                                                placeholder='[{"type":"testimonial","content":"..."}]'>{{ old('reusable_components', $page->reusable_components) }}</textarea>
-                                    </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enable_slider" name="enable_slider" value="1" {{ $page->enable_slider ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="enable_slider">Enable Slider</label>
                                 </div>
-
-                                {{-- 🔹 Contact Form --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-lg-4">
-                                        <label class="form-label">Enable Contact Form</label>
-                                        <select class="form-select" name="contact_form_enabled">
-                                            <option value="0" @selected(old('contact_form_enabled', $page->contact_form_enabled)==='0' || !$page->contact_form_enabled)>No</option>
-                                            <option value="1" @selected(old('contact_form_enabled', $page->contact_form_enabled)==='1' || $page->contact_form_enabled)>Yes</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="form-label">Recipient Email</label>
-                                        <input type="email" class="form-control" name="contact_form_email"
-                                            value="{{ old('contact_form_email', $page->contact_form_email) }}">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="form-label">Form Subject</label>
-                                        <input type="text" class="form-control" name="contact_form_subject"
-                                            value="{{ old('contact_form_subject', $page->contact_form_subject) }}">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="form-label">Form Success Message</label>
-                                        <input type="text" class="form-control" name="contact_form_success_message"
-                                            value="{{ old('contact_form_success_message', $page->contact_form_success_message) }}">
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Custom Fields (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="contact_form_fields"
-                                                placeholder='[{"label":"Name","type":"text"}]'>{{ old('contact_form_fields', $page->contact_form_fields) }}</textarea>
-                                    </div>
-                                </div>
-
-                                {{-- 🔹 Newsletter Signup --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Newsletter Signup</label>
-                                        <select class="form-select" name="newsletter_enabled">
-                                            <option value="0" @selected(old('newsletter_enabled', $page->newsletter_enabled)==='0' || !$page->newsletter_enabled)>No</option>
-                                            <option value="1" @selected(old('newsletter_enabled', $page->newsletter_enabled)==='1' || $page->newsletter_enabled)>Yes</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Integration Provider</label>
-                                        <input type="text" class="form-control" name="newsletter_provider"
-                                            placeholder="e.g. Mailchimp, SendGrid"
-                                            value="{{ old('newsletter_provider', $page->newsletter_provider) }}">
-                                    </div>
-                                </div>
-
-                                {{-- 🔹 Polls / Surveys --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-12">
-                                        <label class="form-label">Polls / Surveys (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="polls_surveys"
-                                                placeholder='[{"question":"...","options":["a","b"]}]'>{{ old('polls_surveys', $page->polls_surveys) }}</textarea>
-                                    </div>
-                                </div>
-
-                                {{-- 🔹 Dynamic Tables --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-12">
-                                        <label class="form-label">Dynamic Tables / Grids (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="dynamic_tables"
-                                                placeholder='[{"columns":["Name","Email"],"rows":[...]}]'>{{ old('dynamic_tables', $page->dynamic_tables) }}</textarea>
-                                    </div>
-                                </div>
-
-                                {{-- 🔹 Conditional Logic --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-12">
-                                        <label class="form-label">Conditional Display Logic (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="conditional_logic"
-                                                placeholder='[{"component":"hero","condition":{"role":"admin"}}]'>{{ old('conditional_logic', $page->conditional_logic) }}</textarea>
-                                    </div>
-                                </div>
-
-                                {{-- 🔹 Extra Components (future-proofing) --}}
-                                <div class="row g-3 mt-1">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Embed Code (HTML/JS)</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="embed_code"
-                                                placeholder="<script>...</script>">{{ old('embed_code', $page->embed_code) }}</textarea>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Custom CSS</label>
-                                        <textarea class="form-control font-monospace" rows="3"
-                                                name="custom_css"
-                                                placeholder=".hero { background:red; }">{{ old('custom_css', $page->custom_css) }}</textarea>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Custom Code -->
-                        <div class="tab-pane fade" id="scriptsTab" role="tabpanel">
-                            <div class="card card-body">
-                                <h5 class="fw-semibold mb-3">Custom Code</h5>
+                <!-- 🔸 Right Column: Settings / Sidebar -->
+                <div class="col-lg-4 col-md-12">
+                    <div class="grid gap-4">
+                        <!-- Visibility -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">🔒 Visibility & Scheduling</div>
+                            <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label">Custom JS</label>
-                                    <textarea class="form-control font-monospace" rows="5"
-                                        name="custom_js">{{ old('custom_js', $page->custom_js) }}</textarea>
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="draft" {{ $page->status === 'draft' ? 'selected' : '' }}>Draft</option>
+                                        <option value="published" {{ $page->status === 'published' ? 'selected' : '' }}>Published</option>
+                                        <option value="scheduled" {{ $page->status === 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                    </select>
                                 </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label">Custom Head Injection</label>
-                                    <textarea class="form-control font-monospace" rows="4"
-                                        name="custom_head">{{ old('custom_head', $page->custom_head) }}</textarea>
+                                    <label class="form-label">Visibility</label>
+                                    <select name="visibility" class="form-select">
+                                        <option value="public" {{ $page->visibility === 'public' ? 'selected' : '' }}>Public</option>
+                                        <option value="private" {{ $page->visibility === 'private' ? 'selected' : '' }}>Private</option>
+                                        <option value="password" {{ $page->visibility === 'password' ? 'selected' : '' }}>Password Protected</option>
+                                    </select>
                                 </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label">Custom Body Injection</label>
-                                    <textarea class="form-control font-monospace" rows="4"
-                                        name="custom_body">{{ old('custom_body', $page->custom_body) }}</textarea>
+                                    <label class="form-label">Password (if protected)</label>
+                                    <input type="text" name="visibility_password" class="form-control" value="{{ old('visibility_password', $page->visibility_password) }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Publish Date</label>
+                                    <input type="datetime-local" name="publish_at" class="form-control" value="{{ old('publish_at', optional($page->publish_at)->format('Y-m-d\TH:i')) }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Expire Date</label>
+                                    <input type="datetime-local" name="expire_at" class="form-control" value="{{ old('expire_at', optional($page->expire_at)->format('Y-m-d\TH:i')) }}">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Access Control -->
-                        <div class="tab-pane fade" id="accessTab" role="tabpanel">
-                            <div class="card card-body">
-                                <h5 class="fw-semibold mb-3">Access Control</h5>
-                                <div class="row g-3">
-                                    <div class="col-lg-4">
-                                        <label class="form-label">Visible to Roles</label>
-                                        <div id="roles-tag-input">
-                                            <div class="tag-input"></div>
-                                        </div>
-                                        <input type="hidden" name="role_ids" id="roleIds" value="{{ old('role_ids', is_array($page->role_ids) ? implode(',', $page->role_ids) : $page->role_ids) }}" />
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label">Device Visibility</label>
-                                        @php($dv = collect(old('device_visibility', is_array($page->device_visibility) ? $page->device_visibility : [])))
-                                        <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                name="device_visibility[]" value="desktop" id="dvDesktop"
-                                                @checked($dv->contains('desktop'))><label class="form-check-label"
-                                                for="dvDesktop">Desktop</label></div>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                name="device_visibility[]" value="tablet" id="dvTablet"
-                                                @checked($dv->contains('tablet'))><label class="form-check-label"
-                                                for="dvTablet">Tablet</label></div>
-                                        <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                name="device_visibility[]" value="mobile" id="dvMobile"
-                                                @checked($dv->contains('mobile'))><label class="form-check-label"
-                                                for="dvMobile">Mobile</label></div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label">Geolocation Rules (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="4" name="geo_rules"
-                                            placeholder='{"allow":["NG","US"],"deny":["CN"]}'>{{ old('geo_rules', $page->geo_rules) }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Analytics -->
-                        <div class="tab-pane fade" id="analyticsTab" role="tabpanel">
-                            <div class="card card-body">
-                                <h5 class="fw-semibold mb-3">Analytics & Experiments</h5>
-                                <div class="row g-3">
-                                    <div class="col-lg-6">
-                                        <label class="form-label">Custom Tracking Code</label>
-                                        <textarea class="form-control font-monospace" rows="4" name="tracking_code"
-                                            placeholder="&lt;script&gt;...&lt;/script&gt;">{{ old('tracking_code', $page->tracking_code) }}</textarea>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label">A/B Test Variants (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="4" name="ab_variants"
-                                            placeholder='[{"key":"hero","variant":"B"}]'>{{ old('ab_variants', $page->ab_variants) }}</textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Conversion Goals (JSON)</label>
-                                        <textarea class="form-control font-monospace" rows="3" name="conversion_goals"
-                                            placeholder='[{"name":"Lead","selector":"#contact-submit"}]'>{{ old('conversion_goals', $page->conversion_goals) }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Settings (Extra) -->
-                        <div class="tab-pane fade" id="settingsTab" role="tabpanel">
-                            <div class="card card-body">
-                                <h5 class="fw-semibold mb-3">Additional Settings</h5>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Layout</label>
-                                        <select class="form-select" name="layout">
-                                            @php($layout = old('layout', $page->layout ?? 'default'))
-                                            <option value="default" @selected($layout==='default' )>Default</option>
-                                            <option value="fullwidth" @selected($layout==='fullwidth' )>Full Width
+                        <!-- Hierarchy -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-light fw-bold">📂 Parent Page</div>
+                            <div class="card-body">
+                                <select name="parent_id" class="form-select">
+                                    <option value="">No Parent (Top Level)</option>
+                                    @foreach($allPages as $p)
+                                        @if($p->page_id !== $page->page_id)
+                                            <option value="{{ $p->page_id }}" {{ $p->page_id == $page->parent_id ? 'selected' : '' }}>
+                                                {{ $p->title }}
                                             </option>
-                                            <option value="sidebar-left" @selected($layout==='sidebar-left' )>Sidebar
-                                                Left</option>
-                                            <option value="sidebar-right" @selected($layout==='sidebar-right' )>Sidebar
-                                                Right</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Template</label>
-                                        <select class="form-select" name="template_alt">
-                                            @php($templateAlt = old('template_alt', $page->template_alt ?? 'default'))
-                                            <option value="default" @selected($templateAlt==='default' )>Default
-                                                Template</option>
-                                            <option value="landing" @selected($templateAlt==='landing' )>Landing Page
-                                            </option>
-                                            <option value="blog" @selected($templateAlt==='blog' )>Blog Post</option>
-                                            <option value="faq" @selected($templateAlt==='faq' )>FAQ Page</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-    </div>   
- @section('scripts')
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <script src="{{asset('adminAssets/libs/uppy/uppy.legacy.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <!-- Tagging Component -->
-    <script>
-        class TaggingComponent {
-        constructor(containerId, hiddenInputId, endpoint) {
-            this.container = document.getElementById(containerId);
-            this.tagInput = this.container.querySelector('.tag-input');
-            this.tags = [];
-            this.itemMap = {};
+    </div>
 
-            this.endpoint = endpoint;
-            this.hiddenInput = document.getElementById(hiddenInputId);
-
-            this.renderInputField();
-            this.renderSuggestions();
-        }
-
-        renderInputField() {
-            const inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.placeholder = 'Search...';
-            inputField.className = 'form-control';
-            inputField.addEventListener('input', (e) => this.fetchItems(e.target.value.trim()));
-            inputField.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ',') {
-                    e.preventDefault();
-                    const name = e.target.value.trim();
-                    if (this.itemMap[name]) {
-                        this.addTag(this.itemMap[name], name);
-                    }
-                }
+    @section('scripts')
+        <script src="{{ asset('adminAssets/libs/quill/quill.min.js') }}"></script>
+        <script src="{{ asset('adminAssets/libs/select2/select2.min.js') }}"></script>
+        <script src="{{ asset('adminAssets/libs/spectrum-colorpicker/spectrum.js') }}"></script>
+        <script src="{{ asset('adminAssets/js/pages/form-editor.init.js') }}"></script>
+        <script src="{{ asset('adminAssets/js/pages/form-advanced.init.js') }}"></script>
+        {{-- Optional: Preview handler --}}
+        <script>
+            document.getElementById('previewBtn').addEventListener('click', function() {
+                const form = document.getElementById('pageForm');
+                form.action = "{{ route('admin.pages.preview') }}";
+                form.target = "_blank";
+                form.submit();
             });
-            this.tagInput.appendChild(inputField);
-            this.inputField = inputField;
-        }
-
-        renderSuggestions() {
-            const suggestionsDiv = document.createElement('div');
-            suggestionsDiv.className = 'suggestions';
-            this.tagInput.appendChild(suggestionsDiv);
-            this.suggestionsDiv = suggestionsDiv;
-        }
-
-        async fetchItems(query) {
-            if (!query) {
-            this.suggestionsDiv.innerHTML = '';
-            return;
-            }
-            try {
-            const response = await fetch(`${this.endpoint}?search=${encodeURIComponent(query)}`);
-            const data = await response.json();
-            console.log('--Data: ', data);
-            this.showSuggestions(data.items || data.categories || data.tags || data.roles || []);
-            } catch (error) {
-            console.error("Failed to fetch:", error);
-            }
-        }
-
-        showSuggestions(items) {
-            const filtered = items.filter(c => !this.tags.includes(c.id));
-            this.suggestionsDiv.innerHTML = '';
-            filtered.forEach(c => {
-            const suggestionElement = document.createElement('div');
-            suggestionElement.className = 'suggestion';
-            suggestionElement.innerHTML = `
-                <div style="padding: 6px; cursor: pointer;">
-                <strong style="color: #1d4ed8;">${c.name}</strong>
-                </div>
-            `;
-            suggestionElement.addEventListener('click', () => this.addTag(c.id, c.name));
-            this.suggestionsDiv.appendChild(suggestionElement);
-
-            this.itemMap[c.name] = c.id;
-            });
-        }
-
-        addTag(itemId, itemName) {
-            if (itemId && !this.tags.includes(itemId)) {
-            this.tags.push(itemId);
-            this.renderTags();
-            this.inputField.value = '';
-            this.suggestionsDiv.innerHTML = '';
-            this.syncHiddenInput();
-            }
-        }
-
-        removeTag(itemId) {
-            this.tags = this.tags.filter(id => id !== itemId);
-            this.renderTags();
-            this.syncHiddenInput();
-        }
-
-        renderTags() {
-            this.tagInput.innerHTML = '';
-            this.tags.forEach(itemId => {
-            const itemName = Object.keys(this.itemMap).find(name => this.itemMap[name] === itemId);
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.innerHTML = `${itemName} <span>&times;</span>`;
-            tagElement.querySelector('span').addEventListener('click', () => this.removeTag(itemId));
-            this.tagInput.appendChild(tagElement);
-            });
-            this.tagInput.appendChild(this.inputField);
-            this.tagInput.appendChild(this.suggestionsDiv);
-        }
-
-        syncHiddenInput() {
-            this.hiddenInput.value = this.tags.join(',');
-        }
-        }
-
-        // ✅ Initialize
-        let categoryTagging = new TaggingComponent(
-        'category-tag-input',
-        'categoryIds',
-        `{{ url('/admin/search-category') }}`
-        );
-
-        let tagTagging = new TaggingComponent(
-        'tag-tag-input',
-        'tagIds',
-        `{{ url('/admin/search-cms-tag') }}`
-        );
-
-        let roleTagging = new TaggingComponent(
-        'roles-tag-input',
-        'roleIds',
-        `{{ url('/admin/search-cms-role') }}`
-        );
-    </script>
-    <!-- Author Tagging Component -->
-    <script>
-        class AuthorTaggingComponent {
-        constructor(containerId, TagInput, hiddenInputId) {
-            this.container = document.getElementById(containerId);
-            this.tagInput = this.container.querySelector(`.${TagInput}`) || this.container;
-            this.tags = [];
-            this.userMap = {}; // Maps user names to ids
-            this.hiddenInput = document.getElementById(hiddenInputId);
-
-            this.renderInputField();
-            this.renderSuggestions();
-        }
-
-        renderInputField() {
-            const inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.placeholder = 'Select an author...';
-            inputField.className = 'form-control';
-            inputField.addEventListener('input', (e) => this.fetchUsers(e.target.value.trim()));
-            inputField.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ',') {
-                e.preventDefault();
-                const name = e.target.value.trim();
-                if (this.userMap[name]) {
-                this.addTag(this.userMap[name], name);
-                }
-            }
-            });
-            this.tagInput.appendChild(inputField);
-            this.inputField = inputField;
-        }
-
-        renderSuggestions() {
-            const suggestionsDiv = document.createElement('div');
-            suggestionsDiv.className = 'suggestions';
-            this.tagInput.appendChild(suggestionsDiv);
-            this.suggestionsDiv = suggestionsDiv;
-        }
-
-        async fetchUsers(query) {
-            if (!query) {
-            this.suggestionsDiv.innerHTML = '';
-            return;
-            }
-            try {
-            const response = await fetch(`{{ url('/admin/search-author') }}?search=${encodeURIComponent(query)}`);
-            const users = await response.json();
-            this.showSuggestions(users.users || []);
-            } catch (error) {
-            console.error("Failed to fetch authors:", error);
-            }
-        }
-
-        showSuggestions(users) {
-            this.suggestionsDiv.innerHTML = '';
-            users.forEach(user => {
-            const fullName = `${user.first_name} ${user.last_name}${user.other_name ? ' ' + user.other_name : ''}`;
-            const suggestionElement = document.createElement('div');
-            suggestionElement.className = 'suggestion';
-            suggestionElement.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${user.profilePic}" alt="${fullName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
-                    <div>
-                        <strong style="font-size: 15px; color: #1d4ed8;">${fullName}</strong><br>
-                        <span style="font-size: 13px; color: #64748b;">${user.email}</span>
-                    </div>
-                </div>
-            `;
-            suggestionElement.addEventListener('click', () => this.addTag(user.id, fullName));
-            this.suggestionsDiv.appendChild(suggestionElement);
-
-            this.userMap[fullName] = user.id;
-            });
-        }
-
-        addTag(userId, fullName) {
-            // Only allow one author
-            this.tags = [userId];
-            this.hiddenInput.value = userId; // ✅ Store in hidden input
-            this.renderTags(fullName);
-            this.inputField.value = '';
-            this.suggestionsDiv.innerHTML = '';
-        }
-
-        removeTag() {
-            this.tags = [];
-            this.hiddenInput.value = '';
-            this.renderTags();
-        }
-
-        renderTags(fullName = null) {
-            this.tagInput.innerHTML = '';
-            if (this.tags.length > 0 && fullName) {
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.innerHTML = `${fullName} <span>&times;</span>`;
-            tagElement.querySelector('span').addEventListener('click', () => this.removeTag());
-            this.tagInput.appendChild(tagElement);
-            }
-            this.tagInput.appendChild(this.inputField);
-            this.tagInput.appendChild(this.suggestionsDiv);
-        }
-        }
-
-        // ✅ Instantiate Author Tagging
-        let authorTagging = new AuthorTaggingComponent('author-tag-input', 'author-tag-input', 'author_id');
-
-    </script> 
-   <!-- <script src="{{asset('adminAssets/js/pages/file-upload.init.js')}}"></script> -->
-    <script>
-        // Tab subtitle with icons
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabLinks = document.querySelectorAll('#pageTab .nav-link');
-            const tabDescription = document.getElementById('tabDescription');
-            const tabIcon = document.getElementById('tabIcon');
-
-            const tabIcons = {
-                '#seoTab': '📝',
-                '#mediaTab': '🖼️',
-                '#layoutTab': '🎨',
-                '#componentsTab': '⚙️',
-                '#scriptsTab': '💻',
-                '#accessTab': '🔒',
-                '#analyticsTab': '📊',
-                '#settingsTab': '⚡'
-            };
-
-            tabLinks.forEach(link => {
-                link.addEventListener('shown.bs.tab', function (event) {
-                    const desc = event.target.getAttribute('data-description');
-                    const href = event.target.getAttribute('href');
-
-                    tabDescription.style.opacity = 0;
-                    setTimeout(() => {
-                        tabIcon.textContent = tabIcons[href] || '';
-                        tabDescription.textContent = desc;
-                        tabDescription.prepend(tabIcon);
-                        tabDescription.style.opacity = 1;
-                        tabDescription.classList.remove('active');
-                    }, 50);
-                });
-            });
-
-            // Auto-generate slug from title if slug is empty
-            const titleField = document.getElementById('pageTitle');
-            const slugField = document.getElementById('pageSlug');
-            
-            if (titleField && slugField) {
-                titleField.addEventListener('input', function() {
-                    if (!slugField.value.trim()) {
-                        const slug = this.value.toLowerCase()
-                            .replace(/[^a-z0-9\s-]/g, '')
-                            .replace(/\s+/g, '-')
-                            .replace(/-+/g, '-')
-                            .trim('-');
-                        slugField.value = slug;
-                    }
-                });
-            }
-        });
-    </script>
-    <!-- Quill Editor -->
-    <script>
-        // Register modules
-        Quill.register('modules/imageResize', window.ImageResize.default || window.ImageResize);
-        Quill.register('modules/emoji', window.QuillEmoji);
-
-        // Initialize Quill
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            placeholder: 'Start writing your page content...',
-            modules: {
-                toolbar: [
-                    [{ 'font': [] }, { 'size': [] }, { 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'script': 'sub' }, { 'script': 'super' }],
-                    [{ 'header': 1 }, { 'header': 2 }],
-                    ['blockquote', 'code-block'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                    [{ 'align': [] }, { 'direction': 'rtl' }],
-                    ['link', 'image', 'video', 'formula'],
-                    ['emoji'],
-                    ['clean'],
-                    ['html']
-                ],
-                imageResize: { modules: ['Resize', 'DisplaySize'] },
-                "emoji-toolbar": true,
-                "emoji-textarea": false,
-                "emoji-shortname": true
-            }
-        });
-
-        // Fullscreen button
-        const toolbar = quill.getModule('toolbar');
-        const buttonContainer = toolbar.container.querySelector('.ql-formats');
-        const fullscreenBtn = document.createElement('button');
-        fullscreenBtn.type = 'button';
-        fullscreenBtn.innerHTML = '<svg viewBox="0 0 18 18"><polyline points="3,7 3,3 7,3" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="11,3 15,3 15,7" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="15,11 15,15 11,15" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="7,15 3,15 3,11" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
-        fullscreenBtn.title = "Toggle Fullscreen";
-        buttonContainer.appendChild(fullscreenBtn);
-
-        let fullscreen = false;
-        const expandIcon = fullscreenBtn.innerHTML;
-        const collapseIcon = '<svg viewBox="0 0 18 18"><polyline points="5,5 5,3 3,3" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="13,3 15,3 15,5" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="15,13 15,15 13,15" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="3,13 3,15 5,15" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
-
-        fullscreenBtn.addEventListener('click', () => {
-            fullscreen = !fullscreen;
-            const container = document.querySelector('#editor-container');
-            container.classList.toggle('ql-fullscreen', fullscreen);
-            if (fullscreen) window.scrollTo(0, 0);
-            fullscreenBtn.innerHTML = fullscreen ? collapseIcon : expandIcon;
-        });
-        document.addEventListener('keydown', e => { if (e.key === "Escape" && fullscreen) fullscreenBtn.click(); });
-
-        // HTML insert
-        const htmlBtn = toolbar.container.querySelector('.ql-html');
-        if (htmlBtn) htmlBtn.addEventListener('click', () => {
-            const html = prompt("Paste your HTML code:");
-            if (html) {
-                const range = quill.getSelection(true);
-                quill.clipboard.dangerouslyPasteHTML(range.index, html);
-            }
-        });
-
-        // Undo / Redo
-        const undoStack = [], redoStack = [];
-        quill.on('text-change', (delta, oldDelta, source) => { if (source === 'user') undoStack.push(oldDelta); });
-        function undo() { if (undoStack.length > 0) { const last = undoStack.pop(); redoStack.push(quill.getContents()); quill.setContents(last); } }
-        function redo() { if (redoStack.length > 0) { const next = redoStack.pop(); undoStack.push(quill.getContents()); quill.setContents(next); } }
-
-        // Save & Preview
-        document.querySelector('#previewBtn').onclick = (e) => {
-            e.preventDefault();
-            const previewForm = document.querySelector('#pageForm').cloneNode(true);
-            previewForm.action = "{{ route('admin.pages.preview') }}";
-            previewForm.target = "_blank";
-            document.body.appendChild(previewForm);
-            previewForm.submit();
-            previewForm.remove();
-        };
-
-
-        // SEO live preview
-        document.querySelector('#seoTitle').addEventListener('input', e => {
-            document.querySelector('#seoPreviewTitle').textContent = e.target.value + " | Site Name";
-        });
-        document.querySelector('#seoDescription').addEventListener('input', e => {
-            document.querySelector('#seoPreviewDesc').textContent = e.target.value;
-        });
-
-
-        // --- Visibility password toggle ---
-        (function () {
-            const visibility = document.getElementById('visibility');
-            const password = document.getElementById('visibilityPassword');
-            function sync() { password.disabled = visibility.value !== 'password'; }
-            visibility.addEventListener('change', sync); sync();
-        })();
-    </script>
-    <script>
-        // On form submit, set hidden input with Quill HTML
-        document.querySelector('#pageForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            console.log(this);
-            
-            // Client-side validation - only check our required fields
-            const title = document.querySelector('input[name="title"]').value.trim();
-            const slug = document.querySelector('input[name="slug"]').value.trim();
-            const status = document.querySelector('select[name="status"]').value;
-            
-            console.log('Validation check:', { title, slug, status });
-            
-            if (!title || !slug || !status) {
-                let missingFields = [];
-                if (!title) missingFields.push('Page Title');
-                if (!slug) missingFields.push('Slug');
-                if (!status) missingFields.push('Status');
-                
-                Toastify({
-                    text: `Please fill required fields: ${missingFields.join(', ')}`,
-                    duration: 5000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#F44336",
-                    stopOnFocus: true
-                }).showToast();
-                return;
-            }
-
-            // Set Quill HTML to hidden input
-            document.querySelector('input[name="body"]').value = quill.root.innerHTML;
-
-            const form = e.target;
-            const formData = new FormData(form);
-
-            try {
-                const res = await fetch("{{ route('admin.pages.update', ['page' => $page->page_id]) }}", {
-                    method: "POST",
-                    body: formData,
-                    headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" }
-                });
-
-                const data = await res.json();
-
-                if (data.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Updated!',
-                        text: 'Page has been updated successfully.',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.location.href = "{{ route('admin.pages.index') }}";
-                    });
-                } else if (data.status === 'error') {
-                    console.log(data.errors);
-                
-                    let errorMsg = '';
-
-                    // Combine all errors into one string
-                    if (data.errors) {
-                        errorMsg = Object.values(data.errors).flat().join("\n");
-                    } else {
-                        errorMsg = data.message || "Failed to update page.";
-                    }
-
-                    Toastify({
-                        text: errorMsg,
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#F44336",
-                        stopOnFocus: true
-                    }).showToast();
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Unexpected response. Please try again.',
-                        confirmButtonText: 'OK'
-                    });
-                }
-            } catch (err) {
-                console.error("Error:", err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong. Please try again!',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    </script> 
-   <!-- Slider Component Logic -->
-    <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let sliderComponent = document.getElementById('slider-component');
-                let selectSlider = document.querySelector("select[name='enable_slider']");
-
-                if (selectSlider && sliderComponent) {
-                    selectSlider.addEventListener("change", function () {
-                        if (selectSlider.value === "1") { 
-                            // or whatever value enables slider
-                            sliderComponent.classList.remove("d-none");
-                        } else {
-                            sliderComponent.classList.add("d-none");
-                        }
-                    });
-                }
-
-
-                const slidesContainer = document.getElementById("slidesContainer");
-                const addSlideBtn = document.getElementById("addSlideBtn");
-
-                // Add new slide
-                if (addSlideBtn) {
-                    addSlideBtn.addEventListener("click", function () {
-                        const index = slidesContainer.children.length;
-                        const slide = document.createElement("div");
-                        slide.className = "card p-3 slide-item mb-2";
-                        slide.innerHTML = `
-                            <div class="row g-2 align-items-start justify-content-center">
-                                <div class="col-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="slides[${index}][image]" id="slide_image_${index}" readonly>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary select-media-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#mediaModal"
-                                            data-input="slide_image_${index}"
-                                            data-preview="slide_preview_${index}"
-                                            data-multiple="false">
-                                            Add Image
-                                        </button>
-                                    </div>
-                                    <div id="slide_preview_${index}" class="mt-2"></div>
-                                </div>
-                                <div class="col"><input type="text" class="form-control" name="slides[${index}][title]" placeholder="Title"></div>
-                                <div class="col"><input type="text" class="form-control" name="slides[${index}][caption]" placeholder="Caption"></div>
-                                <div class="col"><input type="url" class="form-control" name="slides[${index}][media_link]" placeholder="Media Link (optional)"></div>
-                                <div class="col"><input type="text" class="form-control" name="slides[${index}][link]" placeholder="Link (optional)"></div>
-                                <div class="col"><input type="number" class="form-control" name="slides[${index}][order]" placeholder="Order" value="${index}"></div>
-                                <div class="col text-end">
-                                    <button type="button" class="btn btn-danger btn-sm removeSlideBtn">&times;</button>
-                                </div>
-                            </div>
-                        `;
-                        slidesContainer.appendChild(slide);
-
-                        // Bind remove button
-                        slide.querySelector(".removeSlideBtn").addEventListener("click", () => {
-                            slide.remove();
-                        });
-
-                        // Re-bind media picker events for new slide
-                        if (window.bindMediaPickerEvents) window.bindMediaPickerEvents();
-                    });
-                }
-
-                // Bind remove buttons for initial slides
-                if (slidesContainer) {
-                    slidesContainer.querySelectorAll(".removeSlideBtn").forEach(btn => {
-                        btn.addEventListener("click", function () {
-                            btn.closest(".slide-item").remove();
-                        });
-                    });
-                }
-            });
-    </script>
-    <!-- Slider Component Logic -->
-    <!-- Media Selection -->
-    <script>
-        let currentPage = 1;
-        let selectedMedia = [];
-        let activeInputId = null;
-        let activePreviewId = null;
-        let allowMultiple = false;
-
-        const mediaLibrary = document.getElementById('media-library');
-        const mediaSearch = document.getElementById('mediaSearch');
-        const mediaPagination = document.getElementById('mediaPagination');
-        const mediaLoading = document.getElementById('media-loading');
-        const mediaInsertBtn = document.getElementById('insertMediaBtn');
-
-        // ==========================
-        // LOAD MEDIA (with pagination)
-        // ==========================
-        function loadMedia(search = '', page = 1) {
-            mediaLoading.classList.remove('d-none');
-            mediaLibrary.innerHTML = '';
-            mediaPagination.innerHTML = '';
-
-            fetch(`{{ url('/admin/media-search') }}?search=${encodeURIComponent(search)}&page=${page}`)
-                .then(res => res.json())
-                .then(data => {
-                    mediaLoading.classList.add('d-none');
-                    mediaLibrary.innerHTML = '';
-
-                    if (!data.media || data.media.length === 0) {
-                        mediaLibrary.innerHTML = '<p class="text-center text-muted">No media found.</p>';
-                        return;
-                    }
-
-                    // Render media cards
-                    data.media.forEach(item => {
-                        const mediaUrl = `{{ asset('storage/') }}/${item.path}`;
-                        const div = document.createElement('div');
-                        div.className = 'col-3 mb-3';
-                        div.innerHTML = `
-                            <div class="media-card border rounded p-2 text-center selectable" 
-                                data-url="${mediaUrl}" 
-                                data-name="${item.original_name || 'Untitled'}"
-                                style="cursor:pointer;">
-                                
-                                ${item.mime_type.startsWith('image/') 
-                                    ? `<img src="${mediaUrl}" class="img-fluid media-item" loading="lazy">`
-                                    : `<embed src="${mediaUrl}" class="img-fluid media-item" type="${item.mime_type}" loading="lazy">`}
-                                
-                                <small class="d-block mt-1 text-truncate">${item.original_name || 'Untitled'}</small>
-                            </div>
-                        `;
-                        mediaLibrary.appendChild(div);
-                    });
-
-                    // ✅ Render Pagination Links
-                    renderPagination(data.links, search);
-
-                    // Enable click events
-                    bindMediaItemClicks();
-                })
-                .catch(err => {
-                    mediaLoading.classList.add('d-none');
-                    console.error('Media load error:', err);
-                    Toastify({
-                        text: 'Failed to load media. Please try again.',
-                        backgroundColor: "#F44336"
-                    }).showToast();
-                });
-        }
-
-        // ==========================
-        // RENDER PAGINATION
-        // ==========================
-        function renderPagination(links, search) {
-            mediaPagination.innerHTML = '';
-
-            if (!links || links.length <= 3) return; // skip if no pagination needed
-
-            const ul = document.createElement('ul');
-            ul.className = 'pagination justify-content-center';
-
-            links.forEach(link => {
-                const li = document.createElement('li');
-                li.className = `page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}`;
-                const a = document.createElement('a');
-                a.className = 'page-link';
-                a.innerHTML = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»');
-                
-                if (link.url) {
-                    a.href = '#';
-                    a.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const url = new URL(link.url);
-                        const newPage = url.searchParams.get('page') || 1;
-                        currentPage = newPage;
-                        loadMedia(search, newPage);
-                    });
-                }
-
-                li.appendChild(a);
-                ul.appendChild(li);
-            });
-
-            mediaPagination.appendChild(ul);
-        }
-
-        // ==========================
-        // HANDLE ITEM SELECTION
-        // ==========================
-        function bindMediaItemClicks() {
-            document.querySelectorAll('.media-card').forEach(card => {
-                const url = card.dataset.url;
-
-                card.addEventListener('click', () => {
-                    if (allowMultiple) {
-                        if (selectedMedia.includes(url)) {
-                            selectedMedia = selectedMedia.filter(u => u !== url);
-                            card.classList.remove('selected');
-                        } else {
-                            selectedMedia.push(url);
-                            card.classList.add('selected');
-                        }
-                    } else {
-                        document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-                        selectedMedia = [url];
-                        card.classList.add('selected');
-                    }
-                });
-            });
-        }
-
-        // ==========================
-        // INSERT SELECTED MEDIA
-        // ==========================
-        mediaInsertBtn.addEventListener('click', () => {
-            if (selectedMedia.length === 0) {
-                Toastify({
-                    text: 'Please select at least one item.',
-                    backgroundColor: "#FFC107"
-                }).showToast();
-                return;
-            }
-
-            if (!activeInputId) return;
-
-            const inputField = document.getElementById(activeInputId);
-            const previewContainer = document.getElementById(activePreviewId);
-
-            inputField.value = allowMultiple ? JSON.stringify(selectedMedia) : selectedMedia[0];
-
-            if (previewContainer) {
-                previewContainer.innerHTML = '';
-                
-                if (allowMultiple) {
-                    // For gallery images, add remove buttons with index
-                    selectedMedia.forEach((url, index) => {
-                        const imageContainer = document.createElement('div');
-                        imageContainer.className = 'position-relative d-inline-block';
-                        imageContainer.innerHTML = `
-                            <img src="${url}" class="img-thumbnail m-1" style="width: 120px;">
-                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle p-1" 
-                                    style="width: 25px; height: 25px; font-size: 12px; line-height: 1;"
-                                    onclick="removeGalleryImage(${index})"
-                                    title="Remove image">
-                                ×
-                            </button>
-                        `;
-                        previewContainer.appendChild(imageContainer);
-                    });
-                } else {
-                    // For single images, add remove button
-                    selectedMedia.forEach(url => {
-                        const imageContainer = document.createElement('div');
-                        imageContainer.className = 'position-relative d-inline-block';
-                        imageContainer.innerHTML = `
-                            <img src="${url}" class="img-thumbnail m-1" style="width: 120px;">
-                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle p-1" 
-                                    style="width: 25px; height: 25px; font-size: 12px; line-height: 1;"
-                                    onclick="removeImage('${activeInputId}', '${activePreviewId}')"
-                                    title="Remove image">
-                                ×
-                            </button>
-                        `;
-                        previewContainer.appendChild(imageContainer);
-                    });
-                }
-            }
-
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('mediaModal'));
-            modal.hide();
-        });
-
-        // ==========================
-        // HANDLE "SELECT MEDIA" BUTTONS
-        // ==========================
-        document.querySelectorAll('.select-media-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                activeInputId = btn.dataset.input;
-                activePreviewId = btn.dataset.preview;
-                allowMultiple = btn.dataset.multiple === 'true';
-                selectedMedia = [];
-                document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-                loadMedia();
-            });
-        });
-
-        // ==========================
-        // SEARCH WITH DEBOUNCE
-        // ==========================
-        let searchTimeout;
-        mediaSearch.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => loadMedia(mediaSearch.value), 300);
-        });
-
-        // INITIAL LOAD ON MODAL SHOW
-        document.getElementById('mediaModal').addEventListener('shown.bs.modal', () => loadMedia());
-    </script>
-    <!-- Media Selection -->
-    <script>
-        window.bindMediaPickerEvents = function() {
-            document.querySelectorAll('.select-media-btn').forEach(btn => {
-                btn.onclick = function() {
-                    activeInputId = btn.dataset.input;
-                    activePreviewId = btn.dataset.preview;
-                    allowMultiple = btn.dataset.multiple === 'true';
-                    selectedMedia = [];
-                    document.querySelectorAll('.media-card.selected').forEach(c => c.classList.remove('selected'));
-                    loadMedia(); // reload media library
-                };
-            });
-        };
-    </script>
+        </script>
     @endsection
 </x-layouts.admin-app>

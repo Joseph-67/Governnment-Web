@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formData = new FormData(addEmployeeForm);
         const companyId = "{{ $company->company_id ?? '' }}";
-        const url = `{{ route('admin.store-company-employee', ['company' => 'COMPANY_ID']) }}`.replace('COMPANY_ID', companyId);
+        const url = `{{ route('admin.store-company-employee') }}`;
 
         displayMessage('info', 'Adding new employee...');
 
@@ -198,41 +198,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const employee = employeeCache.find(emp => emp.EmployeeID === employeeId);
         if (!employee) return displayMessage('danger', 'Employee not found.');
 
-
-
         // Populate form fields
-        const form = document.querySelector('#editEmployeeModal form');
-        const fields = [
-            'EmployeeNumber', 'FirstName', 'LastName', 'Email', 'PhoneNumber',
-            'DateOfBirth', 'Gender', 'JobTitle', 'HireDate', 'Status',
-            'Address', 'City', 'State', 'ZipCode', 'Country',
-            'EmergencyContact', 'EmergencyPhone'
-        ];
-
-        fields.forEach(field => {
-            const input = form.querySelector(`[name="${field}"]`);
-            if (input) input.value = employee[field] ?? '';
-        });
-
-        // Handle Status dropdown
-        const statusSelect = form.querySelector('[name="Status"]');
-        if (statusSelect && employee.Status) {
-            statusSelect.value = employee.Status;
-        } else if (statusSelect) {
-            statusSelect.selectedIndex = 0; // Reset to "Choose..."
-        }
-
-        // Handle Gender dropdown
-        const genderSelect = form.querySelector('[name="Gender"]');
-        if (genderSelect && employee.Gender) {
-            genderSelect.value = employee.Gender;
-        } else if (genderSelect) {
-            genderSelect.selectedIndex = 0; // Reset to "Choose..."
-        }
-
-        // Set hidden EmployeeID and existing profile picture
-        form.querySelector('input[name="EmployeeID"]').value = employeeId;
-        form.querySelector('input[name="existing_profile_picture"]').value = employee.ProfilePicture ?? '';
+        document.querySelector('#editEmployeeModal input[name="FirstName"]').value = employee.FirstName ?? '';
+        document.querySelector('#editEmployeeModal input[name="LastName"]').value = employee.LastName ?? '';
+        document.querySelector('#editEmployeeModal input[name="Email"]').value = employee.Email ?? '';
+        document.querySelector('#editEmployeeModal input[name="HireDate"]').value = employee.HireDate ?? '';
+        document.querySelector('#editEmployeeModal select[name="Status"]').value = employee.Status ?? 'Active';
+        document.querySelector('#editEmployeeModal input[name="EmployeeID"]').value = employeeId;
 
         // Load departments with the selected department
         const selectedDepartmentId = employee.department?.DepartmentID ?? '';
@@ -252,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentImg.style.display = 'block';
             noProfileText.style.display = 'none';
         } else {
+            // Use avatar placeholder
             const name = `${employee.FirstName ?? ''} ${employee.LastName ?? ''}`.trim() || 'Employee';
             const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D8ABC&color=fff&size=64`;
             currentImg.src = avatarUrl;
@@ -259,7 +232,6 @@ document.addEventListener('DOMContentLoaded', function () {
             noProfileText.style.display = 'none';
         }
 
-        // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
         modal.show();
     }
@@ -268,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const form = e.target;
 
-        if (!form.checkValidity()) return;
+        if (!form.checkValidity()) return; // Stop if invalid
 
         const employeeId = form.EmployeeID.value;
         const formData = new FormData(form);

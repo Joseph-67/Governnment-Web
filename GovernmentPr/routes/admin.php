@@ -507,7 +507,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     Route::controller(CompanyEmployeesController::class)->group(function() {
         Route::get('/company-employees/{company}', 'index')->name('admin.company-employees');
         Route::get('/search-employee', 'search')->name('admin.search-employee');
-        Route::post('/company-employees/{company}/store', 'store')->name('admin.store-company-employee');
+        Route::post('/company-employees/store', 'store')->name('admin.store-company-employee');
         Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
         Route::post('/company-employees/{employee}', 'update')->name('admin.update-company-employee');
         Route::delete('/company-employees/{employee}', 'destroy')->name('admin.delete-company-employee');

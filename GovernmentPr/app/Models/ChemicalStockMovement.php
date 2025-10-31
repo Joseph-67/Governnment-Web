@@ -9,32 +9,17 @@ class ChemicalStockMovement extends Model
 {
     use HasFactory;
     protected $table = 'chemical_stock_movements';
-    protected $primaryKey = 'chemicalStockID';
+    protected $primaryKey = 'stockID';
     protected $fillable = [
-        'company_id',
         'company_chemical_id',
         'chemical_id',
-        'batch_number',
-        'production_batch_number',
-        'transaction_type',
-        'adjustment_type',
+        'company_id',
+        'movement_type',
         'quantity',
-        'unit',
-        'source_location',
-        'destination_location',
-        'reason',
-        'remark',
-        'reference_id',
-        'reference_type',
-        'guard',
-        'performed_by',
         'calendar_year',
-        'transaction_date',
+        'movement_date',
+        'remarks',
         'status',
-    ];
-
-    protected $casts = [
-        'transaction_date' => 'datetime',
     ];
 
     public $timestamps = true;
@@ -43,10 +28,4 @@ class ChemicalStockMovement extends Model
     {
         return $this->belongsTo(CompanyChemical::class, 'company_chemical_id');
     }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class, 'company_id');
-    }
-
 }

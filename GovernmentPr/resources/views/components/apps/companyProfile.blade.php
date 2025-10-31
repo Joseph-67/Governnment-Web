@@ -2553,8 +2553,8 @@
                                     </button>
                                 </div>
 
-                                <div class="table-responsive w-100" style="width: 100%;">
-                                    <table class="table table-striped w-100" id="chemicalTable">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="chemicalTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th>#</th>
@@ -2562,12 +2562,9 @@
                                                 <th>Type</th>
                                                 <th>Quantity</th>
                                                 <th>Unit</th>
-                                                <th>Reorder Level</th>
-                                                <th>Safety Level</th>
                                                 <th>Hazardous</th>
                                                 <th>Storage</th>
                                                 <th>Updated</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -5285,7 +5282,7 @@
     @include('components.apps.company.scripts.chemicals')
     <script>
         $(document).ready(function() {
-            $('#generalTable, #waterTable, #equipmentTable, #rawTable').DataTable();
+            $('#generalTable, #chemicalTable, #waterTable, #equipmentTable, #rawTable').DataTable();
         });
     </script>
     <script>
