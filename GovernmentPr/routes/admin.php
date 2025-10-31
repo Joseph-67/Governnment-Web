@@ -532,7 +532,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/company-employees/{id}', 'show')->name('admin.show-company-employee');
         Route::post('/company-employees/{employee}', 'update')->name('admin.update-company-employee');
         Route::delete('/company-employees/{employee}', 'destroy')->name('admin.delete-company-employee');
-    });
+    }); h
 
     // Company Material
     Route::controller(CompanyMaterialController::class)->group(function(){
