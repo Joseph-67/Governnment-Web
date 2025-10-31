@@ -24,6 +24,7 @@ return new class extends Migration
 
             // Transaction details
             $table->enum('transaction_type', ['checkin', 'checkout', 'transfer', 'adjustment', 'disposal', 'return'])->nullable();
+            $table->enum('adjustment_type', ['increase', 'decrease'])->nullable();
             
             $table->decimal('quantity', 15, 2)->default(0);
             

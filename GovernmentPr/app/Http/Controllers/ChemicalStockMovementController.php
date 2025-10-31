@@ -33,6 +33,24 @@ class ChemicalStockMovementController extends Controller
         return ($totalIn + $totalAdjust) - ($totalOut + $totalTransfer + $totalDisposed);
     }
 
+    private function getTotalByBatchgetTotal($companyChemicalId, $type, $batch_no)
+    {
+        return ChemicalStockMovement::where('company_chemical_id', $companyChemicalId)
+            ->where('transaction_type', $type)
+            ->where('batch_number', $batch_no)
+            ->sum('quantity');
+    }
+    public function getChemicalBalanceByBatch($companyChemicalId, $batch_no)
+    {
+        $totalIn = $this->getTotalByBatchgetTotal($companyChemicalId, 'checkin', $batch_no);
+        $totalOut = $this->getTotalByBatchgetTotal($companyChemicalId, 'checkout', $batch_no);
+        $totalTransfer = $this->getTotalByBatchgetTotal($companyChemicalId, 'transfer', $batch_no);
+        $totalAdjust = $this->getTotalByBatchgetTotal($companyChemicalId, 'adjustment', $batch_no);
+        $totalDisposed = $this->getTotalByBatchgetTotal($companyChemicalId, 'disposal', $batch_no);
+
+        // Balance formula: (checkin + adjustment) - (checkout + transfer + disposal)
+        return ($totalIn + $totalAdjust) - ($totalOut + $totalTransfer + $totalDisposed);
+    }
     /**
      * ✅ Check-in operation
      */
@@ -79,15 +97,15 @@ class ChemicalStockMovementController extends Controller
     private function storeMovement(Request $request, $movementType)
     {
         $validator = Validator::make($request->all(), [
-            'company_chemical_id' => ['required', 'numeric'],
-            'chemical_id'         => ['required', 'numeric'],
-            'company_id'          => ['required', 'numeric'],
-            'quantity'            => ['required', 'numeric', 'min:0.001'],
-            'date'                => ['required', 'date'],
-            'remark'              => ['nullable', 'string', 'min:3'],
-            'source'              => ['nullable', 'string'],
-            'destination_location'=> ['nullable', 'string'],
-            'batch_no'            => ['nullable', 'string'],
+            'company_chemical_id'  => ['required', 'numeric'],
+            'chemical_id'          => ['required', 'numeric'],
+            'company_id'           => ['required', 'numeric'],
+            'quantity'             => ['required', 'numeric', 'min:0.001'],
+            'transaction_date'     => ['required', 'date'],
+            'remarks'              => ['nullable', 'string', 'min:3'],
+            'source_location'      => ['nullable', 'string'],
+            'destination_location' => ['nullable', 'string'],
+            'batch_no'             => ['nullable', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -98,39 +116,63 @@ class ChemicalStockMovementController extends Controller
             ], 422);
         }
 
-        $companyChemicalId = $request->input('company_chemical_id');
+        $companyChemicalId = $request->company_chemical_id;
+        $quantity = $request->quantity;
+        $batchNo = $request->batch_no?:"DEFAULT";
         $availableBalance = $this->getChemicalBalance($companyChemicalId);
-        $quantity = $request->input('quantity');
-        $year = Carbon::parse($request->input('date'))->year;
-        $guard = Auth::getDefaultDriver();
+        $year = Carbon::parse($request->transaction_date)->year;
+        $guard = auth()->user() ? auth()->getDefaultDriver() : 'system';
 
-        // Validate for outflow actions
-        if (in_array($movementType, ['checkout', 'transfer', 'disposal']) && $quantity > $availableBalance) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Insufficient stock for this operation.',
-                'available_balance' => $availableBalance
-            ], 400);
+        // dd($batchNo);
+        // 🔍 For outflow actions — ensure sufficient balance
+        if (in_array($movementType, ['checkout', 'transfer', 'disposal'])) {
+            $availableBatchBalance = $batchNo 
+                ? $this->getChemicalBalanceByBatch($companyChemicalId, $batchNo)
+                : $availableBalance;
+
+            if ($quantity > $availableBatchBalance) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Insufficient stock for this operation.',
+                    'available_balance' => $availableBatchBalance
+                ], 400);
+            }
         }
 
-        $result = ChemicalStockMovement::create([
+        if (in_array($movementType, ['adjustment']) && isset($request->adjustment_type)) {
+            // dd($quantity, $request->adjustment_type);
+            # code...
+            if ($request->adjustment_type === 'decrease' && $quantity > $availableBalance) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Insufficient stock for this adjustment.',
+                    'available_balance' => $availableBalance
+                ], 400);
+            }
+            $quantity = $request->adjustment_type === 'decrease' ? -abs($quantity) : abs($quantity);
+        }
+
+        // 🧾 Store transaction
+        $movement = ChemicalStockMovement::create([
+            'company_id'          => $request->company_id,
+            'chemical_id'         => $request->chemical_id,
             'company_chemical_id' => $companyChemicalId,
-            'chemical_id' => $request->chemical_id,
-            'company_id' => $request->company_id,
-            'transaction_type' => $movementType,
-            'batch_number' => $request->batch_no,
-            'quantity' => $quantity,
-            'calendar_year' => $year,
-            'transaction_date' => $request->date,
-            'source_location' => $request->source,
-            'destination_location' => $request->destination_location,
-            'batch_no' => $request->batch_no,
-            'remark' => $request->remark,
-            'guard' => $guard,
-            'performed_by' => auth()->id(),
+            'batch_number'        => $batchNo,
+            'transaction_type'    => $movementType,
+            'adjustment_type'     => $movementType === 'adjustment' ? $request->adjustment_type : null,
+            'quantity'            => $quantity,
+            // 'unit'                => $request->unit,
+            'source_location'     => $request->source_location,
+            'destination_location'=> $request->destination_location,
+            'remarks'             => $request->remarks,
+            'reference_id'        => $request->input('reference_id'),
+            'reference_type'      => $request->input('reference_type'),
+            'performed_by'        => auth()->id(),
+            'transaction_date'    => $request->transaction_date,
+            'calendar_year'       => $year,
         ]);
 
-        return $result
+        return $movement
             ? response()->json([
                 'status' => 'success',
                 'message' => ucfirst($movementType) . ' recorded successfully.',
@@ -138,6 +180,7 @@ class ChemicalStockMovementController extends Controller
             ])
             : response()->json(['status' => 'error', 'message' => 'Transaction failed.'], 500);
     }
+
 
     /**
      * 📊 Get chemical stock movement report (by time period)
@@ -193,6 +236,56 @@ class ChemicalStockMovementController extends Controller
             'status' => 'success',
             'total' => $data->sum('quantity'),
             'movements' => $data
+        ]);
+    }
+
+    public function getBatches(Request $request, $company_id)
+    {
+        $chemicalId = $request->query('chemical_id');
+
+        // ✅ Validate input
+        if (!$chemicalId) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Missing chemical_id parameter.'
+            ], 400);
+        }
+
+        // ✅ Fetch distinct batch numbers (avoid duplicates)
+        $batches = ChemicalStockMovement::where('company_id', $company_id)
+            ->where('company_chemical_id', $chemicalId)
+            ->whereNotNull('batch_number')
+            ->where('batch_number', '!=', 'DEFAULT')
+            ->select('batch_number as batch_no')
+            ->distinct()
+            ->orderBy('batch_no', 'asc')
+            ->get();
+
+        $availableBalance = $this->getChemicalBalance($chemicalId);
+
+        // ✅ Return structured JSON response
+        return response()->json([
+            'status' => 'success',
+            'count' => $batches->count(),
+            'batches' => $batches,
+            'available_balance' => $availableBalance
+        ]);
+    }
+
+    public function getBatchAvailableQuantity(Request $request, $company_id) {
+        $batch_no = $request->query('batch_no');
+        $company_chemical_id = $request->query('company_chemical_id');
+        if (!$batch_no || !$company_chemical_id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Missing batch_no or company_chemical_id parameter.'
+            ], 400);
+        }
+        $balance = $this->getChemicalBalanceByBatch($company_chemical_id, $batch_no);
+        return response()->json([
+            'status' => 'success',
+            'batch_no' => $batch_no,
+            'available_balance' => $balance
         ]);
     }
 }

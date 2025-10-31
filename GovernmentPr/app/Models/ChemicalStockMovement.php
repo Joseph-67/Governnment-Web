@@ -17,6 +17,7 @@ class ChemicalStockMovement extends Model
         'batch_number',
         'production_batch_number',
         'transaction_type',
+        'adjustment_type',
         'quantity',
         'unit',
         'source_location',

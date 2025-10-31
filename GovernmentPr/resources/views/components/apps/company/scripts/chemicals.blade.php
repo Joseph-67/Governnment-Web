@@ -184,6 +184,7 @@
     });
 </script>
 <script>
+    // datatable
     $(document).ready(function() {
         const table = $('#chemicalTable').DataTable({
             processing: true,
@@ -216,13 +217,13 @@
                                     <i class="la la-eye text-info"></i> View Details</a></li>
                                 <li><a class="dropdown-item chemicalCheckinBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-arrow-down text-success"></i> Check-In</a></li>
-                                <li><a class="dropdown-item chemicalCheckoutBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item chemicalCheckoutBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-arrow-up text-warning"></i> Check-Out</a></li>
-                                <li><a class="dropdown-item chemicalAdjustBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item chemicalAdjustBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-sync text-primary"></i> Adjustment</a></li>
-                                <li><a class="dropdown-item chemicalTransferBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item chemicalTransferBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-exchange-alt text-secondary"></i> Transfer</a></li>
-                                <li><a class="dropdown-item chemicalDisposeBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item chemicalDisposeBtn" data-id="${row.company_chemical_id}" data-name="${row.name}" data-unit="${row.unit}" data-chemical-id="${row.chemical_id}">
                                     <i class="la la-trash text-danger"></i> Disposal</a></li>
                             </ul>
                         </div>
@@ -244,17 +245,149 @@
         });
 
         $(document).on('click', '.chemicalCheckoutBtn', function() {
-            $('#chemicalCheckoutModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#chemicalCheckoutModal [name=chemical_name]').val($(this).data('name'));
-            $('#chemicalCheckoutModal [name=unit]').val($(this).data('unit'));
-            $('#chemicalCheckoutModal').modal('show');
+            const modal = $('#chemicalCheckoutModal');
+            const companyId = {{ $company->company_id }};
+            
+            // Extract chemical data from button
+            const companyChemicalId = $(this).data('id');
+            const chemicalId = $(this).data('chemical-id');
+            const chemicalName = $(this).data('name');
+            const unit = $(this).data('unit');
+
+            // Populate modal fields
+            modal.find('[name=company_chemical_id]').val(companyChemicalId);
+            modal.find('[name=chemical_id]').val(chemicalId);
+            modal.find('#checkInChemicalName').val(chemicalName);
+            modal.find('[name=unit]').val(unit);
+            modal.find('#checkoutUnit').val(unit);
+            modal.find('#availableQty').val('');
+            modal.find('#checkoutQty').val('');
+            modal.find('#chemicalCheckoutBatch').html('<option value="">Loading batches...</option>');
+
+            // Show modal
+            modal.modal('show');
+
+            // Load batches dynamically
+            const batchSelect = modal.find('#chemicalCheckoutBatch');
+            const availableQtyField = modal.find('#availableQty');
+            const checkoutUnit = modal.find('#checkoutUnit');
+            let batchData = {};
+
+            fetch(`{{ route('admin.get-chemical-batches', ['company_id' => '__CID__']) }}`
+                .replace('__CID__', companyId) + `?chemical_id=${companyChemicalId}`)
+                .then(res => res.json())
+                .then(data => {
+                    availableQtyField.val(data.available_balance || 0);
+                    batchSelect.html('<option value="">Select Batch</option>');
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        data.batches.forEach(batch => {
+                            batchData[batch.batch_no] = batch;
+                            batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                        });
+                        availableQtyField.val(data.available_balance || 0);
+                    } else {
+                        batchSelect.html('<option value="">No batches available</option>');
+                    }
+                })
+                .catch(err => console.error('Error loading batches:', err));
+
+            // When batch changes, show available qty
+            batchSelect.off('change').on('change', function() {
+                const batchNo = $(this).val();
+                if (batchData[batchNo]) {
+                    fetch(`{{ route('admin.get-batch-available-quantity', ['company_id' => '__CID__']) }}`
+                    .replace('__CID__', companyId) + `?company_chemical_id=${companyChemicalId}&batch_no=${batchNo}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success' && data.available_balance !== undefined) {
+                            availableQtyField.val(data.available_balance || 0);
+                        } else {
+                            availableQtyField.val(data.available_balance || 0);
+                        }
+                    })
+                    .catch(err => console.error('Error loading batches:', err));
+                    availableQtyField.val(batchData[batchNo].available_quantity || 0);
+                    checkoutUnit.val(batchData[batchNo].unit || unit);
+                } else {
+                    availableQtyField.val('');
+                }
+            });
         });
 
+
         $(document).on('click', '.chemicalAdjustBtn', function() {
-            $('#chemicalAdjustmentModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#chemicalAdjustmentModal [name=chemical_name]').val($(this).data('name'));
-            $('#chemicalAdjustmentModal [name=unit]').val($(this).data('unit'));
-            $('#chemicalAdjustmentModal').modal('show');
+            // $('#chemicalAdjustmentModal [name=company_chemical_id]').val($(this).data('id'));
+            // $('#chemicalAdjustmentModal [name=chemical_name]').val($(this).data('name'));
+            // $('#chemicalAdjustmentModal [name=unit]').val($(this).data('unit'));
+            // $('#chemicalAdjustmentModal').modal('show');
+
+            const modal = $('#chemicalAdjustmentModal');
+            const companyId = {{ $company->company_id }};
+            
+            // Extract chemical data from button
+            const companyChemicalId = $(this).data('id');
+            const chemicalId = $(this).data('chemical-id');
+            const chemicalName = $(this).data('name');
+            const unit = $(this).data('unit');
+
+            // Populate modal fields
+            modal.find('[name=company_chemical_id]').val(companyChemicalId);
+            modal.find('[name=chemical_id]').val(chemicalId);
+            modal.find('#adjustmentChemicalName').val(chemicalName);
+            modal.find('[name=unit]').val(unit);
+            modal.find('#chemicalAdjustmentUnit').val(unit);
+            modal.find('#availableQty').val('');
+            modal.find('#chemicalAdjustmentQty').val('');
+            modal.find('#chemicalAdjustmentBatch').html('<option value="">Loading batches...</option>');
+
+            // Show modal
+            modal.modal('show');
+
+            // Load batches dynamically
+            const batchSelect = modal.find('#chemicalAdjustmentBatch');
+            const availableQtyField = modal.find('#chemicalAdjustmentQty');
+            const adjustmentUnit = modal.find('#chemicalUnit');
+            let batchData = {};
+
+            fetch(`{{ route('admin.get-chemical-batches', ['company_id' => '__CID__']) }}`
+                .replace('__CID__', companyId) + `?chemical_id=${companyChemicalId}`)
+                .then(res => res.json())
+                .then(data => {
+                    availableQtyField.val(data.available_balance || 0);
+                    batchSelect.html('<option value="">Select Batch</option>');
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        data.batches.forEach(batch => {
+                            batchData[batch.batch_no] = batch;
+                            batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                        });
+                        availableQtyField.val(data.available_balance || 0);
+                    } else {
+                        batchSelect.html('<option value="">No batches available</option>');
+                    }
+                })
+                .catch(err => console.error('Error loading batches:', err));
+
+            // When batch changes, show available qty
+            batchSelect.off('change').on('change', function() {
+                const batchNo = $(this).val();
+                if (batchData[batchNo]) {
+                    fetch(`{{ route('admin.get-batch-available-quantity', ['company_id' => '__CID__']) }}`
+                    .replace('__CID__', companyId) + `?company_chemical_id=${companyChemicalId}&batch_no=${batchNo}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success' && data.available_balance !== undefined) {
+                            availableQtyField.val(data.available_balance || 0);
+                        } else {
+                            availableQtyField.val(data.available_balance || 0);
+                        }
+                    })
+                    .catch(err => console.error('Error loading batches:', err));
+                    availableQtyField.val(batchData[batchNo].available_quantity || 0);
+                    checkoutUnit.val(batchData[batchNo].unit || unit);
+                } else {
+                    availableQtyField.val('');
+                }
+            });
         });
 
         $(document).on('click', '.chemicalTransferBtn', function() {
@@ -357,137 +490,62 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", () => {
+    const chemicalCheckoutForm = document.querySelector("#chemicalCheckoutForm");
 
-        const checkoutChemical = document.getElementById('checkoutChemical');
-        const checkoutBatch = document.getElementById('checkoutBatch');
-        const availableQty = document.getElementById('availableQty');
-        const checkoutUnit = document.getElementById('checkoutUnit');
-        const checkoutQty = document.getElementById('checkoutQty');
+    // 🧾 Handle form submission
+    chemicalCheckoutForm.addEventListener("submit", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        chemicalCheckoutForm.classList.add("was-validated");
 
-        // When a chemical is selected, load its batches
-        checkoutChemical.addEventListener('change', function () {
-            const chemicalId = this.value;
+        if (!chemicalCheckoutForm.checkValidity()) return;
 
-            if (!chemicalId) return;
+        const formData = new FormData(chemicalCheckoutForm);
+        // formData.append("chemical_id", chemicalId);
+        // formData.append("company_id", companyId);
 
-            fetch(``)
-                .then(res => res.json())
-                .then(data => {
-                    checkoutBatch.innerHTML = `<option value="">Select Batch</option>`;
-                    if (data.status === 'success' && data.batches.length > 0) {
-                        checkoutBatch.removeAttribute('disabled');
-                        data.batches.forEach(batch => {
-                            checkoutBatch.innerHTML += `
-                                <option value="${batch.batch_no}" data-qty="${batch.remaining_quantity}" data-unit="${batch.unit}">
-                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit}
-                                </option>`;
-                        });
-                    } else {
-                        checkoutBatch.setAttribute('disabled', true);
-                        Swal.fire('No Batches Found', 'This chemical currently has no available batches.', 'info');
-                    }
-                })
-                .catch(err => console.error(err));
-        });
+        const url = `{{ route('admin.save-company-chemical-check-out') }}`;
 
-        // When a batch is selected, show available qty & unit
-        checkoutBatch.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-            availableQty.value = selected.dataset.qty || '';
-            checkoutUnit.value = selected.dataset.unit || '';
-        });
-
-        // Validate quantity before submitting
-        checkoutQty.addEventListener('input', function () {
-            const maxQty = parseFloat(availableQty.value || 0);
-            if (parseFloat(this.value) > maxQty) {
-                this.setCustomValidity('Cannot exceed available quantity');
+        fetch(url, {
+            method: "POST",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Checkout Recorded",
+                    text: data.message || "Chemical checkout completed successfully!"
+                });
+                bootstrap.Modal.getInstance(document.getElementById("chemicalCheckoutModal")).hide();
+                chemicalCheckoutForm.reset();
             } else {
-                this.setCustomValidity('');
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: data.message || "Failed to save checkout."
+                });
             }
-        });
-
-        // Submit checkout form
-        const checkoutForm = document.getElementById('chemicalCheckoutForm');
-        checkoutForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (!checkoutForm.checkValidity()) {
-                e.stopPropagation();
-                checkoutForm.classList.add('was-validated');
-                return;
-            }
-
-            const formData = new FormData(checkoutForm);
-
-            fetch(``, {
-                method: 'POST',
-                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Checkout Recorded',
-                        text: 'Chemical checkout successfully recorded.'
-                    });
-                    $('#chemicalCheckoutModal').modal('hide');
-                    $('#chemicalTable').DataTable().ajax.reload();
-                    checkoutForm.reset();
-                    checkoutForm.classList.remove('was-validated');
-                } else {
-                    Swal.fire('Error', data.message || 'Unable to record checkout.', 'error');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                Swal.fire('Server Error', 'Could not complete the request.', 'error');
-            });
-        });
+        })
+        .catch(err => console.error('Checkout error:', err));
     });
+});
 </script>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        const adjustChemical = document.getElementById('adjustChemical');
-        const adjustBatch = document.getElementById('adjustBatch');
-        const adjustCurrentQty = document.getElementById('adjustCurrentQty');
+        const adjustChemical = document.getElementById('adjustmentChemicalName');
+        const adjustBatch = document.getElementById('chemicalAdjustmentBatch');
+        const adjustCurrentQty = document.getElementById('chemicalAdjustmentQty');
         const adjustUnit = document.getElementById('adjustUnit');
         const adjustQuantity = document.getElementById('adjustQuantity');
 
-        // Load batches for selected chemical
-        adjustChemical.addEventListener('change', function () {
-            const chemicalId = this.value;
-            if (!chemicalId) return;
-
-            fetch(``)
-                .then(res => res.json())
-                .then(data => {
-                    adjustBatch.innerHTML = `<option value="">Select Batch</option>`;
-                    if (data.status === 'success' && data.batches.length > 0) {
-                        adjustBatch.removeAttribute('disabled');
-                        data.batches.forEach(batch => {
-                            adjustBatch.innerHTML += `
-                                <option value="${batch.batch_no}" data-qty="${batch.remaining_quantity}" data-unit="${batch.unit}">
-                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit}
-                                </option>`;
-                        });
-                    } else {
-                        adjustBatch.setAttribute('disabled', true);
-                        Swal.fire('No Batches Found', 'This chemical currently has no active batches.', 'info');
-                    }
-                });
-        });
-
-        // Display current qty and unit when batch is selected
-        adjustBatch.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-            adjustCurrentQty.value = selected.dataset.qty || '';
-            adjustUnit.value = selected.dataset.unit || '';
-        });
 
         // Validate adjustment quantity for decrease
         const adjustType = document.getElementById('adjustType');
@@ -513,7 +571,7 @@
             }
 
             const formData = new FormData(form);
-            fetch(``, {
+            fetch(`{{ route('admin.save-company-chemical-adjustment') }}`, {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: formData

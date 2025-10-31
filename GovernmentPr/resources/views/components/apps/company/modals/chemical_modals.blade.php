@@ -71,7 +71,7 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Date Received</label>
-                            <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <div class="col-12">
@@ -112,12 +112,14 @@
                             <label class="form-label">Chemical</label>
                             <input type="text" name="chemical_name" id="checkInChemicalName" class="form-control" readonly>
                             <input type="hidden" name="company_chemical_id">
+                            <input type="hidden" name="chemical_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
                         <!-- Batch -->
                         <div class="col-md-6">
                             <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="checkoutBatch" class="form-select" required disabled>
+                            <select name="batch_no" id="chemicalCheckoutBatch" class="form-select">
                                 <option value="">Select Batch</option>
                             </select>
                         </div>
@@ -125,7 +127,7 @@
                         <!-- Available Quantity -->
                         <div class="col-md-6">
                             <label class="form-label">Available Quantity</label>
-                            <input type="text" id="availableQty" class="form-control" readonly placeholder="Select batch first">
+                            <input type="text" name="available_quantity" id="availableQty" class="form-control" readonly placeholder="Select batch first">
                         </div>
 
                         <!-- Checkout Quantity -->
@@ -157,7 +159,7 @@
                         <!-- Checkout Date -->
                         <div class="col-md-6">
                             <label class="form-label">Date</label>
-                            <input type="date" name="checkout_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <!-- Remarks -->
@@ -198,14 +200,16 @@
                         <!-- Chemical -->
                         <div class="col-md-6">
                             <label class="form-label">Chemical</label>
-                            <input type="text" name="chemical_name" id="checkInChemicalName" class="form-control" readonly>
+                            <input type="text" name="chemical_name" id="adjustmentChemicalName" class="form-control" readonly>
                             <input type="hidden" name="company_chemical_id">
+                            <input type="hidden" name="chemical_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
                         <!-- Batch -->
                         <div class="col-md-6">
                             <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="adjustBatch" class="form-select" required disabled>
+                            <select name="batch_no" id="chemicalAdjustmentBatch" class="form-select">
                                 <option value="">Select Batch</option>
                             </select>
                         </div>
@@ -213,7 +217,7 @@
                         <!-- Current Qty -->
                         <div class="col-md-6">
                             <label class="form-label">Current Quantity</label>
-                            <input type="text" id="adjustCurrentQty" class="form-control" readonly placeholder="Select batch first">
+                            <input type="text" id="chemicalAdjustmentQty" class="form-control" readonly placeholder="Select batch first">
                         </div>
 
                         <!-- Adjustment Type -->
@@ -229,7 +233,7 @@
                         <!-- Adjustment Quantity -->
                         <div class="col-md-6">
                             <label class="form-label">Quantity to Adjust</label>
-                            <input type="number" name="adjust_quantity" id="adjustQuantity" class="form-control" min="0.01" step="0.01" required>
+                            <input type="number" name="quantity" id="adjustQuantity" class="form-control" min="0.01" step="0.01" required>
                             <div class="invalid-feedback">Enter a valid positive quantity.</div>
                         </div>
 
@@ -240,7 +244,7 @@
                         </div>
 
                         <!-- Reason -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Adjustment Reason</label>
                             <select name="reason" class="form-select" required>
                                 <option value="">Select Reason</option>
@@ -250,6 +254,12 @@
                                 <option value="damage">Damaged Chemical</option>
                                 <option value="other">Other</option>
                             </select>
+                        </div>
+                        
+                        <!-- Transaction date -->
+                        <div class="col-md-6">
+                            <label class="form-label">Date</label>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <!-- Remarks -->

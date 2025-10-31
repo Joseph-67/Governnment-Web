@@ -440,6 +440,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/chemicals/{id}', 'show')->name('admin.show-chemical');
         Route::put('/chemicals/{id}', 'update')->name('admin.update-chemical');
         Route::delete('/chemicals/{id}', 'destroy')->name('admin.delete-chemical');
+        Route::get('/company/{company_id}/chemical-batches', 'get_batches')->name('admin.get-chemical-batches');
     });
 
     Route::controller(CompanyChemicalController::class)->group(function() {
@@ -449,6 +450,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/get-chemicals/{value}', 'getCompanyChemicals');
         Route::post('/update-chemical-details', 'updateChemicalDetails')->name('admin.update-chemical-details');
         Route::delete('/delete-chemical/{id}', 'deleteChemical')->name('admin.delete-chemical');
+        Route::get('/company/{company_id}/chemical-batches', 'getBatches')->name('admin.get-chemical-batches');
+        Route::get('/company/{company_id}/batch-available-quantity', 'getBatchAvailableQuantity')->name('admin.get-batch-available-quantity');
     });
 
     // Company
