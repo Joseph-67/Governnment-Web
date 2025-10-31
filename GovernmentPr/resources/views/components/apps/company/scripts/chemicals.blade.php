@@ -410,7 +410,7 @@
             modal.find('#transferChemicalName').val(chemicalName);
             modal.find('[name=unit]').val(unit);
             modal.find('#chemicalTransferUnit').val(unit);
-            modal.find('#chemicalTransferQty').val('');
+            modal.find('#chemicalTransferAvailableQty').val('');
             modal.find('#chemicalTransferBatch').html('<option value="">Loading batches...</option>');
 
             // Show modal
@@ -418,7 +418,7 @@
 
             // Load batches dynamically
             const batchSelect = modal.find('#chemicalTransferBatch');
-            const availableQtyField = modal.find('#chemicalTransferQty');
+            const availableQtyField = modal.find('#chemicalTransferAvailableQty');
             const transferUnit = modal.find('#chemicalUnit');
             let batchData = {};
 
@@ -428,15 +428,38 @@
                 .then(data => {
                     batchSelect.html('<option value="">Select Batch</option>');
                     if (data.status === 'success' && data.batches.length > 0) {
+                        availableQtyField.val(data.available_balance || 0);
                         data.batches.forEach(batch => {
                             batchData[batch.batch_no] = batch;
                             batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                            availableQtyField.val(data.available_balance || 0);
                         });
                     } else {
                         batchSelect.html('<option value="">No batches available</option>');
                     }
                 })
                 .catch(err => console.error('Error loading batches:', err));
+            // When batch changes, show available qty
+            batchSelect.off('change').on('change', function() {
+                const batchNo = $(this).val();
+                if (batchData[batchNo]) {
+                    fetch(`{{ route('admin.get-batch-available-quantity', ['company_id' => '__CID__']) }}`
+                    .replace('__CID__', companyId) + `?company_chemical_id=${companyChemicalId}&batch_no=${batchNo}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success' && data.available_balance !== undefined) {
+                            availableQtyField.val(data.available_balance || 0);
+                        } else {
+                            availableQtyField.val(data.available_balance || 0);
+                        }
+                    })
+                    .catch(err => console.error('Error loading batches:', err));
+                    availableQtyField.val(batchData[batchNo].available_quantity || 0);
+                    transferUnit.val(batchData[batchNo].unit || unit);
+                } else {
+                    availableQtyField.val('');
+                }
+            });
 
         });
 
