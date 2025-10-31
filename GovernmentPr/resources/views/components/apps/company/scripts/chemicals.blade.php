@@ -410,7 +410,7 @@
             modal.find('#transferChemicalName').val(chemicalName);
             modal.find('[name=unit]').val(unit);
             modal.find('#chemicalTransferUnit').val(unit);
-            modal.find('#chemicalTransferQty').val('');
+            modal.find('#chemicalTransferAvailableQty').val('');
             modal.find('#chemicalTransferBatch').html('<option value="">Loading batches...</option>');
 
             // Show modal
@@ -418,7 +418,7 @@
 
             // Load batches dynamically
             const batchSelect = modal.find('#chemicalTransferBatch');
-            const availableQtyField = modal.find('#chemicalTransferQty');
+            const availableQtyField = modal.find('#chemicalTransferAvailableQty');
             const transferUnit = modal.find('#chemicalUnit');
             let batchData = {};
 
@@ -428,15 +428,38 @@
                 .then(data => {
                     batchSelect.html('<option value="">Select Batch</option>');
                     if (data.status === 'success' && data.batches.length > 0) {
+                        availableQtyField.val(data.available_balance || 0);
                         data.batches.forEach(batch => {
                             batchData[batch.batch_no] = batch;
                             batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                            availableQtyField.val(data.available_balance || 0);
                         });
                     } else {
                         batchSelect.html('<option value="">No batches available</option>');
                     }
                 })
                 .catch(err => console.error('Error loading batches:', err));
+            // When batch changes, show available qty
+            batchSelect.off('change').on('change', function() {
+                const batchNo = $(this).val();
+                if (batchData[batchNo]) {
+                    fetch(`{{ route('admin.get-batch-available-quantity', ['company_id' => '__CID__']) }}`
+                    .replace('__CID__', companyId) + `?company_chemical_id=${companyChemicalId}&batch_no=${batchNo}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success' && data.available_balance !== undefined) {
+                            availableQtyField.val(data.available_balance || 0);
+                        } else {
+                            availableQtyField.val(data.available_balance || 0);
+                        }
+                    })
+                    .catch(err => console.error('Error loading batches:', err));
+                    availableQtyField.val(batchData[batchNo].available_quantity || 0);
+                    transferUnit.val(batchData[batchNo].unit || unit);
+                } else {
+                    availableQtyField.val('');
+                }
+            });
 
         });
 
@@ -645,51 +668,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const transferUnit = document.getElementById('transferUnit');
     const transferQuantity = document.getElementById('transferQuantity');
 
-    // Load batches for selected chemical
-    transferChemical.addEventListener('change', function () {
-        const chemicalId = this.value;
-        if (!chemicalId) return;
-
-        fetch(``)
-            .then(res => res.json())
-            .then(data => {
-                transferBatch.innerHTML = `<option value="">Select Batch</option>`;
-                if (data.status === 'success' && data.batches.length > 0) {
-                    transferBatch.removeAttribute('disabled');
-                    data.batches.forEach(batch => {
-                        transferBatch.innerHTML += `
-                            <option value="${batch.batch_no}" 
-                                    data-location="${batch.storage_location}" 
-                                    data-qty="${batch.remaining_quantity}" 
-                                    data-unit="${batch.unit}">
-                                ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit} (${batch.storage_location})
-                            </option>`;
-                    });
-                } else {
-                    transferBatch.setAttribute('disabled', true);
-                    Swal.fire('No Batches Found', 'This chemical has no active batches.', 'info');
-                }
-            });
-    });
-
-    // When batch is selected, show location and unit
-    transferBatch.addEventListener('change', function () {
-        const selected = this.options[this.selectedIndex];
-        transferFromLocation.value = selected.dataset.location || '';
-        transferUnit.value = selected.dataset.unit || '';
-        transferQuantity.max = selected.dataset.qty || 0;
-    });
-
-    // Validate transfer quantity
-    transferQuantity.addEventListener('input', function () {
-        const maxQty = parseFloat(this.max);
-        if (parseFloat(this.value) > maxQty) {
-            this.setCustomValidity('Cannot transfer more than available quantity');
-        } else {
-            this.setCustomValidity('');
-        }
-    });
-
     // Submit transfer form
     const form = document.getElementById('chemicalTransferForm');
     form.addEventListener('submit', function (e) {
@@ -701,7 +679,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const formData = new FormData(form);
-        fetch(``, {
+        fetch(`{{ route('admin.save-company-chemical-transfer') }}`, {
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             body: formData

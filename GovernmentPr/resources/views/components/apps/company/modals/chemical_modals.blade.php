@@ -325,16 +325,28 @@
                             <input type="text" name="to_location" id="transferToLocation" class="form-control" required>
                         </div>
 
+                        <!-- Available Qty -->
+                        <div class="col-md-4">
+                            <label class="form-label">Available Qty</label>
+                            <input type="number" id="chemicalTransferAvailableQty" class="form-control" readonly>
+                        </div>
+
                         <!-- Quantity -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Quantity to Transfer</label>
-                            <input type="number" name="transfer_quantity" id="transferQuantity" class="form-control" min="0.01" step="0.01" required>
+                            <input type="number" name="quantity" id="transferQuantity" class="form-control" min="0.01" step="0.01" required>
                         </div>
 
                         <!-- Unit -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Unit</label>
                             <input type="text" id="transferUnit" name="unit" class="form-control" readonly>
+                        </div>
+
+                        <!-- Transaction date -->
+                        <div class="col-md-4">
+                            <label class="form-label">Date</label>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <!-- Remarks -->
