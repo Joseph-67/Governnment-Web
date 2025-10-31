@@ -26,3 +26,4 @@ class role-management extends Component
         return view('components.admin.role-management');
     }
 }
+

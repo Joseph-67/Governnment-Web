@@ -64,7 +64,7 @@ class CompanyStageController extends Controller
             'stage_status' => [
                 'required',
                 'string',
-                Rule::in(['pending', 'in_progress', 'completed', 'halted', 'cancelled']),
+                Rule::in(['Pending', 'In Progress', 'Completed', 'Cancelled']),
             ],
             // Add other fields and rules as needed
         ]);
@@ -99,9 +99,18 @@ class CompanyStageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CompanyStage $companyStage)
+    public function show($id)
     {
         //
+        $companyStage = CompanyStage::with('tasks')->find($id);
+        if (!$companyStage) {
+            return response()->json(['status' => 'error', 'message' => 'Company stage not found.'], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'company_stage' => $companyStage,
+            'message' => 'Company stage retrieved successfully.'
+        ], 200);
     }
 
     /**

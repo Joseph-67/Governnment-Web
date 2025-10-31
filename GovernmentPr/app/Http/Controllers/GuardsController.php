@@ -47,6 +47,16 @@ class GuardsController extends Controller
     ]);
 }
 
+    public function destroy($id)
+{
+    $guard = Guard::findOrFail($id);
+    $guard->delete();
+
+    return redirect()->back()->with('success', "Guard \"{$guard->title}\" deleted successfully.");
+}
+
+
+
 
 }
 
