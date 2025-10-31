@@ -96,15 +96,15 @@
                                     </div>
 
                                     <!-- Delete -->
-                                    <form action="" 
-                                          method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-sm btn-outline-danger"
-                                                onclick="return confirm('Are you sure you want to delete this guard?')">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
+                                    <form action="{{ route('guards.destroy', $guard->guard_id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    >
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+
                                     </form>
                                 </td>
                             </tr>

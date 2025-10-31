@@ -534,9 +534,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
     });
 
     // Guards
-    Route::controller(GuardsController::class)->group(function() {
-        Route::post('/guard', 'store')->name('admin.store-guard');
-    });
+Route::get('admin/guards', [GuardsController::class, 'index'])->name('admin.guards.index');
+Route::post('admin/guards', [GuardsController::class, 'store'])->name('admin.guards.store');
+Route::put('admin/guards/{id}', [GuardsController::class, 'update'])->name('admin.guards.update');
+Route::delete('/guards/{id}', [GuardsController::class, 'destroy'])->name('guards.destroy');
+
     
     // Inventory Forecasting
     Route::controller(InventoryForecastingController::class)->group(function() {
