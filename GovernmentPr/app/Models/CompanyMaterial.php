@@ -69,7 +69,7 @@ class CompanyMaterial extends Model
         return $query->whereDate('created_at', $date);
     }
 
-    public function scopeTotalMaterials()
+    public function scopeTotalMaterials($query)
     {
         return $query->count();
     }

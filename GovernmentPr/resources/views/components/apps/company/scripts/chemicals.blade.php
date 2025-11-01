@@ -464,9 +464,90 @@
         });
 
         $(document).on('click', '.chemicalDisposeBtn', function() {
-            $('#chemicalDisposalModal [name=company_chemical_id]').val($(this).data('id'));
-            $('#chemicalDisposalModal [name=chemical_name]').val($(this).data('name'));
-            $('#chemicalDisposalModal').modal('show');
+            // $('#chemicalDisposalModal [name=company_chemical_id]').val($(this).data('id'));
+            // $('#chemicalDisposalModal [name=chemical_name]').val($(this).data('name'));
+            // $('#chemicalDisposalModal').modal('show');
+
+            const modal = $('#chemicalDisposalModal');
+            const companyId = {{ $company->company_id }};
+            
+            // Extract chemical data from button
+            const companyChemicalId = $(this).data('id');
+            const chemicalId = $(this).data('chemical-id');
+            const chemicalName = $(this).data('name');
+            const unit = $(this).data('unit');
+
+            // Populate modal fields
+            modal.find('[name=company_chemical_id]').val(companyChemicalId);
+            modal.find('[name=chemical_id]').val(chemicalId);
+            modal.find('#disposalChemicalName').val(chemicalName);
+            modal.find('[name=unit]').val(unit);
+            modal.find('#chemicalDisposalUnit').val(unit);
+            // modal.find('#chemicalDisposalAvailableQty').val('');
+            modal.find('#chemicalDisposalBatch').html('<option value="">Loading batches...</option>');
+
+            // Show modal
+            modal.modal('show');
+
+            // Load batches dynamically
+            const batchSelect = modal.find('#chemicalDisposalBatch');
+            const disposalSelect = modal.find('#chemicalDisposal');
+            const availableQtyField = modal.find('#chemicalDisposalAvailableQty');
+            const transferUnit = modal.find('#chemicalUnit');
+            let batchData = {};
+
+            fetch(`{{ route('admin.get-chemical-batches', ['company_id' => '__CID__']) }}`
+                .replace('__CID__', companyId) + `?chemical_id=${companyChemicalId}`)
+                .then(res => res.json())
+                .then(data => {
+                    batchSelect.html('<option value="">Select Batch</option>');
+                    if (data.status === 'success' && data.batches.length > 0) {
+                        // availableQtyField.val(data.available_balance || 0);
+                        data.batches.forEach(batch => {
+                            batchData[batch.batch_no] = batch;
+                            batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                            // availableQtyField.val(data.available_balance || 0);
+                        });
+                    } else {
+                        batchSelect.html('<option value="">No batches available</option>');
+                    }
+                })
+                .catch(err => console.error('Error loading batches:', err));
+            fetch(`{{ route('admin.get-disposal-methods') }}`)
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data.data);
+                
+                if (data.status == 'success') {
+                    data.data.forEach(method => {
+                        disposalSelect.append(`<option value="${method.id}">${method.method_name}</option>`);
+                    })
+                } else {
+                        disposalSelect.html('<option value="">No disposal method available</option>');
+                    }
+            })
+            .catch(err => console.error('Error loading disposal methods:', err));
+            // When batch changes, show available qty
+            // batchSelect.off('change').on('change', function() {
+            //     const batchNo = $(this).val();
+            //     if (batchData[batchNo]) {
+            //         fetch(`{{ route('admin.get-batch-available-quantity', ['company_id' => '__CID__']) }}`
+            //         .replace('__CID__', companyId) + `?company_chemical_id=${companyChemicalId}&batch_no=${batchNo}`)
+            //         .then(res => res.json())
+            //         .then(data => {
+            //             if (data.status === 'success' && data.available_balance !== undefined) {
+            //                 availableQtyField.val(data.available_balance || 0);
+            //             } else {
+            //                 availableQtyField.val(data.available_balance || 0);
+            //             }
+            //         })
+            //         .catch(err => console.error('Error loading batches:', err));
+            //         availableQtyField.val(batchData[batchNo].available_quantity || 0);
+            //         transferUnit.val(batchData[batchNo].unit || unit);
+            //     } else {
+            //         availableQtyField.val('');
+            //     }
+            // });
         });
 
         // 🔹 Form submissions
@@ -556,52 +637,50 @@
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const chemicalCheckoutForm = document.querySelector("#chemicalCheckoutForm");
+    document.addEventListener("DOMContentLoaded", () => {
+        const chemicalCheckoutForm = document.querySelector("#chemicalCheckoutForm");
 
-    // 🧾 Handle form submission
-    chemicalCheckoutForm.addEventListener("submit", e => {
-        e.preventDefault();
-        e.stopPropagation();
-        chemicalCheckoutForm.classList.add("was-validated");
+        // 🧾 Handle form submission
+        chemicalCheckoutForm.addEventListener("submit", e => {
+            e.preventDefault();
+            e.stopPropagation();
+            chemicalCheckoutForm.classList.add("was-validated");
 
-        if (!chemicalCheckoutForm.checkValidity()) return;
+            if (!chemicalCheckoutForm.checkValidity()) return;
 
-        const formData = new FormData(chemicalCheckoutForm);
-        // formData.append("chemical_id", chemicalId);
-        // formData.append("company_id", companyId);
+            const formData = new FormData(chemicalCheckoutForm);
+            // formData.append("chemical_id", chemicalId);
+            // formData.append("company_id", companyId);
 
-        const url = `{{ route('admin.save-company-chemical-check-out') }}`;
+            const url = `{{ route('admin.save-company-chemical-check-out') }}`;
 
-        fetch(url, {
-            method: "POST",
-            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "success") {
-                Swal.fire({
-                    icon: "success",
-                    title: "Checkout Recorded",
-                    text: data.message || "Chemical checkout completed successfully!"
-                });
-                bootstrap.Modal.getInstance(document.getElementById("chemicalCheckoutModal")).hide();
-                chemicalCheckoutForm.reset();
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: data.message || "Failed to save checkout."
-                });
-            }
-        })
-        .catch(err => console.error('Checkout error:', err));
+            fetch(url, {
+                method: "POST",
+                headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Checkout Recorded",
+                        text: data.message || "Chemical checkout completed successfully!"
+                    });
+                    bootstrap.Modal.getInstance(document.getElementById("chemicalCheckoutModal")).hide();
+                    chemicalCheckoutForm.reset();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: data.message || "Failed to save checkout."
+                    });
+                }
+            })
+            .catch(err => console.error('Checkout error:', err));
+        });
     });
-});
 </script>
-
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -660,101 +739,49 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-    const transferChemical = document.getElementById('transferChemical');
-    const transferBatch = document.getElementById('transferBatch');
-    const transferFromLocation = document.getElementById('transferFromLocation');
-    const transferUnit = document.getElementById('transferUnit');
-    const transferQuantity = document.getElementById('transferQuantity');
+        const transferChemical = document.getElementById('transferChemical');
+        const transferBatch = document.getElementById('transferBatch');
+        const transferFromLocation = document.getElementById('transferFromLocation');
+        const transferUnit = document.getElementById('transferUnit');
+        const transferQuantity = document.getElementById('transferQuantity');
 
-    // Submit transfer form
-    const form = document.getElementById('chemicalTransferForm');
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!form.checkValidity()) {
-            e.stopPropagation();
-            form.classList.add('was-validated');
-            return;
-        }
-
-        const formData = new FormData(form);
-        fetch(`{{ route('admin.save-company-chemical-transfer') }}`, {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                Swal.fire('Transfer Successful', 'Chemical transferred successfully.', 'success');
-                $('#chemicalTransferModal').modal('hide');
-                $('#chemicalTable').DataTable().ajax.reload();
-                form.reset();
-                form.classList.remove('was-validated');
-            } else {
-                Swal.fire('Error', data.message || 'Transfer failed.', 'error');
+        // Submit transfer form
+        const form = document.getElementById('chemicalTransferForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!form.checkValidity()) {
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                return;
             }
-        })
-        .catch(() => Swal.fire('Server Error', 'Unable to complete request.', 'error'));
-    });
-});
-</script>
 
+            const formData = new FormData(form);
+            fetch(`{{ route('admin.save-company-chemical-transfer') }}`, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Transfer Successful', 'Chemical transferred successfully.', 'success');
+                    $('#chemicalTransferModal').modal('hide');
+                    $('#chemicalTable').DataTable().ajax.reload();
+                    form.reset();
+                    form.classList.remove('was-validated');
+                } else {
+                    Swal.fire('Error', data.message || 'Transfer failed.', 'error');
+                }
+            })
+            .catch(() => Swal.fire('Server Error', 'Unable to complete request.', 'error'));
+        });
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const disposalChemical = document.getElementById('disposalChemical');
-        const disposalBatch = document.getElementById('disposalBatch');
-        const disposalLocation = document.getElementById('disposalLocation');
-        const disposalQuantity = document.getElementById('disposalQuantity');
-        const disposalUnit = document.getElementById('disposalUnit');
-
-        // Load batches for selected chemical
-        disposalChemical.addEventListener('change', function () {
-            const chemicalId = this.value;
-            if (!chemicalId) return;
-
-            fetch(``)
-                .then(res => res.json())
-                .then(data => {
-                    disposalBatch.innerHTML = `<option value="">Select Batch</option>`;
-                    if (data.status === 'success' && data.batches.length > 0) {
-                        disposalBatch.removeAttribute('disabled');
-                        data.batches.forEach(batch => {
-                            disposalBatch.innerHTML += `
-                                <option value="${batch.batch_no}" 
-                                    data-location="${batch.storage_location}" 
-                                    data-qty="${batch.remaining_quantity}" 
-                                    data-unit="${batch.unit}">
-                                    ${batch.batch_no} — ${batch.remaining_quantity} ${batch.unit} (${batch.storage_location})
-                                </option>`;
-                        });
-                    } else {
-                        disposalBatch.setAttribute('disabled', true);
-                        Swal.fire('No Batches Found', 'No available batches for this chemical.', 'info');
-                    }
-                });
-        });
-
-        // Auto-fill details on batch select
-        disposalBatch.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-            disposalLocation.value = selected.dataset.location || '';
-            disposalUnit.value = selected.dataset.unit || '';
-            disposalQuantity.max = selected.dataset.qty || 0;
-        });
-
-        // Validate disposal quantity
-        disposalQuantity.addEventListener('input', function () {
-            const maxQty = parseFloat(this.max);
-            if (parseFloat(this.value) > maxQty) {
-                this.setCustomValidity('Cannot dispose more than available quantity');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
-
         // Submit disposal
         const form = document.getElementById('chemicalDisposalForm');
         form.addEventListener('submit', function (e) {
@@ -766,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const formData = new FormData(form);
-            fetch(``, {
+            fetch(`{{ route('admin.save-company-chemical-disposal') }}`, {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: formData

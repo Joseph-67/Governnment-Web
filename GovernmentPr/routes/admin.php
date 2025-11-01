@@ -15,6 +15,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyMaterialController;
 use App\Http\Controllers\CompanyOperationController;
 use App\Http\Controllers\CompanyWasteController;
+use App\Http\Controllers\DisposalMethodController;
 use App\Http\Controllers\EmailApp;
 use App\Http\Controllers\EmailIntegration;
 use App\Http\Controllers\EquipmentTypeController;
@@ -93,6 +94,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/logout', 'destroy')->name('admin.logout');
         Route::get('/admin-details',  'getAllAdmins')->name('admins.details');
         Route::get('/admin/recp-trend-data', 'recpTrendData')->name('admin.recp-trend-data');
+    });
+
+    Route::controller(DisposalMethodController::class)->group(function() {
+        Route::get('/disposal-methods', 'index')->name('admin.get-disposal-methods');
+        Route::post('/disposal-methods/store', 'store')->name('admin.store-disposal-method');
+        Route::get('/disposal-methods/{id}', 'show')->name('admin.show-disposal-method');
+        Route::put('/disposal-methods/{id}', 'update')->name('admin.update-disposal-method');
+        Route::delete('/disposal-methods/{id}', 'destroy')->name('admin.delete-disposal-method');
     });
 
 
@@ -822,7 +831,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
 
     // waste category
     Route::controller(WasteCategoryController::class)->group(function() {
-        Route::get('/waste-categories', 'index')->name('admin.waste-categories');
+        Route::get('/waste-categories', 'fetchCategories')->name('admin.waste-categories');
         Route::post('/waste-categories', 'store')->name('admin.store-waste-category');
         Route::get('/waste-categories/{id}', 'show')->name('admin.show-waste-category');
         Route::put('/waste-categories/{id}', 'update')->name('admin.update-waste-category');
@@ -846,7 +855,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::get('/waste-items/{id}', 'show')->name('admin.show-waste-item');
         Route::put('/waste-items/{id}', 'update')->name('admin.update-waste-item');
         Route::delete('/waste-items/{id}', 'destroy')->name('admin.delete-waste-item');
-        Route::get('/get-waste-items', 'data')->name('admin.get-waste-items');
+        Route::get('/get-waste-items', 'getWaste')->name('admin.get-waste-items');
 
     });
 
@@ -857,7 +866,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::put('/waste-report/{id}', 'update')->name('admin.update-waste-report');
         Route::delete('/waste-report/{id}', 'destroy')->name('admin.delete-waste-report');
         Route::get('/get-waste-report-data/{selectedCompany}/{selectedYear}', 'create_report');
-        Route::get('/get-waste-items', 'getAll')->name('admin.get-waste-items');
     });
     Route::resource('waste', WasteController::class)->names('admin.waste');
 

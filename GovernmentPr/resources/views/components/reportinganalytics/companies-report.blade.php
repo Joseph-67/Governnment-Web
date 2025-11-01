@@ -784,8 +784,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                                         $chemicalUsage = DB::table('chemical_stock_movements')
                                                             ->where('company_id', $company->company_id) // Filter by company ID
                                                             ->where('chemical_id', $chemical->chemical_id) // Filter by chemical ID
-                                                            ->whereYear('movement_date', $year) // Filter by year
-                                                            ->where('movement_type', 'out') // Only "out" movements
+                                                            ->whereYear('calendar_year', $year) // Filter by year
+                                                            ->where('transaction_type', 'checkout') // Only "out" movements
                                                             ->sum('quantity'); // Sum the quantity for the given filters
 
                                                         // Display the result

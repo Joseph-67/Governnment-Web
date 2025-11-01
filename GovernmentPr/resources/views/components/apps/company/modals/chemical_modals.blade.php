@@ -388,14 +388,16 @@
                         <!-- Chemical -->
                         <div class="col-md-6">
                             <label class="form-label">Chemical</label>
-                            <input type="text" name="chemical_name" id="checkInChemicalName" class="form-control" readonly>
+                            <input type="text" name="chemical_name" id="disposalChemicalName" class="form-control" readonly>
                             <input type="hidden" name="company_chemical_id">
+                            <input type="hidden" name="chemical_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
                         <!-- Batch -->
                         <div class="col-md-6">
                             <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="disposalBatch" class="form-select" required disabled>
+                            <select name="batch_no" id="chemicalDisposalBatch" class="form-select" required>
                                 <option value="">Select Batch</option>
                             </select>
                         </div>
@@ -403,7 +405,7 @@
                         <!-- Current Location -->
                         <div class="col-md-6">
                             <label class="form-label">Storage Location</label>
-                            <input type="text" id="disposalLocation" name="storage_location" class="form-control" readonly>
+                            <input type="text" id="disposalLocation" name="storage_location" class="form-control">
                         </div>
 
                         <!-- Quantity -->
@@ -415,7 +417,7 @@
                         <!-- Unit -->
                         <div class="col-md-6">
                             <label class="form-label">Unit</label>
-                            <input type="text" id="disposalUnit" class="form-control" readonly>
+                            <input type="text" id="chemicalDisposalUnit" class="form-control" readonly>
                         </div>
 
                         <!-- Disposal Reason -->
@@ -433,19 +435,15 @@
                         <!-- Method of Disposal -->
                         <div class="col-md-6">
                             <label class="form-label">Disposal Method</label>
-                            <select name="method" class="form-select" required>
+                            <select name="method" class="form-select" id="chemicalDisposal" required>
                                 <option value="">Select Method</option>
-                                <option value="Neutralization">Neutralization</option>
-                                <option value="Incineration">Incineration</option>
-                                <option value="Recycling">Recycling</option>
-                                <option value="Third-party Contractor">Third-party Contractor</option>
                             </select>
                         </div>
 
                         <!-- Disposal Date -->
                         <div class="col-md-6">
                             <label class="form-label">Disposal Date</label>
-                            <input type="date" name="disposal_date" class="form-control" required>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <!-- Remarks -->

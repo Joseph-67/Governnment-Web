@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class DisposalMethod extends Model
 {
     use HasFactory;
+    protected $primaryKey = "disposal_method_id";
+    protected $fillable = [
+        'method_name',
+        'description',
+        'safety_level'
+    ];
 }

@@ -21,10 +21,16 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->string('unit')->nullable();
             $table->decimal('quantity_per_unit', 10, 2)->default(1.00);
-            $table->unsignedBigInteger('waste_sub_category_id');
+            $table->unsignedBigInteger('waste_category_id');
+            $table->unsignedBigInteger('waste_sub_category_id')->nullable();
             $table->timestamps();
 
             // Foreign key constraint
+            $table->foreign('waste_category_id')
+                ->references('waste_category_id')
+                ->on('waste_categories')
+                ->onDelete('cascade');
+
             $table->foreign('waste_sub_category_id')
                 ->references('waste_sub_category_id')
                 ->on('waste_sub_categories')

@@ -17,34 +17,64 @@ class WasteItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-{
-    $data['wasteSubCategories'] = WasteSubCategories::select('waste_sub_category_id', 'waste_sub_category_name')->get();
-    $data['wasteItems'] = WasteItem::with('wasteSubCategory')->get();
-    return view('components.apps.waste-item', $data);
-}
-public function data()
-{
-    try {
-        $items = WasteItem::with('wasteSubCategory')->latest()->get();
-
-        $formatted = $items->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'name' => $item->name,
-                'quantity' => $item->quantity_per_unit,
-                'unit' => $item->unit,
-                'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-',
-            ];
-        });
-
-        return response()->json(['data' => $formatted]);
-    } catch (\Exception $e) {
-        return response()->json(['data' => [], 'error' => $e->getMessage()], 500);
+    {
+        $data['wasteSubCategories'] = WasteSubCategories::select('waste_sub_category_id', 'waste_sub_category_name')->get();
+        $data['wasteItems'] = WasteItem::with('wasteSubCategory')->get();
+        return view('components.apps.waste-item', $data);
     }
-}
 
+    public function getWaste()
+    {
+        try {
+            $wastes = WasteItem::with(['wasteSubCategory', 'wasteCategory'])
+                ->orderBy('name', 'asc')
+                ->get()
+                ->map(function ($waste) {
+                    return [
+                        'waste_item_id' => $waste->waste_item_id,
+                        'name' => $waste->name,
+                        'description' => $waste->description,
+                        'category_name' => optional($waste->wasteCategory)?->waste_category_name,
+                        'sub_category_name' => $waste->wasteSubCategory ? $waste->wasteSubCategory->waste_sub_category_name : 'N/A',
+                        'quantity' => $waste->quantity_per_unit,
+                        'unit' => $waste->unit,
+                    ];
+                });
 
+                // dd( $wastes);
+            return response()->json([
+                'success' => true,
+                'data' => $wastes
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch waste data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
+    
+    public function data()
+    {
+        try {
+            $items = WasteItem::with('wasteSubCategory')->latest()->get();
+
+            $formatted = $items->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'quantity' => $item->quantity_per_unit,
+                    'unit' => $item->unit,
+                    'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-',
+                ];
+            });
+
+            return response()->json(['data' => $formatted]);
+        } catch (\Exception $e) {
+            return response()->json(['data' => [], 'error' => $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -62,38 +92,39 @@ public function data()
      * @return \Illuminate\Http\Response
      */
    
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'waste_name' => 'required|string|max:255',
-        'waste_sub_category' => 'required|exists:waste_sub_categories,waste_sub_category_id',
-        'quantity' => 'required|numeric|min:0',
-        'unit' => 'required|string|max:50',
-        'description' => 'nullable|string|max:1000',
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'waste_name' => 'required|string|max:255',
+            'waste_category' => 'required|exists:waste_categories,waste_category_id',
+            'quantity' => 'required|numeric|min:0',
+            'unit' => 'required|string|max:50',
+            'description' => 'nullable|string|max:1000',
+        ]);
 
-    $item = WasteItem::create([
-        'name' => $validated['waste_name'],
-        'waste_sub_category_id' => $validated['waste_sub_category'],
-        'quantity_per_unit' => $validated['quantity'],
-        'unit' => $validated['unit'],
-        'description' => $validated['description'] ?? null,
-    ]);
+        $item = WasteItem::create([
+            'name' => $validated['waste_name'],
+            'waste_category_id' => $request['waste_category'],
+            'waste_sub_category_id' => $request['waste_sub_category'],
+            'quantity_per_unit' => $validated['quantity'],
+            'unit' => $validated['unit'],
+            'description' => $validated['description'] ?? null,
+        ]);
 
-    $item->load('wasteSubCategory');
+        $item->load('wasteSubCategory');
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Waste item saved successfully.',
-        'data' => [
-            'id' => $item->id,
-            'name' => $item->name,
-            'quantity' => $item->quantity_per_unit,
-            'unit' => $item->unit,
-            'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-'
-        ]
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Waste item saved successfully.',
+            'data' => [
+                'id' => $item->id,
+                'name' => $item->name,
+                'quantity' => $item->quantity_per_unit,
+                'unit' => $item->unit,
+                'sub_category' => $item->wasteSubCategory->waste_sub_category_name ?? '-'
+            ]
+        ]);
+    }
 
 
 

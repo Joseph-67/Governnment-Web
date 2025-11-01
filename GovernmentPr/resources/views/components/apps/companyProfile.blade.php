@@ -785,8 +785,8 @@
         <!-- Hero Header -->
         <div class="wm-hero d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex align-items-center gap-3">
-                <img src="{{ asset($company->logo ?? 'images/default-logo.png') }}" alt="Company Logo"
-                    class="rounded-circle border border-light" style="width: 80px; height: 80px; object-fit: cover;">
+                <img src="{{ asset($company->logo ?? 'adminAssets/images/illustrate/industry.svg') }}" alt="Company Logo"
+                    class="rounded-circle border border-light bg-white" style="width: 80px; height: 80px; object-fit: cover;">
 
                 <div class="company-meta">
                     <h2>{{ $company->company_name ?? 'Company Name' }}</h2>

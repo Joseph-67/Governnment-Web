@@ -31,18 +31,19 @@ class WasteCategoryController extends Controller
 
     public function fetchCategories()
     {
-        $categories = WasteCategory::withCount('subCategories')
+        $categories = WasteCategory::withCount(['subCategories'])
             ->orderBy('waste_category_name')
             ->get()
             ->map(function($cat) {
                     return [
-                        'waste_category_id' => $cat->waste_category_id,
+                        'id' => $cat->waste_category_id,
                         'name' => $cat->waste_category_name,
                         'description' => $cat->waste_category_description,
-                        'sub_count' => $cat->subcategories_count,
+                        'sub_count' => $cat->sub_categories_count ??0,
                     ];
                 });
 
+                // dd( $categories);
         return response()->json([
             'success' => true,
             'message' => 'Categories fetched successfully.',

@@ -8,58 +8,79 @@ use Illuminate\Http\Request;
 class DisposalMethodController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all disposal methods (for DataTables or API).
      */
     public function index()
     {
-        //
+        $methods = DisposalMethod::orderBy('created_at', 'desc')->get();
+        // dd($methods);
+        return response()->json([
+            'status' => 'success',
+            'data' => $methods
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created disposal method.
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'method_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'safety_level' => 'nullable|string|max:50'
+        ]);
+
+        $method = DisposalMethod::create($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Disposal method added successfully.',
+            'data' => $method
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * Show a single disposal method (for editing).
      */
-    public function show(DisposalMethod $disposalMethod)
+    public function show($id)
     {
-        //
+        $method = DisposalMethod::findOrFail($id);
+        return response()->json($method);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update a disposal method.
      */
-    public function edit(DisposalMethod $disposalMethod)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'method_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'safety_level' => 'nullable|string|max:50'
+        ]);
+
+        $method = DisposalMethod::findOrFail($id);
+        $method->update($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Disposal method updated successfully.',
+            'data' => $method
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete a disposal method.
      */
-    public function update(Request $request, DisposalMethod $disposalMethod)
+    public function destroy($id)
     {
-        //
-    }
+        $method = DisposalMethod::findOrFail($id);
+        $method->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DisposalMethod $disposalMethod)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Disposal method deleted successfully.'
+        ]);
     }
 }
