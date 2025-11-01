@@ -115,18 +115,20 @@
                             <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
-                        <!-- Batch -->
+                        <!-- Batch (Required) -->
                         <div class="col-md-6">
-                            <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="materialCheckoutBatch" class="form-select">
-                                <option value="">Select Batch</option>
+                            <label class="form-label">Batch No <span class="text-danger">*</span></label>
+                            <select name="batch_no" id="materialCheckoutBatch" class="form-select" required>
+                                <option value="">Select Batch (Required)</option>
                             </select>
+                            <div class="invalid-feedback">Please select a batch for checkout.</div>
                         </div>
 
                         <!-- Available Quantity -->
                         <div class="col-md-6">
                             <label class="form-label">Available Quantity</label>
-                            <input type="text" name="available_quantity" id="availableQty" class="form-control" readonly placeholder="Select batch first">
+                            <input type="text" name="available_quantity" id="availableQty" class="form-control" readonly placeholder="Loading total quantity...">
+                            <small class="text-muted" id="quantityHelpText">Total available across all batches</small>
                         </div>
 
                         <!-- Checkout Quantity -->
@@ -198,28 +200,39 @@
                         <!-- Material -->
                         <div class="col-md-6">
                             <label class="form-label">Material</label>
-                            <input type="text" name="material_name" id="adjustMaterialName" class="form-control" readonly>
+                            <input type="text" name="material_name" id="adjustmentMaterialName" class="form-control" readonly>
                             <input type="hidden" name="company_material_id">
+                            <input type="hidden" name="material_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
-                        <!-- Batch -->
+                        <!-- Available Quantity -->
                         <div class="col-md-6">
-                            <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="adjustMaterialBatch" class="form-select" required disabled>
-                                <option value="">Select Batch</option>
+                            <label class="form-label" id="adjustmentQtyLabel">Total Available Quantity</label>
+                            <input type="text" id="adjustmentTotalQty" class="form-control" readonly placeholder="Loading...">
+                            <small class="text-muted" id="adjustmentQtyHelpText">Total across all batches</small>
+                        </div>
+
+                        <!-- Batch (Required) -->
+                        <div class="col-md-6">
+                            <label class="form-label">Batch No <span class="text-danger">*</span></label>
+                            <select name="batch_no" id="materialAdjustmentBatch" class="form-select" required>
+                                <option value="">Select Batch (Required)</option>
                             </select>
+                            <div class="invalid-feedback">Please select a batch for adjustment.</div>
                         </div>
 
-                        <!-- Current Qty -->
+                        <!-- Batch Current Quantity -->
                         <div class="col-md-6">
-                            <label class="form-label">Current Quantity</label>
-                            <input type="text" id="adjustMaterialCurrentQty" class="form-control" readonly placeholder="Select batch first">
+                            <label class="form-label">Batch Current Quantity</label>
+                            <input type="text" id="adjustmentBatchQty" class="form-control" readonly placeholder="Select batch first">
+                            <small class="text-muted">Current quantity in selected batch</small>
                         </div>
 
                         <!-- Adjustment Type -->
                         <div class="col-md-6">
                             <label class="form-label">Adjustment Type</label>
-                            <select name="adjustment_type" id="adjustMaterialType" class="form-select" required>
+                            <select name="adjustment_type" id="materialAdjustmentType" class="form-select" required>
                                 <option value="">Select Type</option>
                                 <option value="increase">Increase</option>
                                 <option value="decrease">Decrease</option>
@@ -229,18 +242,18 @@
                         <!-- Adjustment Quantity -->
                         <div class="col-md-6">
                             <label class="form-label">Quantity to Adjust</label>
-                            <input type="number" name="adjust_quantity" id="adjustMaterialQuantity" class="form-control" min="0.01" step="0.01" required>
+                            <input type="number" name="quantity" id="materialAdjustmentQuantity" class="form-control" min="0.01" step="0.01" required>
                             <div class="invalid-feedback">Enter a valid positive quantity.</div>
                         </div>
 
                         <!-- Unit -->
                         <div class="col-md-6">
                             <label class="form-label">Unit</label>
-                            <input type="text" id="adjustMaterialUnit" name="unit" class="form-control" readonly>
+                            <input type="text" id="materialAdjustmentUnit" name="unit" class="form-control" readonly>
                         </div>
 
                         <!-- Reason -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Adjustment Reason</label>
                             <select name="reason" class="form-select" required>
                                 <option value="">Select Reason</option>
@@ -251,9 +264,15 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
+                        
+                        <!-- Transaction date -->
+                        <div class="col-md-6">
+                            <label class="form-label">Date</label>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                        </div>
 
                         <!-- Remarks -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Remarks</label>
                             <textarea name="remarks" class="form-control" rows="2" placeholder="Explain the adjustment..."></textarea>
                         </div>
@@ -290,42 +309,60 @@
                             <label class="form-label">Material</label>
                             <input type="text" name="material_name" id="transferMaterialName" class="form-control" readonly>
                             <input type="hidden" name="company_material_id">
+                            <input type="hidden" name="material_id">
+                            <input type="hidden" name="company_id" value="{{ $company->company_id }}">
                         </div>
 
                         <!-- Batch -->
                         <div class="col-md-6">
-                            <label class="form-label">Batch No</label>
-                            <select name="batch_no" id="transferMaterialBatch" class="form-select" required disabled>
-                                <option value="">Select Batch</option>
+                            <label class="form-label">Batch No <span class="text-danger">*</span></label>
+                            <select name="batch_no" id="materialTransferBatch" class="form-select" required>
+                                <option value="">Select Batch (Required)</option>
                             </select>
+                            <div class="invalid-feedback">Please select a batch for transfer.</div>
                         </div>
 
                         <!-- From Location -->
                         <div class="col-md-6">
                             <label class="form-label">From Location</label>
-                            <input type="text" id="transferMaterialFromLocation" class="form-control" readonly placeholder="Auto-filled">
+                            <input type="text" id="transferMaterialFromLocation" class="form-control" readonly placeholder="Current location">
                         </div>
 
                         <!-- To Location -->
                         <div class="col-md-6">
                             <label class="form-label">To Location</label>
-                            <input type="text" name="to_location" id="transferMaterialToLocation" class="form-control" required>
+                            <input type="text" name="to_location" id="transferMaterialToLocation" class="form-control" required placeholder="Enter destination location">
+                            <div class="invalid-feedback">Please enter the destination location.</div>
+                        </div>
+
+                        <!-- Available Qty -->
+                        <div class="col-md-4">
+                            <label class="form-label">Available Qty</label>
+                            <input type="text" id="materialTransferAvailableQty" class="form-control" readonly placeholder="Select batch first">
+                            <small class="text-muted">Quantity in selected batch</small>
                         </div>
 
                         <!-- Quantity -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Quantity to Transfer</label>
-                            <input type="number" name="transfer_quantity" id="transferMaterialQuantity" class="form-control" min="0.01" step="0.01" required>
+                            <input type="number" name="quantity" id="transferMaterialQuantity" class="form-control" min="0.01" step="0.01" required>
+                            <div class="invalid-feedback">Enter a valid quantity within available limit.</div>
                         </div>
 
                         <!-- Unit -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Unit</label>
                             <input type="text" id="transferMaterialUnit" name="unit" class="form-control" readonly>
                         </div>
 
+                        <!-- Transaction date -->
+                        <div class="col-md-6">
+                            <label class="form-label">Transfer Date</label>
+                            <input type="date" name="transaction_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                        </div>
+
                         <!-- Remarks -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Remarks</label>
                             <textarea name="remarks" class="form-control" rows="2" placeholder="Reason for transfer..."></textarea>
                         </div>
