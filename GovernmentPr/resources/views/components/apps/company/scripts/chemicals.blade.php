@@ -141,7 +141,7 @@
             const data = await res.json();
 
             if (data.status === 'success') {
-                renderChemicalTable(data.company_chemical, form.id.value || form.chemical_id.value);
+                $('#chemicalTable').DataTable().ajax.reload(null, false); // reload table data
                 showToast(`${operation.charAt(0).toUpperCase() + operation.slice(1)} successful`, 'success');
                 bootstrap.Modal.getInstance(document.querySelector('#chemicalModal')).hide();
             } 
