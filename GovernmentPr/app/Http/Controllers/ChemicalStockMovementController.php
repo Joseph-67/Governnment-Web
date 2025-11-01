@@ -165,9 +165,12 @@ class ChemicalStockMovementController extends Controller
             'source_location'     => $request->source_location,
             'destination_location'=> $request->destination_location,
             'remarks'             => $request->remarks,
+            'reason'              => $request->reason,
             'reference_id'        => $request->input('reference_id'),
             'reference_type'      => $request->input('reference_type'),
             'performed_by'        => auth()->id(),
+            'disposal_method_id' => $request->input('disposal_method'),
+            'guard'               => $guard,
             'transaction_date'    => $request->transaction_date,
             'calendar_year'       => $year,
         ]);

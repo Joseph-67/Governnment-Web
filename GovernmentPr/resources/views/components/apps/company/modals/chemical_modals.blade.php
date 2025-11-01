@@ -435,7 +435,7 @@
                         <!-- Method of Disposal -->
                         <div class="col-md-6">
                             <label class="form-label">Disposal Method</label>
-                            <select name="method" class="form-select" id="chemicalDisposal" required>
+                            <select name="disposal_method" class="form-select" id="chemicalDisposal" required>
                                 <option value="">Select Method</option>
                             </select>
                         </div>

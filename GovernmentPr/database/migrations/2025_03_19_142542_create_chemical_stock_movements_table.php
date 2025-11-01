@@ -43,6 +43,9 @@ return new class extends Migration
             $table->string('calendar_year');
             $table->timestamp('transaction_date')->useCurrent();
 
+            // disposal method
+            $table->unsignedBigInteger('disposal_method_id')->nullable();
+
 
             $table->string('remark')->nullable();
             $table->string('reason')->nullable();
@@ -50,6 +53,7 @@ return new class extends Migration
             $table->foreign('company_chemical_id')->references('company_chemical_id')->on('company_chemicals');
             $table->foreign('chemical_id')->references('chemical_id')->on('chemicals')->onDelete('cascade');
             $table->foreign('company_id')->references('company_id')->on('companies');
+            $table->foreign('disposal_method_id')->references('disposal_method_id')->on('disposal_methods');
 
             $table->timestamps();
             $table->softDeletes();

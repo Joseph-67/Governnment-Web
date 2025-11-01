@@ -495,6 +495,7 @@
             const availableQtyField = modal.find('#chemicalDisposalAvailableQty');
             const transferUnit = modal.find('#chemicalUnit');
             let batchData = {};
+            disposalSelect.empty();
 
             fetch(`{{ route('admin.get-chemical-batches', ['company_id' => '__CID__']) }}`
                 .replace('__CID__', companyId) + `?chemical_id=${companyChemicalId}`)

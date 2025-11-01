@@ -29,6 +29,7 @@ class ChemicalStockMovement extends Model
         'guard',
         'performed_by',
         'calendar_year',
+        'disposal_method_id',
         'transaction_date',
         'status',
     ];
