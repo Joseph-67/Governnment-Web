@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('companyID');
             $table->enum('movement_type', ['in', 'out', 'transfer', 'adjustment'])->nullable();
             $table->string('quantity');
+            $table->string('batch_number')->nullable();
+            $table->string('source')->nullable();
+            $table->string('usage_reason')->nullable();
             $table->string('calendar_year');
             $table->string('movement_date');
             $table->string('remark')->nullable();

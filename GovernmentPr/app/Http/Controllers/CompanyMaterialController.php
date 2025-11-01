@@ -48,11 +48,57 @@ class CompanyMaterialController extends StockMovementController
                 ->byCompany($companyId)
                 ->get()
                 ->map(function ($mat) {
+                    // Get all movement totals for this material
+                    $totalCheckIn = $this->getMaterialTotalCheckIn($mat->companyMaterialId);
+                    $totalCheckOut = $this->getMaterialTotalCheckOut($mat->companyMaterialId);
+                    $totalTransfer = $this->getMaterialTotalTransfer($mat->companyMaterialId);
+                    $totalAdjustment = $this->getMaterialTotalAdjustment($mat->companyMaterialId);
+                    
+                    // Calculate available quantity after each movement type
+                    $availableAfterCheckIn = $totalCheckIn; // Available after check-ins
+                    $availableAfterCheckOut = $availableAfterCheckIn - $totalCheckOut; // Available after check-outs
+                    $availableAfterTransfer = $availableAfterCheckOut - $totalTransfer; // Available after transfers
+                    $availableAfterAdjustment = $availableAfterTransfer + $totalAdjustment; // Final available after adjustments
+                    
                     return [
                         'company_material_id' => $mat->companyMaterialId,
                         'material_id' => $mat->materialID,
                         'name' => optional($mat->material)->material ?? 'N/A',
-                        'quantity' => $mat->quantity_per_unit ?? $mat->threshold_quantity ?? 0,
+                        'quantity' => $mat->quantity_per_unit ?? $mat->threshold_quantity ?? 0, // Show initial quantity like chemicals
+                        
+                        // Movement totals
+                        'total_check_in' => $totalCheckIn,
+                        'total_check_out' => $totalCheckOut,
+                        'total_transfer' => $totalTransfer,
+                        'total_adjustment' => $totalAdjustment,
+                        
+                        // Available quantity after each movement type
+                        'available_after_checkin' => max(0, $availableAfterCheckIn),
+                        'available_after_checkout' => max(0, $availableAfterCheckOut),
+                        'available_after_transfer' => max(0, $availableAfterTransfer),
+                        'available_after_adjustment' => max(0, $availableAfterAdjustment),
+                        
+                        // Movement breakdown with impact
+                        'movement_breakdown' => [
+                            'in' => [
+                                'total' => $totalCheckIn,
+                                'available_after' => max(0, $availableAfterCheckIn)
+                            ],
+                            'out' => [
+                                'total' => $totalCheckOut,
+                                'available_after' => max(0, $availableAfterCheckOut)
+                            ],
+                            'transfer' => [
+                                'total' => $totalTransfer,
+                                'available_after' => max(0, $availableAfterTransfer)
+                            ],
+                            'adjustment' => [
+                                'total' => $totalAdjustment,
+                                'available_after' => max(0, $availableAfterAdjustment)
+                            ]
+                        ],
+                        
+                        'original_quantity' => $mat->quantity_per_unit ?? $mat->threshold_quantity ?? 0,
                         'unit' => $mat->unit ?? $mat->unit_of_measure ?? '-',
                         'reorder_level' => $mat->minimum_threshold ?? $mat->threshold_quantity ?? '-',
                         'safety_level' => $mat->maximum_threshold ?? '-',
@@ -95,13 +141,14 @@ class CompanyMaterialController extends StockMovementController
                 return $query->where('companyID', $request['company_id']);
             })],
             'quantity_per_unit' => 'required|string',
-            'unit_of_measurement' => 'required|string',
+            'unit_of_measurement' => ['required', 'string', 'regex:/^[A-Za-z\/²³°%\s]+$/'],
             'hazardous' => 'nullable|boolean',
             'storage_location' => 'nullable|string',
             'reorder_level' => 'nullable',
             'safety_stock' => 'nullable',
         ], [
-            'material.unique' => "Material has already been added."
+            'material.unique' => "Material has already been added.",
+            'unit_of_measurement.regex' => "Unit should contain only letters and symbols (e.g., kg, m², L/min, °C). Numbers are not allowed."
         ]);
 
         // Return validation errors if any
@@ -192,7 +239,7 @@ class CompanyMaterialController extends StockMovementController
                 return $query->where('companyID', $request['companyID']);
             })],
             'serial_number'   =>  ['nullable', 'string'],
-            'unit_of_measurement' => ['nullable', 'string'],
+            'unit_of_measurement' => ['nullable', 'string', 'regex:/^[A-Za-z\/²³°%\s]+$/'],
             'threshold' => ['nullable', 'string']
         ]);
 
@@ -300,29 +347,37 @@ class CompanyMaterialController extends StockMovementController
     public function getMaterialTotalCheckIn($companyMaterialId)
     {
         $totalCheckIn = stock_movement::where('companyMaterialId', $companyMaterialId)
-            ->where('movement_type', 'in')->sum('quantity');
-        return $totalCheckIn;
+            ->where('movement_type', 'in')
+            ->where('status', 'active')
+            ->sum('quantity');
+        return $totalCheckIn ?: 0;
     }
 
     public function getMaterialTotalTransfer($companyMaterialId)
     {
         $totalTransfer = stock_movement::where('companyMaterialId', $companyMaterialId)
-            ->where('movement_type', 'transfer')->sum('quantity');
-        return $totalTransfer;
+            ->where('movement_type', 'transfer')
+            ->where('status', 'active')
+            ->sum('quantity');
+        return $totalTransfer ?: 0;
     }
 
     public function getMaterialTotalAdjustment($companyMaterialId)
     {
         $totalAdjustment = stock_movement::where('companyMaterialId', $companyMaterialId)
-            ->where('movement_type', 'adjustment')->sum('quantity');
-        return $totalAdjustment;
+            ->where('movement_type', 'adjustment')
+            ->where('status', 'active')
+            ->sum('quantity');
+        return $totalAdjustment ?: 0;
     }
 
     public function getMaterialTotalCheckOut($companyMaterialId)
     {
         $totalCheckOut = stock_movement::where('companyMaterialId', $companyMaterialId)
-            ->where('movement_type', 'out')->sum('quantity');
-        return $totalCheckOut;
+            ->where('movement_type', 'out')
+            ->where('status', 'active')
+            ->sum('quantity');
+        return $totalCheckOut ?: 0;
     }
 
     public function getMaterialBalance($companyMaterialId) 
@@ -408,10 +463,10 @@ class CompanyMaterialController extends StockMovementController
             $stockMovement->materialID = $request['material_id'];
             $stockMovement->movement_type = 'in';
             $stockMovement->quantity = $request['quantity'];
-            $stockMovement->batch_no = $request['batch_no'];
+            $stockMovement->batch_number = $request['batch_no'];  // Fixed: batch_number not batch_no
             $stockMovement->source = $request['source'];
             $stockMovement->movement_date = $request['date'];
-            $stockMovement->remarks = $request['remarks'];
+            $stockMovement->remark = $request['remarks'];  // Fixed: remark not remarks
             $stockMovement->save();
 
             return response()->json([
@@ -430,12 +485,13 @@ class CompanyMaterialController extends StockMovementController
     public function save_check_out(Request $request)
     {
         $validatedData = Validator::make($request->all(), [
-            'company_material_id' => 'required|integer',
+            'checkOut_material_id' => 'required|integer',
+            'material_id' => 'required|integer',
             'quantity' => 'required|numeric|min:0.01',
             'batch_no' => 'nullable|string',
             'usage_reason' => 'required|string',
-            'checkout_date' => 'required|date',
-            'remarks' => 'nullable|string',
+            'date' => 'required|date',
+            'remark' => 'nullable|string',
         ]);
 
         if ($validatedData->fails()) {
@@ -448,13 +504,14 @@ class CompanyMaterialController extends StockMovementController
 
         try {
             $stockMovement = new stock_movement();
-            $stockMovement->companyMaterialId = $request['company_material_id'];
+            $stockMovement->companyMaterialId = $request['checkOut_material_id'];  // Fixed: match form field name
+            $stockMovement->materialID = $request['material_id'];  // Added missing materialID
             $stockMovement->movement_type = 'out';
             $stockMovement->quantity = $request['quantity'];
-            $stockMovement->batch_no = $request['batch_no'];
+            $stockMovement->batch_number = $request['batch_no'];  // Fixed: batch_number not batch_no
             $stockMovement->usage_reason = $request['usage_reason'];
-            $stockMovement->movement_date = $request['checkout_date'];
-            $stockMovement->remarks = $request['remarks'];
+            $stockMovement->movement_date = $request['date'];  // Fixed: match form field name
+            $stockMovement->remark = $request['remark'];  // Fixed: match form field name
             $stockMovement->save();
 
             return response()->json([

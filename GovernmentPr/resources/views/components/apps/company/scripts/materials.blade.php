@@ -34,7 +34,8 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Unit</label>
-                    <input name="unit_of_measurement" class="form-control" value="${data.unit || ''}">
+                    <input name="unit_of_measurement" class="form-control" value="${data.unit || ''}" pattern="[A-Za-z/²³°%]+[A-Za-z/²³°%\\s]*" title="Unit should contain only letters and common symbols (/, ², ³, °, %)">
+                    <div class="invalid-feedback">Unit should contain only letters and symbols (e.g., kg, m², L/min, °C).</div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Hazardous?</label>
@@ -193,6 +194,73 @@
             btn.disabled = false;
         }
     });
+
+    // Add real-time validation for unit field to prevent numbers
+    $(document).on('input', 'input[name="unit_of_measurement"]', function(e) {
+        const input = e.target;
+        const value = input.value;
+        
+        // Remove any digits from the input
+        const cleanValue = value.replace(/[0-9]/g, '');
+        
+        if (value !== cleanValue) {
+            input.value = cleanValue;
+            
+            // Show temporary feedback
+            input.classList.add('is-invalid');
+            
+            // Remove existing feedback
+            const existingFeedback = input.parentNode.querySelector('.invalid-feedback.temp-feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            
+            // Add temporary feedback
+            const feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback temp-feedback';
+            feedback.textContent = 'Numbers are not allowed in unit field';
+            input.parentNode.appendChild(feedback);
+            
+            // Remove the error styling after 2 seconds
+            setTimeout(() => {
+                input.classList.remove('is-invalid');
+                if (feedback.parentNode) {
+                    feedback.remove();
+                }
+            }, 2000);
+        }
+    });
+
+    // Additional validation on blur to ensure proper format
+    $(document).on('blur', 'input[name="unit_of_measurement"]', function(e) {
+        const input = e.target;
+        const value = input.value.trim();
+        
+        // Check if value contains only valid characters
+        const validPattern = /^[A-Za-z/²³°%\s]+$/;
+        
+        if (value && !validPattern.test(value)) {
+            input.classList.add('is-invalid');
+            
+            // Remove existing feedback
+            const existingFeedback = input.parentNode.querySelector('.invalid-feedback.validation-feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            
+            // Add validation feedback
+            const feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback validation-feedback';
+            feedback.textContent = 'Unit should contain only letters and symbols (e.g., kg, m², L/min, °C)';
+            input.parentNode.appendChild(feedback);
+        } else {
+            input.classList.remove('is-invalid');
+            const feedback = input.parentNode.querySelector('.invalid-feedback.validation-feedback');
+            if (feedback) {
+                feedback.remove();
+            }
+        }
+    });
 </script>
 
 <script>
@@ -229,9 +297,9 @@
                                     <i class="la la-arrow-down text-success"></i> Check-In</a></li>
                                 <li><a class="dropdown-item materialCheckoutBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}" data-material-id="${row.material_id}">
                                     <i class="la la-arrow-up text-warning"></i> Check-Out</a></li>
-                                <li><a class="dropdown-item materialAdjustBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item materialAdjustBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}" data-material-id="${row.material_id}">
                                     <i class="la la-sync text-primary"></i> Adjustment</a></li>
-                                <li><a class="dropdown-item materialTransferBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item materialTransferBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}" data-material-id="${row.material_id}">
                                     <i class="la la-exchange-alt text-secondary"></i> Transfer</a></li>
                                 <li><a class="dropdown-item materialDisposeBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}">
                                     <i class="la la-trash text-danger"></i> Disposal</a></li>
@@ -252,6 +320,83 @@
             $('#materialCheckInModal [name=material_name]').val($(this).data('name'));
             $('#materialCheckInModal [name=unit]').val($(this).data('unit'));
             $('#materialCheckInModal').modal('show');
+        });
+
+        // Adjustment button handler (following chemical pattern)
+        $(document).on('click', '.materialAdjustBtn', function() {
+            const modal = $('#materialAdjustmentModal');
+            const companyMaterialId = $(this).data('id');
+            const materialId = $(this).data('material-id');
+            const materialName = $(this).data('name');
+            const unit = $(this).data('unit');
+            
+            console.log('Material adjustment clicked:', {
+                companyMaterialId, materialId, materialName, unit
+            });
+            
+            // Populate modal fields
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#adjustmentMaterialName').val(materialName);
+            modal.find('#materialAdjustmentUnit').val(unit);
+            modal.find('#adjustmentTotalQty').val('Loading...');
+            modal.find('#adjustmentBatchQty').val('');
+            modal.find('#materialAdjustmentBatch').html('<option value="">Loading batches...</option>');
+            
+            // Reset form
+            modal.find('form')[0].reset();
+            modal.find('form').removeClass('was-validated');
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#adjustmentMaterialName').val(materialName);
+            modal.find('#materialAdjustmentUnit').val(unit);
+            
+            // Set default date
+            modal.find('[name=transaction_date]').val(new Date().toISOString().slice(0, 10));
+            
+            // Load batches and total quantity
+            loadMaterialAdjustmentBatches(companyMaterialId, unit);
+            
+            modal.modal('show');
+        });
+
+        // Transfer button handler (following chemical pattern)
+        $(document).on('click', '.materialTransferBtn', function() {
+            const modal = $('#materialTransferModal');
+            const companyMaterialId = $(this).data('id');
+            const materialId = $(this).data('material-id');
+            const materialName = $(this).data('name');
+            const unit = $(this).data('unit');
+            
+            console.log('Material transfer clicked:', {
+                companyMaterialId, materialId, materialName, unit
+            });
+            
+            // Populate modal fields
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#transferMaterialName').val(materialName);
+            modal.find('#transferMaterialUnit').val(unit);
+            modal.find('#materialTransferAvailableQty').val('');
+            modal.find('#transferMaterialQuantity').val('');
+            modal.find('#transferMaterialToLocation').val('');
+            modal.find('#materialTransferBatch').html('<option value="">Loading batches...</option>');
+            
+            // Reset form
+            modal.find('form')[0].reset();
+            modal.find('form').removeClass('was-validated');
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#transferMaterialName').val(materialName);
+            modal.find('#transferMaterialUnit').val(unit);
+            
+            // Set default date
+            modal.find('[name=transaction_date]').val(new Date().toISOString().slice(0, 10));
+            
+            // Load batches for transfer
+            loadMaterialTransferBatches(companyMaterialId, unit);
+            
+            modal.modal('show');
         });
 
         // Checkout button handler (following chemical pattern)
@@ -331,10 +476,17 @@
             const batchSelect = modal.find('#materialCheckoutBatch');
             const availableQtyField = modal.find('#availableQty');
             const checkoutUnit = modal.find('#checkoutUnit');
+            const quantityHelpText = modal.find('#quantityHelpText');
             
             let batchData = {};
+            let totalAvailableQuantity = 0;
+            
+            // Show total available quantity initially
+            availableQtyField.val('Loading...');
+            quantityHelpText.text('Loading total available quantity...');
             
             // Fetch batches from API
+            console.log('🔍 Fetching batches for material:', companyMaterialId);
             fetch(`/admin/material-batches/${companyMaterialId}`, {
                 method: 'GET',
                 headers: {
@@ -342,102 +494,87 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('📡 Batch API response status:', response.status);
+                return response.json();
+            })
             .then(data => {
-                console.log('Batches loaded:', data);
+                console.log('📦 Batches API response:', data);
                 
-                batchSelect.html('<option value="">Select Batch</option>');
+                availableQtyField.val(data.available_balance || 0);
+                batchSelect.html('<option value="">Select Batch (Required)</option>');
                 
                 if (data.status === 'success' && data.batches && data.batches.length > 0) {
                     data.batches.forEach(batch => {
-                        // Validate that batch belongs to the correct material
-                        if (batch.material_id == materialId) {
-                            batchData[batch.batch_id] = {
-                                available_quantity: batch.available_quantity,
-                                unit: unit,
-                                original_quantity: batch.original_quantity,
-                                material_id: batch.material_id,
-                                company_material_id: batch.company_material_id
-                            };
-                            
-                            batchSelect.append(`
-                                <option value="${batch.batch_id}" data-material-id="${batch.material_id}">
-                                    ${batch.batch_no} (${batch.available_quantity} available) - ${batch.check_in_date}
-                                </option>
-                            `);
-                        } else {
-                            console.warn('Batch material mismatch:', {
-                                batchMaterialId: batch.material_id,
-                                expectedMaterialId: materialId,
-                                batchId: batch.batch_id
-                            });
-                        }
+                        batchData[batch.batch_no] = batch;
+                        batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
                     });
-                    
-                    // If no valid batches found after filtering
-                    if (batchSelect.children().length === 1) { // Only the default option
-                        batchSelect.html('<option value="">No valid batches available for this material</option>');
-                    }
+                    availableQtyField.val(`${data.available_balance} ${unit}`);
+                    quantityHelpText.text(`Total available across all batches (${data.batches.length} batches)`);
                 } else {
                     batchSelect.html('<option value="">No batches available</option>');
+                    availableQtyField.val('0 ' + unit);
+                    quantityHelpText.text('No batches found');
                 }
             })
             .catch(err => {
                 console.error('Error loading batches:', err);
                 batchSelect.html('<option value="">Error loading batches</option>');
+                availableQtyField.val('Error loading');
+                quantityHelpText.text('Error loading batch data');
             });
             
-            // Handle batch selection
+            // Handle batch selection - get batch-specific quantity like chemicals
             batchSelect.off('change').on('change', function() {
                 const batchNo = $(this).val();
-                const selectedOption = $(this).find('option:selected');
                 
                 if (batchNo && batchData[batchNo]) {
-                    // Double-check material ID match
-                    const batchMaterialId = selectedOption.data('material-id') || batchData[batchNo].material_id;
-                    
-                    if (batchMaterialId && batchMaterialId != materialId) {
-                        // Material mismatch detected
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Batch Selection',
-                            html: `
-                                <div class="text-start">
-                                    <p><strong>⚠️ Material Mismatch Detected!</strong></p>
-                                    <p>The selected batch does not belong to the current material.</p>
-                                    <hr>
-                                    <p><strong>Current Material ID:</strong> ${materialId}</p>
-                                    <p><strong>Batch Material ID:</strong> ${batchMaterialId}</p>
-                                    <p><strong>Material Name:</strong> ${materialName}</p>
-                                    <hr>
-                                    <p class="text-danger">This could indicate a data integrity issue. Please contact your administrator.</p>
-                                </div>
-                            `,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#dc3545'
-                        });
-                        
-                        // Reset selection
-                        $(this).val('');
-                        availableQtyField.val('');
-                        checkoutUnit.val(unit);
-                        return;
-                    }
-                    
-                    // Show the actual available quantity from the batch
-                    availableQtyField.val(batchData[batchNo].available_quantity || 0);
-                    checkoutUnit.val(batchData[batchNo].unit || unit);
+                    // Get batch-specific quantity
+                    fetch(`/admin/material-batch-quantity/${companyMaterialId}?batch_no=${batchNo}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const batchQuantity = data.available_balance;
+                            availableQtyField.val(`${batchQuantity} ${unit}`);
+                            quantityHelpText.html(`Available in batch <strong>${batchNo}</strong>`);
+                            checkoutUnit.val(unit);
+                            
+                            // Store batch quantity for validation
+                            modal.data('current-batch-qty', batchQuantity);
+                            modal.data('current-batch-no', batchNo);
+                            
+                            // Update quantity input max value
+                            modal.find('#checkoutQty').attr('max', batchQuantity);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error getting batch quantity:', err);
+                        availableQtyField.val('Error loading batch quantity');
+                    });
                 } else {
-                    availableQtyField.val('');
+                    // No batch selected - clear stored data
+                    modal.removeData('current-batch-qty');
+                    modal.removeData('current-batch-no');
+                    
+                    availableQtyField.val('Select a batch to see available quantity');
+                    quantityHelpText.text('Select a batch to see available quantity');
                     checkoutUnit.val(unit);
+                    
+                    // Remove max limit
+                    modal.find('#checkoutQty').removeAttr('max');
                 }
             });
             
-            // Validate quantity against available stock with enhanced feedback
+            // Validate quantity against available stock with batch requirement
             modal.find('#checkoutQty').off('input').on('input', function() {
                 const batchNo = batchSelect.val();
                 const requestedQty = parseFloat($(this).val());
-                const availableQty = parseFloat(availableQtyField.val());
                 const qtyInput = $(this);
                 
                 // Remove any existing feedback
@@ -445,35 +582,60 @@
                 qtyInput.siblings('.invalid-feedback.qty-validation').remove();
                 qtyInput.siblings('.valid-feedback.qty-validation').remove();
                 
-                if (batchNo && batchData[batchNo] && !isNaN(requestedQty) && !isNaN(availableQty)) {
-                    if (requestedQty > availableQty) {
-                        // Exceeds available stock
-                        qtyInput[0].setCustomValidity(`Quantity cannot exceed available stock (${availableQty})`);
+                // First check if batch is selected (required)
+                if (!batchNo) {
+                    if (requestedQty > 0) {
+                        qtyInput[0].setCustomValidity('Please select a batch first');
                         qtyInput.addClass('is-invalid');
                         
                         const feedback = $(`
                             <div class="invalid-feedback qty-validation">
                                 <i class="la la-exclamation-triangle"></i> 
-                                Maximum available: <strong>${availableQty} ${unit}</strong>
-                                <br>You're requesting <strong>${(requestedQty - availableQty)} ${unit}</strong> more than available.
-                            </div>
-                        `);
-                        qtyInput.after(feedback);
-                    } else if (requestedQty > 0) {
-                        // Valid quantity
-                        qtyInput[0].setCustomValidity('');
-                        qtyInput.addClass('is-valid');
-                        
-                        const remaining = availableQty - requestedQty;
-                        const feedback = $(`
-                            <div class="valid-feedback qty-validation">
-                                <i class="la la-check-circle"></i> 
-                                Valid quantity. Remaining after checkout: <strong>${remaining} ${unit}</strong>
+                                Please select a batch before entering quantity
                             </div>
                         `);
                         qtyInput.after(feedback);
                     } else {
                         qtyInput[0].setCustomValidity('');
+                    }
+                    return;
+                }
+                
+                // Store batch quantity when batch is selected to avoid repeated API calls
+                const storedBatchQty = modal.data('current-batch-qty');
+                const storedBatchNo = modal.data('current-batch-no');
+                
+                // Validate against stored batch quantity
+                if (batchNo && storedBatchNo === batchNo && storedBatchQty && !isNaN(requestedQty) && requestedQty > 0) {
+                    const batchAvailableQty = parseFloat(storedBatchQty);
+                    
+                    if (requestedQty > batchAvailableQty) {
+                        // Exceeds batch stock
+                        qtyInput[0].setCustomValidity(`Quantity cannot exceed batch stock (${batchAvailableQty})`);
+                        qtyInput.addClass('is-invalid');
+                        
+                        const feedback = $(`
+                            <div class="invalid-feedback qty-validation">
+                                <i class="la la-exclamation-triangle"></i> 
+                                Maximum in this batch: <strong>${batchAvailableQty} ${unit}</strong>
+                                <br>You're requesting <strong>${isNaN(requestedQty - batchAvailableQty) ? '0.00' : (requestedQty - batchAvailableQty).toFixed(2)} ${unit}</strong> more than available in this batch.
+                            </div>
+                        `);
+                        qtyInput.after(feedback);
+                    } else {
+                        // Valid quantity
+                        qtyInput[0].setCustomValidity('');
+                        qtyInput.addClass('is-valid');
+                        
+                        const remaining = batchAvailableQty - requestedQty;
+                        const feedback = $(`
+                            <div class="valid-feedback qty-validation">
+                                <i class="la la-check-circle"></i> 
+                                Valid quantity from batch <strong>${batchNo}</strong>
+                                <br>Remaining in batch: <strong>${isNaN(remaining) ? '0.00' : remaining.toFixed(2)} ${unit}</strong>
+                            </div>
+                        `);
+                        qtyInput.after(feedback);
                     }
                 } else {
                     qtyInput[0].setCustomValidity('');
@@ -489,6 +651,181 @@
 </script>
 
 <script>
+// Global function for loading material adjustment batches (chemical-style)
+async function loadMaterialAdjustmentBatches(companyMaterialId, unit) {
+    try {
+        console.log('🔄 Loading adjustment batches for material:', companyMaterialId);
+        
+        const batchSelect = document.getElementById('materialAdjustmentBatch');
+        const totalQtyInput = document.getElementById('adjustmentTotalQty');
+        const batchQtyInput = document.getElementById('adjustmentBatchQty');
+        
+        if (!batchSelect || !totalQtyInput || !batchQtyInput) {
+            console.error('❌ Adjustment batch elements not found');
+            return;
+        }
+        
+        // Reset and disable while loading
+        batchSelect.innerHTML = '<option value="">Loading batches...</option>';
+        batchSelect.disabled = true;
+        totalQtyInput.value = 'Loading...';
+        batchQtyInput.value = '';
+        
+        const response = await fetch(`/admin/material-batches/${companyMaterialId}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('📦 Adjustment batches API response:', data);
+        
+        // Use chemical-style simple approach
+        totalQtyInput.value = data.available_balance || 0;
+        batchSelect.innerHTML = '<option value="">Select Batch (Required)</option>';
+        
+        if (data.status === 'success' && data.batches && data.batches.length > 0) {
+            let batchData = {};
+            data.batches.forEach(batch => {
+                batchData[batch.batch_no] = batch;
+                const option = document.createElement('option');
+                option.value = batch.batch_no;
+                option.textContent = batch.batch_no;
+                batchSelect.appendChild(option);
+            });
+            totalQtyInput.value = `${data.available_balance} ${unit}`;
+            batchQtyInput.value = 'Select batch first';
+            batchSelect.disabled = false;
+            
+            // Store for later use
+            window.materialAdjustmentBatchData = batchData;
+            window.materialAdjustmentTotalQty = data.available_balance;
+            window.materialAdjustmentBatchCount = data.batches.length;
+        } else {
+            batchSelect.innerHTML = '<option value="">No batches available</option>';
+            batchSelect.disabled = true;
+            totalQtyInput.value = `0 ${unit}`;
+            batchQtyInput.value = 'No batches available';
+        }
+        
+    } catch (error) {
+        console.error('❌ Failed to load adjustment batches:', error);
+        
+        const batchSelect = document.getElementById('materialAdjustmentBatch');
+        const totalQtyInput = document.getElementById('adjustmentTotalQty');
+        const batchQtyInput = document.getElementById('adjustmentBatchQty');
+        
+        if (batchSelect && totalQtyInput && batchQtyInput) {
+            batchSelect.innerHTML = '<option value="">Error loading batches</option>';
+            batchSelect.disabled = true;
+            totalQtyInput.value = 'Error loading data';
+            batchQtyInput.value = 'Error loading data';
+        }
+        
+        if (typeof toastr !== 'undefined') {
+            toastr.error('Failed to load batches for adjustment.');
+        }
+    }
+}
+
+// Global function for loading material transfer batches (chemical-style)
+async function loadMaterialTransferBatches(companyMaterialId, unit) {
+    try {
+        console.log('🔄 Loading transfer batches for material:', companyMaterialId);
+        
+        const batchSelect = document.getElementById('materialTransferBatch');
+        const availableQtyInput = document.getElementById('materialTransferAvailableQty');
+        
+        if (!batchSelect || !availableQtyInput) {
+            console.error('❌ Transfer batch elements not found');
+            return;
+        }
+        
+        // Reset and disable while loading
+        batchSelect.innerHTML = '<option value="">Loading batches...</option>';
+        batchSelect.disabled = true;
+        availableQtyInput.value = 'Loading...';
+        
+        const response = await fetch(`/admin/material-batches/${companyMaterialId}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('📦 Transfer batches API response:', data);
+        
+        batchSelect.innerHTML = '<option value="">Select Batch (Required)</option>';
+        
+        if (data.status === 'success' && data.batches && data.batches.length > 0) {
+            let batchData = {};
+            
+            console.log('🔍 Raw batch data from API:', data.batches);
+            
+            data.batches.forEach(batch => {
+                const availableQty = parseFloat(batch.available_quantity) || 0;
+                
+                console.log(`📦 Processing batch ${batch.batch_no}:`, {
+                    raw_available_quantity: batch.available_quantity,
+                    parsed_available_quantity: availableQty
+                });
+                
+                batchData[batch.batch_no] = {
+                    batch_no: batch.batch_no,
+                    available_quantity: availableQty,
+                    unit: unit
+                };
+                
+                const option = document.createElement('option');
+                option.value = batch.batch_no;
+                option.textContent = `${batch.batch_no} (${availableQty} ${unit})`;
+                batchSelect.appendChild(option);
+            });
+            
+            // Show total available quantity initially (will change to batch-specific when batch is selected)
+            availableQtyInput.value = `Total: ${data.available_balance || 0} ${unit}`;
+            batchSelect.disabled = false;
+            
+            // Store batch data globally for easy access
+            window.materialTransferBatchData = batchData;
+            
+            console.log('📦 Final stored batch data:', batchData);
+        } else {
+            batchSelect.innerHTML = '<option value="">No batches available</option>';
+            batchSelect.disabled = true;
+            availableQtyInput.value = `0 ${unit}`;
+        }
+        
+    } catch (error) {
+        console.error('❌ Failed to load transfer batches:', error);
+        
+        const batchSelect = document.getElementById('materialTransferBatch');
+        const availableQtyInput = document.getElementById('materialTransferAvailableQty');
+        
+        if (batchSelect && availableQtyInput) {
+            batchSelect.innerHTML = '<option value="">Error loading batches</option>';
+            batchSelect.disabled = true;
+            availableQtyInput.value = 'Error loading data';
+        }
+        
+        if (typeof toastr !== 'undefined') {
+            toastr.error('Failed to load batches for transfer.');
+        }
+    }
+}
+
 // Global function for loading material batches
 async function loadMaterialBatches(companyMaterialId) {
     try {
@@ -535,7 +872,7 @@ async function loadMaterialBatches(companyMaterialId) {
                 data.batches.forEach(batch => {
                     const option = document.createElement('option');
                     option.value = batch.batch_id;
-                    option.textContent = `${batch.batch_no} (${batch.available_quantity} available) - ${batch.check_in_date}`;
+                    option.textContent = `${batch.batch_no} (${Math.round(batch.available_quantity)} available) - ${batch.check_in_date}`;
                     option.dataset.availableQty = batch.available_quantity;
                     option.dataset.originalQty = batch.original_quantity;
                     batchSelect.appendChild(option);
@@ -606,6 +943,337 @@ $(document).ready(function() {
         }
     });
     
+    // Handle material adjustment batch selection (chemical-style)
+    $(document).on('change', '#materialAdjustmentBatch', function() {
+        const batchNo = $(this).val();
+        const totalQtyInput = document.getElementById('adjustmentTotalQty');
+        const totalQtyLabel = document.getElementById('adjustmentQtyLabel');
+        const totalQtyHelpText = document.getElementById('adjustmentQtyHelpText');
+        const batchQtyInput = document.getElementById('adjustmentBatchQty');
+        const adjustmentQtyInput = document.getElementById('materialAdjustmentQuantity');
+        const unit = document.getElementById('materialAdjustmentUnit').value || '';
+        
+        if (batchNo && window.materialAdjustmentBatchData && window.materialAdjustmentBatchData[batchNo]) {
+            // Get batch-specific quantity via API like chemicals do
+            const companyMaterialId = $('[name=company_material_id]').val();
+            
+            fetch(`/admin/material-batch-quantity/${companyMaterialId}?batch_no=${batchNo}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const availableQty = data.available_balance;
+                    
+                    // Switch to batch-specific display
+                    totalQtyLabel.textContent = 'Available Quantity';
+                    totalQtyInput.value = `${availableQty} ${unit}`;
+                    totalQtyHelpText.innerHTML = `Available in batch <strong>${batchNo}</strong>`;
+                    
+                    // Update batch quantity field
+                    batchQtyInput.value = `${availableQty} available`;
+                    
+                    console.log('📊 Adjustment batch selected:', {
+                        batchNo: batchNo,
+                        availableQty: availableQty
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Error getting batch quantity for adjustment:', err);
+                batchQtyInput.value = 'Error loading batch quantity';
+            });
+        } else {
+            // Reset to total quantity display
+            const totalAvailable = window.materialAdjustmentTotalQty || 0;
+            const totalBatches = window.materialAdjustmentBatchCount || 0;
+            
+            totalQtyLabel.textContent = 'Total Available Quantity';
+            totalQtyInput.value = `${totalAvailable} ${unit}`;
+            totalQtyHelpText.textContent = `Total across all batches (${totalBatches} batches)`;
+            
+            // Reset batch quantity field
+            batchQtyInput.value = 'Select batch first';
+        }
+        
+        // Clear adjustment quantity when batch changes
+        if (adjustmentQtyInput) {
+            adjustmentQtyInput.value = '';
+            adjustmentQtyInput.classList.remove('is-invalid', 'is-valid');
+            
+            // Remove any existing feedback
+            const feedback = adjustmentQtyInput.parentNode.querySelector('.invalid-feedback.qty-validation, .valid-feedback.qty-validation');
+            if (feedback) {
+                feedback.remove();
+            }
+        }
+    });
+    
+    // Validate adjustment quantity
+    $(document).on('input', '#materialAdjustmentQuantity', function() {
+        const batchSelect = document.getElementById('materialAdjustmentBatch');
+        const adjustmentType = document.getElementById('materialAdjustmentType').value;
+        const requestedQty = parseFloat(this.value);
+        const qtyInput = this;
+        
+        // Remove any existing feedback
+        qtyInput.classList.remove('is-invalid', 'is-valid');
+        const existingFeedback = qtyInput.parentNode.querySelector('.invalid-feedback.qty-validation, .valid-feedback.qty-validation');
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+        
+        // Check if batch is selected
+        if (!batchSelect.value) {
+            if (requestedQty > 0) {
+                qtyInput.setCustomValidity('Please select a batch first');
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = '<i class="la la-exclamation-triangle"></i> Please select a batch before entering quantity';
+                qtyInput.parentNode.appendChild(feedback);
+            } else {
+                qtyInput.setCustomValidity('');
+            }
+            return;
+        }
+        
+        // Check if adjustment type is selected
+        if (!adjustmentType) {
+            if (requestedQty > 0) {
+                qtyInput.setCustomValidity('Please select adjustment type first');
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = '<i class="la la-exclamation-triangle"></i> Please select adjustment type first';
+                qtyInput.parentNode.appendChild(feedback);
+            } else {
+                qtyInput.setCustomValidity('');
+            }
+            return;
+        }
+        
+        // Validate against batch quantity for decrease
+        if (adjustmentType === 'decrease' && batchSelect.value && !isNaN(requestedQty)) {
+            // Get current batch quantity from the displayed value
+            const totalQtyInput = document.getElementById('adjustmentTotalQty');
+            const currentQtyText = totalQtyInput.value;
+            const availableQty = parseFloat(currentQtyText.split(' ')[0]) || 0;
+            
+            if (requestedQty > availableQty) {
+                qtyInput.setCustomValidity(`Cannot decrease more than available quantity (${availableQty})`);
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = `<i class="la la-exclamation-triangle"></i> Maximum decrease: <strong>${isNaN(availableQty) ? '0.00' : availableQty.toFixed(2)}</strong><br>You're trying to decrease by <strong>${isNaN(requestedQty - availableQty) ? '0.00' : (requestedQty - availableQty).toFixed(2)}</strong> more than available.`;
+                qtyInput.parentNode.appendChild(feedback);
+            } else if (requestedQty > 0) {
+                qtyInput.setCustomValidity('');
+                qtyInput.classList.add('is-valid');
+                
+                const remaining = availableQty - requestedQty;
+                const feedback = document.createElement('div');
+                feedback.className = 'valid-feedback qty-validation';
+                feedback.innerHTML = `<i class="la la-check-circle"></i> Valid ${adjustmentType}. Remaining after adjustment: <strong>${isNaN(remaining) ? '0.00' : remaining.toFixed(2)}</strong>`;
+                qtyInput.parentNode.appendChild(feedback);
+            } else {
+                qtyInput.setCustomValidity('');
+            }
+        } else if (adjustmentType === 'increase' && requestedQty > 0) {
+            qtyInput.setCustomValidity('');
+            qtyInput.classList.add('is-valid');
+            
+            // Get current batch quantity from the displayed value
+            const totalQtyInput = document.getElementById('adjustmentTotalQty');
+            const currentQtyText = totalQtyInput.value;
+            const availableQty = parseFloat(currentQtyText.split(' ')[0]) || 0;
+            const newTotal = availableQty + requestedQty;
+            
+            const feedback = document.createElement('div');
+            feedback.className = 'valid-feedback qty-validation';
+            feedback.innerHTML = `<i class="la la-check-circle"></i> Valid ${adjustmentType}. New quantity after adjustment: <strong>${isNaN(newTotal) ? '0.00' : newTotal.toFixed(2)}</strong>`;
+            qtyInput.parentNode.appendChild(feedback);
+        } else {
+            qtyInput.setCustomValidity('');
+        }
+    });
+    
+    // Trigger validation when adjustment type changes
+    $(document).on('change', '#materialAdjustmentType', function() {
+        const qtyInput = document.getElementById('materialAdjustmentQuantity');
+        if (qtyInput && qtyInput.value) {
+            $(qtyInput).trigger('input');
+        }
+    });
+
+    // Handle material transfer batch selection (chemical-style)
+    $(document).on('change', '#materialTransferBatch', function() {
+        const batchNo = $(this).val();
+        const availableQtyInput = document.getElementById('materialTransferAvailableQty');
+        const transferQtyInput = document.getElementById('transferMaterialQuantity');
+        const unit = document.getElementById('transferMaterialUnit').value || '';
+        
+        console.log('🔄 Batch selection changed:', batchNo);
+        
+        if (batchNo && window.materialTransferBatchData && window.materialTransferBatchData[batchNo]) {
+            // Get batch-specific quantity from cached data
+            const batchData = window.materialTransferBatchData[batchNo];
+            const availableQty = batchData.available_quantity;
+            
+            console.log('📊 Using cached batch data:', batchData);
+            
+            // Update available quantity display to show ONLY the batch-specific quantity
+            availableQtyInput.value = `${availableQty} ${unit}`;
+            
+            // Update quantity input constraints
+            if (transferQtyInput) {
+                transferQtyInput.max = availableQty;
+                transferQtyInput.placeholder = `Max: ${availableQty} ${unit}`;
+            }
+            
+            console.log('✅ Updated display to batch-specific quantity:', availableQty);
+            
+        } else if (batchNo) {
+            // Fallback: fetch batch quantity via API if not in cache
+            console.log('⚠️ Batch data not in cache, fetching from API...');
+            
+            const companyMaterialId = $('[name=company_material_id]').val();
+            availableQtyInput.value = 'Loading...';
+            
+            fetch(`/admin/material-batch-quantity/${companyMaterialId}?batch_no=${batchNo}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const availableQty = parseFloat(data.available_balance) || 0;
+                    
+                    // Update available quantity display to show batch-specific quantity
+                    availableQtyInput.value = `${availableQty} ${unit}`;
+                    
+                    if (transferQtyInput) {
+                        transferQtyInput.max = availableQty;
+                        transferQtyInput.placeholder = `Max: ${availableQty} ${unit}`;
+                    }
+                    
+                    console.log('✅ Updated from API - batch quantity:', availableQty);
+                } else {
+                    availableQtyInput.value = 'Error loading quantity';
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching batch quantity:', err);
+                availableQtyInput.value = 'Error loading quantity';
+            });
+            
+        } else {
+            // No batch selected - reset to initial state
+            availableQtyInput.value = 'Select batch first';
+            if (transferQtyInput) {
+                transferQtyInput.removeAttribute('max');
+                transferQtyInput.placeholder = 'Enter quantity';
+            }
+            console.log('🔄 Reset to initial state - no batch selected');
+        }
+        
+        // Clear transfer quantity when batch changes
+        if (transferQtyInput) {
+            transferQtyInput.value = '';
+            transferQtyInput.classList.remove('is-invalid', 'is-valid');
+            
+            // Remove any existing feedback
+            const feedback = transferQtyInput.parentNode.querySelector('.invalid-feedback.qty-validation, .valid-feedback.qty-validation');
+            if (feedback) {
+                feedback.remove();
+            }
+        }
+    });
+
+    // Validate transfer quantity (chemical-style)
+    $(document).on('input', '#transferMaterialQuantity', function() {
+        const batchSelect = document.getElementById('materialTransferBatch');
+        const requestedQty = parseFloat(this.value);
+        const qtyInput = this;
+        
+        // Remove any existing feedback
+        qtyInput.classList.remove('is-invalid', 'is-valid');
+        const existingFeedback = qtyInput.parentNode.querySelector('.invalid-feedback.qty-validation, .valid-feedback.qty-validation');
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+        
+        // Check if batch is selected
+        if (!batchSelect.value) {
+            if (requestedQty > 0) {
+                qtyInput.setCustomValidity('Please select a batch first');
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = '<i class="la la-exclamation-triangle"></i> Please select a batch before entering quantity';
+                qtyInput.parentNode.appendChild(feedback);
+            } else {
+                qtyInput.setCustomValidity('');
+            }
+            return;
+        }
+        
+        // Get current batch quantity from the available quantity display
+        if (batchSelect.value && !isNaN(requestedQty) && requestedQty > 0) {
+            const availableQtyInput = document.getElementById('materialTransferAvailableQty');
+            const availableQtyText = availableQtyInput.value || '';
+            
+            // Parse available quantity more safely
+            let availableQty = 0;
+            if (availableQtyText && availableQtyText !== 'Select batch first' && availableQtyText !== 'Error loading batch quantity') {
+                const qtyMatch = availableQtyText.match(/^(\d+(?:\.\d+)?)/);
+                availableQty = qtyMatch ? parseFloat(qtyMatch[1]) : 0;
+            }
+            
+            const batchNo = batchSelect.value || 'undefined';
+            
+            if (availableQty <= 0) {
+                qtyInput.setCustomValidity('No quantity available in selected batch');
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = '<i class="la la-exclamation-triangle"></i> No quantity available in selected batch';
+                qtyInput.parentNode.appendChild(feedback);
+            } else if (requestedQty > availableQty) {
+                qtyInput.setCustomValidity(`Cannot transfer more than available quantity (${availableQty})`);
+                qtyInput.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback qty-validation';
+                feedback.innerHTML = `<i class="la la-exclamation-triangle"></i> Maximum available: <strong>${isNaN(availableQty) ? '0.00' : availableQty.toFixed(2)}</strong><br>You're trying to transfer <strong>${isNaN(requestedQty - availableQty) ? '0.00' : (requestedQty - availableQty).toFixed(2)}</strong> more than available.`;
+                qtyInput.parentNode.appendChild(feedback);
+            } else {
+                qtyInput.setCustomValidity('');
+                qtyInput.classList.add('is-valid');
+                
+                const remaining = availableQty - requestedQty;
+                const feedback = document.createElement('div');
+                feedback.className = 'valid-feedback qty-validation';
+                feedback.innerHTML = `<i class="la la-check-circle"></i> Valid transfer from batch <strong>${batchNo}</strong>. Remaining: <strong>${isNaN(remaining) ? '0.00' : remaining.toFixed(2)}</strong>`;
+                qtyInput.parentNode.appendChild(feedback);
+            }
+        } else {
+            qtyInput.setCustomValidity('');
+        }
+    });
+
     // Validate checkout quantity against available quantity
     $(document).on('input', '#checkoutMaterialQty', function() {
         const batchSelect = document.getElementById('checkoutMaterialBatch');
@@ -787,7 +1455,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                     </div>
                                                     <div class="row border-top pt-2 mt-2">
                                                         <div class="col-6"><strong>Shortage:</strong></div>
-                                                        <div class="col-6 text-warning"><strong>${shortage.toFixed(2)} ${unit}</strong></div>
+                                                        <div class="col-6 text-warning"><strong>${isNaN(shortage) ? '0.00' : shortage.toFixed(2)} ${unit}</strong></div>
                                                     </div>
                                                 </div>
                                                 
@@ -802,7 +1470,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                                 <strong>Option 1:</strong> Use maximum available (${availableBalance} ${unit})
                                                             </div>
                                                             <div class="p-2 border rounded bg-light">
-                                                                <strong>Option 2:</strong> Check-in ${shortage.toFixed(2)} more ${unit} first
+                                                                <strong>Option 2:</strong> Check-in ${isNaN(shortage) ? '0.00' : shortage.toFixed(2)} more ${unit} first
                                                             </div>
                                                         </div>
                                                     </div>
@@ -812,7 +1480,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             showDenyButton: true,
                                             showCancelButton: true,
                                             confirmButtonText: `<i class="la la-check"></i> Use ${availableBalance} ${unit}`,
-                                            denyButtonText: `<i class="la la-plus"></i> Check-In ${shortage.toFixed(2)} More`,
+                                            denyButtonText: `<i class="la la-plus"></i> Check-In ${isNaN(shortage) ? '0.00' : shortage.toFixed(2)} More`,
                                             cancelButtonText: '<i class="la la-times"></i> Cancel',
                                             confirmButtonColor: '#28a745',
                                             denyButtonColor: '#007bff',
@@ -933,6 +1601,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     if ($.fn.DataTable.isDataTable('#materialTable')) {
                         $('#materialTable').DataTable().ajax.reload(null, false);
                     }
+                    
+                    // Clear any cached batch data to force fresh reload
+                    window.materialAdjustmentBatchData = null;
+                    window.materialAdjustmentTotalQty = null;
+                    window.materialAdjustmentBatchCount = null;
+                    
+                    // Clear any checkout modal batch data if it exists
+                    if (window.materialCheckoutBatchData) {
+                        window.materialCheckoutBatchData = null;
+                    }
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -1031,9 +1709,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         text: data.message || 'Material batch recorded successfully.'
                     });
                     $('#materialCheckInModal').modal('hide');
+                    
+                    // Refresh the materials table
                     if ($.fn.DataTable.isDataTable('#materialTable')) {
                         $('#materialTable').DataTable().ajax.reload(null, false);
                     }
+                    
+                    // Clear any cached batch data to force fresh reload
+                    window.materialAdjustmentBatchData = null;
+                    window.materialAdjustmentTotalQty = null;
+                    window.materialAdjustmentBatchCount = null;
+                    
+                    // Clear any checkout modal batch data if it exists
+                    if (window.materialCheckoutBatchData) {
+                        window.materialCheckoutBatchData = null;
+                    }
+                    
                     materialCheckInForm.reset();
                     materialCheckInForm.classList.remove('was-validated');
                 } else {
@@ -1065,6 +1756,239 @@ document.addEventListener("DOMContentLoaded", () => {
             const rand = Math.floor(100 + Math.random() * 900);
             const batchNo = `MAT-${materialId || 'GEN'}-${ymd}-${rand}`;
             document.getElementById('materialBatchNo').value = batchNo;
+        });
+    }
+    
+    // Material Adjustment Form Handler (following chemical pattern)
+    const materialAdjustmentForm = document.querySelector("#materialAdjustmentForm");
+    if (materialAdjustmentForm) {
+        materialAdjustmentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            materialAdjustmentForm.classList.add('was-validated');
+
+            if (!materialAdjustmentForm.checkValidity()) {
+                return;
+            }
+
+            const formData = new FormData(materialAdjustmentForm);
+            
+            // Debug form data
+            console.log('Material adjustment form data:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            fetch(`{{ route('admin.save-company-material-adjustment') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(async res => {
+                console.log('Adjustment response status:', res.status);
+                
+                const responseText = await res.text();
+                console.log('Adjustment raw response:', responseText);
+                
+                if (!res.ok) {
+                    if (res.status === 422) {
+                        try {
+                            const errorData = JSON.parse(responseText);
+                            console.log('Adjustment validation errors:', errorData);
+                            
+                            if (errorData.errors) {
+                                let errorMessage = 'Validation failed:\n';
+                                Object.keys(errorData.errors).forEach(field => {
+                                    errorMessage += `${field}: ${errorData.errors[field][0]}\n`;
+                                });
+                                
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Validation Error",
+                                    text: errorMessage
+                                });
+                                return;
+                            }
+                        } catch (parseError) {
+                            console.error('Failed to parse validation error response:', parseError);
+                        }
+                    }
+                    throw new Error(`HTTP ${res.status}: ${responseText}`);
+                }
+                
+                try {
+                    return JSON.parse(responseText);
+                } catch (parseError) {
+                    if (res.status === 200) {
+                        return { status: 'success', message: 'Material adjustment recorded successfully' };
+                    }
+                    throw new Error('Invalid JSON response from server');
+                }
+            })
+            .then(data => {
+                console.log('Adjustment response:', data);
+                
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Adjustment Applied',
+                        text: data.message || 'Material adjustment recorded successfully.'
+                    });
+                    $('#materialAdjustmentModal').modal('hide');
+                    
+                    // Refresh the materials table
+                    if ($.fn.DataTable.isDataTable('#materialTable')) {
+                        $('#materialTable').DataTable().ajax.reload(null, false);
+                    }
+                    
+                    // Clear any cached batch data to force fresh reload
+                    window.materialAdjustmentBatchData = null;
+                    window.materialAdjustmentTotalQty = null;
+                    window.materialAdjustmentBatchCount = null;
+                    
+                    // Clear any checkout modal batch data if it exists
+                    if (window.materialCheckoutBatchData) {
+                        window.materialCheckoutBatchData = null;
+                    }
+                    
+                    materialAdjustmentForm.reset();
+                    materialAdjustmentForm.classList.remove('was-validated');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Something went wrong.'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Adjustment error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    text: `Error: ${err.message}`
+                });
+            });
+        });
+    }
+    
+    // Material Transfer Form Handler (following chemical pattern)
+    const materialTransferForm = document.querySelector("#materialTransferForm");
+    if (materialTransferForm) {
+        materialTransferForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            materialTransferForm.classList.add('was-validated');
+
+            if (!materialTransferForm.checkValidity()) {
+                return;
+            }
+
+            const formData = new FormData(materialTransferForm);
+            
+            // Debug form data
+            console.log('Material transfer form data:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            fetch(`{{ route('admin.save-company-material-transfer') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(async res => {
+                console.log('Transfer response status:', res.status);
+                
+                const responseText = await res.text();
+                console.log('Transfer raw response:', responseText);
+                
+                if (!res.ok) {
+                    if (res.status === 422) {
+                        try {
+                            const errorData = JSON.parse(responseText);
+                            console.log('Transfer validation errors:', errorData);
+                            
+                            if (errorData.errors) {
+                                let errorMessage = 'Validation failed:\n';
+                                Object.keys(errorData.errors).forEach(field => {
+                                    errorMessage += `${field}: ${errorData.errors[field][0]}\n`;
+                                });
+                                
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Validation Error",
+                                    text: errorMessage
+                                });
+                                return;
+                            }
+                        } catch (parseError) {
+                            console.error('Failed to parse validation error response:', parseError);
+                        }
+                    }
+                    throw new Error(`HTTP ${res.status}: ${responseText}`);
+                }
+                
+                try {
+                    return JSON.parse(responseText);
+                } catch (parseError) {
+                    if (res.status === 200) {
+                        return { status: 'success', message: 'Material transfer completed successfully' };
+                    }
+                    throw new Error('Invalid JSON response from server');
+                }
+            })
+            .then(data => {
+                console.log('Transfer response:', data);
+                
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Transfer Completed',
+                        text: data.message || 'Material transfer completed successfully.'
+                    });
+                    $('#materialTransferModal').modal('hide');
+                    
+                    // Refresh the materials table
+                    if ($.fn.DataTable.isDataTable('#materialTable')) {
+                        $('#materialTable').DataTable().ajax.reload(null, false);
+                    }
+                    
+                    // Clear any cached batch data to force fresh reload
+                    window.materialAdjustmentBatchData = null;
+                    window.materialAdjustmentTotalQty = null;
+                    window.materialAdjustmentBatchCount = null;
+                    window.materialTransferBatchData = null;
+                    
+                    // Clear any checkout modal batch data if it exists
+                    if (window.materialCheckoutBatchData) {
+                        window.materialCheckoutBatchData = null;
+                    }
+                    
+                    materialTransferForm.reset();
+                    materialTransferForm.classList.remove('was-validated');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Something went wrong.'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Transfer error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    text: `Error: ${err.message}`
+                });
+            });
         });
     }
 });
