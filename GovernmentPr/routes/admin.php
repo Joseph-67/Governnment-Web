@@ -808,6 +808,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function() {
         Route::post('/company/material-setup/check-out', 'store_checkout')->name('admin.save-company-material-check-out');
         Route::post('/company/material-setup/adjustment', 'store_material_adjustment')->name('admin.save-company-material-adjustment');
         Route::post('/company/material-setup/transfer', 'store_material_transfer')->name('admin.save-company-material-transfer');
+        Route::post('/company/material-setup/disposal', 'store_material_disposal')->name('admin.save-company-material-disposal');
         Route::get('/material-batches/{companyMaterialId}', 'getMaterialBatches')->name('admin.get-material-batches');
         Route::get('/material-balance/{companyMaterialId}', 'getMaterialBalanceAPI')->name('admin.get-material-balance');
         Route::get('/material-batch-quantity/{companyMaterialId}', 'getBatchAvailableQuantity')->name('admin.get-material-batch-quantity');

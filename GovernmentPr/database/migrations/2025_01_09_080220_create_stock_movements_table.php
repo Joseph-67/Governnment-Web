@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('companyMaterialId');
             $table->unsignedBigInteger('materialID');
             $table->unsignedBigInteger('companyID');
-            $table->enum('movement_type', ['in', 'out', 'transfer', 'adjustment'])->nullable();
+            $table->enum('movement_type', ['in', 'out', 'transfer', 'adjustment', 'disposal'])->nullable();
             $table->string('quantity');
             $table->string('batch_number')->nullable();
             $table->string('source')->nullable();
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('calendar_year');
             $table->string('movement_date');
             $table->string('remark')->nullable();
+            $table->unsignedBigInteger('disposal_method_id')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreign('companyMaterialId')->references('companyMaterialId')->on('company_materials');
             $table->foreign('materialID')->references('materialID')->on('materials');

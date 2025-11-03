@@ -444,13 +444,14 @@
                         <!-- Method of Disposal -->
                         <div class="col-md-6">
                             <label class="form-label">Disposal Method</label>
-                            <select name="method" class="form-select" required>
-                                <option value="">Select Method</option>
-                                <option value="Recycling">Recycling</option>
-                                <option value="Incineration">Incineration</option>
-                                <option value="Landfill">Landfill</option>
-                                <option value="Third-party Contractor">Third-party Contractor</option>
-                            </select>
+                            <div class="input-group">
+                                <select name="method" id="materialDisposalMethod" class="form-select" required>
+                                    <option value="">Loading disposal methods...</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-secondary" id="refreshDisposalMethodsBtn" title="Refresh disposal methods">
+                                    <i class="la la-refresh"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Disposal Date -->

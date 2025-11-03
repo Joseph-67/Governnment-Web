@@ -23,6 +23,7 @@ class stock_movement extends Model
         'calendar_year',
         'movement_date',
         'remark',
+        'disposal_method_id',
         'status'
     ];
 
@@ -45,6 +46,10 @@ class stock_movement extends Model
 
     public function company() {
         return $this->belongsTo(Company::class, 'companyID', 'companyID'); // Adjust 'id' as the primary key in the Company model
+    }
+
+    public function disposalMethod() {
+        return $this->belongsTo(\App\Models\DisposalMethod::class, 'disposal_method_id', 'id');
     }
 
     public function scopeByYear($query, $year)
@@ -77,6 +82,11 @@ class stock_movement extends Model
         return $query->where('movement_type', 'out');
     }
     
+    public function scopeDisposals($query)
+    {
+        return $query->where('movement_type', 'disposal');
+    }
+    
     /**
      * Get available quantity for a specific batch
      */
@@ -101,12 +111,17 @@ class stock_movement extends Model
             ->where('batch_number', $batchNumber)
             ->where('movement_type', 'adjustment')
             ->sum('quantity');
+
+        $disposals = self::where('companyMaterialId', $companyMaterialId)
+            ->where('batch_number', $batchNumber)
+            ->where('movement_type', 'disposal')
+            ->sum('quantity');
             
-        return $checkIns - $checkOuts - $transfers + $adjustments;
+        return $checkIns - $checkOuts - $transfers + $adjustments - $disposals;
     }
     
     /**
-     * Get all batches with available quantities for a material including adjustments
+     * Get all batches with available quantities for a material including adjustments and disposals
      */
     public static function getAvailableBatches($companyMaterialId)
     {
@@ -119,10 +134,12 @@ class stock_movement extends Model
                 SUM(CASE WHEN movement_type = "out" THEN quantity ELSE 0 END) as total_out,
                 SUM(CASE WHEN movement_type = "transfer" THEN quantity ELSE 0 END) as total_transfer,
                 SUM(CASE WHEN movement_type = "adjustment" THEN quantity ELSE 0 END) as total_adjustment,
+                SUM(CASE WHEN movement_type = "disposal" THEN quantity ELSE 0 END) as total_disposal,
                 (SUM(CASE WHEN movement_type = "in" THEN quantity ELSE 0 END) - 
                  SUM(CASE WHEN movement_type = "out" THEN quantity ELSE 0 END) - 
                  SUM(CASE WHEN movement_type = "transfer" THEN quantity ELSE 0 END) + 
-                 SUM(CASE WHEN movement_type = "adjustment" THEN quantity ELSE 0 END)) as available_quantity
+                 SUM(CASE WHEN movement_type = "adjustment" THEN quantity ELSE 0 END) - 
+                 SUM(CASE WHEN movement_type = "disposal" THEN quantity ELSE 0 END)) as available_quantity
             ')
             ->where('companyMaterialId', $companyMaterialId)
             ->whereNotNull('batch_number')
@@ -136,6 +153,7 @@ class stock_movement extends Model
                 $batch->batch_adjustments = $batch->total_adjustment;
                 $batch->batch_checkouts = $batch->total_out;
                 $batch->batch_transfers = $batch->total_transfer;
+                $batch->batch_disposals = $batch->total_disposal;
                 return $batch;
             });
     }

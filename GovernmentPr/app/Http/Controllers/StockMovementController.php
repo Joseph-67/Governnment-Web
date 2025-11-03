@@ -59,8 +59,18 @@ class StockMovementController extends Controller
         return $totalCheckOut ?: 0;
     }
 
+    public function getMaterialTotalDisposal($companyMaterialId)
+    {
+        //
+        $totalDisposal = stock_movement::where('companyMaterialId', $companyMaterialId)
+        ->where('movement_type', 'disposal')
+        ->where('status', 'active')
+        ->sum('quantity');
+        return $totalDisposal ?: 0;
+    }
+
     public function getMaterialBalance($companyMaterialId) {
-        $balance = $this->getMaterialTotalCheckIn($companyMaterialId) - $this->getMaterialTotalTransfer($companyMaterialId) + $this->getMaterialTotalAdjustment($companyMaterialId) - $this->getMaterialTotalCheckOut($companyMaterialId);
+        $balance = $this->getMaterialTotalCheckIn($companyMaterialId) - $this->getMaterialTotalTransfer($companyMaterialId) + $this->getMaterialTotalAdjustment($companyMaterialId) - $this->getMaterialTotalCheckOut($companyMaterialId) - $this->getMaterialTotalDisposal($companyMaterialId);
         return $balance; 
     }
 
@@ -93,8 +103,14 @@ class StockMovementController extends Controller
             ->where('status', 'active')
             ->sum('quantity') ?: 0;
 
-        // Balance formula: (checkin + adjustment) - (checkout + transfer)
-        return ($totalIn + $totalAdjustment) - ($totalOut + $totalTransfer);
+        $totalDisposal = stock_movement::where('companyMaterialId', $companyMaterialId)
+            ->where('batch_number', $batchNo)
+            ->where('movement_type', 'disposal')
+            ->where('status', 'active')
+            ->sum('quantity') ?: 0;
+
+        // Balance formula: (checkin + adjustment) - (checkout + transfer + disposal)
+        return ($totalIn + $totalAdjustment) - ($totalOut + $totalTransfer + $totalDisposal);
     }
     /**
      * Store a newly created resource in storage.
@@ -695,5 +711,143 @@ class StockMovementController extends Controller
         }
         // dd($movements->get());
         return response()->json($movements->get());
+    }
+
+    /**
+     * Store material disposal (following chemical pattern)
+     */
+    public function store_material_disposal(Request $request)
+    {
+        // Log incoming request data for debugging
+        \Log::info('Material disposal request data:', $request->all());
+        
+        $validator = Validator::make($request->all(), [
+            'company_material_id'  => ['required', 'numeric'],
+            'material_id'          => ['nullable', 'numeric'],
+            'company_id'           => ['nullable', 'numeric'],
+            'quantity'             => ['required', 'numeric', 'min:0.001'],
+            'batch_no'             => ['required', 'string'],
+            'reason'               => ['required', 'string'],
+            'method'               => ['required', 'integer', 'min:1'], // Must be positive integer
+            'disposal_date'        => ['required', 'date'],
+            'remarks'              => ['nullable', 'string'],
+        ], [
+            'method.required' => 'Please select a disposal method.',
+            'method.integer' => 'Invalid disposal method selected. Please select a valid method from the dropdown.',
+            'method.min' => 'Invalid disposal method selected. Please select a valid method from the dropdown.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation failed.',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
+        $companyMaterialId = $request->company_material_id;
+        $quantity = $request->quantity;
+        $batchNo = $request->batch_no;
+        
+        // Validate disposal method exists if provided
+        if ($request->method) {
+            $disposalMethod = \App\Models\DisposalMethod::find($request->method);
+            if (!$disposalMethod) {
+                \Log::warning('Invalid disposal method ID provided:', ['method_id' => $request->method]);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid disposal method selected.',
+                    'errors' => ['method' => ['The selected disposal method does not exist in the database.']]
+                ], 422);
+            }
+            \Log::info('Valid disposal method found:', ['method' => $disposalMethod->toArray()]);
+        }
+        
+        // Validate batch belongs to this material
+        $companyMaterial = \App\Models\CompanyMaterial::find($companyMaterialId);
+        if (!$companyMaterial) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Company material not found.',
+                'errors' => ['material_error' => ['The selected material does not exist.']]
+            ], 422);
+        }
+
+        // Check batch-specific balance
+        $batchBalance = $this->getMaterialBalanceByBatch($companyMaterialId, $batchNo);
+        
+        if ($batchBalance <= 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No stock available in the selected batch.',
+                'errors' => ['batch_balance_error' => ['The selected batch has no available stock for disposal.']],
+                'batch_balance' => $batchBalance
+            ], 422);
+        }
+
+        if ($quantity > $batchBalance) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Disposal quantity exceeds available batch stock.',
+                'errors' => ['quantity_error' => ["Cannot dispose {$quantity} units. Only {$batchBalance} units available in this batch."]],
+                'batch_balance' => $batchBalance
+            ], 422);
+        }
+
+        $year = Carbon::parse($request->disposal_date)->year;
+
+        // Handle disposal method - ensure it's a valid integer or null
+        $disposalMethodId = null;
+        if ($request->method && $request->method !== '' && is_numeric($request->method)) {
+            $disposalMethodId = (int) $request->method;
+        }
+
+        // Store the disposal as a stock movement (positive quantity for disposal out)
+        $result = stock_movement::create([
+            'companyMaterialId'  => $companyMaterialId,
+            'materialID'         => $companyMaterial->materialID,
+            'companyID'          => $companyMaterial->companyID,
+            'quantity'           => $quantity, // Positive quantity for disposal out
+            'batch_number'       => $batchNo,
+            'source'             => $request->reason, // Store disposal reason in source field
+            'usage_reason'       => 'disposal: ' . ($request->method ?: 'manual'), // Store disposal method
+            'movement_type'      => 'disposal',
+            'disposal_method_id' => $disposalMethodId, // Store disposal method ID (nullable)
+            'calendar_year'      => $year,
+            'movement_date'      => $request->disposal_date,
+            'remark'             => $request->remarks,
+            'status'             => 'active'
+        ]);
+
+        if ($result) {
+            $newBalance = $this->getMaterialBalance($companyMaterialId);
+            $newBatchBalance = $this->getMaterialBalanceByBatch($companyMaterialId, $batchNo);
+            
+            // Get disposal method name for better message
+            $disposalMethodName = 'Unknown Method';
+            if ($disposalMethodId) {
+                $disposalMethod = \App\Models\DisposalMethod::find($disposalMethodId);
+                $disposalMethodName = $disposalMethod ? $disposalMethod->method_name : "Method ID {$disposalMethodId}";
+            }
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => "Material disposal recorded successfully. {$quantity} units disposed via {$disposalMethodName}.",
+                'disposal_details' => [
+                    'quantity_disposed' => $quantity,
+                    'disposal_method_id' => $disposalMethodId,
+                    'disposal_method_name' => $disposalMethodName,
+                    'disposal_reason' => $request->reason,
+                    'batch_no' => $batchNo,
+                    'remaining_in_batch' => $newBatchBalance,
+                    'total_remaining' => $newBalance
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Disposal failed to record.'
+            ], 500);
+        }
     }
 }

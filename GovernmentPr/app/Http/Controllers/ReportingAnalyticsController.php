@@ -28,7 +28,7 @@ class ReportingAnalyticsController extends Controller
             'company:company_id,company_name',
             'material:materialID,material'
         ])
-        ->select('companyMaterialId', 'companyID', 'materialID', 'unit_of_measure', 'threshold_quantity')
+        ->select('companyMaterialId', 'companyID', 'materialID', 'unit', 'minimum_threshold')
         ->get();
 
 

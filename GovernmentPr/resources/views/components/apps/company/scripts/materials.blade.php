@@ -301,7 +301,7 @@
                                     <i class="la la-sync text-primary"></i> Adjustment</a></li>
                                 <li><a class="dropdown-item materialTransferBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}" data-material-id="${row.material_id}">
                                     <i class="la la-exchange-alt text-secondary"></i> Transfer</a></li>
-                                <li><a class="dropdown-item materialDisposeBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}">
+                                <li><a class="dropdown-item materialDisposeBtn" data-id="${row.company_material_id}" data-name="${row.name}" data-unit="${row.unit}" data-material-id="${row.material_id}">
                                     <i class="la la-trash text-danger"></i> Disposal</a></li>
                             </ul>
                         </div>
@@ -397,6 +397,290 @@
             loadMaterialTransferBatches(companyMaterialId, unit);
             
             modal.modal('show');
+        });
+
+        // Disposal button handler (following chemical pattern)
+        $(document).on('click', '.materialDisposeBtn', function() {
+            const modal = $('#materialDisposalModal');
+            const companyMaterialId = $(this).data('id');
+            const materialId = $(this).data('material-id');
+            const materialName = $(this).data('name');
+            const unit = $(this).data('unit');
+            
+            console.log('Material disposal clicked:', {
+                companyMaterialId, materialId, materialName, unit
+            });
+            
+            // Populate modal fields
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#disposalMaterialName').val(materialName);
+            modal.find('#disposalMaterialUnit').val(unit);
+            modal.find('#disposalMaterialBatch').html('<option value="">Loading batches...</option>');
+            
+            // Clear form validation and reset specific fields (don't reset entire form)
+            modal.find('form').removeClass('was-validated');
+            modal.find('input[type="number"]').val('');
+            modal.find('textarea').val('');
+            modal.find('select:not(#materialDisposalMethod)').each(function() {
+                this.selectedIndex = 0;
+            });
+            
+            // Populate fields
+            modal.find('[name=company_material_id]').val(companyMaterialId);
+            modal.find('[name=material_id]').val(materialId);
+            modal.find('#disposalMaterialName').val(materialName);
+            modal.find('#disposalMaterialUnit').val(unit);
+            
+            // Set default date
+            modal.find('[name=disposal_date]').val(new Date().toISOString().slice(0, 10));
+            
+            // Show modal
+            modal.modal('show');
+            
+            // Load batches dynamically
+            const batchSelect = modal.find('#disposalMaterialBatch');
+            const quantityInput = modal.find('#disposalMaterialQuantity');
+            let batchData = {};
+            
+            // Add available quantity display helper
+            const addAvailableQtyHelper = () => {
+                const existingHelper = modal.find('#disposalAvailableQtyHelper');
+                if (existingHelper.length === 0) {
+                    const helper = $(`
+                        <div id="disposalAvailableQtyHelper" class="mt-2">
+                            <small class="text-muted">
+                                <i class="la la-info-circle"></i> 
+                                <span id="disposalAvailableQtyText">Select a batch to see available quantity</span>
+                            </small>
+                        </div>
+                    `);
+                    quantityInput.parent().append(helper);
+                }
+            };
+            
+            addAvailableQtyHelper();
+            
+            fetch(`/admin/material-batches/${companyMaterialId}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                batchSelect.html('<option value="">Select Batch</option>');
+                if (data.status === 'success' && data.batches && data.batches.length > 0) {
+                    data.batches.forEach(batch => {
+                        batchData[batch.batch_no] = batch;
+                        batchSelect.append(`<option value="${batch.batch_no}">${batch.batch_no}</option>`);
+                    });
+                    batchSelect.prop('disabled', false);
+                    
+                    // Add batch selection handler for disposal
+                    batchSelect.off('change.disposal').on('change.disposal', function() {
+                        const selectedBatch = $(this).val();
+                        const helperText = modal.find('#disposalAvailableQtyText');
+                        
+                        if (selectedBatch && companyMaterialId) {
+                            helperText.html('<i class="la la-spinner la-spin"></i> Loading available quantity...');
+                            
+                            fetch(`/admin/material-batch-quantity/${companyMaterialId}?batch_no=${selectedBatch}`, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    const availableQty = data.available_balance;
+                                    const unit = modal.find('#disposalMaterialUnit').val() || 'units';
+                                    helperText.html(`Available in batch <strong>${selectedBatch}</strong>: <span class="text-success">${availableQty} ${unit}</span>`);
+                                    
+                                    // Set max attribute on quantity input
+                                    quantityInput.attr('max', availableQty);
+                                    quantityInput.attr('placeholder', `Max: ${availableQty} ${unit}`);
+                                } else {
+                                    helperText.html('<span class="text-warning">Error loading quantity</span>');
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Error loading batch quantity:', err);
+                                helperText.html('<span class="text-danger">Error loading quantity</span>');
+                            });
+                        } else {
+                            helperText.text('Select a batch to see available quantity');
+                            quantityInput.removeAttr('max');
+                            quantityInput.attr('placeholder', 'Enter quantity to dispose');
+                        }
+                    });
+                } else {
+                    batchSelect.html('<option value="">No batches available</option>');
+                    batchSelect.prop('disabled', true);
+                }
+            })
+            .catch(err => {
+                console.error('Error loading batches:', err);
+                batchSelect.html('<option value="">Error loading batches</option>');
+                batchSelect.prop('disabled', true);
+            });
+            
+            // Load disposal methods
+            const methodSelect = modal.find('#materialDisposalMethod');
+            
+            // Always load disposal methods when modal opens
+            methodSelect.html('<option value="">Loading disposal methods...</option>');
+            methodSelect.prop('disabled', true);
+            
+            console.log('Loading disposal methods...');
+            console.log('Method select element:', methodSelect);
+            console.log('Method select length:', methodSelect.length);
+            
+            fetch('/admin/disposal-methods', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(resp => {
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+                }
+                return resp.json();
+            })
+            .then(data => {
+                console.log('Disposal methods response:', data);
+                console.log('Response structure analysis:', {
+                    status: data.status,
+                    hasData: !!data.data,
+                    dataType: typeof data.data,
+                    dataLength: data.data ? data.data.length : 'N/A',
+                    firstItem: data.data && data.data.length > 0 ? data.data[0] : 'No items',
+                    allKeys: data.data && data.data.length > 0 ? Object.keys(data.data[0]) : 'No keys'
+                });
+                
+                if (data.status == 'success' && data.data && data.data.length > 0) {
+                    // Clear loading message and populate with actual methods
+                    methodSelect.html('<option value="">Select Method</option>');
+                    
+                    console.log('Processing disposal methods:', data.data);
+                    
+                    data.data.forEach((method, index) => {
+                        console.log(`Processing method ${index + 1}:`, method);
+                        
+                        // Try different possible ID field names
+                        let methodId = method.id || method.disposal_method_id || method.method_id || method.ID;
+                        
+                        // If still no ID, use the array index + 1 as fallback
+                        if (!methodId) {
+                            methodId = index + 1;
+                            console.warn(`No ID found for method, using index: ${methodId}`, method);
+                        }
+                        
+                        // Ensure methodId is a number
+                        methodId = parseInt(methodId, 10);
+                        if (isNaN(methodId)) {
+                            console.error('Invalid method ID after parsing:', method);
+                            return;
+                        }
+                        
+                        // Try different possible name field names
+                        const methodName = method.method_name || method.name || method.disposal_method || method.title || `Method ${methodId}`;
+                        
+                        // Use jQuery to append option
+                        const optionHtml = `<option value="${methodId}" data-method-id="${methodId}">${methodName}</option>`;
+                        methodSelect.append(optionHtml);
+                        
+                        console.log('Successfully added option:', {
+                            id: methodId,
+                            name: methodName,
+                            html: optionHtml
+                        });
+                    });
+                    
+                    methodSelect.prop('disabled', false);
+                    console.log('Disposal methods loaded successfully. Total options:', methodSelect.find('option').length);
+                    console.log('Final select HTML:', methodSelect.html());
+                    console.log('All options:', methodSelect.find('option').map(function() { return {value: this.value, text: this.text}; }).get());
+                } else {
+                    console.warn('No disposal methods found in response, creating defaults...');
+                    
+                    // Create default disposal methods automatically
+                    createDefaultDisposalMethods().then(() => {
+                        // Retry loading after creating defaults
+                        setTimeout(() => {
+                            console.log('Retrying disposal methods load after creating defaults...');
+                            refreshDisposalMethods();
+                        }, 1000);
+                    });
+                    
+                    // Show fallback methods immediately
+                    const fallbackMethods = [
+                        { id: 1, name: 'Recycling' },
+                        { id: 2, name: 'Incineration' },
+                        { id: 3, name: 'Landfill' },
+                        { id: 4, name: 'Third-party Contractor' }
+                    ];
+                    
+                    let fallbackHtml = '<option value="">Select Method (Using Defaults)</option>';
+                    fallbackMethods.forEach(method => {
+                        fallbackHtml += `<option value="${method.id}" data-fallback="true">${method.name}</option>`;
+                    });
+                    
+                    methodSelect.html(fallbackHtml);
+                    methodSelect.prop('disabled', false);
+                    
+                    console.log('Added fallback disposal methods');
+                }
+            })
+            .catch(err => {
+                console.error('Error loading disposal methods:', err);
+                
+                // Show detailed error information
+                console.error('Fetch error details:', {
+                    message: err.message,
+                    stack: err.stack,
+                    url: '/admin/disposal-methods',
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Provide fallback options if API fails
+                methodSelect.empty();
+                
+                const fallbackMethods = [
+                    { id: 1, name: 'Recycling' },
+                    { id: 2, name: 'Incineration' },
+                    { id: 3, name: 'Landfill' },
+                    { id: 4, name: 'Third-party Contractor' }
+                ];
+                
+                // Add default option and fallback methods using jQuery
+                let fallbackHtml = '<option value="">Select Method (Fallback)</option>';
+                
+                fallbackMethods.forEach(method => {
+                    fallbackHtml += `<option value="${method.id}" data-fallback="true">${method.name}</option>`;
+                });
+                
+                methodSelect.html(fallbackHtml);
+                
+                console.log('Added fallback disposal methods');
+                methodSelect.prop('disabled', false);
+                
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'API Connection Issue',
+                    html: `
+                        <p>Could not load disposal methods from server.</p>
+                        <p><strong>Error:</strong> ${err.message}</p>
+                        <p>Using fallback options. Please verify with administrator.</p>
+                    `,
+                    confirmButtonText: 'Continue with Fallback'
+                });
+            });
         });
 
         // Checkout button handler (following chemical pattern)
@@ -1990,6 +2274,545 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             });
         });
+    }
+    
+    // Material Disposal Form Handler (following chemical pattern)
+    const materialDisposalForm = document.querySelector("#materialDisposalForm");
+    if (materialDisposalForm) {
+        materialDisposalForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            materialDisposalForm.classList.add('was-validated');
+
+            if (!materialDisposalForm.checkValidity()) {
+                return;
+            }
+
+            // Additional validation for disposal method
+            const disposalMethodField = materialDisposalForm.querySelector('[name="method"]');
+            const batchNoField = materialDisposalForm.querySelector('[name="batch_no"]');
+            const reasonField = materialDisposalForm.querySelector('[name="reason"]');
+            
+            const disposalMethod = disposalMethodField ? disposalMethodField.value : '';
+            const batchNo = batchNoField ? batchNoField.value : '';
+            const reason = reasonField ? reasonField.value : '';
+            
+            console.log('Validation check:', {
+                disposalMethod: disposalMethod,
+                batchNo: batchNo,
+                reason: reason,
+                disposalMethodType: typeof disposalMethod,
+                isDisposalMethodEmpty: !disposalMethod || disposalMethod === '',
+                isDisposalMethodNaN: isNaN(disposalMethod)
+            });
+            
+            if (!disposalMethod || disposalMethod === '' || disposalMethod === 'Loading disposal methods...' || disposalMethod === 'No disposal methods available' || disposalMethod === 'Error loading disposal methods') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select a valid disposal method before submitting.'
+                });
+                return;
+            }
+            
+            if (!batchNo || batchNo === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select a batch before submitting.'
+                });
+                return;
+            }
+            
+            if (!reason || reason === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select a disposal reason before submitting.'
+                });
+                return;
+            }
+
+            // Create FormData and ensure method is sent as a number
+            const formData = new FormData(materialDisposalForm);
+            
+            // Convert method to number if it exists
+            const methodValue = disposalMethodField.value;
+            if (methodValue && methodValue !== '') {
+                // Remove the string value and add as number
+                formData.delete('method');
+                const methodNumber = parseInt(methodValue, 10);
+                if (!isNaN(methodNumber)) {
+                    formData.append('method', methodNumber.toString());
+                    console.log('Method converted to number:', methodNumber);
+                } else {
+                    console.error('Method value is not a valid number:', methodValue);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Disposal Method',
+                        text: 'The selected disposal method is invalid. Please try selecting again.'
+                    });
+                    return;
+                }
+            }
+            
+            // Debug form data
+            console.log('Material disposal form data (after processing):');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value} (type: ${typeof value})`);
+            }
+            
+            // Additional debugging for disposal method
+            const methodField = materialDisposalForm.querySelector('[name="method"]');
+            console.log('Disposal method debugging:', {
+                field: methodField,
+                originalValue: methodField ? methodField.value : 'Field not found',
+                selectedIndex: methodField ? methodField.selectedIndex : 'No field',
+                processedValue: formData.get('method'),
+                allOptions: methodField ? Array.from(methodField.options).map(opt => ({
+                    value: opt.value, 
+                    text: opt.text, 
+                    selected: opt.selected,
+                    valueType: typeof opt.value
+                })) : 'No options'
+            });
+
+            fetch(`{{ route('admin.save-company-material-disposal') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(async res => {
+                console.log('Disposal response status:', res.status);
+                
+                const responseText = await res.text();
+                console.log('Disposal raw response:', responseText);
+                
+                if (!res.ok) {
+                    if (res.status === 422) {
+                        try {
+                            const errorData = JSON.parse(responseText);
+                            console.log('Disposal validation errors:', errorData);
+                            
+                            // Handle specific disposal quantity error
+                            if (errorData.message && errorData.message.includes('exceeds available batch stock') && errorData.batch_balance !== undefined) {
+                                const requestedQty = formData.get('quantity');
+                                const availableQty = errorData.batch_balance;
+                                const batchNo = formData.get('batch_no');
+                                const unit = materialDisposalForm.querySelector('#disposalMaterialUnit').value || 'units';
+                                
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Insufficient Stock for Disposal",
+                                    html: `
+                                        <div class="text-start">
+                                            <p><strong>Batch:</strong> ${batchNo}</p>
+                                            <p><strong>Available Stock:</strong> <span class="text-success">${availableQty} ${unit}</span></p>
+                                            <p><strong>Requested Disposal:</strong> <span class="text-danger">${requestedQty} ${unit}</span></p>
+                                            <p><strong>Excess Amount:</strong> <span class="text-warning">${(parseFloat(requestedQty) - parseFloat(availableQty)).toFixed(2)} ${unit}</span></p>
+                                            <hr>
+                                            <p class="text-muted"><small>Please reduce the disposal quantity to ${availableQty} ${unit} or less.</small></p>
+                                        </div>
+                                    `,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Adjust Quantity',
+                                    cancelButtonText: 'Cancel',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Auto-fill with maximum available quantity
+                                        const quantityInput = materialDisposalForm.querySelector('[name="quantity"]');
+                                        if (quantityInput) {
+                                            quantityInput.value = availableQty;
+                                            quantityInput.focus();
+                                            quantityInput.select();
+                                        }
+                                    }
+                                });
+                                return;
+                            }
+                            
+                            if (errorData.errors) {
+                                let errorMessage = 'Validation failed:\n';
+                                Object.keys(errorData.errors).forEach(field => {
+                                    errorMessage += `${field}: ${errorData.errors[field][0]}\n`;
+                                });
+                                
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Validation Error",
+                                    text: errorMessage
+                                });
+                                return;
+                            }
+                        } catch (parseError) {
+                            console.error('Failed to parse validation error response:', parseError);
+                        }
+                    }
+                    throw new Error(`HTTP ${res.status}: ${responseText}`);
+                }
+                
+                try {
+                    return JSON.parse(responseText);
+                } catch (parseError) {
+                    if (res.status === 200) {
+                        return { status: 'success', message: 'Material disposal recorded successfully' };
+                    }
+                    throw new Error('Invalid JSON response from server');
+                }
+            })
+            .then(data => {
+                console.log('Disposal response:', data);
+                
+                if (data.status === 'success') {
+                    // Show simple success message with just the disposed quantity
+                    const disposalDetails = data.disposal_details;
+                    let successMessage = data.message || 'Material disposal recorded successfully.';
+                    
+                    if (disposalDetails) {
+                        const unit = materialDisposalForm.querySelector('#disposalMaterialUnit').value || 'units';
+                        const materialName = materialDisposalForm.querySelector('#disposalMaterialName').value || 'Material';
+                        successMessage = `${disposalDetails.quantity_disposed} ${unit} of ${materialName} disposed successfully.`;
+                    }
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Disposal Recorded',
+                        text: successMessage,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    $('#materialDisposalModal').modal('hide');
+                    
+                    // Refresh the materials table
+                    if ($.fn.DataTable.isDataTable('#materialTable')) {
+                        $('#materialTable').DataTable().ajax.reload(null, false);
+                    }
+                    
+                    // Clear any cached batch data to force fresh reload
+                    window.materialAdjustmentBatchData = null;
+                    window.materialAdjustmentTotalQty = null;
+                    window.materialAdjustmentBatchCount = null;
+                    window.materialTransferBatchData = null;
+                    
+                    // Clear any checkout modal batch data if it exists
+                    if (window.materialCheckoutBatchData) {
+                        window.materialCheckoutBatchData = null;
+                    }
+                    
+                    materialDisposalForm.reset();
+                    materialDisposalForm.classList.remove('was-validated');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Something went wrong.'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Disposal error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    text: `Error: ${err.message}`
+                });
+            });
+        });
+    }
+    
+    // Add real-time validation for disposal quantity
+    $(document).on('input', '#disposalMaterialQuantity', function() {
+        const quantityInput = $(this);
+        const requestedQty = parseFloat(quantityInput.val());
+        const batchSelect = $('#disposalMaterialBatch');
+        const selectedBatch = batchSelect.val();
+        
+        // Remove existing validation feedback
+        quantityInput.removeClass('is-invalid is-valid');
+        quantityInput.siblings('.invalid-feedback.qty-validation, .valid-feedback.qty-validation').remove();
+        
+        if (!selectedBatch || !requestedQty || isNaN(requestedQty)) {
+            return;
+        }
+        
+        // Get available quantity for the selected batch
+        const companyMaterialId = $('[name="company_material_id"]').val();
+        if (companyMaterialId && selectedBatch) {
+            fetch(`/admin/material-batch-quantity/${companyMaterialId}?batch_no=${selectedBatch}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const availableQty = parseFloat(data.available_balance);
+                    const unit = $('#disposalMaterialUnit').val() || 'units';
+                    
+                    if (requestedQty > availableQty) {
+                        // Show error
+                        quantityInput.addClass('is-invalid');
+                        const excess = (requestedQty - availableQty).toFixed(2);
+                        const feedback = $(`
+                            <div class="invalid-feedback qty-validation">
+                                <i class="la la-exclamation-triangle"></i> 
+                                <strong>Exceeds available stock!</strong><br>
+                                Available: <strong>${availableQty} ${unit}</strong><br>
+                                Excess: <strong>${excess} ${unit}</strong>
+                            </div>
+                        `);
+                        quantityInput.after(feedback);
+                    } else if (requestedQty > 0) {
+                        // Show success
+                        quantityInput.addClass('is-valid');
+                        const remaining = (availableQty - requestedQty).toFixed(2);
+                        const feedback = $(`
+                            <div class="valid-feedback qty-validation">
+                                <i class="la la-check-circle"></i> 
+                                Valid disposal quantity<br>
+                                Remaining after disposal: <strong>${remaining} ${unit}</strong>
+                            </div>
+                        `);
+                        quantityInput.after(feedback);
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Error validating disposal quantity:', err);
+            });
+        }
+    });
+    
+    // Validate quantity when batch changes
+    $(document).on('change', '#disposalMaterialBatch', function() {
+        const quantityInput = $('#disposalMaterialQuantity');
+        if (quantityInput.val()) {
+            quantityInput.trigger('input');
+        }
+    });
+    
+    // Add event listener for refresh button
+    $(document).on('click', '#refreshDisposalMethodsBtn', function() {
+        console.log('🔄 Manual refresh button clicked');
+        refreshDisposalMethods();
+    });
+    
+    // Add event listener for disposal method selection debugging
+    $(document).on('change', '#materialDisposalMethod', function() {
+        const selectedValue = $(this).val();
+        const selectedText = $(this).find('option:selected').text();
+        const selectedOption = $(this).find('option:selected')[0];
+        
+        console.log('Disposal method changed:', {
+            value: selectedValue,
+            text: selectedText,
+            type: typeof selectedValue,
+            isNumber: !isNaN(selectedValue) && selectedValue !== '',
+            parsedInt: parseInt(selectedValue, 10),
+            option: selectedOption,
+            isFallback: selectedOption ? selectedOption.hasAttribute('data-fallback') : false
+        });
+    });
+    
+    // Test disposal methods API on page load
+    function testDisposalMethodsAPI() {
+        console.log('🔍 Testing disposal methods API...');
+        
+        const startTime = performance.now();
+        
+        fetch('/admin/disposal-methods', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(resp => {
+            const endTime = performance.now();
+            const duration = Math.round(endTime - startTime);
+            
+            console.log(`📡 API Response received in ${duration}ms:`, {
+                status: resp.status,
+                statusText: resp.statusText,
+                ok: resp.ok,
+                headers: Object.fromEntries(resp.headers.entries())
+            });
+            
+            if (!resp.ok) {
+                throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+            }
+            
+            return resp.json();
+        })
+        .then(data => {
+            console.log('📊 Disposal methods API test result:', data);
+            
+            if (data.status === 'success' && data.data && Array.isArray(data.data)) {
+                console.log(`✅ Disposal methods API is working. Found ${data.data.length} methods:`);
+                data.data.forEach((method, index) => {
+                    console.log(`  ${index + 1}. ID: ${method.id}, Name: ${method.method_name}`);
+                });
+            } else {
+                console.warn('⚠️ Disposal methods API returned unexpected data structure:', data);
+            }
+        })
+        .catch(err => {
+            console.error('❌ Disposal methods API test failed:', {
+                error: err.message,
+                stack: err.stack,
+                url: '/admin/disposal-methods'
+            });
+        });
+    }
+    
+    // Run API test when page loads
+    $(document).ready(function() {
+        testDisposalMethodsAPI();
+        
+        // Also test if we can create some default disposal methods
+        setTimeout(() => {
+            checkAndCreateDisposalMethods();
+        }, 2000);
+        
+        // Add a simple test button to console for manual testing
+        console.log('💡 Manual test commands available:');
+        console.log('  - testDisposalMethodsAPI() : Test the API');
+        console.log('  - refreshDisposalMethods() : Refresh disposal methods');
+        console.log('  - createDefaultDisposalMethods() : Create default methods');
+        console.log('  - checkAndCreateDisposalMethods() : Check and create if needed');
+    });
+    
+    // Function to check and create disposal methods if none exist
+    function checkAndCreateDisposalMethods() {
+        fetch('/admin/disposal-methods', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            if (data.status === 'success' && (!data.data || data.data.length === 0)) {
+                console.log('🔧 No disposal methods found. Creating default methods...');
+                createDefaultDisposalMethods();
+            }
+        })
+        .catch(err => {
+            console.error('Error checking disposal methods:', err);
+        });
+    }
+    
+    // Manual refresh function for disposal methods
+    window.refreshDisposalMethods = function() {
+        console.log('🔄 Manually refreshing disposal methods...');
+        
+        const methodSelect = $('#materialDisposalMethod');
+        if (methodSelect.length === 0) {
+            console.error('❌ Disposal method select not found');
+            return;
+        }
+        
+        methodSelect.html('<option value="">Refreshing disposal methods...</option>');
+        methodSelect.prop('disabled', true);
+        
+        fetch('/admin/disposal-methods', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(resp => {
+            if (!resp.ok) {
+                throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+            }
+            return resp.json();
+        })
+        .then(data => {
+            console.log('🔄 Manual refresh result:', data);
+            
+            if (data.status === 'success' && data.data && data.data.length > 0) {
+                methodSelect.html('<option value="">Select Method</option>');
+                
+                data.data.forEach(method => {
+                    const methodId = parseInt(method.id, 10);
+                    if (!isNaN(methodId)) {
+                        const optionHtml = `<option value="${methodId}">${method.method_name}</option>`;
+                        methodSelect.append(optionHtml);
+                    }
+                });
+                
+                methodSelect.prop('disabled', false);
+                console.log('✅ Disposal methods refreshed successfully');
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Refreshed',
+                    text: `Loaded ${data.data.length} disposal methods`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                throw new Error('No disposal methods found');
+            }
+        })
+        .catch(err => {
+            console.error('❌ Manual refresh failed:', err);
+            methodSelect.html('<option value="">Error loading methods</option>');
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Refresh Failed',
+                text: err.message,
+                confirmButtonText: 'OK'
+            });
+        });
+    };
+    
+    // Helper function to create default disposal methods if none exist
+    function createDefaultDisposalMethods() {
+        console.log('Creating default disposal methods...');
+        
+        const defaultMethods = [
+            { method_name: 'Recycling', description: 'Material recycling' },
+            { method_name: 'Incineration', description: 'Controlled burning' },
+            { method_name: 'Landfill', description: 'Landfill disposal' },
+            { method_name: 'Third-party Contractor', description: 'External disposal service' }
+        ];
+        
+        const promises = defaultMethods.map((method, index) => {
+            const formData = new FormData();
+            formData.append('method_name', method.method_name);
+            formData.append('description', method.description);
+            
+            return fetch('/admin/disposal-methods/store', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: formData
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log('Created disposal method:', data);
+                return data;
+            })
+            .catch(err => {
+                console.error('Failed to create disposal method:', err);
+                return null;
+            });
+        });
+        
+        return Promise.all(promises);
     }
 });
 </script>
